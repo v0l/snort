@@ -1,13 +1,14 @@
-import { NostrEvent, CachedMetadata, RelayMetrics, UsersRelays } from "@snort/system";
+import { NostrEvent, CachedMetadata, RelayMetrics, UsersRelays, UsersFollows } from "@snort/system";
 import Dexie, { Table } from "dexie";
 
 const NAME = "snort-system";
-const VERSION = 2;
+const VERSION = 3;
 
 const STORES = {
   users: "++pubkey, name, display_name, picture, nip05, npub",
   relayMetrics: "++addr",
   userRelays: "++pubkey",
+  contacts: "++pubkey",
   events: "++id, pubkey, created_at",
 };
 
@@ -17,6 +18,7 @@ export class SnortSystemDb extends Dexie {
   relayMetrics!: Table<RelayMetrics>;
   userRelays!: Table<UsersRelays>;
   events!: Table<NostrEvent>;
+  contacts!: Table<UsersFollows>;
 
   constructor() {
     super(NAME);

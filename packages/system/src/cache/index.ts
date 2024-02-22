@@ -44,9 +44,16 @@ export interface RelayMetrics {
 
 export interface UsersRelays {
   pubkey: string;
-  relays: FullRelaySettings[];
   created: number;
   loaded: number;
+  relays: FullRelaySettings[];
+}
+
+export interface UsersFollows {
+  pubkey: string;
+  created: number;
+  loaded: number;
+  follows: Array<Array<string>>;
 }
 
 export function mapEventToProfile(ev: NostrEvent) {
@@ -78,6 +85,7 @@ export interface SnortSystemDb {
   relayMetrics: DexieTableLike<RelayMetrics>;
   userRelays: DexieTableLike<UsersRelays>;
   events: DexieTableLike<NostrEvent>;
+  contacts: DexieTableLike<UsersFollows>;
 
   isAvailable(): Promise<boolean>;
 }

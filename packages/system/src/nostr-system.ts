@@ -1,7 +1,7 @@
 import debug from "debug";
 import EventEmitter from "eventemitter3";
 
-import { CachedTable } from "@snort/shared";
+import { CachedTable, isHex, unixNowMs } from "@snort/shared";
 import { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr";
 import { Connection, RelaySettings } from "./connection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
@@ -19,6 +19,10 @@ import {
   SnortSystemDb,
   QueryLike,
   OutboxModel,
+  socialGraphInstance,
+  EventKind,
+  UsersFollows,
+  ID,
 } from ".";
 import { EventsCache } from "./cache/events";
 import { RelayMetadataLoader } from "./outbox";
@@ -26,7 +30,8 @@ import { Optimizer, DefaultOptimizer } from "./query-optimizer";
 import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
 import { QueryManager } from "./query-manager";
 import { CacheRelay } from "./cache-relay";
-import { RequestRouter } from "request-router";
+import { RequestRouter } from "./request-router";
+import { UserFollowsCache } from "./cache/user-follows-lists";
 
 export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
@@ -57,6 +62,11 @@ export interface SystemConfig {
   events: CachedTable<NostrEvent>;
 
   /**
+   * Cache of user ContactLists (kind 3)
+   */
+  contactLists: CachedTable<UsersFollows>;
+
+  /**
    * Optimized cache relay, usually `@snort/worker-relay`
    */
   cachingRelay?: CacheRelay;
@@ -83,6 +93,14 @@ export interface SystemConfig {
    * 2. Write to inbox for all `p` tagged users in broadcasting events
    */
   automaticOutboxModel: boolean;
+
+  /**
+   * Automatically populate SocialGraph from kind 3 events fetched.
+   *
+   * This is basically free because we always load relays (which includes kind 3 contact lists)
+   * for users when fetching by author.
+   */
+  buildFollowGraph: boolean;
 }
 
 /**
@@ -125,6 +143,10 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     return this.#config.events;
   }
 
+  get userFollowsCache(): CachedTable<UsersFollows> {
+    return this.#config.contactLists;
+  }
+
   get cacheRelay(): CacheRelay | undefined {
     return this.#config.cachingRelay;
   }
@@ -153,11 +175,13 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
       profiles: props.profiles ?? new UserProfileCache(props.db?.users),
       relayMetrics: props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics),
       events: props.events ?? new EventsCache(props.db?.events),
+      contactLists: props.contactLists ?? new UserFollowsCache(props.db?.contacts),
       optimizer: props.optimizer ?? DefaultOptimizer,
       checkSigs: props.checkSigs ?? false,
       cachingRelay: props.cachingRelay,
       db: props.db,
       automaticOutboxModel: props.automaticOutboxModel ?? true,
+      buildFollowGraph: props.buildFollowGraph ?? false,
     };
 
     this.profileLoader = new ProfileLoaderService(this, this.profileCache);
@@ -167,6 +191,32 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     // if automatic outbox model, setup request router as OutboxModel
     if (this.#config.automaticOutboxModel) {
       this.requestRouter = OutboxModel.fromSystem(this);
+    }
+
+    // Hook on-event when building follow graph
+    if (this.#config.buildFollowGraph) {
+      let evBuf: Array<TaggedNostrEvent> = [];
+      let t: ReturnType<typeof setTimeout> | undefined;
+      this.on("event", (_, ev) => {
+        if (ev.kind === EventKind.ContactList) {
+          // fire&forget update
+          this.userFollowsCache.update({
+            loaded: unixNowMs(),
+            created: ev.created_at,
+            pubkey: ev.pubkey,
+            follows: ev.tags,
+          });
+
+          // buffer social graph updates into 500ms window
+          evBuf.push(ev);
+          if (!t) {
+            t = setTimeout(() => {
+              socialGraphInstance.handleEvent(evBuf);
+              evBuf = [];
+            }, 500);
+          }
+        }
+      });
     }
 
     this.pool = new DefaultConnectionPool(this);
@@ -225,8 +275,24 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
       this.profileCache.preload(),
       this.relayMetricsCache.preload(),
       this.eventsCache.preload(),
+      this.userFollowsCache.preload(),
     ];
     await Promise.all(t);
+    await this.PreloadSocialGraph();
+  }
+
+  async PreloadSocialGraph() {
+    // Insert data to socialGraph from cache
+    if (this.#config.buildFollowGraph) {
+      for (const list of this.userFollowsCache.snapshot()) {
+        const user = ID(list.pubkey);
+        for (const fx of list.follows) {
+          if (fx[0] === "p" && fx[1].length === 64) {
+            socialGraphInstance.addFollower(ID(fx[1]), user);
+          }
+        }
+      }
+    }
   }
 
   async ConnectToRelay(address: string, options: RelaySettings) {

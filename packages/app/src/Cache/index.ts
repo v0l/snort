@@ -6,6 +6,7 @@ import WorkerRelayPath from "@snort/worker-relay/dist/worker?worker&url";
 import { EventCacheWorker } from "./EventCacheWorker";
 import { GiftWrapCache } from "./GiftWrapCache";
 import { ProfileCacheRelayWorker } from "./ProfileWorkerCache";
+import { UserFollowsWorker } from "./UserFollowsWorker";
 
 export const Relay = new WorkerRelayInterface(WorkerRelayPath);
 export async function initRelayWorker() {
@@ -20,6 +21,7 @@ export const SystemDb = new SnortSystemDb();
 export const UserRelays = new UserRelaysCache(SystemDb.userRelays);
 export const RelayMetrics = new RelayMetricCache(SystemDb.relayMetrics);
 
+export const UserFollows = new UserFollowsWorker(Relay);
 export const UserCache = new ProfileCacheRelayWorker(Relay);
 export const EventsCache = new EventCacheWorker(Relay);
 
@@ -32,6 +34,7 @@ export async function preload(follows?: Array<string>) {
     GiftsCache.preload(),
     UserRelays.preload(follows),
     EventsCache.preload(),
+    UserFollows.preload(),
   ];
   await Promise.all(preloads);
 }

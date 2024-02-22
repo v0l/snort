@@ -47,44 +47,47 @@ export default class SocialGraph {
     }
   }
 
-  handleEvent(event: NostrEvent) {
-    if (event.kind !== 3) {
+  handleEvent(evs: NostrEvent | Array<NostrEvent>) {
+    const filtered = (Array.isArray(evs) ? evs : [evs]).filter(a => a.kind === 3);
+    if (filtered.length === 0) {
       return;
     }
     queueMicrotask(() => {
       try {
-        const author = ID(event.pubkey);
-        const timestamp = event.created_at;
-        const existingTimestamp = this.latestFollowEventTimestamps.get(author);
-        if (existingTimestamp && timestamp <= existingTimestamp) {
-          return;
-        }
-        this.latestFollowEventTimestamps.set(author, timestamp);
+        for (const event of filtered) {
+          const author = ID(event.pubkey);
+          const timestamp = event.created_at;
+          const existingTimestamp = this.latestFollowEventTimestamps.get(author);
+          if (existingTimestamp && timestamp <= existingTimestamp) {
+            return;
+          }
+          this.latestFollowEventTimestamps.set(author, timestamp);
 
-        // Collect all users followed in the new event.
-        const followedInEvent = new Set<UID>();
-        for (const tag of event.tags) {
-          if (tag[0] === "p") {
-            const followedUser = ID(tag[1]);
-            if (followedUser !== author) {
-              followedInEvent.add(followedUser);
+          // Collect all users followed in the new event.
+          const followedInEvent = new Set<UID>();
+          for (const tag of event.tags) {
+            if (tag[0] === "p") {
+              const followedUser = ID(tag[1]);
+              if (followedUser !== author) {
+                followedInEvent.add(followedUser);
+              }
             }
           }
-        }
 
-        // Get the set of users currently followed by the author.
-        const currentlyFollowed = this.followedByUser.get(author) || new Set<UID>();
+          // Get the set of users currently followed by the author.
+          const currentlyFollowed = this.followedByUser.get(author) || new Set<UID>();
 
-        // Find users that need to be removed.
-        for (const user of currentlyFollowed) {
-          if (!followedInEvent.has(user)) {
-            this.removeFollower(user, author);
+          // Find users that need to be removed.
+          for (const user of currentlyFollowed) {
+            if (!followedInEvent.has(user)) {
+              this.removeFollower(user, author);
+            }
           }
-        }
 
-        // Add or update the followers based on the new event.
-        for (const user of followedInEvent) {
-          this.addFollower(user, author);
+          // Add or update the followers based on the new event.
+          for (const user of followedInEvent) {
+            this.addFollower(user, author);
+          }
         }
       } catch (e) {
         // might not be logged in or sth

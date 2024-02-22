@@ -2,13 +2,12 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
 
-import { socialGraphInstance } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 
-import { initRelayWorker, preload, Relay, UserCache } from "@/Cache";
+import { initRelayWorker, preload, UserCache } from "@/Cache";
 import { ThreadRoute } from "@/Components/Event/Thread";
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
 import { db } from "@/Db";
@@ -55,25 +54,10 @@ async function initSite() {
   updateRelayConnections(System, login.relays.item).catch(console.error);
   setupWebLNWalletConfig(Wallets);
 
-  Relay.query([
-    "REQ",
-    "preload-social-graph",
-    {
-      kinds: [3],
-    },
-  ]).then(res => {
-    for (const ev of res) {
-      try {
-        socialGraphInstance.handleEvent(ev);
-      } catch (e) {
-        console.error("Failed to handle contact list event from sql db", e);
-      }
-    }
-  });
-
   db.ready = await db.isAvailable();
   if (db.ready) {
     await preload(login.follows.item);
+    await System.PreloadSocialGraph();
   }
 
   queueMicrotask(() => {

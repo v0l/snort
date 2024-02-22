@@ -1,7 +1,7 @@
 import { removeUndefined, throwIfOffline } from "@snort/shared";
-import { mapEventToProfile, NostrEvent, NostrSystem, socialGraphInstance } from "@snort/system";
+import { mapEventToProfile, NostrEvent, NostrSystem } from "@snort/system";
 
-import { EventsCache, Relay, RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
+import { EventsCache, Relay, RelayMetrics, SystemDb, UserCache, UserFollows, UserRelays } from "@/Cache";
 import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
@@ -10,13 +10,15 @@ import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
  * Singleton nostr system
  */
 export const System = new NostrSystem({
-  relayCache: UserRelays,
-  eventsCache: EventsCache,
-  profileCache: UserCache,
+  relays: UserRelays,
+  events: EventsCache,
+  profiles: UserCache,
   relayMetrics: RelayMetrics,
-  cacheRelay: Relay,
+  cachingRelay: Relay,
+  contactLists: UserFollows,
   optimizer: hasWasm ? WasmOptimizer : undefined,
   db: SystemDb,
+  buildFollowGraph: true,
 });
 
 System.on("auth", async (c, r, cb) => {
@@ -31,7 +33,6 @@ System.on("event", (_, ev) => {
   Relay.event(ev);
   EventsCache.discover(ev);
   UserCache.discover(ev);
-  socialGraphInstance.handleEvent(ev);
   addEventToFuzzySearch(ev);
 });
 
