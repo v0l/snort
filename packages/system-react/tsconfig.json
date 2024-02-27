@@ -9,6 +9,7 @@
     "jsx": "react-jsx",
     "strict": true,
     "declaration": true,
+    "declarationMap": true,
     "inlineSourceMap": true,
     "outDir": "dist",
     "skipLibCheck": true

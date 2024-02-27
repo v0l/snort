@@ -1,4 +1,4 @@
-import { SortedMap } from "@snort/shared";
+import { SortedMap, dedupe } from "@snort/shared";
 import { EventExt, EventType, TaggedNostrEvent } from ".";
 import { findTag } from "./utils";
 import EventEmitter from "eventemitter3";
@@ -73,7 +73,7 @@ export class KeyedReplaceableNoteStore extends HookedNoteStore {
       const existingCreated = existing?.created_at ?? 0;
       if (a.created_at > existingCreated) {
         if (existing) {
-          a.relays.push(...existing.relays);
+          a.relays = dedupe([...existing.relays, ...a.relays]);
         }
         this.#events.set(keyOnEvent, a);
         changes.push(a);
