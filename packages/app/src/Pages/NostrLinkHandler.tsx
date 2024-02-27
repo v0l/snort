@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useParams } from "react-router-dom";
 
-import { ThreadRoute } from "@/Components/Event/Thread";
+import { ThreadRoute } from "@/Components/Event/Thread/ThreadRoute";
 import { GenericFeed } from "@/Components/Feed/Generic";
 import Spinner from "@/Components/Icons/Spinner";
 import ProfilePage from "@/Pages/Profile/ProfilePage";

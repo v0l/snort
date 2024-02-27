@@ -1,6 +1,6 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 
-import { Thread } from "@/Components/Event/Thread";
+import { Thread } from "@/Components/Event/Thread/Thread";
 import Modal from "@/Components/Modal/Modal";
 import { SpotlightMedia } from "@/Components/Spotlight/SpotlightMedia";
 import getEventMedia from "@/Utils/getEventMedia";
