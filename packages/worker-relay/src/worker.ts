@@ -152,6 +152,6 @@ globalThis.onmessage = async ev => {
     }
   } catch (e) {
     console.error(e);
-    reply(msg.id, { error: e });
+    reply(msg.id, { error: JSON.stringify(e) });
   }
 };
