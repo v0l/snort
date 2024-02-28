@@ -1,34 +1,21 @@
-import { HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
-import { Menu, MenuItem } from "@szhsin/react-menu";
-import { useEffect, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import {HexKey, NostrLink, NostrPrefix} from "@snort/system";
+import {Menu, MenuItem} from "@szhsin/react-menu";
+import {useEffect, useState} from "react";
+import {FormattedMessage, useIntl} from "react-intl";
 
+import {NoteContextMenuProps, NoteTranslation} from "@/Components/Event/Note/types";
 import Icon from "@/Components/Icons/Icon";
 import messages from "@/Components/messages";
 import SnortApi from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
-import { setBookmarked, setPinned } from "@/Utils/Login";
-import { getCurrentSubscription, SubscriptionType } from "@/Utils/Subscription";
+import {setBookmarked, setPinned} from "@/Utils/Login";
+import {getCurrentSubscription, SubscriptionType} from "@/Utils/Subscription";
 
-import { ReBroadcaster } from "../../ReBroadcaster";
+import {ReBroadcaster} from "../../ReBroadcaster";
 
-export interface NoteTranslation {
-  text: string;
-  fromLanguage: string;
-  confidence: number;
-  skipped?: boolean;
-}
-
-interface NosteContextMenuProps {
-  ev: TaggedNostrEvent;
-  setShowReactions(b: boolean): void;
-  react(content: string): Promise<void>;
-  onTranslated?: (t: NoteTranslation) => void;
-}
-
-export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
+export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
   const { formatMessage } = useIntl();
   const login = useLogin();
   const { mute, block } = useModeration();

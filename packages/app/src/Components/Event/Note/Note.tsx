@@ -11,6 +11,7 @@ import NoteHeader from "@/Components/Event/Note/NoteHeader";
 import NoteQuote from "@/Components/Event/Note/NoteQuote";
 import { NoteText } from "@/Components/Event/Note/NoteText";
 import { TranslationInfo } from "@/Components/Event/Note/TranslationInfo";
+import {NoteTranslation} from "@/Components/Event/Note/types";
 import Username from "@/Components/User/Username";
 import useModeration from "@/Hooks/useModeration";
 import { findTag } from "@/Utils";
@@ -21,7 +22,6 @@ import Text from "../../Text/Text";
 import { NoteProps } from "../EventComponent";
 import HiddenNote from "../HiddenNote";
 import Poll from "../Poll";
-import { NoteTranslation } from "./NoteContextMenu";
 import NoteFooter from "./NoteFooter/NoteFooter";
 
 const defaultOptions = {

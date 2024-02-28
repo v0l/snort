@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { NotePropsOptions } from "@/Components/Event/EventComponent";
-import { NoteContextMenu, NoteTranslation } from "@/Components/Event/Note/NoteContextMenu";
+import { NoteContextMenu } from "@/Components/Event/Note/NoteContextMenu";
 import NoteTime from "@/Components/Event/Note/NoteTime";
 import ReactionsModal from "@/Components/Event/Note/ReactionsModal";
 import ReplyTag from "@/Components/Event/Note/ReplyTag";
+import {NoteTranslation} from "@/Components/Event/Note/types";
 import Icon from "@/Components/Icons/Icon";
 import messages from "@/Components/messages";
 import ProfileImage from "@/Components/User/ProfileImage";

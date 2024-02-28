@@ -1,7 +1,7 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { NoteTranslation } from "@/Components/Event/Note/NoteContextMenu";
+import {NoteTranslation} from "@/Components/Event/Note/types";
 import messages from "@/Components/messages";
 
 interface TranslationInfoProps {

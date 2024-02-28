@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
 import { NoteProps } from "@/Components/Event/EventComponent";
-import { NoteTranslation } from "@/Components/Event/Note/NoteContextMenu";
+import {NoteTranslation} from "@/Components/Event/Note/types";
 import Reveal from "@/Components/Event/Reveal";
 import Text from "@/Components/Text/Text";
 import useLogin from "@/Hooks/useLogin";
