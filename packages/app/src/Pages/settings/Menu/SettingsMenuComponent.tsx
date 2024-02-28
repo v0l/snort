@@ -1,15 +1,16 @@
-import {Link} from "react-router-dom";
 import classNames from "classnames";
-import Icon from "@/Components/Icons/Icon";
-import {SettingsMenuItems} from "@/Pages/settings/Menu/Menu";
+import { Link } from "react-router-dom";
 
-export function SettingsMenuComponent({menu}: { menu: SettingsMenuItems }) {
+import Icon from "@/Components/Icons/Icon";
+import { SettingsMenuItems } from "@/Pages/settings/Menu/Menu";
+
+export function SettingsMenuComponent({ menu }: { menu: SettingsMenuItems }) {
   return (
     <div className="flex flex-col">
       {menu.map((group, groupIndex) => (
         <div key={groupIndex} className="mb-4">
           <div className="p-2 font-bold uppercase text-secondary text-xs tracking-wide">{group.title}</div>
-          {group.items.map(({icon, iconBg, message, path, action}, index) => (
+          {group.items.map(({ icon, iconBg, message, path, action }, index) => (
             <Link
               to={path || "#"}
               onClick={action}
@@ -21,11 +22,11 @@ export function SettingsMenuComponent({menu}: { menu: SettingsMenuItems }) {
               })}>
               <div className="flex items-center gap-3">
                 <div className={`p-1 ${iconBg} rounded-lg flex justify-center items-center text-white`}>
-                  <Icon name={icon} size={18} className="relative"/>
+                  <Icon name={icon} size={18} className="relative" />
                 </div>
                 <span className="text-base font-semibold flex-grow">{message}</span>
               </div>
-              <Icon name="arrowFront" size={12} className="text-secondary"/>
+              <Icon name="arrowFront" size={12} className="text-secondary" />
             </Link>
           ))}
         </div>

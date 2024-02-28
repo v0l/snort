@@ -1,17 +1,14 @@
-import "./ZapPool.css";
-
-import { useUserProfile } from "@snort/system-react";
 import { useMemo, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
-import ProfilePreview from "@/Components/User/ProfilePreview";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import { ZapPoolTarget } from "@/Pages/ZapPool/ZapPoolTarget";
 import { bech32ToHex, getRelayName, trackEvent, unwrap } from "@/Utils";
 import { SnortPubKey } from "@/Utils/Const";
 import { UploaderServices } from "@/Utils/Upload";
-import { ZapPoolController, ZapPoolRecipient, ZapPoolRecipientType } from "@/Utils/ZapPoolController";
+import { ZapPoolController, ZapPoolRecipientType } from "@/Utils/ZapPoolController";
 import { useWallet } from "@/Wallet";
 
 const DataProviders = [
@@ -21,51 +18,7 @@ const DataProviders = [
   },
 ];
 
-function ZapPoolTargetInner({ target }: { target: ZapPoolRecipient }) {
-  const login = useLogin();
-  const profile = useUserProfile(target.pubkey);
-  const hasAddress = profile?.lud16 || profile?.lud06;
-  const defaultZapMount = Math.ceil(login.appData.item.preferences.defaultZapAmount * (target.split / 100));
-  return (
-    <ProfilePreview
-      pubkey={target.pubkey}
-      actions={
-        hasAddress ? (
-          <div>
-            <div>
-              <FormattedNumber value={target.split} />% (
-              <FormattedMessage defaultMessage="{n} sats" id="CsCUYo" values={{ n: defaultZapMount }} />)
-            </div>
-            <input
-              type="range"
-              min={0}
-              max={100}
-              step={0.5}
-              value={target.split}
-              onChange={e =>
-                ZapPoolController?.set({
-                  ...target,
-                  split: e.target.valueAsNumber,
-                })
-              }
-            />
-          </div>
-        ) : (
-          <FormattedMessage defaultMessage="No lightning address" id="JPFYIM" />
-        )
-      }
-    />
-  );
-}
-
-export function ZapPoolTarget({ target }: { target: ZapPoolRecipient }) {
-  if (!ZapPoolController) {
-    return null;
-  }
-  return <ZapPoolTargetInner target={target} />;
-}
-
-function ZapPoolPageInner() {
+export function ZapPoolPageInner() {
   const login = useLogin();
   const { system } = useEventPublisher();
   const zapPool = useSyncExternalStore(
@@ -231,11 +184,4 @@ function ZapPoolPageInner() {
       ))}
     </div>
   );
-}
-
-export default function ZapPoolPage() {
-  if (!ZapPoolController) {
-    return null;
-  }
-  return <ZapPoolPageInner />;
 }

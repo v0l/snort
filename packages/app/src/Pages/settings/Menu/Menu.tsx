@@ -1,10 +1,11 @@
-import {ReactNode, useCallback} from "react";
-import {FormattedMessage} from "react-intl";
-import {useNavigate} from "react-router-dom";
+import { ReactNode, useCallback } from "react";
+import { FormattedMessage } from "react-intl";
+import { useNavigate } from "react-router-dom";
+
 import useLogin from "@/Hooks/useLogin";
-import {LoginStore, logout} from "@/Utils/Login";
-import {getCurrentSubscription} from "@/Utils/Subscription";
-import {SettingsMenuComponent} from "@/Pages/settings/Menu/SettingsMenuComponent";
+import { SettingsMenuComponent } from "@/Pages/settings/Menu/SettingsMenuComponent";
+import { LoginStore, logout } from "@/Utils/Login";
+import { getCurrentSubscription } from "@/Utils/Subscription";
 
 export type SettingsMenuItems = Array<{
   title: ReactNode;

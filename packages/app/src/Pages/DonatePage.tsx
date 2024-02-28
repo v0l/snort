@@ -12,11 +12,10 @@ import Modal from "@/Components/Modal/Modal";
 import QrCode from "@/Components/QrCode";
 import ProfilePreview from "@/Components/User/ProfilePreview";
 import SnortApi, { RevenueSplit, RevenueToday } from "@/External/SnortApi";
+import { ZapPoolTarget } from "@/Pages/ZapPool/ZapPoolTarget";
 import { bech32ToHex, unwrap } from "@/Utils";
 import { ApiHost, DeveloperAccounts, SnortPubKey } from "@/Utils/Const";
 import { ZapPoolController, ZapPoolRecipientType } from "@/Utils/ZapPoolController";
-
-import { ZapPoolTarget } from "./ZapPool";
 
 const Contributors = [
   bech32ToHex("npub10djxr5pvdu97rjkde7tgcsjxzpdzmdguwacfjwlchvj7t88dl7nsdl54nf"), // ivan

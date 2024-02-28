@@ -36,7 +36,7 @@ import { SubscribeRoutes } from "@/Pages/subscribe";
 import WalletPage from "@/Pages/wallet";
 import { WalletReceivePage } from "@/Pages/wallet/receive";
 import { WalletSendPage } from "@/Pages/wallet/send";
-import ZapPoolPage from "@/Pages/ZapPool";
+import ZapPoolPage from "@/Pages/ZapPool/ZapPool";
 import { System } from "@/system";
 import { storeRefCode, unwrap } from "@/Utils";
 import { LoginStore } from "@/Utils/Login";
