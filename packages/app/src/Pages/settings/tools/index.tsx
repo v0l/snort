@@ -1,9 +1,10 @@
 import { FormattedMessage } from "react-intl";
 import { Outlet, RouteObject } from "react-router-dom";
 
-import { SettingsMenuComponent, SettingsMenuItems } from "../Menu";
+import { SettingsMenuItems } from "../Menu/Menu";
 import { FollowsRelayHealth } from "./follows-relay-health";
 import { PruneFollowList } from "./prune-follows";
+import {SettingsMenuComponent} from "@/Pages/settings/Menu/SettingsMenuComponent";
 
 const ToolMenuItems = [
   {

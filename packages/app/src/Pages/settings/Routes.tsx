@@ -4,7 +4,7 @@ import AccountsPage from "@/Pages/settings/Accounts";
 import { CacheSettings } from "@/Pages/settings/Cache";
 import { ManageHandleRoutes } from "@/Pages/settings/handle";
 import ExportKeys from "@/Pages/settings/Keys";
-import Menu from "@/Pages/settings/Menu";
+import Menu from "@/Pages/settings/Menu/Menu";
 import ModerationSettings from "@/Pages/settings/Moderation";
 import Notifications from "@/Pages/settings/Notifications";
 import Preferences from "@/Pages/settings/Preferences";
