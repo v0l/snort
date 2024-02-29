@@ -41,7 +41,7 @@ export interface NoteProps {
   ignoreModeration?: boolean;
   onClick?: (e: TaggedNostrEvent) => void;
   depth?: number;
-  searchedValue?: string;
+  highlightText?: string;
   threadChains?: Map<string, Array<NostrEvent>>;
   context?: ReactNode;
   options?: NotePropsOptions;

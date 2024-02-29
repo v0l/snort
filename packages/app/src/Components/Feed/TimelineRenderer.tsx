@@ -25,6 +25,7 @@ export interface TimelineRendererProps {
   noteContext?: (ev: TaggedNostrEvent) => ReactNode;
   displayAs?: DisplayAs;
   loadMore?: () => void;
+  highlightText?: string;
 }
 
 // filter frags[0].events that have media
@@ -105,6 +106,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
           noteRenderer={props.noteRenderer}
           noteOnClick={props.noteOnClick}
           noteContext={props.noteContext}
+          highlightText={props.highlightText}
         />
       </ErrorBoundary>
     ));

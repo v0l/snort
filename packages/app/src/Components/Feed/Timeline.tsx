@@ -93,6 +93,7 @@ const Timeline = (props: TimelineProps) => {
         showLatest={t => onShowLatest(t)}
         displayAs={displayAs}
         loadMore={() => feed.loadMore()}
+        highlightText={props.subject.type === "post_keyword" ? props.subject.items[0] : undefined}
       />
     </>
   );

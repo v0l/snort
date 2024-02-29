@@ -1,4 +1,4 @@
-import {TaggedNostrEvent} from "@snort/system";
+import { TaggedNostrEvent } from "@snort/system";
 
 export interface NoteTranslation {
   text: string;

@@ -14,6 +14,7 @@ export interface TimelineFragProps {
   noteRenderer?: (ev: TaggedNostrEvent) => ReactNode;
   noteOnClick?: (ev: TaggedNostrEvent) => void;
   noteContext?: (ev: TaggedNostrEvent) => ReactNode;
+  highlightText?: string;
 }
 
 const options = {
@@ -35,6 +36,7 @@ export function TimelineFragment(props: TimelineFragProps) {
               context={props.noteContext?.(e)}
               options={options}
               waitUntilInView={index > 5}
+              highlightText={props.highlightText}
             />
           ),
       )}

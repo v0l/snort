@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
 import { NoteProps } from "@/Components/Event/EventComponent";
-import {NoteTranslation} from "@/Components/Event/Note/types";
+import { NoteTranslation } from "@/Components/Event/Note/types";
 import Reveal from "@/Components/Event/Reveal";
 import Text from "@/Components/Text/Text";
 import useLogin from "@/Hooks/useLogin";
@@ -40,7 +40,7 @@ export const NoteText = memo(function InnerContent(
       {shouldTruncate && showMore && <ToggleShowMore />}
       <Text
         id={id}
-        highlighText={props.searchedValue}
+        highlightText={props.highlightText}
         content={body}
         tags={ev.tags}
         creator={ev.pubkey}
