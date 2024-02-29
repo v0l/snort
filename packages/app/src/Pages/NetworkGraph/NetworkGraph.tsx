@@ -1,65 +1,12 @@
-import { CachedMetadata, socialGraphInstance, STR, UID } from "@snort/system";
+import { socialGraphInstance, STR, UID } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { useContext, useEffect, useState } from "react";
 import { NodeObject } from "react-force-graph-3d";
 import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
-import { proxyImg } from "@/Hooks/useImgProxy";
-import { LoginStore } from "@/Utils/Login";
-
-import { defaultAvatar } from "../Utils";
-
-interface GraphNode {
-  id: UID;
-  profile?: CachedMetadata;
-  distance: number;
-  val: number;
-  inboundCount: number;
-  outboundCount: number;
-  color?: string;
-  visible: boolean;
-  // curvature?: number;
-}
-
-interface GraphLink {
-  source: UID;
-  target: UID;
-  distance: number;
-}
-
-interface GraphMetadata {
-  // usersByFollowDistance?: Map<number, Set<UID>>;
-  userCountByDistance: number[];
-  nodes?: Map<number, GraphNode>;
-}
-
-interface GraphData {
-  nodes: GraphNode[];
-  links: GraphLink[];
-  meta?: GraphMetadata;
-}
-
-enum Direction {
-  INBOUND,
-  OUTBOUND,
-  BOTH,
-}
-
-const avatar = (node: NodeObject<NodeObject<GraphNode>>) => {
-  const login = LoginStore.snapshot();
-  return node.profile?.picture
-    ? proxyImg(node.profile?.picture, login.appData.item.preferences.imgProxyConfig)
-    : defaultAvatar(node.address);
-};
-
-const NODE_LIMIT = 500;
-
-interface GraphConfig {
-  direction: Direction;
-  renderLimit: number | null;
-  showDistance: number;
-}
+import { avatar } from "@/Pages/NetworkGraph/Avatar";
+import { Direction, GraphConfig, GraphData, GraphLink, GraphNode, NODE_LIMIT } from "@/Pages/NetworkGraph/types";
 
 const NetworkGraph = () => {
   const [graphData, setGraphData] = useState(null as GraphData | null);

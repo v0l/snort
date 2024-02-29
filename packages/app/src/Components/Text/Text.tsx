@@ -9,6 +9,7 @@ import Hashtag from "@/Components/Embed/Hashtag";
 import HyperText from "@/Components/Embed/HyperText";
 import Invoice from "@/Components/Embed/Invoice";
 import { baseImageWidth, GRID_GAP, gridConfigMap, ROW_HEIGHT } from "@/Components/Text/const";
+import DisableMedia from "@/Components/Text/DisableMedia";
 import { useTextTransformer } from "@/Hooks/useTextTransformCache";
 
 import RevealMedia from "../Event/RevealMedia";
@@ -50,12 +51,6 @@ export default function Text({
 
   const elements = useTextTransformer(id, content, tags);
   const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content);
-
-  const DisableMedia = ({ content }: { content: string }) => (
-    <a href={content} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-      {content}
-    </a>
-  );
 
   const RevealMediaInstance = ({ content, data, size }: { content: string; data?: object; size?: number }) => {
     const imeta = data as IMeta | undefined;
