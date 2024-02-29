@@ -3,7 +3,6 @@ import {
   NostrEvent,
   OkResponse,
   ReqCommand,
-  ReqFilter,
   WorkerMessage,
   WorkerMessageCommand,
 } from "./types";
@@ -12,6 +11,9 @@ import { v4 as uuid } from "uuid";
 export class WorkerRelayInterface {
   #worker: Worker;
   #commandQueue: Map<string, (v: unknown, ports: ReadonlyArray<MessagePort>) => void> = new Map();
+
+  // Command timeout
+  timeout: number = 30_000;
 
   constructor(path: string) {
     this.#worker = new Worker(path, { type: "module" });
@@ -61,7 +63,7 @@ export class WorkerRelayInterface {
     return this.#workerRpc<[string, EventMetadata], void>("setEventMetadata", [id, meta]);
   }
 
-  #workerRpc<T, R>(cmd: WorkerMessageCommand, args?: T) {
+  async #workerRpc<T, R>(cmd: WorkerMessageCommand, args?: T) {
     const id = uuid();
     const msg = {
       id,
@@ -69,9 +71,17 @@ export class WorkerRelayInterface {
       args,
     } as WorkerMessage<T>;
     this.#worker.postMessage(msg);
-    return new Promise<R>(resolve => {
+    return await new Promise<R>((resolve, reject) => {
+      const t = setTimeout(() => {
+        reject(new Error("Timeout"));
+      }, this.timeout);
       this.#commandQueue.set(id, (v, port) => {
-        const cmdReply = v as WorkerMessage<R>;
+        clearTimeout(t);
+        const cmdReply = v as WorkerMessage<R & { error?: any }>;
+        if (cmdReply.args.error) {
+          reject(cmdReply.args.error);
+          return;
+        }
         resolve(cmdReply.args);
       });
     });
