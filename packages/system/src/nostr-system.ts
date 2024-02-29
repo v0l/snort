@@ -287,7 +287,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
       for (const list of this.userFollowsCache.snapshot()) {
         const user = ID(list.pubkey);
         for (const fx of list.follows) {
-          if (fx[0] === "p" && fx[1].length === 64) {
+          if (fx[0] === "p" && fx[1]?.length === 64) {
             socialGraphInstance.addFollower(ID(fx[1]), user);
           }
         }
