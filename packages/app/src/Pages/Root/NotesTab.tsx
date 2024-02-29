@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import TimelineFollows from "@/Components/Feed/TimelineFollows";
 import { TaskList } from "@/Components/Tasks/TaskList";
 import useLogin from "@/Hooks/useLogin";
-import { DeckContext } from "@/Pages/DeckLayout";
+import { DeckContext } from "@/Pages/Deck/DeckLayout";
 import messages from "@/Pages/messages";
 
 const FollowsHint = () => {

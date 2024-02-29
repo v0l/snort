@@ -14,7 +14,7 @@ import { db } from "@/Db";
 import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch";
 import { updateRelayConnections } from "@/Hooks/useLoginRelays";
 import { AboutPage } from "@/Pages/About";
-import { SnortDeckLayout } from "@/Pages/DeckLayout";
+import { SnortDeckLayout } from "@/Pages/Deck/DeckLayout";
 import DonatePage from "@/Pages/Donate/DonatePage";
 import ErrorPage from "@/Pages/ErrorPage";
 import FreeNostrAddressPage from "@/Pages/FreeNostrAddressPage";
