@@ -73,6 +73,7 @@ export class WorkerRelayInterface {
     this.#worker.postMessage(msg);
     return await new Promise<R>((resolve, reject) => {
       const t = setTimeout(() => {
+        this.#commandQueue.delete(id);
         reject(new Error("Timeout"));
       }, this.timeout);
       this.#commandQueue.set(id, (v, port) => {
