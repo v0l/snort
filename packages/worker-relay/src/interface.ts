@@ -3,7 +3,6 @@ import { v4 as uuid } from "uuid";
 
 export class WorkerRelayInterface {
   #worker: Worker;
-  #sqliteDir?: string;
   #commandQueue: Map<string, (v: unknown, ports: ReadonlyArray<MessagePort>) => void> = new Map();
 
   // Command timeout
@@ -12,10 +11,8 @@ export class WorkerRelayInterface {
   /**
    * Interface wrapper for worker relay
    * @param scriptPath Path to worker script or Worker script object
-   * @param sqlite3Dir Directory to search for sqlite3 depends
    */
-  constructor(scriptPath?: string | URL | Worker, sqlite3Dir?: string) {
-    this.#sqliteDir = sqlite3Dir;
+  constructor(scriptPath?: string | URL | Worker) {
     if (scriptPath instanceof Worker) {
       this.#worker = scriptPath;
     } else {
@@ -39,7 +36,7 @@ export class WorkerRelayInterface {
   }
 
   async init(databasePath: string) {
-    return await this.#workerRpc<Array<string>, boolean>("init", [databasePath, this.#sqliteDir ?? ""]);
+    return await this.#workerRpc<Array<string | undefined>, boolean>("init", [databasePath]);
   }
 
   async event(ev: NostrEvent) {

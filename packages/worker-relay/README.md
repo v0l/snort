@@ -11,30 +11,30 @@ Worker relay is a Nostr relay built on `sqlite-wasm`
 ```typescript
 import { WorkerRelayInterface } from "@snort/worker-relay";
 
-// in debug mode you may need this, to map to the correct sqlite-wasm path
-// this is needed because sqlite-wasm will otherwise look inside @snort/worker-relay directory for sqlite3.wasm
-const basePath = new URL("@sqlite.org/sqlite-wasm", import.meta.url);
+// when using Vite import the worker script directly (for production)
+import WorkerVite from "@snort/worker-relay/src/worker?worker"
 
-// internally we resolve the script path like this:
-const scriptPath = new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url);
+// in dev mode import esm module, i have no idea why it has to work like this
+const workerScript = import.meta.env.DEV ?
+    new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url) :
+    new WorkerVite();
 
-// scriptPath & basePath are optional
-const relay = new WorkerRelayInterface(scriptPath.href, basePath.href);
+const workerRelay = new WorkerRelayInterface(workerScript);
 
 // load sqlite database and run migrations
-await relay.init("my-relay.db");
+await workerRelay.init("my-relay.db");
 
 // Query worker relay with regular nostr REQ command
-const results = await relay.query(["REQ", "1", { kinds: [1], limit: 10 }]);
+const results = await workerRelay.query(["REQ", "1", { kinds: [1], limit: 10 }]);
 
 // publish a new event to the relay
 const myEvent = {
-  kind: 1,
-  created_at: Math.floor(new Date().getTime() / 1000),
-  content: "test",
-  tags: []
+    kind: 1,
+    created_at: Math.floor(new Date().getTime() / 1000),
+    content: "test",
+    tags: []
 };
-if (await relay.event(myEvent)) {
-  console.log("Success");
+if (await workerRelay.event(myEvent)) {
+    console.log("Success");
 }
 ```

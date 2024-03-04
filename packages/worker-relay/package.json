@@ -1,6 +1,6 @@
 {
   "name": "@snort/worker-relay",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A nostr relay in a service worker",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,18 +10,17 @@
   "author": "Kieran",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc && esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs"
+    "build": "rm -rf dist && tsc && yarn build:esm",
+    "build:esm": "esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs --loader:.wasm=copy"
   },
   "files": [
     "src",
     "dist"
   ],
   "dependencies": {
+    "@sqlite.org/sqlite-wasm": "^3.45.1-build1",
     "eventemitter3": "^5.0.1",
     "uuid": "^9.0.1"
-  },
-  "peerDependencies": {
-    "@sqlite.org/sqlite-wasm": "^3.45.1-build1"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",

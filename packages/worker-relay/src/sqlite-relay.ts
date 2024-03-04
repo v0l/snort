@@ -4,6 +4,9 @@ import { EventMetadata, NostrEvent, RelayHandler, RelayHandlerEvents, ReqFilter,
 import migrate from "./migrations";
 import { debugLog } from "./debug";
 
+// import wasm file directly, this needs to be copied from https://sqlite.org/download.html
+import SqlitePath from "./sqlite3.wasm";
+
 export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements RelayHandler {
   #sqlite?: Sqlite3Static;
   #log = (msg: string, ...args: Array<any>) => debugLog("SqliteRelay", msg, ...args);
@@ -13,11 +16,14 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
   /**
    * Initialize the SQLite driver
    */
-  async init(path: string, sqliteWasmPath?: string) {
+  async init(path: string) {
     if (this.#sqlite) return;
     this.#sqlite = await sqlite3InitModule({
-      locateFile(path, prefix) {
-        return new URL(`sqlite-wasm/jswasm/${path}`, sqliteWasmPath).href;
+      locateFile: (path, prefix) => {
+        if (path === "sqlite3.wasm") {
+          return SqlitePath;
+        }
+        return prefix + path;
       },
       print: msg => this.#log(msg),
       printErr: msg => this.#log(msg)

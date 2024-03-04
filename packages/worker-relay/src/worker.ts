@@ -80,9 +80,9 @@ globalThis.onmessage = async ev => {
           } else {
             relay = new InMemoryRelay();
           }
-          const [dbPath, wasmPath] = msg.args as Array<string>;
-          debugLog("StartInit", dbPath, wasmPath);
-          await relay.init(dbPath, wasmPath);
+          const [dbPath] = msg.args as Array<string>;
+          debugLog("StartInit", dbPath);
+          await relay.init(dbPath);
           reply(msg.id, true);
         });
         break;
