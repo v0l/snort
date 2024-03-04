@@ -9,14 +9,6 @@ import { getForYouFeed } from "./forYouFeed";
 
 let relay: RelayHandler | undefined;
 
-async function reply<T>(id: string, obj?: T) {
-  globalThis.postMessage({
-    id,
-    cmd: "reply",
-    args: obj,
-  } as WorkerMessage<T>);
-}
-
 // Event inserter queue
 let eventWriteQueue: Array<NostrEvent> = [];
 async function insertBatch() {
@@ -50,21 +42,15 @@ try {
   console.error(e);
 }
 
-async function tryOpfs() {
-  try {
-    await navigator.storage.getDirectory();
-    return true;
-  } catch {
-    // ignore
+const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: MessageEvent) => {
+  async function reply<T>(id: string, obj?: T) {
+    port.postMessage({
+      id,
+      cmd: "reply",
+      args: obj,
+    } as WorkerMessage<T>);
   }
-  return false;
-}
 
-globalThis.onclose = () => {
-  relay?.close();
-}
-
-globalThis.onmessage = async ev => {
   const msg = ev.data as WorkerMessage<any>;
   try {
     switch (msg.cmd) {
@@ -75,14 +61,19 @@ globalThis.onmessage = async ev => {
       }
       case "init": {
         await barrierQueue(cmdQueue, async () => {
-          if ("WebAssembly" in globalThis && (await tryOpfs())) {
-            relay = new SqliteRelay();
-          } else {
-            relay = new InMemoryRelay();
-          }
           const [dbPath] = msg.args as Array<string>;
-          debugLog("StartInit", dbPath);
-          await relay.init(dbPath);
+          try {
+            if ("WebAssembly" in self) {
+              relay = new SqliteRelay();
+            } else {
+              relay = new InMemoryRelay();
+            }
+            await relay.init(dbPath);
+          } catch (e) {
+            console.error("Fallback to InMemoryRelay", e);
+            relay = new InMemoryRelay();
+            await relay.init(dbPath);
+          }
           reply(msg.id, true);
         });
         break;
@@ -173,5 +164,18 @@ globalThis.onmessage = async ev => {
     } else {
       reply(msg.id, "Unknown error")
     }
+  }
+}
+
+if ("SharedWorkerGlobalScope" in globalThis) {
+  onconnect = (e) => {
+    const port = e.ports[0];
+    port.onmessage = (msg) => handleMsg(port, msg);
+    port.start();
+  }
+}
+if ("DedicatedWorkerGlobalScope" in globalThis) {
+  onmessage = e => {
+    handleMsg(self as DedicatedWorkerGlobalScope, e)
   }
 }

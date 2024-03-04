@@ -1,6 +1,6 @@
 {
   "name": "@snort/worker-relay",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A nostr relay in a service worker",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
+    "@types/sharedworker": "^0.0.112",
     "@types/uuid": "^9.0.7",
     "esbuild": "^0.20.1",
     "typescript": "^5.2.2"
