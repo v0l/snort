@@ -856,19 +856,11 @@
   "RhDAoS": {
     "defaultMessage": "Are you sure you want to delete {id}"
   },
-  "RjpoYG": {
-    "defaultMessage": "Recent",
-    "description": "Sort order name"
-  },
   "RoOyAh": {
     "defaultMessage": "Relays"
   },
   "Rs4kCE": {
     "defaultMessage": "Bookmark"
-  },
-  "RwFaYs": {
-    "defaultMessage": "Sort",
-    "description": "Label for sorting options for people search"
   },
   "SLZGPn": {
     "defaultMessage": "Enter a pin to encrypt your private key, you must enter this pin every time you open {site}."
@@ -1457,10 +1449,6 @@
   },
   "mKhgP9": {
     "defaultMessage": "{n,plural,=0{} =1{zapped} other{zapped}}"
-  },
-  "mTJFgF": {
-    "defaultMessage": "Popular",
-    "description": "Sort order name"
   },
   "mfe8RW": {
     "defaultMessage": "Option: {n}"
