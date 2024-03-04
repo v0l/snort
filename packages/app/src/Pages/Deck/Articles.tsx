@@ -1,9 +1,9 @@
 import { useContext } from "react";
 
 import { useArticles } from "@/Feed/ArticlesFeed";
-import { DeckContext } from "@/Pages/DeckLayout";
+import { DeckContext } from "@/Pages/Deck/DeckLayout";
 
-import Note from "../Event/EventComponent";
+import Note from "../../Components/Event/EventComponent";
 
 const options = {
   longFormPreview: true,

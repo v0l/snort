@@ -1,11 +1,4 @@
-import {
-  EventMetadata,
-  NostrEvent,
-  OkResponse,
-  ReqCommand,
-  WorkerMessage,
-  WorkerMessageCommand,
-} from "./types";
+import { EventMetadata, NostrEvent, OkResponse, ReqCommand, WorkerMessage, WorkerMessageCommand } from "./types";
 import { v4 as uuid } from "uuid";
 
 export class WorkerRelayInterface {

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";
@@ -25,7 +25,6 @@ const SearchPage = () => {
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string>(params.keyword ?? "");
   const [keyword, setKeyword] = useState<string>(params.keyword ?? "");
-  const [sortPopular, setSortPopular] = useState<boolean>(true);
   // tabs
   const SearchTab = [
     { text: formatMessage({ defaultMessage: "Notes", id: "7+Domh" }), value: NOTES },
@@ -56,10 +55,10 @@ const SearchPage = () => {
   const subject = useMemo(
     () => ({
       type: "post_keyword",
-      items: [keyword + (sortPopular ? " sort:popular" : "")],
+      items: [keyword],
       discriminator: keyword,
     }),
-    [keyword, sortPopular],
+    [keyword],
   );
 
   function tabContent() {
@@ -71,29 +70,7 @@ const SearchPage = () => {
       return <TrendingNotes />;
     }
 
-    return (
-      <>
-        {sortOptions()}
-        <Timeline key={keyword} subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} loadMore={false} />
-      </>
-    );
-  }
-
-  function sortOptions() {
-    if (tab.value != PROFILES) return null;
-    return (
-      <div className="flex items-center justify-end g8">
-        <FormattedMessage defaultMessage="Sort" id="RwFaYs" description="Label for sorting options for people search" />
-        <select onChange={e => setSortPopular(e.target.value == "true")} value={sortPopular ? "true" : "false"}>
-          <option value={"true"}>
-            <FormattedMessage defaultMessage="Popular" id="mTJFgF" description="Sort order name" />
-          </option>
-          <option value={"false"}>
-            <FormattedMessage defaultMessage="Recent" id="RjpoYG" description="Sort order name" />
-          </option>
-        </select>
-      </div>
-    );
+    return <Timeline key={keyword} subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} loadMore={false} />;
   }
 
   return (

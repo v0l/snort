@@ -2,7 +2,7 @@ import "./Thread.css";
 
 import { EventExt, TaggedNostrEvent, u256 } from "@snort/system";
 import { ReactNode, useCallback, useContext, useMemo } from "react";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import BackButton from "@/Components/Button/BackButton";
@@ -72,6 +72,22 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
     }
   }
 
+  function renderCurrent() {
+    if (thread.current) {
+      const note = thread.data.find(n => n.id === thread.current);
+      return (
+        note && (
+          <Note
+            data={note}
+            options={{ showReactionsLink: true, showMediaSpotlight: true }}
+            threadChains={thread.chains}
+            onClick={navigateThread}
+          />
+        )
+      );
+    }
+  }
+
   function goBack() {
     if (parent) {
       thread.setCurrent(parent);
@@ -119,6 +135,12 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
       <div className="main-content">
         {thread.root && renderRoot(thread.root)}
         {thread.root && renderChain(chainKey(thread.root))}
+        {!thread.root && renderCurrent()}
+        {!thread.root && !thread.current && (
+          <NoteGhost>
+            <FormattedMessage defaultMessage="Looking up thread..." id="JA+tz3" />
+          </NoteGhost>
+        )}
       </div>
     </>
   );
