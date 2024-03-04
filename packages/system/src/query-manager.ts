@@ -1,5 +1,5 @@
 import debug from "debug";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 import { BuiltRawReqFilter, RequestBuilder, RequestStrategy, SystemInterface, TaggedNostrEvent } from ".";
 import { Query, TraceReport } from "./query";
 import { FilterCacheLayer, IdsFilterCacheLayer } from "./filter-cache-layer";

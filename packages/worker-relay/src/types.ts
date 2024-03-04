@@ -11,7 +11,8 @@ export type WorkerMessageCommand =
   | "dumpDb"
   | "emit-event"
   | "forYouFeed"
-  | "setEventMetadata";
+  | "setEventMetadata"
+  | "debug";
 
 export interface WorkerMessage<T> {
   id: string;
@@ -57,7 +58,7 @@ export interface OkResponse {
 }
 
 export interface RelayHandler extends EventEmitter<RelayHandlerEvents> {
-  init(path: string): Promise<void>;
+  init(path: string, path2Wasm?: string): Promise<void>;
   close(): void;
   event(ev: NostrEvent): boolean;
   eventBatch(evs: Array<NostrEvent>): boolean;

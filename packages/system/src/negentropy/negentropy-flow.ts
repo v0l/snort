@@ -4,7 +4,7 @@ import { ReqFilter, TaggedNostrEvent } from "../nostr";
 import { Negentropy } from "./negentropy";
 import { NegentropyStorageVector } from "./vector-storage";
 import debug from "debug";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 
 export interface NegentropyFlowEvents {
   /**

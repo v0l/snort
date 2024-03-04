@@ -8,7 +8,7 @@ import { EventSigner, PrivateKeySigner } from "../signer";
 import { NostrEvent } from "../nostr";
 import { EventBuilder } from "../event-builder";
 import EventKind from "../event-kind";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 
 const NIP46_KIND = 24_133;
 

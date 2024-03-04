@@ -62,11 +62,12 @@ export default defineConfig({
     CONFIG: JSON.stringify(appConfig),
     global: {}, // needed for custom-event lib
   },
-  test: {
-    globals: true,
-    environment: "jsdom",
-  },
   worker: {
     format: "es",
+    rollupOptions: {
+      output: {
+        format: "module"
+      }
+    }
   },
 });

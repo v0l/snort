@@ -8,7 +8,7 @@ import { Optimizer } from "./query-optimizer";
 import { base64 } from "@scure/base";
 import { CachedTable } from "@snort/shared";
 import { ConnectionPool } from "./connection-pool";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 import { QueryEvents } from "./query";
 import { CacheRelay } from "./cache-relay";
 import { RequestRouter } from "./request-router";

@@ -1,8 +1,8 @@
 import { NostrEvent } from "./types";
 import { SqliteRelay } from "./sqlite-relay";
-import debug from "debug";
+import { debugLog } from "./debug";
 
-const log = debug("SqliteRelay:migrations");
+const log = (msg: string, ...args: Array<any>) => debugLog("SqliteRelay:migrations", msg, ...args);
 
 const migrations = [
   { version: 1, script: migrate_v1 },

@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import debug from "debug";
 import WebSocket from "isomorphic-ws";
 import { unixNowMs, dedupe } from "@snort/shared";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 
 import { DefaultConnectTimeout } from "./const";
 import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";

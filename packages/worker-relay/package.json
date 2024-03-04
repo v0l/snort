@@ -1,15 +1,16 @@
 {
   "name": "@snort/worker-relay",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "A nostr relay in a service worker",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "module": "src/index.ts",
   "repository": "https://git.v0l.io/Kieran/snort",
   "author": "Kieran",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && tsc && esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs"
   },
   "files": [
     "src",
@@ -17,13 +18,13 @@
   ],
   "dependencies": {
     "@sqlite.org/sqlite-wasm": "^3.45.1-build1",
-    "debug": "^4.3.4",
     "eventemitter3": "^5.0.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
     "@types/uuid": "^9.0.7",
+    "esbuild": "^0.20.1",
     "typescript": "^5.2.2"
   }
 }

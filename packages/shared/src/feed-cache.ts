@@ -1,7 +1,7 @@
 import debug from "debug";
 import { removeUndefined, unixNowMs } from "./utils";
 import { DexieTableLike } from "./dexie-like";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 
 type HookFn = () => void;
 

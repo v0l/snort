@@ -1,7 +1,7 @@
 import { SortedMap, dedupe } from "@snort/shared";
 import { EventExt, EventType, TaggedNostrEvent } from ".";
 import { findTag } from "./utils";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 
 export const EmptySnapshot: NoteStoreSnapshotData = [];
 export type NoteStoreSnapshotData = Array<TaggedNostrEvent>;

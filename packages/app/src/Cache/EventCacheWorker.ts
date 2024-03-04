@@ -1,7 +1,7 @@
 import { CachedTable, CacheEvents } from "@snort/shared";
 import { NostrEvent } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 
 export class EventCacheWorker extends EventEmitter<CacheEvents> implements CachedTable<NostrEvent> {
   #relay: WorkerRelayInterface;

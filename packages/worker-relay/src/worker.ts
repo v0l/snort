@@ -1,8 +1,9 @@
 /// <reference lib="webworker" />
 
-import { InMemoryRelay } from "./memory-relay";
-import { WorkQueueItem, barrierQueue, processWorkQueue } from "./queue";
 import { SqliteRelay } from "./sqlite-relay";
+import { InMemoryRelay } from "./memory-relay";
+import { debugLog, setLogging } from "./debug";
+import { WorkQueueItem, barrierQueue, processWorkQueue } from "./queue";
 import { NostrEvent, RelayHandler, ReqCommand, ReqFilter, WorkerMessage, unixNowMs, EventMetadata } from "./types";
 import { getForYouFeed } from "./forYouFeed";
 
@@ -40,10 +41,14 @@ async function insertBatch() {
   }
   setTimeout(() => insertBatch(), 100);
 }
-setTimeout(() => insertBatch(), 100);
 
 const cmdQueue: Array<WorkQueueItem> = [];
-processWorkQueue(cmdQueue, 50);
+try {
+  setTimeout(() => insertBatch(), 100);
+  processWorkQueue(cmdQueue, 50);
+} catch (e) {
+  console.error(e);
+}
 
 async function tryOpfs() {
   try {
@@ -57,12 +62,17 @@ async function tryOpfs() {
 
 globalThis.onclose = () => {
   relay?.close();
-};
+}
 
 globalThis.onmessage = async ev => {
   const msg = ev.data as WorkerMessage<any>;
   try {
     switch (msg.cmd) {
+      case "debug": {
+        setLogging(true);
+        reply(msg.id, true);
+        break;
+      }
       case "init": {
         await barrierQueue(cmdQueue, async () => {
           if ("WebAssembly" in globalThis && (await tryOpfs())) {
@@ -70,7 +80,9 @@ globalThis.onmessage = async ev => {
           } else {
             relay = new InMemoryRelay();
           }
-          await relay.init(msg.args as string);
+          const [dbPath, wasmPath] = msg.args as Array<string>;
+          debugLog("StartInit", dbPath, wasmPath);
+          await relay.init(dbPath, wasmPath);
           reply(msg.id, true);
         });
         break;
@@ -81,7 +93,10 @@ globalThis.onmessage = async ev => {
         break;
       }
       case "close": {
-        reply(msg.id, true);
+        await barrierQueue(cmdQueue, async () => {
+          const res = relay!.close();
+          reply(msg.id, res);
+        });
         break;
       }
       case "req": {
@@ -151,6 +166,12 @@ globalThis.onmessage = async ev => {
       }
     }
   } catch (e) {
-    reply(msg.id, { error: JSON.stringify(e) });
+    if (e instanceof Error) {
+      reply(msg.id, { error: e.message });
+    } else if (typeof e === "string") {
+      reply(msg.id, { error: e });
+    } else {
+      reply(msg.id, "Unknown error")
+    }
   }
-};
+}

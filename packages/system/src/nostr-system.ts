@@ -1,5 +1,5 @@
 import debug from "debug";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 
 import { CachedTable, isHex, unixNowMs } from "@snort/shared";
 import { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr";

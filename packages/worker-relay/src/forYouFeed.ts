@@ -1,5 +1,4 @@
-import debug from "debug";
-
+import { debugLog } from "./debug";
 import { RelayHandler, NostrEvent } from "./types";
 
 // import { parseZap } from "../../system/src/zaps";
@@ -8,7 +7,7 @@ const parseZap = (_zap: NostrEvent) => {
   return { event: null } as { event: null | NostrEvent };
 };
 
-const log = debug("getForYouFeed");
+const log = (msg: string, ...args: Array<any>) => debugLog("getForYouFeed", msg, ...args);
 
 export async function getForYouFeed(relay: RelayHandler, pubkey: string): Promise<NostrEvent[]> {
   console.time("For You feed generation time");

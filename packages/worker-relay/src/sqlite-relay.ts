@@ -1,21 +1,27 @@
 import sqlite3InitModule, { Database, Sqlite3Static } from "@sqlite.org/sqlite-wasm";
 import { EventEmitter } from "eventemitter3";
 import { EventMetadata, NostrEvent, RelayHandler, RelayHandlerEvents, ReqFilter, unixNowMs } from "./types";
-import debug from "debug";
 import migrate from "./migrations";
+import { debugLog } from "./debug";
 
 export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements RelayHandler {
   #sqlite?: Sqlite3Static;
-  #log = debug("SqliteRelay");
+  #log = (msg: string, ...args: Array<any>) => debugLog("SqliteRelay", msg, ...args);
   db?: Database;
   #seenInserts = new Set<string>();
 
   /**
    * Initialize the SQLite driver
    */
-  async init(path: string) {
+  async init(path: string, sqliteWasmPath?: string) {
     if (this.#sqlite) return;
-    this.#sqlite = await sqlite3InitModule();
+    this.#sqlite = await sqlite3InitModule({
+      locateFile(path, prefix) {
+        return new URL(`sqlite-wasm/jswasm/${path}`, sqliteWasmPath).href;
+      },
+      print: msg => this.#log(msg),
+      printErr: msg => this.#log(msg)
+    });
     this.#log(`Got SQLite version: ${this.#sqlite.version.libVersion}`);
     await this.#open(path);
     this.db && migrate(this);
@@ -28,22 +34,13 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     if (!this.#sqlite) throw new Error("Must call init first");
     if (this.db) return;
 
-    if ("opfs" in this.#sqlite) {
-      try {
-        this.db = new this.#sqlite.oo1.OpfsDb(path, "cw");
-        this.#log(`Opened ${this.db.filename}`);
-        this.db.exec(
-          `PRAGMA cache_size=${
-            32 * 1024
-          }; PRAGMA page_size=8192; PRAGMA journal_mode=MEMORY; PRAGMA temp_store=MEMORY;`,
-        );
-      } catch (e) {
-        // wipe db
-        console.error(e);
-      }
-    } else {
-      throw new Error("OPFS not supported!");
-    }
+    const pool = await this.#sqlite.installOpfsSAHPoolVfs({});
+    this.db = new pool.OpfsSAHPoolDb(path);
+    this.#log(`Opened ${this.db.filename}`);
+    /*this.db.exec(
+      `PRAGMA cache_size=${32 * 1024
+      }; PRAGMA page_size=8192; PRAGMA journal_mode=MEMORY; PRAGMA temp_store=MEMORY;`,
+    );*/
   }
 
   close() {

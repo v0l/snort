@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 import { unixNowMs, unwrap } from "@snort/shared";
 
 import { Connection, ReqFilter, Nips, TaggedNostrEvent, SystemInterface, ParsedFragment } from ".";

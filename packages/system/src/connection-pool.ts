@@ -1,6 +1,6 @@
 import { removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
 import debug from "debug";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 
 import { Connection, RelaySettings } from "./connection";
 import { NostrEvent, OkResponse, TaggedNostrEvent } from "./nostr";

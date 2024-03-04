@@ -2,7 +2,7 @@ import { CachedTable, CacheEvents, removeUndefined, unixNowMs, unwrap } from "@s
 import { CachedMetadata, mapEventToProfile, NostrEvent } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 import debug from "debug";
-import EventEmitter from "eventemitter3";
+import { EventEmitter } from "eventemitter3";
 
 export class ProfileCacheRelayWorker extends EventEmitter<CacheEvents> implements CachedTable<CachedMetadata> {
   #relay: WorkerRelayInterface;
