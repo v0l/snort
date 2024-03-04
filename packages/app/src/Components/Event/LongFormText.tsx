@@ -149,7 +149,9 @@ export function LongFormText(props: LongFormTextProps) {
   }
 
   return (
-    <div className={classNames("long-form-note flex flex-col g16 p break-words")}>
+    <div
+      className={classNames("long-form-note flex flex-col g16 p break-words", { "cursor-pointer": props.isPreview })}
+      onClick={props.onClick}>
       <ProfilePreview
         pubkey={props.ev.pubkey}
         actions={

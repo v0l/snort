@@ -3,11 +3,11 @@ import { useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 import { Outlet } from "react-router-dom";
 
-import Articles from "@/Components/Feed/Articles";
 import { RootTabs } from "@/Components/Feed/RootTabs";
 import TimelineFollows from "@/Components/Feed/TimelineFollows";
 import Icon from "@/Components/Icons/Icon";
 import { transformTextCached } from "@/Hooks/useTextTransformCache";
+import Articles from "@/Pages/Deck/Articles";
 import NotificationsPage from "@/Pages/Notifications/Notifications";
 
 export function NotesCol() {
