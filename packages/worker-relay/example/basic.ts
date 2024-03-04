@@ -1,14 +1,3 @@
-## Worker Relay
-
-Worker relay is a Nostr relay built on `sqlite-wasm`
-
-`WorkerRelayInterface` is the class which accepts the URL of the worker script
-
-`sqlite-wasm` uses OFPS in order to persist the database.
-
-### Example
-
-```typescript
 import { WorkerRelayInterface } from "@snort/worker-relay";
 
 // in debug mode you may need this, to map to the correct sqlite-wasm path
@@ -19,7 +8,7 @@ const basePath = new URL("@sqlite.org/sqlite-wasm", import.meta.url);
 const scriptPath = new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url);
 
 // scriptPath & basePath are optional
-const relay = new WorkerRelayInterface(scriptPath.href, basePath.href);
+const relay = new WorkerRelayInterface(scriptPath, basePath.href);
 
 // load sqlite database and run migrations
 await relay.init("my-relay.db");
@@ -37,4 +26,3 @@ const myEvent = {
 if (await relay.event(myEvent)) {
   console.log("Success");
 }
-```

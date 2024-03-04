@@ -193,6 +193,13 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
       this.requestRouter = OutboxModel.fromSystem(this);
     }
 
+    // Cache everything
+    if (this.#config.cachingRelay) {
+      this.on("event", async (_, ev) => {
+        await this.#config.cachingRelay?.event(ev);
+      })
+    }
+
     // Hook on-event when building follow graph
     if (this.#config.buildFollowGraph) {
       let evBuf: Array<TaggedNostrEvent> = [];
