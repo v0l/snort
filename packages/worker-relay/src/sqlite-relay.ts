@@ -26,7 +26,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
         return prefix + path;
       },
       print: msg => this.#log(msg),
-      printErr: msg => this.#log(msg)
+      printErr: msg => this.#log(msg),
     });
     this.#log(`Got SQLite version: ${this.#sqlite.version.libVersion}`);
     await this.#open(path);
