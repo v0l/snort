@@ -120,7 +120,7 @@
     "tinybench": "^2.5.1",
     "typescript": "^5.2.2",
     "vite": "^5.1.5",
-    "vite-plugin-pwa": "^0.17.0",
+    "vite-plugin-pwa": "^0.19.2",
     "vite-plugin-version-mark": "^0.0.10",
     "vitest": "^0.34.6"
   }

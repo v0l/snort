@@ -12,15 +12,13 @@ export default defineConfig({
     }),
     VitePWA({
       strategies: "injectManifest",
+      injectRegister: "inline",
       srcDir: "src",
       filename: "service-worker.ts",
+      registerType: "autoUpdate",
       devOptions: {
         enabled: true,
         type: "module",
-      },
-      workbox: {
-        globPatterns: ["**/*.{js,html,wasm,woff,woff2,ttf,svg,png,jpg,jpeg,webp,ico,json}"],
-        sourcemap: true,
       },
     }),
     visualizer({
