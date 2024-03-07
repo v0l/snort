@@ -49,12 +49,6 @@ export default defineConfig({
       "@": "/src",
     },
   },
-  server: {
-    headers: {
-      "Cross-Origin-Opener-Policy": "same-origin",
-      "Cross-Origin-Embedder-Policy": "require-corp",
-    },
-  },
   define: {
     CONFIG: JSON.stringify(appConfig),
     global: {}, // needed for custom-event lib
