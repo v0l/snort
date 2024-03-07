@@ -1,14 +1,16 @@
 import { RelayMetricCache, UserRelaysCache } from "@snort/system";
 import { SnortSystemDb } from "@snort/system-web";
 import { WorkerRelayInterface } from "@snort/worker-relay";
-import WorkerRelayPath from "@snort/worker-relay/dist/worker?worker&url";
+import WorkerVite from "@snort/worker-relay/src/worker?worker";
 
 import { EventCacheWorker } from "./EventCacheWorker";
 import { GiftWrapCache } from "./GiftWrapCache";
 import { ProfileCacheRelayWorker } from "./ProfileWorkerCache";
 import { UserFollowsWorker } from "./UserFollowsWorker";
 
-export const Relay = new WorkerRelayInterface(WorkerRelayPath);
+export const Relay = new WorkerRelayInterface(
+  import.meta.env.DEV ? new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url) : new WorkerVite()
+);
 export async function initRelayWorker() {
   try {
     await Relay.init("relay.db");
