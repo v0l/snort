@@ -10,6 +10,8 @@ import { EventBuilder } from "../event-builder";
 import EventKind from "../event-kind";
 
 const NIP46_KIND = 24_133;
+// FIXME add all kinds that Snort signs
+const PERMS = "nip04_encrypt,nip04_decrypt,sign_event:0,sign_event:1,sign_event:3,sign_event:4,sign_event:6,sign_event:7"
 
 interface Nip46Metadata {
   name: string;
@@ -33,6 +35,7 @@ interface Nip46Response {
 interface QueueObj {
   resolve: (o: any) => void;
   reject: (e: Error) => void;
+  authed?: boolean;
 }
 
 export class Nip46Signer implements EventSigner {
@@ -50,7 +53,7 @@ export class Nip46Signer implements EventSigner {
   constructor(config: string, insideSigner?: EventSigner) {
     const u = new URL(config);
     this.#proto = u.protocol;
-    this.#localPubkey = u.pathname.substring(2);
+    this.#localPubkey = u.hostname || u.pathname.substring(2);
 
     if (u.hash.length > 1) {
       this.#token = u.hash.substring(1);
@@ -96,6 +99,8 @@ export class Nip46Signer implements EventSigner {
             {
               kinds: [NIP46_KIND],
               "#p": [this.#localPubkey],
+              // strfry doesn't always delete ephemeral events
+              since: Math.floor(Date.now() / 1000 - 10),
             },
           ],
           () => {},
@@ -139,12 +144,7 @@ export class Nip46Signer implements EventSigner {
   }
 
   async nip4Decrypt(content: string, otherKey: string) {
-    const payload = await this.#rpc<string>("nip04_decrypt", [otherKey, content]);
-    try {
-      return JSON.parse(payload)[0];
-    } catch {
-      return "<error>";
-    }
+    return await this.#rpc<string>("nip04_decrypt", [otherKey, content]);
   }
 
   nip44Encrypt(content: string, key: string): Promise<string> {
@@ -165,10 +165,7 @@ export class Nip46Signer implements EventSigner {
   }
 
   async #connect(pk: string) {
-    const connectParams = [pk];
-    if (this.#token) {
-      connectParams.push(this.#token);
-    }
+    const connectParams = [pk, this.#token || '', PERMS];
     return await this.#rpc<string>("connect", connectParams);
   }
 
@@ -199,8 +196,14 @@ export class Nip46Signer implements EventSigner {
       throw new Error("No pending command found");
     }
 
-    pending.resolve(reply);
-    this.#commandQueue.delete(reply.id);
+    if ("result" in reply && reply.result === "auth_url") {
+      if (!pending.authed)
+        window.open(reply.error, "Snort", "width=600,height=800,popup=yes")
+      pending.authed = true
+    } else {
+      pending.resolve(reply);
+      this.#commandQueue.delete(reply.id);
+    }
   }
 
   async #rpc<T>(method: string, params: Array<any>) {
