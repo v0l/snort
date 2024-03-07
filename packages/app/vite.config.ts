@@ -54,6 +54,6 @@ export default defineConfig({
     global: {}, // needed for custom-event lib
   },
   worker: {
-    format: "es"
+    format: "es",
   },
 });

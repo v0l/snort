@@ -197,7 +197,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     if (this.#config.cachingRelay) {
       this.on("event", async (_, ev) => {
         await this.#config.cachingRelay?.event(ev);
-      })
+      });
     }
 
     // Hook on-event when building follow graph

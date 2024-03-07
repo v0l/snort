@@ -9,7 +9,7 @@ import { ProfileCacheRelayWorker } from "./ProfileWorkerCache";
 import { UserFollowsWorker } from "./UserFollowsWorker";
 
 export const Relay = new WorkerRelayInterface(
-  import.meta.env.DEV ? new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url) : new WorkerVite()
+  import.meta.env.DEV ? new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url) : new WorkerVite(),
 );
 export async function initRelayWorker() {
   try {

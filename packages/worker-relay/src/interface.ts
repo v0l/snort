@@ -17,14 +17,14 @@ export class WorkerRelayInterface {
       this.#worker = scriptPath;
     } else {
       const sp = scriptPath ? scriptPath : new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url);
-      this.#worker = new Worker(sp, { type: "module" })
-    };
+      this.#worker = new Worker(sp, { type: "module" });
+    }
     this.#worker.onerror = e => {
       console.error(e.message, e);
-    }
+    };
     this.#worker.onmessageerror = e => {
       console.error(e);
-    }
+    };
     this.#worker.onmessage = e => {
       const cmd = e.data as WorkerMessage<any>;
       if (cmd.cmd === "reply") {

@@ -162,20 +162,20 @@ const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: Mes
     } else if (typeof e === "string") {
       reply(msg.id, { error: e });
     } else {
-      reply(msg.id, "Unknown error")
+      reply(msg.id, "Unknown error");
     }
   }
-}
+};
 
 if ("SharedWorkerGlobalScope" in globalThis) {
-  onconnect = (e) => {
+  onconnect = e => {
     const port = e.ports[0];
-    port.onmessage = (msg) => handleMsg(port, msg);
+    port.onmessage = msg => handleMsg(port, msg);
     port.start();
-  }
+  };
 }
 if ("DedicatedWorkerGlobalScope" in globalThis) {
   onmessage = e => {
-    handleMsg(self as DedicatedWorkerGlobalScope, e)
-  }
+    handleMsg(self as DedicatedWorkerGlobalScope, e);
+  };
 }
