@@ -30,8 +30,11 @@ const Avatar = ({
   className,
   showTitle = true,
 }: AvatarProps) => {
+  const defaultImg = defaultAvatar(pubkey);
   const url = useMemo(() => {
-    return image ?? user?.picture ?? defaultAvatar(pubkey);
+    if((image?.length ?? 0) > 0) return image;
+    if((user?.picture?.length ?? 0) > 0) return user?.picture;
+    return defaultImg;
   }, [user, image, pubkey]);
 
   const s = size ?? 120;
@@ -42,6 +45,7 @@ const Avatar = ({
   }
 
   const domain = user?.nip05 && user.nip05.split("@")[1];
+  const isDefault = url === defaultImg;
   return (
     <div
       onClick={onClick}
@@ -49,6 +53,7 @@ const Avatar = ({
       className={classNames(
         "avatar relative flex items-center justify-center",
         { "with-overlay": imageOverlay },
+        { "outline outline-2 outline-nostr-purple m-[2px]": isDefault },
         className,
       )}
       data-domain={domain?.toLowerCase()}

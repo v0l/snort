@@ -66,19 +66,6 @@
   font-size: 15px;
 }
 
-.profile-wrapper > .avatar-wrapper {
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-}
-
-.profile-wrapper > .avatar-wrapper .avatar {
-  width: 100px;
-  height: 100px;
-  background-image: var(--img-url);
-  border: 3px solid #fff;
-}
-
 .profile .name {
   display: flex;
   flex-direction: column;

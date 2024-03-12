@@ -10,8 +10,6 @@ module.exports = {
         highlight: "var(--highlight)",
         "bg-color": "var(--bg-color)",
         "bg-secondary": "var(--bg-secondary)",
-      },
-      textColor: {
         "nostr-blue": "var(--repost)",
         "nostr-green": "var(--success)",
         "nostr-orange": "var(--zap)",

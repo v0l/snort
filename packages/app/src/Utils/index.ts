@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import * as utils from "@noble/curves/abstract/utils";
 import * as secp from "@noble/curves/secp256k1";
 import { hmac } from "@noble/hashes/hmac";
@@ -459,7 +460,7 @@ export function kvToObject<T>(o: string, sep?: string) {
 export function defaultAvatar(input?: string) {
   if (isOffline()) return Nostrich;
   const key = (input?.length ?? 0) === 0 ? "missing" : input;
-  return `https://robohash.v0l.io/${key}.png${isHalloween() ? "?set=set2" : ""}`;
+  return `https://nostr.api.v0l.io/api/v1/avatar/${isHalloween() ? "zombies" : "cyberpunks"}/${key}.webp`;
 }
 
 export function isFormElement(target: HTMLElement): boolean {
