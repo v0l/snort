@@ -41,6 +41,10 @@ export class EventPublisher {
     this.#pubKey = pubKey;
   }
 
+  get signer() {
+    return this.#signer;
+  }
+
   /**
    * Create a NIP-07 EventPublisher
    */
