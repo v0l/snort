@@ -32,8 +32,8 @@ const Avatar = ({
 }: AvatarProps) => {
   const defaultImg = defaultAvatar(pubkey);
   const url = useMemo(() => {
-    if((image?.length ?? 0) > 0) return image;
-    if((user?.picture?.length ?? 0) > 0) return user?.picture;
+    if ((image?.length ?? 0) > 0) return image;
+    if ((user?.picture?.length ?? 0) > 0) return user?.picture;
     return defaultImg;
   }, [user, image, pubkey]);
 

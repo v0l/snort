@@ -37,7 +37,7 @@ export const onRequest: PagesFunction<Env> = async context => {
           return new Response(body, {
             headers: {
               ...Object.fromEntries(rsp.headers.entries()),
-              "cache-control": "public, max-age=60"
+              "cache-control": "public, max-age=60",
             },
           });
         }

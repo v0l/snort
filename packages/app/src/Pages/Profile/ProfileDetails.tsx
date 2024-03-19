@@ -70,14 +70,14 @@ const ProfileDetails = ({
         targets={
           lnurl?.lnurl && id
             ? [
-              {
-                type: "lnurl",
-                value: lnurl?.lnurl,
-                weight: 1,
-                name: user?.display_name || user?.name,
-                zap: { pubkey: id, anon: false },
-              },
-            ]
+                {
+                  type: "lnurl",
+                  value: lnurl?.lnurl,
+                  weight: 1,
+                  name: user?.display_name || user?.name,
+                  zap: { pubkey: id, anon: false },
+                },
+              ]
             : undefined
         }
         show={showLnQr}

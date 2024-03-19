@@ -102,7 +102,13 @@ const AvatarSection = ({
 
   return (
     <div className="flex justify-between w-full">
-      <Avatar pubkey={id ?? ""} user={user} onClick={() => setModalImage(user?.picture || "")} className="pointer" size={100} />
+      <Avatar
+        pubkey={id ?? ""}
+        user={user}
+        onClick={() => setModalImage(user?.picture || "")}
+        className="pointer"
+        size={100}
+      />
       <div className="profile-actions">
         {renderButtons()}
         {!isMe && id && <FollowButton pubkey={id} />}
@@ -112,14 +118,14 @@ const AvatarSection = ({
         targets={
           lnurl?.lnurl && id
             ? [
-              {
-                type: "lnurl",
-                value: lnurl.lnurl,
-                weight: 1,
-                name: user?.display_name || user?.name,
-                zap: { pubkey: id, anon: false }
-              } as ZapTarget,
-            ]
+                {
+                  type: "lnurl",
+                  value: lnurl.lnurl,
+                  weight: 1,
+                  name: user?.display_name || user?.name,
+                  zap: { pubkey: id, anon: false },
+                } as ZapTarget,
+              ]
             : undefined
         }
         show={showLnQr}
