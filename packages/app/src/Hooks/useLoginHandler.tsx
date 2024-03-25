@@ -85,6 +85,9 @@ export default function useLoginHandler() {
       }
     } else if (key.startsWith("bunker://")) {
       const nip46 = new Nip46Signer(key);
+      nip46.on("oauth", url => {
+        window.open(url, CONFIG.appNameCapitalized, "width=600,height=800,popup=yes");
+      });
       await nip46.init();
 
       const loginPubkey = await nip46.getPubKey();
