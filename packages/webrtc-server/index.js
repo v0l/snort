@@ -25,7 +25,8 @@ io.on("connection", socket => {
   socket.on("candidate", data => emitToTarget("candidate", data, data.recipient));
 
   socket.on("hello", peerId => {
-    console.log(`Received hello from ${peerId}`);
+    // Log Forging issue fixed by sanitizing input to remove new lines (Powered by Mobb)
+    console.log(`Received hello from ${String(peerId).replace(/\n|\r/g, "")}`);
     peerSocketMap.set(peerId, socket.id);
     socketPeerMap.set(socket.id, peerId);
     socket.broadcast.emit("hello", peerId);
