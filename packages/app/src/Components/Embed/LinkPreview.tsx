@@ -56,7 +56,7 @@ const LinkPreview = ({ url }: { url: string }) => {
       const urlTags = ["og:video:secure_url", "og:video:url", "og:video"];
       const link = preview?.og_tags?.find(a => urlTags.includes(a[0].toLowerCase()))?.[1];
       const videoType = preview?.og_tags?.find(a => a[0].toLowerCase() === "og:video:type")?.[1] ?? "video/mp4";
-      if (link) {
+      if (link && videoType.startsWith("video/")) {
         return <MediaElement url={link} mime={videoType} />;
       }
     }

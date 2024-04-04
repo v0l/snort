@@ -397,7 +397,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
             this.queueReq(["REQ", id, ...newFilters], item.cb);
           }
         };
-        if (this.Info?.software?.includes("strfry")) {
+        if (this.Address.startsWith("wss://relay.snort.social")) {
           const newFilters = filters.map(a => {
             if (a.ids_only) {
               const copy = { ...a };

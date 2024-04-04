@@ -1,10 +1,14 @@
 import { EventExt, EventKind, NostrLink, RequestBuilder } from "@snort/system";
-import { useReactions, useRequestBuilder } from "@snort/system-react";
-import { useEffect, useMemo, useState } from "react";
+import { SnortContext, useRequestBuilder } from "@snort/system-react";
+import { useContext, useEffect, useMemo, useState } from "react";
+
+import { randomSample } from "@/Utils";
 
 export default function useThreadFeed(link: NostrLink) {
   const [root, setRoot] = useState<NostrLink>();
+  const [rootRelays, setRootRelays] = useState<Array<string>>();
   const [allEvents, setAllEvents] = useState<Array<NostrLink>>([]);
+  const system = useContext(SnortContext);
 
   const sub = useMemo(() => {
     const sub = new RequestBuilder(`thread:${link.id.slice(0, 12)}`);
@@ -13,7 +17,7 @@ export default function useThreadFeed(link: NostrLink) {
     });
     sub.withFilter().link(link);
     if (root) {
-      sub.withFilter().link(root);
+      sub.withFilter().link(root).relay(rootRelays ?? []);
     }
     const grouped = [link, ...allEvents].reduce(
       (acc, v) => {
@@ -24,11 +28,14 @@ export default function useThreadFeed(link: NostrLink) {
       {} as Record<string, Array<NostrLink>>,
     );
 
-    for (const [, v] of Object.entries(grouped)) {
-      sub.withFilter().kinds([EventKind.TextNote]).replyToLink(v);
+    for (const v of Object.values(grouped)) {
+      sub.withFilter()
+        .kinds([EventKind.TextNote])
+        .replyToLink(v)
+        .relay(rootRelays ?? []);
     }
     return sub;
-  }, [allEvents.length]);
+  }, [allEvents.length, rootRelays]);
 
   const store = useRequestBuilder(sub);
 
@@ -57,15 +64,28 @@ export default function useThreadFeed(link: NostrLink) {
               ]),
             );
           }
+        } else {
+          setRoot(link);
         }
       }
     }
   }, [store?.length]);
 
-  const reactions = useReactions(`thread:${link.id.slice(0, 12)}:reactions`, [link, ...allEvents]);
+  useEffect(() => {
+    if (root) {
+      const rootEvent = store?.find(a => root.matchesEvent(a));
+      if (rootEvent) {
+        system.relayCache.buffer([rootEvent.pubkey]).then(() => {
+          const relays = system.relayCache.getFromCache(rootEvent.pubkey);
 
-  return {
-    thread: store ?? [],
-    reactions: reactions ?? [],
-  };
+          if (relays) {
+            const readRelays = randomSample(relays.relays.filter(a => a.settings.read).map(a => a.url), 3);
+            setRootRelays(readRelays);
+          }
+        })
+      }
+    }
+  }, [link, root, store?.length]);
+
+  return store ?? [];
 }

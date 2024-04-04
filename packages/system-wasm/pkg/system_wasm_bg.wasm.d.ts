@@ -7,7 +7,6 @@ export function get_diff(a: number, b: number, c: number): void;
 export function flat_merge(a: number, b: number): void;
 export function compress(a: number, b: number): void;
 export function pow(a: number, b: number, c: number): void;
-export function argon2(a: number, b: number, c: number): void;
 export function schnorr_verify(a: number, b: number, c: number, d: number): void;
 export function schnorr_verify_event(a: number, b: number): void;
 export function rustsecp256k1_v0_9_1_context_create(a: number): number;

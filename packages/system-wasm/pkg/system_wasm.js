@@ -341,27 +341,6 @@ export function pow(val, target) {
 }
 
 /**
- * @param {any} password
- * @param {any} salt
- * @returns {any}
- */
-export function argon2(password, salt) {
-  try {
-    const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-    wasm.argon2(retptr, addHeapObject(password), addHeapObject(salt));
-    var r0 = getInt32Memory0()[retptr / 4 + 0];
-    var r1 = getInt32Memory0()[retptr / 4 + 1];
-    var r2 = getInt32Memory0()[retptr / 4 + 2];
-    if (r2) {
-      throw takeObject(r1);
-    }
-    return takeObject(r0);
-  } finally {
-    wasm.__wbindgen_add_to_stack_pointer(16);
-  }
-}
-
-/**
  * @param {any} hash
  * @param {any} sig
  * @param {any} pub_key
@@ -484,10 +463,6 @@ function __wbg_get_imports() {
     const ret = new Error(getStringFromWasm0(arg0, arg1));
     return addHeapObject(ret);
   };
-  imports.wbg.__wbindgen_object_clone_ref = function (arg0) {
-    const ret = getObject(arg0);
-    return addHeapObject(ret);
-  };
   imports.wbg.__wbindgen_jsval_loose_eq = function (arg0, arg1) {
     const ret = getObject(arg0) == getObject(arg1);
     return ret;
@@ -505,6 +480,10 @@ function __wbg_get_imports() {
   };
   imports.wbg.__wbindgen_number_new = function (arg0) {
     const ret = arg0;
+    return addHeapObject(ret);
+  };
+  imports.wbg.__wbindgen_object_clone_ref = function (arg0) {
+    const ret = getObject(arg0);
     return addHeapObject(ret);
   };
   imports.wbg.__wbindgen_string_new = function (arg0, arg1) {

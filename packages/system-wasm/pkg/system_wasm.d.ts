@@ -34,12 +34,6 @@ export function compress(val: any): any;
  */
 export function pow(val: any, target: any): any;
 /**
- * @param {any} password
- * @param {any} salt
- * @returns {any}
- */
-export function argon2(password: any, salt: any): any;
-/**
  * @param {any} hash
  * @param {any} sig
  * @param {any} pub_key
@@ -62,7 +56,6 @@ export interface InitOutput {
   readonly flat_merge: (a: number, b: number) => void;
   readonly compress: (a: number, b: number) => void;
   readonly pow: (a: number, b: number, c: number) => void;
-  readonly argon2: (a: number, b: number, c: number) => void;
   readonly schnorr_verify: (a: number, b: number, c: number, d: number) => void;
   readonly schnorr_verify_event: (a: number, b: number) => void;
   readonly rustsecp256k1_v0_9_1_context_create: (a: number) => number;

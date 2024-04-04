@@ -2,13 +2,12 @@
 import { TaggedNostrEvent } from "@snort/system";
 import { createContext } from "react";
 
-interface ThreadContext {
+export interface ThreadContextState {
   current: string;
   root?: TaggedNostrEvent;
   chains: Map<string, Array<TaggedNostrEvent>>;
   data: Array<TaggedNostrEvent>;
-  reactions: Array<TaggedNostrEvent>;
   setCurrent: (i: string) => void;
 }
 
-export const ThreadContext = createContext({} as ThreadContext);
+export const ThreadContext = createContext({} as ThreadContextState);

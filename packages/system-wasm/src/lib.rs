@@ -1,6 +1,5 @@
 extern crate console_error_panic_hook;
 
-use argon2::{Argon2};
 use secp256k1::{Message, XOnlyPublicKey, SECP256K1};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -91,16 +90,6 @@ pub fn pow(val: JsValue, target: JsValue) -> Result<JsValue, JsValue> {
 }
 
 #[wasm_bindgen]
-pub fn argon2(password: JsValue, salt: JsValue) -> Result<JsValue, JsValue> {
-    console_error_panic_hook::set_once();
-    let password_parsed: String = serde_wasm_bindgen::from_value(password)?;
-    let salt_parsed: String = serde_wasm_bindgen::from_value(salt)?;
-    let mut key = [0u8; 32];
-    Argon2::default().hash_password_into(password_parsed.as_bytes(), salt_parsed.as_bytes(), &mut key).expect("Failed to generate key");
-    Ok(serde_wasm_bindgen::to_value(&hex::encode(key))?)
-}
-
-#[wasm_bindgen]
 pub fn schnorr_verify(hash: JsValue, sig: JsValue, pub_key: JsValue) -> Result<bool, JsValue> {
     console_error_panic_hook::set_once();
     let msg_hex: String = serde_wasm_bindgen::from_value(hash)?;
@@ -137,15 +126,7 @@ mod tests {
     fn flat_merge_expanded() {
         let input = vec![
             ReqFilter {
-                ids: None,
                 kinds: Some(HashSet::from([1, 6969, 6])),
-                e_tag: None,
-                p_tag: None,
-                t_tag: None,
-                d_tag: None,
-                r_tag: None,
-                a_tag: None,
-                g_tag: None,
                 authors: Some(HashSet::from([
                     "kieran".to_string(),
                     "snort".to_string(),
@@ -155,56 +136,23 @@ mod tests {
                 ])),
                 since: Some(1),
                 until: Some(100),
-                search: None,
-                limit: None,
+                ..Default::default()
             },
             ReqFilter {
-                ids: None,
                 kinds: Some(HashSet::from([4])),
-                e_tag: None,
-                p_tag: None,
-                t_tag: None,
-                d_tag: None,
-                r_tag: None,
-                a_tag: None,
-                g_tag: None,
-                search: None,
-                since: None,
-                until: None,
                 authors: Some(HashSet::from(["kieran".to_string()])),
-                limit: None,
+                ..Default::default()
             },
             ReqFilter {
-                ids: None,
-                authors: None,
                 kinds: Some(HashSet::from([4])),
-                e_tag: None,
                 p_tag: Some(HashSet::from(["kieran".to_string()])),
-                t_tag: None,
-                d_tag: None,
-                r_tag: None,
-                a_tag: None,
-                g_tag: None,
-                search: None,
-                since: None,
-                until: None,
-                limit: None,
+                ..Default::default()
             },
             ReqFilter {
-                ids: None,
                 kinds: Some(HashSet::from([1000])),
                 authors: Some(HashSet::from(["snort".to_string()])),
                 p_tag: Some(HashSet::from(["kieran".to_string()])),
-                t_tag: None,
-                d_tag: None,
-                r_tag: None,
-                a_tag: None,
-                g_tag: None,
-                search: None,
-                since: None,
-                until: None,
-                e_tag: None,
-                limit: None,
+                ..Default::default()
             },
         ];
 

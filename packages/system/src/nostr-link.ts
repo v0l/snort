@@ -177,14 +177,14 @@ export class NostrLink implements ToNostrEventTag {
     throw new Error(`Unknown tag kind ${tag.key}`);
   }
 
-  static fromTag(tag: Array<string>) {
+  static fromTag(tag: Array<string>, author?: string, kind?: number) {
     const relays = tag.length > 2 ? [tag[2]] : undefined;
     switch (tag[0]) {
       case "e": {
-        return new NostrLink(NostrPrefix.Event, tag[1], undefined, undefined, relays);
+        return new NostrLink(NostrPrefix.Event, tag[1], kind, author, relays);
       }
       case "p": {
-        return new NostrLink(NostrPrefix.Profile, tag[1], undefined, undefined, relays);
+        return new NostrLink(NostrPrefix.Profile, tag[1], kind, author, relays);
       }
       case "a": {
         const [kind, author, dTag] = tag[1].split(":");

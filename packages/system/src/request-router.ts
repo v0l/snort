@@ -1,20 +1,6 @@
+import { unwrap } from "@snort/shared";
 import { NostrEvent, ReqFilter } from "./nostr";
 import { FlatReqFilter } from "./query-optimizer";
-
-export interface RelayTaggedFilter {
-  relay: string;
-  filter: ReqFilter;
-}
-
-export interface RelayTaggedFlatFilters {
-  relay: string;
-  filters: Array<FlatReqFilter>;
-}
-
-export interface RelayTaggedFilters {
-  relay: string;
-  filters: Array<ReqFilter>;
-}
 
 /**
  * Request router managed splitting of requests to one or more relays, and which relay to send events to.
@@ -35,7 +21,7 @@ export interface RequestRouter {
    * @param pickN Number of relays to pick
    * @returns
    */
-  forRequest(filter: ReqFilter, pickN?: number): Array<RelayTaggedFilter>;
+  forRequest(filter: ReqFilter, pickN?: number): Array<ReqFilter>;
 
   /**
    * Split a request filter to one or more relays.
@@ -43,34 +29,37 @@ export interface RequestRouter {
    * @param pickN Number of relays to pick
    * @returns
    */
-  forFlatRequest(filter: Array<FlatReqFilter>, pickN?: number): Array<RelayTaggedFlatFilters>;
+  forFlatRequest(filter: Array<FlatReqFilter>, pickN?: number): Array<FlatReqFilter>;
+
+  /**
+   * Same as forRequest, but merges the results
+   * @param filters 
+   */
+  forAllRequest(filters: Array<ReqFilter>): Array<ReqFilter>;
 }
 
 export abstract class BaseRequestRouter implements RequestRouter {
   abstract forReply(ev: NostrEvent, pickN?: number): Promise<Array<string>>;
-  abstract forRequest(filter: ReqFilter, pickN?: number): Array<RelayTaggedFilter>;
-  abstract forFlatRequest(filter: FlatReqFilter[], pickN?: number): Array<RelayTaggedFlatFilters>;
+  abstract forRequest(filter: ReqFilter, pickN?: number): Array<ReqFilter>;
+  abstract forFlatRequest(filter: FlatReqFilter[], pickN?: number): Array<FlatReqFilter>;
 
   forAllRequest(filters: Array<ReqFilter>) {
     const allSplit = filters
       .map(a => this.forRequest(a))
       .reduce((acc, v) => {
         for (const vn of v) {
-          const existing = acc.get(vn.relay);
-          if (existing) {
-            existing.push(vn.filter);
-          } else {
-            acc.set(vn.relay, [vn.filter]);
+          for (const r of (vn.relays?.length ?? 0) > 0 ? unwrap(vn.relays) : [""]) {
+            const existing = acc.get(r);
+            if (existing) {
+              existing.push(vn);
+            } else {
+              acc.set(r, [vn]);
+            }
           }
         }
         return acc;
       }, new Map<string, Array<ReqFilter>>());
 
-    return [...allSplit.entries()].map(([k, v]) => {
-      return {
-        relay: k,
-        filters: v,
-      } as RelayTaggedFilters;
-    });
+    return [...allSplit.values()].flat()
   }
 }

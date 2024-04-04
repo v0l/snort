@@ -19,6 +19,7 @@ export interface FlatReqFilter {
   since?: number;
   until?: number;
   limit?: number;
+  relay?: string;
   resultSetId: string;
 }
 

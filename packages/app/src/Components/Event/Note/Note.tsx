@@ -149,11 +149,12 @@ function useGoToEvent(props, options) {
 }
 
 function Reaction({ ev }: { ev: TaggedNostrEvent }) {
-  const reactedToTag = ev.tags.find((tag: string[]) => tag[0] === "e");
+  const reactedToTag = ev.tags.findLast(tag => tag[0] === "e");
+  const pTag = ev.tags.findLast(tag => tag[0] === "p");
   if (!reactedToTag?.length) {
     return null;
   }
-  const link = NostrLink.fromTag(reactedToTag);
+  const link = NostrLink.fromTag(reactedToTag, pTag?.[1]);
   return (
     <div className="note card">
       <div className="text-gray-medium font-bold">

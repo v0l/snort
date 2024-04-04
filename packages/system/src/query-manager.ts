@@ -1,8 +1,8 @@
 import debug from "debug";
 import { EventEmitter } from "eventemitter3";
-import { BuiltRawReqFilter, RequestBuilder, RequestStrategy, SystemInterface, TaggedNostrEvent } from ".";
+import { BuiltRawReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from ".";
 import { Query, TraceReport } from "./query";
-import { FilterCacheLayer, IdsFilterCacheLayer } from "./filter-cache-layer";
+import { FilterCacheLayer } from "./filter-cache-layer";
 import { trimFilters } from "./request-trim";
 
 interface QueryManagerEvents {
@@ -35,7 +35,6 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
   constructor(system: SystemInterface) {
     super();
     this.#system = system;
-    this.#queryCacheLayers.push(new IdsFilterCacheLayer(system.eventsCache));
 
     setInterval(() => this.#cleanup(), 1_000);
   }

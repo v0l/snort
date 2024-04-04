@@ -1,10 +1,10 @@
 import { EventKind, NostrEvent, ReqFilter, RequestBuilder, SystemInterface } from "..";
-import { dedupe, removeUndefined, unixNowMs, unwrap } from "@snort/shared";
+import { appendDedupe, dedupe, removeUndefined, unixNowMs, unwrap } from "@snort/shared";
 import { FlatReqFilter } from "../query-optimizer";
 import { RelayListCacheExpire } from "../const";
 import { AuthorsRelaysCache, EventFetcher, PickedRelays, DefaultPickNRelays, parseRelaysFromKind } from ".";
 import debug from "debug";
-import { BaseRequestRouter, RelayTaggedFilter, RelayTaggedFlatFilters } from "../request-router";
+import { BaseRequestRouter } from "../request-router";
 
 /**
  * Simple outbox model using most popular relays
@@ -89,15 +89,10 @@ export class OutboxModel extends BaseRequestRouter {
    * @param pickN Number of relays to pick per author
    * @returns
    */
-  forRequest(filter: ReqFilter, pickN?: number): Array<RelayTaggedFilter> {
+  forRequest(filter: ReqFilter, pickN?: number): Array<ReqFilter> {
     const authors = filter.authors;
     if ((authors?.length ?? 0) === 0) {
-      return [
-        {
-          relay: "",
-          filter,
-        },
-      ];
+      return [filter];
     }
 
     const topRelays = this.pickTopRelays(unwrap(authors), pickN ?? DefaultPickNRelays, "write");
@@ -106,22 +101,17 @@ export class OutboxModel extends BaseRequestRouter {
     const picked = pickedRelays.map(a => {
       const keysOnPickedRelay = dedupe(topRelays.filter(b => b.relays.includes(a)).map(b => b.key));
       return {
-        relay: a,
-        filter: {
-          ...filter,
-          authors: keysOnPickedRelay,
-        },
-      } as RelayTaggedFilter;
+        ...filter,
+        authors: keysOnPickedRelay,
+        relays: appendDedupe(filter.relays, [a])
+      } as ReqFilter;
     });
     const noRelays = dedupe(topRelays.filter(a => a.relays.length === 0).map(a => a.key));
     if (noRelays.length > 0) {
       picked.push({
-        relay: "",
-        filter: {
-          ...filter,
-          authors: noRelays,
-        },
-      });
+        ...filter,
+        authors: noRelays,
+      } as ReqFilter);
     }
     this.#log("Picked %O => %O", filter, picked);
     return picked;
@@ -133,32 +123,32 @@ export class OutboxModel extends BaseRequestRouter {
    * @param pickN Number of relays to pick per author
    * @returns
    */
-  forFlatRequest(input: Array<FlatReqFilter>, pickN?: number): Array<RelayTaggedFlatFilters> {
-    const authors = input.filter(a => a.authors).map(a => unwrap(a.authors));
+  forFlatRequest(input: Array<FlatReqFilter>, pickN?: number): Array<FlatReqFilter> {
+    const authors = removeUndefined(input.flatMap(a => a.authors));
     if (authors.length === 0) {
-      return [
-        {
-          relay: "",
-          filters: input,
-        },
-      ];
+      return input;
     }
     const topRelays = this.pickTopRelays(authors, pickN ?? DefaultPickNRelays, "write");
     const pickedRelays = dedupe(topRelays.flatMap(a => a.relays));
 
-    const picked = pickedRelays.map(a => {
+    const picked = pickedRelays.flatMap(a => {
       const authorsOnRelay = new Set(topRelays.filter(v => v.relays.includes(a)).map(v => v.key));
-      return {
-        relay: a,
-        filters: input.filter(v => v.authors && authorsOnRelay.has(v.authors)),
-      } as RelayTaggedFlatFilters;
+      return input
+        .filter(v => v.authors && authorsOnRelay.has(v.authors))
+        .flatMap(b => {
+          // if flat filter isnt already relay tagged, set relay tag or
+          // create a duplicate filter with the authors picked relay
+          if (!b.relay) {
+            b.relay = a;
+            return [b];
+          } else {
+            return [b, { ...b, relay: a }];
+          }
+        });
     });
     const noRelays = new Set(topRelays.filter(v => v.relays.length === 0).map(v => v.key));
     if (noRelays.size > 0) {
-      picked.push({
-        relay: "",
-        filters: input.filter(v => !v.authors || noRelays.has(v.authors)),
-      } as RelayTaggedFlatFilters);
+      picked.push(...input.filter(v => !v.authors || noRelays.has(v.authors)));
     }
 
     this.#log("Picked %d relays from %d filters", picked.length, input.length);

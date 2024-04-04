@@ -21,35 +21,11 @@ mod tests {
     fn simple_diff_same() {
         let prev = vec![FlatReqFilter {
             id: Some("a".to_owned()),
-            author: None,
-            kind: None,
-            e_tag: None,
-            p_tag: None,
-            t_tag: None,
-            d_tag: None,
-            r_tag: None,
-            a_tag: None,
-            g_tag: None,
-            search: None,
-            since: None,
-            until: None,
-            limit: None,
+            ..Default::default()
         }];
         let next = vec![FlatReqFilter {
             id: Some("a".to_owned()),
-            author: None,
-            kind: None,
-            e_tag: None,
-            p_tag: None,
-            t_tag: None,
-            d_tag: None,
-            r_tag: None,
-            a_tag: None,
-            g_tag: None,
-            search: None,
-            since: None,
-            until: None,
-            limit: None,
+            ..Default::default()
         }];
 
         let result = diff_filter(&prev, &next);
@@ -60,52 +36,16 @@ mod tests {
     fn simple_diff_add() {
         let prev = vec![FlatReqFilter {
             id: Some("a".to_owned()),
-            author: None,
-            kind: None,
-            e_tag: None,
-            p_tag: None,
-            t_tag: None,
-            d_tag: None,
-            r_tag: None,
-            a_tag: None,
-            g_tag: None,
-            search: None,
-            since: None,
-            until: None,
-            limit: None,
+            ..Default::default()
         }];
         let next = vec![
             FlatReqFilter {
                 id: Some("a".to_owned()),
-                author: None,
-                kind: None,
-                e_tag: None,
-                p_tag: None,
-                t_tag: None,
-                d_tag: None,
-                r_tag: None,
-                a_tag: None,
-                g_tag: None,
-                search: None,
-                since: None,
-                until: None,
-                limit: None,
+                ..Default::default()
             },
             FlatReqFilter {
                 id: Some("b".to_owned()),
-                author: None,
-                kind: None,
-                e_tag: None,
-                p_tag: None,
-                t_tag: None,
-                d_tag: None,
-                r_tag: None,
-                a_tag: None,
-                g_tag: None,
-                search: None,
-                since: None,
-                until: None,
-                limit: None,
+                ..Default::default()
             },
         ];
 
@@ -114,19 +54,7 @@ mod tests {
             result,
             vec![FlatReqFilter {
                 id: Some("b".to_owned()),
-                author: None,
-                kind: None,
-                e_tag: None,
-                p_tag: None,
-                t_tag: None,
-                d_tag: None,
-                r_tag: None,
-                a_tag: None,
-                g_tag: None,
-                search: None,
-                since: None,
-                until: None,
-                limit: None,
+                ..Default::default()
             }]
         )
     }
@@ -135,35 +63,11 @@ mod tests {
     fn simple_diff_replace() {
         let prev = vec![FlatReqFilter {
             id: Some("a".to_owned()),
-            author: None,
-            kind: None,
-            e_tag: None,
-            p_tag: None,
-            t_tag: None,
-            d_tag: None,
-            r_tag: None,
-            a_tag: None,
-            g_tag: None,
-            search: None,
-            since: None,
-            until: None,
-            limit: None,
+            ..Default::default()
         }];
         let next = vec![FlatReqFilter {
             id: Some("b".to_owned()),
-            author: None,
-            kind: None,
-            e_tag: None,
-            p_tag: None,
-            t_tag: None,
-            d_tag: None,
-            r_tag: None,
-            a_tag: None,
-            g_tag: None,
-            search: None,
-            since: None,
-            until: None,
-            limit: None,
+            ..Default::default()
         }];
 
         let result = diff_filter(&prev, &next);
@@ -171,19 +75,7 @@ mod tests {
             result,
             vec![FlatReqFilter {
                 id: Some("b".to_owned()),
-                author: None,
-                kind: None,
-                e_tag: None,
-                p_tag: None,
-                t_tag: None,
-                d_tag: None,
-                r_tag: None,
-                a_tag: None,
-                g_tag: None,
-                search: None,
-                since: None,
-                until: None,
-                limit: None,
+                ..Default::default()
             }]
         )
     }

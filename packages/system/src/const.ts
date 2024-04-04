@@ -49,3 +49,12 @@ export const MentionNostrEntityRegex = /@n(pub|profile|event|ote|addr|)1[acdefgh
  * Regex to match markdown code content
  */
 export const MarkdownCodeRegex = /(```.+?```)/gms;
+
+/**
+ * Public metadata relays
+ */
+export const MetadataRelays = [
+    "wss://purplepag.es/",
+    "wss://relay.nostr.band/",
+    "wss://relay.snort.social/"
+]
