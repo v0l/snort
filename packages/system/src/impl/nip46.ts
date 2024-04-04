@@ -11,6 +11,8 @@ import EventKind from "../event-kind";
 import { EventEmitter } from "eventemitter3";
 
 const NIP46_KIND = 24_133;
+// FIXME add all kinds that Snort signs
+const PERMS = "nip04_encrypt,nip04_decrypt,sign_event:0,sign_event:1,sign_event:3,sign_event:4,sign_event:6,sign_event:7,sign_event:30078"
 
 interface Nip46Metadata {
   name: string;
@@ -34,6 +36,7 @@ interface Nip46Response {
 interface QueueObj {
   resolve: (o: Nip46Response) => void;
   reject: (e: Error) => void;
+  authed?: boolean;
 }
 
 interface Nip46Events {
@@ -112,6 +115,8 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
             {
               kinds: [NIP46_KIND],
               "#p": [this.#localPubkey],
+              // strfry doesn't always delete ephemeral events
+              since: Math.floor(Date.now() / 1000 - 10),
             },
           ],
           () => {},
@@ -195,7 +200,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
    */
   async createAccount(name: string, domain: string, email?: string) {
     await this.init(false);
-    const rsp = await this.#rpc("create_account", [name, domain, email ?? ""]);
+    const rsp = await this.#rpc("create_account", [name, domain, email ?? "", PERMS]);
     if (!rsp.error) {
       this.#remotePubkey = rsp.result as string;
     }
@@ -206,10 +211,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   }
 
   async #connect(pk: string) {
-    const connectParams = [pk];
-    if (this.#token) {
-      connectParams.push(this.#token);
-    }
+    const connectParams = [pk, this.#token ?? '', PERMS];
     return await this.#rpc("connect", connectParams);
   }
 
@@ -241,7 +243,8 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     }
 
     if ("result" in reply && reply.result === "auth_url") {
-      this.emit("oauth", reply.error);
+      if (!pending.authed) this.emit("oauth", reply.error);
+      pending.authed = true;
     } else {
       const rx = reply as Nip46Response;
       if (rx.error) {

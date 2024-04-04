@@ -247,6 +247,9 @@ export function createPublisher(l: LoginSession) {
       const relayArgs = (l.remoteSignerRelays ?? []).map(a => `relay=${encodeURIComponent(a)}`);
       const inner = new PrivateKeySigner(unwrap(l.privateKeyData as KeyStorage).value);
       const nip46 = new Nip46Signer(`bunker://${unwrap(l.publicKey)}?${[...relayArgs].join("&")}`, inner);
+      nip46.on("oauth", url => {
+        window.open(url, CONFIG.appNameCapitalized, "width=600,height=800,popup=yes");
+      });
       return new EventPublisher(nip46, unwrap(l.publicKey));
     }
     case LoginSessionType.Nip7os: {
