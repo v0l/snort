@@ -12,7 +12,8 @@ import { EventEmitter } from "eventemitter3";
 
 const NIP46_KIND = 24_133;
 // FIXME add all kinds that Snort signs
-const PERMS = "nip04_encrypt,nip04_decrypt,sign_event:0,sign_event:1,sign_event:3,sign_event:4,sign_event:6,sign_event:7,sign_event:30078"
+const PERMS =
+  "nip04_encrypt,nip04_decrypt,sign_event:0,sign_event:1,sign_event:3,sign_event:4,sign_event:6,sign_event:7,sign_event:30078";
 
 interface Nip46Metadata {
   name: string;
@@ -211,7 +212,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   }
 
   async #connect(pk: string) {
-    const connectParams = [pk, this.#token ?? '', PERMS];
+    const connectParams = [pk, this.#token ?? "", PERMS];
     return await this.#rpc("connect", connectParams);
   }
 
