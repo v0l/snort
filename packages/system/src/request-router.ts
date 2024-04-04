@@ -33,7 +33,7 @@ export interface RequestRouter {
 
   /**
    * Same as forRequest, but merges the results
-   * @param filters 
+   * @param filters
    */
   forAllRequest(filters: Array<ReqFilter>): Array<ReqFilter>;
 }
@@ -60,6 +60,6 @@ export abstract class BaseRequestRouter implements RequestRouter {
         return acc;
       }, new Map<string, Array<ReqFilter>>());
 
-    return [...allSplit.values()].flat()
+    return [...allSplit.values()].flat();
   }
 }

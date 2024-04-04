@@ -17,7 +17,10 @@ export default function useThreadFeed(link: NostrLink) {
     });
     sub.withFilter().link(link);
     if (root) {
-      sub.withFilter().link(root).relay(rootRelays ?? []);
+      sub
+        .withFilter()
+        .link(root)
+        .relay(rootRelays ?? []);
     }
     const grouped = [link, ...allEvents].reduce(
       (acc, v) => {
@@ -29,7 +32,8 @@ export default function useThreadFeed(link: NostrLink) {
     );
 
     for (const v of Object.values(grouped)) {
-      sub.withFilter()
+      sub
+        .withFilter()
         .kinds([EventKind.TextNote])
         .replyToLink(v)
         .relay(rootRelays ?? []);
@@ -79,10 +83,13 @@ export default function useThreadFeed(link: NostrLink) {
           const relays = system.relayCache.getFromCache(rootEvent.pubkey);
 
           if (relays) {
-            const readRelays = randomSample(relays.relays.filter(a => a.settings.read).map(a => a.url), 3);
+            const readRelays = randomSample(
+              relays.relays.filter(a => a.settings.read).map(a => a.url),
+              3,
+            );
             setRootRelays(readRelays);
           }
-        })
+        });
       }
     }
   }, [link, root, store?.length]);

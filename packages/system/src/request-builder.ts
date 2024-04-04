@@ -176,7 +176,7 @@ export class RequestFilterBuilder {
   get filter() {
     return {
       ...this.#filter,
-      relays: this.#relays.size > 0 ? [...this.#relays] : undefined
+      relays: this.#relays.size > 0 ? [...this.#relays] : undefined,
     };
   }
 

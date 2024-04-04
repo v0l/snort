@@ -103,7 +103,7 @@ export class OutboxModel extends BaseRequestRouter {
       return {
         ...filter,
         authors: keysOnPickedRelay,
-        relays: appendDedupe(filter.relays, [a])
+        relays: appendDedupe(filter.relays, [a]),
       } as ReqFilter;
     });
     const noRelays = dedupe(topRelays.filter(a => a.relays.length === 0).map(a => a.key));
