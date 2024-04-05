@@ -38,6 +38,7 @@ export * from "./pow-util";
 export * from "./query-optimizer";
 export * from "./encrypted";
 export * from "./outbox";
+export * from "./range-sync";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";

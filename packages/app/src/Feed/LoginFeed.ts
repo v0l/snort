@@ -65,6 +65,7 @@ export default function useLoginFeed() {
         EventKind.BookmarksList,
         EventKind.InterestsList,
         EventKind.PublicChatsList,
+        EventKind.DirectMessage,
       ]);
     if (CONFIG.features.subscriptions && !login.readonly) {
       b.withFilter().authors([pubKey]).kinds([EventKind.AppData]).tag("d", ["snort"]);

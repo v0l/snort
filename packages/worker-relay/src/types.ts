@@ -45,7 +45,6 @@ export interface ReqFilter {
   since?: number;
   until?: number;
   limit?: number;
-  ids_only?: boolean;
   [key: string]: Array<string> | Array<number> | string | number | undefined | boolean;
 }
 

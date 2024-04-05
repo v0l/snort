@@ -43,8 +43,8 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
 
   gotEose() {
     this.eose = unixNowMs();
-    this.emit("change");
     this.emit("eose", this.id, this.connId, false);
+    this.emit("change");
   }
 
   forceEose() {
@@ -304,14 +304,6 @@ export class Query extends EventEmitter<QueryEvents> {
     this.cleanup();
   }
 
-  eose(sub: string, conn: Readonly<Connection>) {
-    const qt = this.#tracing.find(a => a.id === sub && a.connId === conn.Id);
-    qt?.gotEose();
-    if (!this.#leaveOpen) {
-      qt?.sendClose();
-    }
-  }
-
   /**
    * Get the progress to EOSE, can be used to determine when we should load more content
    */
@@ -334,6 +326,16 @@ export class Query extends EventEmitter<QueryEvents> {
       }, this.#groupingDelay);
     } else {
       this.#emitFilters();
+    }
+  }
+
+  #eose(sub: string, conn: Readonly<Connection>) {
+    const qt = this.#tracing.find(a => a.id === sub && a.connId === conn.Id);
+    if (qt) {
+      qt.gotEose();
+      if (!this.#leaveOpen) {
+        qt.sendClose();
+      }
     }
   }
 
@@ -394,10 +396,6 @@ export class Query extends EventEmitter<QueryEvents> {
 
   #sendQueryInternal(c: Connection, q: BuiltRawReqFilter) {
     let filters = q.filters;
-    if (c.supportsNip(Nips.GetMatchingEventIds)) {
-      filters = filters.map(f => ({ ...f, ids_only: true }));
-    }
-
     const qt = new QueryTrace(c.Address, filters, c.Id);
     qt.on("close", x => c.closeReq(x));
     qt.on("change", () => this.#onProgress());
@@ -410,13 +408,22 @@ export class Query extends EventEmitter<QueryEvents> {
         responseTime: qt.responseTime,
       } as TraceReport),
     );
-    const handler = (sub: string, ev: TaggedNostrEvent) => {
+    const eventHandler = (sub: string, ev: TaggedNostrEvent) => {
       if (this.request.options?.fillStore ?? true) {
         this.handleEvent(sub, ev);
       }
     };
-    c.on("event", handler);
-    this.on("end", () => c.off("event", handler));
+    const eoseHandler = (sub: string) => {
+      this.#eose(sub, c);
+    };
+    c.on("event", eventHandler);
+    c.on("eose", eoseHandler);
+    c.on("closed", eoseHandler);
+    this.on("end", () => {
+      c.off("event", eventHandler);
+      c.off("eose", eoseHandler);
+      c.off("closed", eoseHandler);
+    });
     this.#tracing.push(qt);
 
     if (q.syncFrom !== undefined) {

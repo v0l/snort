@@ -4,6 +4,7 @@ import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import { GiftsCache, Relay, RelayMetrics } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
+import useLogin from "@/Hooks/useLogin";
 
 export function CacheSettings() {
   return (
@@ -50,15 +51,24 @@ function CacheDetails<T>({ cache, name }: { cache: FeedCache<T>; name: ReactNode
 
 function RelayCacheStats() {
   const [counts, setCounts] = useState<Record<string, number>>({});
+  const [myEvents, setMyEvents] = useState<number>(0);
+  const login = useLogin();
 
   useEffect(() => {
     Relay.summary().then(setCounts);
+    if (login.publicKey) {
+      Relay.count(["REQ", "my", { authors: [login.publicKey] }]).then(setMyEvents);
+    }
   }, []);
 
   return (
     <div className="flex justify-between br p bg-superdark">
       <div className="flex flex-col g4 w-64">
         <FormattedMessage defaultMessage="Worker Relay" id="xSoIUU" />
+        {myEvents && <p>
+          <FormattedMessage defaultMessage="My events: {n}" id="lEnclp" values={{
+            n: <FormattedNumber value={myEvents} />
+          }} /></p>}
         <table className="text-secondary">
           <thead>
             <tr>
@@ -89,7 +99,7 @@ function RelayCacheStats() {
         </table>
       </div>
       <div className="flex flex-col gap-2">
-        <AsyncButton onClick={() => {}}>
+        <AsyncButton onClick={() => { }}>
           <FormattedMessage defaultMessage="Clear" id="/GCoTA" />
         </AsyncButton>
         <AsyncButton

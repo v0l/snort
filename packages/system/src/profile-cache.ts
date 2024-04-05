@@ -1,6 +1,6 @@
 import { unixNowMs } from "@snort/shared";
 import { EventKind, TaggedNostrEvent, RequestBuilder } from ".";
-import { ProfileCacheExpire } from "./const";
+import { MetadataRelays, ProfileCacheExpire } from "./const";
 import { mapEventToProfile, CachedMetadata } from "./cache";
 import { BackgroundLoader } from "./background-loader";
 
@@ -19,7 +19,10 @@ export class ProfileLoaderService extends BackgroundLoader<CachedMetadata> {
 
   override buildSub(missing: string[]): RequestBuilder {
     const sub = new RequestBuilder(`profiles`);
-    sub.withFilter().kinds([EventKind.SetMetadata]).authors(missing).relay(["wss://purplepag.es/"]);
+    sub.withFilter()
+      .kinds([EventKind.SetMetadata])
+      .authors(missing)
+      .relay(MetadataRelays);
     return sub;
   }
 

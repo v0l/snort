@@ -28,7 +28,6 @@ interface ConnectionEvents {
   disconnect: (code: number) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
   notice: (msg: string) => void;
-  have: (sub: string, id: u256) => void; // NIP-114
   unknownMessage: (obj: Array<any>) => void;
 }
 
@@ -159,7 +158,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
       this.IsClosed = true;
       this.#log(`Closed! (Remote)`);
     } else if (!this.IsClosed) {
-      this.ConnectTimeout = this.ConnectTimeout * 2;
+      this.ConnectTimeout = this.ConnectTimeout * this.ConnectTimeout;
       this.#log(
         `Closed (code=${e.code}), trying again in ${(this.ConnectTimeout / 1000).toFixed(0).toLocaleString()} sec`,
       );
@@ -209,11 +208,6 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           }
           this.emit("event", msg[1] as string, ev);
           // todo: stats events received
-          break;
-        }
-        // NIP-114: GetMatchingEventIds
-        case "HAVE": {
-          this.emit("have", msg[1] as string, msg[2] as u256);
           break;
         }
         case "EOSE": {
@@ -398,18 +392,14 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           }
         };
         if (this.Address.startsWith("wss://relay.snort.social")) {
-          const newFilters = filters.map(a => {
-            if (a.ids_only) {
-              const copy = { ...a };
-              delete copy.ids_only;
-              return copy;
-            }
-            return a;
-          });
+          const newFilters = filters;
           const neg = new NegentropyFlow(id, this, eventSet, newFilters);
           neg.once("finish", filters => {
             if (filters.length > 0) {
               this.queueReq(["REQ", cmd[1], ...filters], item.cb);
+            } else {
+              // no results to query, emulate closed
+              this.emit("closed", id, "Nothing to sync");
             }
           });
           neg.once("error", () => {

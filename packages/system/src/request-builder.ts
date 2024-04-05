@@ -140,6 +140,7 @@ export class RequestBuilder {
   #groupFlatByRelay(system: SystemInterface, filters: Array<FlatReqFilter>) {
     const relayMerged = filters.reduce((acc, v) => {
       const relay = v.relay ?? "";
+      // delete relay from filter
       delete v.relay;
       const existing = acc.get(relay);
       if (existing) {
@@ -167,7 +168,6 @@ export class RequestBuilder {
  */
 export class RequestFilterBuilder {
   #filter: ReqFilter;
-  #relays = new Set<string>();
 
   constructor(f?: ReqFilter) {
     this.#filter = f ?? {};
@@ -176,7 +176,6 @@ export class RequestFilterBuilder {
   get filter() {
     return {
       ...this.#filter,
-      relays: this.#relays.size > 0 ? [...this.#relays] : undefined,
     };
   }
 
@@ -185,12 +184,7 @@ export class RequestFilterBuilder {
    */
   relay(u: string | Array<string>) {
     const relays = Array.isArray(u) ? u : [u];
-    for (const r of relays) {
-      const uClean = sanitizeRelayUrl(r);
-      if (uClean) {
-        this.#relays.add(uClean);
-      }
-    }
+    this.#filter.relays = appendDedupe(this.#filter.relays, removeUndefined(relays.map(a => sanitizeRelayUrl(a))));
     return this;
   }
 

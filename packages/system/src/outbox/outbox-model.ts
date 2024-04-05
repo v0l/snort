@@ -61,6 +61,9 @@ export class OutboxModel extends BaseRequestRouter {
     // selection algo will just pick relays with the most users
     const topRelays = [...relayUserMap.entries()].sort(([, v], [, v1]) => v1.size - v.size);
 
+    if (missing.length > 0) {
+      this.#log("No relay metadata found, outbox model will not work for %O", missing)
+    }
     // <relay, key[]> - count keys per relay
     // <key, relay[]> - pick n top relays
     // <relay, key[]> - map keys per relay (for subscription filter)
@@ -90,30 +93,35 @@ export class OutboxModel extends BaseRequestRouter {
    * @returns
    */
   forRequest(filter: ReqFilter, pickN?: number): Array<ReqFilter> {
-    const authors = filter.authors;
+    // when sending a request prioritize the #p filter over authors
+    const pattern = filter["#p"] !== undefined ? "inbox" : "outbox";
+    const key = filter["#p"] !== undefined ? "#p" : "authors";
+    const authors = filter[key];
     if ((authors?.length ?? 0) === 0) {
       return [filter];
     }
 
-    const topRelays = this.pickTopRelays(unwrap(authors), pickN ?? DefaultPickNRelays, "write");
-    const pickedRelays = dedupe(topRelays.flatMap(a => a.relays));
+    const topWriteRelays = this.pickTopRelays(unwrap(authors),
+      pickN ?? DefaultPickNRelays,
+      pattern === "inbox" ? "read" : "write");
+    const pickedRelays = dedupe(topWriteRelays.flatMap(a => a.relays));
 
     const picked = pickedRelays.map(a => {
-      const keysOnPickedRelay = dedupe(topRelays.filter(b => b.relays.includes(a)).map(b => b.key));
+      const keysOnPickedRelay = dedupe(topWriteRelays.filter(b => b.relays.includes(a)).map(b => b.key));
       return {
         ...filter,
-        authors: keysOnPickedRelay,
-        relays: appendDedupe(filter.relays, [a]),
+        [key]: keysOnPickedRelay,
+        relays: appendDedupe(filter.relays, [a])
       } as ReqFilter;
     });
-    const noRelays = dedupe(topRelays.filter(a => a.relays.length === 0).map(a => a.key));
+    const noRelays = dedupe(topWriteRelays.filter(a => a.relays.length === 0).map(a => a.key));
     if (noRelays.length > 0) {
       picked.push({
         ...filter,
-        authors: noRelays,
+        [key]: noRelays,
       } as ReqFilter);
     }
-    this.#log("Picked %O => %O", filter, picked);
+    this.#log("Picked: pattern=%s, input=%O, output=%O", pattern, filter, picked);
     return picked;
   }
 
@@ -151,7 +159,7 @@ export class OutboxModel extends BaseRequestRouter {
       picked.push(...input.filter(v => !v.authors || noRelays.has(v.authors)));
     }
 
-    this.#log("Picked %d relays from %d filters", picked.length, input.length);
+    this.#log("Picked: pattern=%s, input=%O, output=%O", "outbox", input, picked);
     return picked;
   }
 
@@ -167,7 +175,8 @@ export class OutboxModel extends BaseRequestRouter {
     await this.updateRelayLists(recipients);
     const relays = this.pickTopRelays(recipients, pickN ?? DefaultPickNRelays, "read");
     const ret = removeUndefined(dedupe(relays.map(a => a.relays).flat()));
-    this.#log("Picked %O from authors %O", ret, recipients);
+    
+    this.#log("Picked: pattern=%s, input=%O, output=%O", "inbox", ev, ret);
     return ret;
   }
 

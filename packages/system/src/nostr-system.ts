@@ -257,14 +257,6 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
         }
       }
     });
-    this.pool.on("eose", (id, sub) => {
-      const c = this.pool.getConnection(id);
-      if (c) {
-        for (const [, v] of this.#queryManager) {
-          v.eose(sub, c);
-        }
-      }
-    });
     this.pool.on("auth", (_, c, r, cb) => this.emit("auth", c, r, cb));
     this.pool.on("notice", (addr, msg) => {
       this.#log("NOTICE: %s %s", addr, msg);
