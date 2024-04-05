@@ -19,10 +19,7 @@ export class ProfileLoaderService extends BackgroundLoader<CachedMetadata> {
 
   override buildSub(missing: string[]): RequestBuilder {
     const sub = new RequestBuilder(`profiles`);
-    sub.withFilter()
-      .kinds([EventKind.SetMetadata])
-      .authors(missing)
-      .relay(MetadataRelays);
+    sub.withFilter().kinds([EventKind.SetMetadata]).authors(missing).relay(MetadataRelays);
     return sub;
   }
 

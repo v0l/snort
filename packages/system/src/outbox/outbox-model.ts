@@ -62,7 +62,7 @@ export class OutboxModel extends BaseRequestRouter {
     const topRelays = [...relayUserMap.entries()].sort(([, v], [, v1]) => v1.size - v.size);
 
     if (missing.length > 0) {
-      this.#log("No relay metadata found, outbox model will not work for %O", missing)
+      this.#log("No relay metadata found, outbox model will not work for %O", missing);
     }
     // <relay, key[]> - count keys per relay
     // <key, relay[]> - pick n top relays
@@ -101,9 +101,11 @@ export class OutboxModel extends BaseRequestRouter {
       return [filter];
     }
 
-    const topWriteRelays = this.pickTopRelays(unwrap(authors),
+    const topWriteRelays = this.pickTopRelays(
+      unwrap(authors),
       pickN ?? DefaultPickNRelays,
-      pattern === "inbox" ? "read" : "write");
+      pattern === "inbox" ? "read" : "write",
+    );
     const pickedRelays = dedupe(topWriteRelays.flatMap(a => a.relays));
 
     const picked = pickedRelays.map(a => {
@@ -111,7 +113,7 @@ export class OutboxModel extends BaseRequestRouter {
       return {
         ...filter,
         [key]: keysOnPickedRelay,
-        relays: appendDedupe(filter.relays, [a])
+        relays: appendDedupe(filter.relays, [a]),
       } as ReqFilter;
     });
     const noRelays = dedupe(topWriteRelays.filter(a => a.relays.length === 0).map(a => a.key));
@@ -175,7 +177,7 @@ export class OutboxModel extends BaseRequestRouter {
     await this.updateRelayLists(recipients);
     const relays = this.pickTopRelays(recipients, pickN ?? DefaultPickNRelays, "read");
     const ret = removeUndefined(dedupe(relays.map(a => a.relays).flat()));
-    
+
     this.#log("Picked: pattern=%s, input=%O, output=%O", "inbox", ev, ret);
     return ret;
   }

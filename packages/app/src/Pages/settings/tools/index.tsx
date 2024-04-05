@@ -23,21 +23,20 @@ const ToolMenuItems = [
         iconBg: "bg-green-800",
         message: <FormattedMessage defaultMessage="Follows Relay Health" id="XQiFEl" />,
         path: "follows-relay-health",
-      }
+      },
     ],
   },
   {
-
     title: <FormattedMessage defaultMessage="Account Data" id="IIOul1" />,
     items: [
       {
         icon: "repost",
         iconBg: "bg-blue-800",
         message: <FormattedMessage defaultMessage="Sync Account" id="hMQmIw" />,
-        path: "sync-account"
-      }
-    ]
-  }
+        path: "sync-account",
+      },
+    ],
+  },
 ] as SettingsMenuItems;
 
 export const ToolsPages = [
@@ -62,8 +61,8 @@ export const ToolsPages = [
   },
   {
     path: "sync-account",
-    element: <SyncAccountTool />
-  }
+    element: <SyncAccountTool />,
+  },
 ] as Array<RouteObject>;
 
 export function ToolsPage() {

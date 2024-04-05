@@ -31,11 +31,7 @@ export const SnortPubKey = "npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x680
 /**
  * Default search relays
  */
-export const SearchRelays = [
-  "wss://relay.nostr.band/",
-  "wss://search.nos.today/",
-  "wss://relay.noswhere.com/",
-];
+export const SearchRelays = ["wss://relay.nostr.band/", "wss://search.nos.today/", "wss://relay.noswhere.com/"];
 
 export const DeveloperAccounts = [
   "63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed", // kieran
