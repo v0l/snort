@@ -30,7 +30,7 @@ export function useRates(symbol: string, leaveOpen = true) {
     ask: Number(tag[2]),
     bid: Number(tag[3]),
     low: Number(tag[4]),
-    hight: Number(tag[5]),
+    high: Number(tag[5]),
   };
 }
 
@@ -57,7 +57,7 @@ export function useRateHistory(symbol: string, size: number, leaveOpen = false) 
         ask: Number(tag[2]),
         bid: Number(tag[3]),
         low: Number(tag[4]),
-        hight: Number(tag[5]),
+        high: Number(tag[5]),
       };
     }),
   );
