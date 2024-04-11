@@ -104,7 +104,7 @@ export type Sats = number;
 export type MilliSats = number;
 
 export interface WalletEvents {
-  change: (data?: string) => void
+  change: (data?: string) => void;
 }
 
 export type LNWallet = EventEmitter<WalletEvents> & {
@@ -122,7 +122,7 @@ export type LNWallet = EventEmitter<WalletEvents> & {
   canGetBalance: () => boolean;
   canCreateInvoice: () => boolean;
   canPayInvoice: () => boolean;
-}
+};
 
 /**
  * Load wallet by kind
@@ -152,4 +152,4 @@ export function loadWallet(kind: WalletKind, data: string | undefined) {
   }
 }
 
-export { LNCWallet, WebLNWallet, LNDHubWallet, NostrConnectWallet, AlbyWallet, CashuWallet }
+export { LNCWallet, WebLNWallet, LNDHubWallet, NostrConnectWallet, AlbyWallet, CashuWallet };

@@ -20,14 +20,12 @@ const ConnectCashu = () => {
         throw new Error("Mint URL is required");
       }
 
-      const connection = new CashuWallet(
-        {
-          url: config,
-          keys: {},
-          proofs: [],
-          keysets: [],
-        },
-      );
+      const connection = new CashuWallet({
+        url: config,
+        keys: {},
+        proofs: [],
+        keysets: [],
+      });
       await connection.login();
       const info = await connection.getInfo();
       const newWallet = {

@@ -31,14 +31,14 @@ interface WalletConnectResponse<T> {
   result?: T;
   error?: {
     code:
-    | "RATE_LIMITED"
-    | "NOT_IMPLEMENTED"
-    | "INSUFFICIENT_BALANCE"
-    | "QUOTA_EXCEEDED"
-    | "RESTRICTED"
-    | "UNAUTHORIZED"
-    | "INTERNAL"
-    | "OTHER";
+      | "RATE_LIMITED"
+      | "NOT_IMPLEMENTED"
+      | "INSUFFICIENT_BALANCE"
+      | "QUOTA_EXCEEDED"
+      | "RESTRICTED"
+      | "UNAUTHORIZED"
+      | "INTERNAL"
+      | "OTHER";
     message: string;
   };
 }
