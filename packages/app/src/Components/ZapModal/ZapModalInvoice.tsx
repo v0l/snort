@@ -1,5 +1,5 @@
 import { LNWallet } from "@snort/wallet";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 
 import Copy from "@/Components/Copy/Copy";

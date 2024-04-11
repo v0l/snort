@@ -1,13 +1,13 @@
 import { decodeInvoice, unwrap } from "@snort/shared";
 import AlbyWallet from "./AlbyWallet";
-import { CashuWallet } from "./Cashu";
+//import { CashuWallet } from "./Cashu";
 import { LNCWallet } from "./LNCWallet";
 import LNDHubWallet from "./LNDHub";
 import { NostrConnectWallet } from "./NostrWalletConnect";
 import { WebLNWallet } from "./WebLN";
 import EventEmitter from "eventemitter3";
 
-export enum WalletKind {
+export const enum WalletKind {
   LNDHub = 1,
   LNC = 2,
   WebLN = 3,
@@ -126,12 +126,15 @@ export type LNWallet = EventEmitter<WalletEvents> & {
 
 /**
  * Load wallet by kind
+ *
+ * Some wallets are loaded using `async import` to avoid large dependency costs in bundle
  * @param kind The wallet kind to create
  * @param data Opaque data
  */
-export function loadWallet(kind: WalletKind, data: string | undefined) {
+export async function loadWallet(kind: WalletKind, data: string | undefined) {
   switch (kind) {
     case WalletKind.LNC: {
+      const { LNCWallet } = await import("./LNCWallet");
       return LNCWallet.Empty();
     }
     case WalletKind.WebLN: {
@@ -147,9 +150,10 @@ export function loadWallet(kind: WalletKind, data: string | undefined) {
       return new AlbyWallet(JSON.parse(unwrap(data)));
     }
     case WalletKind.Cashu: {
-      return new CashuWallet(JSON.parse(unwrap(data)));
+      //const { CashuWallet } = await import("./Cashu");
+      //return new CashuWallet(JSON.parse(unwrap(data)));
     }
   }
 }
 
-export { LNCWallet, WebLNWallet, LNDHubWallet, NostrConnectWallet, AlbyWallet, CashuWallet };
+export { LNCWallet, WebLNWallet, LNDHubWallet, NostrConnectWallet, AlbyWallet };

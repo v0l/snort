@@ -2,6 +2,7 @@
   "name": "@snort/app",
   "version": "0.2.0",
   "dependencies": {
+    "@cashu/cashu-ts": "^1.0.0-rc.3",
     "@here/maps-api-for-javascript": "^1.50.0",
     "@noble/curves": "^1.0.0",
     "@noble/hashes": "^1.3.3",

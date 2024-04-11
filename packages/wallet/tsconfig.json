@@ -14,5 +14,5 @@
     "skipLibCheck": true
   },
   "include": ["./src/**/*.ts"],
-  "exclude": ["**/*.test.ts"]
+  "exclude": ["**/*.test.ts", "./src/Cashu.ts"]
 }

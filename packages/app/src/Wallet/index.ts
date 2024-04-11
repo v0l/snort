@@ -51,8 +51,10 @@ export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
       if (w) {
         if ("then" in w) {
           w.then(async wx => {
-            this.#instance.set(activeConfig.id, wx);
-            this.notifyChange();
+            if (wx) {
+              this.#instance.set(activeConfig.id, wx);
+              this.notifyChange();
+            }
           });
           return undefined;
         } else {
@@ -116,8 +118,8 @@ export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
     } as WalletStoreSnapshot;
   }
 
-  #activateWallet(cfg: WalletConfig): LNWallet | Promise<LNWallet> | undefined {
-    const w = loadWallet(cfg.kind, cfg.data);
+  async #activateWallet(cfg: WalletConfig) {
+    const w = await loadWallet(cfg.kind, cfg.data);
     if (w) {
       w.on("change", d => this.#onWalletChange(cfg, d));
     }
