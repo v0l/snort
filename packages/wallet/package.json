@@ -1,6 +1,6 @@
 {
   "name": "@snort/wallet",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Snort wallet system package",
   "type": "module",
   "main": "dist/index.js",
@@ -22,8 +22,8 @@
     "@cashu/cashu-ts": "^1.0.0-rc.3",
     "@lightninglabs/lnc-web": "^0.3.1-alpha",
     "@scure/base": "^1.1.6",
-    "@snort/shared": "workspace:^",
-    "@snort/system": "workspace:^",
+    "@snort/shared": "^1.0.14",
+    "@snort/system": "^1.2.12",
     "debug": "^4.3.4",
     "eventemitter3": "^5.0.1"
   },
