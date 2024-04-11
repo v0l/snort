@@ -1,11 +1,11 @@
+import { AlbyWallet, WalletKind } from "@snort/wallet";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 
 import PageSpinner from "@/Components/PageSpinner";
 import { getAlbyOAuth } from "@/Pages/settings/wallet/utils";
-import { WalletConfig, WalletKind, Wallets } from "@/Wallet";
-import AlbyWallet from "@/Wallet/AlbyWallet";
+import { WalletConfig, Wallets } from "@/Wallet";
 
 export default function AlbyOAuth() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function AlbyOAuth() {
   async function setupWallet(token: string) {
     try {
       const auth = await alby.getToken(token);
-      const connection = new AlbyWallet(auth, () => {});
+      const connection = new AlbyWallet(auth);
       const info = await connection.getInfo();
 
       const newWallet = {

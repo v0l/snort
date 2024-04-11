@@ -7,27 +7,27 @@ import {
   Sats,
   WalletError,
   WalletErrorCode,
+  WalletEvents,
   WalletInfo,
   WalletInvoice,
   WalletInvoiceState,
-} from "@/Wallet";
+} from ".";
+import EventEmitter from "eventemitter3";
 
 const defaultHeaders = {
   Accept: "application/json",
   "Content-Type": "application/json",
 };
 
-export default class LNDHubWallet implements LNWallet {
+export default class LNDHubWallet extends EventEmitter<WalletEvents> implements LNWallet {
   type: "lndhub";
   url: URL;
   user: string;
   password: string;
   auth?: AuthResponse;
 
-  constructor(
-    url: string,
-    readonly changed: (data?: object) => void,
-  ) {
+  constructor(url: string) {
+    super();
     if (url.startsWith("lndhub://")) {
       const regex = /^lndhub:\/\/([\S-]+):([\S-]+)@(.*)$/i;
       const parsedUrl = url.match(regex);
@@ -84,7 +84,7 @@ export default class LNDHubWallet implements LNWallet {
       password: this.password,
     });
     this.auth = rsp as AuthResponse;
-    this.changed();
+    this.emit("change");
     return true;
   }
 

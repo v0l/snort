@@ -8,10 +8,12 @@ import {
   LNWallet,
   WalletError,
   WalletErrorCode,
+  WalletEvents,
   WalletInfo,
   WalletInvoice,
   WalletInvoiceState,
-} from "@/Wallet";
+} from ".";
+import EventEmitter from "eventemitter3";
 
 interface WalletConnectConfig {
   relayUrl: string;
@@ -29,14 +31,14 @@ interface WalletConnectResponse<T> {
   result?: T;
   error?: {
     code:
-      | "RATE_LIMITED"
-      | "NOT_IMPLEMENTED"
-      | "INSUFFICIENT_BALANCE"
-      | "QUOTA_EXCEEDED"
-      | "RESTRICTED"
-      | "UNAUTHORIZED"
-      | "INTERNAL"
-      | "OTHER";
+    | "RATE_LIMITED"
+    | "NOT_IMPLEMENTED"
+    | "INSUFFICIENT_BALANCE"
+    | "QUOTA_EXCEEDED"
+    | "RESTRICTED"
+    | "UNAUTHORIZED"
+    | "INTERNAL"
+    | "OTHER";
     message: string;
   };
 }
@@ -75,7 +77,7 @@ interface MakeInvoiceResponse {
 
 const DefaultSupported = ["get_info", "pay_invoice"];
 
-export class NostrConnectWallet implements LNWallet {
+export class NostrConnectWallet extends EventEmitter<WalletEvents> implements LNWallet {
   #log = debug("NWC");
   #config: WalletConnectConfig;
   #conn?: Connection;
@@ -83,10 +85,8 @@ export class NostrConnectWallet implements LNWallet {
   #info?: WalletInfo;
   #supported_methods: Array<string> = DefaultSupported;
 
-  constructor(
-    cfg: string,
-    readonly changed: (data?: object) => void,
-  ) {
+  constructor(cfg: string) {
+    super();
     this.#config = NostrConnectWallet.parseConfigUrl(cfg);
     this.#commandQueue = new Map();
   }
@@ -183,7 +183,7 @@ export class NostrConnectWallet implements LNWallet {
       this.#conn.connect();
     });
     await this.getInfo();
-    this.changed();
+    this.emit("change");
     return true;
   }
 

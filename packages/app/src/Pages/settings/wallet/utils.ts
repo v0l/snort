@@ -59,7 +59,7 @@ export function getAlbyOAuth() {
 
       const data = await req.json();
       if (req.ok) {
-        return { ...data, created_at: unixNow() } as OAuthToken;
+        return { ...data, created_at: unixNow(), clientId, clientSecret } as OAuthToken;
       } else {
         throw new Error(data.error_description as string);
       }
@@ -74,4 +74,6 @@ export interface OAuthToken {
   refresh_token: string;
   scope: string;
   token_type: string;
+  clientId: string;
+  clientSecret: string;
 }

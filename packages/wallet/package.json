@@ -1,0 +1,35 @@
+{
+  "name": "@snort/wallet",
+  "version": "0.1.0",
+  "description": "Snort wallet system package",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "src/index.ts",
+  "repository": "https://git.v0l.io/Kieran/snort",
+  "author": "v0l",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "test": "jest --runInBand"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "packageManager": "yarn@4.1.1",
+  "dependencies": {
+    "@cashu/cashu-ts": "^1.0.0-rc.3",
+    "@lightninglabs/lnc-web": "^0.3.1-alpha",
+    "@scure/base": "^1.1.6",
+    "@snort/shared": "workspace:^",
+    "@snort/system": "workspace:^",
+    "debug": "^4.3.4",
+    "eventemitter3": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.12",
+    "@webbtc/webln-types": "^3.0.0",
+    "typescript": "^5.4.5"
+  }
+}

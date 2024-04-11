@@ -1,4 +1,5 @@
 /* eslint-disable max-lines */
+import { LNWallet,Sats, WalletInvoice } from "@snort/wallet";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
@@ -10,7 +11,7 @@ import NoteTime from "@/Components/Event/Note/NoteTime";
 import Icon from "@/Components/Icons/Icon";
 import { useRates } from "@/Hooks/useRates";
 import { unwrap } from "@/Utils";
-import { LNWallet, Sats, useWallet, WalletInvoice, Wallets } from "@/Wallet";
+import { useWallet, Wallets } from "@/Wallet";
 
 export default function WalletPage(props: { showHistory: boolean }) {
   const navigate = useNavigate();

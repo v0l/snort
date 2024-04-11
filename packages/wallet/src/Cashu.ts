@@ -1,6 +1,7 @@
 import { CashuMint, Proof } from "@cashu/cashu-ts";
 
-import { InvoiceRequest, LNWallet, WalletInfo, WalletInvoice } from "@/Wallet";
+import { InvoiceRequest, LNWallet, WalletEvents, WalletInfo, WalletInvoice } from ".";
+import EventEmitter from "eventemitter3";
 
 export type CashuWalletConfig = {
   url: string;
@@ -9,14 +10,12 @@ export type CashuWalletConfig = {
   proofs: Array<Proof>;
 };
 
-export class CashuWallet implements LNWallet {
+export class CashuWallet extends EventEmitter<WalletEvents> implements LNWallet {
   #wallet: CashuWalletConfig;
   #mint: CashuMint;
 
-  constructor(
-    wallet: CashuWalletConfig,
-    readonly onChange: (data?: object) => void,
-  ) {
+  constructor(wallet: CashuWalletConfig) {
+    super();
     this.#wallet = wallet;
     this.#mint = new CashuMint(this.#wallet.url);
   }
@@ -99,7 +98,7 @@ export class CashuWallet implements LNWallet {
     const filteredProofs = this.#wallet.proofs.filter((_, i) => checks.spendable[i]);
     this.#wallet.proofs = filteredProofs;
     if (filteredProofs.length !== checks.spendable.length) {
-      this.onChange(this.#wallet);
+      this.emit("change", JSON.stringify(this.#wallet));
     }
   }
 }

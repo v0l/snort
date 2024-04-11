@@ -5,42 +5,19 @@ import {
   LNWallet,
   prToWalletInvoice,
   Sats,
-  WalletConfig,
   WalletError,
   WalletErrorCode,
+  WalletEvents,
   WalletInfo,
   WalletInvoice,
   WalletInvoiceState,
-  WalletKind,
-  WalletStore,
-} from "@/Wallet";
+} from ".";
+import EventEmitter from "eventemitter3";
 
 const WebLNQueue: Array<WorkQueueItem> = [];
 processWorkQueue(WebLNQueue);
 
-/**
- * Adds a wallet config for WebLN if detected
- */
-export function setupWebLNWalletConfig(store: WalletStore) {
-  const wallets = store.list();
-
-  const existing = wallets.find(a => a.kind === WalletKind.WebLN);
-  if (window.webln && !existing) {
-    const newConfig = {
-      id: "webln",
-      kind: WalletKind.WebLN,
-      active: wallets.length === 0,
-      info: {
-        alias: "WebLN",
-      },
-    } as WalletConfig;
-    store.add(newConfig);
-  } else if (existing) {
-    store.remove(existing.id);
-  }
-}
-
-export class WebLNWallet implements LNWallet {
+export class WebLNWallet extends EventEmitter<WalletEvents> implements LNWallet {
   isReady(): boolean {
     return window.webln !== undefined && window.webln !== null;
   }

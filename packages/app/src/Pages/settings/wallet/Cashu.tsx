@@ -1,3 +1,4 @@
+import { CashuWallet, WalletKind } from "@snort/wallet";
 import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
@@ -5,7 +6,7 @@ import { v4 as uuid } from "uuid";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { unwrap } from "@/Utils";
-import { WalletConfig, WalletKind, Wallets } from "@/Wallet";
+import { WalletConfig, Wallets } from "@/Wallet";
 
 const ConnectCashu = () => {
   const navigate = useNavigate();
@@ -19,7 +20,6 @@ const ConnectCashu = () => {
         throw new Error("Mint URL is required");
       }
 
-      const { CashuWallet } = await import("@/Wallet/Cashu");
       const connection = new CashuWallet(
         {
           url: config,
@@ -27,7 +27,6 @@ const ConnectCashu = () => {
           proofs: [],
           keysets: [],
         },
-        () => {},
       );
       await connection.login();
       const info = await connection.getInfo();

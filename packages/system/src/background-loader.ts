@@ -109,7 +109,6 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
         }
       } catch (e) {
         this.#log("Error: %O", e);
-        debugger;
       }
     }
 

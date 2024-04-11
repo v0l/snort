@@ -1,11 +1,12 @@
 import { ExternalStore, LNURL, unixNow } from "@snort/shared";
+import { LNWallet, WalletInvoiceState } from "@snort/wallet";
 import debug from "debug";
 
 import { UserCache } from "@/Cache";
 import { Toastore } from "@/Components/Toaster/Toaster";
 import { SnortPubKey } from "@/Utils/Const";
 import { bech32ToHex, getDisplayName, trackEvent } from "@/Utils/index";
-import { LNWallet, WalletInvoiceState, Wallets } from "@/Wallet";
+import { Wallets } from "@/Wallet";
 
 export enum ZapPoolRecipientType {
   Generic = 0,

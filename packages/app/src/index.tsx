@@ -42,7 +42,7 @@ import { storeRefCode, unwrap } from "@/Utils";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, wasmInit, WasmPath } from "@/Utils/wasm";
 import { Wallets } from "@/Wallet";
-import { setupWebLNWalletConfig } from "@/Wallet/WebLN";
+import { setupWebLNWalletConfig } from "@/Wallet";
 
 async function initSite() {
   storeRefCode();

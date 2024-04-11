@@ -1,5 +1,6 @@
 import { LNURL } from "@snort/shared";
 import { NostrEvent } from "@snort/system";
+import { WalletInvoiceState } from "@snort/wallet";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import { UserCache } from "@/Cache";
@@ -10,7 +11,6 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { dedupe, findTag, getDisplayName, hexToBech32 } from "@/Utils";
 import { useWallet } from "@/Wallet";
-import { WalletInvoiceState } from "@/Wallet";
 
 export default function PubkeyList({ ev, className }: { ev: NostrEvent; className?: string }) {
   const wallet = useWallet();

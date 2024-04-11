@@ -1,3 +1,4 @@
+import { LNCWallet, LNWallet, WalletInfo, WalletKind } from "@snort/wallet";
 import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
@@ -5,7 +6,7 @@ import { v4 as uuid } from "uuid";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { unwrap } from "@/Utils";
-import { LNWallet, WalletInfo, WalletKind, Wallets } from "@/Wallet";
+import { Wallets } from "@/Wallet";
 
 const ConnectLNC = () => {
   const { formatMessage } = useIntl();
@@ -18,7 +19,6 @@ const ConnectLNC = () => {
 
   async function tryConnect(cfg: string) {
     try {
-      const { LNCWallet } = await import("@/Wallet/LNCWallet");
       const lnc = await LNCWallet.Initialize(cfg);
       const info = await lnc.getInfo();
 

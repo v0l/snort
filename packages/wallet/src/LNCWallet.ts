@@ -1,7 +1,6 @@
 import LNC from "@lightninglabs/lnc-web";
 import debug from "debug";
 
-import { unwrap } from "@/Utils";
 import {
   InvoiceRequest,
   LNWallet,
@@ -9,10 +8,13 @@ import {
   prToWalletInvoice,
   WalletError,
   WalletErrorCode,
+  WalletEvents,
   WalletInfo,
   WalletInvoice,
   WalletInvoiceState,
-} from "@/Wallet";
+} from ".";
+import { unwrap } from "@snort/shared";
+import EventEmitter from "eventemitter3";
 
 enum Payment_PaymentStatus {
   UNKNOWN = "UNKNOWN",
@@ -22,11 +24,12 @@ enum Payment_PaymentStatus {
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
-export class LNCWallet implements LNWallet {
+export class LNCWallet extends EventEmitter<WalletEvents> implements LNWallet {
   #lnc: LNC;
   readonly #log = debug("LNC");
 
   private constructor(pairingPhrase?: string, password?: string) {
+    super();
     this.#lnc = new LNC({
       pairingPhrase,
       password,

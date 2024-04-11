@@ -1,3 +1,4 @@
+import { NostrConnectWallet, WalletKind } from "@snort/wallet";
 import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
@@ -5,8 +6,7 @@ import { v4 as uuid } from "uuid";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { unwrap } from "@/Utils";
-import { WalletConfig, WalletKind, Wallets } from "@/Wallet";
-import { NostrConnectWallet } from "@/Wallet/NostrWalletConnect";
+import { WalletConfig, Wallets } from "@/Wallet";
 
 const ConnectNostrWallet = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const ConnectNostrWallet = () => {
 
   async function tryConnect(config: string) {
     try {
-      const connection = new NostrConnectWallet(config, () => {});
+      const connection = new NostrConnectWallet(config);
       await connection.login();
       const info = await connection.getInfo();
 

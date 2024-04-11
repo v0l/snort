@@ -1,25 +1,34 @@
 import { base64 } from "@scure/base";
 import { unixNow, unwrap } from "@snort/shared";
 
-import { OAuthToken } from "@/Pages/settings/wallet/utils";
-
 import {
   InvoiceRequest,
   LNWallet,
   prToWalletInvoice,
   WalletError,
   WalletErrorCode,
+  WalletEvents,
   WalletInfo,
   WalletInvoice,
   WalletInvoiceState,
 } from ".";
+import EventEmitter from "eventemitter3";
 
-export default class AlbyWallet implements LNWallet {
+export interface OAuthToken {
+  access_token: string;
+  created_at: number;
+  expires_in: number;
+  refresh_token: string;
+  scope: string;
+  token_type: string;
+  clientId: string;
+  clientSecret: string;
+}
+
+export default class AlbyWallet extends EventEmitter<WalletEvents> implements LNWallet {
   #token: OAuthToken;
-  constructor(
-    token: OAuthToken,
-    readonly onChange: (data?: object) => void,
-  ) {
+  constructor(token: OAuthToken) {
+    super();
     this.#token = token;
   }
 
@@ -136,7 +145,7 @@ export default class AlbyWallet implements LNWallet {
           accept: "application/json",
           "content-type": "application/x-www-form-urlencoded",
           authorization: `Basic ${base64.encode(
-            new TextEncoder().encode(`${CONFIG.alby?.clientId}:${CONFIG.alby?.clientSecret}`),
+            new TextEncoder().encode(`${this.#token.clientId}:${this.#token.clientSecret}`),
           )}`,
         },
       });
@@ -146,7 +155,7 @@ export default class AlbyWallet implements LNWallet {
           ...(json as OAuthToken),
           created_at: unixNow(),
         };
-        this.onChange(this.#token);
+        this.emit("change", JSON.stringify(this.#token));
       }
     }
   }
