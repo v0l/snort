@@ -7,6 +7,7 @@ import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
 import TrendingNotes from "@/Components/Trending/TrendingPosts";
 import TrendingUsers from "@/Components/Trending/TrendingUsers";
 import FollowListBase from "@/Components/User/FollowListBase";
+import { TimelineSubject } from "@/Feed/TimelineFeed";
 import useProfileSearch from "@/Hooks/useProfileSearch";
 import { debounce } from "@/Utils";
 
@@ -52,14 +53,13 @@ const SearchPage = () => {
     return debounce(500, () => setKeyword(search));
   }, [search]);
 
-  const subject = useMemo(
-    () => ({
+  const subject = useMemo(() => {
+    return {
       type: "post_keyword",
       items: [keyword],
       discriminator: keyword,
-    }),
-    [keyword],
-  );
+    } as TimelineSubject;
+  }, [keyword]);
 
   function tabContent() {
     if (tab.value === PROFILES) {
@@ -70,7 +70,7 @@ const SearchPage = () => {
       return <TrendingNotes />;
     }
 
-    return <Timeline key={keyword} subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} loadMore={false} />;
+    return <Timeline key={keyword} subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} />;
   }
 
   return (
