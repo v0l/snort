@@ -2,6 +2,7 @@ import { TaggedNostrEvent } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import classNames from "classnames";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 
 import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon";
 import Icon from "@/Components/Icons/Icon";
@@ -12,6 +13,7 @@ import { useNoteCreator } from "@/State/NoteCreator";
 
 export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: TaggedNostrEvent[] }) => {
   const { formatMessage } = useIntl();
+  const navigate = useNavigate();
   const { publisher, system } = useEventPublisher();
   const { publicKey, preferences: prefs } = useLogin(s => ({
     preferences: s.appData.item.preferences,
@@ -30,13 +32,15 @@ export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: T
         system.BroadcastEvent(evRepost);
       }
     }
+    if (!publisher) {
+      navigate("/login");
+    }
   };
 
   return (
     <Menu
       menuButton={
         <AsyncFooterIcon
-          disabled={!publisher}
           className={classNames(
             "flex-none min-w-[50px] md:min-w-[80px]",
             hasReposted() ? "reacted text-nostr-blue" : "hover:text-nostr-blue",

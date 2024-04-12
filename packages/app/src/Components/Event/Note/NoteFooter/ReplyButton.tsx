@@ -1,8 +1,10 @@
 import { TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
 import { useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 
 import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon";
+import useLogin from "@/Hooks/useLogin";
 import { useNoteCreator } from "@/State/NoteCreator";
 
 export const ReplyButton = ({
@@ -15,6 +17,8 @@ export const ReplyButton = ({
   readonly: boolean;
 }) => {
   const { formatMessage } = useIntl();
+  const navigate = useNavigate();
+  const publicKey = useLogin(s => s.publicKey);
   const note = useNoteCreator(n => ({
     show: n.show,
     replyTo: n.replyTo,
@@ -23,6 +27,10 @@ export const ReplyButton = ({
   }));
 
   const handleReplyButtonClick = () => {
+    if (!publicKey) {
+      navigate("/login");
+      return;
+    }
     if (readonly) {
       return;
     }

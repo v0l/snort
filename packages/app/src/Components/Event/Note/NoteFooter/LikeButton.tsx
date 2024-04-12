@@ -2,6 +2,7 @@ import { normalizeReaction } from "@snort/shared";
 import { TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
 import { useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 
 import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon";
 import useEventPublisher from "@/Hooks/useEventPublisher";
@@ -15,6 +16,7 @@ export const LikeButton = ({
   positiveReactions: TaggedNostrEvent[];
 }) => {
   const { formatMessage } = useIntl();
+  const navigate = useNavigate();
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   const { publisher, system } = useEventPublisher();
 
@@ -28,6 +30,9 @@ export const LikeButton = ({
     if (!hasReacted(content) && publisher) {
       const evLike = await publisher.react(ev, content);
       system.BroadcastEvent(evLike);
+    }
+    if (!publisher) {
+      navigate("/login");
     }
   };
 
