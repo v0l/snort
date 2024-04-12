@@ -15,7 +15,7 @@ export async function initRelayWorker() {
   try {
     await Relay.init({
       databasePath: "relay.db",
-      insertBatchSize: 100
+      insertBatchSize: 100,
     });
   } catch (e) {
     console.error(e);

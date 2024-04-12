@@ -24,7 +24,7 @@ const workerRelay = new WorkerRelayInterface(workerScript);
 // load sqlite database and run migrations
 await workerRelay.init({
   databasePath: "relay.db",
-  insertBatchSize: 100
+  insertBatchSize: 100,
 });
 
 // Query worker relay with regular nostr REQ command

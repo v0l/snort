@@ -44,8 +44,8 @@ try {
 }
 
 interface InitAargs {
-  databasePath: string,
-  insertBatchSize?: number
+  databasePath: string;
+  insertBatchSize?: number;
 }
 
 const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: MessageEvent) => {

@@ -5,12 +5,12 @@ export interface InitAargs {
   /**
    * OPFS file path for the database
    */
-  databasePath: string,
+  databasePath: string;
 
   /**
    * How many events to insert per batch
    */
-  insertBatchSize?: number
+  insertBatchSize?: number;
 }
 
 export class WorkerRelayInterface {
