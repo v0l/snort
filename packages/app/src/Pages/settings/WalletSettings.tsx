@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import LndLogo from "@/assets/img/lnd-logo.png";
 import AlbyIcon from "@/Components/Icons/Alby";
 import BlueWallet from "@/Components/Icons/BlueWallet";
-import CashuIcon from "@/Components/Icons/Cashu";
+//import CashuIcon from "@/Components/Icons/Cashu";
 import Icon from "@/Components/Icons/Icon";
-import NostrIcon from "@/Components/Icons/Nostrich";
+import NWCIcon from "@/Components/Icons/NWC";
 import { getAlbyOAuth } from "@/Pages/settings/wallet/utils";
 
 const WalletRow = (props: {
@@ -52,7 +52,7 @@ const WalletSettings = () => {
       </h3>
       <div className="flex flex-col gap-3 cursor-pointer">
         <WalletRow
-          logo={<NostrIcon width={64} height={64} />}
+          logo={<NWCIcon width={64} height={64} />}
           name="Nostr Wallet Connect"
           url="/settings/wallet/nwc"
           desc={<FormattedMessage defaultMessage="Native nostr wallet connection" id="cG/bKQ" />}
@@ -71,12 +71,12 @@ const WalletSettings = () => {
           url="/settings/wallet/lndhub"
           desc={<FormattedMessage defaultMessage="Generic LNDHub wallet (BTCPayServer / Alby / LNBits)" id="0MndVW" />}
         />
-        <WalletRow
+        {/*<WalletRow
           logo={<CashuIcon size={64} />}
           name="Cashu"
           url="/settings/wallet/cashu"
           desc={<FormattedMessage defaultMessage="Cashu mint wallet" id="3natuV" />}
-        />
+        />*/}
         {CONFIG.alby && (
           <WalletRow
             logo={<AlbyIcon size={64} />}
