@@ -761,7 +761,7 @@ button.tall {
   opacity: 1;
   animation-name: fadeInOpacity;
   animation-timing-function: ease-in;
-  animation-duration: 0.5s;
+  animation-duration: 0.3s;
 }
 
 @keyframes fadeInOpacity {

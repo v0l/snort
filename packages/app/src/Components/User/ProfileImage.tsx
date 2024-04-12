@@ -108,8 +108,8 @@ export default function ProfileImage({
   function profileCard() {
     if (showProfileCard && user && isHovering) {
       return (
-        <div className="absolute shadow-lg z-10">
-          <ProfileCard pubkey={pubkey} user={user} show={true} />
+        <div className="absolute shadow-lg z-10 fade-in">
+          <ProfileCard pubkey={pubkey} user={user} show={true} delay={100} />
         </div>
       );
     }
