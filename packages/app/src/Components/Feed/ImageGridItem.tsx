@@ -1,4 +1,4 @@
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { memo, MouseEvent, ReactNode } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
@@ -17,8 +17,10 @@ const ImageGridItem = memo((props: ImageGridItemProps) => {
   const { event, onClick, waitUntilInView } = props;
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "0px 0px 3000px 0px" });
 
-  const media = getEventMedia(event);
+  // skip reposts in image grid
+  if(event.kind === EventKind.Repost) return null;
 
+  const media = getEventMedia(event);
   if (media.length === 0) return null;
 
   const multiple = media.length > 1;
