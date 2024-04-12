@@ -100,10 +100,7 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
   async function bookmark(id: string) {
     if (publisher) {
       const es = [...login.bookmarked.item, id];
-      const ev = await publisher.bookmarks(
-        es.map(a => new NostrLink(NostrPrefix.Note, a)),
-        "bookmark",
-      );
+      const ev = await publisher.bookmarks(es.map(a => new NostrLink(NostrPrefix.Note, a)));
       system.BroadcastEvent(ev);
       setBookmarked(login, es, ev.created_at * 1000);
     }
@@ -155,12 +152,6 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
           <MenuItem onClick={() => mute(ev.pubkey)}>
             <Icon name="mute" />
             <FormattedMessage {...messages.Mute} />
-          </MenuItem>
-        )}
-        {login.appData.item.preferences.enableReactions && !login.readonly && (
-          <MenuItem onClick={() => props.react("-")}>
-            <Icon name="dislike" />
-            <FormattedMessage {...messages.DislikeAction} />
           </MenuItem>
         )}
         <MenuItem onClick={handleReBroadcastButtonClick}>
