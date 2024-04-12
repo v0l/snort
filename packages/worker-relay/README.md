@@ -22,7 +22,10 @@ const workerScript = import.meta.env.DEV
 const workerRelay = new WorkerRelayInterface(workerScript);
 
 // load sqlite database and run migrations
-await workerRelay.init("my-relay.db");
+await workerRelay.init({
+  databasePath: "relay.db",
+  insertBatchSize: 100
+});
 
 // Query worker relay with regular nostr REQ command
 const results = await workerRelay.query(["REQ", "1", { kinds: [1], limit: 10 }]);
