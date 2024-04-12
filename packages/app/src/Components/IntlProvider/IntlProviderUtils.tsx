@@ -25,4 +25,5 @@ export const AllLanguageCodes = [
   "sw",
   "nl",
   "fi",
+  "ko",
 ];

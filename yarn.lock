@@ -3329,7 +3329,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snort/shared@npm:^1.0.14, @snort/shared@npm:^1.0.6, @snort/shared@workspace:*, @snort/shared@workspace:^, @snort/shared@workspace:packages/shared":
+"@snort/shared@npm:^1.0.14, @snort/shared@npm:^1.0.6, @snort/shared@workspace:*, @snort/shared@workspace:packages/shared":
   version: 0.0.0-use.local
   resolution: "@snort/shared@workspace:packages/shared"
   dependencies:
@@ -3384,7 +3384,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snort/system@npm:^1.0.21, @snort/system@npm:^1.2.11, @snort/system@npm:^1.2.12, @snort/system@workspace:*, @snort/system@workspace:^, @snort/system@workspace:packages/system":
+"@snort/system@npm:^1.0.21, @snort/system@npm:^1.2.11, @snort/system@npm:^1.2.12, @snort/system@workspace:*, @snort/system@workspace:packages/system":
   version: 0.0.0-use.local
   resolution: "@snort/system@workspace:packages/system"
   dependencies:
@@ -3423,8 +3423,8 @@ __metadata:
     "@cashu/cashu-ts": "npm:^1.0.0-rc.3"
     "@lightninglabs/lnc-web": "npm:^0.3.1-alpha"
     "@scure/base": "npm:^1.1.6"
-    "@snort/shared": "workspace:^"
-    "@snort/system": "workspace:^"
+    "@snort/shared": "npm:^1.0.14"
+    "@snort/system": "npm:^1.2.12"
     "@types/debug": "npm:^4.1.12"
     "@webbtc/webln-types": "npm:^3.0.0"
     debug: "npm:^4.3.4"
