@@ -58,10 +58,10 @@ const ReactionsModal = ({ onClose, event, initialTab = 0 }: ReactionsModalProps)
 
   const [tab, setTab] = useState(tabs[initialTab]);
 
-  const renderReactionItem = (ev, icon, size) => (
+  const renderReactionItem = (ev: TaggedNostrEvent, icon: string, iconClass?: string, size?: number) => (
     <div key={ev.id} className="reactions-item">
       <div className="reaction-icon">
-        <Icon name={icon} size={size} />
+        <Icon name={icon} size={size} className={iconClass} />
       </div>
       <ProfileImage pubkey={ev.pubkey} showProfileCard={true} />
     </div>
@@ -77,14 +77,14 @@ const ReactionsModal = ({ onClose, event, initialTab = 0 }: ReactionsModalProps)
       </div>
       <TabSelectors tabs={tabs} tab={tab} setTab={setTab} />
       <div className="reactions-body" key={tab.value}>
-        {tab.value === 0 && likes.map(ev => renderReactionItem(ev, "heart"))}
+        {tab.value === 0 && likes.map(ev => renderReactionItem(ev, "heart-solid", "text-heart"))}
         {tab.value === 1 &&
           zaps.map(
             z =>
               z.sender && (
                 <div key={z.id} className="reactions-item">
                   <div className="zap-reaction-icon">
-                    <Icon name="zap" size={20} />
+                    <Icon name="zap-solid" size={20} className="text-zap" />
                     <span className="zap-amount">{formatShort(z.amount)}</span>
                   </div>
                   <ProfileImage
@@ -99,7 +99,7 @@ const ReactionsModal = ({ onClose, event, initialTab = 0 }: ReactionsModalProps)
                 </div>
               ),
           )}
-        {tab.value === 2 && sortedReposts.map(ev => renderReactionItem(ev, "repost", 16))}
+        {tab.value === 2 && sortedReposts.map(ev => renderReactionItem(ev, "repost", "text-repost", 16))}
         {tab.value === 3 && dislikes.map(ev => renderReactionItem(ev, "dislike"))}
       </div>
     </Modal>
