@@ -18,7 +18,7 @@ const ImageGridItem = memo((props: ImageGridItemProps) => {
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "0px 0px 3000px 0px" });
 
   // skip reposts in image grid
-  if(event.kind === EventKind.Repost) return null;
+  if (event.kind === EventKind.Repost) return null;
 
   const media = getEventMedia(event);
   if (media.length === 0) return null;
