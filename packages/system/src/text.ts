@@ -336,8 +336,5 @@ export function transformText(body: string, tags: Array<Array<string>>) {
       }
     }
   }
-  if (frags.some(a => a.type === "hashtag")) {
-    console.debug(frags);
-  }
   return frags;
 }
