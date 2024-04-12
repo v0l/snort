@@ -18,7 +18,7 @@ export function Topics() {
     const active = topics.includes(name);
     return (
       <div
-        className={classNames("tab", { active })}
+        className={classNames("tab", { "!bg-white !text-black": active })}
         onClick={() => setTopics(s => (active ? s.filter(a => a !== name) : appendDedupe(s, [name])))}>
         {text}
       </div>
