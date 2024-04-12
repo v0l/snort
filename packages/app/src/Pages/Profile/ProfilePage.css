@@ -10,6 +10,7 @@
   object-fit: cover;
   margin-bottom: -37px;
   z-index: 0;
+  background-color: var(--gray);
 }
 
 .profile .profile-actions {
