@@ -1,12 +1,14 @@
 import "./LinkPreview.css";
 
-import { CSSProperties, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LRUCache } from "typescript-lru-cache";
 
 import { MediaElement } from "@/Components/Embed/MediaElement";
 import Spinner from "@/Components/Icons/Spinner";
 import { LinkPreviewData, NostrServices } from "@/External/NostrServices";
-import useImgProxy from "@/Hooks/useImgProxy";
+
+import { ProxyImg } from "../ProxyImg";
+import GenericPlayer from "./GenericPlayer";
 
 async function fetchUrlPreviewInfo(url: string) {
   const api = new NostrServices("https://nostr.api.v0l.io");
@@ -23,7 +25,6 @@ const cache = new LRUCache<string, LinkPreviewData>({
 
 const LinkPreview = ({ url }: { url: string }) => {
   const [preview, setPreview] = useState<LinkPreviewData | null>(cache.get(url));
-  const { proxy } = useImgProxy();
 
   useEffect(() => {
     (async () => {
@@ -59,6 +60,9 @@ const LinkPreview = ({ url }: { url: string }) => {
       if (link && videoType.startsWith("video/")) {
         return <MediaElement url={link} mime={videoType} />;
       }
+      if (link && videoType.startsWith("text/html") && preview?.image) {
+        return <GenericPlayer url={link} poster={preview?.image} />;
+      }
     }
     if (type?.startsWith("image")) {
       const urlTags = ["og:image:secure_url", "og:image:url", "og:image"];
@@ -69,9 +73,7 @@ const LinkPreview = ({ url }: { url: string }) => {
       }
     }
     if (preview?.image) {
-      const backgroundImage = preview?.image ? `url(${proxy(preview?.image)})` : "";
-      const style = { "--img-url": backgroundImage } as CSSProperties;
-      return <div className="link-preview-image" style={style}></div>;
+      return <ProxyImg src={preview?.image} />;
     }
     return null;
   }

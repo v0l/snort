@@ -38,7 +38,9 @@
   font-size: 12px;
 }
 
-.link-preview-image {
+.link-preview-container img,
+.link-preview-container video,
+.link-preview-container iframe {
   margin: 0 0 15px 0 !important;
   border-radius: 0 !important;
   background-image: var(--img-url);

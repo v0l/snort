@@ -83,7 +83,7 @@ export function Note(props: NoteProps) {
         <div className="body" onClick={e => goToEvent(e, ev)}>
           <NoteText {...props} translated={translated} showTranslation={showTranslation} />
           {translated && <TranslationInfo translated={translated} setShowTranslation={setShowTranslation} />}
-          {ev.kind === EventKind.Polls && <Poll ev={ev} />}
+          {ev.kind === EventKind.Polls && <Poll ev={ev} zaps={[]} />}
           {optionsMerged.showFooter && (
             <div className="mt-4">
               <NoteFooter ev={ev} replyCount={props.threadChains?.get(chainKey(ev))?.length} />

@@ -380,15 +380,23 @@ export class Query extends EventEmitter<QueryEvents> {
   }
 
   #canSendQuery(c: Connection, q: BuiltRawReqFilter) {
+    // query is not for this relay
     if (q.relay && q.relay !== c.Address) {
       return false;
     }
+    // cannot send unless relay is tagged on ephemeral relay connection
     if (!q.relay && c.Ephemeral) {
       this.#log("Cant send non-specific REQ to ephemeral connection %O %O %O", q, q.relay, c);
       return false;
     }
+    // search not supported, cant send
     if (q.filters.some(a => a.search) && !c.supportsNip(Nips.Search)) {
       this.#log("Cant send REQ to non-search relay", c.Address);
+      return false;
+    }
+    // query already closed, cant send
+    if (this.canRemove()) {
+      this.#log("Cant send REQ when query is closed", this.id, q);
       return false;
     }
     return true;
