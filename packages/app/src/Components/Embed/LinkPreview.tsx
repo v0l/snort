@@ -73,7 +73,7 @@ const LinkPreview = ({ url }: { url: string }) => {
       }
     }
     if (preview?.image) {
-      return <ProxyImg src={preview?.image} className="w-full object-cover aspect-video"/>;
+      return <ProxyImg src={preview?.image} className="w-full object-cover aspect-video" />;
     }
     return null;
   }
