@@ -3,11 +3,11 @@ import "./Following.css";
 import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
-import useLogin from "@/Hooks/useLogin";
+import useFollowsControls from "@/Hooks/useFollowControls";
 
 export function FollowingMark({ pubkey }: { pubkey: string }) {
-  const { follows } = useLogin(s => ({ follows: s.follows }));
-  const doesFollow = follows.item.includes(pubkey);
+  const { isFollowing } = useFollowsControls();
+  const doesFollow = isFollowing(pubkey);
   if (!doesFollow) return;
 
   return (

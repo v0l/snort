@@ -56,7 +56,8 @@ async function initSite() {
 
   db.ready = await db.isAvailable();
   if (db.ready) {
-    await preload(login.follows.item);
+    const pTags = login.contacts.filter(a => a[0] === "p").map(a => a[1]);
+    await preload(pTags);
     await System.PreloadSocialGraph();
   }
 

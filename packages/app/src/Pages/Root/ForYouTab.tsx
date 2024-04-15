@@ -8,14 +8,15 @@ import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelecto
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import { TaskList } from "@/Components/Tasks/TaskList";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
+import useFollowsControls from "@/Hooks/useFollowControls";
 import useHistoryState from "@/Hooks/useHistoryState";
 import useLogin from "@/Hooks/useLogin";
 import messages from "@/Pages/messages";
 import { System } from "@/system";
 
 const FollowsHint = () => {
-  const { publicKey: pubKey, follows } = useLogin();
-  if (follows.item?.length === 0 && pubKey) {
+  const { publicKey, contacts } = useLogin();
+  if (contacts.length === 0 && publicKey) {
     return (
       <FormattedMessage
         {...messages.NoFollows}
@@ -61,25 +62,24 @@ const getReactedByFollows = (follows: string[]) => {
 
 export const ForYouTab = memo(function ForYouTab() {
   const [notes, setNotes] = useState<NostrEvent[]>(forYouFeed.events);
-  const { feedDisplayAs, follows } = useLogin();
-  const displayAsInitial = feedDisplayAs ?? "list";
+  const login = useLogin();
+  const displayAsInitial = login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
-  const { publicKey } = useLogin();
   const navigationType = useNavigationType();
   const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt");
+  const { followList } = useFollowsControls();
 
-  if (!reactionsRequested && publicKey) {
+  if (!reactionsRequested && login.publicKey) {
     reactionsRequested = true;
     // on first load, ask relays for reactions to events by follows
-    getReactedByFollows(follows.item);
+    getReactedByFollows(followList);
   }
 
-  const login = useLogin();
   const subject = useMemo(
     () =>
       ({
         type: "pubkey",
-        items: login.follows.item,
+        items: followList,
         discriminator: login.publicKey?.slice(0, 12),
         extra: rb => {
           if (login.tags.item.length > 0) {
@@ -87,7 +87,7 @@ export const ForYouTab = memo(function ForYouTab() {
           }
         },
       }) as TimelineSubject,
-    [login.follows.item, login.tags.item],
+    [followList, login.tags.item],
   );
   // also get "follows" feed so data is loaded from relays and there's a fallback if "for you" feed is empty
   const latestFeed = useTimelineFeed(subject, { method: "TIME_RANGE", now: openedAt } as TimelineFeedOptions);
@@ -101,17 +101,17 @@ export const ForYouTab = memo(function ForYouTab() {
   }, [latestFeed.main, subject]);
 
   const getFeed = () => {
-    if (!publicKey) {
+    if (!login.publicKey) {
       return [];
     }
     if (!getForYouFeedPromise) {
-      getForYouFeedPromise = Relay.forYouFeed(publicKey);
+      getForYouFeedPromise = Relay.forYouFeed(login.publicKey);
     }
     getForYouFeedPromise!.then(notes => {
       getForYouFeedPromise = null;
       if (notes.length < 10) {
         setTimeout(() => {
-          getForYouFeedPromise = Relay.forYouFeed(publicKey);
+          getForYouFeedPromise = Relay.forYouFeed(login.publicKey!);
         }, 1000);
       }
       forYouFeed = {

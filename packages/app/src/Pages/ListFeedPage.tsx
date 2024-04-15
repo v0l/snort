@@ -7,18 +7,22 @@ import { useParams } from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";
 import PageSpinner from "@/Components/PageSpinner";
+import { TimelineSubject } from "@/Feed/TimelineFeed";
 import { Hour } from "@/Utils/Const";
 
 export function ListFeedPage() {
   const { id } = useParams();
   const link = parseNostrLink(unwrap(id));
-  const { data } = useEventFeed(link);
+  const data = useEventFeed(link);
+
+  const pubkeys = dedupe(data?.tags.filter(a => a[0] === "p").map(a => a[1]) ?? []);
   const subject = useMemo(
-    () => ({
-      type: "pubkey",
-      items: pubkeys,
-      discriminator: "list-feed",
-    }),
+    () =>
+      ({
+        type: "pubkey",
+        items: pubkeys,
+        discriminator: "list-feed",
+      }) as TimelineSubject,
     [pubkeys],
   );
 
@@ -30,6 +34,5 @@ export function ListFeedPage() {
       </b>
     );
   }
-  const pubkeys = dedupe(data.tags.filter(a => a[0] === "p").map(a => a[1]));
   return <Timeline subject={subject} postsOnly={true} method="TIME_RANGE" window={Hour * 12} />;
 }

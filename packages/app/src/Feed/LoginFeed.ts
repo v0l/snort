@@ -1,4 +1,4 @@
-import { EventKind, NostrLink, NostrPrefix, parseRelayTags, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrLink, parseRelayTags, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useEffect, useMemo } from "react";
 
@@ -12,11 +12,11 @@ import {
   LoginStore,
   setBlocked,
   setBookmarked,
-  setFollows,
   setMuted,
   setPinned,
   setRelays,
   setTags,
+  updateSession,
 } from "@/Utils/Login";
 import { SubscriptionEvent } from "@/Utils/Subscription";
 /**
@@ -24,7 +24,7 @@ import { SubscriptionEvent } from "@/Utils/Subscription";
  */
 export default function useLoginFeed() {
   const login = useLogin();
-  const { publicKey: pubKey, follows } = login;
+  const { publicKey: pubKey, contacts } = login;
   const { publisher, system } = useEventPublisher();
 
   useEffect(() => {
@@ -32,8 +32,7 @@ export default function useLoginFeed() {
       system.checkSigs = login.appData.json.preferences.checkSigs;
 
       if (publisher) {
-        const link = new NostrLink(NostrPrefix.Address, "snort", EventKind.AppData, pubKey);
-        login.appData.sync(link, publisher.signer, system);
+        login.appData.sync(publisher.signer, system);
       }
     }
   }, [login, publisher]);
@@ -76,8 +75,9 @@ export default function useLoginFeed() {
     if (loginFeed) {
       const contactList = getNewest(loginFeed.filter(a => a.kind === EventKind.ContactList));
       if (contactList) {
-        const pTags = contactList.tags.filter(a => a[0] === "p").map(a => a[1]);
-        setFollows(login.id, pTags, contactList.created_at * 1000);
+        updateSession(login.id, s => {
+          s.contacts = contactList.tags;
+        });
       }
 
       const relays = getNewest(loginFeed.filter(a => a.kind === EventKind.Relays));
@@ -180,6 +180,7 @@ export default function useLoginFeed() {
   }, [loginFeed]);
 
   useEffect(() => {
-    system.profileLoader.TrackKeys(follows.item); // always track follows profiles
-  }, [follows.item]);
+    const pTags = contacts.filter(a => a[0] === "p").map(a => a[1]);
+    system.profileLoader.TrackKeys(pTags); // always track follows profiles
+  }, [contacts]);
 }

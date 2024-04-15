@@ -11,6 +11,7 @@ import Modal from "@/Components/Modal/Modal";
 import ProfileImage from "@/Components/User/ProfileImage";
 import ProfilePreview from "@/Components/User/ProfilePreview";
 import useEventPublisher from "@/Hooks/useEventPublisher";
+import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
 import Nip28ChatProfile from "@/Pages/Messages/Nip28ChatProfile";
 import { appendDedupe, debounce } from "@/Utils";
@@ -25,11 +26,12 @@ export default function NewChatWindow() {
   const search = useUserSearch();
   const login = useLogin();
   const { system, publisher } = useEventPublisher();
+  const { followList } = useFollowsControls();
 
   useEffect(() => {
     setNewChat([]);
     setSearchTerm("");
-    setResults(login.follows.item);
+    setResults(followList);
   }, [show]);
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function NewChatWindow() {
       if (term) {
         search(term).then(setResults);
       } else {
-        setResults(login.follows.item);
+        setResults(followList);
       }
     });
   }, [term]);

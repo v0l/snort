@@ -16,7 +16,7 @@ import { GiftsCache } from "@/Cache";
 import SnortApi from "@/External/SnortApi";
 import { bech32ToHex, dedupeById, deleteRefCode, getCountry, sanitizeRelayUrl, unwrap } from "@/Utils";
 import { Blasters } from "@/Utils/Const";
-import { LoginSession, LoginSessionType, LoginStore, SnortAppData, UserPreferences } from "@/Utils/Login/index";
+import { LoginSession, LoginSessionType, LoginStore, SnortAppData } from "@/Utils/Login/index";
 import { entropyToPrivateKey, generateBip39Entropy } from "@/Utils/nip6";
 import { SubscriptionEvent } from "@/Utils/Subscription";
 
@@ -54,12 +54,6 @@ export function setRelays(state: LoginSession, relays: Record<string, RelaySetti
 export function removeRelay(state: LoginSession, addr: string) {
   delete state.relays.item[addr];
   LoginStore.updateSession(state);
-}
-
-export async function updatePreferences(id: string, p: UserPreferences, system: SystemInterface) {
-  await updateAppData(id, system, d => {
-    return { ...d, preferences: p };
-  });
 }
 
 export function logout(id: string) {
@@ -174,14 +168,11 @@ export function setBlocked(state: LoginSession, blocked: Array<string>, ts: numb
   LoginStore.updateSession(state);
 }
 
-export function setFollows(id: string, follows: Array<string>, ts: number) {
+export function updateSession(id: string, fn: (state: LoginSession) => void) {
   const session = LoginStore.get(id);
   if (session) {
-    if (ts > session.follows.timestamp) {
-      session.follows.item = follows;
-      session.follows.timestamp = ts;
-      LoginStore.updateSession(session);
-    }
+    fn(session);
+    LoginStore.updateSession(session);
   }
 }
 

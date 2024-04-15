@@ -1,11 +1,15 @@
+/* eslint-disable max-lines */
 import * as utils from "@noble/curves/abstract/utils";
 import * as secp from "@noble/curves/secp256k1";
 import { ExternalStore, unwrap } from "@snort/shared";
 import {
+  EventKind,
   EventPublisher,
   HexKey,
   JsonEventSync,
   KeyStorage,
+  NostrLink,
+  NostrPrefix,
   NotEncrypted,
   RelaySettings,
   socialGraphInstance,
@@ -25,10 +29,8 @@ const LoggedOut = {
     item: [],
     timestamp: 0,
   },
-  follows: {
-    item: [],
-    timestamp: 0,
-  },
+  contacts: [],
+  follows: [],
   muted: {
     item: [],
     timestamp: 0,
@@ -59,6 +61,7 @@ const LoggedOut = {
       mutedWords: [],
       showContentWarningPosts: false,
     },
+    new NostrLink(NostrPrefix.Address, "snort", EventKind.AppData),
     true,
   ),
   extraChats: [],
@@ -100,7 +103,11 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       if (v.privateKeyData) {
         v.privateKeyData = KeyStorage.fromPayload(v.privateKeyData as object);
       }
-      v.appData = new JsonEventSync<SnortAppData>(v.appData as unknown as SnortAppData, true);
+      v.appData = new JsonEventSync<SnortAppData>(
+        v.appData as unknown as SnortAppData,
+        new NostrLink(NostrPrefix.Address, "snort", EventKind.AppData, v.publicKey),
+        true,
+      );
       v.appData.on("change", () => {
         this.#save();
       });
@@ -177,6 +184,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
           mutedWords: [],
           showContentWarningPosts: false,
         },
+        new NostrLink(NostrPrefix.Address, "snort", EventKind.AppData, key),
         true,
       ),
       remoteSignerRelays,
@@ -231,6 +239,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
           mutedWords: [],
           showContentWarningPosts: false,
         },
+        new NostrLink(NostrPrefix.Address, "snort", EventKind.AppData, pubKey),
         true,
       ),
     } as LoginSession;
@@ -294,7 +303,11 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     for (const [, acc] of this.#accounts) {
       if ("item" in acc.appData) {
         didMigrate = true;
-        acc.appData = new JsonEventSync<SnortAppData>(acc.appData.item as SnortAppData, true);
+        acc.appData = new JsonEventSync<SnortAppData>(
+          acc.appData.item as SnortAppData,
+          new NostrLink(NostrPrefix.Address, "snort", EventKind.AppData, acc.publicKey),
+          true,
+        );
       }
     }
 

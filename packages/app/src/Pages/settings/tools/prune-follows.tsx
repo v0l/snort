@@ -7,7 +7,6 @@ import AsyncButton from "@/Components/Button/AsyncButton";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useFollowsControls from "@/Hooks/useFollowControls";
-import useLogin from "@/Hooks/useLogin";
 import { Day } from "@/Utils/Const";
 
 import { FollowsRelayHealth } from "./follows-relay-health";
@@ -18,9 +17,9 @@ const enum PruneStage {
 }
 
 export function PruneFollowList() {
-  const { follows } = useLogin(s => ({ id: s.id, follows: s.follows }));
+  const { followList: follows } = useFollowsControls();
   const { system } = useEventPublisher();
-  const uniqueFollows = dedupe(follows.item);
+  const uniqueFollows = dedupe(follows);
   const [status, setStatus] = useState<PruneStage>();
   const [progress, setProgress] = useState(0);
   const [lastPost, setLastPosts] = useState<Record<string, number>>();
@@ -122,8 +121,8 @@ export function PruneFollowList() {
           defaultMessage="{x} follows ({y} duplicates)"
           id="iICVoL"
           values={{
-            x: follows.item.length,
-            y: follows.item.length - uniqueFollows.length,
+            x: follows.length,
+            y: follows.length - uniqueFollows.length,
           }}
         />
       </div>

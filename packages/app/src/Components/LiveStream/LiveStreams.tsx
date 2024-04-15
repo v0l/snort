@@ -7,19 +7,19 @@ import { CSSProperties, useMemo } from "react";
 import { Link } from "react-router-dom";
 
 import Icon from "@/Components/Icons/Icon";
+import useFollowsControls from "@/Hooks/useFollowControls";
 import useImgProxy from "@/Hooks/useImgProxy";
-import useLogin from "@/Hooks/useLogin";
 import { findTag } from "@/Utils";
 
 export function LiveStreams() {
-  const follows = useLogin(s => s.follows.item);
+  const { followList } = useFollowsControls();
   const sub = useMemo(() => {
     const since = unixNow() - 60 * 60 * 24;
     const rb = new RequestBuilder("follows:streams");
-    rb.withFilter().kinds([EventKind.LiveEvent]).authors(follows).since(since);
-    rb.withFilter().kinds([EventKind.LiveEvent]).tag("p", follows).since(since);
+    rb.withFilter().kinds([EventKind.LiveEvent]).authors(followList).since(since);
+    rb.withFilter().kinds([EventKind.LiveEvent]).tag("p", followList).since(since);
     return rb;
-  }, [follows]);
+  }, [followList]);
 
   const streams = useRequestBuilder(sub);
   if (streams.length === 0) return null;

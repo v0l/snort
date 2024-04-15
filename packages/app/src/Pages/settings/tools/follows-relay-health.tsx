@@ -6,7 +6,7 @@ import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import { CollapsedSection } from "@/Components/Collapsed";
 import ProfilePreview from "@/Components/User/ProfilePreview";
-import useLogin from "@/Hooks/useLogin";
+import useFollowsControls from "@/Hooks/useFollowControls";
 import { getRelayName } from "@/Utils";
 
 export function FollowsRelayHealth({
@@ -19,8 +19,8 @@ export function FollowsRelayHealth({
   missingRelaysActions?: (k: string) => ReactNode;
 }) {
   const system = useContext(SnortContext);
-  const follows = useLogin(s => s.follows);
-  const uniqueFollows = dedupe(follows.item);
+  const { followList: follows } = useFollowsControls();
+  const uniqueFollows = dedupe(follows);
 
   const hasRelays = useMemo(() => {
     return uniqueFollows.filter(a => (system.relayCache.getFromCache(a)?.relays.length ?? 0) > 0);

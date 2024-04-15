@@ -78,7 +78,10 @@ export class NostrLink implements ToNostrEventTag {
         return true;
       }
     } else if (this.type === NostrPrefix.Event || this.type === NostrPrefix.Note) {
-      return this.id === ev.id;
+      const ifSetCheck = <T>(a: T | undefined, b: T) => {
+        return !Boolean(a) || a === b;
+      };
+      return ifSetCheck(this.id, ev.id) && ifSetCheck(this.author, ev.pubkey) && ifSetCheck(this.kind, ev.kind);
     }
 
     return false;

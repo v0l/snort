@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import { MediaElement } from "@/Components/Embed/MediaElement";
 import Reveal from "@/Components/Event/Reveal";
+import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
 import { FileExtensionRegex } from "@/Utils/Const";
 
@@ -16,13 +17,13 @@ interface RevealMediaProps {
 }
 
 export default function RevealMedia(props: RevealMediaProps) {
-  const { preferences, follows, publicKey } = useLogin(s => ({
+  const { preferences, publicKey } = useLogin(s => ({
     preferences: s.appData.json.preferences,
-    follows: s.follows.item,
     publicKey: s.publicKey,
   }));
+  const { isFollowing } = useFollowsControls();
 
-  const hideNonFollows = preferences.autoLoadMedia === "follows-only" && !follows.includes(props.creator);
+  const hideNonFollows = preferences.autoLoadMedia === "follows-only" && !isFollowing(props.creator);
   const isMine = props.creator === publicKey;
   const hideMedia = preferences.autoLoadMedia === "none" || (!isMine && hideNonFollows);
   const hostname = new URL(props.link).hostname;

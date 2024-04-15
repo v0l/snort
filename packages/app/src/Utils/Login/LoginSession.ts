@@ -72,7 +72,7 @@ export interface LoginSession {
   /**
    * A list of pubkeys this user follows
    */
-  follows: Newest<Array<HexKey>>;
+  contacts: Array<Array<string>>;
 
   /**
    * A list of tags this user follows

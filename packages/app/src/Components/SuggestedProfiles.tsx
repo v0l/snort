@@ -6,7 +6,6 @@ import PageSpinner from "@/Components/PageSpinner";
 import TrendingUsers from "@/Components/Trending/TrendingUsers";
 import FollowListBase from "@/Components/User/FollowListBase";
 import NostrBandApi from "@/External/NostrBand";
-import SemisolDevApi from "@/External/SemisolDev";
 import useCachedFetch from "@/Hooks/useCachedFetch";
 import useLogin from "@/Hooks/useLogin";
 import { hexToBech32 } from "@/Utils";
@@ -15,11 +14,10 @@ import { ErrorOrOffline } from "./ErrorOrOffline";
 
 enum Provider {
   NostrBand = 1,
-  SemisolDev = 2,
 }
 
 export default function SuggestedProfiles() {
-  const login = useLogin(s => ({ publicKey: s.publicKey, follows: s.follows.item }));
+  const login = useLogin(s => ({ publicKey: s.publicKey, follows: s.contacts }));
   const [provider, setProvider] = useState(Provider.NostrBand);
 
   const getUrlAndKey = () => {
@@ -29,11 +27,6 @@ export default function SuggestedProfiles() {
         const api = new NostrBandApi();
         const url = api.suggestedFollowsUrl(hexToBech32(NostrPrefix.PublicKey, login.publicKey));
         return { url, key: `nostr-band-${url}` };
-      }
-      case Provider.SemisolDev: {
-        const api = new SemisolDevApi();
-        const url = api.suggestedFollowsUrl(login.publicKey, login.follows);
-        return { url, key: `semisol-dev-${url}` };
       }
       default:
         return { url: null, key: null };
@@ -49,8 +42,6 @@ export default function SuggestedProfiles() {
     switch (provider) {
       case Provider.NostrBand:
         return data.profiles.map(a => a.pubkey);
-      case Provider.SemisolDev:
-        return data.recommendations.sort(a => a[1]).map(a => a[0]);
       default:
         return [];
     }

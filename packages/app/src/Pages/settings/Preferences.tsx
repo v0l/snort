@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { AllLanguageCodes } from "@/Components/IntlProvider/IntlProviderUtils";
+import { useLocale } from "@/Components/IntlProvider/useLocale";
 import usePreferences from "@/Hooks/usePreferences";
 import { unwrap } from "@/Utils";
 import { DefaultImgProxy } from "@/Utils/Const";
@@ -18,6 +19,7 @@ const PreferencesPage = () => {
   const { preferences, update: updatePerf } = usePreferences();
   const [pref, setPref] = useState<UserPreferences>(preferences);
   const [error, setError] = useState("");
+  const { lang } = useLocale();
 
   async function update(obj: UserPreferences) {
     try {
@@ -44,7 +46,7 @@ const PreferencesPage = () => {
         </h4>
         <div>
           <select
-            value={pref.language}
+            value={pref.language ?? lang}
             onChange={e =>
               setPref({
                 ...pref,

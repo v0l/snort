@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
+import useFollowsControls from "@/Hooks/useFollowControls";
 import useHistoryState from "@/Hooks/useHistoryState";
 import useLogin from "@/Hooks/useLogin";
 import { dedupeByPubkey } from "@/Utils";
@@ -29,11 +30,12 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt");
+  const { isFollowing, followList } = useFollowsControls();
   const subject = useMemo(
     () =>
       ({
         type: "pubkey",
-        items: login.follows.item,
+        items: followList,
         discriminator: login.publicKey?.slice(0, 12),
         extra: rb => {
           if (login.tags.item.length > 0) {
@@ -41,7 +43,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
           }
         },
       }) as TimelineSubject,
-    [login.follows.item, login.tags.item],
+    [followList, login.tags.item],
   );
   const feed = useTimelineFeed(subject, { method: "TIME_RANGE", now: openedAt } as TimelineFeedOptions);
 
@@ -57,9 +59,9 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
       return a
         ?.filter(postsOnly)
         .filter(a => props.noteFilter?.(a) ?? true)
-        .filter(a => login.follows.item.includes(a.pubkey) || a.tags.filter(a => a[0] === "t").length < 5);
+        .filter(a => isFollowing(a.pubkey) || a.tags.filter(a => a[0] === "t").length < 5);
     },
-    [postsOnly, props.noteFilter, login.follows.timestamp],
+    [postsOnly, props.noteFilter, isFollowing],
   );
 
   const mainFeed = useMemo(() => {

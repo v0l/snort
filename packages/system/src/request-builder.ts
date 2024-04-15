@@ -245,9 +245,14 @@ export class RequestFilterBuilder {
         .kinds([unwrap(link.kind)])
         .authors([unwrap(link.author)]);
     } else {
-      this.ids([link.id]);
+      if (link.id) {
+        this.ids([link.id]);
+      }
       if (link.author) {
         this.authors([link.author]);
+      }
+      if (link.kind !== undefined) {
+        this.kinds([link.kind]);
       }
     }
     link.relays?.forEach(v => this.relay(v));

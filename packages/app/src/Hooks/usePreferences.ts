@@ -1,4 +1,4 @@
-import { updatePreferences, UserPreferences } from "@/Utils/Login";
+import { updateAppData, UserPreferences } from "@/Utils/Login";
 
 import useEventPublisher from "./useEventPublisher";
 import useLogin from "./useLogin";
@@ -10,7 +10,9 @@ export default function usePreferences() {
   return {
     preferences: pref,
     update: async (data: UserPreferences) => {
-      await updatePreferences(id, data, system);
+      await updateAppData(id, system, d => {
+        return { ...d, preferences: data };
+      });
     },
   };
 }
