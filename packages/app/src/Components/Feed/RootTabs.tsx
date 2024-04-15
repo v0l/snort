@@ -19,7 +19,7 @@ export function RootTabs({ base = "/" }: { base: string }) {
   } = useLogin(s => ({
     publicKey: s.publicKey,
     tags: s.tags,
-    preferences: s.appData.item.preferences,
+    preferences: s.appData.json.preferences,
   }));
 
   const menuItems = useMemo(() => rootTabItems(base, pubKey, tags), [base, pubKey, tags]);

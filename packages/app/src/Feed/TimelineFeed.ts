@@ -30,7 +30,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     window: options.window,
     now: options.now ?? unixNow(),
   });
-  const pref = useLogin(s => s.appData.item.preferences);
+  const pref = useLogin(s => s.appData.json.preferences);
   const { isEventMuted } = useModeration();
 
   const createBuilder = useCallback(() => {

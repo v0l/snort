@@ -22,7 +22,7 @@ export function ZapModalInput(props: {
   onNextStage: (v: SendSatsInputSelection) => Promise<void>;
 }) {
   const { defaultZapAmount, readonly } = useLogin(s => ({
-    defaultZapAmount: s.appData.item.preferences.defaultZapAmount,
+    defaultZapAmount: s.appData.json.preferences.defaultZapAmount,
     readonly: s.readonly,
   }));
   const { formatMessage } = useIntl();

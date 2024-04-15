@@ -16,7 +16,7 @@ export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: T
   const navigate = useNavigate();
   const { publisher, system } = useEventPublisher();
   const { publicKey, preferences: prefs } = useLogin(s => ({
-    preferences: s.appData.item.preferences,
+    preferences: s.appData.json.preferences,
     publicKey: s.publicKey,
   }));
   const note = useNoteCreator(n => ({ show: n.show, replyTo: n.replyTo, update: n.update, quote: n.quote }));

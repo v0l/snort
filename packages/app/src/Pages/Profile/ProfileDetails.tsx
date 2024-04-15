@@ -32,8 +32,8 @@ const ProfileDetails = ({
 }) => {
   const follows = useFollowsFeed(id);
   const { showStatus, showBadges } = useLogin(s => ({
-    showStatus: s.appData.item.preferences.showStatus ?? false,
-    showBadges: s.appData.item.preferences.showBadges ?? false,
+    showStatus: s.appData.json.preferences.showStatus ?? false,
+    showBadges: s.appData.json.preferences.showBadges ?? false,
   }));
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const badges = useProfileBadges(showBadges ? id : undefined);

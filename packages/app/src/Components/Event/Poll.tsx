@@ -27,7 +27,7 @@ export default function Poll(props: PollProps) {
     preferences: prefs,
     publicKey: myPubKey,
     relays,
-  } = useLogin(s => ({ preferences: s.appData.item.preferences, publicKey: s.publicKey, relays: s.relays }));
+  } = useLogin(s => ({ preferences: s.appData.json.preferences, publicKey: s.publicKey, relays: s.relays }));
   const pollerProfile = useUserProfile(props.ev.pubkey);
   const [tallyBy, setTallyBy] = useState<PollTally>("pubkeys");
   const [error, setError] = useState("");

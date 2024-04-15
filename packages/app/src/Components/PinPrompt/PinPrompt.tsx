@@ -104,8 +104,8 @@ export function LoginUnlock() {
     const newPin = await PinEncrypted.create(k, pin);
 
     const pub = EventPublisher.privateKey(k);
-    if (login.appData.item.preferences.pow) {
-      pub.pow(login.appData.item.preferences.pow, GetPowWorker());
+    if (login.appData.json.preferences.pow) {
+      pub.pow(login.appData.json.preferences.pow, GetPowWorker());
     }
     LoginStore.setPublisher(login.id, pub);
     LoginStore.updateSession({
@@ -121,8 +121,8 @@ export function LoginUnlock() {
     await key.unlock(pin);
     const pub = createPublisher(login);
     if (pub) {
-      if (login.appData.item.preferences.pow) {
-        pub.pow(login.appData.item.preferences.pow, GetPowWorker());
+      if (login.appData.json.preferences.pow) {
+        pub.pow(login.appData.json.preferences.pow, GetPowWorker());
       }
       LoginStore.setPublisher(login.id, pub);
       LoginStore.updateSession({

@@ -1,6 +1,6 @@
 import { unixNow } from "@snort/shared";
 import EventEmitter from "eventemitter3";
-import { ReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from ".";
+import { ReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from "..";
 
 /**
  * When nostr was created

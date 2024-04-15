@@ -56,7 +56,7 @@ const quoteNoteOptions = {
 export function NoteCreator() {
   const { formatMessage } = useIntl();
   const uploader = useFileUpload();
-  const login = useLogin(s => ({ relays: s.relays, publicKey: s.publicKey, pow: s.appData.item.preferences.pow }));
+  const login = useLogin(s => ({ relays: s.relays, publicKey: s.publicKey, pow: s.appData.json.preferences.pow }));
   const { system, publisher: pub } = useEventPublisher();
   const publisher = login.pow ? pub?.pow(login.pow, GetPowWorker()) : pub;
   const note = useNoteCreator();

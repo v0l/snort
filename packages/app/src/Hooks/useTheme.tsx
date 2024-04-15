@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import useLogin from "./useLogin";
 
 export function useTheme() {
-  const { preferences } = useLogin(s => ({ preferences: s.appData.item.preferences }));
+  const { preferences } = useLogin(s => ({ preferences: s.appData.json.preferences }));
 
   function setTheme(theme: "light" | "dark") {
     const elm = document.documentElement;

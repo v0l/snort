@@ -17,7 +17,7 @@ interface RevealMediaProps {
 
 export default function RevealMedia(props: RevealMediaProps) {
   const { preferences, follows, publicKey } = useLogin(s => ({
-    preferences: s.appData.item.preferences,
+    preferences: s.appData.json.preferences,
     follows: s.follows.item,
     publicKey: s.publicKey,
   }));

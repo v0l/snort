@@ -1,7 +1,7 @@
-import { unixNowMs } from "@snort/shared";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
+import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { appendDedupe } from "@/Utils";
 import { SnortAppData, updateAppData } from "@/Utils/Login";
@@ -9,36 +9,28 @@ import { SnortAppData, updateAppData } from "@/Utils/Login";
 export default function ModerationSettingsPage() {
   const login = useLogin();
   const [muteWord, setMuteWord] = useState("");
-  const appData = login.appData.item;
+  const appData = login.appData.json;
+  const { system } = useEventPublisher();
 
   function addMutedWord() {
-    updateAppData(login.id, ad => ({
-      item: {
-        ...ad,
-        mutedWords: appendDedupe(appData.mutedWords, [muteWord]),
-      },
-      timestamp: unixNowMs(),
+    updateAppData(login.id, system, ad => ({
+      ...ad,
+      mutedWords: appendDedupe(appData.mutedWords, [muteWord]),
     }));
     setMuteWord("");
   }
 
   const handleToggle = (setting: keyof SnortAppData) => {
-    updateAppData(login.id, ad => ({
-      item: {
-        ...ad,
-        [setting]: !appData[setting],
-      },
-      timestamp: unixNowMs(),
+    updateAppData(login.id, system, ad => ({
+      ...ad,
+      [setting]: !appData[setting],
     }));
   };
 
   function removeMutedWord(word: string) {
-    updateAppData(login.id, ad => ({
-      item: {
-        ...ad,
-        mutedWords: appData.mutedWords.filter(a => a !== word),
-      },
-      timestamp: unixNowMs(),
+    updateAppData(login.id, system, ad => ({
+      ...ad,
+      mutedWords: appData.mutedWords.filter(a => a !== word),
     }));
     setMuteWord("");
   }

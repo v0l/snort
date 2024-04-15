@@ -4,14 +4,12 @@ import { MixCloudRegex } from "@/Utils/Const";
 const MixCloudEmbed = ({ link }: { link: string }) => {
   const feedPath = (MixCloudRegex.test(link) && RegExp.$1) + "%2F" + (MixCloudRegex.test(link) && RegExp.$2);
 
-  const theme = useLogin(s => s.appData.item.preferences.theme);
+  const theme = useLogin(s => s.appData.json.preferences.theme);
   const lightParams = theme === "light" ? "light=1" : "light=0";
   return (
     <>
       <br />
       <iframe
-        // eslint-disable-next-line react/no-unknown-property
-        credentialless=""
         title="SoundCloud player"
         width="100%"
         height="120"

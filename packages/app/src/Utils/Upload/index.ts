@@ -65,7 +65,7 @@ export interface UploadProgress {
 export type UploadStage = "starting" | "hashing" | "uploading" | "done" | undefined;
 
 export default function useFileUpload(): Uploader {
-  const fileUploader = useLogin(s => s.appData.item.preferences.fileUploader);
+  const fileUploader = useLogin(s => s.appData.json.preferences.fileUploader);
   const { publisher } = useEventPublisher();
   const [progress, setProgress] = useState<Array<UploadProgress>>([]);
   const [stage, setStage] = useState<UploadStage>();

@@ -78,7 +78,7 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
 
   useEffect(() => {
     const sub = getCurrentSubscription(login.subscriptions);
-    if (sub?.type === SubscriptionType.Premium && (login.appData.item.preferences.autoTranslate ?? true)) {
+    if (sub?.type === SubscriptionType.Premium && (login.appData.json.preferences.autoTranslate ?? true)) {
       translate();
     }
   }, []);

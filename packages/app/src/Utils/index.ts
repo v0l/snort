@@ -537,7 +537,7 @@ export function trackEvent(
   if (
     !import.meta.env.DEV &&
     CONFIG.features.analytics &&
-    (LoginStore.snapshot().appData.item.preferences.telemetry ?? true)
+    (LoginStore.snapshot().appData.json.preferences.telemetry ?? true)
   ) {
     fetch("https://pa.v0l.io/api/event", {
       method: "POST",

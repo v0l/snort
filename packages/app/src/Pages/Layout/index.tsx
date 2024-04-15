@@ -27,7 +27,7 @@ export default function Index() {
   const { id, stalker, telemetry } = useLogin(s => ({
     id: s.id,
     stalker: s.stalker ?? false,
-    telemetry: s.appData.item.preferences.telemetry,
+    telemetry: s.appData.json.preferences.telemetry,
   }));
 
   useTheme();

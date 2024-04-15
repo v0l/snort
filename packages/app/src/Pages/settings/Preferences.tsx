@@ -1,36 +1,52 @@
+/* eslint-disable max-lines */
 import "./Preferences.css";
 
+import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import AsyncButton from "@/Components/Button/AsyncButton";
 import { AllLanguageCodes } from "@/Components/IntlProvider/IntlProviderUtils";
-import { useLocale } from "@/Components/IntlProvider/useLocale";
-import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { unwrap } from "@/Utils";
 import { DefaultImgProxy } from "@/Utils/Const";
-import { updatePreferences, UserPreferences } from "@/Utils/Login";
+import { UserPreferences } from "@/Utils/Login";
 
 import messages from "./messages";
 
 const PreferencesPage = () => {
   const { formatMessage } = useIntl();
-  const { id, pref } = useLogin(s => ({ id: s.id, pref: s.appData.item.preferences }));
-  const { lang } = useLocale();
+  const { preferences, update: updatePerf } = usePreferences();
+  const [pref, setPref] = useState<UserPreferences>(preferences);
+  const [error, setError] = useState("");
+
+  async function update(obj: UserPreferences) {
+    try {
+      setError("");
+      await updatePerf(obj);
+    } catch (e) {
+      console.error(e);
+      setError(formatMessage({ defaultMessage: "Failed to update, please try again", id: "OoZgbB" }));
+    }
+  }
 
   return (
     <div className="preferences flex flex-col g24">
       <h3>
-        <FormattedMessage {...messages.Preferences} />
+        <FormattedMessage defaultMessage="Preferences" id="PCSt5T" />
       </h3>
-
+      <AsyncButton onClick={() => update(pref)}>
+        <FormattedMessage defaultMessage="Save" id="jvo0vs" />
+      </AsyncButton>
+      {error && <b className="warning">{error}</b>}
       <div className="flex justify-between w-max">
         <h4>
           <FormattedMessage defaultMessage="Language" id="y1Z3or" />
         </h4>
         <div>
           <select
-            value={lang}
+            value={pref.language}
             onChange={e =>
-              updatePreferences(id, {
+              setPref({
                 ...pref,
                 language: e.target.value,
               })
@@ -54,7 +70,7 @@ const PreferencesPage = () => {
           <select
             value={pref.theme}
             onChange={e =>
-              updatePreferences(id, {
+              setPref({
                 ...pref,
                 theme: e.target.value,
               } as UserPreferences)
@@ -79,7 +95,7 @@ const PreferencesPage = () => {
           <select
             value={pref.defaultRootTab}
             onChange={e =>
-              updatePreferences(id, {
+              setPref({
                 ...pref,
                 defaultRootTab: e.target.value,
               } as UserPreferences)
@@ -112,7 +128,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={pref.telemetry ?? true}
-            onChange={e => updatePreferences(id, { ...pref, telemetry: e.target.checked })}
+            onChange={e => setPref({ ...pref, telemetry: e.target.checked })}
           />
         </div>
       </div>
@@ -129,7 +145,7 @@ const PreferencesPage = () => {
               className="w-max"
               value={pref.autoLoadMedia}
               onChange={e =>
-                updatePreferences(id, {
+                setPref({
                   ...pref,
                   autoLoadMedia: e.target.value,
                 } as UserPreferences)
@@ -160,7 +176,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={pref.checkSigs}
-            onChange={e => updatePreferences(id, { ...pref, checkSigs: e.target.checked })}
+            onChange={e => setPref({ ...pref, checkSigs: e.target.checked })}
           />
         </div>
       </div>
@@ -177,7 +193,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={pref.autoTranslate}
-            onChange={e => updatePreferences(id, { ...pref, autoTranslate: e.target.checked })}
+            onChange={e => setPref({ ...pref, autoTranslate: e.target.checked })}
           />
         </div>
       </div>
@@ -195,7 +211,7 @@ const PreferencesPage = () => {
             type="number"
             defaultValue={pref.pow}
             min={0}
-            onChange={e => updatePreferences(id, { ...pref, pow: parseInt(e.target.value || "0") })}
+            onChange={e => setPref({ ...pref, pow: parseInt(e.target.value || "0") })}
           />
         </div>
       </div>
@@ -208,7 +224,7 @@ const PreferencesPage = () => {
             type="number"
             defaultValue={pref.defaultZapAmount}
             min={1}
-            onChange={e => updatePreferences(id, { ...pref, defaultZapAmount: parseInt(e.target.value || "0") })}
+            onChange={e => setPref({ ...pref, defaultZapAmount: parseInt(e.target.value || "0") })}
           />
         </div>
       </div>
@@ -225,7 +241,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={pref.showBadges ?? false}
-            onChange={e => updatePreferences(id, { ...pref, showBadges: e.target.checked })}
+            onChange={e => setPref({ ...pref, showBadges: e.target.checked })}
           />
         </div>
       </div>
@@ -242,7 +258,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={pref.showStatus ?? true}
-            onChange={e => updatePreferences(id, { ...pref, showStatus: e.target.checked })}
+            onChange={e => setPref({ ...pref, showStatus: e.target.checked })}
           />
         </div>
       </div>
@@ -259,7 +275,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={pref.autoZap}
-            onChange={e => updatePreferences(id, { ...pref, autoZap: e.target.checked })}
+            onChange={e => setPref({ ...pref, autoZap: e.target.checked })}
           />
         </div>
       </div>
@@ -278,7 +294,7 @@ const PreferencesPage = () => {
               type="checkbox"
               checked={pref.imgProxyConfig !== null}
               onChange={e =>
-                updatePreferences(id, {
+                setPref({
                   ...pref,
                   imgProxyConfig: e.target.checked ? DefaultImgProxy : undefined,
                 })
@@ -302,7 +318,7 @@ const PreferencesPage = () => {
                     description: "Placeholder text for imgproxy url textbox",
                   })}
                   onChange={e =>
-                    updatePreferences(id, {
+                    setPref({
                       ...pref,
                       imgProxyConfig: {
                         ...unwrap(pref.imgProxyConfig),
@@ -327,7 +343,7 @@ const PreferencesPage = () => {
                     description: "Hexidecimal 'key' input for improxy",
                   })}
                   onChange={e =>
-                    updatePreferences(id, {
+                    setPref({
                       ...pref,
                       imgProxyConfig: {
                         ...unwrap(pref.imgProxyConfig),
@@ -352,7 +368,7 @@ const PreferencesPage = () => {
                     description: "Hexidecimal 'salt' input for imgproxy",
                   })}
                   onChange={e =>
-                    updatePreferences(id, {
+                    setPref({
                       ...pref,
                       imgProxyConfig: {
                         ...unwrap(pref.imgProxyConfig),
@@ -379,7 +395,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={pref.enableReactions}
-            onChange={e => updatePreferences(id, { ...pref, enableReactions: e.target.checked })}
+            onChange={e => setPref({ ...pref, enableReactions: e.target.checked })}
           />
         </div>
       </div>
@@ -395,7 +411,7 @@ const PreferencesPage = () => {
           value={pref.reactionEmoji}
           onChange={e => {
             const split = e.target.value.match(/[\p{L}\S]{1}/u);
-            updatePreferences(id, {
+            setPref({
               ...pref,
               reactionEmoji: split?.[0] ?? "",
             });
@@ -415,7 +431,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={pref.confirmReposts}
-            onChange={e => updatePreferences(id, { ...pref, confirmReposts: e.target.checked })}
+            onChange={e => setPref({ ...pref, confirmReposts: e.target.checked })}
           />
         </div>
       </div>
@@ -432,7 +448,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={pref.autoShowLatest}
-            onChange={e => updatePreferences(id, { ...pref, autoShowLatest: e.target.checked })}
+            onChange={e => setPref({ ...pref, autoShowLatest: e.target.checked })}
           />
         </div>
       </div>
@@ -446,7 +462,7 @@ const PreferencesPage = () => {
         <select
           value={pref.fileUploader}
           onChange={e =>
-            updatePreferences(id, {
+            setPref({
               ...pref,
               fileUploader: e.target.value,
             } as UserPreferences)
@@ -473,7 +489,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={pref.showDebugMenus}
-            onChange={e => updatePreferences(id, { ...pref, showDebugMenus: e.target.checked })}
+            onChange={e => setPref({ ...pref, showDebugMenus: e.target.checked })}
           />
         </div>
       </div>
@@ -490,10 +506,14 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={pref.hideMutedNotes}
-            onChange={e => updatePreferences(id, { ...pref, hideMutedNotes: e.target.checked })}
+            onChange={e => setPref({ ...pref, hideMutedNotes: e.target.checked })}
           />
         </div>
       </div>
+      <AsyncButton onClick={() => update(pref)}>
+        <FormattedMessage defaultMessage="Save" id="jvo0vs" />
+      </AsyncButton>
+      {error && <b className="error">{error}</b>}
     </div>
   );
 };

@@ -1,10 +1,10 @@
-import { unixNowMs } from "@snort/shared";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { ToggleSwitch } from "@/Components/Icons/Toggle";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { FixedModeration } from "@/Pages/onboarding/fixedModeration";
 import { appendDedupe } from "@/Utils";
@@ -15,6 +15,7 @@ export function Moderation() {
   const [topics, setTopics] = useState<Array<string>>(Object.keys(FixedModeration));
   const [extraTerms, setExtraTerms] = useState("");
   const navigate = useNavigate();
+  const { system } = useEventPublisher();
 
   return (
     <div className="flex flex-col g24">
@@ -81,15 +82,10 @@ export function Moderation() {
                 .filter(a => a.length > 1),
             );
           if (words.length > 0) {
-            updateAppData(id, ad => {
-              return {
-                item: {
-                  ...ad,
-                  mutedWords: appendDedupe(ad.mutedWords, words),
-                },
-                timestamp: unixNowMs(),
-              };
-            });
+            updateAppData(id, system, ad => ({
+              ...ad,
+              mutedWords: appendDedupe(ad.mutedWords, words),
+            }));
           }
           navigate("/");
         }}>

@@ -58,11 +58,11 @@ export default function useModeration() {
   }
 
   function isMutedWord(word: string) {
-    return appData.item.mutedWords.includes(word.toLowerCase());
+    return appData.json.mutedWords.includes(word.toLowerCase());
   }
 
   function isEventMuted(ev: TaggedNostrEvent | NostrEvent) {
-    return isMuted(ev.pubkey) || appData.item.mutedWords.some(w => ev.content.toLowerCase().includes(w));
+    return isMuted(ev.pubkey) || appData.json.mutedWords.some(w => ev.content.toLowerCase().includes(w));
   }
 
   return {

@@ -26,7 +26,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { positive } = reactions;
 
   const { preferences: prefs, readonly } = useLogin(s => ({
-    preferences: s.appData.item.preferences,
+    preferences: s.appData.json.preferences,
     publicKey: s.publicKey,
     readonly: s.readonly,
   }));

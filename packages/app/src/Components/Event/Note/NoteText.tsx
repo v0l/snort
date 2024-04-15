@@ -53,7 +53,7 @@ export const NoteText = memo(function InnerContent(
     </>
   );
 
-  if (!appData.item.showContentWarningPosts) {
+  if (!appData.json.showContentWarningPosts) {
     const contentWarning = ev.tags.find(a => a[0] === "content-warning");
     if (contentWarning) {
       return (

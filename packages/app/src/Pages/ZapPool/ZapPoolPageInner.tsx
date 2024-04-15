@@ -66,7 +66,7 @@ export function ZapPoolPageInner() {
           values={{
             number: (
               <b>
-                <FormattedNumber value={login.appData.item.preferences.defaultZapAmount} />
+                <FormattedNumber value={login.appData.json.preferences.defaultZapAmount} />
               </b>
             ),
           }}
@@ -79,13 +79,13 @@ export function ZapPoolPageInner() {
           values={{
             nIn: (
               <b>
-                <FormattedNumber value={login.appData.item.preferences.defaultZapAmount} />
+                <FormattedNumber value={login.appData.json.preferences.defaultZapAmount} />
               </b>
             ),
             nOut: (
               <b>
                 <FormattedNumber
-                  value={ZapPoolController?.calcAllocation(login.appData.item.preferences.defaultZapAmount) ?? 0}
+                  value={ZapPoolController?.calcAllocation(login.appData.json.preferences.defaultZapAmount) ?? 0}
                 />
               </b>
             ),

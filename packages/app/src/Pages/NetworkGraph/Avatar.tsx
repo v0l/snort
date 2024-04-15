@@ -8,6 +8,6 @@ import { LoginStore } from "@/Utils/Login";
 export const avatar = (node: NodeObject<NodeObject<GraphNode>>) => {
   const login = LoginStore.snapshot();
   return node.profile?.picture
-    ? proxyImg(node.profile?.picture, login.appData.item.preferences.imgProxyConfig)
+    ? proxyImg(node.profile?.picture, login.appData.json.preferences.imgProxyConfig)
     : defaultAvatar(node.address);
 };

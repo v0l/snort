@@ -16,7 +16,7 @@ import { GiftsCache } from "@/Cache";
 import SnortApi from "@/External/SnortApi";
 import { bech32ToHex, dedupeById, deleteRefCode, getCountry, sanitizeRelayUrl, unwrap } from "@/Utils";
 import { Blasters } from "@/Utils/Const";
-import { LoginSession, LoginSessionType, LoginStore, Newest, SnortAppData, UserPreferences } from "@/Utils/Login/index";
+import { LoginSession, LoginSessionType, LoginStore, SnortAppData, UserPreferences } from "@/Utils/Login/index";
 import { entropyToPrivateKey, generateBip39Entropy } from "@/Utils/nip6";
 import { SubscriptionEvent } from "@/Utils/Subscription";
 
@@ -56,12 +56,9 @@ export function removeRelay(state: LoginSession, addr: string) {
   LoginStore.updateSession(state);
 }
 
-export function updatePreferences(id: string, p: UserPreferences) {
-  updateAppData(id, d => {
-    return {
-      item: { ...d, preferences: p },
-      timestamp: unixNowMs(),
-    };
+export async function updatePreferences(id: string, p: UserPreferences, system: SystemInterface) {
+  await updateAppData(id, system, d => {
+    return { ...d, preferences: p };
   });
 }
 
@@ -206,23 +203,19 @@ export function setBookmarked(state: LoginSession, bookmarked: Array<string>, ts
   LoginStore.updateSession(state);
 }
 
-export function setAppData(state: LoginSession, data: SnortAppData, ts: number) {
-  if (state.appData.timestamp >= ts) {
-    return;
-  }
-  state.appData.item = data;
-  state.appData.timestamp = ts;
+export async function setAppData(state: LoginSession, data: SnortAppData, system: SystemInterface) {
+  const pub = LoginStore.getPublisher(state.id);
+  if (!pub) return;
+
+  await state.appData.updateJson(data, pub.signer, system);
   LoginStore.updateSession(state);
 }
 
-export function updateAppData(id: string, fn: (data: SnortAppData) => Newest<SnortAppData>) {
+export async function updateAppData(id: string, system: SystemInterface, fn: (data: SnortAppData) => SnortAppData) {
   const session = LoginStore.get(id);
   if (session) {
-    const next = fn(session.appData.item);
-    if (next.timestamp > session.appData.timestamp) {
-      session.appData = next;
-      LoginStore.updateSession(session);
-    }
+    const next = fn(session.appData.json);
+    await setAppData(session, next, system);
   }
 }
 

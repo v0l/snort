@@ -5,7 +5,7 @@ import { LangOverride } from "@/Components/IntlProvider/langStore";
 import useLogin from "@/Hooks/useLogin";
 
 export function useLocale() {
-  const { language } = useLogin(s => ({ language: s.appData.item.preferences.language }));
+  const { language } = useLogin(s => ({ language: s.appData.json.preferences.language }));
   const loggedOutLang = useSyncExternalStore(
     c => LangOverride.hook(c),
     () => LangOverride.snapshot(),

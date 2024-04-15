@@ -1,12 +1,20 @@
 import * as utils from "@noble/curves/abstract/utils";
 import * as secp from "@noble/curves/secp256k1";
 import { ExternalStore, unwrap } from "@snort/shared";
-import { EventPublisher, HexKey, KeyStorage, NotEncrypted, RelaySettings, socialGraphInstance } from "@snort/system";
+import {
+  EventPublisher,
+  HexKey,
+  JsonEventSync,
+  KeyStorage,
+  NotEncrypted,
+  RelaySettings,
+  socialGraphInstance,
+} from "@snort/system";
 import { v4 as uuid } from "uuid";
 
-import { createPublisher, LoginSession, LoginSessionType } from "@/Utils/Login/index";
+import { createPublisher, LoginSession, LoginSessionType, SnortAppData } from "@/Utils/Login/index";
 
-import { DefaultPreferences, UserPreferences } from "./Preferences";
+import { DefaultPreferences } from "./Preferences";
 
 const AccountStoreKey = "sessions";
 const LoggedOut = {
@@ -44,14 +52,15 @@ const LoggedOut = {
   latestNotification: 0,
   readNotifications: 0,
   subscriptions: [],
-  appData: {
-    item: {
-      mutedWords: [],
+  appData: new JsonEventSync<SnortAppData>(
+    {
+      id: "",
       preferences: DefaultPreferences,
+      mutedWords: [],
       showContentWarningPosts: false,
     },
-    timestamp: 0,
-  },
+    true,
+  ),
   extraChats: [],
   stalker: false,
 } as LoginSession;
@@ -87,19 +96,14 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       if (v.type === LoginSessionType.PrivateKey && v.readonly) {
         v.readonly = false;
       }
-      // fill possibly undefined (migrate up)
-      v.appData ??= {
-        item: {
-          mutedWords: [],
-          showContentWarningPosts: false,
-          preferences: DefaultPreferences,
-        },
-        timestamp: 0,
-      };
       v.extraChats ??= [];
       if (v.privateKeyData) {
         v.privateKeyData = KeyStorage.fromPayload(v.privateKeyData as object);
       }
+      v.appData = new JsonEventSync<SnortAppData>(v.appData as unknown as SnortAppData, true);
+      v.appData.on("change", () => {
+        this.#save();
+      });
     }
     this.#loadIrisKeyIfExists();
   }
@@ -163,10 +167,18 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         item: initRelays,
         timestamp: 1,
       },
-      preferences: {
-        ...DefaultPreferences,
-        ...CONFIG.defaultPreferences,
-      },
+      appData: new JsonEventSync<SnortAppData>(
+        {
+          id: "",
+          preferences: {
+            ...DefaultPreferences,
+            ...CONFIG.defaultPreferences,
+          },
+          mutedWords: [],
+          showContentWarningPosts: false,
+        },
+        true,
+      ),
       remoteSignerRelays,
       privateKeyData: privateKey,
       stalker: stalker ?? false,
@@ -209,10 +221,18 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         item: initRelays,
         timestamp: 1,
       },
-      preferences: {
-        ...DefaultPreferences,
-        ...CONFIG.defaultPreferences,
-      },
+      appData: new JsonEventSync<SnortAppData>(
+        {
+          id: "",
+          preferences: {
+            ...DefaultPreferences,
+            ...CONFIG.defaultPreferences,
+          },
+          mutedWords: [],
+          showContentWarningPosts: false,
+        },
+        true,
+      ),
     } as LoginSession;
 
     if ("nostr_os" in window && window?.nostr_os) {
@@ -271,41 +291,10 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   #migrate() {
     let didMigrate = false;
 
-    // update session types
-    for (const [, v] of this.#accounts) {
-      if (!v.type) {
-        v.type = v.privateKey ? LoginSessionType.PrivateKey : LoginSessionType.Nip7;
+    for (const [, acc] of this.#accounts) {
+      if ("item" in acc.appData) {
         didMigrate = true;
-      }
-    }
-
-    // add ids
-    for (const [, v] of this.#accounts) {
-      if ((v.id?.length ?? 0) === 0) {
-        v.id = uuid();
-        didMigrate = true;
-      }
-    }
-
-    // mark readonly
-    for (const [, v] of this.#accounts) {
-      if (v.type === LoginSessionType.PublicKey && !v.readonly) {
-        v.readonly = true;
-        didMigrate = true;
-      }
-      // reset readonly on load
-      if (v.type === LoginSessionType.PrivateKey && v.readonly) {
-        v.readonly = false;
-        didMigrate = true;
-      }
-    }
-
-    // move preferences to appdata
-    for (const [, v] of this.#accounts) {
-      if ("preferences" in v) {
-        v.appData.item.preferences = v.preferences as UserPreferences;
-        delete v["preferences"];
-        didMigrate = true;
+        acc.appData = new JsonEventSync<SnortAppData>(acc.appData.item as SnortAppData, true);
       }
     }
 
@@ -324,10 +313,14 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       if (v.privateKeyData instanceof KeyStorage) {
         toSave.push({
           ...v,
+          appData: v.appData.json,
           privateKeyData: v.privateKeyData.toPayload(),
         });
       } else {
-        toSave.push({ ...v });
+        toSave.push({
+          ...v,
+          appData: v.appData.json,
+        });
       }
     }
 

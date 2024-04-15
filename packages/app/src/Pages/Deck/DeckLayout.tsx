@@ -40,7 +40,7 @@ export function SnortDeckLayout() {
   const login = useLogin(s => ({
     publicKey: s.publicKey,
     subscriptions: s.subscriptions,
-    telemetry: s.appData.item.preferences.telemetry,
+    telemetry: s.appData.json.preferences.telemetry,
   }));
   const navigate = useNavigate();
   const [deckState, setDeckState] = useState<DeckState>({

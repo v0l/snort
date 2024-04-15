@@ -30,7 +30,7 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
   } = useLogin(s => ({
     publicKey: s.publicKey,
     readonly: s.readonly,
-    preferences: s.appData.item.preferences,
+    preferences: s.appData.json.preferences,
   }));
   const walletState = useWallet();
   const wallet = walletState.wallet;

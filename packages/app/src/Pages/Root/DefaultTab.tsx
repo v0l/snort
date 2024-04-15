@@ -3,7 +3,7 @@ import { RootTabRoutes } from "@/Pages/Root/RootTabRoutes";
 
 export const DefaultTab = () => {
   const { preferences, publicKey } = useLogin(s => ({
-    preferences: s.appData.item.preferences,
+    preferences: s.appData.json.preferences,
     publicKey: s.publicKey,
   }));
   const tab = publicKey ? preferences.defaultRootTab : `trending/notes`;

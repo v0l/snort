@@ -1,4 +1,4 @@
-import { HexKey, KeyStorage, RelaySettings, u256 } from "@snort/system";
+import { HexKey, JsonEventSync, KeyStorage, RelaySettings } from "@snort/system";
 
 import { DisplayAs } from "@/Components/Feed/DisplayAsSelector";
 import { UserPreferences } from "@/Utils/Login/index";
@@ -21,6 +21,7 @@ export const enum LoginSessionType {
 }
 
 export interface SnortAppData {
+  id: string;
   mutedWords: Array<string>;
   showContentWarningPosts: boolean;
   preferences: UserPreferences;
@@ -81,12 +82,12 @@ export interface LoginSession {
   /**
    * A list of event ids this user has pinned
    */
-  pinned: Newest<Array<u256>>;
+  pinned: Newest<Array<string>>;
 
   /**
    * A list of event ids this user has bookmarked
    */
-  bookmarked: Newest<Array<u256>>;
+  bookmarked: Newest<Array<string>>;
 
   /**
    * A list of pubkeys this user has muted
@@ -116,7 +117,7 @@ export interface LoginSession {
   /**
    * Snort application data
    */
-  appData: Newest<SnortAppData>;
+  appData: JsonEventSync<SnortAppData>;
 
   /**
    * A list of chats which we have joined (NIP-28/NIP-29)

@@ -11,7 +11,7 @@ export interface ImgProxySettings {
 }
 
 export default function useImgProxy() {
-  const settings = useLogin(s => s.appData.item.preferences.imgProxyConfig);
+  const settings = useLogin(s => s.appData.json.preferences.imgProxyConfig);
 
   return {
     proxy: (url: string, resize?: number, sha256?: string) => proxyImg(url, settings, resize, sha256),
