@@ -5,7 +5,6 @@ export enum ProfileTabType {
   FOLLOWS = 3,
   ZAPS = 4,
   MUTED = 5,
-  BLOCKED = 6,
   RELAYS = 7,
   BOOKMARKS = 8,
 }

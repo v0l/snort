@@ -13,6 +13,7 @@ import { useCommunityLeaders } from "@/Hooks/useCommunityLeaders";
 import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
 import useLogin from "@/Hooks/useLogin";
 import { useLoginRelays } from "@/Hooks/useLoginRelays";
+import usePreferences from "@/Hooks/usePreferences";
 import { useTheme } from "@/Hooks/useTheme";
 import Footer from "@/Pages/Layout/Footer";
 import { Header } from "@/Pages/Layout/Header";
@@ -24,11 +25,11 @@ import RightColumn from "./RightColumn";
 
 export default function Index() {
   const location = useLocation();
-  const { id, stalker, telemetry } = useLogin(s => ({
+  const { id, stalker } = useLogin(s => ({
     id: s.id,
     stalker: s.stalker ?? false,
-    telemetry: s.appData.json.preferences.telemetry,
   }));
+  const telemetry = usePreferences(s => s.telemetry);
 
   useTheme();
   useLoginRelays();

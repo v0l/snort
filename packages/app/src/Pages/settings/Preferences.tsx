@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { AllLanguageCodes } from "@/Components/IntlProvider/IntlProviderUtils";
 import { useLocale } from "@/Components/IntlProvider/useLocale";
-import usePreferences from "@/Hooks/usePreferences";
+import { useAllPreferences } from "@/Hooks/usePreferences";
 import { unwrap } from "@/Utils";
 import { DefaultImgProxy } from "@/Utils/Const";
 import { UserPreferences } from "@/Utils/Login";
@@ -16,7 +16,7 @@ import messages from "./messages";
 
 const PreferencesPage = () => {
   const { formatMessage } = useIntl();
-  const { preferences, update: updatePerf } = usePreferences();
+  const { preferences, update: updatePerf } = useAllPreferences();
   const [pref, setPref] = useState<UserPreferences>(preferences);
   const [error, setError] = useState("");
   const { lang } = useLocale();

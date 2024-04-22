@@ -12,7 +12,6 @@ import { ThreadRoute } from "@/Components/Event/Thread/ThreadRoute";
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
 import { db } from "@/Db";
 import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch";
-import { updateRelayConnections } from "@/Hooks/useLoginRelays";
 import { AboutPage } from "@/Pages/About";
 import { SnortDeckLayout } from "@/Pages/Deck/DeckLayout";
 import DonatePage from "@/Pages/Donate/DonatePage";
@@ -39,10 +38,10 @@ import { WalletSendPage } from "@/Pages/wallet/send";
 import ZapPoolPage from "@/Pages/ZapPool/ZapPool";
 import { System } from "@/system";
 import { storeRefCode, unwrap } from "@/Utils";
-import { LoginStore } from "@/Utils/Login";
 import { hasWasm, wasmInit, WasmPath } from "@/Utils/wasm";
 import { Wallets } from "@/Wallet";
 import { setupWebLNWalletConfig } from "@/Wallet";
+import { LoginStore } from "./Utils/Login";
 
 async function initSite() {
   storeRefCode();
@@ -50,15 +49,14 @@ async function initSite() {
     await wasmInit(WasmPath);
     await initRelayWorker();
   }
-  const login = LoginStore.takeSnapshot();
-  updateRelayConnections(System, login.relays.item).catch(console.error);
+
   setupWebLNWalletConfig(Wallets);
 
   db.ready = await db.isAvailable();
   if (db.ready) {
-    const pTags = login.contacts.filter(a => a[0] === "p").map(a => a[1]);
-    await preload(pTags);
-    await System.PreloadSocialGraph();
+    const login = LoginStore.snapshot();
+    preload(login.state.follows); // dont await this
+    System.PreloadSocialGraph(); // dont await this
   }
 
   queueMicrotask(() => {

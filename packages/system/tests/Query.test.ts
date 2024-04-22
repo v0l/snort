@@ -16,11 +16,8 @@ describe("query", () => {
       write: true,
     };
     const c1 = new Connection("wss://one.com", opt);
-    c1.Down = false;
     const c2 = new Connection("wss://two.com", opt);
-    c2.Down = false;
     const c3 = new Connection("wss://three.com", opt);
-    c3.Down = false;
 
     const f = {
       relay: "",

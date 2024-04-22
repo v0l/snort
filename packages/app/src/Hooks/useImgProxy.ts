@@ -1,7 +1,7 @@
 import * as utils from "@noble/curves/abstract/utils";
 import { base64 } from "@scure/base";
 
-import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { hmacSha256, unwrap } from "@/Utils";
 
 export interface ImgProxySettings {
@@ -11,10 +11,10 @@ export interface ImgProxySettings {
 }
 
 export default function useImgProxy() {
-  const settings = useLogin(s => s.appData.json.preferences.imgProxyConfig);
+  const imgProxyConfig = usePreferences(s => s.imgProxyConfig);
 
   return {
-    proxy: (url: string, resize?: number, sha256?: string) => proxyImg(url, settings, resize, sha256),
+    proxy: (url: string, resize?: number, sha256?: string) => proxyImg(url, imgProxyConfig, resize, sha256),
   };
 }
 

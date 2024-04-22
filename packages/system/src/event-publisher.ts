@@ -15,6 +15,7 @@ import {
   PowMiner,
   PrivateKeySigner,
   RelaySettings,
+  settingsToRelayTag,
   SignerSupports,
   TaggedNostrEvent,
   ToNostrEventTag,
@@ -23,10 +24,10 @@ import {
 } from ".";
 
 import { EventBuilder } from "./event-builder";
-import { EventExt } from "./event-ext";
 import { findTag } from "./utils";
 import { Nip7Signer } from "./impl/nip7";
 import { base64 } from "@scure/base";
+import { Nip10 } from "./impl/nip10";
 
 type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
 
@@ -202,29 +203,7 @@ export class EventPublisher {
     const eb = this.#eb(EventKind.TextNote);
     eb.content(msg);
 
-    const link = NostrLink.fromEvent(replyTo);
-    const thread = EventExt.extractThread(replyTo);
-    if (thread) {
-      const rootOrReplyAsRoot = thread.root || thread.replyTo;
-      if (rootOrReplyAsRoot) {
-        eb.tag([rootOrReplyAsRoot.key, rootOrReplyAsRoot.value ?? "", rootOrReplyAsRoot.relay ?? "", "root"]);
-      }
-      eb.tag([...unwrap(link.toEventTag()), "reply"]);
-
-      eb.tag(["p", replyTo.pubkey]);
-      for (const pk of thread.pubKeys) {
-        if (pk === this.#pubKey) {
-          continue;
-        }
-        eb.tag(["p", pk]);
-      }
-    } else {
-      eb.tag([...unwrap(link.toEventTag()), "root"]);
-      // dont tag self in replies
-      if (replyTo.pubkey !== this.#pubKey) {
-        eb.tag(["p", replyTo.pubkey]);
-      }
-    }
+    Nip10.replyTo(replyTo, eb);
     eb.processContent();
     fnExtra?.(eb);
     return await this.#sign(eb);
@@ -247,15 +226,9 @@ export class EventPublisher {
     }
     const eb = this.#eb(EventKind.Relays);
     for (const rx of relays) {
-      const rTag = ["r", rx.url];
-      if (rx.settings.read && !rx.settings.write) {
-        rTag.push("read");
-      }
-      if (rx.settings.write && !rx.settings.read) {
-        rTag.push("write");
-      }
-      if (rx.settings.read || rx.settings.write) {
-        eb.tag(rTag);
+      const tag = settingsToRelayTag(rx);
+      if (tag) {
+        eb.tag(tag);
       }
     }
     return await this.#sign(eb);

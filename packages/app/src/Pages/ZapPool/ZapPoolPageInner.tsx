@@ -1,9 +1,9 @@
-import { useMemo, useSyncExternalStore } from "react";
+import { SnortContext } from "@snort/system-react";
+import { useContext, useMemo, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { ZapPoolTarget } from "@/Pages/ZapPool/ZapPoolTarget";
 import { bech32ToHex, getRelayName, trackEvent, unwrap } from "@/Utils";
 import { SnortPubKey } from "@/Utils/Const";
@@ -19,8 +19,8 @@ const DataProviders = [
 ];
 
 export function ZapPoolPageInner() {
-  const login = useLogin();
-  const { system } = useEventPublisher();
+  const defaultZapAmount = usePreferences(s => s.defaultZapAmount);
+  const system = useContext(SnortContext);
   const zapPool = useSyncExternalStore(
     c => unwrap(ZapPoolController).hook(c),
     () => unwrap(ZapPoolController).snapshot(),
@@ -39,7 +39,7 @@ export function ZapPoolPageInner() {
       })
       .filter(a => a !== undefined)
       .map(unwrap);
-  }, [login.relays]);
+  }, []);
 
   const sumPending = zapPool.reduce((acc, v) => acc + v.sum, 0);
   return (
@@ -66,7 +66,7 @@ export function ZapPoolPageInner() {
           values={{
             number: (
               <b>
-                <FormattedNumber value={login.appData.json.preferences.defaultZapAmount} />
+                <FormattedNumber value={defaultZapAmount} />
               </b>
             ),
           }}
@@ -79,14 +79,12 @@ export function ZapPoolPageInner() {
           values={{
             nIn: (
               <b>
-                <FormattedNumber value={login.appData.json.preferences.defaultZapAmount} />
+                <FormattedNumber value={defaultZapAmount} />
               </b>
             ),
             nOut: (
               <b>
-                <FormattedNumber
-                  value={ZapPoolController?.calcAllocation(login.appData.json.preferences.defaultZapAmount) ?? 0}
-                />
+                <FormattedNumber value={ZapPoolController?.calcAllocation(defaultZapAmount) ?? 0} />
               </b>
             ),
           }}

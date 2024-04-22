@@ -2,10 +2,10 @@ import { useSyncExternalStore } from "react";
 
 import { getLocale } from "@/Components/IntlProvider/IntlProviderUtils";
 import { LangOverride } from "@/Components/IntlProvider/langStore";
-import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 
 export function useLocale() {
-  const { language } = useLogin(s => ({ language: s.appData.json.preferences.language }));
+  const language = usePreferences(s => s.language);
   const loggedOutLang = useSyncExternalStore(
     c => LangOverride.hook(c),
     () => LangOverride.snapshot(),

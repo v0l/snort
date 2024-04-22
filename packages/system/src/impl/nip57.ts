@@ -1,10 +1,10 @@
-import { decodeInvoice, InvoiceDetails } from "@snort/shared";
-import { NostrEvent } from "./nostr";
-import { findTag } from "./utils";
-import { EventExt } from "./event-ext";
-import { NostrLink } from "./nostr-link";
 import debug from "debug";
 import { LRUCache } from "lru-cache";
+import { decodeInvoice, InvoiceDetails } from "@snort/shared";
+import { NostrEvent } from "../nostr";
+import { findTag } from "../utils";
+import { NostrLink } from "../nostr-link";
+import { Nip10 } from "./nip10";
 
 const Log = debug("zaps");
 const ParsedZapCache = new LRUCache<string, ParsedZap>({ max: 1000 });
@@ -35,7 +35,7 @@ export function parseZap(zapReceipt: NostrEvent): ParsedZap {
         // old format, ignored
         throw new Error("deprecated zap format");
       }
-      const zapRequestThread = EventExt.extractThread(zapRequest);
+      const zapRequestThread = Nip10.parseThread(zapRequest);
       const requestContext = zapRequestThread?.root;
 
       const anonZap = zapRequest.tags.find(a => a[0] === "anon");
@@ -44,7 +44,7 @@ export function parseZap(zapReceipt: NostrEvent): ParsedZap {
         id: zapReceipt.id,
         zapService: zapReceipt.pubkey,
         amount: (invoice?.amount ?? 0) / 1000,
-        event: requestContext ? NostrLink.fromThreadTag(requestContext) : undefined,
+        event: requestContext,
         sender: zapRequest.pubkey,
         receiver: findTag(zapRequest, "p"),
         valid: true,

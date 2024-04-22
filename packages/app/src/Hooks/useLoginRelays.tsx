@@ -2,10 +2,10 @@ import { RelaySettings, SystemInterface } from "@snort/system";
 import { useEffect } from "react";
 
 import useEventPublisher from "./useEventPublisher";
-import useLogin from "./useLogin";
+import useRelays from "./useRelays";
 
 export function useLoginRelays() {
-  const relays = useLogin(s => s.relays.item);
+  const relays = useRelays();
   const { system } = useEventPublisher();
 
   useEffect(() => {

@@ -17,15 +17,15 @@ enum Provider {
 }
 
 export default function SuggestedProfiles() {
-  const login = useLogin(s => ({ publicKey: s.publicKey, follows: s.contacts }));
+  const publicKey = useLogin(s => s.publicKey);
   const [provider, setProvider] = useState(Provider.NostrBand);
 
   const getUrlAndKey = () => {
-    if (!login.publicKey) return { url: null, key: null };
+    if (!publicKey) return { url: null, key: null };
     switch (provider) {
       case Provider.NostrBand: {
         const api = new NostrBandApi();
-        const url = api.suggestedFollowsUrl(hexToBech32(NostrPrefix.PublicKey, login.publicKey));
+        const url = api.suggestedFollowsUrl(hexToBech32(NostrPrefix.PublicKey, publicKey));
         return { url, key: `nostr-band-${url}` };
       }
       default:

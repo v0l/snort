@@ -11,6 +11,7 @@ import { ZapsSummary } from "@/Components/Event/ZapsSummary";
 import ZapModal from "@/Components/ZapModal/ZapModal";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { getDisplayName } from "@/Utils";
 import { Zapper, ZapTarget } from "@/Utils/Zapper";
 import { ZapPoolController } from "@/Utils/ZapPoolController";
@@ -23,15 +24,11 @@ export interface ZapIconProps {
 }
 
 export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
-  const {
-    publicKey,
-    readonly,
-    preferences: prefs,
-  } = useLogin(s => ({
+  const { publicKey, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
     readonly: s.readonly,
-    preferences: s.appData.json.preferences,
   }));
+  const preferences = usePreferences(s => ({ autoZap: s.autoZap, defaultZapAmount: s.defaultZapAmount }));
   const walletState = useWallet();
   const wallet = walletState.wallet;
   const link = NostrLink.fromEvent(ev);
@@ -75,7 +72,7 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
     if (canFastZap && lnurl) {
       setZapping(true);
       try {
-        await fastZapInner(lnurl, prefs.defaultZapAmount);
+        await fastZapInner(lnurl, preferences.defaultZapAmount);
       } catch (e) {
         console.warn("Fast zap failed", e);
         if (!(e instanceof Error) || e.message !== "User rejected") {
@@ -110,13 +107,13 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
   const targets = getZapTarget();
 
   useEffect(() => {
-    if (prefs.autoZap && !didZap && !isMine && !zapping) {
+    if (preferences.autoZap && !didZap && !isMine && !zapping) {
       const lnurl = getZapTarget();
       if (wallet?.isReady() && lnurl) {
         setZapping(true);
         queueMicrotask(async () => {
           try {
-            await fastZapInner(lnurl, prefs.defaultZapAmount);
+            await fastZapInner(lnurl, preferences.defaultZapAmount);
           } catch {
             // ignored
           } finally {
@@ -125,7 +122,7 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
         });
       }
     }
-  }, [prefs.autoZap, author, zapping]);
+  }, [preferences.autoZap, author, zapping]);
 
   return (
     <>

@@ -36,14 +36,6 @@ export function usePinList(pubkey: string | undefined) {
   });
 }
 
-export function useMuteList(pubkey: string | undefined) {
-  return useLinkList(`list:mute:${pubkey?.slice(0, 12)}`, rb => {
-    if (pubkey) {
-      rb.withFilter().kinds([EventKind.MuteList]).authors([pubkey]);
-    }
-  });
-}
-
 export function useBookmarkList(pubkey: string | undefined) {
   return useLinkListEvents(`list:bookmark:${pubkey?.slice(0, 12)}`, rb => {
     if (pubkey) {

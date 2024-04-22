@@ -1,4 +1,4 @@
-import { EventExt, EventKind, NostrLink, RequestBuilder } from "@snort/system";
+import { EventKind, Nip10, NostrLink, RequestBuilder } from "@snort/system";
 import { SnortContext, useRequestBuilder } from "@snort/system-react";
 import { useContext, useEffect, useMemo, useState } from "react";
 
@@ -39,7 +39,7 @@ export default function useThreadFeed(link: NostrLink) {
         .relay(rootRelays ?? []);
     }
     return sub;
-  }, [allEvents.length, rootRelays]);
+  }, [allEvents, link, root, rootRelays]);
 
   const store = useRequestBuilder(sub);
 
@@ -53,27 +53,21 @@ export default function useThreadFeed(link: NostrLink) {
         .flat();
       setAllEvents(links);
 
+      // load the thread structure from the current note
       const current = store.find(a => link.matchesEvent(a));
       if (current) {
-        const t = EventExt.extractThread(current);
+        const t = Nip10.parseThread(current);
         if (t) {
           const rootOrReplyAsRoot = t?.root ?? t?.replyTo;
           if (rootOrReplyAsRoot) {
-            setRoot(
-              NostrLink.fromTag([
-                rootOrReplyAsRoot.key,
-                rootOrReplyAsRoot.value ?? "",
-                rootOrReplyAsRoot.relay ?? "",
-                ...(rootOrReplyAsRoot.marker ?? []),
-              ]),
-            );
+            setRoot(rootOrReplyAsRoot);
           }
         } else {
           setRoot(link);
         }
       }
     }
-  }, [store?.length]);
+  }, [link, store, store.length]);
 
   useEffect(() => {
     if (root) {
@@ -87,12 +81,15 @@ export default function useThreadFeed(link: NostrLink) {
               relays.relays.filter(a => a.settings.read).map(a => a.url),
               3,
             );
+            if (root.relays) {
+              readRelays.push(...root.relays);
+            }
             setRootRelays(readRelays);
           }
         });
       }
     }
-  }, [link, root, store?.length]);
+  }, [link, root, store, store.length, system.relayCache]);
 
   return store ?? [];
 }

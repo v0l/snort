@@ -1,5 +1,5 @@
 import { EventKind, FullRelaySettings, NostrEvent, SystemInterface, UsersRelays } from "..";
-import { sanitizeRelayUrl } from "@snort/shared";
+import { removeUndefined, sanitizeRelayUrl } from "@snort/shared";
 
 export const DefaultPickNRelays = 2;
 
@@ -20,6 +20,7 @@ export type EventFetcher = {
 };
 
 export function parseRelayTag(tag: Array<string>) {
+  if (tag[0] !== "r") return;
   return {
     url: sanitizeRelayUrl(tag[1]),
     settings: {
@@ -30,7 +31,7 @@ export function parseRelayTag(tag: Array<string>) {
 }
 
 export function parseRelayTags(tag: Array<Array<string>>) {
-  return tag.map(parseRelayTag).filter(a => a !== null);
+  return removeUndefined(tag.map(parseRelayTag));
 }
 
 export function parseRelaysFromKind(ev: NostrEvent) {
@@ -51,6 +52,22 @@ export function parseRelaysFromKind(ev: NostrEvent) {
     }
   } else if (ev.kind === EventKind.Relays) {
     return parseRelayTags(ev.tags);
+  }
+}
+
+/**
+ * Convert relay settings into NIP-65 relay tag
+ */
+export function settingsToRelayTag(rx: FullRelaySettings) {
+  const rTag = ["r", rx.url];
+  if (rx.settings.read && !rx.settings.write) {
+    rTag.push("read");
+  }
+  if (rx.settings.write && !rx.settings.read) {
+    rTag.push("write");
+  }
+  if (rx.settings.read || rx.settings.write) {
+    return rTag;
   }
 }
 

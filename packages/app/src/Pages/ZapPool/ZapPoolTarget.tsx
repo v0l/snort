@@ -2,14 +2,13 @@ import { useUserProfile } from "@snort/system-react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import ProfilePreview from "@/Components/User/ProfilePreview";
-import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { ZapPoolController, ZapPoolRecipient } from "@/Utils/ZapPoolController";
 
 function ZapPoolTargetInner({ target }: { target: ZapPoolRecipient }) {
-  const login = useLogin();
   const profile = useUserProfile(target.pubkey);
   const hasAddress = profile?.lud16 || profile?.lud06;
-  const defaultZapMount = Math.ceil(login.appData.json.preferences.defaultZapAmount * (target.split / 100));
+  const defaultZapMount = usePreferences(s => s.defaultZapAmount * (target.split / 100));
   return (
     <ProfilePreview
       pubkey={target.pubkey}

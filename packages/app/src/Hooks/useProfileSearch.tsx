@@ -2,10 +2,10 @@ import { socialGraphInstance } from "@snort/system";
 import { useEffect, useMemo, useState } from "react";
 
 import fuzzySearch from "@/Db/FuzzySearch";
-import useTimelineFeed from "@/Feed/TimelineFeed";
+import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
 import { debounce } from "@/Utils";
 
-const options = { method: "LIMIT_UNTIL" };
+const options: TimelineFeedOptions = { method: "LIMIT_UNTIL" };
 
 export default function useProfileSearch(search: string) {
   const [debouncedSearch, setDebouncedSearch] = useState(search);
@@ -17,11 +17,12 @@ export default function useProfileSearch(search: string) {
   }, [search]);
 
   const subject = useMemo(
-    () => ({
-      type: "profile_keyword",
-      items: debouncedSearch ? [debouncedSearch] : [],
-      discriminator: debouncedSearch,
-    }),
+    () =>
+      ({
+        type: "profile_keyword",
+        items: debouncedSearch ? [debouncedSearch] : [],
+        discriminator: debouncedSearch,
+      }) as TimelineSubject,
     [debouncedSearch],
   );
   const feed = useTimelineFeed(subject, options);

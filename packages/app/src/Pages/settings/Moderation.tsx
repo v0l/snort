@@ -5,15 +5,14 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { appendDedupe } from "@/Utils";
 import { SnortAppData, updateAppData } from "@/Utils/Login";
+import { useAllPreferences } from "@/Hooks/usePreferences";
 
 export default function ModerationSettingsPage() {
-  const login = useLogin();
+  const state = useAllPreferences();
   const [muteWord, setMuteWord] = useState("");
-  const appData = login.appData.json;
-  const { system } = useEventPublisher();
 
   function addMutedWord() {
-    updateAppData(login.id, system, ad => ({
+    updateAppData(login.id, ad => ({
       ...ad,
       mutedWords: appendDedupe(appData.mutedWords, [muteWord]),
     }));
@@ -21,14 +20,14 @@ export default function ModerationSettingsPage() {
   }
 
   const handleToggle = (setting: keyof SnortAppData) => {
-    updateAppData(login.id, system, ad => ({
+    updateAppData(login.id, ad => ({
       ...ad,
       [setting]: !appData[setting],
     }));
   };
 
   function removeMutedWord(word: string) {
-    updateAppData(login.id, system, ad => ({
+    updateAppData(login.id, ad => ({
       ...ad,
       mutedWords: appData.mutedWords.filter(a => a !== word),
     }));

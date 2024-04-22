@@ -17,14 +17,13 @@ const enum PruneStage {
 }
 
 export function PruneFollowList() {
-  const { followList: follows } = useFollowsControls();
+  const followControls = useFollowsControls();
   const { system } = useEventPublisher();
-  const uniqueFollows = dedupe(follows);
+  const uniqueFollows = dedupe(followControls.followList);
   const [status, setStatus] = useState<PruneStage>();
   const [progress, setProgress] = useState(0);
   const [lastPost, setLastPosts] = useState<Record<string, number>>();
   const [unfollow, setUnfollow] = useState<Array<string>>([]);
-  const followControls = useFollowsControls();
 
   async function fetchLastPosts() {
     setStatus(PruneStage.FetchLastPostTimestamp);
@@ -121,8 +120,8 @@ export function PruneFollowList() {
           defaultMessage="{x} follows ({y} duplicates)"
           id="iICVoL"
           values={{
-            x: follows.length,
-            y: follows.length - uniqueFollows.length,
+            x: followControls.followList.length,
+            y: followControls.followList.length - uniqueFollows.length,
           }}
         />
       </div>

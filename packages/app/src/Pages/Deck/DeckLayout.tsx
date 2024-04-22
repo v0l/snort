@@ -13,6 +13,7 @@ import Toaster from "@/Components/Toaster/Toaster";
 import useLoginFeed from "@/Feed/LoginFeed";
 import useLogin from "@/Hooks/useLogin";
 import { useLoginRelays } from "@/Hooks/useLoginRelays";
+import usePreferences from "@/Hooks/usePreferences";
 import { useTheme } from "@/Hooks/useTheme";
 import { ArticlesCol, MediaCol, NotesCol, NotificationsCol } from "@/Pages/Deck/Columns";
 import NavSidebar from "@/Pages/Layout/NavSidebar";
@@ -40,8 +41,8 @@ export function SnortDeckLayout() {
   const login = useLogin(s => ({
     publicKey: s.publicKey,
     subscriptions: s.subscriptions,
-    telemetry: s.appData.json.preferences.telemetry,
   }));
+  const telemetry = usePreferences(s => s.telemetry);
   const navigate = useNavigate();
   const [deckState, setDeckState] = useState<DeckState>({
     thread: undefined,
@@ -60,7 +61,7 @@ export function SnortDeckLayout() {
   }, [login]);
 
   useEffect(() => {
-    if (CONFIG.features.analytics && (login.telemetry ?? true)) {
+    if (CONFIG.features.analytics && (telemetry ?? true)) {
       trackEvent("pageview");
     }
   }, [location]);

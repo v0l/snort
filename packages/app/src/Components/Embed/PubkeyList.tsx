@@ -8,30 +8,31 @@ import AsyncButton from "@/Components/Button/AsyncButton";
 import { Toastore } from "@/Components/Toaster/Toaster";
 import FollowListBase from "@/Components/User/FollowListBase";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { dedupe, findTag, getDisplayName, hexToBech32 } from "@/Utils";
 import { useWallet } from "@/Wallet";
 
 export default function PubkeyList({ ev, className }: { ev: NostrEvent; className?: string }) {
   const wallet = useWallet();
-  const login = useLogin();
-  const { publisher } = useEventPublisher();
+  const defaultZapAmount = usePreferences(s => s.defaultZapAmount);
+  const { publisher, system } = useEventPublisher();
   const ids = dedupe(ev.tags.filter(a => a[0] === "p").map(a => a[1]));
 
   async function zapAll() {
     for (const pk of ids) {
       try {
         const profile = await UserCache.get(pk);
-        const amtSend = login.appData.json.preferences.defaultZapAmount;
+        const amtSend = defaultZapAmount;
         const lnurl = profile?.lud16 || profile?.lud06;
         if (lnurl) {
           const svc = new LNURL(lnurl);
           await svc.load();
 
+          const relays = await system.requestRouter?.forReplyTo(pk);
           const zap = await publisher?.zap(
             amtSend * 1000,
             pk,
-            Object.keys(login.relays.item),
+            relays ?? [],
             undefined,
             `Zap from ${hexToBech32("note", ev.id)}`,
           );
@@ -74,7 +75,7 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
               defaultMessage="Zap all {n} sats"
               id="IVbtTS"
               values={{
-                n: <FormattedNumber value={login.appData.json.preferences.defaultZapAmount * ids.length} />,
+                n: <FormattedNumber value={defaultZapAmount * ids.length} />,
               }}
             />
           </AsyncButton>

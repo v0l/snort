@@ -30,7 +30,7 @@ export * from "./event-publisher";
 export * from "./event-builder";
 export * from "./nostr-link";
 export * from "./profile-cache";
-export * from "./zaps";
+export * from "./impl/nip57";
 export * from "./signer";
 export * from "./text";
 export * from "./pow";
@@ -39,11 +39,14 @@ export * from "./query-optimizer";
 export * from "./encrypted";
 export * from "./outbox";
 export * from "./sync";
+export * from "./user-state";
 
 export * from "./impl/nip4";
-export * from "./impl/nip44";
 export * from "./impl/nip7";
+export * from "./impl/nip10";
+export * from "./impl/nip44";
 export * from "./impl/nip46";
+export * from "./impl/nip57";
 
 export * from "./cache/index";
 export * from "./cache/user-relays";

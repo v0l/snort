@@ -12,13 +12,13 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
   const location = useLocation();
   const [currentId, setCurrentId] = useState(unwrap(link.toEventTag())[1]);
   const feed = useThreadFeed(link);
-  const { isBlocked } = useModeration();
+  const { isMuted } = useModeration();
 
   const chains = useMemo(() => {
     const chains = new Map<u256, Array<TaggedNostrEvent>>();
     if (feed) {
       feed
-        ?.filter(a => !isBlocked(a.pubkey))
+        ?.filter(a => !isMuted(a.pubkey))
         .forEach(v => {
           const replyTo = replyChainKey(v);
           if (replyTo) {
@@ -31,7 +31,7 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
         });
     }
     return chains;
-  }, [feed]);
+  }, [feed, isMuted]);
 
   // Root is the parent of the current note or the current note if its a root note or the root of the thread
   const root = useMemo(() => {
@@ -46,7 +46,7 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
         return currentNote;
       }
     }
-  }, [feed.length, currentId, location]);
+  }, [feed, location.state, currentId]);
 
   const ctxValue = useMemo<ThreadContextState>(() => {
     return {
@@ -56,7 +56,7 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
       data: feed,
       setCurrent: v => setCurrentId(v),
     };
-  }, [root, chains]);
+  }, [currentId, root, chains, feed]);
 
   return <ThreadContext.Provider value={ctxValue}>{children}</ThreadContext.Provider>;
 }

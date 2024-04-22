@@ -9,6 +9,7 @@ import { ReplyButton } from "@/Components/Event/Note/NoteFooter/ReplyButton";
 import { RepostButton } from "@/Components/Event/Note/NoteFooter/RepostButton";
 import ReactionsModal from "@/Components/Event/Note/ReactionsModal";
 import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 
 export interface NoteFooterProps {
   replyCount?: number;
@@ -25,17 +26,14 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { replies, reactions, zaps, reposts } = useEventReactions(link, related);
   const { positive } = reactions;
 
-  const { preferences: prefs, readonly } = useLogin(s => ({
-    preferences: s.appData.json.preferences,
-    publicKey: s.publicKey,
-    readonly: s.readonly,
-  }));
+  const readonly = useLogin(s => s.readonly);
+  const enableReactions = usePreferences(s => s.enableReactions);
 
   return (
     <div className="flex flex-row gap-4 overflow-hidden max-w-full h-6 items-center">
       <ReplyButton ev={ev} replyCount={props.replyCount ?? replies.length} readonly={readonly} />
       <RepostButton ev={ev} reposts={reposts} />
-      {prefs.enableReactions && <LikeButton ev={ev} positiveReactions={positive} />}
+      {enableReactions && <LikeButton ev={ev} positiveReactions={positive} />}
       {CONFIG.showPowIcon && <PowIcon ev={ev} />}
       <FooterZapButton ev={ev} zaps={zaps} onClickZappers={() => setShowReactions(true)} />
       {showReactions && <ReactionsModal initialTab={1} onClose={() => setShowReactions(false)} event={ev} />}

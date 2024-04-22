@@ -4,6 +4,7 @@ import { BuiltRawReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } 
 import { Query, TraceReport } from "./query";
 import { FilterCacheLayer } from "./filter-cache-layer";
 import { trimFilters } from "./request-trim";
+import { eventMatchesFilter } from "./request-matcher";
 
 interface QueryManagerEvents {
   change: () => void;
@@ -75,26 +76,19 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    * Async fetch results
    */
   async fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
-    const q = new Query(this.#system, req);
-    q.on("trace", r => this.emit("trace", r));
-    q.on("request", (subId, fx) => {
-      this.#send(q, fx);
-    });
+    const filters = req.buildRaw();
+    const q = this.query(req);
     if (cb) {
-      q.on("event", evs => cb(evs));
+      q.on("event", cb);
     }
     await new Promise<void>(resolve => {
-      q.on("loading", loading => {
-        this.#log("loading %s %o", q.id, loading);
-        if (!loading) {
-          resolve();
-        }
-      });
+      q.once("done", resolve);
     });
     const results = q.feed.takeSnapshot();
-    q.cleanup();
-    this.#log("Fetch results for %s %o", q.id, results);
-    return results;
+    if (cb) {
+      q.off("event", cb);
+    }
+    return results.filter(a => filters.some(b => eventMatchesFilter(a, b)));
   }
 
   *[Symbol.iterator]() {
@@ -112,6 +106,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       const data = await this.#system.cacheRelay.query(["REQ", q.id, ...qSend.filters]);
       if (data.length > 0) {
         qSend.syncFrom = data as Array<TaggedNostrEvent>;
+        this.#log("Adding from cache: %O", data);
         q.feed.add(data as Array<TaggedNostrEvent>);
       }
     }
@@ -138,6 +133,8 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         const qt = q.sendToRelay(s, qSend);
         if (qt) {
           return [qt];
+        } else {
+          this.#log("Query not sent to %s: %O", qSend.relay, qSend);
         }
       } else {
         const nc = await this.#system.pool.connect(qSend.relay, { read: true, write: true }, true);
@@ -145,6 +142,8 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
           const qt = q.sendToRelay(nc, qSend);
           if (qt) {
             return [qt];
+          } else {
+            this.#log("Query not sent to %s: %O", qSend.relay, qSend);
           }
         } else {
           console.warn("Failed to connect to new relay for:", qSend.relay, q);
@@ -158,6 +157,8 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
           const qt = q.sendToRelay(s, qSend);
           if (qt) {
             ret.push(qt);
+          } else {
+            this.#log("Query not sent to %s: %O", a, qSend);
           }
         }
       }

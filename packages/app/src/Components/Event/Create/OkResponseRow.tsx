@@ -8,21 +8,16 @@ import IconButton from "@/Components/Button/IconButton";
 import Icon from "@/Components/Icons/Icon";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
-import { saveRelays } from "@/Pages/settings/saveRelays";
 import { getRelayName } from "@/Utils";
-import { removeRelay } from "@/Utils/Login";
 
 export function OkResponseRow({ rsp, close }: { rsp: OkResponse; close: () => void }) {
   const [r, setResult] = useState(rsp);
   const { formatMessage } = useIntl();
-  const { publisher, system } = useEventPublisher();
+  const { system } = useEventPublisher();
   const login = useLogin();
 
   async function removeRelayFromResult(r: OkResponse) {
-    if (publisher) {
-      removeRelay(login, unwrap(sanitizeRelayUrl(r.relay)));
-      await saveRelays(system, publisher, login.relays.item);
-    }
+    await login.state.removeRelay(unwrap(sanitizeRelayUrl(r.relay)), true);
     close();
   }
 

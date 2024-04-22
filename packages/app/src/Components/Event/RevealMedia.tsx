@@ -6,6 +6,7 @@ import { MediaElement } from "@/Components/Embed/MediaElement";
 import Reveal from "@/Components/Event/Reveal";
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { FileExtensionRegex } from "@/Utils/Const";
 
 interface RevealMediaProps {
@@ -17,15 +18,13 @@ interface RevealMediaProps {
 }
 
 export default function RevealMedia(props: RevealMediaProps) {
-  const { preferences, publicKey } = useLogin(s => ({
-    preferences: s.appData.json.preferences,
-    publicKey: s.publicKey,
-  }));
+  const publicKey = useLogin(s => s.publicKey);
+  const autoLoadMedia = usePreferences(s => s.autoLoadMedia);
   const { isFollowing } = useFollowsControls();
 
-  const hideNonFollows = preferences.autoLoadMedia === "follows-only" && !isFollowing(props.creator);
+  const hideNonFollows = autoLoadMedia === "follows-only" && !isFollowing(props.creator);
   const isMine = props.creator === publicKey;
-  const hideMedia = preferences.autoLoadMedia === "none" || (!isMine && hideNonFollows);
+  const hideMedia = autoLoadMedia === "none" || (!isMine && hideNonFollows);
   const hostname = new URL(props.link).hostname;
 
   const url = new URL(props.link);

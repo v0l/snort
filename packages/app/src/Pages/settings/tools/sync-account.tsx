@@ -6,6 +6,7 @@ import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import useLogin from "@/Hooks/useLogin";
+import useRelays from "@/Hooks/useRelays";
 import { SearchRelays } from "@/Utils/Const";
 
 export default function SyncAccountTool() {
@@ -13,9 +14,10 @@ export default function SyncAccountTool() {
   const login = useLogin();
   const [scan, setScan] = useState<number>();
   const [results, setResults] = useState<Array<TaggedNostrEvent>>([]);
+  const myRelays = useRelays();
 
   async function start() {
-    const relays = Object.entries(login.relays.item)
+    const relays = Object.entries(myRelays)
       .filter(([, v]) => v.write)
       .map(([k]) => k);
     const sync = new RangeSync(system);

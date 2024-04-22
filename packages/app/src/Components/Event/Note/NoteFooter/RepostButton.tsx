@@ -9,16 +9,15 @@ import Icon from "@/Components/Icons/Icon";
 import messages from "@/Components/messages";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { useNoteCreator } from "@/State/NoteCreator";
 
 export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: TaggedNostrEvent[] }) => {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const { publisher, system } = useEventPublisher();
-  const { publicKey, preferences: prefs } = useLogin(s => ({
-    preferences: s.appData.json.preferences,
-    publicKey: s.publicKey,
-  }));
+  const publicKey = useLogin(s => s.publicKey);
+  const confirmReposts = usePreferences(s => s.confirmReposts);
   const note = useNoteCreator(n => ({ show: n.show, replyTo: n.replyTo, update: n.update, quote: n.quote }));
 
   const hasReposted = () => {
@@ -27,7 +26,7 @@ export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: T
 
   const repost = async () => {
     if (!hasReposted() && publisher) {
-      if (!prefs.confirmReposts || window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.id }))) {
+      if (!confirmReposts || window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.id }))) {
         const evRepost = await publisher.repost(ev);
         system.BroadcastEvent(evRepost);
       }

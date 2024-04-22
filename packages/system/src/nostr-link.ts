@@ -19,7 +19,7 @@ export interface ToNostrEventTag {
 export class NostrHashtagLink implements ToNostrEventTag {
   constructor(readonly tag: string) {}
 
-  toEventTag(): string[] | undefined {
+  toEventTag() {
     return ["t", this.tag];
   }
 }
@@ -31,6 +31,7 @@ export class NostrLink implements ToNostrEventTag {
     readonly kind?: number,
     readonly author?: string,
     readonly relays?: Array<string>,
+    readonly marker?: string,
   ) {
     if (type !== NostrPrefix.Address && !isHex(id)) {
       throw new Error("ID must be hex");
@@ -52,22 +53,43 @@ export class NostrLink implements ToNostrEventTag {
     }
   }
 
-  toEventTag(marker?: string) {
-    const relayEntry = this.relays?.at(0) ? [this.relays[0]] : [];
+  get tagKey() {
+    if (this.type === NostrPrefix.Address) {
+      return `${this.kind}:${this.author}:${this.id}`;
+    }
+    return this.id;
+  }
 
+  /**
+   * Create an event tag for this link
+   */
+  toEventTag(marker?: string) {
+    const suffix: Array<string> = [];
+    if (this.relays && this.relays.length > 0) {
+      suffix.push(this.relays[0]);
+    }
     if (marker) {
-      if (relayEntry.length === 0) {
-        relayEntry.push("");
+      if (suffix[0] === undefined) {
+        suffix.push(""); // empty relay hint
       }
-      relayEntry.push(marker);
+      suffix.push(marker);
     }
 
     if (this.type === NostrPrefix.PublicKey || this.type === NostrPrefix.Profile) {
-      return ["p", this.id, ...relayEntry];
+      return ["p", this.id, ...suffix];
     } else if (this.type === NostrPrefix.Note || this.type === NostrPrefix.Event) {
-      return ["e", this.id, ...relayEntry];
+      if (this.author) {
+        if (suffix[0] === undefined) {
+          suffix.push(""); // empty relay hint
+        }
+        if (suffix[1] === undefined) {
+          suffix.push(""); // empty marker
+        }
+        suffix.push(this.author);
+      }
+      return ["e", this.id, ...suffix];
     } else if (this.type === NostrPrefix.Address) {
-      return ["a", `${this.kind}:${this.author}:${this.id}`, ...relayEntry];
+      return ["a", `${this.kind}:${this.author}:${this.id}`, ...suffix];
     }
   }
 
@@ -162,46 +184,38 @@ export class NostrLink implements ToNostrEventTag {
     }
   }
 
-  static fromThreadTag(tag: Tag) {
-    const relay = tag.relay ? [tag.relay] : undefined;
-
-    switch (tag.key) {
-      case "e": {
-        return new NostrLink(NostrPrefix.Event, unwrap(tag.value), undefined, undefined, relay);
-      }
-      case "p": {
-        return new NostrLink(NostrPrefix.Profile, unwrap(tag.value), undefined, undefined, relay);
-      }
-      case "a": {
-        const [kind, author, dTag] = unwrap(tag.value).split(":");
-        return new NostrLink(NostrPrefix.Address, dTag, Number(kind), author, relay);
-      }
-    }
-    throw new Error(`Unknown tag kind ${tag.key}`);
-  }
-
-  static fromTag(tag: Array<string>, author?: string, kind?: number) {
+  static fromTag<T = NostrLink>(
+    tag: Array<string>,
+    author?: string,
+    kind?: number,
+    fnOther?: (tag: Array<string>) => T,
+  ) {
     const relays = tag.length > 2 ? [tag[2]] : undefined;
     switch (tag[0]) {
       case "e": {
-        return new NostrLink(NostrPrefix.Event, tag[1], kind, author, relays);
+        return new NostrLink(NostrPrefix.Event, tag[1], kind, author ?? tag[4], relays, tag[3]);
       }
       case "p": {
         return new NostrLink(NostrPrefix.Profile, tag[1], kind, author, relays);
       }
       case "a": {
         const [kind, author, dTag] = tag[1].split(":");
-        return new NostrLink(NostrPrefix.Address, dTag, Number(kind), author, relays);
+        return new NostrLink(NostrPrefix.Address, dTag, Number(kind), author, relays, tag[3]);
+      }
+      default: {
+        if (fnOther) {
+          return fnOther(tag);
+        }
       }
     }
     throw new Error(`Unknown tag kind ${tag[0]}`);
   }
 
-  static fromTags(tags: Array<Array<string>>) {
+  static fromTags<T = NostrLink>(tags: ReadonlyArray<Array<string>>, fnOther?: (tag: Array<string>) => T) {
     return removeUndefined(
       tags.map(a => {
         try {
-          return NostrLink.fromTag(a);
+          return NostrLink.fromTag<T>(a, undefined, undefined, fnOther);
         } catch {
           // ignored, cant be mapped
         }
@@ -217,6 +231,14 @@ export class NostrLink implements ToNostrEventTag {
       return new NostrLink(NostrPrefix.Address, dTag, ev.kind, ev.pubkey, relays);
     }
     return new NostrLink(NostrPrefix.Event, ev.id, ev.kind, ev.pubkey, relays);
+  }
+
+  static profile(pk: string, relays?: Array<string>) {
+    return new NostrLink(NostrPrefix.Profile, pk, undefined, undefined, relays);
+  }
+
+  static publicKey(pk: string, relays?: Array<string>) {
+    return new NostrLink(NostrPrefix.PublicKey, pk, undefined, undefined, relays);
   }
 }
 

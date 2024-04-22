@@ -1,14 +1,9 @@
-import { SafeSync } from "./safe-sync";
-import { HasId } from ".";
-import { EventBuilder, EventSigner, NostrEvent, NostrLink, NostrPrefix, SystemInterface } from "..";
+import { SafeSync, SafeSyncEvents } from "./safe-sync";
+import { EventBuilder, EventSigner, NostrEvent, NostrLink, SystemInterface } from "..";
 import debug from "debug";
 import EventEmitter from "eventemitter3";
 
-export interface JsonSyncEvents {
-  change: () => void;
-}
-
-export class JsonEventSync<T extends HasId> extends EventEmitter<JsonSyncEvents> {
+export class JsonEventSync<T> extends EventEmitter<SafeSyncEvents> {
   #log = debug("JsonEventSync");
   #sync: SafeSync;
   #json: T;
@@ -19,7 +14,7 @@ export class JsonEventSync<T extends HasId> extends EventEmitter<JsonSyncEvents>
     readonly encrypt: boolean,
   ) {
     super();
-    this.#sync = new SafeSync();
+    this.#sync = new SafeSync(link);
     this.#json = initValue;
 
     this.#sync.on("change", () => this.emit("change"));
@@ -31,7 +26,7 @@ export class JsonEventSync<T extends HasId> extends EventEmitter<JsonSyncEvents>
   }
 
   async sync(signer: EventSigner, system: SystemInterface) {
-    const res = await this.#sync.sync(this.link, system);
+    const res = await this.#sync.sync(system);
     this.#log("Sync result %O", res);
     if (res) {
       if (this.encrypt) {
@@ -71,6 +66,5 @@ export class JsonEventSync<T extends HasId> extends EventEmitter<JsonSyncEvents>
 
     await this.#sync.update(next, signer, system, !isNew);
     this.#json = val;
-    this.#json.id = next.id;
   }
 }

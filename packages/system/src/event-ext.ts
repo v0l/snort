@@ -11,6 +11,7 @@ export interface Tag {
   value?: string;
   relay?: string;
   marker?: string; // NIP-10
+  author?: string; // NIP-10 "pubkey-stub"
 }
 
 export interface Thread {
@@ -48,9 +49,6 @@ export abstract class EventExt {
 
     const sig = secp.schnorr.sign(e.id, key);
     e.sig = utils.bytesToHex(sig);
-    if (!secp.schnorr.verify(e.sig, e.id, e.pubkey)) {
-      throw new Error("Signing failed");
-    }
     return e;
   }
 
@@ -102,10 +100,15 @@ export abstract class EventExt {
       value: tag[1],
     } as Tag;
     switch (ret.key) {
-      case "a":
+      case "a": {
+        ret.relay = tag[2];
+        ret.marker = tag[3];
+        break;
+      }
       case "e": {
-        ret.relay = tag.length > 2 ? tag[2] : undefined;
-        ret.marker = tag.length > 3 ? tag[3] : undefined;
+        ret.relay = tag[2];
+        ret.marker = tag[3];
+        ret.author = tag[4];
         break;
       }
     }

@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import useLogin from "@/Hooks/useLogin";
 
 export default function useFollowsFeed(pubkey?: HexKey) {
-  const { publicKey, follows } = useLogin();
+  const { publicKey, follows } = useLogin(s => ({ publicKey: s.publicKey, follows: s.state.follows }));
   const isMe = publicKey === pubkey;
 
   const sub = useMemo(() => {
@@ -18,11 +18,11 @@ export default function useFollowsFeed(pubkey?: HexKey) {
   const contactFeed = useRequestBuilder(sub);
   return useMemo(() => {
     if (isMe) {
-      return follows.item;
+      return follows;
     }
 
     return getFollowing(contactFeed ?? [], pubkey);
-  }, [contactFeed, follows, pubkey]);
+  }, [isMe, contactFeed, follows, pubkey]);
 }
 
 export function getFollowing(notes: readonly TaggedNostrEvent[], pubkey?: HexKey) {

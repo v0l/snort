@@ -169,19 +169,19 @@ export function useChatSystem(chat: ChatSystem) {
   const login = useLogin();
   const sub = useMemo(() => {
     return chat.subscription(login);
-  }, [login.publicKey]);
+  }, [chat, login]);
   const data = useRequestBuilder(sub);
-  const { isBlocked } = useModeration();
+  const { isMuted } = useModeration();
 
   return useMemo(() => {
     if (login.publicKey) {
       return chat.listChats(
         login.publicKey,
-        data.filter(a => !isBlocked(a.pubkey)),
+        data.filter(a => !isMuted(a.pubkey)),
       );
     }
     return [];
-  }, [login.publicKey, data]);
+  }, [chat, login, data, isMuted]);
 }
 
 export function useChatSystems() {

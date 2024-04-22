@@ -1,5 +1,5 @@
 import { dedupe } from "@snort/shared";
-import { EventKind, RequestBuilder } from "@snort/system";
+import { EventKind, NostrHashtagLink, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import classNames from "classnames";
 import { useMemo } from "react";
@@ -9,15 +9,22 @@ import { Link, useParams } from "react-router-dom";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import Timeline from "@/Components/Feed/Timeline";
 import ProfileImage from "@/Components/User/ProfileImage";
-import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
-import { setTags } from "@/Utils/Login";
 import { formatShort } from "@/Utils/Number";
+import { TimelineSubject } from "@/Feed/TimelineFeed";
 
 const HashTagsPage = () => {
   const params = useParams();
   const tag = (params.tag ?? "").toLowerCase();
-  const subject = useMemo(() => ({ type: "hashtag", items: [tag], discriminator: tag }), [tag]);
+  const subject = useMemo(
+    () =>
+      ({
+        type: "hashtag",
+        items: [tag],
+        discriminator: tag,
+      }) as TimelineSubject,
+    [tag],
+  );
 
   return (
     <>
@@ -32,23 +39,10 @@ const HashTagsPage = () => {
 export default HashTagsPage;
 
 export function HashTagHeader({ tag, events, className }: { tag: string; events?: number; className?: string }) {
-  const login = useLogin();
+  const state = useLogin(s => s.state);
   const isFollowing = useMemo(() => {
-    return login.tags.item.includes(tag);
-  }, [login, tag]);
-  const { publisher, system } = useEventPublisher();
-
-  async function followTags(ts: string[]) {
-    if (publisher) {
-      const ev = await publisher.generic(eb => {
-        eb.kind(EventKind.InterestsList);
-        ts.forEach(a => eb.tag(["t", a]));
-        return eb;
-      });
-      setTags(login, ts, ev.created_at * 1000);
-      await system.BroadcastEvent(ev);
-    }
-  }
+    return state.isOnList(EventKind.InterestsList, new NostrHashtagLink(tag));
+  }, [state, tag]);
 
   const sub = useMemo(() => {
     const rb = new RequestBuilder(`hashtag-counts:${tag}`);
@@ -78,11 +72,13 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
           )}
         </div>
         {isFollowing ? (
-          <AsyncButton className="secondary" onClick={() => followTags(login.tags.item.filter(t => t !== tag))}>
+          <AsyncButton
+            className="secondary"
+            onClick={() => state.removeFromList(EventKind.InterestsList, new NostrHashtagLink(tag), true)}>
             <FormattedMessage defaultMessage="Unfollow" id="izWS4J" />
           </AsyncButton>
         ) : (
-          <AsyncButton onClick={() => followTags(login.tags.item.concat([tag]))}>
+          <AsyncButton onClick={() => state.addToList(EventKind.InterestsList, new NostrHashtagLink(tag), true)}>
             <FormattedMessage defaultMessage="Follow" id="ieGrWo" />
           </AsyncButton>
         )}

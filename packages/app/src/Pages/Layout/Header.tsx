@@ -1,4 +1,4 @@
-import { NostrLink, NostrPrefix, parseNostrLink } from "@snort/system";
+import { EventKind, NostrLink, NostrPrefix, parseNostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 import classNames from "classnames";
 import React, { useCallback, useMemo } from "react";
@@ -13,6 +13,7 @@ import useLogin from "@/Hooks/useLogin";
 import { LogoHeader } from "@/Pages/Layout/LogoHeader";
 import NotificationsHeader from "@/Pages/Layout/NotificationsHeader";
 import { bech32ToHex } from "@/Utils";
+import { unwrap } from "@snort/shared";
 
 export function Header() {
   const navigate = useNavigate();
@@ -27,10 +28,17 @@ export function Header() {
     }
   }, [pageName]);
 
-  const { publicKey, tags } = useLogin();
+  const { publicKey, tags } = useLogin(s => ({
+    publicKey: s.publicKey,
+    tags: s.state.getList(EventKind.InterestsList),
+  }));
 
   const isRootTab = useMemo(() => {
-    return location.pathname === "/" || rootTabItems("", publicKey, tags).some(item => item.path === location.pathname);
+    // todo: clean this up, its also in other places
+    const hashTags = tags.filter(a => a.toEventTag()?.[0] === "t").map(a => unwrap(a.toEventTag())[1]);
+    return (
+      location.pathname === "/" || rootTabItems("", publicKey, hashTags).some(item => item.path === location.pathname)
+    );
   }, [location.pathname, publicKey, tags]);
 
   const scrollUp = useCallback(() => {

@@ -33,7 +33,7 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
         const ev = a.event;
         if (!System.optimizer.schnorrVerify(ev)) {
           console.error(`Event with invalid sig\n\n${ev}\n\nfrom ${trendingNotesUrl}`);
-          return;
+          return undefined;
         }
         System.HandleEvent("*", ev as TaggedNostrEvent);
         return ev;

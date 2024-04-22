@@ -1,4 +1,4 @@
-import { HexKey, JsonEventSync, KeyStorage, RelaySettings } from "@snort/system";
+import { HexKey, KeyStorage, UserState } from "@snort/system";
 
 import { DisplayAs } from "@/Components/Feed/DisplayAsSelector";
 import { UserPreferences } from "@/Utils/Login/index";
@@ -21,9 +21,6 @@ export const enum LoginSessionType {
 }
 
 export interface SnortAppData {
-  id: string;
-  mutedWords: Array<string>;
-  showContentWarningPosts: boolean;
   preferences: UserPreferences;
 }
 
@@ -64,40 +61,7 @@ export interface LoginSession {
    */
   publicKey?: HexKey;
 
-  /**
-   * All the logged in users relays
-   */
-  relays: Newest<Record<string, RelaySettings>>;
-
-  /**
-   * A list of pubkeys this user follows
-   */
-  contacts: Array<Array<string>>;
-
-  /**
-   * A list of tags this user follows
-   */
-  tags: Newest<Array<string>>;
-
-  /**
-   * A list of event ids this user has pinned
-   */
-  pinned: Newest<Array<string>>;
-
-  /**
-   * A list of event ids this user has bookmarked
-   */
-  bookmarked: Newest<Array<string>>;
-
-  /**
-   * A list of pubkeys this user has muted
-   */
-  muted: Newest<Array<HexKey>>;
-
-  /**
-   * A list of pubkeys this user has muted privately
-   */
-  blocked: Newest<Array<HexKey>>;
+  state: UserState<SnortAppData>;
 
   /**
    * Timestamp of last read notification
@@ -113,11 +77,6 @@ export interface LoginSession {
    * Remote signer relays (NIP-46)
    */
   remoteSignerRelays?: Array<string>;
-
-  /**
-   * Snort application data
-   */
-  appData: JsonEventSync<SnortAppData>;
 
   /**
    * A list of chats which we have joined (NIP-28/NIP-29)

@@ -1,17 +1,14 @@
 import "./Relay.css";
 
-import { unixNowMs } from "@snort/shared";
 import { RelaySettings } from "@snort/system";
-import { SnortContext } from "@snort/system-react";
 import classNames from "classnames";
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AsyncIcon } from "@/Components/Button/AsyncIcon";
 import useRelayState from "@/Feed/RelayState";
 import useLogin from "@/Hooks/useLogin";
-import { getRelayName, unwrap } from "@/Utils";
-import { removeRelay, setRelays } from "@/Utils/Login";
+import { getRelayName } from "@/Utils";
 
 import { RelayFavicon } from "./RelaysMetadata";
 
@@ -21,35 +18,29 @@ export interface RelayProps {
 
 export default function Relay(props: RelayProps) {
   const navigate = useNavigate();
-  const system = useContext(SnortContext);
-  const login = useLogin();
+  const state = useLogin(s => s.state);
 
-  const relaySettings = unwrap(login.relays.item[props.addr] ?? system.pool.getConnection(props.addr)?.Settings ?? {});
-  const state = useRelayState(props.addr);
   const name = useMemo(() => getRelayName(props.addr), [props.addr]);
+  const connection = useRelayState(props.addr);
 
-  function configure(o: RelaySettings) {
-    setRelays(
-      login,
-      {
-        ...login.relays.item,
-        [props.addr]: o,
-      },
-      unixNowMs(),
-    );
+  const relaySettings = state.relays?.find(a => a.url === props.addr)?.settings;
+  if (!relaySettings || !connection) return;
+
+  async function configure(o: RelaySettings) {
+    await state.updateRelay(props.addr, o);
   }
 
   return (
     <>
       <div className="relay bg-dark">
-        <div className={classNames("flex items-center", state?.IsClosed === false ? "bg-success" : "bg-error")}>
+        <div className={classNames("flex items-center", connection.isOpen ? "bg-success" : "bg-error")}>
           <RelayFavicon url={props.addr} />
         </div>
         <div className="flex flex-col g8">
           <div>
             <b>{name}</b>
           </div>
-          {!state?.Ephemeral && (
+          {!connection?.Ephemeral && (
             <div className="flex g8">
               <AsyncIcon
                 iconName="write"
@@ -77,13 +68,13 @@ export default function Relay(props: RelayProps) {
                 iconName="trash"
                 iconSize={16}
                 className="button-icon-sm transparent trash-icon"
-                onClick={() => removeRelay(login, props.addr)}
+                onClick={() => state.removeRelay(props.addr)}
               />
               <AsyncIcon
                 iconName="gear"
                 iconSize={16}
                 className="button-icon-sm transparent"
-                onClick={() => navigate(state?.Id ?? "")}
+                onClick={() => navigate(connection?.Id ?? "")}
               />
             </div>
           )}

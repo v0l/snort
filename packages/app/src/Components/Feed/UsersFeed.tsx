@@ -16,12 +16,12 @@ export default function UsersFeed({ keyword, sortPopular = true }: { keyword: st
     { method: "LIMIT_UNTIL" },
   );
 
-  const { muted, isEventMuted } = useModeration();
+  const { isEventMuted } = useModeration();
   const filterPosts = useCallback(
     (nts: readonly TaggedNostrEvent[]) => {
       return nts.filter(a => !isEventMuted(a));
     },
-    [muted],
+    [isEventMuted],
   );
   const usersFeed = useMemo(() => filterPosts(feed.main ?? []).map(p => p.pubkey), [feed, filterPosts]);
 

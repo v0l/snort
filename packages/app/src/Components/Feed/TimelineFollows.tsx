@@ -26,7 +26,11 @@ export interface TimelineFollowsProps {
  * A list of notes by "subject"
  */
 const TimelineFollows = (props: TimelineFollowsProps) => {
-  const login = useLogin();
+  const login = useLogin(s => ({
+    publicKey: s.publicKey,
+    feedDisplayAs: s.feedDisplayAs,
+    tags: s.state.getList(EventKind.InterestSet),
+  }));
   const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt");
@@ -38,12 +42,12 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         items: followList,
         discriminator: login.publicKey?.slice(0, 12),
         extra: rb => {
-          if (login.tags.item.length > 0) {
-            rb.withFilter().kinds([EventKind.TextNote, EventKind.Repost]).tag("t", login.tags.item);
+          if (login.tags.length > 0) {
+            rb.withFilter().kinds([EventKind.TextNote, EventKind.Repost]).tags(login.tags);
           }
         },
       }) as TimelineSubject,
-    [followList, login.tags.item],
+    [login.publicKey, followList, login.tags],
   );
   const feed = useTimelineFeed(subject, { method: "TIME_RANGE", now: openedAt } as TimelineFeedOptions);
 

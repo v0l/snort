@@ -70,8 +70,7 @@ export class KeyedReplaceableNoteStore extends HookedNoteStore {
     ev.forEach(a => {
       const keyOnEvent = this.#keyFn(a);
       const existing = this.#events.get(keyOnEvent);
-      const existingCreated = existing?.created_at ?? 0;
-      if (a.created_at > existingCreated) {
+      if (a.created_at > (existing?.created_at ?? 0)) {
         if (existing) {
           a.relays = dedupe([...existing.relays, ...a.relays]);
         }

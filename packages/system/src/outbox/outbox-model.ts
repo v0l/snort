@@ -182,6 +182,16 @@ export class OutboxModel extends BaseRequestRouter {
     return ret;
   }
 
+  async forReplyTo(pk: string, pickN?: number | undefined): Promise<string[]> {
+    const recipients = [pk];
+    await this.updateRelayLists(recipients);
+    const relays = this.pickTopRelays(recipients, pickN ?? DefaultPickNRelays, "read");
+    const ret = removeUndefined(dedupe(relays.map(a => a.relays).flat()));
+
+    this.#log("Picked: pattern=%s, input=%s, output=%O", "inbox", pk, ret);
+    return ret;
+  }
+
   /**
    * Update relay cache with latest relay lists
    * @param authors The authors to update relay lists for

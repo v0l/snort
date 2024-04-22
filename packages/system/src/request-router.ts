@@ -8,6 +8,15 @@ import { FlatReqFilter } from "./query-optimizer";
 export interface RequestRouter {
   /**
    * Pick relays to send an event to
+   * @param pk The pubkey you are replying to
+   * @param system Nostr system interface
+   * @param pickN Number of relays to pick per recipient
+   * @returns
+   */
+  forReplyTo(pk: string, pickN?: number): Promise<Array<string>>;
+
+  /**
+   * Pick relays to send an event to
    * @param ev The reply event to send
    * @param system Nostr system interface
    * @param pickN Number of relays to pick per recipient
@@ -39,6 +48,7 @@ export interface RequestRouter {
 }
 
 export abstract class BaseRequestRouter implements RequestRouter {
+  abstract forReplyTo(pk: string, pickN?: number): Promise<Array<string>>;
   abstract forReply(ev: NostrEvent, pickN?: number): Promise<Array<string>>;
   abstract forRequest(filter: ReqFilter, pickN?: number): Array<ReqFilter>;
   abstract forFlatRequest(filter: FlatReqFilter[], pickN?: number): Array<FlatReqFilter>;

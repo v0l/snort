@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 
 const HiddenNote = ({ children }: { children: React.ReactNode }) => {
-  const hideMutedNotes = useLogin(s => s.appData.json.preferences.hideMutedNotes);
+  const hideMutedNotes = usePreferences(s => s.hideMutedNotes);
   const [show, setShow] = useState(false);
   if (hideMutedNotes) return;
 

@@ -1,4 +1,4 @@
-import { HexKey, NostrLink, NostrPrefix } from "@snort/system";
+import { EventKind, HexKey, NostrLink, NostrPrefix } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -10,7 +10,7 @@ import SnortApi from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
-import { setBookmarked, setPinned } from "@/Utils/Login";
+import usePreferences from "@/Hooks/usePreferences";
 import { getCurrentSubscription, SubscriptionType } from "@/Utils/Subscription";
 
 import { ReBroadcaster } from "../../ReBroadcaster";
@@ -18,7 +18,8 @@ import { ReBroadcaster } from "../../ReBroadcaster";
 export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
   const { formatMessage } = useIntl();
   const login = useLogin();
-  const { mute, block } = useModeration();
+  const autoTranslate = usePreferences(s => s.autoTranslate);
+  const { mute } = useModeration();
   const { publisher, system } = useEventPublisher();
   const [showBroadcast, setShowBroadcast] = useState(false);
   const lang = window.navigator.language;
@@ -26,6 +27,7 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
     type: "language",
   });
   const isMine = ev.pubkey === login.publicKey;
+  const link = NostrLink.fromEvent(ev);
 
   async function deleteEvent() {
     if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.id.substring(0, 8) })) && publisher) {
@@ -78,7 +80,7 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
 
   useEffect(() => {
     const sub = getCurrentSubscription(login.subscriptions);
-    if (sub?.type === SubscriptionType.Premium && (login.appData.json.preferences.autoTranslate ?? true)) {
+    if (sub?.type === SubscriptionType.Premium && (autoTranslate ?? true)) {
       translate();
     }
   }, []);
@@ -90,19 +92,13 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
 
   async function pin(id: HexKey) {
     if (publisher) {
-      const es = [...login.pinned.item, id];
-      const ev = await publisher.pinned(es.map(a => new NostrLink(NostrPrefix.Note, a)));
-      system.BroadcastEvent(ev);
-      setPinned(login, es, ev.created_at * 1000);
+      //todo: PIN note
     }
   }
 
   async function bookmark(id: string) {
     if (publisher) {
-      const es = [...login.bookmarked.item, id];
-      const ev = await publisher.bookmarks(es.map(a => new NostrLink(NostrPrefix.Note, a)));
-      system.BroadcastEvent(ev);
-      setBookmarked(login, es, ev.created_at * 1000);
+      //todo: bookmark note
     }
   }
 
@@ -132,13 +128,13 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
           <Icon name="share" />
           <FormattedMessage {...messages.Share} />
         </MenuItem>
-        {!login.pinned.item.includes(ev.id) && !login.readonly && (
+        {!login.state.isOnList(EventKind.PinList, link) && !login.readonly && (
           <MenuItem onClick={() => pin(ev.id)}>
             <Icon name="pin" />
             <FormattedMessage {...messages.Pin} />
           </MenuItem>
         )}
-        {!login.bookmarked.item.includes(ev.id) && !login.readonly && (
+        {!login.state.isOnList(EventKind.BookmarksList, link) && !login.readonly && (
           <MenuItem onClick={() => bookmark(ev.id)}>
             <Icon name="bookmark" />
             <FormattedMessage {...messages.Bookmark} />
@@ -158,12 +154,6 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
           <Icon name="relay" />
           <FormattedMessage defaultMessage="Broadcast Event" id="Gxcr08" />
         </MenuItem>
-        {ev.pubkey !== login.publicKey && !login.readonly && (
-          <MenuItem onClick={() => block(ev.pubkey)}>
-            <Icon name="block" />
-            <FormattedMessage {...messages.Block} />
-          </MenuItem>
-        )}
         <MenuItem onClick={() => translate()}>
           <Icon name="translate" />
           <FormattedMessage {...messages.TranslateTo} values={{ lang: langNames.of(lang.split("-")[0]) }} />

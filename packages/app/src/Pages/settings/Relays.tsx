@@ -1,4 +1,4 @@
-import { unixNowMs, unwrap } from "@snort/shared";
+import { unwrap } from "@snort/shared";
 import { useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -7,30 +7,36 @@ import Relay from "@/Components/Relay/Relay";
 import SnortApi, { RelayDistance } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import useRelays from "@/Hooks/useRelays";
 import { saveRelays } from "@/Pages/settings/saveRelays";
 import { getCountry, getRelayName, sanitizeRelayUrl } from "@/Utils";
-import { setRelays } from "@/Utils/Login";
 import { formatShort } from "@/Utils/Number";
 
 import messages from "./messages";
 
 const RelaySettingsPage = () => {
   const { publisher, system } = useEventPublisher();
-  const login = useLogin();
-  const relays = login.relays;
+  const relays = useRelays();
+  const { readonly, state } = useLogin(s => ({ state: s.state, readonly: s.readonly }));
   const [newRelay, setNewRelay] = useState<string>();
 
   const otherConnections = useMemo(() => {
-    return [...system.pool].filter(([k]) => relays.item[k] === undefined).map(([, v]) => v);
-  }, [relays]);
+    return [...system.pool].filter(([k]) => relays[k] === undefined).map(([, v]) => v);
+  }, [system.pool, relays]);
 
   const handleNewRelayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
-    const protocol = window.location.protocol;
-    if ((protocol === "https:" && inputValue.startsWith("wss://")) || protocol === "http:") {
-      setNewRelay(inputValue);
-    }
+    setNewRelay(inputValue);
   };
+
+  async function addNewRelay() {
+    const url = sanitizeRelayUrl(newRelay);
+    if (url) {
+      await state.addRelay(url, { read: true, write: true }, false);
+
+      setNewRelay("");
+    }
+  }
 
   function addRelay() {
     return (
@@ -45,22 +51,11 @@ const RelaySettingsPage = () => {
           value={newRelay}
           onChange={handleNewRelayChange}
         />
-        <button className="secondary" onClick={() => addNewRelay()}>
+        <AsyncButton className="secondary" onClick={() => addNewRelay()}>
           <FormattedMessage {...messages.Add} />
-        </button>
+        </AsyncButton>
       </div>
     );
-  }
-
-  function addNewRelay() {
-    if ((newRelay?.length ?? 0) > 0) {
-      const parsed = new URL(newRelay ?? "");
-      const payload = {
-        ...relays.item,
-        [parsed.toString()]: { read: true, write: true },
-      };
-      setRelays(login, payload, unixNowMs());
-    }
   }
 
   return (
@@ -69,11 +64,11 @@ const RelaySettingsPage = () => {
         <FormattedMessage {...messages.Relays} />
       </h3>
       <div className="flex flex-col g8">
-        {Object.keys(relays.item || {}).map(a => (
+        {Object.keys(relays || {}).map(a => (
           <Relay addr={a} key={a} />
         ))}
       </div>
-      <AsyncButton type="button" onClick={() => saveRelays(system, publisher, relays.item)} disabled={login.readonly}>
+      <AsyncButton type="button" onClick={() => saveRelays(system, publisher, relays.item)} disabled={readonly}>
         <FormattedMessage {...messages.Save} />
       </AsyncButton>
       {addRelay()}
@@ -96,12 +91,20 @@ export function CloseRelays() {
   const [relays, setRecommendedRelays] = useState<Array<RelayDistance>>();
   const country = getCountry();
   const [location, setLocation] = useState<{ lat: number; lon: number }>(country);
-  const login = useLogin();
-  const relayUrls = Object.keys(login.relays.item);
+  const currentRelays = useRelays();
+  const state = useLogin(s => s.state);
+  const relayUrls = Object.keys(currentRelays);
 
   async function loadRelays() {
     const api = new SnortApi();
     setRecommendedRelays(await api.closeRelays(location.lat, location.lon, 10));
+  }
+
+  async function addNewRelay(newRelay: string) {
+    const url = sanitizeRelayUrl(newRelay);
+    if (url) {
+      await state.addRelay(url, { read: true, write: true }, false);
+    }
   }
 
   useEffect(() => {
@@ -138,17 +141,7 @@ export function CloseRelays() {
           <div key={a.url} className="bg-dark p br flex flex-col g8">
             <div className="flex justify-between items-center">
               <div className="bold">{getRelayName(a.url)}</div>
-              <AsyncButton
-                onClick={async () => {
-                  setRelays(
-                    login,
-                    {
-                      ...login.relays.item,
-                      [a.url]: { read: true, write: true },
-                    },
-                    unixNowMs(),
-                  );
-                }}>
+              <AsyncButton onClick={() => addNewRelay(a.url)}>
                 <FormattedMessage defaultMessage="Add" id="2/2yg+" />
               </AsyncButton>
             </div>

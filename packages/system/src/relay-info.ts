@@ -18,4 +18,5 @@ export interface RelayInfo {
   language_tags?: Array<string>;
   tags?: Array<string>;
   posting_policy?: string;
+  negentropy?: string;
 }

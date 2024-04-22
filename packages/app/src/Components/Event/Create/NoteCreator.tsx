@@ -20,6 +20,8 @@ import { Toastore } from "@/Components/Toaster/Toaster";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
+import useRelays from "@/Hooks/useRelays";
 import { useNoteCreator } from "@/State/NoteCreator";
 import { openFile, trackEvent } from "@/Utils";
 import useFileUpload from "@/Utils/Upload";
@@ -56,11 +58,12 @@ const quoteNoteOptions = {
 export function NoteCreator() {
   const { formatMessage } = useIntl();
   const uploader = useFileUpload();
-  const login = useLogin(s => ({ relays: s.relays, publicKey: s.publicKey, pow: s.appData.json.preferences.pow }));
+  const publicKey = useLogin(s => s.publicKey);
+  const pow = usePreferences(s => s.pow);
+  const relays = useRelays();
   const { system, publisher: pub } = useEventPublisher();
-  const publisher = login.pow ? pub?.pow(login.pow, GetPowWorker()) : pub;
+  const publisher = pow ? pub?.pow(pow, GetPowWorker()) : pub;
   const note = useNoteCreator();
-  const relays = login.relays;
 
   useEffect(() => {
     const draft = localStorage.getItem("msgDraft");
@@ -367,8 +370,9 @@ export function NoteCreator() {
   function renderRelayCustomisation() {
     return (
       <div className="flex flex-col g8">
-        {Object.keys(relays.item || {})
-          .filter(el => relays.item[el].write)
+        {Object.entries(relays)
+          .filter(el => el[1].write)
+          .map(a => a[0])
           .map((r, i, a) => (
             <div className="p flex justify-between note-creator-relay" key={r}>
               <div>{r}</div>
@@ -523,7 +527,7 @@ export function NoteCreator() {
       <div className="flex justify-between">
         <div className="flex items-center g8">
           <ProfileImage
-            pubkey={login.publicKey ?? ""}
+            pubkey={publicKey ?? ""}
             className="note-creator-icon"
             link=""
             showUsername={false}

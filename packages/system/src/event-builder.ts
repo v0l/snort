@@ -1,4 +1,4 @@
-import { EventKind, HexKey, NostrPrefix, NostrEvent, EventSigner, PowMiner } from ".";
+import { EventKind, HexKey, NostrPrefix, NostrEvent, EventSigner, PowMiner, NotSignedNostrEvent } from ".";
 import { HashtagRegex, MentionNostrEntityRegex } from "./const";
 import { getPublicKey, jitter, unixNow } from "@snort/shared";
 import { EventExt } from "./event-ext";
@@ -13,6 +13,10 @@ export class EventBuilder {
   #pow?: number;
   #powMiner?: PowMiner;
   #jitter?: number;
+
+  get pubkey() {
+    return this.#pubkey;
+  }
 
   /**
    * Populate builder with values from link

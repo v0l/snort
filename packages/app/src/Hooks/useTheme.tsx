@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
-import useLogin from "./useLogin";
+import usePreferences from "./usePreferences";
 
 export function useTheme() {
-  const { preferences } = useLogin(s => ({ preferences: s.appData.json.preferences }));
+  const theme = usePreferences(s => s.theme);
 
   function setTheme(theme: "light" | "dark") {
     const elm = document.documentElement;
@@ -16,17 +16,15 @@ export function useTheme() {
 
   useEffect(() => {
     const osTheme = window.matchMedia("(prefers-color-scheme: light)");
-    setTheme(
-      preferences.theme === "system" && osTheme.matches ? "light" : preferences.theme === "light" ? "light" : "dark",
-    );
+    setTheme(theme === "system" && osTheme.matches ? "light" : theme === "light" ? "light" : "dark");
 
     osTheme.onchange = e => {
-      if (preferences.theme === "system") {
+      if (theme === "system") {
         setTheme(e.matches ? "light" : "dark");
       }
     };
     return () => {
       osTheme.onchange = null;
     };
-  }, [preferences.theme]);
+  }, [theme]);
 }

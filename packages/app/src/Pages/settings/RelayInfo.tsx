@@ -1,12 +1,12 @@
 import { FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
+import AsyncButton from "@/Components/Button/AsyncButton";
 import ProfilePreview from "@/Components/User/ProfilePreview";
 import useRelayState from "@/Feed/RelayState";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { parseId, unwrap } from "@/Utils";
-import { removeRelay } from "@/Utils/Login";
 
 import messages from "./messages";
 
@@ -104,14 +104,13 @@ const RelayInfo = () => {
           ))}
         </div>
         <div className="flex mt10 justify-end">
-          <div
-            className="btn error"
-            onClick={() => {
-              removeRelay(login, unwrap(conn).Address);
+          <AsyncButton
+            onClick={async () => {
+              await login.state.removeRelay(unwrap(conn).Address, true);
               navigate("/settings/relays");
             }}>
             <FormattedMessage {...messages.Remove} />
-          </div>
+          </AsyncButton>
         </div>
       </div>
     </>

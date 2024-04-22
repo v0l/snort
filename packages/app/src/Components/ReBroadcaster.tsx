@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import Modal from "@/Components/Modal/Modal";
-import useLogin from "@/Hooks/useLogin";
+import useRelays from "@/Hooks/useRelays";
 
 import AsyncButton from "./Button/AsyncButton";
 import messages from "./messages";
@@ -12,7 +12,7 @@ import messages from "./messages";
 export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: TaggedNostrEvent }) {
   const [selected, setSelected] = useState<Array<string>>();
   const system = useContext(SnortContext);
-  const { relays } = useLogin(s => ({ relays: s.relays }));
+  const relays = useRelays();
 
   async function sendReBroadcast() {
     if (selected) {
@@ -25,8 +25,8 @@ export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: Tagged
   function renderRelayCustomisation() {
     return (
       <div className="flex flex-col g8">
-        {Object.keys(relays.item || {})
-          .filter(el => relays.item[el].write)
+        {Object.keys(relays)
+          .filter(el => relays[el].write)
           .map((r, i, a) => (
             <div key={r} className="card flex justify-between">
               <div>{r}</div>
@@ -36,7 +36,7 @@ export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: Tagged
                   checked={!selected || selected.includes(r)}
                   onChange={e =>
                     setSelected(
-                      e.target.checked && selected && selected.length == a.length - 1
+                      e.target.checked && selected && selected.length === a.length - 1
                         ? undefined
                         : a.filter(el => (el === r ? e.target.checked : !selected || selected.includes(el))),
                     )

@@ -201,7 +201,7 @@ export async function fetchNostrAddress(name: string, domain: string, timeout = 
 }
 
 export function removeUndefined<T>(v: Array<T | undefined>) {
-  return v.filter(a => a != undefined).map(a => unwrap(a));
+  return v.filter(a => a !== undefined).map(a => unwrap(a));
 }
 
 /**

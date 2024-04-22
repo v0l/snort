@@ -102,6 +102,11 @@ export interface UserPreferences {
    * Hides muted notes when selected
    */
   hideMutedNotes: boolean;
+
+  /**
+   * Show posts with content warning
+   */
+  showContentWarningPosts: boolean;
 }
 
 export const DefaultPreferences = {
@@ -123,4 +128,5 @@ export const DefaultPreferences = {
   checkSigs: true,
   autoTranslate: true,
   hideMutedNotes: false,
+  showContentWarningPosts: false,
 } as UserPreferences;

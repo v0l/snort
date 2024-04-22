@@ -5,7 +5,6 @@ import { EventEmitter } from "eventemitter3";
 import { Connection, RelaySettings } from "./connection";
 import { NostrEvent, OkResponse, TaggedNostrEvent } from "./nostr";
 import { SystemInterface } from ".";
-import LRUSet from "@snort/shared/src/LRUSet";
 
 export interface NostrConnectionPoolEvents {
   connected: (address: string, wasReconnect: boolean) => void;
@@ -38,7 +37,6 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
    * All currently connected websockets
    */
   #sockets = new Map<string, Connection>();
-  #requestedIds = new LRUSet<string>(1000);
 
   constructor(system: SystemInterface) {
     super();
@@ -49,7 +47,8 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
    * Get a connection object from the pool
    */
   getConnection(id: string) {
-    return this.#sockets.get(id);
+    const addr = unwrap(sanitizeRelayUrl(id));
+    return this.#sockets.get(addr);
   }
 
   /**

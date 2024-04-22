@@ -51,6 +51,9 @@ export class Connection extends EventEmitter<ConnectionEvents> {
   #activity: number = unixNowMs();
   #expectAuth = false;
   #ephemeral: boolean;
+  #closing = false;
+  #downCount = 0;
+  #activeRequests = new Set<string>();
 
   Id: string;
   readonly Address: string;
@@ -58,26 +61,22 @@ export class Connection extends EventEmitter<ConnectionEvents> {
 
   PendingRaw: Array<object> = [];
   PendingRequests: Array<ConnectionQueueItem> = [];
-  ActiveRequests = new Set<string>();
 
   Settings: RelaySettings;
   Info?: RelayInfo;
   ConnectTimeout: number = DefaultConnectTimeout;
   HasStateChange: boolean = true;
-  IsClosed: boolean;
   ReconnectTimer?: ReturnType<typeof setTimeout>;
   EventsCallback: Map<u256, (msg: Array<string | boolean>) => void>;
 
   AwaitingAuth: Map<string, boolean>;
   Authed = false;
-  Down = true;
 
   constructor(addr: string, options: RelaySettings, ephemeral: boolean = false) {
     super();
     this.Id = uuid();
     this.Address = addr;
     this.Settings = options;
-    this.IsClosed = false;
     this.EventsCallback = new Map();
     this.AwaitingAuth = new Map();
     this.#ephemeral = ephemeral;
@@ -93,7 +92,20 @@ export class Connection extends EventEmitter<ConnectionEvents> {
     this.#setupEphemeral();
   }
 
+  get isOpen() {
+    return this.Socket?.readyState === WebSocket.OPEN;
+  }
+
+  get isDown() {
+    return this.#downCount > 0;
+  }
+
+  get ActiveRequests() {
+    return [...this.#activeRequests];
+  }
+
   async connect() {
+    if (this.isOpen) return;
     try {
       if (this.Info === undefined) {
         const u = new URL(this.Address);
@@ -116,7 +128,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
       // ignored
     }
 
-    const wasReconnect = this.Socket !== null && !this.IsClosed;
+    const wasReconnect = this.Socket !== null;
     if (this.Socket) {
       this.Id = uuid();
       this.Socket.onopen = null;
@@ -125,7 +137,6 @@ export class Connection extends EventEmitter<ConnectionEvents> {
       this.Socket.onclose = null;
       this.Socket = null;
     }
-    this.IsClosed = false;
     this.Socket = new WebSocket(this.Address);
     this.Socket.onopen = () => this.#onOpen(wasReconnect);
     this.Socket.onmessage = e => this.#onMessage(e);
@@ -133,50 +144,55 @@ export class Connection extends EventEmitter<ConnectionEvents> {
     this.Socket.onclose = e => this.#onClose(e);
   }
 
-  close() {
-    this.IsClosed = true;
+  close(final = true) {
+    if (final) {
+      this.#closing = true;
+    }
     this.Socket?.close();
   }
 
   #onOpen(wasReconnect: boolean) {
-    this.ConnectTimeout = DefaultConnectTimeout;
+    this.#downCount = 0;
     this.#log(`Open!`);
-    this.Down = false;
     this.#setupEphemeral();
     this.emit("connected", wasReconnect);
     this.#sendPendingRaw();
   }
 
   #onClose(e: WebSocket.CloseEvent) {
-    if (this.ReconnectTimer) {
-      clearTimeout(this.ReconnectTimer);
-      this.ReconnectTimer = undefined;
-    }
-
     // remote server closed the connection, dont re-connect
-    if (e.code === 4000) {
-      this.IsClosed = true;
-      this.#log(`Closed! (Remote)`);
-    } else if (!this.IsClosed) {
-      this.ConnectTimeout = this.ConnectTimeout * this.ConnectTimeout;
-      this.#log(
-        `Closed (code=${e.code}), trying again in ${(this.ConnectTimeout / 1000).toFixed(0).toLocaleString()} sec`,
-      );
-      this.ReconnectTimer = setTimeout(() => {
-        try {
-          this.connect();
-        } catch {
-          this.emit("disconnect", -1);
-        }
-      }, this.ConnectTimeout);
-      // todo: stats disconnect
+    if (!this.#closing) {
+      this.#downCount++;
+      this.#reconnectTimer(e);
     } else {
       this.#log(`Closed!`);
-      this.ReconnectTimer = undefined;
+      this.#downCount = 0;
+      if (this.ReconnectTimer) {
+        clearTimeout(this.ReconnectTimer);
+        this.ReconnectTimer = undefined;
+      }
     }
 
     this.emit("disconnect", e.code);
     this.#reset();
+  }
+
+  #reconnectTimer(e: WebSocket.CloseEvent) {
+    if (this.ReconnectTimer) {
+      clearTimeout(this.ReconnectTimer);
+      this.ReconnectTimer = undefined;
+    }
+    this.ConnectTimeout = this.ConnectTimeout * 2;
+    this.#log(
+      `Closed (code=${e.code}), trying again in ${(this.ConnectTimeout / 1000).toFixed(0).toLocaleString()} sec`,
+    );
+    this.ReconnectTimer = setTimeout(() => {
+      try {
+        this.connect();
+      } catch {
+        this.emit("disconnect", -1);
+      }
+    }, this.ConnectTimeout);
   }
 
   #onMessage(e: WebSocket.MessageEvent) {
@@ -332,14 +348,13 @@ export class Connection extends EventEmitter<ConnectionEvents> {
       this.#expectAuth = true;
       this.#log("Setting expectAuth flag %o", requestKinds);
     }
-    if (this.ActiveRequests.size >= this.#maxSubscriptions) {
+    if (this.#activeRequests.size >= this.#maxSubscriptions) {
       this.PendingRequests.push({
         obj: cmd,
         cb: cbSent,
       });
       this.#log("Queuing: %O", cmd);
     } else {
-      this.ActiveRequests.add(cmd[1]);
       this.#sendRequestCommand({
         obj: cmd,
         cb: cbSent,
@@ -350,7 +365,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
   }
 
   closeReq(id: string) {
-    if (this.ActiveRequests.delete(id)) {
+    if (this.#activeRequests.delete(id)) {
       this.send(["CLOSE", id]);
       this.emit("eose", id);
       this.#sendQueuedRequests();
@@ -359,7 +374,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
   }
 
   #sendQueuedRequests() {
-    const canSend = this.#maxSubscriptions - this.ActiveRequests.size;
+    const canSend = this.#maxSubscriptions - this.#activeRequests.size;
     if (canSend > 0) {
       for (let x = 0; x < canSend; x++) {
         const p = this.PendingRequests.shift();
@@ -375,12 +390,12 @@ export class Connection extends EventEmitter<ConnectionEvents> {
     try {
       const cmd = item.obj;
       if (cmd[0] === "REQ" || cmd[0] === "GET") {
-        this.ActiveRequests.add(cmd[1]);
+        this.#activeRequests.add(cmd[1]);
         this.send(cmd);
       } else if (cmd[0] === "SYNC") {
         const [_, id, eventSet, ...filters] = cmd;
         const lastResortSync = () => {
-          if (filters.some(a => a.since || a.until)) {
+          if (filters.some(a => a.since || a.until || a.ids)) {
             this.queueReq(["REQ", id, ...filters], item.cb);
           } else {
             const latest = eventSet.reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
@@ -391,7 +406,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
             this.queueReq(["REQ", id, ...newFilters], item.cb);
           }
         };
-        if (this.Address.startsWith("wss://relay.snort.social")) {
+        if (this.Info?.negentropy === "v1") {
           const newFilters = filters;
           const neg = new NegentropyFlow(id, this, eventSet, newFilters);
           neg.once("finish", filters => {
@@ -419,19 +434,34 @@ export class Connection extends EventEmitter<ConnectionEvents> {
     // reset connection Id on disconnect, for query-tracking
     this.Id = uuid();
     this.#expectAuth = false;
-    this.ActiveRequests.clear();
+    this.#log(
+      "Reset active=%O, pending=%O, raw=%O",
+      [...this.#activeRequests],
+      [...this.PendingRequests],
+      [...this.PendingRaw],
+    );
+    for (const active of this.#activeRequests) {
+      this.emit("closed", active, "connection closed");
+    }
+    for (const pending of this.PendingRequests) {
+      this.emit("closed", pending.obj[1], "connection closed");
+    }
+    for (const raw of this.PendingRaw) {
+      if (Array.isArray(raw) && raw[0] === "REQ") {
+        this.emit("closed", raw[1], "connection closed");
+      }
+    }
+    this.#activeRequests.clear();
     this.PendingRequests = [];
     this.PendingRaw = [];
+
     this.emit("change");
   }
 
   send(obj: object) {
     const authPending = !this.Authed && (this.AwaitingAuth.size > 0 || this.Info?.limitation?.auth_required === true);
-    if (!this.Socket || this.Socket?.readyState !== WebSocket.OPEN || authPending) {
+    if (!this.isOpen || authPending) {
       this.PendingRaw.push(obj);
-      if (this.Socket?.readyState === WebSocket.CLOSED && this.Ephemeral && this.IsClosed) {
-        this.connect();
-      }
       return false;
     }
 
@@ -503,11 +533,15 @@ export class Connection extends EventEmitter<ConnectionEvents> {
     if (this.Ephemeral) {
       this.#ephemeralCheck = setInterval(() => {
         const lastActivity = unixNowMs() - this.#activity;
-        if (lastActivity > 30_000 && !this.IsClosed) {
-          if (this.ActiveRequests.size > 0) {
-            this.#log("Inactive connection has %d active requests! %O", this.ActiveRequests.size, this.ActiveRequests);
+        if (lastActivity > 30_000 && !this.#closing) {
+          if (this.#activeRequests.size > 0) {
+            this.#log(
+              "Inactive connection has %d active requests! %O",
+              this.#activeRequests.size,
+              this.#activeRequests,
+            );
           } else {
-            this.close();
+            this.close(false);
           }
         }
       }, 5_000);

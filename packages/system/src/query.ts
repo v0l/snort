@@ -99,11 +99,11 @@ export interface TraceReport {
 }
 
 export interface QueryEvents {
-  loading: (v: boolean) => void;
   trace: (report: TraceReport) => void;
   request: (subId: string, req: BuiltRawReqFilter) => void;
   event: (evs: Array<TaggedNostrEvent>) => void;
   end: () => void;
+  done: () => void;
 }
 
 const QueryCache = new LRUCache<string, Array<TaggedNostrEvent>>({
@@ -357,7 +357,7 @@ export class Query extends EventEmitter<QueryEvents> {
     const isFinished = this.progress === 1;
     if (isFinished) {
       this.#log("%s loading=%s, progress=%d, traces=%O", this.id, !isFinished, this.progress, this.#tracing);
-      this.emit("loading", !isFinished);
+      this.emit("done");
     }
   }
 
@@ -382,6 +382,10 @@ export class Query extends EventEmitter<QueryEvents> {
   #canSendQuery(c: Connection, q: BuiltRawReqFilter) {
     // query is not for this relay
     if (q.relay && q.relay !== c.Address) {
+      return false;
+    }
+    // connection is down, dont send
+    if (c.isDown) {
       return false;
     }
     // cannot send unless relay is tagged on ephemeral relay connection

@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import { appendDedupe, dedupe, removeUndefined, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
 
 import EventKind from "./event-kind";
-import { FlatReqFilter, NostrLink, NostrPrefix, SystemInterface } from ".";
+import { FlatReqFilter, NostrLink, NostrPrefix, SystemInterface, ToNostrEventTag } from ".";
 import { ReqFilter, u256, HexKey, TaggedNostrEvent } from "./nostr";
 import { RequestRouter } from "./request-router";
 
@@ -227,6 +227,19 @@ export class RequestFilterBuilder {
   tag(key: "e" | "p" | "d" | "t" | "r" | "a" | "g" | string, value?: Array<string>) {
     if (!value) return this;
     this.#filter[`#${key}`] = appendDedupe(this.#filter[`#${key}`] as Array<string>, value);
+    return this;
+  }
+
+  /**
+   * Query by a nostr tag
+   */
+  tags(tags: Array<ToNostrEventTag>) {
+    for (const tag of tags) {
+      const tt = tag.toEventTag();
+      if (tt) {
+        this.tag(tt[0], [tt[1]]);
+      }
+    }
     return this;
   }
 

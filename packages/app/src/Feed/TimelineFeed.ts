@@ -3,8 +3,8 @@ import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilderAdvanced } from "@snort/system-react";
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 
-import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
+import usePreferences from "@/Hooks/usePreferences";
 import useTimelineWindow from "@/Hooks/useTimelineWindow";
 import { SearchRelays } from "@/Utils/Const";
 
@@ -30,7 +30,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     window: options.window,
     now: options.now ?? unixNow(),
   });
-  const pref = useLogin(s => s.appData.json.preferences);
+  const autoShowLatest = usePreferences(s => s.autoShowLatest);
   const { isEventMuted } = useModeration();
 
   const createBuilder = useCallback(() => {
@@ -93,7 +93,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       }
       return rb;
     }
-  }, [until, since, options.method, pref, createBuilder]);
+  }, [until, since, options.method, createBuilder]);
 
   const mainQuery = useRequestBuilderAdvanced(sub);
   const main = useSyncExternalStore(
@@ -108,7 +108,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
   const subRealtime = useMemo(() => {
     const rb = createBuilder();
-    if (rb && !pref.autoShowLatest && options.method !== "LIMIT_UNTIL") {
+    if (rb && !autoShowLatest && options.method !== "LIMIT_UNTIL") {
       rb.withOptions({
         leaveOpen: true,
       });
@@ -118,7 +118,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       }
       return rb;
     }
-  }, [pref.autoShowLatest, createBuilder]);
+  }, [autoShowLatest, createBuilder]);
 
   const latestQuery = useRequestBuilderAdvanced(subRealtime);
   const latest = useSyncExternalStore(

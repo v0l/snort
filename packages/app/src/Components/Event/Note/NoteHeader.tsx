@@ -1,4 +1,4 @@
-import { HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
 import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -13,7 +13,6 @@ import messages from "@/Components/messages";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
-import { setBookmarked, setPinned } from "@/Utils/Login";
 
 export default function NoteHeader(props: {
   ev: TaggedNostrEvent;
@@ -24,28 +23,21 @@ export default function NoteHeader(props: {
   const [showReactions, setShowReactions] = useState(false);
   const { ev, options, setTranslated } = props;
   const { formatMessage } = useIntl();
-  const { pinned, bookmarked } = useLogin();
-  const { publisher, system } = useEventPublisher();
+  const { publisher } = useEventPublisher();
   const login = useLogin();
 
-  async function unpin(id: HexKey) {
+  async function unpin() {
     if (options.canUnpin && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnpin))) {
-        const es = pinned.item.filter(e => e !== id);
-        const ev = await publisher.pinned(es.map(a => new NostrLink(NostrPrefix.Note, a)));
-        system.BroadcastEvent(ev);
-        setPinned(login, es, ev.created_at * 1000);
+        await login.state.removeFromList(EventKind.PinList, NostrLink.fromEvent(ev));
       }
     }
   }
 
-  async function unbookmark(id: HexKey) {
+  async function unbookmark() {
     if (options.canUnbookmark && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnbookmark))) {
-        const es = bookmarked.item.filter(e => e !== id);
-        const ev = await publisher.pinned(es.map(a => new NostrLink(NostrPrefix.Note, a)));
-        system.BroadcastEvent(ev);
-        setBookmarked(login, es, ev.created_at * 1000);
+        await login.state.removeFromList(EventKind.BookmarksList, NostrLink.fromEvent(ev));
       }
     }
   }
@@ -66,7 +58,7 @@ export default function NoteHeader(props: {
         {(options.showTime || options.showBookmarked) && (
           <>
             {options.showBookmarked && (
-              <div className={`saved ${options.canUnbookmark ? "pointer" : ""}`} onClick={() => unbookmark(ev.id)}>
+              <div className={`saved ${options.canUnbookmark ? "pointer" : ""}`} onClick={() => unbookmark()}>
                 <Icon name="bookmark" /> <FormattedMessage {...messages.Bookmarked} />
               </div>
             )}
@@ -74,7 +66,7 @@ export default function NoteHeader(props: {
           </>
         )}
         {options.showPinned && (
-          <div className={`pinned ${options.canUnpin ? "pointer" : ""}`} onClick={() => unpin(ev.id)}>
+          <div className={`pinned ${options.canUnpin ? "pointer" : ""}`} onClick={() => unpin()}>
             <Icon name="pin" /> <FormattedMessage {...messages.Pinned} />
           </div>
         )}

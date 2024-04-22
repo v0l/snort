@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { createPublisher, LoginStore, sessionNeedsPin } from "@/Utils/Login";
 import { GetPowWorker } from "@/Utils/wasm";
 
@@ -97,6 +98,7 @@ export function PinPrompt({
 
 export function LoginUnlock() {
   const login = useLogin();
+  const pow = usePreferences(s => s.pow);
   const { publisher } = useEventPublisher();
 
   async function encryptMigration(pin: string) {
@@ -104,8 +106,8 @@ export function LoginUnlock() {
     const newPin = await PinEncrypted.create(k, pin);
 
     const pub = EventPublisher.privateKey(k);
-    if (login.appData.json.preferences.pow) {
-      pub.pow(login.appData.json.preferences.pow, GetPowWorker());
+    if (pow) {
+      pub.pow(pow, GetPowWorker());
     }
     LoginStore.setPublisher(login.id, pub);
     LoginStore.updateSession({
@@ -121,8 +123,8 @@ export function LoginUnlock() {
     await key.unlock(pin);
     const pub = createPublisher(login);
     if (pub) {
-      if (login.appData.json.preferences.pow) {
-        pub.pow(login.appData.json.preferences.pow, GetPowWorker());
+      if (pow) {
+        pub.pow(pow, GetPowWorker());
       }
       LoginStore.setPublisher(login.id, pub);
       LoginStore.updateSession({

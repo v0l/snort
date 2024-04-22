@@ -13,7 +13,7 @@ import { UserWebsiteLink } from "@/Components/User/UserWebsiteLink";
 import ZapModal from "@/Components/ZapModal/ZapModal";
 import useProfileBadges from "@/Feed/BadgesFeed";
 import useFollowsFeed from "@/Feed/FollowsFeed";
-import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { MusicStatus } from "@/Pages/Profile/MusicStatus";
 
 const ProfileDetails = ({
@@ -31,9 +31,9 @@ const ProfileDetails = ({
   lnurl?: LNURL;
 }) => {
   const follows = useFollowsFeed(id);
-  const { showStatus, showBadges } = useLogin(s => ({
-    showStatus: s.appData.json.preferences.showStatus ?? false,
-    showBadges: s.appData.json.preferences.showBadges ?? false,
+  const { showStatus, showBadges } = usePreferences(s => ({
+    showStatus: s.showStatus ?? false,
+    showBadges: s.showBadges ?? false,
   }));
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const badges = useProfileBadges(showBadges ? id : undefined);

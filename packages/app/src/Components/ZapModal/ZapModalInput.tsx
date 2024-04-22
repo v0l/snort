@@ -7,6 +7,7 @@ import messages from "@/Components/messages";
 import { ZapType } from "@/Components/ZapModal/ZapType";
 import { ZapTypeSelector } from "@/Components/ZapModal/ZapTypeSelector";
 import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { formatShort } from "@/Utils/Number";
 import { Zapper } from "@/Utils/Zapper";
 
@@ -21,10 +22,8 @@ export function ZapModalInput(props: {
   onChange?: (v: SendSatsInputSelection) => void;
   onNextStage: (v: SendSatsInputSelection) => Promise<void>;
 }) {
-  const { defaultZapAmount, readonly } = useLogin(s => ({
-    defaultZapAmount: s.appData.json.preferences.defaultZapAmount,
-    readonly: s.readonly,
-  }));
+  const defaultZapAmount = usePreferences(s => s.defaultZapAmount);
+  const readonly = useLogin(s => s.readonly);
   const { formatMessage } = useIntl();
   const amounts: Record<string, string> = {
     [defaultZapAmount.toString()]: "",

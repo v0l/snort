@@ -4,7 +4,7 @@ import { EventExt } from "./event-ext";
 import { Nip4WebCryptoEncryptor } from "./impl/nip4";
 import { XChaCha20Encryptor } from "./impl/nip44";
 import { MessageEncryptorVersion, decodeEncryptionPayload, encodeEncryptionPayload } from "./index";
-import { NostrEvent } from "./nostr";
+import { NostrEvent, NotSignedNostrEvent } from "./nostr";
 import { base64 } from "@scure/base";
 
 export type SignerSupports = "nip04" | "nip44" | string;
@@ -16,7 +16,7 @@ export interface EventSigner {
   nip4Decrypt(content: string, otherKey: string): Promise<string>;
   nip44Encrypt(content: string, key: string): Promise<string>;
   nip44Decrypt(content: string, otherKey: string): Promise<string>;
-  sign(ev: NostrEvent): Promise<NostrEvent>;
+  sign(ev: NostrEvent | NotSignedNostrEvent): Promise<NostrEvent>;
   get supports(): Array<SignerSupports>;
 }
 

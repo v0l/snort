@@ -3,7 +3,7 @@ import { useState } from "react";
 import { v4 as uuid } from "uuid";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { bech32ToHex, unwrap } from "@/Utils";
 import { KieranPubKey } from "@/Utils/Const";
 import NostrBuild from "@/Utils/Upload/NostrBuild";
@@ -65,7 +65,7 @@ export interface UploadProgress {
 export type UploadStage = "starting" | "hashing" | "uploading" | "done" | undefined;
 
 export default function useFileUpload(): Uploader {
-  const fileUploader = useLogin(s => s.appData.json.preferences.fileUploader);
+  const fileUploader = usePreferences(s => s.fileUploader);
   const { publisher } = useEventPublisher();
   const [progress, setProgress] = useState<Array<UploadProgress>>([]);
   const [stage, setStage] = useState<UploadStage>();

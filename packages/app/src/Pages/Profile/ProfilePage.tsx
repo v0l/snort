@@ -9,14 +9,11 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ProxyImg } from "@/Components/ProxyImg";
 import { SpotlightMediaModal } from "@/Components/Spotlight/SpotlightMedia";
 import { Tab, TabSelector } from "@/Components/TabSelectors/TabSelectors";
-import BlockList from "@/Components/User/BlockList";
 import FollowsList from "@/Components/User/FollowListBase";
 import MutedList from "@/Components/User/MutedList";
 import useFollowsFeed from "@/Feed/FollowsFeed";
 import useHorizontalScroll from "@/Hooks/useHorizontalScroll";
-import { useMuteList } from "@/Hooks/useLists";
 import useLogin from "@/Hooks/useLogin";
-import useModeration from "@/Hooks/useModeration";
 import AvatarSection from "@/Pages/Profile/AvatarSection";
 import ProfileDetails from "@/Pages/Profile/ProfileDetails";
 import {
@@ -63,18 +60,13 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   }, [user]);
 
   // feeds
-  const { blocked } = useModeration();
-  const muted = useMuteList(id);
   const follows = useFollowsFeed(id);
 
   // tabs
   const [tab, setTab] = useState<Tab>(ProfileTabSelectors.Notes);
-  const optionalTabs = [
-    ProfileTabSelectors.Zaps,
-    ProfileTabSelectors.Relays,
-    ProfileTabSelectors.Bookmarks,
-    ProfileTabSelectors.Muted,
-  ].filter(a => unwrap(a)) as Tab[];
+  const optionalTabs = [ProfileTabSelectors.Zaps, ProfileTabSelectors.Relays, ProfileTabSelectors.Bookmarks].filter(a =>
+    unwrap(a),
+  ) as Tab[];
   const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
@@ -128,12 +120,6 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       case ProfileTabType.FOLLOWERS: {
         return <FollowersTab id={id} />;
       }
-      case ProfileTabType.MUTED: {
-        return <MutedList pubkeys={muted.map(a => a.id)} />;
-      }
-      case ProfileTabType.BLOCKED: {
-        return <BlockList />;
-      }
       case ProfileTabType.RELAYS: {
         return <RelaysTab id={id} />;
       }
@@ -142,6 +128,9 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       }
       case ProfileTabType.REACTIONS: {
         return <ReactionsTab id={id} />;
+      }
+      case ProfileTabType.MUTED: {
+        return <MutedList />;
       }
     }
   }
@@ -186,7 +175,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
             ProfileTabSelectors.Follows,
           ].map(renderTabSelector)}
           {optionalTabs.map(renderTabSelector)}
-          {isMe && blocked.length > 0 && renderTabSelector(ProfileTabSelectors.Blocked)}
+          {isMe && renderTabSelector(ProfileTabSelectors.Muted)}
         </div>
       </div>
       <div className="main-content">{tabContent()}</div>

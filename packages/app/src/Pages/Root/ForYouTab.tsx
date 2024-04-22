@@ -15,8 +15,9 @@ import messages from "@/Pages/messages";
 import { System } from "@/system";
 
 const FollowsHint = () => {
-  const { publicKey, contacts } = useLogin();
-  if (contacts.length === 0 && publicKey) {
+  const publicKey = useLogin(s => s.publicKey);
+  const { followList } = useFollowsControls();
+  if (followList.length === 0 && publicKey) {
     return (
       <FormattedMessage
         {...messages.NoFollows}
@@ -30,7 +31,6 @@ const FollowsHint = () => {
       />
     );
   }
-  return null;
 };
 
 let forYouFeed = {
@@ -62,7 +62,11 @@ const getReactedByFollows = (follows: string[]) => {
 
 export const ForYouTab = memo(function ForYouTab() {
   const [notes, setNotes] = useState<NostrEvent[]>(forYouFeed.events);
-  const login = useLogin();
+  const login = useLogin(s => ({
+    feedDisplayAs: s.feedDisplayAs,
+    publicKey: s.publicKey,
+    tags: s.state.getList(EventKind.InterestSet),
+  }));
   const displayAsInitial = login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const navigationType = useNavigationType();
@@ -82,12 +86,12 @@ export const ForYouTab = memo(function ForYouTab() {
         items: followList,
         discriminator: login.publicKey?.slice(0, 12),
         extra: rb => {
-          if (login.tags.item.length > 0) {
-            rb.withFilter().kinds([EventKind.TextNote]).tag("t", login.tags.item);
+          if (login.tags.length > 0) {
+            rb.withFilter().kinds([EventKind.TextNote]).tags(login.tags);
           }
         },
       }) as TimelineSubject,
-    [followList, login.tags.item],
+    [login.publicKey, followList, login.tags],
   );
   // also get "follows" feed so data is loaded from relays and there's a fallback if "for you" feed is empty
   const latestFeed = useTimelineFeed(subject, { method: "TIME_RANGE", now: openedAt } as TimelineFeedOptions);
@@ -164,7 +168,7 @@ export const ForYouTab = memo(function ForYouTab() {
   const frags = useMemo(() => {
     return [
       {
-        events: combinedFeed,
+        events: combinedFeed as Array<TaggedNostrEvent>,
         refTime: Date.now(),
       },
     ];
@@ -175,7 +179,13 @@ export const ForYouTab = memo(function ForYouTab() {
       <DisplayAsSelector activeSelection={displayAs} onSelect={a => setDisplayAs(a)} />
       <FollowsHint />
       <TaskList />
-      <TimelineRenderer frags={frags} latest={[]} displayAs={displayAs} loadMore={() => latestFeed.loadMore()} />
+      <TimelineRenderer
+        frags={frags}
+        latest={[]}
+        displayAs={displayAs}
+        loadMore={() => latestFeed.loadMore()}
+        showLatest={() => {}}
+      />
     </>
   );
 });

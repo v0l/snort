@@ -8,6 +8,7 @@ import Spinner from "@/Components/Icons/Spinner";
 import ZapModal from "@/Components/ZapModal/ZapModal";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import usePreferences from "@/Hooks/usePreferences";
 import { unwrap } from "@/Utils";
 import { formatShort } from "@/Utils/Number";
 import { useWallet } from "@/Wallet";
@@ -21,13 +22,10 @@ type PollTally = "zaps" | "pubkeys";
 
 export default function Poll(props: PollProps) {
   const { formatMessage } = useIntl();
-  const { publisher } = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const { wallet } = useWallet();
-  const {
-    preferences: prefs,
-    publicKey: myPubKey,
-    relays,
-  } = useLogin(s => ({ preferences: s.appData.json.preferences, publicKey: s.publicKey, relays: s.relays }));
+  const defaultZapAmount = usePreferences(s => s.defaultZapAmount);
+  const myPubKey = useLogin(s => s.publicKey);
   const pollerProfile = useUserProfile(props.ev.pubkey);
   const [tallyBy, setTallyBy] = useState<PollTally>("pubkeys");
   const [error, setError] = useState("");
@@ -45,7 +43,7 @@ export default function Poll(props: PollProps) {
     ev.stopPropagation();
     if (voting || !publisher) return;
 
-    const amount = prefs.defaultZapAmount;
+    const amount = defaultZapAmount;
     try {
       if (amount <= 0) {
         throw new Error(
@@ -62,9 +60,14 @@ export default function Poll(props: PollProps) {
       }
 
       setVoting(opt);
-      const r = Object.keys(relays.item);
-      const zap = await publisher.zap(amount * 1000, props.ev.pubkey, r, NostrLink.fromEvent(props.ev), undefined, eb =>
-        eb.tag(["poll_option", opt.toString()]),
+      const r = await system.requestRouter?.forReplyTo(props.ev.pubkey);
+      const zap = await publisher.zap(
+        amount * 1000,
+        props.ev.pubkey,
+        r ?? [],
+        NostrLink.fromEvent(props.ev),
+        undefined,
+        eb => eb.tag(["poll_option", opt.toString()]),
       );
 
       const lnurl = props.ev.tags.find(a => a[0] === "zap")?.[1] || pollerProfile?.lud16 || pollerProfile?.lud06;
@@ -121,7 +124,7 @@ export default function Poll(props: PollProps) {
             defaultMessage="You are voting with {amount} sats"
             id="3qnJlS"
             values={{
-              amount: formatShort(prefs.defaultZapAmount),
+              amount: formatShort(defaultZapAmount),
             }}
           />
         </small>

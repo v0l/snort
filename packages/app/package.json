@@ -106,6 +106,7 @@
     "autoprefixer": "^10.4.16",
     "config": "^3.3.9",
     "eslint": "^8.48.0",
+    "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-formatjs": "^4.11.3",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -120,6 +121,7 @@
     "tinybench": "^2.5.1",
     "typescript": "^5.2.2",
     "vite": "^5.2.8",
+    "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-pwa": "^0.19.2",
     "vite-plugin-version-mark": "^0.0.10",
     "vitest": "^0.34.6"
