@@ -45,7 +45,7 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
    * Get decrypted content
    */
   get encryptedTags() {
-    if (this.#decryptedContent) {
+    if (this.#decryptedContent && this.#decryptedContent.startsWith("[") && this.#decryptedContent.endsWith("]")) {
       const tags = JSON.parse(this.#decryptedContent) as Array<Array<string>>;
       return tags;
     }
@@ -99,11 +99,7 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
   async sync(signer: EventSigner, system: SystemInterface) {
     await this.#sync.sync(system);
 
-    if (
-      this.#sync.value?.content &&
-      this.#sync.value?.content.startsWith("[") &&
-      this.#sync.value?.content.endsWith("]")
-    ) {
+    if (this.#sync.value?.content) {
       const decrypted = await signer.nip4Decrypt(this.#sync.value.content, await signer.getPubKey());
       this.#decryptedContent = decrypted;
     }
@@ -140,10 +136,9 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
     }
 
     // apply changes onto next
-    this.#applyChanges(next.tags, this.#changes);
+    next.tags = this.#applyChanges(next.tags, this.#changes);
     if (this.#changesEncrypted.length > 0 && !content) {
-      const encryptedTags = isNew ? [] : this.encryptedTags;
-      this.#applyChanges(encryptedTags, this.#changesEncrypted);
+      const encryptedTags = this.#applyChanges(isNew ? [] : this.encryptedTags, this.#changesEncrypted);
       next.content = JSON.stringify(encryptedTags);
     } else if (content) {
       next.content = content;
@@ -206,5 +201,17 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
         }
       }
     }
+
+    // remove duplicates
+    return tags.filter((v, i, arr) => {
+      let hasAnother = false;
+      for (let x = i + 1; x < arr.length; x++) {
+        if (arr[x][0] === v[0] && arr[x][1] === v[1]) {
+          hasAnother = true;
+          break;
+        }
+      }
+      return !hasAnother;
+    });
   }
 }

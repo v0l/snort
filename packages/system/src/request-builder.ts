@@ -121,7 +121,7 @@ export class RequestBuilder {
   /**
    * Detects a change in request from a previous set of filters
    */
-  async buildDiff(system: SystemInterface, prev: Array<ReqFilter>): Promise<Array<BuiltRawReqFilter>> {
+  buildDiff(system: SystemInterface, prev: Array<ReqFilter>): Array<BuiltRawReqFilter> {
     const start = unixNowMs();
 
     let rawFilters = this.buildRaw();

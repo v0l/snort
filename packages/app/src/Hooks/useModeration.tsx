@@ -1,10 +1,10 @@
 import { dedupe } from "@snort/shared";
-import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent, ToNostrEventTag } from "@snort/system";
+import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent, ToNostrEventTag, UnknownTag } from "@snort/system";
 
 import useLogin from "@/Hooks/useLogin";
 
 export class MutedWordTag implements ToNostrEventTag {
-  constructor(readonly word: string) {}
+  constructor(readonly word: string) { }
 
   toEventTag(): string[] | undefined {
     return ["word", this.word.toLowerCase()];
@@ -43,11 +43,11 @@ export default function useModeration() {
   }
 
   async function addMutedWord(word: string) {
-    await state.addToList(EventKind.MuteList, new MutedWordTag(word.toLowerCase()));
+    await state.addToList(EventKind.MuteList, new MutedWordTag(word.toLowerCase()), true);
   }
 
   async function removeMutedWord(word: string) {
-    await state.removeFromList(EventKind.MuteList, new MutedWordTag(word.toLowerCase()));
+    await state.removeFromList(EventKind.MuteList, new MutedWordTag(word.toLowerCase()), true);
   }
 
   function isEventMuted(ev: TaggedNostrEvent | NostrEvent) {
@@ -56,13 +56,9 @@ export default function useModeration() {
 
   function getMutedWords() {
     return state
-      .getList(EventKind.MuteList, o => {
-        if (o[0] === "word") {
-          return new MutedWordTag(o[1]);
-        }
-      })
-      .filter(a => a instanceof MutedWordTag)
-      .map(a => (a as MutedWordTag).word);
+      .getList(EventKind.MuteList)
+      .filter(a => a instanceof UnknownTag && a.value[0] === "word")
+      .map(a => (a as UnknownTag).value[1]);
   }
 
   return {

@@ -48,16 +48,19 @@ export default function ModerationSettingsPage() {
             value={muteWord}
             onChange={e => setMuteWord(e.target.value.toLowerCase())}
           />
-          <AsyncButton type="button" onClick={() => addMutedWord(muteWord)}>
+          <AsyncButton onClick={async () => {
+            await addMutedWord(muteWord);
+            setMuteWord("");
+          }}>
             <FormattedMessage defaultMessage="Add" id="2/2yg+" />
           </AsyncButton>
         </div>
         {getMutedWords().map(v => (
           <div key={v} className="p br b flex items-center justify-between">
             <div>{v}</div>
-            <button type="button" onClick={() => removeMutedWord(v)}>
+            <AsyncButton onClick={() => removeMutedWord(v)}>
               <FormattedMessage defaultMessage="Delete" id="K3r6DQ" />
-            </button>
+            </AsyncButton>
           </div>
         ))}
       </div>
