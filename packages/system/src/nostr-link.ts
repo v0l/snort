@@ -20,7 +20,7 @@ export interface ToNostrEventTag {
 }
 
 export class NostrHashtagLink implements ToNostrEventTag {
-  constructor(readonly tag: string) { }
+  constructor(readonly tag: string) {}
 
   toEventTag() {
     return ["t", this.tag];
@@ -28,7 +28,7 @@ export class NostrHashtagLink implements ToNostrEventTag {
 }
 
 export class UnknownTag implements ToNostrEventTag {
-  constructor(readonly value: Array<string>) { }
+  constructor(readonly value: Array<string>) {}
   toEventTag(): string[] | undefined {
     return this.value;
   }
@@ -194,11 +194,7 @@ export class NostrLink implements ToNostrEventTag {
     }
   }
 
-  static fromTag(
-    tag: Array<string>,
-    author?: string,
-    kind?: number,
-  ) {
+  static fromTag(tag: Array<string>, author?: string, kind?: number) {
     const relays = tag.length > 2 ? [tag[2]] : undefined;
     switch (tag[0]) {
       case "e": {

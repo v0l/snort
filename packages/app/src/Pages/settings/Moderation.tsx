@@ -48,10 +48,11 @@ export default function ModerationSettingsPage() {
             value={muteWord}
             onChange={e => setMuteWord(e.target.value.toLowerCase())}
           />
-          <AsyncButton onClick={async () => {
-            await addMutedWord(muteWord);
-            setMuteWord("");
-          }}>
+          <AsyncButton
+            onClick={async () => {
+              await addMutedWord(muteWord);
+              setMuteWord("");
+            }}>
             <FormattedMessage defaultMessage="Add" id="2/2yg+" />
           </AsyncButton>
         </div>
