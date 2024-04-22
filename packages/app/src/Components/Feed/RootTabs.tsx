@@ -1,5 +1,7 @@
 import "./RootTabs.css";
 
+import { unwrap } from "@snort/shared";
+import { EventKind } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,8 +11,6 @@ import Icon from "@/Components/Icons/Icon";
 import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
 import { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes";
-import { EventKind } from "@snort/system";
-import { unwrap } from "@snort/shared";
 
 export function RootTabs({ base = "/" }: { base: string }) {
   const navigate = useNavigate();

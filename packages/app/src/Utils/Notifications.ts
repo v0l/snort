@@ -100,7 +100,7 @@ export async function subscribeToNotifications(publisher: EventPublisher) {
           endpoint: sub.endpoint,
           p256dh: base64.encode(new Uint8Array(unwrap(sub.getKey("p256dh")))),
           auth: base64.encode(new Uint8Array(unwrap(sub.getKey("auth")))),
-          scope: `${location.protocol}//${location.hostname}`,
+          scope: `${globalThis.location.protocol}//${globalThis.location.hostname}`,
         });
       }
     }

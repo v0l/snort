@@ -1,10 +1,10 @@
+import { unwrap } from "@snort/shared";
+import { EventKind } from "@snort/system";
 import { useMemo } from "react";
 
 import Timeline from "@/Components/Feed/Timeline";
-import useLogin from "@/Hooks/useLogin";
-import { EventKind } from "@snort/system";
-import { unwrap } from "@snort/shared";
 import { TimelineSubject } from "@/Feed/TimelineFeed";
+import useLogin from "@/Hooks/useLogin";
 
 export function TopicsPage() {
   const { tags, pubKey } = useLogin(s => ({

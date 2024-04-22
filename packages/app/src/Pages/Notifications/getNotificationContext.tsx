@@ -1,4 +1,4 @@
-import { EventKind, NostrLink, TaggedNostrEvent, Nip10 } from "@snort/system";
+import { EventKind, Nip10, NostrLink, TaggedNostrEvent } from "@snort/system";
 
 export function getNotificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {

@@ -1,7 +1,6 @@
 /// <reference lib="webworker" />
-import { CacheableResponsePlugin } from "workbox-cacheable-response";
-
 import { encodeTLVEntries, NostrLink, NostrPrefix, TLVEntryType, tryParseNostrLink } from "@snort/system";
+import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
 import { precacheAndRoute, PrecacheEntry } from "workbox-precaching";
@@ -181,7 +180,7 @@ self.addEventListener("notificationclick", event => {
           if (mention.event) {
             return `/${new NostrLink(NostrPrefix.Note, mention.event).encode()}`;
           }
-        } else if (ev.type == PushType.DirectMessage) {
+        } else if (ev.type === PushType.DirectMessage) {
           const reaction = ev.data as CompactReaction;
           return `/messages/${encodeTLVEntries("chat4" as NostrPrefix, {
             type: TLVEntryType.Author,

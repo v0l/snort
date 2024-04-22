@@ -1,3 +1,4 @@
+import { unwrap } from "@snort/shared";
 import { EventKind, NostrLink, NostrPrefix, parseNostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 import classNames from "classnames";
@@ -13,7 +14,6 @@ import useLogin from "@/Hooks/useLogin";
 import { LogoHeader } from "@/Pages/Layout/LogoHeader";
 import NotificationsHeader from "@/Pages/Layout/NotificationsHeader";
 import { bech32ToHex } from "@/Utils";
-import { unwrap } from "@snort/shared";
 
 export function Header() {
   const navigate = useNavigate();

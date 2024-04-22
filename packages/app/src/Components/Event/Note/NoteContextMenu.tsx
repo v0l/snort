@@ -1,4 +1,4 @@
-import { EventKind, HexKey, NostrLink, NostrPrefix } from "@snort/system";
+import { EventKind, NostrEvent, NostrLink } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -90,16 +90,12 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
     await navigator.clipboard.writeText(link);
   }
 
-  async function pin(id: HexKey) {
-    if (publisher) {
-      //todo: PIN note
-    }
+  async function pin(ev: NostrEvent) {
+    await login.state.addToList(EventKind.PinList, NostrLink.fromEvent(ev), true);
   }
 
-  async function bookmark(id: string) {
-    if (publisher) {
-      //todo: bookmark note
-    }
+  async function bookmark(ev: NostrEvent) {
+    await login.state.addToList(EventKind.BookmarksList, NostrLink.fromEvent(ev), true);
   }
 
   async function copyEvent() {
@@ -129,13 +125,13 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
           <FormattedMessage {...messages.Share} />
         </MenuItem>
         {!login.state.isOnList(EventKind.PinList, link) && !login.readonly && (
-          <MenuItem onClick={() => pin(ev.id)}>
+          <MenuItem onClick={() => pin(ev)}>
             <Icon name="pin" />
             <FormattedMessage {...messages.Pin} />
           </MenuItem>
         )}
         {!login.state.isOnList(EventKind.BookmarksList, link) && !login.readonly && (
-          <MenuItem onClick={() => bookmark(ev.id)}>
+          <MenuItem onClick={() => bookmark(ev)}>
             <Icon name="bookmark" />
             <FormattedMessage {...messages.Bookmark} />
           </MenuItem>

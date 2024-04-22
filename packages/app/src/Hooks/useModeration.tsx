@@ -1,7 +1,15 @@
-import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { dedupe } from "@snort/shared";
+import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent, ToNostrEventTag } from "@snort/system";
 
 import useLogin from "@/Hooks/useLogin";
-import { dedupe } from "@snort/shared";
+
+export class MutedWordTag implements ToNostrEventTag {
+  constructor(readonly word: string) {}
+
+  toEventTag(): string[] | undefined {
+    return ["word", this.word.toLowerCase()];
+  }
+}
 
 export default function useModeration() {
   const state = useLogin(s => s.state);
@@ -30,11 +38,31 @@ export default function useModeration() {
   }
 
   function isMutedWord(word: string) {
-    return false;
+    const words = getMutedWords();
+    return words.includes(word);
+  }
+
+  async function addMutedWord(word: string) {
+    await state.addToList(EventKind.MuteList, new MutedWordTag(word.toLowerCase()));
+  }
+
+  async function removeMutedWord(word: string) {
+    await state.removeFromList(EventKind.MuteList, new MutedWordTag(word.toLowerCase()));
   }
 
   function isEventMuted(ev: TaggedNostrEvent | NostrEvent) {
     return isMuted(ev.pubkey) || false;
+  }
+
+  function getMutedWords() {
+    return state
+      .getList(EventKind.MuteList, o => {
+        if (o[0] === "word") {
+          return new MutedWordTag(o[1]);
+        }
+      })
+      .filter(a => a instanceof MutedWordTag)
+      .map(a => (a as MutedWordTag).word);
   }
 
   return {
@@ -45,5 +73,8 @@ export default function useModeration() {
     isMuted,
     isMutedWord,
     isEventMuted,
+    addMutedWord,
+    removeMutedWord,
+    getMutedWords,
   };
 }

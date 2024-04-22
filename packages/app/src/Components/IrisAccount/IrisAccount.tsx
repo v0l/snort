@@ -255,7 +255,7 @@ class IrisAccount extends Component<Props> {
   }
 
   async declineReserved() {
-    if (!confirm(`Are you sure you want to decline iris.to/${name}?`)) {
+    if (!window.confirm(`Are you sure you want to decline iris.to/${this.state.newUserName}?`)) {
       return;
     }
     const login = LoginStore.snapshot();

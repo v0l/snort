@@ -11,7 +11,6 @@ export function ZapPoolDonateSection() {
   if (!CONFIG.features.zapPool) {
     return;
   }
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const zapPool = useSyncExternalStore(
     c => unwrap(ZapPoolController).hook(c),
     () => unwrap(ZapPoolController).snapshot(),

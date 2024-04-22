@@ -396,9 +396,12 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     return false;
   }
 
-  getList(kind: EventKind): Array<ToNostrEventTag> {
+  getList<T extends ToNostrEventTag>(
+    kind: EventKind,
+    fnOther?: (tag: Array<string>) => T | undefined,
+  ): Array<ToNostrEventTag> {
     const list = this.#standardLists.get(kind);
-    return NostrLink.fromTags(list?.tags ?? []);
+    return NostrLink.fromTags<T>(list?.tags ?? [], fnOther);
   }
 
   serialize(): UserStateObject<TAppData> {

@@ -24,6 +24,13 @@ export class NostrHashtagLink implements ToNostrEventTag {
   }
 }
 
+export class UnknownTag implements ToNostrEventTag {
+  constructor(readonly value: Array<string>) {}
+  toEventTag(): string[] | undefined {
+    return this.value;
+  }
+}
+
 export class NostrLink implements ToNostrEventTag {
   constructor(
     readonly type: NostrPrefix,
@@ -188,7 +195,7 @@ export class NostrLink implements ToNostrEventTag {
     tag: Array<string>,
     author?: string,
     kind?: number,
-    fnOther?: (tag: Array<string>) => T,
+    fnOther?: (tag: Array<string>) => T | undefined,
   ) {
     const relays = tag.length > 2 ? [tag[2]] : undefined;
     switch (tag[0]) {
@@ -203,15 +210,12 @@ export class NostrLink implements ToNostrEventTag {
         return new NostrLink(NostrPrefix.Address, dTag, Number(kind), author, relays, tag[3]);
       }
       default: {
-        if (fnOther) {
-          return fnOther(tag);
-        }
+        return fnOther?.(tag) ?? new UnknownTag(tag);
       }
     }
-    throw new Error(`Unknown tag kind ${tag[0]}`);
   }
 
-  static fromTags<T = NostrLink>(tags: ReadonlyArray<Array<string>>, fnOther?: (tag: Array<string>) => T) {
+  static fromTags<T = NostrLink>(tags: ReadonlyArray<Array<string>>, fnOther?: (tag: Array<string>) => T | undefined) {
     return removeUndefined(
       tags.map(a => {
         try {
