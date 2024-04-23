@@ -121,9 +121,8 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
     if (builder) {
       this.#connectionBuilder = builder;
     } else {
-      this.#connectionBuilder = async (addr, options, ephemeral) => {
-        const c = new Connection(addr, options, ephemeral);
-        return c as unknown as T;
+      this.#connectionBuilder = (addr, options, ephemeral) => {
+        return Promise.resolve<T>(new Connection(addr, options, ephemeral) as unknown as T);
       };
     }
   }
@@ -166,6 +165,10 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
         // upgrade to non-ephemeral, never downgrade
         if (existing.ephemeral && !ephemeral) {
           existing.ephemeral = ephemeral;
+        }
+        // re-open if closed
+        if (existing.ephemeral && !existing.isOpen) {
+          await existing.connect();
         }
         return existing;
       }

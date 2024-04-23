@@ -11,7 +11,6 @@ import { LRUCache } from "lru-cache";
 import { ConnectionType } from "./connection-pool";
 
 interface QueryTraceEvents {
-  change: () => void;
   close: (id: string) => void;
   eose: (id: string, connId: string, wasForced: boolean) => void;
 }
@@ -39,13 +38,11 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
 
   sentToRelay() {
     this.sent = unixNowMs();
-    this.emit("change");
   }
 
   gotEose() {
     this.eose = unixNowMs();
     this.emit("eose", this.id, this.connId, false);
-    this.emit("change");
   }
 
   forceEose() {
@@ -59,7 +56,6 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
   sendClose() {
     this.close = unixNowMs();
     this.emit("close", this.id);
-    this.emit("change");
   }
 
   /**
@@ -354,14 +350,6 @@ export class Query extends EventEmitter<QueryEvents> {
     }
   }
 
-  #onProgress() {
-    const isFinished = this.progress === 1;
-    if (isFinished) {
-      this.#log("%s loading=%s, progress=%d, traces=%O", this.id, !isFinished, this.progress, this.#tracing);
-      this.emit("done");
-    }
-  }
-
   #stopCheckTraces() {
     if (this.#checkTrace) {
       clearInterval(this.#checkTrace);
@@ -411,16 +399,18 @@ export class Query extends EventEmitter<QueryEvents> {
     let filters = q.filters;
     const qt = new QueryTrace(c.address, filters, c.id);
     qt.on("close", x => c.closeRequest(x));
-    qt.on("change", () => this.#onProgress());
-    qt.on("eose", (id, connId, forced) =>
+    qt.on("eose", (id, connId, forced) => {
       this.emit("trace", {
         id,
         conn: c,
         wasForced: forced,
         queued: qt.queued,
         responseTime: qt.responseTime,
-      } as TraceReport),
-    );
+      } as TraceReport);
+      if (this.progress === 1) {
+        this.emit("done");
+      }
+    });
     const eventHandler = (sub: string, ev: TaggedNostrEvent) => {
       if (this.request.options?.fillStore ?? true) {
         this.handleEvent(sub, ev);

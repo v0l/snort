@@ -120,6 +120,9 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     const wasReconnect = this.Socket !== null;
     if (this.Socket) {
       this.id = uuid();
+      if (this.isOpen) {
+        this.Socket.close();
+      }
       this.Socket.onopen = null;
       this.Socket.onmessage = null;
       this.Socket.onerror = null;
@@ -133,10 +136,8 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     this.Socket.onclose = e => this.#onClose(e);
   }
 
-  close(final = true) {
-    if (final) {
-      this.#closing = true;
-    }
+  close() {
+    this.#closing = true;
     this.Socket?.close();
   }
 
@@ -326,14 +327,10 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
    * @param cmd The REQ to send to the server
    */
   request(cmd: ReqCommand | SyncCommand, cbSent?: () => void) {
-    const requestKinds = dedupe(
-      cmd
-        .slice(2)
-        .map(a => (a as ReqFilter).kinds ?? [])
-        .flat(),
-    );
+    const filters = (cmd[0] === "REQ" ? cmd.slice(2) : cmd.slice(3)) as Array<ReqFilter>;
+    const requestKinds = new Set(filters.flatMap(a => a.kinds ?? []));
     const ExpectAuth = [EventKind.DirectMessage, EventKind.GiftWrap];
-    if (ExpectAuth.some(a => requestKinds.includes(a)) && !this.#expectAuth) {
+    if (ExpectAuth.some(a => requestKinds.has(a)) && !this.#expectAuth) {
       this.#expectAuth = true;
       this.#log("Setting expectAuth flag %o", requestKinds);
     }
@@ -518,7 +515,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   }
 
   get #maxSubscriptions() {
-    return this.info?.limitation?.max_subscriptions ?? 25;
+    return this.info?.limitation?.max_subscriptions ?? 20;
   }
 
   #setupEphemeral() {
@@ -529,7 +526,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     if (this.ephemeral) {
       this.#ephemeralCheck = setInterval(() => {
         const lastActivity = unixNowMs() - this.#activity;
-        if (lastActivity > 30_000 && !this.#closing) {
+        if (lastActivity > 10_000 && !this.#closing) {
           if (this.#activeRequests.size > 0) {
             this.#log(
               "Inactive connection has %d active requests! %O",
@@ -537,7 +534,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
               this.#activeRequests,
             );
           } else {
-            this.close(false);
+            this.close();
           }
         }
       }, 5_000);

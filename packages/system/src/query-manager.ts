@@ -107,7 +107,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       if (data.length > 0) {
         qSend.syncFrom = data as Array<TaggedNostrEvent>;
         this.#log("Adding from cache: %O", data);
-        q.feed.add(data as Array<TaggedNostrEvent>);
+        q.feed.add(data.map(a => ({ ...a, relays: [] })));
       }
     }
 
@@ -128,26 +128,16 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
 
     if (qSend.relay) {
       this.#log("Sending query to %s %s %O", qSend.relay, q.id, qSend);
-      const s = this.#system.pool.getConnection(qSend.relay);
-      if (s) {
-        const qt = q.sendToRelay(s, qSend);
+      const nc = await this.#system.pool.connect(qSend.relay, { read: true, write: true }, true);
+      if (nc) {
+        const qt = q.sendToRelay(nc, qSend);
         if (qt) {
           return [qt];
         } else {
           this.#log("Query not sent to %s: %O", qSend.relay, qSend);
         }
       } else {
-        const nc = await this.#system.pool.connect(qSend.relay, { read: true, write: true }, true);
-        if (nc) {
-          const qt = q.sendToRelay(nc, qSend);
-          if (qt) {
-            return [qt];
-          } else {
-            this.#log("Query not sent to %s: %O", qSend.relay, qSend);
-          }
-        } else {
-          console.warn("Failed to connect to new relay for:", qSend.relay, q);
-        }
+        console.warn("Failed to connect to new relay for:", qSend.relay, q);
       }
     } else {
       const ret = [];

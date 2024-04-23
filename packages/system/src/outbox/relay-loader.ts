@@ -34,13 +34,4 @@ export class RelayMetadataLoader extends BackgroundLoader<UsersRelays> {
     rb.withFilter().authors(missing).kinds([EventKind.Relays, EventKind.ContactList]);
     return rb;
   }
-
-  protected override makePlaceholder(key: string): UsersRelays | undefined {
-    return {
-      relays: [],
-      pubkey: key,
-      created: 0,
-      loaded: this.getExpireCutoff() + 300000,
-    };
-  }
 }

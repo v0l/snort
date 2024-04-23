@@ -22,12 +22,4 @@ export class ProfileLoaderService extends BackgroundLoader<CachedMetadata> {
     sub.withFilter().kinds([EventKind.SetMetadata]).authors(missing).relay(MetadataRelays);
     return sub;
   }
-
-  protected override makePlaceholder(key: string): CachedMetadata | undefined {
-    return {
-      pubkey: key,
-      loaded: unixNowMs() - ProfileCacheExpire + 30_000,
-      created: 0,
-    } as CachedMetadata;
-  }
 }

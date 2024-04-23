@@ -21,13 +21,16 @@ export type EventFetcher = {
 
 export function parseRelayTag(tag: Array<string>) {
   if (tag[0] !== "r") return;
-  return {
-    url: sanitizeRelayUrl(tag[1]),
-    settings: {
-      read: tag[2] === "read" || tag[2] === undefined,
-      write: tag[2] === "write" || tag[2] === undefined,
-    },
-  } as FullRelaySettings;
+  const url = sanitizeRelayUrl(tag[1]);
+  if (url) {
+    return {
+      url,
+      settings: {
+        read: tag[2] === "read" || tag[2] === undefined,
+        write: tag[2] === "write" || tag[2] === undefined,
+      },
+    } as FullRelaySettings;
+  }
 }
 
 export function parseRelayTags(tag: Array<Array<string>>) {
@@ -39,15 +42,19 @@ export function parseRelaysFromKind(ev: NostrEvent) {
     const relaysInContent =
       ev.content.length > 0 ? (JSON.parse(ev.content) as Record<string, { read: boolean; write: boolean }>) : undefined;
     if (relaysInContent) {
-      return Object.entries(relaysInContent).map(
-        ([k, v]) =>
-          ({
-            url: sanitizeRelayUrl(k),
-            settings: {
-              read: v.read,
-              write: v.write,
-            },
-          }) as FullRelaySettings,
+      return removeUndefined(
+        Object.entries(relaysInContent).map(([k, v]) => {
+          const url = sanitizeRelayUrl(k);
+          if (url) {
+            return {
+              url,
+              settings: {
+                read: v.read,
+                write: v.write,
+              },
+            } as FullRelaySettings;
+          }
+        }),
       );
     }
   } else if (ev.kind === EventKind.Relays) {
