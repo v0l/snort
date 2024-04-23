@@ -1,5 +1,4 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
     "beforeBuildCommand": "yarn build",
     "beforeDevCommand": "yarn start",
@@ -7,8 +6,8 @@
     "distDir": "../packages/app/build"
   },
   "package": {
-    "productName": "Snort",
-    "version": "0.1.24"
+    "productName": "snort",
+    "version": "0.2.0"
   },
   "tauri": {
     "allowlist": {
