@@ -55,7 +55,7 @@ export class RelayMetricHandler {
   }
 
   onTraceReport(t: TraceReport) {
-    const v = this.#cache.getFromCache(t.conn.Address);
+    const v = this.#cache.getFromCache(t.conn.address);
     if (v) {
       v.latency.push(t.responseTime);
       v.latency = v.latency.slice(-50);

@@ -3,11 +3,12 @@ import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 import { unixNowMs, unwrap } from "@snort/shared";
 
-import { Connection, ReqFilter, Nips, TaggedNostrEvent, SystemInterface, ParsedFragment } from ".";
+import { ReqFilter, Nips, TaggedNostrEvent, SystemInterface, ParsedFragment } from ".";
 import { NoteCollection } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { eventMatchesFilter } from "./request-matcher";
 import { LRUCache } from "lru-cache";
+import { ConnectionType } from "./connection-pool";
 
 interface QueryTraceEvents {
   change: () => void;
@@ -92,7 +93,7 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
 
 export interface TraceReport {
   id: string;
-  conn: Connection;
+  conn: ConnectionType;
   wasForced: boolean;
   queued: number;
   responseTime: number;
@@ -275,7 +276,7 @@ export class Query extends EventEmitter<QueryEvents> {
     return qt;
   }
 
-  sendToRelay(c: Connection, subq: BuiltRawReqFilter) {
+  sendToRelay(c: ConnectionType, subq: BuiltRawReqFilter) {
     if (!this.#canSendQuery(c, subq)) {
       return;
     }
@@ -286,12 +287,12 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#tracing.filter(a => a.connId == id).forEach(a => a.forceEose());
   }
 
-  connectionRestored(c: Connection) {
+  connectionRestored(c: ConnectionType) {
     if (this.isOpen()) {
       for (const qt of this.#tracing) {
-        if (qt.relay === c.Address) {
+        if (qt.relay === c.address) {
           // todo: queue sync?
-          c.queueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
+          c.request(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
         }
       }
     }
@@ -329,8 +330,8 @@ export class Query extends EventEmitter<QueryEvents> {
     }
   }
 
-  #eose(sub: string, conn: Readonly<Connection>) {
-    const qt = this.#tracing.find(a => a.id === sub && a.connId === conn.Id);
+  handleEose(sub: string, conn: Readonly<ConnectionType>) {
+    const qt = this.#tracing.find(a => a.id === sub && a.connId === conn.id);
     if (qt) {
       qt.gotEose();
       if (!this.#leaveOpen) {
@@ -379,9 +380,9 @@ export class Query extends EventEmitter<QueryEvents> {
     }, 500);
   }
 
-  #canSendQuery(c: Connection, q: BuiltRawReqFilter) {
+  #canSendQuery(c: ConnectionType, q: BuiltRawReqFilter) {
     // query is not for this relay
-    if (q.relay && q.relay !== c.Address) {
+    if (q.relay && q.relay !== c.address) {
       return false;
     }
     // connection is down, dont send
@@ -389,13 +390,13 @@ export class Query extends EventEmitter<QueryEvents> {
       return false;
     }
     // cannot send unless relay is tagged on ephemeral relay connection
-    if (!q.relay && c.Ephemeral) {
+    if (!q.relay && c.ephemeral) {
       this.#log("Cant send non-specific REQ to ephemeral connection %O %O %O", q, q.relay, c);
       return false;
     }
     // search not supported, cant send
-    if (q.filters.some(a => a.search) && !c.supportsNip(Nips.Search)) {
-      this.#log("Cant send REQ to non-search relay", c.Address);
+    if (q.filters.some(a => a.search) && !c.info?.supported_nips?.includes(Nips.Search)) {
+      this.#log("Cant send REQ to non-search relay", c.address);
       return false;
     }
     // query already closed, cant send
@@ -406,10 +407,10 @@ export class Query extends EventEmitter<QueryEvents> {
     return true;
   }
 
-  #sendQueryInternal(c: Connection, q: BuiltRawReqFilter) {
+  #sendQueryInternal(c: ConnectionType, q: BuiltRawReqFilter) {
     let filters = q.filters;
-    const qt = new QueryTrace(c.Address, filters, c.Id);
-    qt.on("close", x => c.closeReq(x));
+    const qt = new QueryTrace(c.address, filters, c.id);
+    qt.on("close", x => c.closeRequest(x));
     qt.on("change", () => this.#onProgress());
     qt.on("eose", (id, connId, forced) =>
       this.emit("trace", {
@@ -426,7 +427,7 @@ export class Query extends EventEmitter<QueryEvents> {
       }
     };
     const eoseHandler = (sub: string) => {
-      this.#eose(sub, c);
+      this.handleEose(sub, c);
     };
     c.on("event", eventHandler);
     c.on("eose", eoseHandler);
@@ -439,9 +440,9 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#tracing.push(qt);
 
     if (q.syncFrom !== undefined) {
-      c.queueReq(["SYNC", qt.id, q.syncFrom, ...qt.filters], () => qt.sentToRelay());
+      c.request(["SYNC", qt.id, q.syncFrom, ...qt.filters], () => qt.sentToRelay());
     } else {
-      c.queueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
+      c.request(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
     }
     return qt;
   }

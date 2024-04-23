@@ -4,22 +4,6 @@ import { EventSigner, HexKey, NostrEvent } from "..";
 const Nip7Queue: Array<WorkQueueItem> = [];
 processWorkQueue(Nip7Queue);
 
-declare global {
-  interface Window {
-    nostr?: {
-      getPublicKey: () => Promise<HexKey>;
-      signEvent: <T extends NostrEvent>(event: T) => Promise<T>;
-
-      getRelays?: () => Promise<Record<string, { read: boolean; write: boolean }>>;
-
-      nip04?: {
-        encrypt?: (pubkey: HexKey, plaintext: string) => Promise<string>;
-        decrypt?: (pubkey: HexKey, ciphertext: string) => Promise<string>;
-      };
-    };
-  }
-}
-
 export class Nip7Signer implements EventSigner {
   get supports(): string[] {
     return ["nip04"];
@@ -66,6 +50,12 @@ export class Nip7Signer implements EventSigner {
     if (!window.nostr) {
       throw new Error("Cannot use NIP-07 signer, not found!");
     }
-    return await barrierQueue(Nip7Queue, () => unwrap(window.nostr).signEvent(ev));
+    return await barrierQueue(Nip7Queue, async () => {
+      const signed = await unwrap(window.nostr).signEvent(ev);
+      return {
+        ...ev,
+        sig: signed.sig,
+      };
+    });
   }
 }

@@ -109,19 +109,16 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
         await this.#onReply(e);
       });
       this.#conn.on("connected", async () => {
-        this.#conn!.queueReq(
-          [
-            "REQ",
-            "reply",
-            {
-              kinds: [NIP46_KIND],
-              "#p": [this.#localPubkey],
-              // strfry doesn't always delete ephemeral events
-              since: Math.floor(Date.now() / 1000 - 10),
-            },
-          ],
-          () => {},
-        );
+        this.#conn!.request([
+          "REQ",
+          "reply",
+          {
+            kinds: [NIP46_KIND],
+            "#p": [this.#localPubkey],
+            // strfry doesn't always delete ephemeral events
+            since: Math.floor(Date.now() / 1000 - 10),
+          },
+        ]);
 
         if (autoConnect) {
           if (isBunker) {
@@ -151,7 +148,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   async close() {
     if (this.#conn) {
       await this.#disconnect();
-      this.#conn.closeReq("reply");
+      this.#conn.closeRequest("reply");
       this.#conn.close();
       this.#conn = undefined;
       this.#didInit = false;
@@ -290,6 +287,6 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
 
     this.#log("Send: %O", payload);
     const evCommand = await eb.buildAndSign(this.#insideSigner);
-    await this.#conn.sendEventAsync(evCommand);
+    await this.#conn.publish(evCommand);
   }
 }

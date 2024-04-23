@@ -1,9 +1,9 @@
 import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 
-import { CachedTable, isHex, unixNowMs } from "@snort/shared";
+import { CachedTable, unixNowMs } from "@snort/shared";
 import { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr";
-import { Connection, RelaySettings } from "./connection";
+import { RelaySettings } from "./connection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
@@ -16,13 +16,14 @@ import {
   UserRelaysCache,
   RelayMetricCache,
   UsersRelays,
-  SnortSystemDb,
   QueryLike,
   OutboxModel,
   socialGraphInstance,
   EventKind,
   UsersFollows,
   ID,
+  NostrSystemEvents,
+  SystemConfig,
 } from ".";
 import { EventsCache } from "./cache/events";
 import { RelayMetadataLoader } from "./outbox";
@@ -32,76 +33,6 @@ import { QueryManager } from "./query-manager";
 import { CacheRelay } from "./cache-relay";
 import { RequestRouter } from "./request-router";
 import { UserFollowsCache } from "./cache/user-follows-lists";
-
-export interface NostrSystemEvents {
-  change: (state: SystemSnapshot) => void;
-  auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
-  event: (subId: string, ev: TaggedNostrEvent) => void;
-  request: (subId: string, filter: BuiltRawReqFilter) => void;
-}
-
-export interface SystemConfig {
-  /**
-   * Users configured relays (via kind 3 or kind 10_002)
-   */
-  relays: CachedTable<UsersRelays>;
-
-  /**
-   * Cache of user profiles, (kind 0)
-   */
-  profiles: CachedTable<CachedMetadata>;
-
-  /**
-   * Cache of relay connection stats
-   */
-  relayMetrics: CachedTable<RelayMetrics>;
-
-  /**
-   * Direct reference events cache
-   */
-  events: CachedTable<NostrEvent>;
-
-  /**
-   * Cache of user ContactLists (kind 3)
-   */
-  contactLists: CachedTable<UsersFollows>;
-
-  /**
-   * Optimized cache relay, usually `@snort/worker-relay`
-   */
-  cachingRelay?: CacheRelay;
-
-  /**
-   * Optimized functions, usually `@snort/system-wasm`
-   */
-  optimizer: Optimizer;
-
-  /**
-   * Dexie database storage, usually `@snort/system-web`
-   */
-  db?: SnortSystemDb;
-
-  /**
-   * Check event sigs on receive from relays
-   */
-  checkSigs: boolean;
-
-  /**
-   * Automatically handle outbox model
-   *
-   * 1. Fetch relay lists automatically for queried authors
-   * 2. Write to inbox for all `p` tagged users in broadcasting events
-   */
-  automaticOutboxModel: boolean;
-
-  /**
-   * Automatically populate SocialGraph from kind 3 events fetched.
-   *
-   * This is basically free because we always load relays (which includes kind 3 contact lists)
-   * for users when fetching by author.
-   */
-  buildFollowGraph: boolean;
-}
 
 /**
  * Manages nostr content retrieval system
@@ -233,7 +164,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.pool.on("connected", (id, wasReconnect) => {
       const c = this.pool.getConnection(id);
       if (c) {
-        this.relayMetricsHandler.onConnect(c.Address);
+        this.relayMetricsHandler.onConnect(c.address);
         if (wasReconnect) {
           for (const [, q] of this.#queryManager) {
             q.connectionRestored(c);
@@ -251,9 +182,9 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.pool.on("disconnect", (id, code) => {
       const c = this.pool.getConnection(id);
       if (c) {
-        this.relayMetricsHandler.onDisconnect(c.Address, code);
+        this.relayMetricsHandler.onDisconnect(c.address, code);
         for (const [, q] of this.#queryManager) {
-          q.connectionLost(c.Id);
+          q.connectionLost(c.id);
         }
       }
     });

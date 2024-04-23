@@ -152,7 +152,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     } else {
       const ret = [];
       for (const [a, s] of this.#system.pool) {
-        if (!s.Ephemeral) {
+        if (!s.ephemeral) {
           this.#log("Sending query to %s %s %O", a, q.id, qSend);
           const qt = q.sendToRelay(s, qSend);
           if (qt) {

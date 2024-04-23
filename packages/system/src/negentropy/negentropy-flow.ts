@@ -50,7 +50,7 @@ export class NegentropyFlow extends EventEmitter<NegentropyFlowEvents> {
    */
   start() {
     const init = this.#negentropy.initiate();
-    this.#connection.send(["NEG-OPEN", this.#id, this.#filters, bytesToHex(init)]);
+    this.#connection.sendRaw(["NEG-OPEN", this.#id, this.#filters, bytesToHex(init)]);
   }
 
   #handleMessage(msg: Array<any>) {
@@ -80,9 +80,9 @@ export class NegentropyFlow extends EventEmitter<NegentropyFlowEvents> {
             this.#need.push(...need.map(bytesToHex));
           }
           if (nextMsg) {
-            this.#connection.send(["NEG-MSG", this.#id, bytesToHex(nextMsg)]);
+            this.#connection.sendRaw(["NEG-MSG", this.#id, bytesToHex(nextMsg)]);
           } else {
-            this.#connection.send(["NEG-CLOSE", this.#id]);
+            this.#connection.sendRaw(["NEG-CLOSE", this.#id]);
             this.#cleanup();
           }
           break;
