@@ -104,7 +104,7 @@ export class Zapper {
         if (!svc) {
           throw new Error(`Failed to get invoice from ${t.value}`);
         }
-        const relays = [...this.system.pool].filter(([, v]) => !v.Ephemeral).map(([k]) => k);
+        const relays = [...this.system.pool].filter(([, v]) => !v.ephemeral).map(([k]) => k);
         const pub = t.zap?.anon ?? false ? EventPublisher.privateKey(generateRandomKey().privateKey) : this.publisher;
         const zap =
           t.zap && svc.canZap

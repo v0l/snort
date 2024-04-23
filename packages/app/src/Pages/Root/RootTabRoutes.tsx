@@ -7,7 +7,6 @@ import { ConversationsTab } from "@/Pages/Root/ConversationsTab";
 import { DefaultTab } from "@/Pages/Root/DefaultTab";
 import { FollowedByFriendsTab } from "@/Pages/Root/FollowedByFriendsTab";
 import { ForYouTab } from "@/Pages/Root/ForYouTab";
-import { GlobalTab } from "@/Pages/Root/GlobalTab";
 import { NotesTab } from "@/Pages/Root/NotesTab";
 import { TagsTab } from "@/Pages/Root/TagsTab";
 import { TopicsPage } from "@/Pages/TopicsPage";
@@ -15,7 +14,6 @@ import { TopicsPage } from "@/Pages/TopicsPage";
 export type RootTabRoutePath =
   | ""
   | "for-you"
-  | "global"
   | "following"
   | "followed-by-friends"
   | "conversations"
@@ -40,10 +38,6 @@ export const RootTabRoutes: RootTabRoute[] = [
   {
     path: "for-you",
     element: <ForYouTab />,
-  },
-  {
-    path: "global",
-    element: <GlobalTab />,
   },
   {
     path: "following",

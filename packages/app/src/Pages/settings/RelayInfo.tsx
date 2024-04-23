@@ -1,3 +1,4 @@
+import { Connection } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -16,66 +17,66 @@ const RelayInfo = () => {
   const login = useLogin();
   const { system } = useEventPublisher();
 
-  const conn = [...system.pool].find(([, a]) => a.Id === params.id)?.[1];
+  const conn = [...system.pool].find(([, a]) => a.id === params.id)?.[1];
 
-  const stats = useRelayState(conn?.Address ?? "");
+  const stats = useRelayState(conn?.address ?? "");
   return (
     <>
       <h3 className="pointer" onClick={() => navigate("/settings/relays")}>
         <FormattedMessage {...messages.Relays} />
       </h3>
       <div>
-        <h3>{stats?.Info?.name}</h3>
-        <p>{stats?.Info?.description}</p>
+        <h3>{stats?.info?.name}</h3>
+        <p>{stats?.info?.description}</p>
 
-        {stats?.Info?.pubkey && (
+        {stats?.info?.pubkey && (
           <>
             <h4>
               <FormattedMessage {...messages.Owner} />
             </h4>
-            <ProfilePreview pubkey={parseId(stats.Info.pubkey)} />
+            <ProfilePreview pubkey={parseId(stats.info.pubkey)} />
           </>
         )}
-        {stats?.Info?.software && (
+        {stats?.info?.software && (
           <div className="flex">
             <h4 className="grow">
               <FormattedMessage {...messages.Software} />
             </h4>
             <div className="flex flex-col">
-              {stats.Info.software.startsWith("http") ? (
-                <a href={stats.Info.software} target="_blank" rel="noreferrer">
-                  {stats.Info.software}
+              {stats.info.software.startsWith("http") ? (
+                <a href={stats.info.software} target="_blank" rel="noreferrer">
+                  {stats.info.software}
                 </a>
               ) : (
-                <>{stats.Info.software}</>
+                <>{stats.info.software}</>
               )}
               <small>
-                {!stats.Info.version?.startsWith("v") && "v"}
-                {stats.Info.version}
+                {!stats.info.version?.startsWith("v") && "v"}
+                {stats.info.version}
               </small>
             </div>
           </div>
         )}
-        {stats?.Info?.contact && (
+        {stats?.info?.contact && (
           <div className="flex">
             <h4 className="grow">
               <FormattedMessage {...messages.Contact} />
             </h4>
             <a
-              href={`${stats.Info.contact.startsWith("mailto:") ? "" : "mailto:"}${stats.Info.contact}`}
+              href={`${stats.info.contact.startsWith("mailto:") ? "" : "mailto:"}${stats.info.contact}`}
               target="_blank"
               rel="noreferrer">
-              {stats.Info.contact}
+              {stats.info.contact}
             </a>
           </div>
         )}
-        {stats?.Info?.supported_nips && (
+        {stats?.info?.supported_nips && (
           <>
             <h4>
               <FormattedMessage {...messages.Supports} />
             </h4>
             <div className="grow">
-              {stats.Info?.supported_nips?.map(a => (
+              {stats.info?.supported_nips?.map(a => (
                 <a key={a} target="_blank" rel="noreferrer" href={`https://nips.be/${a}`} className="pill">
                   NIP-{a.toString().padStart(2, "0")}
                 </a>
@@ -83,30 +84,38 @@ const RelayInfo = () => {
             </div>
           </>
         )}
-        <h4>
-          <FormattedMessage defaultMessage="Active Subscriptions" id="p85Uwy" />
-        </h4>
-        <div className="grow">
-          {[...(stats?.ActiveRequests ?? [])].map(a => (
-            <span className="pill" key={a}>
-              {a}
-            </span>
-          ))}
-        </div>
-        <h4>
-          <FormattedMessage defaultMessage="Pending Subscriptions" id="UDYlxu" />
-        </h4>
-        <div className="grow">
-          {stats?.PendingRequests?.map(a => (
-            <span className="pill" key={a.obj[1]}>
-              {a.obj[1]}
-            </span>
-          ))}
-        </div>
+        {conn instanceof Connection && (
+          <>
+            <h4>
+              <FormattedMessage defaultMessage="Active Subscriptions" id="p85Uwy" />
+            </h4>
+            <div className="grow">
+              {conn.ActiveRequests.map(a => (
+                <span className="pill" key={a}>
+                  {a}
+                </span>
+              ))}
+            </div>
+          </>
+        )}
+        {conn instanceof Connection && (
+          <>
+            <h4>
+              <FormattedMessage defaultMessage="Pending Subscriptions" id="UDYlxu" />
+            </h4>
+            <div className="grow">
+              {conn.PendingRequests.map(a => (
+                <span className="pill" key={a.obj[1]}>
+                  {a.obj[1]}
+                </span>
+              ))}
+            </div>
+          </>
+        )}
         <div className="flex mt10 justify-end">
           <AsyncButton
             onClick={async () => {
-              await login.state.removeRelay(unwrap(conn).Address, true);
+              await login.state.removeRelay(unwrap(conn).address, true);
               navigate("/settings/relays");
             }}>
             <FormattedMessage {...messages.Remove} />

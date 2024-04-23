@@ -30,10 +30,10 @@ export function ZapPoolPageInner() {
   const relayConnections = useMemo(() => {
     return [...system.pool]
       .map(([, a]) => {
-        if (a.Info?.pubkey && !a.Ephemeral) {
+        if (a.info?.pubkey && !a.ephemeral) {
           return {
-            address: a.Address,
-            pubkey: a.Info.pubkey,
+            address: a.address,
+            pubkey: a.info.pubkey,
           };
         }
       })

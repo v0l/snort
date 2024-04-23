@@ -31,6 +31,7 @@ export type ConnectionType = {
   readonly address: string;
   readonly info: RelayInfo | undefined;
   readonly isDown: boolean;
+  readonly isOpen: boolean;
   settings: RelaySettings;
   ephemeral: boolean;
 

@@ -78,7 +78,7 @@ const RelaySettingsPage = () => {
       </h3>
       <div className="flex flex-col g8">
         {otherConnections.map(a => (
-          <Relay addr={a.Address} key={a.Id} />
+          <Relay addr={a.address} key={a.id} />
         ))}
       </div>
     </div>

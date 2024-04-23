@@ -40,7 +40,7 @@ export default function Relay(props: RelayProps) {
           <div>
             <b>{name}</b>
           </div>
-          {!connection?.Ephemeral && (
+          {!connection?.ephemeral && (
             <div className="flex g8">
               <AsyncIcon
                 iconName="write"
@@ -74,7 +74,7 @@ export default function Relay(props: RelayProps) {
                 iconName="gear"
                 iconSize={16}
                 className="button-icon-sm transparent"
-                onClick={() => navigate(connection?.Id ?? "")}
+                onClick={() => navigate(connection?.id ?? "")}
               />
             </div>
           )}

@@ -24,7 +24,7 @@ export async function updateRelayConnections(system: SystemInterface, relays: Re
       system.ConnectToRelay(k, v);
     }
     for (const [k, v] of system.pool) {
-      if (!relays[k] && !v.Ephemeral) {
+      if (!relays[k] && !v.ephemeral) {
         system.DisconnectRelay(k);
       }
     }

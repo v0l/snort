@@ -3,7 +3,14 @@ import { QueryLike, SystemConfig, SystemInterface } from "./system";
 import { RelaySettings, SyncCommand } from "./connection";
 import { TaggedNostrEvent, NostrEvent, OkResponse, ReqCommand } from "./nostr";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
-import NDK, { NDKConstructorParams, NDKEvent, NDKFilter, NDKRelay, NDKSubscription } from "@nostr-dev-kit/ndk";
+import NDK, {
+  NDKConstructorParams,
+  NDKEvent,
+  NDKFilter,
+  NDKRelay,
+  NDKSubscription,
+  NDKRelayStatus,
+} from "@nostr-dev-kit/ndk";
 import { SystemBase } from "./system-base";
 import { ConnectionPool, ConnectionType, ConnectionTypeEvents, DefaultConnectionPool } from "./connection-pool";
 import { RelayMetadataLoader } from "./outbox";
@@ -53,7 +60,11 @@ class NDKConnection extends EventEmitter<ConnectionTypeEvents> implements Connec
   }
 
   get isDown() {
-    return !this.relay.connectivity.isAvailable();
+    return this.relay.connectivity.status === NDKRelayStatus.FLAPPING;
+  }
+
+  get isOpen() {
+    return this.relay.connectivity.status === NDKRelayStatus.CONNECTED;
   }
 
   info: RelayInfo | undefined;
