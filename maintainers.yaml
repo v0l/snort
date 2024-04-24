@@ -1,8 +1,8 @@
 maintainers:
-- npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
-- npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+  - npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+  - npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
 relays:
-- wss://relay.snort.social/
-- wss://pyramid.fiatjaf.com/
-- wss://nos.lol/
-- ws://skzzn6cimfdv5e2phjc4yr5v7ikbxtn5f7dkwn5c7v47tduzlbosqmqd.onion/
+  - wss://relay.snort.social/
+  - wss://pyramid.fiatjaf.com/
+  - wss://nos.lol/
+  - ws://skzzn6cimfdv5e2phjc4yr5v7ikbxtn5f7dkwn5c7v47tduzlbosqmqd.onion/
