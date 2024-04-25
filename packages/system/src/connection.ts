@@ -94,7 +94,11 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   }
 
   async connect() {
+    // already connected
     if (this.isOpen) return;
+    // wait for re-connect timer
+    if (this.ReconnectTimer) return;
+
     try {
       if (this.info === undefined) {
         const u = new URL(this.address);
@@ -177,6 +181,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       `Closed (code=${e.code}), trying again in ${(this.ConnectTimeout / 1000).toFixed(0).toLocaleString()} sec`,
     );
     this.ReconnectTimer = setTimeout(() => {
+      this.ReconnectTimer = undefined;
       try {
         this.connect();
       } catch {
