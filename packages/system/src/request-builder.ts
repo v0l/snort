@@ -129,10 +129,13 @@ export class RequestBuilder {
       rawFilters = system.requestRouter.forAllRequest(rawFilters);
     }
     const diff = system.optimizer.getDiff(prev, rawFilters);
-    const ts = unixNowMs() - start;
-    this.#log("buildDiff %s %d ms +%d", this.id, ts, diff.length);
     if (diff.length > 0) {
-      return this.#groupFlatByRelay(system, diff);
+      const ret = this.#groupFlatByRelay(system, diff);
+      const ts = unixNowMs() - start;
+      if (ts >= 100) {
+        this.#log("slow diff %s %d ms, consider separate query ids, or use skipDiff: %O", this.id, ts, ret);
+      }
+      return ret;
     }
     return [];
   }
@@ -150,6 +153,7 @@ export class RequestBuilder {
       }
       return acc;
     }, new Map<string, Array<FlatReqFilter>>());
+
 
     const ret = [];
     for (const [k, v] of relayMerged.entries()) {
@@ -185,6 +189,10 @@ export class RequestFilterBuilder {
   relay(u: string | Array<string>) {
     const relays = Array.isArray(u) ? u : [u];
     this.#filter.relays = appendDedupe(this.#filter.relays, removeUndefined(relays.map(a => sanitizeRelayUrl(a))));
+    // make sure we dont have an empty array
+    if (this.#filter.relays?.length === 0) {
+      this.#filter.relays = undefined;
+    }
     return this;
   }
 
@@ -279,7 +287,7 @@ export class RequestFilterBuilder {
     const types = dedupe(links.map(a => a.type));
     if (types.length > 1) throw new Error("Cannot add multiple links of different kinds");
 
-    const tags = links.map(a => unwrap(a.toEventTag()));
+    const tags = removeUndefined(links.map(a => a.toEventTag()));
     this.tag(
       tags[0][0],
       tags.map(v => v[1]),

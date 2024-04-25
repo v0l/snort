@@ -4,7 +4,7 @@ import { useRequestBuilder } from "./useRequestBuilder";
 
 export function useReactions(
   subId: string,
-  ids: Array<NostrLink>,
+  ids: NostrLink | Array<NostrLink>,
   others?: (rb: RequestBuilder) => void,
   leaveOpen?: boolean,
 ) {
@@ -12,8 +12,9 @@ export function useReactions(
     const rb = new RequestBuilder(subId);
     rb.withOptions({ leaveOpen });
 
-    if (ids.length > 0) {
-      const grouped = ids.reduce(
+    const links = Array.isArray(ids) ? ids : [ids];
+    if (links.length > 0) {
+      const grouped = links.reduce(
         (acc, v) => {
           acc[v.type] ??= [];
           acc[v.type].push(v);
@@ -22,7 +23,7 @@ export function useReactions(
         {} as Record<string, Array<NostrLink>>,
       );
 
-      for (const [, v] of Object.entries(grouped)) {
+      for (const v of Object.values(grouped)) {
         rb.withFilter()
           .kinds([EventKind.TextNote, EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt])
           .replyToLink(v);
