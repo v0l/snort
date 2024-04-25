@@ -13,7 +13,7 @@ export function useNotificationsView() {
       rb.withOptions({
         leaveOpen: true,
       });
-      rb.withFilter().kinds(kinds).tag("p", [publicKey]).limit(1000);
+      rb.withFilter().kinds(kinds).tag("p", [publicKey]).limit(100);
       return rb;
     }
   }, [publicKey]);
