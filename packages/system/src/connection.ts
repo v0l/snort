@@ -43,6 +43,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   #closing = false;
   #downCount = 0;
   #activeRequests = new Set<string>();
+  #connectStarted = false;
 
   id: string;
   readonly address: string;
@@ -85,6 +86,10 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     return this.Socket?.readyState === WebSocket.OPEN;
   }
 
+  get isConnecting() {
+    return this.Socket?.readyState === WebSocket.CONNECTING;
+  }
+
   get isDown() {
     return this.#downCount > 0;
   }
@@ -95,9 +100,12 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
 
   async connect() {
     // already connected
-    if (this.isOpen) return;
+    if (this.isOpen || this.isConnecting) return;
     // wait for re-connect timer
     if (this.ReconnectTimer) return;
+    // prevent race condition
+    if (this.#connectStarted) return;
+    this.#connectStarted = true;
 
     try {
       if (this.info === undefined) {
@@ -138,6 +146,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     this.Socket.onmessage = e => this.#onMessage(e);
     this.Socket.onerror = e => this.#onError(e);
     this.Socket.onclose = e => this.#onClose(e);
+    this.#connectStarted = false;
   }
 
   close() {

@@ -21,7 +21,7 @@ export interface ConnectionTypeEvents {
   unknownMessage: (obj: Array<any>) => void;
 }
 
-export interface ConnectionSubscription {}
+export interface ConnectionSubscription { }
 
 /**
  * Basic relay connection
@@ -93,15 +93,14 @@ export type ConnectionBuilder<T extends ConnectionType> = (
   address: string,
   options: RelaySettings,
   ephemeral: boolean,
-) => Promise<T>;
+) => Promise<T> | T;
 
 /**
  * Simple connection pool containing connections to multiple nostr relays
  */
 export class DefaultConnectionPool<T extends ConnectionType = Connection>
   extends EventEmitter<ConnectionPoolEvents>
-  implements ConnectionPool
-{
+  implements ConnectionPool {
   #system: SystemInterface;
   #log = debug("ConnectionPool");
 
@@ -122,7 +121,7 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
       this.#connectionBuilder = builder;
     } else {
       this.#connectionBuilder = (addr, options, ephemeral) => {
-        return Promise.resolve<T>(new Connection(addr, options, ephemeral) as unknown as T);
+        return new Connection(addr, options, ephemeral) as unknown as T;
       };
     }
   }
