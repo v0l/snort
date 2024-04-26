@@ -21,7 +21,6 @@ export interface TimelineFollowsProps {
   noteRenderer?: (ev: NostrEvent) => ReactNode;
   noteOnClick?: (ev: NostrEvent) => void;
   displayAs?: DisplayAs;
-  showDisplayAsSelector?: boolean;
 }
 
 /**
@@ -53,11 +52,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
 
   return (
     <>
-      <DisplayAsSelector
-        show={props.showDisplayAsSelector}
-        activeSelection={displayAs}
-        onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)}
-      />
+      <DisplayAsSelector activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
       {chunks.map(c => (
         <TimelineChunk
           key={c.until}
@@ -67,6 +62,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
           noteFilter={filterEvents}
           noteOnClick={props.noteOnClick}
           noteRenderer={props.noteRenderer}
+          displayAs={displayAs}
         />
       ))}
       <AutoLoadMore onClick={() => showMore()} />

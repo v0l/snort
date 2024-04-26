@@ -5,7 +5,7 @@ import { ReactNode, useMemo } from "react";
 import { WindowChunk } from "@/Hooks/useTimelineChunks";
 
 import { DisplayAs } from "./DisplayAsSelector";
-import { TimelineFragment } from "./TimelineFragment";
+import { TimelineRenderer } from "./TimelineRenderer";
 
 export interface TimelineChunkProps {
   id: string;
@@ -15,7 +15,6 @@ export interface TimelineChunkProps {
   noteRenderer?: (ev: NostrEvent) => ReactNode;
   noteOnClick?: (ev: NostrEvent) => void;
   displayAs?: DisplayAs;
-  showDisplayAsSelector?: boolean;
 }
 
 /**
@@ -34,13 +33,16 @@ export default function TimelineChunk(props: TimelineChunkProps) {
   const feed = useRequestBuilder(sub);
 
   return (
-    <TimelineFragment
-      frag={{
+    <TimelineRenderer
+      frags={{
         events: feed.filter(a => props.noteFilter?.(a) ?? true),
         refTime: props.chunk.until,
       }}
       noteOnClick={props.noteOnClick}
       noteRenderer={props.noteRenderer}
+      displayAs={props.displayAs}
+      latest={[]}
+      showLatest={() => {}}
     />
   );
 }

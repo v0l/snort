@@ -14,7 +14,7 @@ import ProfileImage from "@/Components/User/ProfileImage";
 import getEventMedia from "@/Utils/getEventMedia";
 
 export interface TimelineRendererProps {
-  frags: Array<TimelineFragment>;
+  frags: Array<TimelineFragment> | TimelineFragment;
   /**
    * List of pubkeys who have posted recently
    */
@@ -29,10 +29,10 @@ export interface TimelineRendererProps {
 }
 
 // filter frags[0].events that have media
-function Grid({ frags }: { frags: Array<TimelineFragment> }) {
+function Grid({ frags }: { frags: Array<TimelineFragment> | TimelineFragment }) {
   const [modalEventIndex, setModalEventIndex] = useState<number | undefined>(undefined);
   const allEvents = useMemo(() => {
-    return frags.flatMap(frag => frag.events);
+    return (Array.isArray(frags) ? frags : [frags]).flatMap(frag => frag.events);
   }, [frags]);
   const mediaEvents = useMemo(() => {
     return allEvents.filter(event => getEventMedia(event).length > 0);
@@ -99,7 +99,8 @@ export function TimelineRenderer(props: TimelineRendererProps) {
   }, [inView, props.latest]);
 
   const renderNotes = () => {
-    return props.frags.map((frag, index) => (
+    const frags = Array.isArray(props.frags) ? props.frags : [props.frags];
+    return frags.map((frag, index) => (
       <ErrorBoundary key={frag.events[0]?.id + index}>
         <TimelineFragment
           frag={frag}
