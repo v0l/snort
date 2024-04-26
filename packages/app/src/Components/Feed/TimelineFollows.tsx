@@ -39,37 +39,39 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const { isFollowing, followList } = useFollowsControls();
   const { chunks, showMore } = useTimelineChunks({
     now: openedAt,
-    firstChunkSize: Hour * 2
+    firstChunkSize: Hour * 2,
   });
 
   const builder = (rb: RequestBuilder) => {
-    rb.withFilter()
-      .authors(followList)
-      .kinds([EventKind.TextNote, EventKind.Repost, EventKind.Polls]);
+    rb.withFilter().authors(followList).kinds([EventKind.TextNote, EventKind.Repost, EventKind.Polls]);
   };
 
   const filterEvents = (a: NostrEvent) =>
-    (props.noteFilter?.(a) ?? true)
-    && (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true)
-    && (isFollowing(a.pubkey) || a.tags.filter(a => a[0] === "t").length < 5);
+    (props.noteFilter?.(a) ?? true) &&
+    (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true) &&
+    (isFollowing(a.pubkey) || a.tags.filter(a => a[0] === "t").length < 5);
 
-  return <>
-    <DisplayAsSelector
-      show={props.showDisplayAsSelector}
-      activeSelection={displayAs}
-      onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)}
-    />
-    {chunks.map(c => <TimelineChunk
-      key={c.until}
-      id="follows"
-      chunk={c}
-      builder={builder}
-      noteFilter={filterEvents}
-      noteOnClick={props.noteOnClick}
-      noteRenderer={props.noteRenderer}
-    />)}
-    <AutoLoadMore onClick={() => showMore()} />
-  </>;
+  return (
+    <>
+      <DisplayAsSelector
+        show={props.showDisplayAsSelector}
+        activeSelection={displayAs}
+        onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)}
+      />
+      {chunks.map(c => (
+        <TimelineChunk
+          key={c.until}
+          id="follows"
+          chunk={c}
+          builder={builder}
+          noteFilter={filterEvents}
+          noteOnClick={props.noteOnClick}
+          noteRenderer={props.noteRenderer}
+        />
+      ))}
+      <AutoLoadMore onClick={() => showMore()} />
+    </>
+  );
 };
 
 export default TimelineFollows;

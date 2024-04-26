@@ -21,7 +21,7 @@ export interface ConnectionTypeEvents {
   unknownMessage: (obj: Array<any>) => void;
 }
 
-export interface ConnectionSubscription { }
+export interface ConnectionSubscription {}
 
 /**
  * Basic relay connection
@@ -100,7 +100,8 @@ export type ConnectionBuilder<T extends ConnectionType> = (
  */
 export class DefaultConnectionPool<T extends ConnectionType = Connection>
   extends EventEmitter<ConnectionPoolEvents>
-  implements ConnectionPool {
+  implements ConnectionPool
+{
   #system: SystemInterface;
   #log = debug("ConnectionPool");
 

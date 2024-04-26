@@ -154,7 +154,6 @@ export class RequestBuilder {
       return acc;
     }, new Map<string, Array<FlatReqFilter>>());
 
-
     const ret = [];
     for (const [k, v] of relayMerged.entries()) {
       const filters = system.optimizer.flatMerge(v);
