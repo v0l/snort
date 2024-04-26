@@ -1,5 +1,6 @@
 import "./Timeline.css";
 
+import { unixNow } from "@snort/shared";
 import { socialGraphInstance, TaggedNostrEvent } from "@snort/system";
 import { useCallback, useMemo, useState } from "react";
 
@@ -28,7 +29,7 @@ export interface TimelineProps {
  */
 const Timeline = (props: TimelineProps) => {
   const login = useLogin();
-  const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt");
+  const [openedAt] = useHistoryState(unixNow(), "openedAt");
   const feedOptions = useMemo(
     () => ({
       method: props.method,

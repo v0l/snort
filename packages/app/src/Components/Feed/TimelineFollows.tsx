@@ -1,16 +1,18 @@
 import "./Timeline.css";
 
-import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
-import { ReactNode, useCallback, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { unixNow } from "@snort/shared";
+import { EventKind, NostrEvent, RequestBuilder } from "@snort/system";
+import { ReactNode, useState } from "react";
 
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
-import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
-import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useHistoryState from "@/Hooks/useHistoryState";
 import useLogin from "@/Hooks/useLogin";
-import { dedupeByPubkey } from "@/Utils";
+import useTimelineChunks from "@/Hooks/useTimelineChunks";
+import { Hour } from "@/Utils/Const";
+
+import { AutoLoadMore } from "../Event/LoadMore";
+import TimelineChunk from "./TimelineChunk";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;
@@ -23,7 +25,7 @@ export interface TimelineFollowsProps {
 }
 
 /**
- * A list of notes by "subject"
+ * A list of notes by your follows
  */
 const TimelineFollows = (props: TimelineFollowsProps) => {
   const login = useLogin(s => ({
@@ -33,83 +35,41 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   }));
   const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
-  const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt");
+  const [openedAt] = useHistoryState(unixNow(), "openedAt");
   const { isFollowing, followList } = useFollowsControls();
-  const subject = useMemo(
-    () =>
-      ({
-        type: "pubkey",
-        items: followList,
-        discriminator: login.publicKey?.slice(0, 12),
-        extra: rb => {
-          if (login.tags.length > 0) {
-            rb.withFilter().kinds([EventKind.TextNote, EventKind.Repost]).tags(login.tags);
-          }
-        },
-      }) as TimelineSubject,
-    [login.publicKey, followList, login.tags],
-  );
-  const feed = useTimelineFeed(subject, { method: "TIME_RANGE", now: openedAt } as TimelineFeedOptions);
+  const { chunks, showMore } = useTimelineChunks({
+    now: openedAt,
+    firstChunkSize: Hour * 2
+  });
 
-  // TODO allow reposts:
-  const postsOnly = useCallback(
-    (a: NostrEvent) => (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true),
-    [props.postsOnly],
-  );
+  const builder = (rb: RequestBuilder) => {
+    rb.withFilter()
+      .authors(followList)
+      .kinds([EventKind.TextNote, EventKind.Repost, EventKind.Polls]);
+  };
 
-  const filterPosts = useCallback(
-    (nts: Array<TaggedNostrEvent>) => {
-      const a = nts.filter(a => a.kind !== EventKind.LiveEvent);
-      return a
-        ?.filter(postsOnly)
-        .filter(a => props.noteFilter?.(a) ?? true)
-        .filter(a => isFollowing(a.pubkey) || a.tags.filter(a => a[0] === "t").length < 5);
-    },
-    [postsOnly, props.noteFilter, isFollowing],
-  );
+  const filterEvents = (a: NostrEvent) =>
+    (props.noteFilter?.(a) ?? true)
+    && (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true)
+    && (isFollowing(a.pubkey) || a.tags.filter(a => a[0] === "t").length < 5);
 
-  const mainFeed = useMemo(() => {
-    return filterPosts(feed.main ?? []);
-  }, [feed.main, filterPosts]);
-
-  const latestFeed = useMemo(() => {
-    return filterPosts(feed.latest ?? []);
-  }, [feed.latest]);
-
-  const latestAuthors = useMemo(() => {
-    return dedupeByPubkey(latestFeed).map(e => e.pubkey);
-  }, [latestFeed]);
-
-  function onShowLatest(scrollToTop = false) {
-    feed.showLatest();
-    if (scrollToTop) {
-      window.scrollTo(0, 0);
-    }
-  }
-
-  return (
-    <>
-      <DisplayAsSelector
-        show={props.showDisplayAsSelector}
-        activeSelection={displayAs}
-        onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)}
-      />
-      <TimelineRenderer
-        frags={[{ events: mainFeed, refTime: 0 }]}
-        latest={latestAuthors}
-        showLatest={t => onShowLatest(t)}
-        noteOnClick={props.noteOnClick}
-        noteRenderer={props.noteRenderer}
-        noteContext={e => {
-          if (typeof e.context === "string") {
-            return <Link to={`/t/${e.context}`}>{`#${e.context}`}</Link>;
-          }
-        }}
-        displayAs={displayAs}
-        loadMore={() => feed.loadMore()}
-      />
-    </>
-  );
+  return <>
+    <DisplayAsSelector
+      show={props.showDisplayAsSelector}
+      activeSelection={displayAs}
+      onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)}
+    />
+    {chunks.map(c => <TimelineChunk
+      key={c.until}
+      id="follows"
+      chunk={c}
+      builder={builder}
+      noteFilter={filterEvents}
+      noteOnClick={props.noteOnClick}
+      noteRenderer={props.noteRenderer}
+    />)}
+    <AutoLoadMore onClick={() => showMore()} />
+  </>;
 };
 
 export default TimelineFollows;
