@@ -1,12 +1,25 @@
 import { WorkQueueItem, processWorkQueue, barrierQueue, unwrap } from "@snort/shared";
-import { EventSigner, HexKey, NostrEvent } from "..";
+import { EventSigner, NostrEvent } from "..";
 
 const Nip7Queue: Array<WorkQueueItem> = [];
 processWorkQueue(Nip7Queue);
 
+declare interface Nip44Window {
+  nostr?: {
+    nip44?: {
+      encrypt(recipientHexPubKey: string, value: string): Promise<string>;
+      decrypt(senderHexPubKey: string, value: string): Promise<string>;
+    };
+  }
+}
+
 export class Nip7Signer implements EventSigner {
   get supports(): string[] {
-    return ["nip04"];
+    const supports = ["nip04"];
+    if (window.nostr && "nip44" in window.nostr) {
+      supports.push("nip44");
+    }
+    return supports;
   }
 
   init(): Promise<void> {
@@ -39,11 +52,23 @@ export class Nip7Signer implements EventSigner {
   }
 
   async nip44Encrypt(content: string, key: string): Promise<string> {
-    throw new Error("Method not implemented.");
+    if (!window.nostr) {
+      throw new Error("Cannot use NIP-07 signer, not found!");
+    }
+    return await barrierQueue(Nip7Queue, async () => {
+      const window = globalThis.window as Nip44Window;
+      return await window.nostr!.nip44!.encrypt(key, content);
+    });
   }
 
   async nip44Decrypt(content: string, otherKey: string): Promise<string> {
-    throw new Error("Method not implemented.");
+    if (!window.nostr) {
+      throw new Error("Cannot use NIP-07 signer, not found!");
+    }
+    return await barrierQueue(Nip7Queue, async () => {
+      const window = globalThis.window as Nip44Window;
+      return await window.nostr!.nip44!.decrypt(otherKey, content);
+    });
   }
 
   async sign(ev: NostrEvent): Promise<NostrEvent> {
