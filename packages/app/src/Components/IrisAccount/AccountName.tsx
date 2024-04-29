@@ -11,10 +11,10 @@ export default function AccountName({ name = "", link = true }: AccountNameProps
   return (
     <>
       <div>
-        <FormattedMessage defaultMessage="Username" id="JCIgkj" />: <b>{name}</b>
+        <FormattedMessage defaultMessage="Username" />: <b>{name}</b>
       </div>
       <div>
-        <FormattedMessage defaultMessage="Short link" id="rx1i0i" />:{" "}
+        <FormattedMessage defaultMessage="Short link" />:{" "}
         {link ? (
           <a
             href={`https://iris.to/${name}`}
@@ -29,7 +29,7 @@ export default function AccountName({ name = "", link = true }: AccountNameProps
         )}
       </div>
       <div>
-        <FormattedMessage defaultMessage="Nostr address (nip05)" id="BjNwZW" />: <b>{name}@iris.to</b>
+        <FormattedMessage defaultMessage="Nostr address (nip05)" />: <b>{name}@iris.to</b>
       </div>
     </>
   );

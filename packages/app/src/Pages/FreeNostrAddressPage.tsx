@@ -8,7 +8,7 @@ export default function FreeNostrAddressPage() {
   return (
     <div className="main-content p">
       <h2>
-        <FormattedMessage defaultMessage="Get a free nostr address" id="OQSOJF" />
+        <FormattedMessage defaultMessage="Get a free nostr address" />
       </h2>
       <p>
         <FormattedMessage {...messages.Nip05} />

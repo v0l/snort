@@ -67,7 +67,7 @@ export default function NostrLinkHandler() {
         <Spinner width={50} height={50} />
       ) : (
         <b className="error">
-          <FormattedMessage defaultMessage="Nothing found :/" id="oJ+JJN" />
+          <FormattedMessage defaultMessage="Nothing found :/" />
         </b>
       )}
     </div>

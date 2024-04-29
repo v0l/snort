@@ -9,7 +9,7 @@ export function SuccessAction({ success }: { success: LNURLSuccessAction }) {
     <div className="flex items-center">
       <p className="flex g12">
         <Icon name="check" className="success" />
-        {success?.description ?? <FormattedMessage defaultMessage="Paid" id="u/vOPu" />}
+        {success?.description ?? <FormattedMessage defaultMessage="Paid" />}
       </p>
       {success.url && (
         <p>

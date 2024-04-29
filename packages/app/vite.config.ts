@@ -9,6 +9,9 @@ export default defineConfig({
   plugins: [
     react({
       jsxImportSource: "@welldone-software/why-did-you-render",
+      babel: {
+        configFile: true,
+      },
     }),
     VitePWA({
       strategies: "injectManifest",
@@ -17,7 +20,7 @@ export default defineConfig({
       filename: "service-worker.ts",
       registerType: "autoUpdate",
       devOptions: {
-        enabled: true,
+        enabled: false,
         type: "module",
       },
     }),

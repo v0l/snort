@@ -13,7 +13,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       element: (
         <>
           <Icon name="user-v2" />
-          <FormattedMessage defaultMessage="For you" id="xEjBS7" />
+          <FormattedMessage defaultMessage="For you" />
         </>
       ),
     },
@@ -24,7 +24,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       element: (
         <>
           <Icon name="user-v2" />
-          <FormattedMessage defaultMessage="Following" id="cPIKU2" />
+          <FormattedMessage defaultMessage="Following" />
         </>
       ),
     },
@@ -35,7 +35,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       element: (
         <>
           <Icon name="fire" />
-          <FormattedMessage defaultMessage="Trending Notes" id="Ix8l+B" />
+          <FormattedMessage defaultMessage="Trending Notes" />
         </>
       ),
     },
@@ -46,7 +46,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       element: (
         <>
           <Icon name="message-chat-circle" />
-          <FormattedMessage defaultMessage="Conversations" id="1udzha" />
+          <FormattedMessage defaultMessage="Conversations" />
         </>
       ),
     },
@@ -57,7 +57,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       element: (
         <>
           <Icon name="user-v2" />
-          <FormattedMessage defaultMessage="Followed by friends" id="voxBKC" />
+          <FormattedMessage defaultMessage="Followed by friends" />
         </>
       ),
     },
@@ -68,7 +68,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       element: (
         <>
           <Icon name="thumbs-up" />
-          <FormattedMessage defaultMessage="Suggested Follows" id="C8HhVE" />
+          <FormattedMessage defaultMessage="Suggested Follows" />
         </>
       ),
     },
@@ -79,7 +79,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       element: (
         <>
           <Icon name="hash" />
-          <FormattedMessage defaultMessage="Trending Hashtags" id="XXm7jJ" />
+          <FormattedMessage defaultMessage="Trending Hashtags" />
         </>
       ),
     },
@@ -90,7 +90,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       element: (
         <>
           <Icon name="globe" />
-          <FormattedMessage defaultMessage="Global" id="EWyQH5" />
+          <FormattedMessage defaultMessage="Global" />
         </>
       ),
     },
@@ -101,7 +101,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       element: (
         <>
           <Icon name="hash" />
-          <FormattedMessage defaultMessage="Topics" id="kc79d3" />
+          <FormattedMessage defaultMessage="Topics" />
         </>
       ),
     },

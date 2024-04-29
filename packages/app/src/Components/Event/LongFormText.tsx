@@ -97,11 +97,7 @@ export function LongFormText(props: LongFormTextProps) {
         e.stopPropagation();
         setShowMore(!showMore);
       }}>
-      {showMore ? (
-        <FormattedMessage defaultMessage="Show less" id="qyJtWy" />
-      ) : (
-        <FormattedMessage defaultMessage="Show more" id="aWpBzj" />
-      )}
+      {showMore ? <FormattedMessage defaultMessage="Show less" /> : <FormattedMessage defaultMessage="Show more" />}
     </a>
   );
 
@@ -126,12 +122,12 @@ export function LongFormText(props: LongFormTextProps) {
           <div>‧</div>
           {!reading && (
             <div className="pointer" onClick={() => readArticle()}>
-              <FormattedMessage defaultMessage="Listen to this article" id="nihgfo" />
+              <FormattedMessage defaultMessage="Listen to this article" />
             </div>
           )}
           {reading && (
             <div className="pointer" onClick={() => stopReading()}>
-              <FormattedMessage defaultMessage="Stop listening" id="U1aPPi" />
+              <FormattedMessage defaultMessage="Stop listening" />
             </div>
           )}
         </div>

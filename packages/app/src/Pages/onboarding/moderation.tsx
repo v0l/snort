@@ -21,17 +21,17 @@ export function Moderation() {
     <div className="flex flex-col g24">
       <div className="flex flex-col g8 text-center">
         <h1>
-          <FormattedMessage defaultMessage="Clean up your feed" id="jHa/ko" />
+          <FormattedMessage defaultMessage="Clean up your feed" />
         </h1>
-        <FormattedMessage defaultMessage="Your space the way you want it 😌" id="/B8zwF" />
+        <FormattedMessage defaultMessage="Your space the way you want it 😌" />
       </div>
       <div className="flex flex-col g8">
         <div className="flex g8 items-center">
           <small className="grow uppercase font-semibold">
-            <FormattedMessage defaultMessage="Lists to mute:" id="d+6YsV" />
+            <FormattedMessage defaultMessage="Lists to mute:" />
           </small>
           <span className="font-medium">
-            <FormattedMessage defaultMessage="Toggle all" id="Dx4ey3" />
+            <FormattedMessage defaultMessage="Toggle all" />
           </span>
           <ToggleSwitch
             size={50}
@@ -48,7 +48,7 @@ export function Moderation() {
             <div className="font-semibold grow">{v.title}</div>
             {v.canEdit && (
               <div>
-                <FormattedMessage defaultMessage="edit" id="+vj0U3" />
+                <FormattedMessage defaultMessage="edit" />
               </div>
             )}
             <ToggleSwitch
@@ -61,10 +61,10 @@ export function Moderation() {
       </div>
       <div className="flex flex-col g8">
         <span className="font-semibold">
-          <FormattedMessage defaultMessage="Additional Terms:" id="xl4s/X" />
+          <FormattedMessage defaultMessage="Additional Terms:" />
         </span>
         <small className="font-medium">
-          <FormattedMessage defaultMessage="Use commas to separate words e.g. word1, word2, word3" id="J2HeQ+" />
+          <FormattedMessage defaultMessage="Use commas to separate words e.g. word1, word2, word3" />
         </small>
         <textarea onChange={e => setExtraTerms(e.target.value)} value={extraTerms}></textarea>
       </div>
@@ -89,7 +89,7 @@ export function Moderation() {
           }
           navigate("/");
         }}>
-        <FormattedMessage defaultMessage="Finish" id="2O2sfp" />
+        <FormattedMessage defaultMessage="Finish" />
       </AsyncButton>
     </div>
   );

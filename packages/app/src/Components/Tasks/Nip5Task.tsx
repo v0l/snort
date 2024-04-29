@@ -20,7 +20,7 @@ export class Nip5Task extends BaseUITask {
           values={{
             link: (
               <Link to="/nostr-address">
-                <FormattedMessage defaultMessage="Buy nostr address" id="MuVeKe" />
+                <FormattedMessage defaultMessage="Buy nostr address" />
               </Link>
             ),
           }}

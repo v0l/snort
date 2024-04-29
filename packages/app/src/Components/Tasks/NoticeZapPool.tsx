@@ -29,7 +29,7 @@ export class NoticeZapPoolDefault extends BaseUITask {
               ),
               link: (
                 <Link to="/zap-pool">
-                  <FormattedMessage defaultMessage="Zap Pool" id="i/dBAR" />
+                  <FormattedMessage defaultMessage="Zap Pool" />
                 </Link>
               ),
             }}

@@ -35,7 +35,7 @@ export const WalletBalance = () => {
         <Icon name="dots" className="text-secondary" />
       </div>
       <div className="text-secondary text-sm">
-        <FormattedMessage defaultMessage="~{amount}" id="3QwfJR" values={msgValues} />
+        <FormattedMessage defaultMessage="~{amount}" values={msgValues} />
       </div>
     </div>
   );

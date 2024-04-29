@@ -22,7 +22,7 @@ export function ZapModalInvoice(props: {
             <Copy text={v.pr} maxSize={26} className="items-center" />
             <a href={`lightning:${v.pr}`}>
               <button type="button">
-                <FormattedMessage defaultMessage="Open Wallet" id="HbefNb" />
+                <FormattedMessage defaultMessage="Open Wallet" />
               </button>
             </a>
           </div>

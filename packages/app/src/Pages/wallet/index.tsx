@@ -65,7 +65,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
     return (
       <>
         <h3>
-          <FormattedMessage defaultMessage="Enter wallet password" id="r5srDR" />
+          <FormattedMessage defaultMessage="Enter wallet password" />
         </h3>
         <div className="flex w-max">
           <div className="grow mr10">
@@ -82,7 +82,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
             />
           </div>
           <AsyncButton onClick={() => loginWallet(unwrap(walletPassword))} disabled={(walletPassword?.length ?? 0) < 8}>
-            <FormattedMessage defaultMessage="Unlock" id="xQtL3v" description="Unlock wallet" />
+            <FormattedMessage defaultMessage="Unlock" />
           </AsyncButton>
         </div>
       </>
@@ -95,11 +95,11 @@ export default function WalletPage(props: { showHistory: boolean }) {
         <div className="flex flex-col gap-4">
           <div>
             <button onClick={() => navigate("/settings/wallet")}>
-              <FormattedMessage defaultMessage="Connect Wallet" id="cg1VJ2" />
+              <FormattedMessage defaultMessage="Connect Wallet" />
             </button>
           </div>
           <small>
-            <FormattedMessage defaultMessage="Connect a wallet to send instant payments" id="Yf3DwC" />
+            <FormattedMessage defaultMessage="Connect a wallet to send instant payments" />
           </small>
         </div>
       );
@@ -107,7 +107,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
     return (
       <div className="flex items-center">
         <h4 className="grow">
-          <FormattedMessage defaultMessage="Select Wallet" id="G1BGCg" />
+          <FormattedMessage defaultMessage="Select Wallet" />
         </h4>
         <div>
           <select className="w-max" onChange={e => Wallets.switch(e.target.value)} value={walletState.config?.id}>
@@ -130,11 +130,11 @@ export default function WalletPage(props: { showHistory: boolean }) {
     return (
       <div className="flex flex-col gap-1">
         <h3>
-          <FormattedMessage defaultMessage="Payments" id="pukxg/" description="Wallet transation history" />
+          <FormattedMessage defaultMessage="Payments" />
         </h3>
         {history === undefined && (
           <small>
-            <FormattedMessage defaultMessage="Your sent and received payments will show up here." id="i5gBFz" />
+            <FormattedMessage defaultMessage="Your sent and received payments will show up here." />
           </small>
         )}
         {history?.map(a => {
@@ -238,13 +238,13 @@ export default function WalletPage(props: { showHistory: boolean }) {
           <div className="flex gap-2">
             {wallet?.canCreateInvoice() && (
               <AsyncButton className="secondary" onClick={() => navigate("/wallet/receive")}>
-                <FormattedMessage defaultMessage="Receive" id="ULXFfP" />
+                <FormattedMessage defaultMessage="Receive" />
                 <Icon name="arrow-up-right" className="rotate-180" />
               </AsyncButton>
             )}
             {wallet?.canPayInvoice() && (
               <AsyncButton onClick={() => navigate("/wallet/send")} className="primary">
-                <FormattedMessage defaultMessage="Send" id="9WRlF4" />
+                <FormattedMessage defaultMessage="Send" />
                 <Icon name="arrow-up-right" />
               </AsyncButton>
             )}

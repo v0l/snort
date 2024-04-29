@@ -54,7 +54,7 @@ export default function SuggestedProfiles() {
   return (
     <>
       <div className="flex items-center justify-between bg-superdark p br">
-        <FormattedMessage defaultMessage="Provider" id="xaj9Ba" />
+        <FormattedMessage defaultMessage="Provider" />
         <select onChange={e => setProvider(Number(e.target.value))}>
           <option value={Provider.NostrBand}>nostr.band</option>
           {/*<option value={Provider.SemisolDev}>semisol.dev</option>*/}

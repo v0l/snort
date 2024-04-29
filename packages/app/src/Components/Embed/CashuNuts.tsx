@@ -74,7 +74,7 @@ export default function CashuNuts({ token }: { token: string }) {
           <Icon name="copy" />
         </AsyncButton>
         <AsyncButton onClick={() => redeemToken(token)}>
-          <FormattedMessage defaultMessage="Redeem" id="XrSk2j" description="Button: Redeem Cashu token" />
+          <FormattedMessage defaultMessage="Redeem" />
         </AsyncButton>
       </div>
     </div>

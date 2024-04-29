@@ -160,7 +160,7 @@ function Reaction({ ev }: { ev: TaggedNostrEvent }) {
       <div className="text-gray-medium font-bold">
         <Username pubkey={ev.pubkey} onLinkVisit={() => {}} />
         <span> </span>
-        <FormattedMessage defaultMessage="liked" id="TvKqBp" />
+        <FormattedMessage defaultMessage="liked" />
       </div>
       <NoteQuote link={link} />
     </div>

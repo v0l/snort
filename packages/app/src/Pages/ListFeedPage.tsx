@@ -30,7 +30,7 @@ export function ListFeedPage() {
   if (data.kind !== EventKind.ContactList && data.kind !== EventKind.FollowSet) {
     return (
       <b>
-        <FormattedMessage defaultMessage="Must be a contact list or pubkey list" id="vB3oQ/" />
+        <FormattedMessage defaultMessage="Must be a contact list or pubkey list" />
       </b>
     );
   }

@@ -87,7 +87,7 @@ export function SnortDeckLayout() {
             <div>
               <Link to="/subscribe">
                 <button>
-                  <FormattedMessage defaultMessage="Subscribe" id="gczcC5" />
+                  <FormattedMessage defaultMessage="Subscribe" />
                 </button>
               </Link>
             </div>

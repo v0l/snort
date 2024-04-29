@@ -10,11 +10,11 @@ export function CacheSettings() {
   return (
     <div className="flex flex-col g8">
       <h3>
-        <FormattedMessage defaultMessage="Cache" id="DBiVK1" />
+        <FormattedMessage defaultMessage="Cache" />
       </h3>
       <RelayCacheStats />
-      <CacheDetails cache={RelayMetrics} name={<FormattedMessage defaultMessage="Relay Metrics" id="tjpYlr" />} />
-      <CacheDetails cache={GiftsCache} name={<FormattedMessage defaultMessage="Gift Wraps" id="fjAcWo" />} />
+      <CacheDetails cache={RelayMetrics} name={<FormattedMessage defaultMessage="Relay Metrics" />} />
+      <CacheDetails cache={GiftsCache} name={<FormattedMessage defaultMessage="Gift Wraps" />} />
     </div>
   );
 }
@@ -42,7 +42,7 @@ function CacheDetails<T>({ cache, name }: { cache: FeedCache<T>; name: ReactNode
       </div>
       <div>
         <AsyncButton onClick={() => cache.clear()}>
-          <FormattedMessage defaultMessage="Clear" id="/GCoTA" />
+          <FormattedMessage defaultMessage="Clear" />
         </AsyncButton>
       </div>
     </div>
@@ -64,7 +64,7 @@ function RelayCacheStats() {
   return (
     <div className="flex justify-between br p bg-superdark">
       <div className="flex flex-col g4 w-64">
-        <FormattedMessage defaultMessage="Worker Relay" id="xSoIUU" />
+        <FormattedMessage defaultMessage="Worker Relay" />
         {myEvents && (
           <p>
             <FormattedMessage
@@ -80,10 +80,10 @@ function RelayCacheStats() {
           <thead>
             <tr>
               <th className="text-left">
-                <FormattedMessage defaultMessage="Kind" id="e5x8FT" />
+                <FormattedMessage defaultMessage="Kind" />
               </th>
               <th className="text-left">
-                <FormattedMessage defaultMessage="Count" id="Aujn2T" />
+                <FormattedMessage defaultMessage="Count" />
               </th>
             </tr>
           </thead>
@@ -107,7 +107,7 @@ function RelayCacheStats() {
       </div>
       <div className="flex flex-col gap-2">
         <AsyncButton onClick={() => {}}>
-          <FormattedMessage defaultMessage="Clear" id="/GCoTA" />
+          <FormattedMessage defaultMessage="Clear" />
         </AsyncButton>
         <AsyncButton
           onClick={async () => {
@@ -122,7 +122,7 @@ function RelayCacheStats() {
             a.download = "snort.db";
             a.click();
           }}>
-          <FormattedMessage defaultMessage="Dump" id="f2CAxA" />
+          <FormattedMessage defaultMessage="Dump" />
         </AsyncButton>
       </div>
     </div>

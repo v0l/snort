@@ -50,7 +50,7 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
       <div className="flex g8">
         <div className="flex flex-col g4">
           <small>
-            <FormattedMessage defaultMessage="Months" id="AxDOiG" />
+            <FormattedMessage defaultMessage="Months" />
           </small>
           <input type="number" value={months} onChange={e => setMonths(Number(e.target.value))} min={1} />
         </div>
@@ -67,7 +67,7 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
                 }}
               />
             ) : (
-              <FormattedMessage defaultMessage="Pay Now" id="Ss0sWu" />
+              <FormattedMessage defaultMessage="Pay Now" />
             )}
           </AsyncButton>
         </div>

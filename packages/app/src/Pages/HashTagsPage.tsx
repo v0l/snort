@@ -75,11 +75,11 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
           <AsyncButton
             className="secondary"
             onClick={() => state.removeFromList(EventKind.InterestsList, new NostrHashtagLink(tag), true)}>
-            <FormattedMessage defaultMessage="Unfollow" id="izWS4J" />
+            <FormattedMessage defaultMessage="Unfollow" />
           </AsyncButton>
         ) : (
           <AsyncButton onClick={() => state.addToList(EventKind.InterestsList, new NostrHashtagLink(tag), true)}>
-            <FormattedMessage defaultMessage="Follow" id="ieGrWo" />
+            <FormattedMessage defaultMessage="Follow" />
           </AsyncButton>
         )}
       </div>

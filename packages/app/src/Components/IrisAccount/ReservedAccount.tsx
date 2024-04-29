@@ -25,12 +25,12 @@ export default function ReservedAccount({
       <AccountName name={name} link={false} />
       <p>
         <button className="btn btn-sm btn-primary" onClick={() => enableReserved()}>
-          <FormattedMessage defaultMessage="Yes please" id="VcwrfF" />
+          <FormattedMessage defaultMessage="Yes please" />
         </button>
       </p>
       <p>
         <button className="btn btn-sm btn-neutral" onClick={() => declineReserved()}>
-          <FormattedMessage defaultMessage="No thanks" id="c+JYNI" />
+          <FormattedMessage defaultMessage="No thanks" />
         </button>
       </p>
     </div>

@@ -47,7 +47,7 @@ export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
   return (
     <div>
       <h4>
-        <FormattedMessage defaultMessage="Update Lightning Address" id="SOqbe9" />
+        <FormattedMessage defaultMessage="Update Lightning Address" />
       </h4>
       <p>
         <FormattedMessage
@@ -85,7 +85,7 @@ export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
           <option value={ForwardType.ProxyDirect}>Proxy</option>
         </select>
         <AsyncButton onClick={() => startUpdate()}>
-          <FormattedMessage defaultMessage="Update" id="BWpuKl" />
+          <FormattedMessage defaultMessage="Update" />
         </AsyncButton>
       </div>
       {error && <b className="error">{error}</b>}

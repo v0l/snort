@@ -74,7 +74,7 @@ const RelaySettingsPage = () => {
       {addRelay()}
       <CloseRelays />
       <h3>
-        <FormattedMessage defaultMessage="Other Connections" id="LF5kYT" />
+        <FormattedMessage defaultMessage="Other Connections" />
       </h3>
       <div className="flex flex-col g8">
         {otherConnections.map(a => (
@@ -114,7 +114,7 @@ export function CloseRelays() {
   return (
     <>
       <h3>
-        <FormattedMessage defaultMessage="Recommended Relays" id="VL900k" />
+        <FormattedMessage defaultMessage="Recommended Relays" />
       </h3>
       {"geolocation" in navigator && (
         <AsyncButton
@@ -131,7 +131,7 @@ export function CloseRelays() {
               console.error(e);
             }
           }}>
-          <FormattedMessage defaultMessage="Use Exact Location" id="0HFX0T" />
+          <FormattedMessage defaultMessage="Use Exact Location" />
         </AsyncButton>
       )}
       {relays
@@ -142,7 +142,7 @@ export function CloseRelays() {
             <div className="flex justify-between items-center">
               <div className="bold">{getRelayName(a.url)}</div>
               <AsyncButton onClick={() => addNewRelay(a.url)}>
-                <FormattedMessage defaultMessage="Add" id="2/2yg+" />
+                <FormattedMessage defaultMessage="Add" />
               </AsyncButton>
             </div>
             <div className="flex flex-col g8">

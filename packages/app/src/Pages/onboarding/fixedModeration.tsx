@@ -12,7 +12,7 @@ export const FixedModeration = {
     canEdit: false,
   },*/
   nsfw: {
-    title: <FormattedMessage defaultMessage="NSFW" id="w6qrwX" />,
+    title: <FormattedMessage defaultMessage="NSFW" />,
     words: [
       "adult content",
       "explicit",
@@ -39,7 +39,7 @@ export const FixedModeration = {
     canEdit: false,
   },
   crypto: {
-    title: <FormattedMessage defaultMessage="Crypto" id="TdtZQ5" />,
+    title: <FormattedMessage defaultMessage="Crypto" />,
     words: [
       "bitcoin",
       "btc",
@@ -67,7 +67,7 @@ export const FixedModeration = {
     canEdit: false,
   },
   politics: {
-    title: <FormattedMessage defaultMessage="Politics" id="0siT4z" />,
+    title: <FormattedMessage defaultMessage="Politics" />,
     words: [
       "politics",
       "election",

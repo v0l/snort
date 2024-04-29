@@ -72,7 +72,7 @@ class IrisAccount extends Component<Props> {
       view = (
         <div>
           <p>
-            <FormattedMessage defaultMessage="Register an Iris username" id="kEZUR8" /> (iris.to/username)
+            <FormattedMessage defaultMessage="Register an Iris username" /> (iris.to/username)
           </p>
           <form onSubmit={e => this.showChallenge(e)}>
             <div className="flex g8">
@@ -84,14 +84,14 @@ class IrisAccount extends Component<Props> {
                 onInput={e => this.onNewUserNameChange(e)}
               />
               <button type="submit">
-                <FormattedMessage defaultMessage="Register" id="deEeEI" />
+                <FormattedMessage defaultMessage="Register" />
               </button>
             </div>
             <div>
               {this.state.newUserNameValid ? (
                 <>
                   <span className="success">
-                    <FormattedMessage defaultMessage="Username is available" id="EcfIwB" />
+                    <FormattedMessage defaultMessage="Username is available" />
                   </span>
                   <AccountName name={this.state.newUserName} link={false} />
                 </>
@@ -107,7 +107,7 @@ class IrisAccount extends Component<Props> {
     return (
       <>
         <h3>
-          <FormattedMessage defaultMessage="Iris.to account" id="Mzizei" />
+          <FormattedMessage defaultMessage="Iris.to account" />
         </h3>
         {view}
         <p>

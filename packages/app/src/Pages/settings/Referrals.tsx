@@ -31,12 +31,12 @@ export function ReferralsPage() {
     return (
       <>
         <h2>
-          <FormattedMessage defaultMessage="Become a leader" id="M6C/px" />
+          <FormattedMessage defaultMessage="Become a leader" />
         </h2>
         <div className="flex items-center justify-between">
           <Link to="https://community.snort.social/" target="_blank">
             <button>
-              <FormattedMessage defaultMessage="Learn more" id="TdTXXf" />
+              <FormattedMessage defaultMessage="Learn more" />
             </button>
           </Link>
 
@@ -44,7 +44,7 @@ export function ReferralsPage() {
         </div>
         <p>
           <AsyncButton className="primary" onClick={applyNow}>
-            <FormattedMessage defaultMessage="Apply Now" id="k0kCJp" />
+            <FormattedMessage defaultMessage="Apply Now" />
           </AsyncButton>
         </p>
       </>
@@ -55,19 +55,19 @@ export function ReferralsPage() {
     return (
       <>
         <h2>
-          <FormattedMessage defaultMessage="Become a leader" id="M6C/px" />
+          <FormattedMessage defaultMessage="Become a leader" />
         </h2>
         <div className="flex items-center justify-between">
           <Link to="https://community.snort.social/" target="_blank">
             <button>
-              <FormattedMessage defaultMessage="Learn more" id="TdTXXf" />
+              <FormattedMessage defaultMessage="Learn more" />
             </button>
           </Link>
 
           <LeaderBadge />
         </div>
         <h3>
-          <FormattedMessage defaultMessage="Your application is pending" id="Ups2/p" />
+          <FormattedMessage defaultMessage="Your application is pending" />
         </h3>
       </>
     );
@@ -77,7 +77,7 @@ export function ReferralsPage() {
     return (
       <>
         <h2>
-          <FormattedMessage defaultMessage="Leader Info" id="H0OG3T" />
+          <FormattedMessage defaultMessage="Leader Info" />
         </h2>
         <p>
           <FormattedMessage
@@ -90,7 +90,7 @@ export function ReferralsPage() {
           />
         </p>
         <p>
-          <FormattedMessage defaultMessage="Use your invite code to earn sats!" id="O3Jz4E" />
+          <FormattedMessage defaultMessage="Use your invite code to earn sats!" />
         </p>
       </>
     );
@@ -99,7 +99,7 @@ export function ReferralsPage() {
   return (
     <>
       <h1>
-        <FormattedMessage defaultMessage="Invite your friends" id="l3H1EK" />
+        <FormattedMessage defaultMessage="Invite your friends" />
       </h1>
       <p>
         <FormattedMessage

@@ -33,7 +33,7 @@ export default function SyncAccountTool() {
   return (
     <>
       <p>
-        <FormattedMessage defaultMessage="Sync all events for your profile into local cache" id="+QM0PJ" />
+        <FormattedMessage defaultMessage="Sync all events for your profile into local cache" />
       </p>
 
       {results.length > 0 && (
@@ -59,7 +59,7 @@ export default function SyncAccountTool() {
         </h4>
       )}
       <AsyncButton onClick={start}>
-        <FormattedMessage defaultMessage="Start" id="mOFG3K" />
+        <FormattedMessage defaultMessage="Start" />
       </AsyncButton>
     </>
   );

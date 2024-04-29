@@ -136,7 +136,7 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
         {!thread.root && renderCurrent()}
         {!thread.root && !thread.current && (
           <NoteGhost>
-            <FormattedMessage defaultMessage="Looking up thread..." id="JA+tz3" />
+            <FormattedMessage defaultMessage="Looking up thread..." />
           </NoteGhost>
         )}
       </div>

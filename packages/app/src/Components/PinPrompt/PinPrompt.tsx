@@ -70,7 +70,7 @@ export function PinPrompt({
         }}>
         <div className="flex flex-col g12">
           <h2>
-            <FormattedMessage defaultMessage="Enter Pin" id="KtsyO0" />
+            <FormattedMessage defaultMessage="Enter Pin" />
           </h2>
           {subTitle ? <div>{subTitle}</div> : null}
           <input
@@ -84,10 +84,10 @@ export function PinPrompt({
           {error && <b className="error">{error}</b>}
           <div className="flex g8">
             <button type="button" onClick={() => onCancel()}>
-              <FormattedMessage defaultMessage="Cancel" id="47FYwb" />
+              <FormattedMessage defaultMessage="Cancel" />
             </button>
             <AsyncButton ref={submitButtonRef} onClick={() => submitPin()} type="submit">
-              <FormattedMessage defaultMessage="Submit" id="wSZR47" />
+              <FormattedMessage defaultMessage="Submit" />
             </AsyncButton>
           </div>
         </div>
@@ -168,7 +168,7 @@ export function LoginUnlock() {
       <PinPrompt
         subTitle={
           <p>
-            <FormattedMessage defaultMessage="Enter pin to unlock your private key" id="e7VmYP" />
+            <FormattedMessage defaultMessage="Enter pin to unlock your private key" />
           </p>
         }
         onResult={unlockSession}

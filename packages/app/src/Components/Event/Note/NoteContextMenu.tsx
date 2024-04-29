@@ -148,7 +148,7 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
         )}
         <MenuItem onClick={handleReBroadcastButtonClick}>
           <Icon name="relay" />
-          <FormattedMessage defaultMessage="Broadcast Event" id="Gxcr08" />
+          <FormattedMessage defaultMessage="Broadcast Event" />
         </MenuItem>
         <MenuItem onClick={() => translate()}>
           <Icon name="translate" />

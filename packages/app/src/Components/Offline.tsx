@@ -10,11 +10,11 @@ export function Offline({ onRetry, className }: { onRetry?: () => void | Promise
     <div className={classNames("flex items-center g8", className)}>
       <Icon name="wifi-off" className="error" />
       <div className="error">
-        <FormattedMessage defaultMessage="Offline" id="7UOvbT" />
+        <FormattedMessage defaultMessage="Offline" />
       </div>
       {onRetry && (
         <AsyncButton onClick={onRetry}>
-          <FormattedMessage defaultMessage="Retry" id="62nsdy" />
+          <FormattedMessage defaultMessage="Retry" />
         </AsyncButton>
       )}
     </div>

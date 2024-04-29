@@ -75,9 +75,9 @@ export function SignIn() {
       <img src={CONFIG.icon} width={48} height={48} className="br mr-auto ml-auto" />
       <div className="flex flex-col g16 items-center">
         <h1>
-          <FormattedMessage defaultMessage="Sign In" id="Ub+AGc" />
+          <FormattedMessage defaultMessage="Sign In" />
         </h1>
-        {nip7Login && <FormattedMessage defaultMessage="Use a nostr signer extension to sign in" id="eF0Re7" />}
+        {nip7Login && <FormattedMessage defaultMessage="Use a nostr signer extension to sign in" />}
       </div>
       <div className={classNames("flex flex-col g16", { "items-center": nip7Login })}>
         {hasNip7 && !useKey && (
@@ -86,13 +86,13 @@ export function SignIn() {
               <div className="circle bg-warning p12 text-white">
                 <Icon name="key" />
               </div>
-              <FormattedMessage defaultMessage="Sign in with Nostr Extension" id="TaeBqw" />
+              <FormattedMessage defaultMessage="Sign in with Nostr Extension" />
             </AsyncButton>
             <Link to="" className="highlight">
-              <FormattedMessage defaultMessage="Supported Extensions" id="aMaLBK" />
+              <FormattedMessage defaultMessage="Supported Extensions" />
             </Link>
             <AsyncButton onClick={() => setUseKey(true)}>
-              <FormattedMessage defaultMessage="Sign in with key" id="X6tipZ" />
+              <FormattedMessage defaultMessage="Sign in with key" />
             </AsyncButton>
           </>
         )}
@@ -111,7 +111,7 @@ export function SignIn() {
             {error && <b className="error">{error}</b>}
             <div className="flex justify-center">
               <AsyncButton onClick={onSubmit} className="primary">
-                <FormattedMessage defaultMessage="Login" id="AyGauy" />
+                <FormattedMessage defaultMessage="Login" />
               </AsyncButton>
             </div>
           </form>
@@ -119,10 +119,10 @@ export function SignIn() {
       </div>
       <div className="flex flex-col g16 items-center">
         <Link to={"/login/sign-up"}>
-          <FormattedMessage defaultMessage="Don't have an account?" id="25WwxF" />
+          <FormattedMessage defaultMessage="Don't have an account?" />
         </Link>
         <AsyncButton className="secondary" onClick={() => navigate("/login/sign-up")}>
-          <FormattedMessage defaultMessage="Sign Up" id="39AHJm" />
+          <FormattedMessage defaultMessage="Sign Up" />
         </AsyncButton>
       </div>
     </div>
@@ -166,9 +166,9 @@ export function SignUp() {
       <img src={CONFIG.icon} width={48} height={48} className="br mr-auto ml-auto" />
       <div className="flex flex-col g16 items-center">
         <h1>
-          <FormattedMessage defaultMessage="Sign Up" id="39AHJm" />
+          <FormattedMessage defaultMessage="Sign Up" />
         </h1>
-        <FormattedMessage defaultMessage="What should we call you?" id="SmuYUd" />
+        <FormattedMessage defaultMessage="What should we call you?" />
       </div>
       <form onSubmit={onSubmit} className="flex flex-col g16">
         <input
@@ -190,16 +190,16 @@ export function SignUp() {
               id="0zASjL"
             />
           ) : (
-            <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
+            <FormattedMessage defaultMessage="Next" />
           )}
         </AsyncButton>
       </form>
       <div className="flex flex-col g16 items-center">
         <Link to={"/login"}>
-          <FormattedMessage defaultMessage="Already have an account?" id="uCk8r+" />
+          <FormattedMessage defaultMessage="Already have an account?" />
         </Link>
         <AsyncButton className="secondary" onClick={() => navigate("/login")}>
-          <FormattedMessage defaultMessage="Sign In" id="Ub+AGc" />
+          <FormattedMessage defaultMessage="Sign In" />
         </AsyncButton>
       </div>
     </div>

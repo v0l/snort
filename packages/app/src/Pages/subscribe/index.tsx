@@ -75,9 +75,9 @@ export function SubscribePage() {
               <div className="flex justify-center">
                 <AsyncButton className="button" disabled={a.disabled} onClick={() => subscribe(a.id)}>
                   {a.disabled ? (
-                    <FormattedMessage defaultMessage="Coming soon" id="e61Jf3" />
+                    <FormattedMessage defaultMessage="Coming soon" />
                   ) : (
-                    <FormattedMessage defaultMessage="Subscribe" id="gczcC5" />
+                    <FormattedMessage defaultMessage="Subscribe" />
                   )}
                 </AsyncButton>
               </div>

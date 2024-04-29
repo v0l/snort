@@ -42,7 +42,7 @@ const InviteModal = () => {
         </p>
         <Link to="/login/sign-up">
           <button className="primary">
-            <FormattedMessage defaultMessage="Sign Up" id="39AHJm" />
+            <FormattedMessage defaultMessage="Sign Up" />
           </button>
         </Link>
       </div>

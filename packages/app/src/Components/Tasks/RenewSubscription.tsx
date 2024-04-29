@@ -27,7 +27,7 @@ export class RenewSubTask extends BaseUITask {
           />
         </p>
         <Link to="/subscribe/manage">
-          <FormattedMessage defaultMessage="Renew" id="nWQFic" />
+          <FormattedMessage defaultMessage="Renew" />
         </Link>
       </>
     );

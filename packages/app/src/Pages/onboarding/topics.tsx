@@ -28,7 +28,7 @@ export function Topics() {
   return (
     <div className="flex flex-col g24 text-center">
       <h1>
-        <FormattedMessage defaultMessage="Pick a few topics of interest" id="fX5RYm" />
+        <FormattedMessage defaultMessage="Pick a few topics of interest" />
       </h1>
       <div className="tabs flex-wrap justify-center">{Object.entries(FixedTopics).map(([k, v]) => tab(k, v.text))}</div>
       <AsyncButton
@@ -51,7 +51,7 @@ export function Topics() {
           }
           navigate("/login/sign-up/discover");
         }}>
-        <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
+        <FormattedMessage defaultMessage="Next" />
       </AsyncButton>
     </div>
   );

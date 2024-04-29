@@ -330,12 +330,12 @@ export function NoteCreator() {
       return (
         <>
           <h4>
-            <FormattedMessage defaultMessage="Poll Options" id="vhlWFg" />
+            <FormattedMessage defaultMessage="Poll Options" />
           </h4>
           {note.pollOptions?.map((a, i) => (
             <div className="form-group w-max" key={`po-${i}`}>
               <div>
-                <FormattedMessage defaultMessage="Option: {n}" id="mfe8RW" values={{ n: i + 1 }} />
+                <FormattedMessage defaultMessage="Option: {n}" values={{ n: i + 1 }} />
               </div>
               <div>
                 <input type="text" value={a} onChange={e => changePollOption(i, e.target.value)} />
@@ -422,24 +422,24 @@ export function NoteCreator() {
       <>
         <div>
           <h4>
-            <FormattedMessage defaultMessage="Custom Relays" id="EcZF24" />
+            <FormattedMessage defaultMessage="Custom Relays" />
           </h4>
           <p>
-            <FormattedMessage defaultMessage="Send note to a subset of your write relays" id="th5lxp" />
+            <FormattedMessage defaultMessage="Send note to a subset of your write relays" />
           </p>
           {renderRelayCustomisation()}
         </div>
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Zap Splits" id="5CB6zB" />
+            <FormattedMessage defaultMessage="Zap Splits" />
           </h4>
-          <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." id="LwYmVi" />
+          <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." />
           <div className="flex flex-col g8">
             {[...(note.zapSplits ?? [])].map((v: ZapTarget, i, arr) => (
               <div className="flex items-center g8" key={`${v.name}-${v.value}`}>
                 <div className="flex flex-col flex-4 g4">
                   <h4>
-                    <FormattedMessage defaultMessage="Recipient" id="8Rkoyb" />
+                    <FormattedMessage defaultMessage="Recipient" />
                   </h4>
                   <input
                     type="text"
@@ -454,7 +454,7 @@ export function NoteCreator() {
                 </div>
                 <div className="flex flex-col flex-1 g4">
                   <h4>
-                    <FormattedMessage defaultMessage="Weight" id="zCb8fX" />
+                    <FormattedMessage defaultMessage="Weight" />
                   </h4>
                   <input
                     type="number"
@@ -484,7 +484,7 @@ export function NoteCreator() {
               onClick={() =>
                 note.update(v => (v.zapSplits = [...(v.zapSplits ?? []), { type: "pubkey", value: "", weight: 1 }]))
               }>
-              <FormattedMessage defaultMessage="Add" id="2/2yg+" />
+              <FormattedMessage defaultMessage="Add" />
             </button>
           </div>
           <span className="warning">
@@ -496,7 +496,7 @@ export function NoteCreator() {
         </div>
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Sensitive Content" id="bQdA2k" />
+            <FormattedMessage defaultMessage="Sensitive Content" />
           </h4>
           <FormattedMessage
             defaultMessage="Users must accept the content warning to show the content of your note."
@@ -515,7 +515,7 @@ export function NoteCreator() {
             })}
           />
           <span className="warning">
-            <FormattedMessage defaultMessage="Not all clients support this yet" id="gXgY3+" />
+            <FormattedMessage defaultMessage="Not all clients support this yet" />
           </span>
         </div>
       </>
@@ -550,7 +550,7 @@ export function NoteCreator() {
             className={classNames("note-creator-icon", { active: note.advanced })}
           />
           <span className="sm:inline hidden">
-            <FormattedMessage defaultMessage="Preview" id="TJo5E6" />
+            <FormattedMessage defaultMessage="Preview" />
           </span>
           <ToggleSwitch
             onClick={() => loadPreview()}
@@ -560,14 +560,10 @@ export function NoteCreator() {
         </div>
         <div className="flex g8">
           <button className="secondary" onClick={cancel}>
-            <FormattedMessage defaultMessage="Cancel" id="47FYwb" />
+            <FormattedMessage defaultMessage="Cancel" />
           </button>
           <AsyncButton onClick={onSubmit} className="primary">
-            {note.replyTo ? (
-              <FormattedMessage defaultMessage="Reply" id="9HU8vw" />
-            ) : (
-              <FormattedMessage defaultMessage="Send" id="9WRlF4" />
-            )}
+            {note.replyTo ? <FormattedMessage defaultMessage="Reply" /> : <FormattedMessage defaultMessage="Send" />}
           </AsyncButton>
         </div>
       </div>
@@ -617,7 +613,7 @@ export function NoteCreator() {
         {note.replyTo && (
           <>
             <h4>
-              <FormattedMessage defaultMessage="Reply To" id="8ED/4u" />
+              <FormattedMessage defaultMessage="Reply To" />
             </h4>
             <div className="max-h-64 overflow-y-auto">
               <Note className="hover:bg-transparent" data={note.replyTo} options={replyToNoteOptions} />
@@ -628,7 +624,7 @@ export function NoteCreator() {
         {note.quote && (
           <>
             <h4>
-              <FormattedMessage defaultMessage="Quote Repost" id="C7642/" />
+              <FormattedMessage defaultMessage="Quote Repost" />
             </h4>
             <div className="max-h-64 overflow-y-auto">
               <Note className="hover:bg-transparent" data={note.quote} options={quoteNoteOptions} />

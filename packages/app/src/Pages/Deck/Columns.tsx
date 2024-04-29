@@ -16,7 +16,7 @@ export function NotesCol() {
       <div className="deck-col-header flex">
         <div className="flex flex-1 g8">
           <Icon name="rows-01" size={24} />
-          <FormattedMessage defaultMessage="Notes" id="7+Domh" />
+          <FormattedMessage defaultMessage="Notes" />
         </div>
         <div className="flex-1">
           <RootTabs base="/deck" />
@@ -34,7 +34,7 @@ export function ArticlesCol() {
     <div>
       <div className="deck-col-header flex g8">
         <Icon name="file-06" size={24} />
-        <FormattedMessage defaultMessage="Articles" id="3KNMbJ" />
+        <FormattedMessage defaultMessage="Articles" />
       </div>
       <div>
         <Articles />
@@ -55,7 +55,7 @@ export function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
     <div>
       <div className="flex items-center gap-2 p-2 border-b border-border-color">
         <Icon name="camera-lens" size={24} />
-        <FormattedMessage defaultMessage="Media" id="hmZ3Bz" />
+        <FormattedMessage defaultMessage="Media" />
       </div>
       <TimelineFollows
         postsOnly={true}
@@ -78,7 +78,7 @@ export function NotificationsCol({ setThread }: { setThread: (e: NostrLink) => v
     <div>
       <div className="deck-col-header flex g8">
         <Icon name="bell-solid" size={24} />
-        <FormattedMessage defaultMessage="Notifications" id="NAidKb" />
+        <FormattedMessage defaultMessage="Notifications" />
       </div>
       <div>
         <NotificationsPage onClick={setThread} />

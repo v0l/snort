@@ -2,7 +2,7 @@ import { FormattedMessage } from "react-intl";
 
 export const FixedTopics = {
   life: {
-    text: <FormattedMessage defaultMessage="Life" id="4MjsHk" />,
+    text: <FormattedMessage defaultMessage="Life" />,
     tags: [
       "life",
       "lifestyle",
@@ -37,7 +37,7 @@ export const FixedTopics = {
     ],
   },
   science: {
-    text: <FormattedMessage defaultMessage="Science" id="qydxOd" />,
+    text: <FormattedMessage defaultMessage="Science" />,
     tags: [
       "science",
       "research",
@@ -72,7 +72,7 @@ export const FixedTopics = {
     ],
   },
   nature: {
-    text: <FormattedMessage defaultMessage="Nature" id="1ozeyg" />,
+    text: <FormattedMessage defaultMessage="Nature" />,
     tags: [
       "nature",
       "wildlife",
@@ -107,7 +107,7 @@ export const FixedTopics = {
     ],
   },
   business: {
-    text: <FormattedMessage defaultMessage="Business" id="w1Fanr" />,
+    text: <FormattedMessage defaultMessage="Business" />,
     tags: [
       "business",
       "entrepreneurship",
@@ -142,7 +142,7 @@ export const FixedTopics = {
     ],
   },
   game: {
-    text: <FormattedMessage defaultMessage="Game" id="Am8glJ" />,
+    text: <FormattedMessage defaultMessage="Game" />,
     tags: [
       "gaming",
       "videogames",
@@ -177,7 +177,7 @@ export const FixedTopics = {
     ],
   },
   sport: {
-    text: <FormattedMessage defaultMessage="Sport" id="JIVWWA" />,
+    text: <FormattedMessage defaultMessage="Sport" />,
     tags: [
       "sports",
       "athletics",
@@ -212,7 +212,7 @@ export const FixedTopics = {
     ],
   },
   photography: {
-    text: <FormattedMessage defaultMessage="Photography" id="cHCwbF" />,
+    text: <FormattedMessage defaultMessage="Photography" />,
     tags: [
       "photography",
       "landscape",

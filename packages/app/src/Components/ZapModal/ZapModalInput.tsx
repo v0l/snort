@@ -104,7 +104,7 @@ export function ZapModalInput(props: {
     <div className="flex flex-col g24">
       <div className="flex flex-col g8">
         <h3>
-          <FormattedMessage defaultMessage="Zap amount in sats" id="zcaOTs" />
+          <FormattedMessage defaultMessage="Zap amount in sats" />
         </h3>
         {renderAmounts()}
         {custom()}
@@ -122,7 +122,7 @@ export function ZapModalInput(props: {
       {(amount ?? 0) > 0 && (
         <AsyncButton onClick={() => props.onNextStage(getValue())}>
           <Icon name="zap" />
-          <FormattedMessage defaultMessage="Zap {n} sats" id="8QDesP" values={{ n: formatShort(amount) }} />
+          <FormattedMessage defaultMessage="Zap {n} sats" values={{ n: formatShort(amount) }} />
         </AsyncButton>
       )}
     </div>

@@ -39,7 +39,7 @@ export function FollowsRelayHealth({
     <div className="flex flex-col gap-4">
       {(withTitle ?? true) && (
         <div className="text-2xl font-semibold">
-          <FormattedMessage defaultMessage="Follows Relay Health" id="XQiFEl" />
+          <FormattedMessage defaultMessage="Follows Relay Health" />
         </div>
       )}
       <div>
@@ -58,7 +58,7 @@ export function FollowsRelayHealth({
           className="rounded-xl border border-border-color px-3 py-4"
           title={
             <div className="text-lg">
-              <FormattedMessage defaultMessage="Missing Relays" id="4emo2p" />
+              <FormattedMessage defaultMessage="Missing Relays" />
             </div>
           }>
           <div>

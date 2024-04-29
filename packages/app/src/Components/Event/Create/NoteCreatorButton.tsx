@@ -74,7 +74,7 @@ export const NoteCreatorButton = ({
           <Icon name="plus" size={16} />
           {showText && (
             <span className="ml-2 hidden xl:inline">
-              <FormattedMessage defaultMessage="New Note" id="2mcwT8" />
+              <FormattedMessage defaultMessage="New Note" />
             </span>
           )}
         </button>

@@ -183,7 +183,7 @@ const NetworkGraph = () => {
             setOpen(true);
             refreshData();
           }}>
-          <FormattedMessage defaultMessage="Show graph" id="ha8JKG" />
+          <FormattedMessage defaultMessage="Show graph" />
         </button>
       )}
       {open && graphData && (

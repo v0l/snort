@@ -38,11 +38,11 @@ export function Profile() {
   return (
     <div className="flex flex-col g24 text-center">
       <h1>
-        <FormattedMessage defaultMessage="Profile Image" id="vN5UH8" />
+        <FormattedMessage defaultMessage="Profile Image" />
       </h1>
       <AvatarEditor picture={picture} onPictureChange={p => setPicture(p)} />
       <AsyncButton className="primary" onClick={() => makeRandomKey()}>
-        <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
+        <FormattedMessage defaultMessage="Next" />
       </AsyncButton>
       {error && <b className="error">{error}</b>}
     </div>

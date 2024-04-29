@@ -9,7 +9,7 @@ export default function HelpPage() {
   return (
     <>
       <h2>
-        <FormattedMessage defaultMessage="NIP-05" id="7hp70g" />
+        <FormattedMessage defaultMessage="NIP-05" />
       </h2>
       <p>
         <FormattedMessage

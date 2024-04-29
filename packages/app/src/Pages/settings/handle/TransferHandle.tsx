@@ -31,7 +31,7 @@ export default function TransferHandle({ handle }: { handle: ManageHandle }) {
   return (
     <div>
       <h4>
-        <FormattedMessage defaultMessage="Transfer to Pubkey" id="5u6iEc" />
+        <FormattedMessage defaultMessage="Transfer to Pubkey" />
       </h4>
       <div className="flex">
         <div className="grow">
@@ -47,7 +47,7 @@ export default function TransferHandle({ handle }: { handle: ManageHandle }) {
           />
         </div>
         <AsyncButton onClick={() => startTransfer()}>
-          <FormattedMessage defaultMessage="Transfer" id="DtYelJ" />
+          <FormattedMessage defaultMessage="Transfer" />
         </AsyncButton>
       </div>
       {error && <b className="error">{error}</b>}

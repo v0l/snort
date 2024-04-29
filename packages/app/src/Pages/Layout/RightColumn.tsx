@@ -13,9 +13,9 @@ export default function RightColumn() {
 
   const getTitleMessage = () => {
     return pubkey ? (
-      <FormattedMessage defaultMessage="Trending notes" id="6k7xfM" />
+      <FormattedMessage defaultMessage="Trending notes" />
     ) : (
-      <FormattedMessage defaultMessage="Trending hashtags" id="CbM2hK" />
+      <FormattedMessage defaultMessage="Trending hashtags" />
     );
   };
 

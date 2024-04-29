@@ -4,12 +4,6 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint", "formatjs", "react-refresh", "simple-import-sort"],
   rules: {
-    "formatjs/enforce-id": [
-      "error",
-      {
-        idInterpolationPattern: "[sha512:contenthash:base64:6]",
-      },
-    ],
     "react/react-in-jsx-scope": "off",
     "react-hooks/exhaustive-deps": "off",
     "react-refresh/only-export-components": "error",

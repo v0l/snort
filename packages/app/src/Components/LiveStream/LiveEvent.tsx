@@ -22,7 +22,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
           <div className="flex g4 items-center">
             <Icon name="signal-01" />
             <b className="uppercase">
-              <FormattedMessage defaultMessage="Live" id="Dn82AL" />
+              <FormattedMessage defaultMessage="Live" />
             </b>
           </div>
         );
@@ -30,7 +30,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
       case "ended": {
         return (
           <b className="uppercase">
-            <FormattedMessage defaultMessage="Ended" id="TP/cMX" />
+            <FormattedMessage defaultMessage="Ended" />
           </b>
         );
       }
@@ -52,7 +52,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
       case "live": {
         return (
           <button className="nowrap" onClick={() => setPlay(true)}>
-            <FormattedMessage defaultMessage="Watch Stream" id="furjvW" />
+            <FormattedMessage defaultMessage="Watch Stream" />
           </button>
         );
       }
@@ -61,7 +61,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
           return (
             <Link to={link} target="_blank">
               <button className="nowrap">
-                <FormattedMessage defaultMessage="Watch Replay" id="6/hB3S" />
+                <FormattedMessage defaultMessage="Watch Replay" />
               </button>
             </Link>
           );

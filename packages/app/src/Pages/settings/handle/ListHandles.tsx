@@ -37,7 +37,7 @@ export default function ListHandles() {
           values={{
             link: (
               <Link to="/nostr-address">
-                <FormattedMessage defaultMessage="Buy Handle" id="5oTnfy" />
+                <FormattedMessage defaultMessage="Buy Handle" />
               </Link>
             ),
           }}
@@ -58,13 +58,13 @@ export default function ListHandles() {
                 state: a,
               })
             }>
-            <FormattedMessage defaultMessage="Manage" id="0Azlrb" />
+            <FormattedMessage defaultMessage="Manage" />
           </button>
         </div>
       ))}
       {handles.length > 0 && (
         <button type="button" onClick={() => navigate("/nostr-address")}>
-          <FormattedMessage defaultMessage="Buy Handle" id="5oTnfy" />
+          <FormattedMessage defaultMessage="Buy Handle" />
         </button>
       )}
       {error && <ErrorOrOffline error={error} onRetry={loadHandles} />}

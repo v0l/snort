@@ -19,7 +19,7 @@ export function LeaderBadge() {
         }}>
         <AwardIcon size={16} />
         <div className="text-xs font-medium text-[#AC88FF]">
-          <FormattedMessage defaultMessage="Community Leader" id="7YkSA2" />
+          <FormattedMessage defaultMessage="Community Leader" />
         </div>
       </div>
       {showModal && (
@@ -28,7 +28,7 @@ export function LeaderBadge() {
             <CloseButton className="absolute right-2 top-2" onClick={() => setShowModal(false)} />
             <AwardIcon size={80} />
             <div className="text-3xl font-semibold">
-              <FormattedMessage defaultMessage="Community Leader" id="7YkSA2" />
+              <FormattedMessage defaultMessage="Community Leader" />
             </div>
             <p className="text-secondary">
               <FormattedMessage
@@ -38,7 +38,7 @@ export function LeaderBadge() {
             </p>
             <Link to="/settings/invite">
               <button className="primary">
-                <FormattedMessage defaultMessage="Become a leader" id="M6C/px" />
+                <FormattedMessage defaultMessage="Become a leader" />
               </button>
             </Link>
           </div>

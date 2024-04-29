@@ -55,7 +55,7 @@ const ConnectLNC = () => {
     return (
       <>
         <h4>
-          <FormattedMessage defaultMessage="Enter pairing phrase" id="Z4BMCZ" />
+          <FormattedMessage defaultMessage="Enter pairing phrase" />
         </h4>
         <div className="flex">
           <div className="grow mr10">
@@ -68,7 +68,7 @@ const ConnectLNC = () => {
             />
           </div>
           <AsyncButton onClick={() => tryConnect(unwrap(pairingPhrase))} disabled={!pairingPhrase}>
-            <FormattedMessage defaultMessage="Connect" id="+vVZ/G" />
+            <FormattedMessage defaultMessage="Connect" />
           </AsyncButton>
         </div>
         {error && <b className="error p10">{error}</b>}
@@ -90,7 +90,7 @@ const ConnectLNC = () => {
           />
         </h3>
         <h4>
-          <FormattedMessage defaultMessage="Enter password" id="2LbrkB" />
+          <FormattedMessage defaultMessage="Enter password" />
         </h4>
         <div className="flex w-max">
           <div className="grow mr10">
@@ -105,7 +105,7 @@ const ConnectLNC = () => {
           <AsyncButton
             onClick={() => setLNCPassword(unwrap(walletPassword))}
             disabled={(walletPassword?.length ?? 0) < 8}>
-            <FormattedMessage defaultMessage="Save" id="jvo0vs" />
+            <FormattedMessage defaultMessage="Save" />
           </AsyncButton>
         </div>
       </div>

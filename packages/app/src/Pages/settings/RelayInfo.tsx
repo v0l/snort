@@ -87,7 +87,7 @@ const RelayInfo = () => {
         {conn instanceof Connection && (
           <>
             <h4>
-              <FormattedMessage defaultMessage="Active Subscriptions" id="p85Uwy" />
+              <FormattedMessage defaultMessage="Active Subscriptions" />
             </h4>
             <div className="grow">
               {conn.ActiveRequests.map(a => (
@@ -101,7 +101,7 @@ const RelayInfo = () => {
         {conn instanceof Connection && (
           <>
             <h4>
-              <FormattedMessage defaultMessage="Pending Subscriptions" id="UDYlxu" />
+              <FormattedMessage defaultMessage="Pending Subscriptions" />
             </h4>
             <div className="grow">
               {conn.PendingRequests.map(a => (

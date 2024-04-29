@@ -25,7 +25,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
         {!sub.handle && (
           <>
             <h3>
-              <FormattedMessage defaultMessage="Claim your included Snort nostr address" id="GUlSVG" />
+              <FormattedMessage defaultMessage="Claim your included Snort nostr address" />
             </h3>
             <Nip5Service
               {...SnortNostrAddressService}
@@ -49,7 +49,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
         </div>
         <div className="flex">
           <p className="flex-1">
-            <FormattedMessage defaultMessage="Created" id="ORGv1Q" />
+            <FormattedMessage defaultMessage="Created" />
             :&nbsp;
             <time dateTime={created.toISOString()}>
               <FormattedDate value={created} dateStyle="medium" />
@@ -57,7 +57,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
           </p>
           {daysToExpire >= 1 && (
             <p className="flex-1">
-              <FormattedMessage defaultMessage="Expires" id="xhQMeQ" />
+              <FormattedMessage defaultMessage="Expires" />
               :&nbsp;
               <time dateTime={expires.toISOString()}>
                 <FormattedMessage
@@ -72,7 +72,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
           )}
           {daysToExpire >= 0 && daysToExpire < 1 && (
             <p className="flex-1">
-              <FormattedMessage defaultMessage="Expires" id="xhQMeQ" />
+              <FormattedMessage defaultMessage="Expires" />
               :&nbsp;
               <time dateTime={expires.toISOString()}>
                 <FormattedMessage
@@ -87,12 +87,12 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
           )}
           {isExpired && (
             <p className="flex-1 error">
-              <FormattedMessage defaultMessage="Expired" id="RahCRH" />
+              <FormattedMessage defaultMessage="Expired" />
             </p>
           )}
           {isNew && (
             <p className="flex-1">
-              <FormattedMessage defaultMessage="Unpaid" id="6uMqL1" />
+              <FormattedMessage defaultMessage="Unpaid" />
             </p>
           )}
         </div>

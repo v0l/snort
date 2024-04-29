@@ -23,7 +23,7 @@ export function WalletSendPage() {
   return (
     <div className="p flex flex-col gap-4">
       <div className="text-2xl font-bold">
-        <FormattedMessage defaultMessage="Send" id="9WRlF4" />
+        <FormattedMessage defaultMessage="Send" />
       </div>
       <p>
         <FormattedMessage
@@ -51,7 +51,7 @@ export function WalletSendPage() {
           />
           <div className="flex flex-col">
             <small>
-              <FormattedMessage defaultMessage="Amount in sats" id="djLctd" />
+              <FormattedMessage defaultMessage="Amount in sats" />
             </small>
             <input type="number" value={amount} onChange={e => setAmount(Number(e.target.value))} />
           </div>
@@ -78,7 +78,7 @@ export function WalletSendPage() {
             setError((e as Error).message);
           }
         }}>
-        <FormattedMessage defaultMessage="Pay" id="lD3+8a" />
+        <FormattedMessage defaultMessage="Pay" />
       </AsyncButton>
       {error && <b className="warning">{error}</b>}
       {result && (

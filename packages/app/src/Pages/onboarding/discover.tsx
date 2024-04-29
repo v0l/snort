@@ -26,7 +26,7 @@ export function Discover() {
         <TrendingUsers
           title={
             <h3>
-              <FormattedMessage defaultMessage="Trending Users" id="FSYL8G" />
+              <FormattedMessage defaultMessage="Trending Users" />
             </h3>
           }
         />
@@ -38,7 +38,7 @@ export function Discover() {
             state,
           })
         }>
-        <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
+        <FormattedMessage defaultMessage="Next" />
       </AsyncButton>
     </div>
   );

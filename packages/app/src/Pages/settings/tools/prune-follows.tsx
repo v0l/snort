@@ -99,7 +99,7 @@ export function PruneFollowList() {
           onChange={e => setUnfollow(v => (e.target.checked ? dedupe([...v, k]) : v.filter(a => a !== k)))}
           checked={unfollow.includes(k)}
         />
-        <FormattedMessage defaultMessage="Unfollow" id="izWS4J" />
+        <FormattedMessage defaultMessage="Unfollow" />
       </div>
     );
   }
@@ -107,7 +107,7 @@ export function PruneFollowList() {
   return (
     <div className="flex flex-col gap-4">
       <div className="text-2xl font-semibold">
-        <FormattedMessage defaultMessage="Prune follow list" id="CM0k0d" />
+        <FormattedMessage defaultMessage="Prune follow list" />
       </div>
       <p>
         <FormattedMessage
@@ -127,7 +127,7 @@ export function PruneFollowList() {
       </div>
       <FollowsRelayHealth withTitle={false} popularRelays={false} missingRelaysActions={k => personToggle(k)} />
       <AsyncButton onClick={fetchLastPosts}>
-        <FormattedMessage defaultMessage="Compute prune list" id="bJ+wrA" />
+        <FormattedMessage defaultMessage="Compute prune list" />
       </AsyncButton>
       {getStatus()}
       <div className="flex flex-col gap-1">
@@ -162,7 +162,7 @@ export function PruneFollowList() {
           />
         </p>
         <AsyncButton onClick={publishFollowList}>
-          <FormattedMessage defaultMessage="Save" id="jvo0vs" />
+          <FormattedMessage defaultMessage="Save" />
         </AsyncButton>
       </div>
     </div>

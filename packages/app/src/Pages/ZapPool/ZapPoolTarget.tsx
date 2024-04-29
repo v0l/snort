@@ -17,7 +17,7 @@ function ZapPoolTargetInner({ target }: { target: ZapPoolRecipient }) {
           <div>
             <div>
               <FormattedNumber value={target.split} />% (
-              <FormattedMessage defaultMessage="{n} sats" id="CsCUYo" values={{ n: defaultZapMount }} />)
+              <FormattedMessage defaultMessage="{n} sats" values={{ n: defaultZapMount }} />)
             </div>
             <input
               type="range"
@@ -34,7 +34,7 @@ function ZapPoolTargetInner({ target }: { target: ZapPoolRecipient }) {
             />
           </div>
         ) : (
-          <FormattedMessage defaultMessage="No lightning address" id="JPFYIM" />
+          <FormattedMessage defaultMessage="No lightning address" />
         )
       }
     />

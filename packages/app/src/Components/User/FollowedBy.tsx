@@ -39,7 +39,7 @@ export default function FollowedBy({ pubkey }: { pubkey: HexKey }) {
       {totalFollowedByFriends > 0 && (
         <div className="text-gray-light">
           <span className="mr-1">
-            <FormattedMessage defaultMessage="Followed by" id="6mr8WU" />
+            <FormattedMessage defaultMessage="Followed by" />
           </span>
           {renderFollowedByFriendsLinks()}
           {totalFollowedByFriends > MAX_FOLLOWED_BY_FRIENDS && (
@@ -55,12 +55,12 @@ export default function FollowedBy({ pubkey }: { pubkey: HexKey }) {
       )}
       {followDistance > 3 && (
         <div className="text-gray-light">
-          <FormattedMessage defaultMessage="Not followed by anyone you follow" id="IgsWFG" />
+          <FormattedMessage defaultMessage="Not followed by anyone you follow" />
         </div>
       )}
       {followDistance === 3 && ( // TODO "followed by friends of {n} friends"
         <div className="text-gray-light">
-          <FormattedMessage defaultMessage="Followed by friends of friends" id="2oCF7O" />
+          <FormattedMessage defaultMessage="Followed by friends of friends" />
         </div>
       )}
     </div>

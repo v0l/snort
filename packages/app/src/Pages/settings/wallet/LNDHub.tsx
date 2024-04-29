@@ -47,7 +47,7 @@ const ConnectLNDHub = () => {
   return (
     <>
       <h4>
-        <FormattedMessage defaultMessage="Enter LNDHub config" id="KAhAcM" />
+        <FormattedMessage defaultMessage="Enter LNDHub config" />
       </h4>
       <div className="flex">
         <div className="grow mr10">
@@ -60,7 +60,7 @@ const ConnectLNDHub = () => {
           />
         </div>
         <AsyncButton onClick={() => tryConnect(unwrap(config))} disabled={!config}>
-          <FormattedMessage defaultMessage="Connect" id="+vVZ/G" />
+          <FormattedMessage defaultMessage="Connect" />
         </AsyncButton>
       </div>
       {error && <b className="error p10">{error}</b>}

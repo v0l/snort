@@ -81,11 +81,11 @@ const PreferencesPage = () => {
   return (
     <div className="flex flex-col">
       <h3>
-        <FormattedMessage defaultMessage="Notifications" id="NAidKb" />
+        <FormattedMessage defaultMessage="Notifications" />
       </h3>
 
       <h4>
-        <FormattedMessage defaultMessage="Push notifications" id="Awq32I" />
+        <FormattedMessage defaultMessage="Push notifications" />
       </h4>
 
       <div className="flex flex-col space-y-4">
@@ -107,7 +107,7 @@ const PreferencesPage = () => {
           />
           {hasNotificationsApi && !notificationsAllowed && (
             <button onClick={requestNotificationPermission}>
-              <FormattedMessage defaultMessage="Allow" id="y/bmsG" />
+              <FormattedMessage defaultMessage="Allow" />
             </button>
           )}
         </div>
@@ -124,7 +124,7 @@ const PreferencesPage = () => {
           />
           {allGood && !subscribedToPush && (
             <button onClick={trySubscribePush}>
-              <FormattedMessage defaultMessage="Subscribe" id="gczcC5" />
+              <FormattedMessage defaultMessage="Subscribe" />
             </button>
           )}
         </div>

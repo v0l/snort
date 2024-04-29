@@ -14,7 +14,7 @@ interface ShowMoreProps {
 const LoadMore = ({ text, onClick, className = "" }: ShowMoreProps) => {
   return (
     <button type="button" className={className} onClick={onClick}>
-      {text || <FormattedMessage defaultMessage="Load more" id="00LcfG" />}
+      {text || <FormattedMessage defaultMessage="Load more" />}
     </button>
   );
 };

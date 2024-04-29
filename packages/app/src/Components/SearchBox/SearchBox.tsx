@@ -139,7 +139,7 @@ export default function SearchBox() {
             }`}
             onMouseEnter={() => setActiveIndex(0)}
             onClick={() => navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })}>
-            <FormattedMessage defaultMessage="Search notes" id="EJbFi7" />: <b>{search}</b>
+            <FormattedMessage defaultMessage="Search notes" />: <b>{search}</b>
           </div>
           {results?.slice(0, MAX_RESULTS).map((result, idx) => (
             <div

@@ -14,7 +14,7 @@ export default function ExportKeys() {
   return (
     <div className="flex flex-col g12">
       <div className="text-xl">
-        <FormattedMessage defaultMessage="Public Key" id="bep9C3" />
+        <FormattedMessage defaultMessage="Public Key" />
       </div>
       <small>
         <FormattedMessage
@@ -27,7 +27,7 @@ export default function ExportKeys() {
       {privateKeyData instanceof KeyStorage && (
         <>
           <div className="text-xl">
-            <FormattedMessage defaultMessage="Private Key" id="JymXbw" />
+            <FormattedMessage defaultMessage="Private Key" />
           </div>
           <small>
             <FormattedMessage
@@ -41,7 +41,7 @@ export default function ExportKeys() {
       {generatedEntropy && (
         <>
           <div className="text-xl">
-            <FormattedMessage defaultMessage="Mnemonic" id="b12Goz" />
+            <FormattedMessage defaultMessage="Mnemonic" />
           </div>
           <div className="mnemonic-grid">
             {hexToMnemonic(generatedEntropy ?? "")

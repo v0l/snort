@@ -41,11 +41,11 @@ export default function NotificationSummary({ evs }: { evs: Array<TaggedNostrEve
   const periodTabs = [
     {
       value: NotificationSummaryPeriod.Daily,
-      text: <FormattedMessage defaultMessage="Daily" id="zxvhnE" />,
+      text: <FormattedMessage defaultMessage="Daily" />,
     },
     {
       value: NotificationSummaryPeriod.Weekly,
-      text: <FormattedMessage defaultMessage="Weekly" id="/clOBU" />,
+      text: <FormattedMessage defaultMessage="Weekly" />,
     },
   ] as Array<Tab>;
 
@@ -114,7 +114,7 @@ export default function NotificationSummary({ evs }: { evs: Array<TaggedNostrEve
     <div className="flex flex-col g12 p bb">
       <div className="flex justify-between">
         <h2>
-          <FormattedMessage defaultMessage="Summary" id="PJeJFc" description="Notifications summary" />
+          <FormattedMessage defaultMessage="Summary" />
         </h2>
         <div className="flex items-center g8">
           {filterIcon(NotificationSummaryFilter.Reactions, "heart-solid", "text-heart")}

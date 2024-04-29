@@ -50,7 +50,7 @@ export default function MessagesPage() {
           {cx.participants.map(v => (
             <ProfileImage key={v.id} pubkey={v.id} link="" showUsername={false} profile={v.profile} />
           ))}
-          {cx.title ?? <FormattedMessage defaultMessage="Group Chat" id="eXT2QQ" />}
+          {cx.title ?? <FormattedMessage defaultMessage="Group Chat" />}
         </div>
       );
     }
@@ -87,7 +87,7 @@ export default function MessagesPage() {
         <div className="overflow-y-auto md:h-screen p-1 w-full md:w-1/3 flex-shrink-0">
           <div className="flex items-center justify-between p-2">
             <button disabled={unreadCount <= 0} type="button" className="text-sm font-semibold">
-              <FormattedMessage defaultMessage="Mark all read" id="ShdEie" />
+              <FormattedMessage defaultMessage="Mark all read" />
             </button>
             <NewChatWindow />
           </div>

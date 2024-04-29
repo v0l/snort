@@ -224,7 +224,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       <div className="flex flex-col g24">
         <div className="flex flex-col w-max g8">
           <h4>
-            <FormattedMessage defaultMessage="Name" id="HAlOn1" />
+            <FormattedMessage defaultMessage="Name" />
           </h4>
           <input
             className="w-max"
@@ -238,7 +238,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         </div>
         <div className="flex flex-col w-max g8">
           <h4>
-            <FormattedMessage defaultMessage="About" id="g5pX+a" />
+            <FormattedMessage defaultMessage="About" />
           </h4>
           <textarea
             className="w-max"
@@ -250,7 +250,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         </div>
         <div className="flex flex-col w-max g8">
           <h4>
-            <FormattedMessage defaultMessage="Website" id="JkLHGw" />
+            <FormattedMessage defaultMessage="Website" />
           </h4>
           <input
             className="w-max"
@@ -262,7 +262,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         </div>
         <div className="flex flex-col w-max g8">
           <h4>
-            <FormattedMessage defaultMessage="Nostr Address" id="9pMqYs" />
+            <FormattedMessage defaultMessage="Nostr Address" />
           </h4>
           <div className="flex flex-col g8 w-max">
             <input type="text" className="w-max" value={nip05} onChange={e => onNip05Change(e)} disabled={readonly} />
@@ -275,20 +275,20 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             </small>
             <div className="flex g12">
               <button className="flex items-center" type="button" onClick={() => navigate("/nostr-address")}>
-                <FormattedMessage defaultMessage="Buy nostr address" id="MuVeKe" />
+                <FormattedMessage defaultMessage="Buy nostr address" />
               </button>
               <button
                 className="flex items-center secondary"
                 type="button"
                 onClick={() => navigate("/free-nostr-address")}>
-                <FormattedMessage defaultMessage="Get a free one" id="vlbWtt" />
+                <FormattedMessage defaultMessage="Get a free one" />
               </button>
             </div>
           </div>
         </div>
         <div className="flex flex-col w-max g8">
           <h4>
-            <FormattedMessage defaultMessage="Lightning Address" id="GSye7T" />
+            <FormattedMessage defaultMessage="Lightning Address" />
           </h4>
           <input
             className="w-max"
@@ -300,7 +300,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           <div>{lud16Valid === false ? <span className="warning">{invalidLud16Message}</span> : <></>}</div>
         </div>
         <AsyncButton className="primary" onClick={() => saveProfile()} disabled={readonly}>
-          <FormattedMessage defaultMessage="Save" id="jvo0vs" />
+          <FormattedMessage defaultMessage="Save" />
         </AsyncButton>
       </div>
     );
@@ -318,7 +318,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               }}
               className="banner">
               <AsyncButton type="button" onClick={() => setNewBanner()} disabled={readonly}>
-                <FormattedMessage defaultMessage="Upload" id="p4N05H" />
+                <FormattedMessage defaultMessage="Upload" />
               </AsyncButton>
             </div>
           )}

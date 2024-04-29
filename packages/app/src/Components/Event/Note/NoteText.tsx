@@ -27,11 +27,7 @@ export const NoteText = memo(function InnerContent(
         e.stopPropagation();
         setShowMore(!showMore);
       }}>
-      {showMore ? (
-        <FormattedMessage defaultMessage="Show less" id="qyJtWy" />
-      ) : (
-        <FormattedMessage defaultMessage="Show more" id="aWpBzj" />
-      )}
+      {showMore ? <FormattedMessage defaultMessage="Show less" /> : <FormattedMessage defaultMessage="Show more" />}
     </a>
   );
 
@@ -80,10 +76,10 @@ export const NoteText = memo(function InnerContent(
                   />
                 </>
               )}
-              . <FormattedMessage defaultMessage="Click here to load anyway" id="IoQq+a" />.{" "}
+              . <FormattedMessage defaultMessage="Click here to load anyway" />.{" "}
               <Link to="/settings/moderation">
                 <i>
-                  <FormattedMessage defaultMessage="Settings" id="D3idYv" />
+                  <FormattedMessage defaultMessage="Settings" />
                 </i>
               </Link>
             </>

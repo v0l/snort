@@ -25,7 +25,7 @@ export class BackupKeyTask extends BaseUITask {
           </div>
           <div className="flex flex-col g8">
             <div className="font-semibold text-xl">
-              <FormattedMessage defaultMessage="Be sure to back up your keys!" id="1UWegE" />
+              <FormattedMessage defaultMessage="Be sure to back up your keys!" />
             </div>
             <small>
               <FormattedMessage
@@ -39,11 +39,11 @@ export class BackupKeyTask extends BaseUITask {
             <div className="flex g8">
               <Link to="/settings/keys">
                 <button>
-                  <FormattedMessage defaultMessage="Back up now" id="rMgF34" />
+                  <FormattedMessage defaultMessage="Back up now" />
                 </button>
               </Link>
               <button className="secondary" onClick={() => this.mute()}>
-                <FormattedMessage defaultMessage="Already backed up" id="j9xbzF" />
+                <FormattedMessage defaultMessage="Already backed up" />
               </button>
             </div>
           </div>

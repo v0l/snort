@@ -9,7 +9,7 @@ const ProfileTabSelectors = {
     text: (
       <>
         <Icon name="pencil" size={16} />
-        <FormattedMessage defaultMessage="Notes" id="7+Domh" />
+        <FormattedMessage defaultMessage="Notes" />
       </>
     ),
     value: ProfileTabType.NOTES,
@@ -18,7 +18,7 @@ const ProfileTabSelectors = {
     text: (
       <>
         <Icon name="heart-solid" size={16} />
-        <FormattedMessage defaultMessage="Reactions" id="XgWvGA" />
+        <FormattedMessage defaultMessage="Reactions" />
       </>
     ),
     value: ProfileTabType.REACTIONS,
@@ -27,7 +27,7 @@ const ProfileTabSelectors = {
     text: (
       <>
         <Icon name="user-v2" size={16} />
-        <FormattedMessage defaultMessage="Followers" id="pzTOmv" />
+        <FormattedMessage defaultMessage="Followers" />
       </>
     ),
     value: ProfileTabType.FOLLOWERS,
@@ -36,7 +36,7 @@ const ProfileTabSelectors = {
     text: (
       <>
         <Icon name="stars" size={16} />
-        <FormattedMessage defaultMessage="Follows" id="IKKHqV" />
+        <FormattedMessage defaultMessage="Follows" />
       </>
     ),
     value: ProfileTabType.FOLLOWS,
@@ -45,7 +45,7 @@ const ProfileTabSelectors = {
     text: (
       <>
         <Icon name="zap-solid" size={16} />
-        <FormattedMessage defaultMessage="Zaps" id="OEW7yJ" />
+        <FormattedMessage defaultMessage="Zaps" />
       </>
     ),
     value: ProfileTabType.ZAPS,
@@ -54,7 +54,7 @@ const ProfileTabSelectors = {
     text: (
       <>
         <Icon name="mute" size={16} />
-        <FormattedMessage defaultMessage="Muted" id="HOzFdo" />
+        <FormattedMessage defaultMessage="Muted" />
       </>
     ),
     value: ProfileTabType.MUTED,
@@ -63,7 +63,7 @@ const ProfileTabSelectors = {
     text: (
       <>
         <Icon name="block" size={16} />
-        <FormattedMessage defaultMessage="Blocked" id="qUJTsT" />
+        <FormattedMessage defaultMessage="Blocked" />
       </>
     ),
     value: ProfileTabType.BLOCKED,
@@ -72,7 +72,7 @@ const ProfileTabSelectors = {
     text: (
       <>
         <Icon name="wifi" size={16} />
-        <FormattedMessage defaultMessage="Relays" id="RoOyAh" />
+        <FormattedMessage defaultMessage="Relays" />
       </>
     ),
     value: ProfileTabType.RELAYS,
@@ -81,7 +81,7 @@ const ProfileTabSelectors = {
     text: (
       <>
         <Icon name="bookmark-solid" size={16} />
-        <FormattedMessage defaultMessage="Bookmarks" id="nGBrvw" />
+        <FormattedMessage defaultMessage="Bookmarks" />
       </>
     ),
     value: ProfileTabType.BOOKMARKS,

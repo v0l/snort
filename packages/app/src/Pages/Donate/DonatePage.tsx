@@ -80,7 +80,7 @@ const DonatePage = () => {
           values={{
             here: (
               <Link to="/about" className="highlight underline">
-                <FormattedMessage defaultMessage="here" id="hniz8Z" />
+                <FormattedMessage defaultMessage="here" />
               </Link>
             ),
           }}
@@ -89,7 +89,7 @@ const DonatePage = () => {
       {CONFIG.chatChannels && (
         <>
           <h4>
-            <FormattedMessage defaultMessage="Public Chat Channels" id="rn52n9" />
+            <FormattedMessage defaultMessage="Public Chat Channels" />
           </h4>
           <div className="flex gap-2">
             {CONFIG.chatChannels.map(a => {
@@ -101,7 +101,7 @@ const DonatePage = () => {
                         window.open(a.value, "_blank", "noreferrer");
                       }}>
                       <img src={Telegram} width={24} height={24} />
-                      <FormattedMessage defaultMessage="Telegram" id="TH1fFo" />
+                      <FormattedMessage defaultMessage="Telegram" />
                     </AsyncButton>
                   );
                 }
@@ -113,7 +113,7 @@ const DonatePage = () => {
                         navigate(`/messages/${id}`);
                       }}>
                       <img src={CONFIG.icon} width={24} height={24} className="rounded-full" />
-                      <FormattedMessage defaultMessage="Nostr Public Chat" id="whSrs+" />
+                      <FormattedMessage defaultMessage="Nostr Public Chat" />
                     </AsyncButton>
                   );
                 }
@@ -123,14 +123,14 @@ const DonatePage = () => {
         </>
       )}
       <h3>
-        <FormattedMessage defaultMessage="Donate" id="2IFGap" />
+        <FormattedMessage defaultMessage="Donate" />
       </h3>
       <div className="flex flex-col g12">
         <div className="b br p">
           <div className="flex items-center justify-between">
-            <FormattedMessage defaultMessage="Lightning Donation" id="C1LjMx" />
+            <FormattedMessage defaultMessage="Lightning Donation" />
             <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL}>
-              <FormattedMessage defaultMessage="Donate" id="2IFGap" />
+              <FormattedMessage defaultMessage="Donate" />
             </ZapButton>
           </div>
           {today && (
@@ -145,9 +145,9 @@ const DonatePage = () => {
         </div>
         <div className="b br p">
           <div className="flex items-center justify-between">
-            <FormattedMessage defaultMessage="On-chain Donation" id="fqwcJ1" />
+            <FormattedMessage defaultMessage="On-chain Donation" />
             <AsyncButton type="button" onClick={getOnChainAddress}>
-              <FormattedMessage defaultMessage="Get Address" id="bLZL5a" />
+              <FormattedMessage defaultMessage="Get Address" />
             </AsyncButton>
           </div>
         </div>
@@ -156,7 +156,7 @@ const DonatePage = () => {
         <Modal onClose={() => setOnChain("")} id="donate-on-chain">
           <div className="flex flex-col items-center g12">
             <h2>
-              <FormattedMessage defaultMessage="On-chain Donation Address" id="EjFyoR" />
+              <FormattedMessage defaultMessage="On-chain Donation Address" />
             </h2>
             <QrCode data={onChain} link={`bitcoin:${onChain}`} />
             <Copy text={onChain} />
@@ -165,19 +165,19 @@ const DonatePage = () => {
       )}
       <ZapPoolDonateSection />
       <h3>
-        <FormattedMessage defaultMessage="Primary Developers" id="4IPzdn" />
+        <FormattedMessage defaultMessage="Primary Developers" />
       </h3>
       {DeveloperAccounts.map(a => (
         <ProfilePreview pubkey={a} key={a} actions={actions(a)} />
       ))}
       <h4>
-        <FormattedMessage defaultMessage="Contributors" id="ZLmyG9" />
+        <FormattedMessage defaultMessage="Contributors" />
       </h4>
       {Contributors.map(a => (
         <ProfilePreview pubkey={a} key={a} actions={actions(a)} />
       ))}
       <h4>
-        <FormattedMessage defaultMessage="Translators" id="3gOsZq" />
+        <FormattedMessage defaultMessage="Translators" />
       </h4>
       {Translators.map(a => (
         <ProfilePreview pubkey={a} key={a} actions={actions(a)} />

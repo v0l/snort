@@ -18,46 +18,46 @@ import { LogoHeader } from "./LogoHeader";
 
 const MENU_ITEMS = [
   {
-    label: <FormattedMessage defaultMessage="Home" id="ejEGdx" />,
+    label: <FormattedMessage defaultMessage="Home" />,
     icon: "home",
     link: "/",
     nonLoggedIn: true,
   },
   {
-    label: <FormattedMessage defaultMessage="Search" id="xmcVZ0" />,
+    label: <FormattedMessage defaultMessage="Search" />,
     icon: "search",
     link: "/search",
     nonLoggedIn: true,
   },
   {
-    label: <FormattedMessage defaultMessage="Notifications" id="NAidKb" />,
+    label: <FormattedMessage defaultMessage="Notifications" />,
     icon: "bell",
     link: "/notifications",
   },
   {
-    label: <FormattedMessage defaultMessage="Messages" id="hMzcSq" />,
+    label: <FormattedMessage defaultMessage="Messages" />,
     icon: "mail",
     link: "/messages",
     hideReadOnly: true,
   },
   {
-    label: <FormattedMessage defaultMessage="Deck" id="o/gK53" />,
+    label: <FormattedMessage defaultMessage="Deck" />,
     icon: "deck",
     link: "/deck",
   },
   {
-    label: <FormattedMessage defaultMessage="Social Graph" id="CzHZoc" />,
+    label: <FormattedMessage defaultMessage="Social Graph" />,
     icon: "graph",
     link: "/graph",
   },
   {
-    label: <FormattedMessage defaultMessage="About" id="g5pX+a" />,
+    label: <FormattedMessage defaultMessage="About" />,
     icon: "info",
     link: "/donate",
     nonLoggedIn: true,
   },
   {
-    label: <FormattedMessage defaultMessage="Settings" id="D3idYv" />,
+    label: <FormattedMessage defaultMessage="Settings" />,
     icon: "settings",
     link: "/settings",
   },
@@ -145,7 +145,7 @@ export default function NavSidebar({ narrow = false }: { narrow?: boolean }) {
                 <Icon name="sign-in" size={24} />
                 {!narrow && (
                   <span className="hidden xl:inline ml-3">
-                    <FormattedMessage defaultMessage="Sign up" id="8HJxXG" />
+                    <FormattedMessage defaultMessage="Sign up" />
                   </span>
                 )}
               </button>
@@ -163,7 +163,7 @@ export default function NavSidebar({ narrow = false }: { narrow?: boolean }) {
           </ProfileLink>
           {readonly && (
             <div className="hidden xl:block text-nostr-red text-sm m-3">
-              <FormattedMessage defaultMessage="Read-only" id="djNL6D" />
+              <FormattedMessage defaultMessage="Read-only" />
             </div>
           )}
         </>

@@ -60,7 +60,7 @@ export function Header() {
     const searchTerm = decodeURIComponent(location.pathname.split("/search/")[1]);
     title = (
       <>
-        <FormattedMessage defaultMessage="Search" id="xmcVZ0" />: {searchTerm}
+        <FormattedMessage defaultMessage="Search" />: {searchTerm}
       </>
     );
   } else if (nostrLink) {
@@ -116,12 +116,12 @@ function NoteTitle({ link }: { link: NostrLink }) {
   }, [ev?.pubkey]);
 
   if (!ev?.pubkey) {
-    return <FormattedMessage defaultMessage="Note" id="qMePPG" />;
+    return <FormattedMessage defaultMessage="Note" />;
   }
 
   return (
     <>
-      <FormattedMessage defaultMessage="Note by {name}" id="ALdW69" values={values} />
+      <FormattedMessage defaultMessage="Note by {name}" values={values} />
     </>
   );
 }

@@ -17,7 +17,7 @@ export function WalletReceivePage() {
   return (
     <div className="p flex flex-col gap-4">
       <div className="text-2xl font-bold">
-        <FormattedMessage defaultMessage="Receive" id="ULXFfP" />
+        <FormattedMessage defaultMessage="Receive" />
       </div>
       <p>
         <FormattedMessage
@@ -37,7 +37,7 @@ export function WalletReceivePage() {
       />
       <div className="flex flex-col">
         <small>
-          <FormattedMessage defaultMessage="Amount in sats" id="djLctd" />
+          <FormattedMessage defaultMessage="Amount in sats" />
         </small>
         <input type="number" value={amount} onChange={e => setAmount(Number(e.target.value))} />
       </div>
@@ -56,7 +56,7 @@ export function WalletReceivePage() {
             setError((e as Error).message);
           }
         }}>
-        <FormattedMessage defaultMessage="Generate Invoice" id="ipHVx5" />
+        <FormattedMessage defaultMessage="Generate Invoice" />
       </AsyncButton>
       {error && <b className="warning">{error}</b>}
       {invoice && (

@@ -20,9 +20,9 @@ export function ZapModalTitle({
       <>
         <h2>
           {zapper?.canZap() ? (
-            <FormattedMessage defaultMessage="Send zap" id="5ykRmX" />
+            <FormattedMessage defaultMessage="Send zap" />
           ) : (
-            <FormattedMessage defaultMessage="Send sats" id="DKnriN" />
+            <FormattedMessage defaultMessage="Send sats" />
           )}
         </h2>
       </>
@@ -38,9 +38,9 @@ export function ZapModalTitle({
         {t.zap?.pubkey && <ProfileImage pubkey={t.zap.pubkey} showUsername={false} />}
         <h2>
           {zapper?.canZap() ? (
-            <FormattedMessage defaultMessage="Send zap to {name}" id="SMO+on" values={values} />
+            <FormattedMessage defaultMessage="Send zap to {name}" values={values} />
           ) : (
-            <FormattedMessage defaultMessage="Send sats to {name}" id="JGrt9q" values={values} />
+            <FormattedMessage defaultMessage="Send sats to {name}" values={values} />
           )}
         </h2>
       </>
@@ -53,9 +53,9 @@ export function ZapModalTitle({
       <div className="flex flex-col g12">
         <h2>
           {zapper?.canZap() ? (
-            <FormattedMessage defaultMessage="Send zap splits to" id="ZS+jRE" />
+            <FormattedMessage defaultMessage="Send zap splits to" />
           ) : (
-            <FormattedMessage defaultMessage="Send sats splits to" id="uc0din" />
+            <FormattedMessage defaultMessage="Send sats splits to" />
           )}
         </h2>
         <div className="flex g4 f-wrap">

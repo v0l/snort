@@ -13,7 +13,7 @@ export default function ModerationSettingsPage() {
   return (
     <>
       <h2>
-        <FormattedMessage defaultMessage="Moderation" id="wofVHy" />
+        <FormattedMessage defaultMessage="Moderation" />
       </h2>
 
       <div className="py-4 flex flex-col gap-2">
@@ -31,13 +31,13 @@ export default function ModerationSettingsPage() {
             id="showContentWarningPosts"
           />
           <label htmlFor="showContentWarningPosts">
-            <FormattedMessage defaultMessage="Show posts that have a content warning tag" id="fQN+tq" />
+            <FormattedMessage defaultMessage="Show posts that have a content warning tag" />
           </label>
         </div>
       </div>
 
       <h3>
-        <FormattedMessage defaultMessage="Muted Words" id="AN0Z7Q" />
+        <FormattedMessage defaultMessage="Muted Words" />
       </h3>
       <div className="flex flex-col g12">
         <div className="flex g8">
@@ -53,14 +53,14 @@ export default function ModerationSettingsPage() {
               await addMutedWord(muteWord);
               setMuteWord("");
             }}>
-            <FormattedMessage defaultMessage="Add" id="2/2yg+" />
+            <FormattedMessage defaultMessage="Add" />
           </AsyncButton>
         </div>
         {getMutedWords().map(v => (
           <div key={v} className="p br b flex items-center justify-between">
             <div>{v}</div>
             <AsyncButton onClick={() => removeMutedWord(v)}>
-              <FormattedMessage defaultMessage="Delete" id="K3r6DQ" />
+              <FormattedMessage defaultMessage="Delete" />
             </AsyncButton>
           </div>
         ))}

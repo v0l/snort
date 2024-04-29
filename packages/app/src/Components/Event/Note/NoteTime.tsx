@@ -16,7 +16,7 @@ const NoteTime: React.FC<NoteTimeProps> = ({ from, fallback }) => {
     const timeDifference = Math.floor((currentTime.getTime() - fromTime) / 1000);
 
     if (timeDifference < secondsInAMinute) {
-      return <FormattedMessage defaultMessage="now" id="kaaf1E" />;
+      return <FormattedMessage defaultMessage="now" />;
     } else if (timeDifference < secondsInAnHour) {
       return `${Math.floor(timeDifference / secondsInAMinute)}m`;
     } else if (timeDifference < secondsInADay) {

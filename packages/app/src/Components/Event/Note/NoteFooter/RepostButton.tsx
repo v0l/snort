@@ -58,7 +58,7 @@ export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: T
       </div>
       <MenuItem onClick={repost} disabled={hasReposted()}>
         <Icon name="repeat" />
-        <FormattedMessage defaultMessage="Repost" id="JeoS4y" />
+        <FormattedMessage defaultMessage="Repost" />
       </MenuItem>
       <MenuItem
         onClick={() =>
@@ -69,7 +69,7 @@ export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: T
           })
         }>
         <Icon name="edit" />
-        <FormattedMessage defaultMessage="Quote Repost" id="C7642/" />
+        <FormattedMessage defaultMessage="Quote Repost" />
       </MenuItem>
     </Menu>
   );

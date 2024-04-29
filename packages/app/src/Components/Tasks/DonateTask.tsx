@@ -22,7 +22,7 @@ export class DonateTask extends BaseUITask {
         </p>
         <Link to="/donate">
           <button>
-            <FormattedMessage defaultMessage="Donate" id="2IFGap" />
+            <FormattedMessage defaultMessage="Donate" />
           </button>
         </Link>
       </>

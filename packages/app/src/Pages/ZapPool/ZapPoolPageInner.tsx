@@ -45,7 +45,7 @@ export function ZapPoolPageInner() {
   return (
     <div className="zap-pool main-content p">
       <h1>
-        <FormattedMessage defaultMessage="Zap Pool" id="i/dBAR" />
+        <FormattedMessage defaultMessage="Zap Pool" />
       </h1>
       <p>
         <FormattedMessage
@@ -110,7 +110,7 @@ export function ZapPoolPageInner() {
               trackEvent("ZapPool", { manual: true });
               await ZapPoolController?.payout(wallet);
             }}>
-            <FormattedMessage defaultMessage="Payout Now" id="+PzQ9Y" />
+            <FormattedMessage defaultMessage="Payout Now" />
           </AsyncButton>
         )}
       </p>
@@ -127,7 +127,7 @@ export function ZapPoolPageInner() {
         />
       </div>
       <h3>
-        <FormattedMessage defaultMessage="Relays" id="RoOyAh" />
+        <FormattedMessage defaultMessage="Relays" />
       </h3>
       {relayConnections.map(a => (
         <div key={a.address}>
@@ -145,7 +145,7 @@ export function ZapPoolPageInner() {
         </div>
       ))}
       <h3>
-        <FormattedMessage defaultMessage="File hosts" id="XICsE8" />
+        <FormattedMessage defaultMessage="File hosts" />
       </h3>
       {UploaderServices.map(a => (
         <div key={a.name}>
@@ -163,7 +163,7 @@ export function ZapPoolPageInner() {
         </div>
       ))}
       <h3>
-        <FormattedMessage defaultMessage="Data Providers" id="ELbg9p" />
+        <FormattedMessage defaultMessage="Data Providers" />
       </h3>
       {DataProviders.map(a => (
         <div key={a.name}>

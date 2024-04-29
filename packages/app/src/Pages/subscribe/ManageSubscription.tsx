@@ -41,14 +41,14 @@ export default function ManageSubscriptionPage() {
   return (
     <div className="main-content p flex flex-col g16">
       <h2>
-        <FormattedMessage defaultMessage="Subscriptions" id="J+dIsA" />
+        <FormattedMessage defaultMessage="Subscriptions" />
       </h2>
       {subs.map(a => (
         <SubscriptionCard sub={a} key={a.id} />
       ))}
       {subs.length !== 0 && (
         <button className="primary" onClick={() => navigate("/subscribe")}>
-          <FormattedMessage defaultMessage="Buy Subscription" id="SP0+yi" />
+          <FormattedMessage defaultMessage="Buy Subscription" />
         </button>
       )}
       {subs.length === 0 && (
@@ -59,7 +59,7 @@ export default function ManageSubscriptionPage() {
             values={{
               link: (
                 <Link to="/subscribe">
-                  <FormattedMessage defaultMessage="here" id="hniz8Z" />
+                  <FormattedMessage defaultMessage="here" />
                 </Link>
               ),
             }}

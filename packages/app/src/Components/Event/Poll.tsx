@@ -135,9 +135,9 @@ export default function Poll(props: PollProps) {
             values={{
               type:
                 tallyBy === "zaps" ? (
-                  <FormattedMessage defaultMessage="zap" id="5BVs2e" />
+                  <FormattedMessage defaultMessage="zap" />
                 ) : (
-                  <FormattedMessage defaultMessage="user" id="sUNhQE" />
+                  <FormattedMessage defaultMessage="user" />
                 ),
             }}
           />

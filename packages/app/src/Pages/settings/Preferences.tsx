@@ -34,15 +34,15 @@ const PreferencesPage = () => {
   return (
     <div className="preferences flex flex-col g24">
       <h3>
-        <FormattedMessage defaultMessage="Preferences" id="PCSt5T" />
+        <FormattedMessage defaultMessage="Preferences" />
       </h3>
       <AsyncButton onClick={() => update(pref)}>
-        <FormattedMessage defaultMessage="Save" id="jvo0vs" />
+        <FormattedMessage defaultMessage="Save" />
       </AsyncButton>
       {error && <b className="warning">{error}</b>}
       <div className="flex justify-between w-max">
         <h4>
-          <FormattedMessage defaultMessage="Language" id="y1Z3or" />
+          <FormattedMessage defaultMessage="Language" />
         </h4>
         <div>
           <select
@@ -103,10 +103,10 @@ const PreferencesPage = () => {
               } as UserPreferences)
             }>
             <option value="for-you">
-              <FormattedMessage defaultMessage="For you" id="xEjBS7" />
+              <FormattedMessage defaultMessage="For you" />
             </option>
             <option value="following">
-              <FormattedMessage defaultMessage="Notes" id="7+Domh" />
+              <FormattedMessage defaultMessage="Notes" />
             </option>
             <option value="conversations">
               <FormattedMessage {...messages.Conversations} />
@@ -120,10 +120,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Send usage metrics" id="XECMfW" />
+            <FormattedMessage defaultMessage="Send usage metrics" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Send anonymous usage metrics" id="/Xf4UW" />
+            <FormattedMessage defaultMessage="Send anonymous usage metrics" />
           </small>
         </div>
         <div>
@@ -168,10 +168,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Check Signatures" id="1o2BgB" />
+            <FormattedMessage defaultMessage="Check Signatures" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Check all event signatures received from relays" id="UNjfWJ" />
+            <FormattedMessage defaultMessage="Check all event signatures received from relays" />
           </small>
         </div>
         <div>
@@ -185,10 +185,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Auto Translate" id="IWz1ta" />
+            <FormattedMessage defaultMessage="Auto Translate" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Automatically translate notes to your local language" id="WmZhfL" />
+            <FormattedMessage defaultMessage="Automatically translate notes to your local language" />
           </small>
         </div>
         <div>
@@ -202,10 +202,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Proof of Work" id="grQ+mI" />
+            <FormattedMessage defaultMessage="Proof of Work" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Amount of work to apply to all published events" id="vxwnbh" />
+            <FormattedMessage defaultMessage="Amount of work to apply to all published events" />
           </small>
         </div>
         <div>
@@ -219,7 +219,7 @@ const PreferencesPage = () => {
       </div>
       <div className="flex justify-between w-max">
         <h4>
-          <FormattedMessage defaultMessage="Default Zap amount" id="qMx1sA" />
+          <FormattedMessage defaultMessage="Default Zap amount" />
         </h4>
         <div>
           <input
@@ -233,10 +233,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Show Badges" id="sKDn4e" />
+            <FormattedMessage defaultMessage="Show Badges" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Show badges on profile pages" id="EQKRE4" />
+            <FormattedMessage defaultMessage="Show badges on profile pages" />
           </small>
         </div>
         <div>
@@ -250,10 +250,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Show Status" id="0uoY11" />
+            <FormattedMessage defaultMessage="Show Status" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Show status messages on profile pages" id="FMfjrl" />
+            <FormattedMessage defaultMessage="Show status messages on profile pages" />
           </small>
         </div>
         <div>
@@ -267,10 +267,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Auto Zap" id="Dh3hbq" />
+            <FormattedMessage defaultMessage="Auto Zap" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Automatically zap every note when loaded" id="D+KzKd" />
+            <FormattedMessage defaultMessage="Automatically zap every note when loaded" />
           </small>
         </div>
         <div>
@@ -498,10 +498,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Hide muted notes" id="9kO0VQ" />
+            <FormattedMessage defaultMessage="Hide muted notes" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Muted notes will not be shown" id="sfL/O+" />
+            <FormattedMessage defaultMessage="Muted notes will not be shown" />
           </small>
         </div>
         <div>
@@ -513,7 +513,7 @@ const PreferencesPage = () => {
         </div>
       </div>
       <AsyncButton onClick={() => update(pref)}>
-        <FormattedMessage defaultMessage="Save" id="jvo0vs" />
+        <FormattedMessage defaultMessage="Save" />
       </AsyncButton>
       {error && <b className="error">{error}</b>}
     </div>

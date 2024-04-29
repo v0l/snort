@@ -44,10 +44,10 @@ const ErrorPage = () => {
   return (
     <div className="p-2">
       <h4>
-        <FormattedMessage defaultMessage="An error has occured!" id="FfYsOb" />
+        <FormattedMessage defaultMessage="An error has occured!" />
       </h4>
       <AsyncButton onClick={handleClearData}>
-        <FormattedMessage defaultMessage="Clear cache and reload" id="HWbkEK" />
+        <FormattedMessage defaultMessage="Clear cache and reload" />
       </AsyncButton>
       <h5>{error.message}</h5>
       <div className="my-2">{error.message}</div>
