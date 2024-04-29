@@ -78,8 +78,8 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
       new NostrLink(NostrPrefix.Event, "", EventKind.SetMetadata, pubkey),
       false,
     );
-    this.#contacts = new DiffSyncTags(new NostrLink(NostrPrefix.Event, "", EventKind.ContactList, pubkey));
-    this.#relays = new DiffSyncTags(new NostrLink(NostrPrefix.Event, "", EventKind.Relays, pubkey));
+    this.#contacts = new DiffSyncTags(new NostrLink(NostrPrefix.Event, "", EventKind.ContactList, pubkey), false);
+    this.#relays = new DiffSyncTags(new NostrLink(NostrPrefix.Event, "", EventKind.Relays, pubkey), false);
     if (options?.appdataId && options.initAppdata) {
       const link = new NostrLink(NostrPrefix.Address, options.appdataId, EventKind.AppData, pubkey);
       this.#appdata = new JsonEventSync<TAppData>(options.initAppdata, link, options.encryptAppdata ?? false);
@@ -415,7 +415,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
       throw new Error("Not a standar list");
     }
     if (!this.#standardLists.has(kind)) {
-      const list = new DiffSyncTags(new NostrLink(NostrPrefix.Event, "", kind, this.pubkey));
+      const list = new DiffSyncTags(new NostrLink(NostrPrefix.Event, "", kind, this.pubkey), true);
       list.on("change", () => this.emit("change", UserStateChangeType.GenericList));
       this.#standardLists.set(kind, list);
     }

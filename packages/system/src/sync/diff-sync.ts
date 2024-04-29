@@ -18,7 +18,7 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
   #changesEncrypted: Array<TagDiff> = [];
   #decryptedContent?: string;
 
-  constructor(readonly link: NostrLink) {
+  constructor(readonly link: NostrLink, readonly contentEncrypted: boolean) {
     super();
     this.#sync = new SafeSync(link);
     this.#sync.on("change", () => {
@@ -99,7 +99,7 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
   async sync(signer: EventSigner, system: SystemInterface) {
     await this.#sync.sync(system);
 
-    if (this.#sync.value?.content) {
+    if (this.#sync.value?.content && this.contentEncrypted) {
       const decrypted = await signer.nip4Decrypt(this.#sync.value.content, await signer.getPubKey());
       this.#decryptedContent = decrypted;
     }
