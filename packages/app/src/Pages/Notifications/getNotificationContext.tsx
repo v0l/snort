@@ -20,12 +20,11 @@ export function getNotificationContext(ev: TaggedNostrEvent) {
     case EventKind.Repost:
     case EventKind.Reaction: {
       const thread = Nip10.parseThread(ev);
-      const tag = thread?.replyTo ?? thread?.root;
+      const tag = thread?.replyTo ?? thread?.root ?? thread?.mentions[0];
       if (tag) {
         return tag;
-      } else {
-        throw new Error("Unknown thread context");
       }
+      break;
     }
     case EventKind.TextNote: {
       return NostrLink.fromEvent(ev);
