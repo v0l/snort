@@ -1,12 +1,14 @@
 import { dedupe, ExternalStore } from "@snort/shared";
-import { decodeTLV, encodeTLVEntries, EventKind, NostrEvent, NostrPrefix, TLVEntry, TLVEntryType } from "@snort/system";
+import { decodeTLV, encodeTLVEntries, EventKind, NostrEvent, NostrPrefix, RequestBuilder, TLVEntry, TLVEntryType } from "@snort/system";
 
+import { GiftsCache } from "@/Cache";
 import { GiftWrapCache } from "@/Cache/GiftWrapCache";
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "@/chat";
 import { UnwrappedGift } from "@/Db";
+import { LoginSession } from "@/Utils/Login";
 import { GetPowWorker } from "@/Utils/wasm";
 
-export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
+export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   #cache: GiftWrapCache;
 
   constructor(cache: GiftWrapCache) {
@@ -15,13 +17,13 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     this.#cache.on("change", () => this.notifyChange());
   }
 
-  subscription() {
-    // ignored
-    return undefined;
-  }
+  subscription(session: LoginSession) {
+    const pk = session.publicKey;
+    if (!pk || session.readonly) return;
 
-  onEvent() {
-    // ignored
+    const rb = new RequestBuilder(`nip17:${pk.slice(0, 12)}`);
+    rb.withFilter().kinds([EventKind.GiftWrap]).tag("p", [pk]);
+    return rb;
   }
 
   listChats(pk: string): Chat[] {
@@ -33,7 +35,7 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
         .filter(a => a !== pk);
 
       return encodeTLVEntries(
-        "chat24" as NostrPrefix,
+        "chat17" as NostrPrefix,
         ...pTags.map(
           v =>
             ({
@@ -46,7 +48,7 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     };
     return dedupe(messages.map(a => chatId(a))).map(a => {
       const chatMessages = messages.filter(b => chatId(b) === a);
-      return Nip24ChatSystem.createChatObj(a, chatMessages);
+      return Nip17ChatSystem.createChatObj(a, chatMessages);
     });
   }
 
@@ -124,3 +126,5 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     return sn.filter(a => a.inner.kind === EventKind.SealedRumor);
   }
 }
+
+export const Nip17Chats = new Nip17ChatSystem(GiftsCache);

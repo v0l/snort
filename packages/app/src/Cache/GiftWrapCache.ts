@@ -1,10 +1,9 @@
-import { EventKind, EventPublisher, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { EventKind, EventPublisher, TaggedNostrEvent } from "@snort/system";
 
 import { db, UnwrappedGift } from "@/Db";
 import { findTag, unwrap } from "@/Utils";
-import { LoginSession, LoginSessionType } from "@/Utils/Login";
 
-import { RefreshFeedCache } from "./RefreshFeedCache";
+import { RefreshFeedCache, TWithCreated } from "./RefreshFeedCache";
 
 export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
   constructor() {
@@ -15,11 +14,8 @@ export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
     return of.id;
   }
 
-  buildSub(session: LoginSession, rb: RequestBuilder): void {
-    const pubkey = session.publicKey;
-    if (pubkey && session.type === LoginSessionType.PrivateKey) {
-      rb.withFilter().kinds([EventKind.GiftWrap]).tag("p", [pubkey]).since(this.newest());
-    }
+  buildSub(): void {
+    // not used
   }
 
   takeSnapshot(): Array<UnwrappedGift> {
@@ -56,5 +52,9 @@ export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
       }
     }
     await this.bulkSet(unwrapped);
+  }
+
+  search(): Promise<TWithCreated<UnwrappedGift>[]> {
+    throw new Error("Method not implemented.");
   }
 }

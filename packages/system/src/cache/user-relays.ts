@@ -26,4 +26,8 @@ export class UserRelaysCache extends FeedCache<UsersRelays> {
   takeSnapshot(): Array<UsersRelays> {
     return [...this.cache.values()];
   }
+
+  async search() {
+    return <Array<UsersRelays>>[];
+  }
 }

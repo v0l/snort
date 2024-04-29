@@ -5,7 +5,7 @@ import { SnortContext } from "./context";
 
 export function useUserSearch() {
   const system = useContext(SnortContext);
-  const cache = system.profileLoader.cache as UserProfileCache;
+  const cache = system.profileLoader.cache;
 
   async function search(input: string): Promise<Array<string>> {
     // try exact match first

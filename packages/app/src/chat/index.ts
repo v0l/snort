@@ -22,7 +22,7 @@ import { findTag } from "@/Utils";
 import { LoginSession } from "@/Utils/Login";
 
 import { Nip4Chats, Nip4ChatSystem } from "./nip4";
-import { Nip24ChatSystem } from "./nip24";
+import { Nip17Chats, Nip17ChatSystem } from "./nip17";
 import { Nip28Chats, Nip28ChatSystem } from "./nip28";
 
 export enum ChatType {
@@ -124,7 +124,7 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
     case ChatType.PrivateDirectMessage: {
       if (params.length > 1) throw new Error("Must only contain one pubkey");
       return `/messages/${encodeTLVEntries(
-        "chat24" as NostrPrefix,
+        "chat17" as NostrPrefix,
         {
           type: TLVEntryType.Author,
           length: params[0].length,
@@ -134,7 +134,7 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
     }
     case ChatType.PrivateGroupChat: {
       return `/messages/${encodeTLVEntries(
-        "chat24" as NostrPrefix,
+        "chat17" as NostrPrefix,
         ...params.map(
           a =>
             ({
@@ -156,8 +156,8 @@ export function createEmptyChatObject(id: string, messages?: Array<TaggedNostrEv
   if (id.startsWith("chat41")) {
     return Nip4ChatSystem.createChatObj(id, messages ?? []);
   }
-  if (id.startsWith("chat241")) {
-    return Nip24ChatSystem.createChatObj(id, []);
+  if (id.startsWith("chat171")) {
+    return Nip17ChatSystem.createChatObj(id, []);
   }
   if (id.startsWith("chat281")) {
     return Nip28ChatSystem.createChatObj(id, messages ?? []);
@@ -187,14 +187,18 @@ export function useChatSystem(chat: ChatSystem) {
 export function useChatSystems() {
   const nip4 = useChatSystem(Nip4Chats);
   const nip28 = useChatSystem(Nip28Chats);
+  const nip17 = useChatSystem(Nip17Chats);
 
-  return [...nip4, ...nip28];
+  return [...nip4, ...nip28, ...nip17];
 }
 
 export function useChat(id: string) {
   const getStore = () => {
     if (id.startsWith("chat41")) {
       return Nip4Chats;
+    }
+    if (id.startsWith("chat171")) {
+      return Nip17Chats;
     }
     if (id.startsWith("chat281")) {
       return Nip28Chats;

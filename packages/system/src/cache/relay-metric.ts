@@ -19,4 +19,8 @@ export class RelayMetricCache extends FeedCache<RelayMetrics> {
   takeSnapshot(): Array<RelayMetrics> {
     return [...this.cache.values()];
   }
+
+  async search() {
+    return <Array<RelayMetrics>>[];
+  }
 }

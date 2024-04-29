@@ -31,7 +31,7 @@ export default function NewChatWindow() {
   useEffect(() => {
     setNewChat([]);
     setSearchTerm("");
-    setResults(followList);
+    setResults(followList.slice(0, 5));
   }, [show]);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function NewChatWindow() {
   function startChat() {
     setShow(false);
     if (newChat.length === 1) {
-      navigate(createChatLink(ChatType.DirectMessage, newChat[0]));
+      navigate(createChatLink(ChatType.PrivateDirectMessage, newChat[0]));
     } else {
       navigate(createChatLink(ChatType.PrivateGroupChat, ...newChat));
     }

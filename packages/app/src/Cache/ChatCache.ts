@@ -27,4 +27,8 @@ export class ChatCache extends FeedCache<NostrEvent> {
   takeSnapshot(): Array<NostrEvent> {
     return [...this.cache.values()];
   }
+
+  async search() {
+    return <Array<NostrEvent>>[];
+  }
 }

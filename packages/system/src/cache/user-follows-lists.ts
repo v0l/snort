@@ -26,4 +26,8 @@ export class UserFollowsCache extends FeedCache<UsersFollows> {
   takeSnapshot(): Array<UsersFollows> {
     return [...this.cache.values()];
   }
+
+  async search() {
+    return <Array<UsersFollows>>[];
+  }
 }

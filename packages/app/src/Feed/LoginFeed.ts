@@ -31,21 +31,20 @@ export default function useLoginFeed() {
   const subLogin = useMemo(() => {
     if (!login || !pubKey) return null;
 
-    const b = new RequestBuilder(`login:${pubKey.slice(0, 12)}`);
-    b.withOptions({
-      leaveOpen: true,
-    });
-    b.withFilter().authors([pubKey]).kinds([EventKind.DirectMessage]);
     if (CONFIG.features.subscriptions && !login.readonly) {
+      const b = new RequestBuilder(`login:${pubKey.slice(0, 12)}`);
+      b.withOptions({
+        leaveOpen: true,
+      });
       b.withFilter()
         .relay("wss://relay.snort.social/")
         .kinds([EventKind.SnortSubscriptions])
         .authors([bech32ToHex(SnortPubKey)])
         .tag("p", [pubKey])
         .limit(10);
+      return b;
     }
 
-    return b;
   }, [pubKey, login]);
 
   const loginFeed = useRequestBuilder(subLogin);

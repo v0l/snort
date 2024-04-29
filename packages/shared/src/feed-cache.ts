@@ -40,6 +40,7 @@ export type CachedTable<T> = {
   buffer(keys: Array<string>): Promise<Array<string>>;
   key(of: T): string;
   snapshot(): Array<T>;
+  search(q: string): Promise<Array<T>>;
 } & EventEmitter<CacheEvents>;
 
 /**
@@ -225,4 +226,5 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents> imple
 
   abstract key(of: TCached): string;
   abstract takeSnapshot(): Array<TCached>;
+  abstract search(q: string): Promise<Array<TCached>>;
 }

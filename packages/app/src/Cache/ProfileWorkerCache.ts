@@ -29,6 +29,18 @@ export class ProfileCacheRelayWorker extends EventEmitter<CacheEvents> implement
     this.#log(`Loaded %d/%d in %d ms`, this.#cache.size, this.#keys.size, (unixNowMs() - start).toLocaleString());
   }
 
+  async search(q: string) {
+    const profiles = await this.#relay.query([
+      "REQ",
+      "profiles-search",
+      {
+        kinds: [0],
+        search: q
+      },
+    ]);
+    return removeUndefined(profiles.map(mapEventToProfile));
+  }
+
   keysOnTable(): string[] {
     return [...this.#keys];
   }

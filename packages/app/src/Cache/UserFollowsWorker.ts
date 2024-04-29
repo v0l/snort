@@ -29,6 +29,18 @@ export class UserFollowsWorker extends EventEmitter<CacheEvents> implements Cach
     this.#log(`Loaded %d/%d in %d ms`, this.#cache.size, this.#keys.size, (unixNowMs() - start).toLocaleString());
   }
 
+  async search(q: string) {
+    const results = await this.#relay.query([
+      "REQ",
+      "contacts-search",
+      {
+        kinds: [3],
+        search: q
+      },
+    ]);
+    return removeUndefined(results.map(mapEventToUserFollows));
+  }
+
   keysOnTable(): string[] {
     return [...this.#keys];
   }

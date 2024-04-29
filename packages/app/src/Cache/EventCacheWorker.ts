@@ -24,6 +24,17 @@ export class EventCacheWorker extends EventEmitter<CacheEvents> implements Cache
     this.#keys = new Set<string>(ids as unknown as Array<string>);
   }
 
+  async search(q: string) {
+    const results = await this.#relay.query([
+      "REQ",
+      "events-search",
+      {
+        search: q
+      },
+    ]);
+    return results;
+  }
+
   keysOnTable(): string[] {
     return [...this.#keys];
   }
