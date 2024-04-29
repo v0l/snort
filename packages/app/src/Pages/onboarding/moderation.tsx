@@ -4,18 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { ToggleSwitch } from "@/Components/Icons/Toggle";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
+import useModeration from "@/Hooks/useModeration";
 import { FixedModeration } from "@/Pages/onboarding/fixedModeration";
 import { appendDedupe } from "@/Utils";
-import { updateAppData } from "@/Utils/Login";
 
 export function Moderation() {
-  const id = useLogin(s => s.id);
   const [topics, setTopics] = useState<Array<string>>(Object.keys(FixedModeration));
   const [extraTerms, setExtraTerms] = useState("");
   const navigate = useNavigate();
-  const { system } = useEventPublisher();
+  const { addMutedWord } = useModeration();
 
   return (
     <div className="flex flex-col g24">
@@ -82,10 +79,7 @@ export function Moderation() {
                 .filter(a => a.length > 1),
             );
           if (words.length > 0) {
-            updateAppData(id, system, ad => ({
-              ...ad,
-              mutedWords: appendDedupe(ad.mutedWords, words),
-            }));
+            await addMutedWord(words);
           }
           navigate("/");
         }}>

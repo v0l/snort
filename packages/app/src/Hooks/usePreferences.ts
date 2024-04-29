@@ -1,6 +1,5 @@
 import { DefaultPreferences, updateAppData, UserPreferences } from "@/Utils/Login";
 
-import useEventPublisher from "./useEventPublisher";
 import useLogin from "./useLogin";
 
 export default function usePreferences<T = UserPreferences>(selector?: (v: UserPreferences) => T): T {
@@ -27,12 +26,10 @@ export function useAllPreferences() {
       pref: pref,
     };
   });
-  const { system } = useEventPublisher();
-
   return {
     preferences: pref,
     update: async (data: UserPreferences) => {
-      await updateAppData(id, system, d => {
+      await updateAppData(id, d => {
         return { ...d, preferences: data };
       });
     },

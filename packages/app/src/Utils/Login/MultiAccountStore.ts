@@ -336,6 +336,20 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         delete acc["tags"];
         didMigrate = true;
       }
+      if (acc.state.appdata) {
+        if ("id" in acc.state.appdata) {
+          delete acc.state.appdata["id"];
+          didMigrate = true;
+        }
+        if ("mutedWords" in acc.state.appdata) {
+          delete acc.state.appdata["mutedWords"];
+          didMigrate = true;
+        }
+        if ("showContentWarningPosts" in acc.state.appdata) {
+          delete acc.state.appdata["showContentWarningPosts"];
+          didMigrate = true;
+        }
+      }
     }
 
     if (didMigrate) {

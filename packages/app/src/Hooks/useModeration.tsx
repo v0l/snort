@@ -42,8 +42,12 @@ export default function useModeration() {
     return words.includes(word);
   }
 
-  async function addMutedWord(word: string) {
-    await state.addToList(EventKind.MuteList, new MutedWordTag(word.toLowerCase()), true);
+  async function addMutedWord(word: string | Array<string>) {
+    const words = Array.isArray(word) ? word : [word];
+    for (const w of words) {
+      await state.addToList(EventKind.MuteList, new MutedWordTag(w.toLowerCase()), false);
+    }
+    await state.saveList(EventKind.MuteList);
   }
 
   async function removeMutedWord(word: string) {
