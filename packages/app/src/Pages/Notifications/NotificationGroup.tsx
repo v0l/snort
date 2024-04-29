@@ -153,6 +153,7 @@ export function NotificationGroup({
                 )}
               </div>
             )}
+            {window.location.search === "?debug=true" && <pre>{JSON.stringify(evs, undefined, 2)}</pre>}
             {context && <NotificationContext link={context} />}
           </div>
         </>

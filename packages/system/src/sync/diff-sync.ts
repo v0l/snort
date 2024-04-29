@@ -18,7 +18,10 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
   #changesEncrypted: Array<TagDiff> = [];
   #decryptedContent?: string;
 
-  constructor(readonly link: NostrLink, readonly contentEncrypted: boolean) {
+  constructor(
+    readonly link: NostrLink,
+    readonly contentEncrypted: boolean,
+  ) {
     super();
     this.#sync = new SafeSync(link);
     this.#sync.on("change", () => {
