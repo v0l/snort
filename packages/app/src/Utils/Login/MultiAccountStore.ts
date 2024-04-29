@@ -336,7 +336,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         delete acc["tags"];
         didMigrate = true;
       }
-      if (acc.state.appdata) {
+      if (acc.state && acc.state.appdata) {
         if ("id" in acc.state.appdata) {
           delete acc.state.appdata["id"];
           didMigrate = true;
