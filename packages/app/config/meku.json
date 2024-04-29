@@ -1,5 +1,5 @@
 {
-  "appName": "meku.app",
+  "appName": "めく",
   "appNameCapitalized": "めく",
   "appTitle": "めく",
   "hostname": "meku.app",
@@ -26,7 +26,8 @@
   },
   "defaultPreferences": {
     "hideMutedNotes": false,
-    "defaultRootTab": "following"
+    "defaultRootTab": "following",
+    "language": "ja"
   },
   "media": {
     "bypassImgProxyError": false,

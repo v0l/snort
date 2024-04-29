@@ -1,0 +1,13 @@
+{
+  "routes": [
+    {
+      "routePath": "/",
+      "mountPath": "/",
+      "method": "",
+      "middleware": [
+        "_middleware.ts:onRequest"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}

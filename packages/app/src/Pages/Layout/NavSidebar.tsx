@@ -109,6 +109,9 @@ export default function NavSidebar({ narrow = false }: { narrow?: boolean }) {
             if ((CONFIG.hideFromNavbar ?? []).includes(a.link)) {
               return false;
             }
+            if (!CONFIG.features.deck && a.link === "/deck") {
+              return false;
+            }
             if (readonly && a.hideReadOnly) {
               return false;
             }
