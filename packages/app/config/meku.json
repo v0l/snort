@@ -1,0 +1,49 @@
+{
+  "appName": "meku.app",
+  "appNameCapitalized": "めく",
+  "appTitle": "めく",
+  "hostname": "meku.app",
+  "nip05Domain": "meku.app",
+  "icon": "/nostr.jpg",
+  "navLogo": null,
+  "publicDir": "public/nostr",
+  "httpCache": "",
+  "animalNamePlaceholders": false,
+  "defaultZapPoolFee": 0,
+  "features": {
+    "analytics": true,
+    "subscriptions": false,
+    "deck": false,
+    "zapPool": false,
+    "notificationGraph": true,
+    "communityLeaders": false,
+    "nostrAddress": false,
+    "pushNotifications": true
+  },
+  "signUp": {
+    "quickStart": false,
+    "defaultFollows": []
+  },
+  "defaultPreferences": {
+    "hideMutedNotes": false,
+    "defaultRootTab": "following"
+  },
+  "media": {
+    "bypassImgProxyError": false,
+    "preferLargeMedia": true
+  },
+  "communityLeaders": null,
+  "noteCreatorToast": false,
+  "hideFromNavbar": ["/graph"],
+  "deckSubKind": 1,
+  "showPowIcon": true,
+  "eventLinkPrefix": "nevent",
+  "profileLinkPrefix": "nprofile",
+  "defaultRelays": {
+    "wss://relay.nostr.wirednet.jp/": { "read": true, "write": true },
+    "wss://yabu.me/": { "read": true, "write": true },
+    "wss://nos.lol/": { "read": true, "write": true }
+  },
+  "alby": null,
+  "chatChannels": null
+}
