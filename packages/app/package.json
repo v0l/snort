@@ -64,7 +64,8 @@
     "intl-extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file src/lang.json --flatten true",
     "intl-compile": "formatjs compile src/lang.json --out-file src/translations/en.json",
     "eslint": "eslint .",
-    "deploy:meku": "NODE_CONFIG_ENV=meku yarn workspace @snort/app build && npx wrangler pages deploy --project-name meku build/"
+    "deploy:meku": "NODE_CONFIG_ENV=meku yarn build && npx wrangler pages deploy --project-name meku build/",
+    "deploy:notestr": "NODE_CONFIG_ENV=nostr yarn build && npx wrangler pages deploy --project-name nostr-generic build/"
   },
   "eslintConfig": {
     "extends": [
