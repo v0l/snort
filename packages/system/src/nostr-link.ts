@@ -127,7 +127,7 @@ export class NostrLink implements ToNostrEventTag {
     if (NonNip10Kinds.includes(ev.kind)) {
       const links = removeUndefined(ev.tags.filter(a => a[0] === "e" || a[0] === "a").map(a => NostrLink.fromTag(a)));
       if (links.length === 0) return false;
-      return links.some(a => a.matchesEvent(ev));
+      return links.some(a => a.equals(this));
     } else {
       const thread = EventExt.extractThread(ev);
       if (!thread) return false; // non-thread events are not replies
@@ -177,8 +177,7 @@ export class NostrLink implements ToNostrEventTag {
   }
 
   equals(other: NostrLink) {
-    if (other.type === this.type && this.type === NostrPrefix.Address) {
-    }
+    return other.tagKey === this.tagKey;
   }
 
   static fromTag(tag: Array<string>, author?: string, kind?: number) {
