@@ -99,10 +99,10 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
     this.emit("change");
   }
 
-  async sync(signer: EventSigner, system: SystemInterface) {
+  async sync(signer: EventSigner | undefined, system: SystemInterface) {
     await this.#sync.sync(system);
 
-    if (this.#sync.value?.content && this.contentEncrypted) {
+    if (this.#sync.value?.content && this.contentEncrypted && signer) {
       const decrypted = await signer.nip4Decrypt(this.#sync.value.content, await signer.getPubKey());
       this.#decryptedContent = decrypted;
     }

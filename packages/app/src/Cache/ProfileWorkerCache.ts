@@ -35,7 +35,7 @@ export class ProfileCacheRelayWorker extends EventEmitter<CacheEvents> implement
       "profiles-search",
       {
         kinds: [0],
-        search: q
+        search: q,
       },
     ]);
     return removeUndefined(profiles.map(mapEventToProfile));

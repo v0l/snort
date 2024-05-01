@@ -35,7 +35,7 @@ export class UserFollowsWorker extends EventEmitter<CacheEvents> implements Cach
       "contacts-search",
       {
         kinds: [3],
-        search: q
+        search: q,
       },
     ]);
     return removeUndefined(results.map(mapEventToUserFollows));

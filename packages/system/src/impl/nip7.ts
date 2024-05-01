@@ -10,7 +10,7 @@ declare interface Nip44Window {
       encrypt(recipientHexPubKey: string, value: string): Promise<string>;
       decrypt(senderHexPubKey: string, value: string): Promise<string>;
     };
-  }
+  };
 }
 
 export class Nip7Signer implements EventSigner {

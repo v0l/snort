@@ -113,6 +113,12 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       );
       stateClass.on("change", () => this.#save());
       v.state = stateClass;
+
+      // always activate signer
+      const signer = createPublisher(v);
+      if (signer) {
+        this.#publishers.set(v.id, signer);
+      }
     }
     this.#loadIrisKeyIfExists();
   }
@@ -194,7 +200,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     newSession.state.on("change", () => this.#save());
     const pub = createPublisher(newSession);
     if (pub) {
-      this.setPublisher(newSession.id, pub);
+      this.#publishers.set(newSession.id, pub);
     }
     this.#accounts.set(newSession.id, newSession);
     this.#activeAccount = newSession.id;
@@ -248,7 +254,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       newSession.privateKeyData = undefined;
     }
     const pub = EventPublisher.privateKey(key.value);
-    this.setPublisher(newSession.id, pub);
+    this.#publishers.set(newSession.id, pub);
 
     this.#accounts.set(newSession.id, newSession);
     this.#activeAccount = newSession.id;

@@ -25,11 +25,12 @@ export class JsonEventSync<T> extends EventEmitter<SafeSyncEvents> {
     return Object.freeze(ret);
   }
 
-  async sync(signer: EventSigner, system: SystemInterface) {
+  async sync(signer: EventSigner | undefined, system: SystemInterface) {
     const res = await this.#sync.sync(system);
     this.#log("Sync result %O", res);
     if (res) {
       if (this.encrypt) {
+        if (!signer) return;
         this.#json = JSON.parse(await signer.nip4Decrypt(res.content, await signer.getPubKey())) as T;
       } else {
         this.#json = JSON.parse(res.content) as T;

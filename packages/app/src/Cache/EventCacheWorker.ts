@@ -29,7 +29,7 @@ export class EventCacheWorker extends EventEmitter<CacheEvents> implements Cache
       "REQ",
       "events-search",
       {
-        search: q
+        search: q,
       },
     ]);
     return results;

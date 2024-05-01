@@ -54,13 +54,11 @@ async function initSite() {
   setupWebLNWalletConfig(Wallets);
 
   db.ready = await db.isAvailable();
-  if (db.ready) {
-    const login = LoginStore.snapshot();
-    preload(login.state.follows); // dont await this
-    System.PreloadSocialGraph(); // dont await this
-  }
 
-  queueMicrotask(() => {
+  const login = LoginStore.snapshot();
+  preload(login.state.follows).then(async () => {
+    await System.PreloadSocialGraph();
+
     for (const ev of UserCache.snapshot()) {
       try {
         addCachedMetadataToFuzzySearch(ev);

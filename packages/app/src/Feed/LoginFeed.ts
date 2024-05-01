@@ -24,10 +24,9 @@ export default function useLoginFeed() {
   }, [system, checkSigs]);
 
   useEffect(() => {
-    if (publisher) {
-      login.state.init(publisher.signer, system).catch(console.error);
-    }
+    login.state.init(publisher?.signer, system).catch(console.error);
   }, [login, publisher, system]);
+
   const subLogin = useMemo(() => {
     if (!login || !pubKey) return null;
 
@@ -44,7 +43,6 @@ export default function useLoginFeed() {
         .limit(10);
       return b;
     }
-
   }, [pubKey, login]);
 
   const loginFeed = useRequestBuilder(subLogin);
