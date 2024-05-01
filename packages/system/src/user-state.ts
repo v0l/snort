@@ -63,6 +63,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   // state object will be used in the getters as a fallback value
   #stateObj?: UserStateObject<TAppData>;
   #didInit = false;
+  #version = 0;
 
   constructor(
     readonly pubkey: string,
@@ -92,6 +93,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     this.#profile.on("change", () => this.emit("change", UserStateChangeType.Profile));
     this.#contacts.on("change", () => this.emit("change", UserStateChangeType.Contacts));
     this.#relays.on("change", () => this.emit("change", UserStateChangeType.Relays));
+    this.on("change", () => this.#version++);
   }
 
   async init(signer: EventSigner | undefined, system: SystemInterface) {
@@ -141,6 +143,10 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
       muteList.add(muteList!.tags, true);
       await muteList.persist(signer, system);
     }
+  }
+
+  get version() {
+    return this.#version;
   }
 
   /**

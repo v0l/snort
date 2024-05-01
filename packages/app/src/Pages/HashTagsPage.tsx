@@ -39,7 +39,7 @@ const HashTagsPage = () => {
 export default HashTagsPage;
 
 export function HashTagHeader({ tag, events, className }: { tag: string; events?: number; className?: string }) {
-  const state = useLogin(s => s.state);
+  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
   const isFollowing = useMemo(() => {
     return state.isOnList(EventKind.InterestsList, new NostrHashtagLink(tag));
   }, [state, tag]);

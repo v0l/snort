@@ -6,14 +6,12 @@ import { Link } from "react-router-dom";
 import TimelineFollows from "@/Components/Feed/TimelineFollows";
 import { TaskList } from "@/Components/Tasks/TaskList";
 import useFollowsControls from "@/Hooks/useFollowControls";
-import useLogin from "@/Hooks/useLogin";
 import { DeckContext } from "@/Pages/Deck/DeckLayout";
 import messages from "@/Pages/messages";
 
 const FollowsHint = () => {
-  const publicKey = useLogin(s => s.publicKey);
   const { followList } = useFollowsControls();
-  if (followList.length === 0 && publicKey) {
+  if (followList.length === 0) {
     return (
       <FormattedMessage
         {...messages.NoFollows}

@@ -12,7 +12,7 @@ export class MutedWordTag implements ToNostrEventTag {
 }
 
 export default function useModeration() {
-  const state = useLogin(s => s.state);
+  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
 
   function isMuted(id: string) {
     const link = NostrLink.publicKey(id);

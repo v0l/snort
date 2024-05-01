@@ -6,7 +6,7 @@ import useLogin from "./useLogin";
  * Simple hook for adding / removing follows
  */
 export default function useFollowsControls() {
-  const state = useLogin(s => s.state);
+  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
 
   return {
     isFollowing: (pk: string) => {

@@ -18,7 +18,7 @@ export interface RelayProps {
 
 export default function Relay(props: RelayProps) {
   const navigate = useNavigate();
-  const state = useLogin(s => s.state);
+  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
 
   const name = useMemo(() => getRelayName(props.addr), [props.addr]);
   const connection = useRelayState(props.addr);

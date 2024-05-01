@@ -17,7 +17,7 @@ import messages from "./messages";
 const RelaySettingsPage = () => {
   const { publisher, system } = useEventPublisher();
   const relays = useRelays();
-  const { readonly, state } = useLogin(s => ({ state: s.state, readonly: s.readonly }));
+  const { readonly, state } = useLogin(s => ({ v: s.state.version, state: s.state, readonly: s.readonly }));
   const [newRelay, setNewRelay] = useState<string>();
 
   const otherConnections = useMemo(() => {
@@ -92,7 +92,7 @@ export function CloseRelays() {
   const country = getCountry();
   const [location, setLocation] = useState<{ lat: number; lon: number }>(country);
   const currentRelays = useRelays();
-  const state = useLogin(s => s.state);
+  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
   const relayUrls = Object.keys(currentRelays);
 
   async function loadRelays() {
