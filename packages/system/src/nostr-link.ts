@@ -125,22 +125,9 @@ export class NostrLink implements ToNostrEventTag {
   isReplyToThis(ev: NostrEvent) {
     const NonNip10Kinds = [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt];
     if (NonNip10Kinds.includes(ev.kind)) {
-      const lastRef = ev.tags.findLast(a => a[0] === "e" || a[0] === "a");
-      if (!lastRef) return false;
-
-      if (
-        lastRef[0] === "e" &&
-        lastRef[1] === this.id &&
-        (this.type === NostrPrefix.Event || this.type === NostrPrefix.Note)
-      ) {
-        return true;
-      }
-      if (lastRef[0] === "a" && this.type === NostrPrefix.Address) {
-        const [kind, author, dTag] = lastRef[1].split(":");
-        if (Number(kind) === this.kind && author === this.author && dTag === this.id) {
-          return true;
-        }
-      }
+      const links = removeUndefined(ev.tags.filter(a => a[0] === "e" || a[0] === "a").map(a => NostrLink.fromTag(a)));
+      if (links.length === 0) return false;
+      return links.some(a => a.matchesEvent(ev));
     } else {
       const thread = EventExt.extractThread(ev);
       if (!thread) return false; // non-thread events are not replies
