@@ -117,7 +117,7 @@ export const DefaultPreferences = {
   confirmReposts: false,
   showDebugMenus: true,
   autoShowLatest: false,
-  fileUploader: "void.cat",
+  fileUploader: "nostr.build",
   imgProxyConfig: DefaultImgProxy,
   defaultRootTab: "following",
   defaultZapAmount: 50,
