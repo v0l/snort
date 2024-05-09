@@ -8,7 +8,7 @@ export class Nip96Uploader implements Uploader {
   constructor(
     readonly url: string,
     readonly publisher: EventPublisher,
-  ) { }
+  ) {}
 
   get progress() {
     return [];
