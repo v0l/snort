@@ -1,8 +1,8 @@
 /// <reference lib="webworker" />
 import { hexToBytes } from "@noble/hashes/utils";
 import { bech32 } from "@scure/base";
+import { encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/system/dist/links";
 import { NostrLink, tryParseNostrLink } from "@snort/system/dist/nostr-link";
-import { encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/system/src/links";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
@@ -19,7 +19,7 @@ clientsClaim();
 
 // cache everything in current domain /assets because precache doesn't seem to include everything
 registerRoute(
-  ({ url }) => url.origin === window.location.origin && url.pathname.startsWith("/assets"),
+  ({ url }) => url.origin === self.location.origin && url.pathname.startsWith("/assets"),
   new StaleWhileRevalidate({
     cacheName: "assets-cache",
     plugins: [
@@ -250,7 +250,7 @@ function replaceMentions(content: string, profiles: Array<CompactProfile>) {
     .map(i => {
       if (MentionNostrEntityRegex.test(i)) {
         const link = tryParseNostrLink(i);
-        if (link?.type === NostrPrefix.PublicKey || link?.type === NostrPrefix.Profile) {
+        if (link && (link.type === NostrPrefix.PublicKey || link.type === NostrPrefix.Profile)) {
           const px = profiles.find(a => a.pubkey === link.id);
           return `@${displayNameOrDefault(px ?? { pubkey: link.id })}`;
         }
