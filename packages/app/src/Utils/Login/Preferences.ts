@@ -46,7 +46,12 @@ export interface UserPreferences {
   /**
    * File uploading service to upload attachments to
    */
-  fileUploader: "void.cat" | "nostr.build" | "nostrimg.com" | "void.cat-NIP96" | "nostrcheck.me";
+  fileUploader: "void.cat" | "nostr.build" | "nostrimg.com" | "void.cat-NIP96" | "nostrcheck.me" | "nip96";
+
+  /**
+   * Custom file server to upload files to
+   */
+  nip96Server?: string;
 
   /**
    * Use imgproxy to optimize images

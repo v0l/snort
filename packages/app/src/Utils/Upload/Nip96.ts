@@ -8,7 +8,9 @@ export class Nip96Uploader implements Uploader {
   constructor(
     readonly url: string,
     readonly publisher: EventPublisher,
-  ) {}
+  ) {
+    this.url = new URL(this.url).toString();
+  }
 
   get progress() {
     return [];
@@ -62,16 +64,27 @@ export class Nip96Uploader implements Uploader {
           metadata: {
             width: dim?.at(0) ? Number(dim[0]) : undefined,
             height: dim?.at(1) ? Number(dim[1]) : undefined,
+            blurhash: data.nip94_event.tags.find(a => a[0] === "blurhash")?.at(1),
+            hash: data.nip94_event.tags.find(a => a[0] === "x")?.at(1),
           },
         };
       }
       return {
         error: data.message,
       };
+    } else {
+      const text = await rsp.text();
+      try {
+        const obj = JSON.parse(text) as Nip96Result;
+        return {
+          error: obj.message,
+        };
+      } catch {
+        return {
+          error: `Upload failed: ${text}`,
+        };
+      }
     }
-    return {
-      error: "Upload failed",
-    };
   }
 }
 

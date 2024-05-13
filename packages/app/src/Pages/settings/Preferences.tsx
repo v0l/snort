@@ -469,6 +469,9 @@ const PreferencesPage = () => {
               fileUploader: e.target.value,
             } as UserPreferences)
           }>
+          <option value="nip96">
+            <FormattedMessage defaultMessage="NIP-96" />
+          </option>
           <option value="void.cat">
             void.cat <FormattedMessage {...messages.Default} />
           </option>
@@ -477,6 +480,19 @@ const PreferencesPage = () => {
           <option value="nostrimg.com">nostrimg.com</option>
           <option value="nostrcheck.me">nostrcheck.me (NIP-96)</option>
         </select>
+        {pref.fileUploader === "nip96" && (
+          <>
+            <small>
+              <FormattedMessage defaultMessage="Custom server URL" />
+            </small>
+            <input
+              type="text"
+              value={pref.nip96Server}
+              onChange={e => setPref({ ...pref, nip96Server: e.target.value })}
+              placeholder="https://my-nip96-server.com/"
+            />
+          </>
+        )}
       </div>
       <div className="flex justify-between">
         <div className="flex flex-col g8">

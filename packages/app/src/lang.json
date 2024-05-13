@@ -62,6 +62,9 @@
   "01iNut": {
     "defaultMessage": "Nostr address does not belong to you"
   },
+  "08zn6O": {
+    "defaultMessage": "Export Keys"
+  },
   "0Azlrb": {
     "defaultMessage": "Manage"
   },
@@ -176,6 +179,9 @@
   },
   "3tVy+Z": {
     "defaultMessage": "{n} Followers"
+  },
+  "3yk8fB": {
+    "defaultMessage": "Wallet"
   },
   "450Fty": {
     "defaultMessage": "None"
@@ -508,6 +514,9 @@
   "FmXUJg": {
     "defaultMessage": "follows you"
   },
+  "FvanT6": {
+    "defaultMessage": "Accounts"
+  },
   "G/yZLu": {
     "defaultMessage": "Remove"
   },
@@ -572,6 +581,9 @@
   "HhcAVH": {
     "defaultMessage": "You don't follow this person, click here to load media from <i>{link}</i>, or update <a><i>your preferences</i></a> to always load media from everybody."
   },
+  "HqRNN8": {
+    "defaultMessage": "Support"
+  },
   "I1AoOu": {
     "defaultMessage": "Last post {time}"
   },
@@ -634,6 +646,9 @@
   },
   "JSx7y9": {
     "defaultMessage": "Subscribe to {site_name} {plan} for {price} and receive the following rewards"
+  },
+  "JTht/T": {
+    "defaultMessage": "NIP-96"
   },
   "JeoS4y": {
     "defaultMessage": "Repost"
@@ -819,6 +834,9 @@
   "Qxv0B2": {
     "defaultMessage": "You currently have {number} sats in your zap pool."
   },
+  "R/6nsx": {
+    "defaultMessage": "Subscription"
+  },
   "R81upa": {
     "defaultMessage": "People you follow"
   },
@@ -906,6 +924,9 @@
   },
   "TvKqBp": {
     "defaultMessage": "liked"
+  },
+  "TwyMau": {
+    "defaultMessage": "Account"
   },
   "U1aPPi": {
     "defaultMessage": "Stop listening"
@@ -1286,8 +1307,14 @@
   "hY4lzx": {
     "defaultMessage": "Supports"
   },
+  "hYOE+U": {
+    "defaultMessage": "Invite"
+  },
   "ha8JKG": {
     "defaultMessage": "Show graph"
+  },
+  "hf6g/W": {
+    "defaultMessage": "Custom server URL"
   },
   "hicxcO": {
     "defaultMessage": "Show replies"
@@ -1297,6 +1324,9 @@
   },
   "hniz8Z": {
     "defaultMessage": "here"
+  },
+  "hvFRBo": {
+    "defaultMessage": "Interaction"
   },
   "i/dBAR": {
     "defaultMessage": "Zap Pool"

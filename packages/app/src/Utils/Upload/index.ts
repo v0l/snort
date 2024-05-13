@@ -65,7 +65,10 @@ export interface UploadProgress {
 export type UploadStage = "starting" | "hashing" | "uploading" | "done" | undefined;
 
 export default function useFileUpload(): Uploader {
-  const fileUploader = usePreferences(s => s.fileUploader);
+  const { fileUploader, nip96Server } = usePreferences(s => ({
+    fileUploader: s.fileUploader,
+    nip96Server: s.nip96Server,
+  }));
   const { publisher } = useEventPublisher();
   const [progress, setProgress] = useState<Array<UploadProgress>>([]);
   const [stage, setStage] = useState<UploadStage>();
@@ -76,6 +79,9 @@ export default function useFileUpload(): Uploader {
         upload: f => NostrBuild(f, publisher),
         progress: [],
       } as Uploader;
+    }
+    case "nip96": {
+      return new Nip96Uploader(unwrap(nip96Server), unwrap(publisher));
     }
     case "void.cat-NIP96": {
       return new Nip96Uploader("https://void.cat/nostr", unwrap(publisher));
