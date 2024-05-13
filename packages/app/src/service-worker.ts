@@ -1,14 +1,14 @@
 /// <reference lib="webworker" />
-import { encodeTLVEntries, NostrLink, NostrPrefix, TLVEntryType, tryParseNostrLink } from "@snort/system";
+import { hexToBytes } from "@noble/hashes/utils";
+import { bech32 } from "@scure/base";
+import { NostrLink, tryParseNostrLink } from "@snort/system/dist/nostr-link";
+import { encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/system/src/links";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
 import { precacheAndRoute, PrecacheEntry } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
-
-import { defaultAvatar, hexToBech32 } from "@/Utils";
-import { formatShort } from "@/Utils/Number";
 
 declare const self: ServiceWorkerGlobalScope & {
   __WB_MANIFEST: (string | PrecacheEntry)[];
@@ -264,7 +264,7 @@ function displayNameOrDefault(p: CompactProfile) {
   if ((p.name?.length ?? 0) > 0) {
     return p.name;
   }
-  return hexToBech32("npub", p.pubkey).slice(0, 12);
+  return bech32.encode("npub", bech32.toWords(hexToBytes(p.pubkey))).slice(0, 12);
 }
 
 function makeNotification(n: PushNotification) {
@@ -286,11 +286,19 @@ function makeNotification(n: PushNotification) {
   };
   const ret = {
     body: body(),
-    icon: evx.author.avatar ?? defaultAvatar(evx.author.pubkey),
+    icon: evx.author.avatar ?? `https://nostr.api.v0l.io/api/v1/avatar/robots/${evx.author.pubkey}.webp`,
     timestamp: evx.created_at * 1000,
     tag: evx.id,
     data: JSON.stringify(n),
   };
   console.debug(ret);
   return ret;
+}
+
+function formatShort(n: number) {
+  if (n > 1000) {
+    return (n / 1000).toFixed(1);
+  } else {
+    return n.toFixed(0);
+  }
 }
