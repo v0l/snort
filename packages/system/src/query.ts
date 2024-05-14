@@ -76,7 +76,7 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
    * Total time spent waiting for relay to respond
    */
   get responseTime() {
-    return this.finished ? unwrap(this.eose) - unwrap(this.sent) : 0;
+    return this.finished ? unwrap(this.eose) - (this.sent ?? unixNowMs()) : 0;
   }
 
   /**

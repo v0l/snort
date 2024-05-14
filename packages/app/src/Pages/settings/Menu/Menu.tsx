@@ -125,6 +125,12 @@ const SettingsIndex = () => {
           message: <FormattedMessage defaultMessage="Cache" />,
           path: "cache",
         },
+        {
+          icon: "camera-plus",
+          iconBg: "bg-lime-500",
+          message: <FormattedMessage defaultMessage="Media" />,
+          path: "media",
+        },
       ],
     },
     {

@@ -62,8 +62,8 @@ export class Nip96Uploader implements Uploader {
           ?.split("x");
         const mime = data.nip94_event.tags.find(a => a[0] === "m")?.at(1) ?? "";
         let url = data.nip94_event.tags.find(a => a[0] === "url")?.at(1) ?? "";
-        if(!url.match(FileExtensionRegex) && mime) {
-          switch(mime) {
+        if (!url.match(FileExtensionRegex) && mime) {
+          switch (mime) {
             case "image/webp": {
               url += ".webp";
               break;

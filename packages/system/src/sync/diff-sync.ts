@@ -160,7 +160,7 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
             ? (change.tag as Array<Array<string>>)
             : [change.tag as Array<string>];
           for (const changeTag of changeTags) {
-            const existing = tags.findIndex(a => change.tag[0] === a[0] && change.tag[1] === a[1]);
+            const existing = tags.findIndex(a => changeTag[0] === a[0] && changeTag[1] === a[1]);
             if (existing === -1) {
               tags.push(changeTag);
             } else {
@@ -174,7 +174,7 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
             ? (change.tag as Array<Array<string>>)
             : [change.tag as Array<string>];
           for (const changeTag of changeTags) {
-            const existing = tags.findIndex(a => change.tag[0] === a[0] && change.tag[1] === a[1]);
+            const existing = tags.findIndex(a => changeTag[0] === a[0] && changeTag[1] === a[1]);
             if (existing !== -1) {
               tags.splice(existing, 1);
             } else {
@@ -188,7 +188,7 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
             ? (change.tag as Array<Array<string>>)
             : [change.tag as Array<string>];
           for (const changeTag of changeTags) {
-            const existing = tags.findIndex(a => change.tag[0] === a[0] && change.tag[1] === a[1]);
+            const existing = tags.findIndex(a => changeTag[0] === a[0] && changeTag[1] === a[1]);
             if (existing !== -1) {
               tags[existing] = changeTag;
             } else {

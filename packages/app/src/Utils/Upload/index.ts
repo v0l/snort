@@ -1,10 +1,12 @@
-import { NostrEvent } from "@snort/system";
+import { removeUndefined } from "@snort/shared";
+import { EventKind, NostrEvent } from "@snort/system";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";
+import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
-import { bech32ToHex, unwrap } from "@/Utils";
+import { bech32ToHex, randomSample, unwrap } from "@/Utils";
 import { KieranPubKey } from "@/Utils/Const";
 import NostrBuild from "@/Utils/Upload/NostrBuild";
 import NostrImg from "@/Utils/Upload/NostrImg";
@@ -48,6 +50,10 @@ export const UploaderServices = [
     name: "nostrimg.com",
     owner: bech32ToHex("npub1xv6axulxcx6mce5mfvfzpsy89r4gee3zuknulm45cqqpmyw7680q5pxea6"),
   },
+  {
+    name: "nostrcheck.me",
+    owner: bech32ToHex("npub138s5hey76qrnm2pmv7p8nnffhfddsm8sqzm285dyc0wy4f8a6qkqtzx624"),
+  },
 ];
 
 export interface Uploader {
@@ -65,13 +71,43 @@ export interface UploadProgress {
 export type UploadStage = "starting" | "hashing" | "uploading" | "done" | undefined;
 
 export default function useFileUpload(): Uploader {
-  const { fileUploader, nip96Server } = usePreferences(s => ({
-    fileUploader: s.fileUploader,
-    nip96Server: s.nip96Server,
-  }));
+  const fileUploader = usePreferences(s => s.fileUploader);
+  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
   const { publisher } = useEventPublisher();
   const [progress, setProgress] = useState<Array<UploadProgress>>([]);
   const [stage, setStage] = useState<UploadStage>();
+
+  const defaultUploader = {
+    upload: async (f, n) => {
+      const id = uuid();
+      setProgress(s => [
+        ...s,
+        {
+          id,
+          file: f,
+          progress: 0,
+          stage: undefined,
+        },
+      ]);
+      const px = (n: number) => {
+        setProgress(s =>
+          s.map(v =>
+            v.id === id
+              ? {
+                  ...v,
+                  progress: n,
+                }
+              : v,
+          ),
+        );
+      };
+      const ret = await VoidCat(f, n, publisher, px, s => setStage(s));
+      setProgress(s => s.filter(a => a.id !== id));
+      return ret;
+    },
+    progress,
+    stage,
+  } as Uploader;
 
   switch (fileUploader) {
     case "nostr.build": {
@@ -79,9 +115,6 @@ export default function useFileUpload(): Uploader {
         upload: f => NostrBuild(f, publisher),
         progress: [],
       } as Uploader;
-    }
-    case "nip96": {
-      return new Nip96Uploader(unwrap(nip96Server), unwrap(publisher));
     }
     case "void.cat-NIP96": {
       return new Nip96Uploader("https://void.cat/nostr", unwrap(publisher));
@@ -95,38 +128,17 @@ export default function useFileUpload(): Uploader {
         progress: [],
       } as Uploader;
     }
+    case "nip96": {
+      const servers = removeUndefined(state.getList(EventKind.StorageServerList).map(a => a.toEventTag()?.at(1)));
+      if (servers.length > 0) {
+        const random = randomSample(servers, 1)[0];
+        return new Nip96Uploader(random, unwrap(publisher));
+      } else {
+        return defaultUploader;
+      }
+    }
     default: {
-      return {
-        upload: async (f, n) => {
-          const id = uuid();
-          setProgress(s => [
-            ...s,
-            {
-              id,
-              file: f,
-              progress: 0,
-              stage: undefined,
-            },
-          ]);
-          const px = (n: number) => {
-            setProgress(s =>
-              s.map(v =>
-                v.id === id
-                  ? {
-                      ...v,
-                      progress: n,
-                    }
-                  : v,
-              ),
-            );
-          };
-          const ret = await VoidCat(f, n, publisher, px, s => setStage(s));
-          setProgress(s => s.filter(a => a.id !== id));
-          return ret;
-        },
-        progress,
-        stage,
-      } as Uploader;
+      return defaultUploader;
     }
   }
 }

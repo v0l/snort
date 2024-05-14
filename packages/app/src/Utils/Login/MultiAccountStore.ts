@@ -3,6 +3,7 @@ import * as utils from "@noble/curves/abstract/utils";
 import * as secp from "@noble/curves/secp256k1";
 import { ExternalStore, unwrap } from "@snort/shared";
 import {
+  EventKind,
   EventPublisher,
   HexKey,
   KeyStorage,
@@ -111,6 +112,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         },
         stateObj,
       );
+      stateClass.checkIsStandardList(EventKind.StorageServerList); // track nip96 list
       stateClass.on("change", () => this.#save());
       v.state = stateClass;
 
@@ -197,6 +199,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       stalker: stalker ?? false,
     } as LoginSession;
 
+    newSession.state.checkIsStandardList(EventKind.StorageServerList); // track nip96 list
     newSession.state.on("change", () => this.#save());
     const pub = createPublisher(newSession);
     if (pub) {
@@ -246,6 +249,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         appdataId: "snort",
       }),
     } as LoginSession;
+    newSession.state.checkIsStandardList(EventKind.StorageServerList); // track nip96 list
     newSession.state.on("change", () => this.#save());
 
     if ("nostr_os" in window && window?.nostr_os) {

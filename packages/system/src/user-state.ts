@@ -88,7 +88,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     }
 
     // always track mute list
-    this.#checkIsStandardList(EventKind.MuteList);
+    this.checkIsStandardList(EventKind.MuteList);
 
     this.#profile.on("change", () => this.emit("change", UserStateChangeType.Profile));
     this.#contacts.on("change", () => this.emit("change", UserStateChangeType.Contacts));
@@ -338,7 +338,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     autoCommit = false,
     encrypted = false,
   ) {
-    this.#checkIsStandardList(kind);
+    this.checkIsStandardList(kind);
     this.#checkInit();
     const list = this.#standardLists.get(kind);
     const tags = removeUndefined(Array.isArray(links) ? links.map(a => a.toEventTag()) : [links.toEventTag()]);
@@ -363,7 +363,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     autoCommit = false,
     encrypted = false,
   ) {
-    this.#checkIsStandardList(kind);
+    this.checkIsStandardList(kind);
     this.#checkInit();
     const list = this.#standardLists.get(kind);
     const tags = removeUndefined(Array.isArray(links) ? links.map(a => a.toEventTag()) : [links.toEventTag()]);
@@ -416,7 +416,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     };
   }
 
-  #checkIsStandardList(kind: EventKind) {
+  checkIsStandardList(kind: EventKind) {
     if (!(kind >= 10_000 && kind < 20_000)) {
       throw new Error("Not a standar list");
     }
