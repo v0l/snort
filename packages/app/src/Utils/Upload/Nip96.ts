@@ -2,6 +2,7 @@ import { base64 } from "@scure/base";
 import { throwIfOffline } from "@snort/shared";
 import { EventKind, EventPublisher } from "@snort/system";
 
+import { FileExtensionRegex } from "../Const";
 import { Uploader, UploadResult } from ".";
 
 export class Nip96Uploader implements Uploader {
@@ -59,8 +60,22 @@ export class Nip96Uploader implements Uploader {
           .find(a => a[0] === "dim")
           ?.at(1)
           ?.split("x");
+        const mime = data.nip94_event.tags.find(a => a[0] === "m")?.at(1) ?? "";
+        let url = data.nip94_event.tags.find(a => a[0] === "url")?.at(1) ?? "";
+        if(!url.match(FileExtensionRegex) && mime) {
+          switch(mime) {
+            case "image/webp": {
+              url += ".webp";
+              break;
+            }
+            default: {
+              url += ".jpg";
+              break;
+            }
+          }
+        }
         return {
-          url: data.nip94_event.tags.find(a => a[0] === "url")?.at(1),
+          url,
           metadata: {
             width: dim?.at(0) ? Number(dim[0]) : undefined,
             height: dim?.at(1) ? Number(dim[1]) : undefined,
