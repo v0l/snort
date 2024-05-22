@@ -1,6 +1,6 @@
 {
   "name": "@snort/system-wasm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "packageManager": "yarn@3.6.3",
   "author": "Kieran",
   "license": "MIT",
