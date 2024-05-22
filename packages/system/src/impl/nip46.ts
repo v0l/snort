@@ -76,6 +76,10 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
 
     this.#relay = unwrap(u.searchParams.get("relay"));
     this.#insideSigner = insideSigner ?? new PrivateKeySigner(secp256k1.utils.randomPrivateKey());
+
+    if (this.isBunker) {
+      this.#remotePubkey = this.#localPubkey;
+    }
   }
 
   get supports(): string[] {
@@ -92,17 +96,17 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     }
   }
 
+  get isBunker() {
+    return this.#proto === "bunker:";
+  }
+
   /**
    * Connect to the bunker relay
    * @param autoConnect Start connect flow for pubkey
    * @returns
    */
   async init(autoConnect = true) {
-    const isBunker = this.#proto === "bunker:";
-    if (isBunker) {
-      this.#remotePubkey = this.#localPubkey;
-      this.#localPubkey = await this.#insideSigner.getPubKey();
-    }
+    this.#localPubkey = await this.#insideSigner.getPubKey();
     return await new Promise<void>((resolve, reject) => {
       this.#conn = new Connection(this.#relay, { read: true, write: true });
       this.#conn.on("event", async (sub, e) => {
@@ -121,7 +125,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
         ]);
 
         if (autoConnect) {
-          if (isBunker) {
+          if (this.isBunker) {
             const rsp = await this.#connect(unwrap(this.#remotePubkey));
             if (rsp.result === "ack") {
               resolve();
