@@ -13,6 +13,7 @@ import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
 import { db } from "@/Db";
 import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch";
 import { AboutPage } from "@/Pages/About";
+import { DebugPage } from "@/Pages/CacheDebug";
 import { SnortDeckLayout } from "@/Pages/Deck/DeckLayout";
 import DonatePage from "@/Pages/Donate/DonatePage";
 import ErrorPage from "@/Pages/ErrorPage";
@@ -74,6 +75,10 @@ async function initSite() {
 let didInit = false;
 const mainRoutes = [
   ...RootRoutes,
+  {
+    path: "/cache-debug",
+    element: <DebugPage />,
+  },
   {
     path: "/help",
     element: <HelpPage />,

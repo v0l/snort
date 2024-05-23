@@ -1,6 +1,7 @@
 import { FeedCache } from "@snort/shared";
 import { ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
+import { useNavigate } from "react-router-dom";
 
 import { GiftsCache, Relay, RelayMetrics } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
@@ -32,7 +33,6 @@ function CacheDetails<T>({ cache, name }: { cache: FeedCache<T>; name: ReactNode
         <small>
           <FormattedMessage
             defaultMessage="{count} ({count2} in memory)"
-            id="geppt8"
             values={{
               count: <FormattedNumber value={cache.keysOnTable().length} />,
               count2: <FormattedNumber value={snapshot.length} />,
@@ -53,6 +53,7 @@ function RelayCacheStats() {
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [myEvents, setMyEvents] = useState<number>(0);
   const login = useLogin();
+  const navigate = useNavigate();
 
   useEffect(() => {
     Relay.summary().then(setCounts);
@@ -69,7 +70,6 @@ function RelayCacheStats() {
           <p>
             <FormattedMessage
               defaultMessage="My events: {n}"
-              id="lEnclp"
               values={{
                 n: <FormattedNumber value={myEvents} />,
               }}
@@ -123,6 +123,9 @@ function RelayCacheStats() {
             a.click();
           }}>
           <FormattedMessage defaultMessage="Dump" />
+        </AsyncButton>
+        <AsyncButton onClick={() => navigate("/cache-debug")}>
+          <FormattedMessage defaultMessage="Debug" />
         </AsyncButton>
       </div>
     </div>

@@ -99,6 +99,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
   }
 
   #deleteById(db: Database, ids: Array<string>) {
+    if (ids.length === 0) return;
     db.exec(`delete from events where id in (${this.#repeatParams(ids.length)})`, {
       bind: ids,
     });
@@ -126,6 +127,9 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
           this.#deleteById(db, toDelete);
         }
         return false;
+      } else {
+        // delete older versions
+        this.#deleteById(db, oldEvents);
       }
     }
     if (ev.kind >= 30_000 && ev.kind < 40_000) {
@@ -142,6 +146,9 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
           this.#deleteById(db, toDelete);
         }
         return false;
+      } else {
+        // delete older versions
+        this.#deleteById(db, oldEvents);
       }
     }
     db.exec("insert or ignore into events(id, pubkey, created, kind, json) values(?,?,?,?,?)", {
@@ -197,6 +204,32 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
   }
 
   /**
+   * Delete events by nostr filter
+   */
+  delete(req: ReqFilter) {
+    this.#log(`Starting delete of ${JSON.stringify(req)}`);
+    const start = unixNowMs();
+    const for_delete = this.req("ids-for-delete", { ...req, ids_only: true }) as Array<string>;
+
+    const grouped = for_delete.reduce(
+      (acc, v, i) => {
+        const batch = (i / 1000).toFixed(0);
+        acc[batch] ??= [];
+        acc[batch].push(v);
+        return acc;
+      },
+      {} as Record<string, Array<string>>,
+    );
+    this.#log(`Starting delete of ${Object.keys(grouped).length} batches`);
+    Object.entries(grouped).forEach(([batch, ids]) => {
+      this.#deleteById(this.db!, ids);
+    });
+    const time = unixNowMs() - start;
+    this.#log(`Delete ${for_delete.length} events took ${time.toLocaleString()}ms`);
+    return for_delete;
+  }
+
+  /**
    * Get a summary about events table
    */
   summary() {
@@ -231,7 +264,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     return new Uint8Array();
   }
 
-  #buildQuery(req: ReqFilter, count = false): [string, Array<any>] {
+  #buildQuery(req: ReqFilter, count = false, remove = false): [string, Array<any>] {
     const conditions: Array<string> = [];
     const params: Array<any> = [];
 
@@ -241,7 +274,11 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     } else if (req.ids_only === true) {
       resultType = "id";
     }
-    let sql = `select ${resultType} from events`;
+    let operation = `select ${resultType}`;
+    if (remove) {
+      operation = "delete";
+    }
+    let sql = `${operation} from events`;
     const tags = Object.entries(req).filter(([k]) => k.startsWith("#"));
     let tx = 0;
     for (const [key, values] of tags) {

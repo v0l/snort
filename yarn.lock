@@ -4060,7 +4060,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/curves@npm:1.2.0, @noble/curves@npm:^1.0.0, @noble/curves@npm:^1.2.0, @noble/curves@npm:~1.2.0":
+"@noble/curves@npm:1.2.0":
   version: 1.2.0
   resolution: "@noble/curves@npm:1.2.0"
   dependencies:
@@ -4085,14 +4085,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/hashes@npm:1.3.2, @noble/hashes@npm:^1.3.2, @noble/hashes@npm:~1.3.0, @noble/hashes@npm:~1.3.2":
+"@noble/hashes@npm:1.3.2, @noble/hashes@npm:~1.3.0":
   version: 1.3.2
   resolution: "@noble/hashes@npm:1.3.2"
   checksum: 10/685f59d2d44d88e738114b71011d343a9f7dce9dfb0a121f1489132f9247baa60bc985e5ec6f3213d114fbd1e1168e7294644e46cbd0ce2eba37994f28eeb51b
   languageName: node
   linkType: hard
 
-"@noble/hashes@npm:1.4.0, @noble/hashes@npm:^1.3.1, @noble/hashes@npm:~1.4.0":
+"@noble/hashes@npm:1.4.0, @noble/hashes@npm:^1.3.1, @noble/hashes@npm:^1.4.0, @noble/hashes@npm:~1.4.0":
   version: 1.4.0
   resolution: "@noble/hashes@npm:1.4.0"
   checksum: 10/e156e65794c473794c52fa9d06baf1eb20903d0d96719530f523cc4450f6c721a957c544796e6efd0197b2296e7cd70efeb312f861465e17940a3e3c7e0febc6
@@ -4140,9 +4140,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nostr-dev-kit/ndk@npm:^2.7.1":
-  version: 2.7.1
-  resolution: "@nostr-dev-kit/ndk@npm:2.7.1"
+"@nostr-dev-kit/ndk@npm:^2.8.2":
+  version: 2.8.2
+  resolution: "@nostr-dev-kit/ndk@npm:2.8.2"
   dependencies:
     "@noble/curves": "npm:^1.4.0"
     "@noble/hashes": "npm:^1.3.1"
@@ -4156,7 +4156,7 @@ __metadata:
     typescript-lru-cache: "npm:^2.0.0"
     utf8-buffer: "npm:^1.0.0"
     websocket-polyfill: "npm:^0.0.3"
-  checksum: 10/8553167dbc8e93952f5deb15dea443272827039a8e03410f851ec898c68811f6d3d21b36becc7194009ff5994cf073c8997355b43d29a55ad98d1ce95176f1f7
+  checksum: 10/4ee2513259800e4cedf88c772cfdf2e2c9652b9ecd432e25582363158635909c293ba7748d1cd314b612ca5344f1da820df456cdd6d908f6533856c0b038b648
   languageName: node
   linkType: hard
 
@@ -4182,7 +4182,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-schema@npm:^2.3.6":
+"@peculiar/asn1-schema@npm:^2.3.8":
   version: 2.3.8
   resolution: "@peculiar/asn1-schema@npm:2.3.8"
   dependencies:
@@ -4202,16 +4202,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/webcrypto@npm:^1.4.3":
-  version: 1.4.3
-  resolution: "@peculiar/webcrypto@npm:1.4.3"
+"@peculiar/webcrypto@npm:^1.4.6":
+  version: 1.4.6
+  resolution: "@peculiar/webcrypto@npm:1.4.6"
   dependencies:
-    "@peculiar/asn1-schema": "npm:^2.3.6"
+    "@peculiar/asn1-schema": "npm:^2.3.8"
     "@peculiar/json-schema": "npm:^1.1.12"
-    pvtsutils: "npm:^1.3.2"
-    tslib: "npm:^2.5.0"
-    webcrypto-core: "npm:^1.7.7"
-  checksum: 10/548f5e32badcfdb02c903ca240daccac5d87ba841e436bd6d30e5455ced22917146130dab21afb718568ea935d6b04dc66fb33a4b6ab652dd868abff81e74a81
+    pvtsutils: "npm:^1.3.5"
+    tslib: "npm:^2.6.2"
+    webcrypto-core: "npm:^1.7.9"
+  checksum: 10/c1700b585cac0a161539f0060c97d52dc0d99c6e05a40b01ec714a83bfdb54708e615cd5a1fe4c9f22c617fdf05936de2f552dd33e856a2d1c5b0f39ec25ccab
   languageName: node
   linkType: hard
 
@@ -4500,7 +4500,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scure/base@npm:^1.1.1, @scure/base@npm:^1.1.2, @scure/base@npm:~1.1.0, @scure/base@npm:~1.1.2":
+"@scure/base@npm:^1.1.1, @scure/base@npm:~1.1.0":
   version: 1.1.3
   resolution: "@scure/base@npm:1.1.3"
   checksum: 10/cb715fa8cdb043c4d96b6ba0666791d4eb4d033f7b5285a853aba25e0ba94914f05ff5d956029ad060005f9bdd02dab0caef9a0a63f07ed096a2c2a0c0cf9c36
@@ -4525,18 +4525,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scure/bip32@npm:^1.3.0":
-  version: 1.3.2
-  resolution: "@scure/bip32@npm:1.3.2"
-  dependencies:
-    "@noble/curves": "npm:~1.2.0"
-    "@noble/hashes": "npm:~1.3.2"
-    "@scure/base": "npm:~1.1.2"
-  checksum: 10/b90da28dfe75519496a85c97e77c9443734873910f32b8557762910a5c4e642290a462b0ed14fa42e0efed6acb9a7f6155ad5cb5d38d4ff87eb2de4760eb32a4
-  languageName: node
-  linkType: hard
-
-"@scure/bip32@npm:^1.3.3":
+"@scure/bip32@npm:^1.3.3, @scure/bip32@npm:^1.4.0":
   version: 1.4.0
   resolution: "@scure/bip32@npm:1.4.0"
   dependencies:
@@ -4547,7 +4536,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scure/bip39@npm:1.2.1, @scure/bip39@npm:^1.1.1":
+"@scure/bip39@npm:1.2.1":
   version: 1.2.1
   resolution: "@scure/bip39@npm:1.2.1"
   dependencies:
@@ -4557,7 +4546,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scure/bip39@npm:^1.2.2":
+"@scure/bip39@npm:^1.2.2, @scure/bip39@npm:^1.3.0":
   version: 1.3.0
   resolution: "@scure/bip39@npm:1.3.0"
   dependencies:
@@ -4599,11 +4588,11 @@ __metadata:
     "@cashu/cashu-ts": "npm:^1.0.0-rc.3"
     "@formatjs/cli": "npm:^6.1.3"
     "@here/maps-api-for-javascript": "npm:^1.50.0"
-    "@noble/curves": "npm:^1.0.0"
-    "@noble/hashes": "npm:^1.3.3"
-    "@scure/base": "npm:^1.1.1"
-    "@scure/bip32": "npm:^1.3.0"
-    "@scure/bip39": "npm:^1.1.1"
+    "@noble/curves": "npm:^1.4.0"
+    "@noble/hashes": "npm:^1.4.0"
+    "@scure/base": "npm:^1.1.6"
+    "@scure/bip32": "npm:^1.4.0"
+    "@scure/bip39": "npm:^1.3.0"
     "@snort/shared": "workspace:*"
     "@snort/system": "workspace:*"
     "@snort/system-react": "workspace:*"
@@ -4611,7 +4600,7 @@ __metadata:
     "@snort/system-web": "workspace:*"
     "@snort/wallet": "workspace:*"
     "@snort/worker-relay": "workspace:*"
-    "@szhsin/react-menu": "npm:^3.3.1"
+    "@szhsin/react-menu": "npm:^3.5.3"
     "@types/config": "npm:^3.3.3"
     "@types/debug": "npm:^4.1.8"
     "@types/latlon-geohash": "npm:^2.0.3"
@@ -4628,7 +4617,7 @@ __metadata:
     "@uidotdev/usehooks": "npm:^2.4.1"
     "@vitejs/plugin-react": "npm:^4.2.0"
     "@void-cat/api": "npm:^1.0.12"
-    "@webbtc/webln-types": "npm:^2.1.0"
+    "@webbtc/webln-types": "npm:^3.0.0"
     "@webscopeio/react-textarea-autocomplete": "npm:^4.9.2"
     "@welldone-software/why-did-you-render": "npm:^8.0.1"
     autoprefixer: "npm:^10.4.16"
@@ -4696,9 +4685,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snort/shared@workspace:packages/shared"
   dependencies:
-    "@noble/curves": "npm:^1.2.0"
-    "@noble/hashes": "npm:^1.3.2"
-    "@scure/base": "npm:^1.1.2"
+    "@noble/curves": "npm:^1.4.0"
+    "@noble/hashes": "npm:^1.4.0"
+    "@scure/base": "npm:^1.1.6"
     "@types/debug": "npm:^4.1.8"
     debug: "npm:^4.3.4"
     eventemitter3: "npm:^5.0.1"
@@ -4752,11 +4741,11 @@ __metadata:
   resolution: "@snort/system@workspace:packages/system"
   dependencies:
     "@jest/globals": "npm:^29.5.0"
-    "@noble/curves": "npm:^1.2.0"
-    "@noble/hashes": "npm:^1.3.2"
-    "@nostr-dev-kit/ndk": "npm:^2.7.1"
-    "@peculiar/webcrypto": "npm:^1.4.3"
-    "@scure/base": "npm:^1.1.2"
+    "@noble/curves": "npm:^1.4.0"
+    "@noble/hashes": "npm:^1.4.0"
+    "@nostr-dev-kit/ndk": "npm:^2.8.2"
+    "@peculiar/webcrypto": "npm:^1.4.6"
+    "@scure/base": "npm:^1.1.6"
     "@snort/shared": "npm:^1.0.15"
     "@stablelib/xchacha20": "npm:^1.0.1"
     "@types/debug": "npm:^4.1.8"
@@ -4801,7 +4790,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snort/worker-relay@workspace:packages/worker-relay"
   dependencies:
-    "@sqlite.org/sqlite-wasm": "npm:^3.45.1-build1"
+    "@sqlite.org/sqlite-wasm": "npm:^3.45.3-build3"
     "@types/debug": "npm:^4.1.12"
     "@types/sharedworker": "npm:^0.0.112"
     "@types/uuid": "npm:^9.0.7"
@@ -4819,12 +4808,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sqlite.org/sqlite-wasm@npm:^3.45.1-build1":
-  version: 3.45.1-build1
-  resolution: "@sqlite.org/sqlite-wasm@npm:3.45.1-build1"
+"@sqlite.org/sqlite-wasm@npm:^3.45.3-build3":
+  version: 3.45.3-build3
+  resolution: "@sqlite.org/sqlite-wasm@npm:3.45.3-build3"
   bin:
     sqlite-wasm: bin/index.js
-  checksum: 10/ae86fedbccfc56f115195dc8f2afefa99b1f63969eb4571ed48bf4bd846773c0bfb9daa84703b95d5f1393954d30042f3aeafc903077ba042aed89dec9c3366f
+  checksum: 10/58dd96936973c8bb3989a7d23d6d6021b05e4b35ae997d617d28b5faf5f370196aaf71d1a060eb1822fed3636acb4b5e0d444807d86687bff2a6efa637f9f1dc
   languageName: node
   linkType: hard
 
@@ -4884,7 +4873,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@szhsin/react-menu@npm:^3.3.1":
+"@szhsin/react-menu@npm:^3.5.3":
   version: 3.5.3
   resolution: "@szhsin/react-menu@npm:3.5.3"
   dependencies:
@@ -4897,90 +4886,90 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli-darwin-arm64@npm:1.5.11":
-  version: 1.5.11
-  resolution: "@tauri-apps/cli-darwin-arm64@npm:1.5.11"
+"@tauri-apps/cli-darwin-arm64@npm:1.5.14":
+  version: 1.5.14
+  resolution: "@tauri-apps/cli-darwin-arm64@npm:1.5.14"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli-darwin-x64@npm:1.5.11":
-  version: 1.5.11
-  resolution: "@tauri-apps/cli-darwin-x64@npm:1.5.11"
+"@tauri-apps/cli-darwin-x64@npm:1.5.14":
+  version: 1.5.14
+  resolution: "@tauri-apps/cli-darwin-x64@npm:1.5.14"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli-linux-arm-gnueabihf@npm:1.5.11":
-  version: 1.5.11
-  resolution: "@tauri-apps/cli-linux-arm-gnueabihf@npm:1.5.11"
+"@tauri-apps/cli-linux-arm-gnueabihf@npm:1.5.14":
+  version: 1.5.14
+  resolution: "@tauri-apps/cli-linux-arm-gnueabihf@npm:1.5.14"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli-linux-arm64-gnu@npm:1.5.11":
-  version: 1.5.11
-  resolution: "@tauri-apps/cli-linux-arm64-gnu@npm:1.5.11"
+"@tauri-apps/cli-linux-arm64-gnu@npm:1.5.14":
+  version: 1.5.14
+  resolution: "@tauri-apps/cli-linux-arm64-gnu@npm:1.5.14"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli-linux-arm64-musl@npm:1.5.11":
-  version: 1.5.11
-  resolution: "@tauri-apps/cli-linux-arm64-musl@npm:1.5.11"
+"@tauri-apps/cli-linux-arm64-musl@npm:1.5.14":
+  version: 1.5.14
+  resolution: "@tauri-apps/cli-linux-arm64-musl@npm:1.5.14"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli-linux-x64-gnu@npm:1.5.11":
-  version: 1.5.11
-  resolution: "@tauri-apps/cli-linux-x64-gnu@npm:1.5.11"
+"@tauri-apps/cli-linux-x64-gnu@npm:1.5.14":
+  version: 1.5.14
+  resolution: "@tauri-apps/cli-linux-x64-gnu@npm:1.5.14"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli-linux-x64-musl@npm:1.5.11":
-  version: 1.5.11
-  resolution: "@tauri-apps/cli-linux-x64-musl@npm:1.5.11"
+"@tauri-apps/cli-linux-x64-musl@npm:1.5.14":
+  version: 1.5.14
+  resolution: "@tauri-apps/cli-linux-x64-musl@npm:1.5.14"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli-win32-arm64-msvc@npm:1.5.11":
-  version: 1.5.11
-  resolution: "@tauri-apps/cli-win32-arm64-msvc@npm:1.5.11"
+"@tauri-apps/cli-win32-arm64-msvc@npm:1.5.14":
+  version: 1.5.14
+  resolution: "@tauri-apps/cli-win32-arm64-msvc@npm:1.5.14"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli-win32-ia32-msvc@npm:1.5.11":
-  version: 1.5.11
-  resolution: "@tauri-apps/cli-win32-ia32-msvc@npm:1.5.11"
+"@tauri-apps/cli-win32-ia32-msvc@npm:1.5.14":
+  version: 1.5.14
+  resolution: "@tauri-apps/cli-win32-ia32-msvc@npm:1.5.14"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli-win32-x64-msvc@npm:1.5.11":
-  version: 1.5.11
-  resolution: "@tauri-apps/cli-win32-x64-msvc@npm:1.5.11"
+"@tauri-apps/cli-win32-x64-msvc@npm:1.5.14":
+  version: 1.5.14
+  resolution: "@tauri-apps/cli-win32-x64-msvc@npm:1.5.14"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli@npm:^1.5.11":
-  version: 1.5.11
-  resolution: "@tauri-apps/cli@npm:1.5.11"
+"@tauri-apps/cli@npm:^1.5.14":
+  version: 1.5.14
+  resolution: "@tauri-apps/cli@npm:1.5.14"
   dependencies:
-    "@tauri-apps/cli-darwin-arm64": "npm:1.5.11"
-    "@tauri-apps/cli-darwin-x64": "npm:1.5.11"
-    "@tauri-apps/cli-linux-arm-gnueabihf": "npm:1.5.11"
-    "@tauri-apps/cli-linux-arm64-gnu": "npm:1.5.11"
-    "@tauri-apps/cli-linux-arm64-musl": "npm:1.5.11"
-    "@tauri-apps/cli-linux-x64-gnu": "npm:1.5.11"
-    "@tauri-apps/cli-linux-x64-musl": "npm:1.5.11"
-    "@tauri-apps/cli-win32-arm64-msvc": "npm:1.5.11"
-    "@tauri-apps/cli-win32-ia32-msvc": "npm:1.5.11"
-    "@tauri-apps/cli-win32-x64-msvc": "npm:1.5.11"
+    "@tauri-apps/cli-darwin-arm64": "npm:1.5.14"
+    "@tauri-apps/cli-darwin-x64": "npm:1.5.14"
+    "@tauri-apps/cli-linux-arm-gnueabihf": "npm:1.5.14"
+    "@tauri-apps/cli-linux-arm64-gnu": "npm:1.5.14"
+    "@tauri-apps/cli-linux-arm64-musl": "npm:1.5.14"
+    "@tauri-apps/cli-linux-x64-gnu": "npm:1.5.14"
+    "@tauri-apps/cli-linux-x64-musl": "npm:1.5.14"
+    "@tauri-apps/cli-win32-arm64-msvc": "npm:1.5.14"
+    "@tauri-apps/cli-win32-ia32-msvc": "npm:1.5.14"
+    "@tauri-apps/cli-win32-x64-msvc": "npm:1.5.14"
   dependenciesMeta:
     "@tauri-apps/cli-darwin-arm64":
       optional: true
@@ -5004,7 +4993,7 @@ __metadata:
       optional: true
   bin:
     tauri: tauri.js
-  checksum: 10/18376915830153f4670f3c68e8acfdb75a33f8f011ba7d366ad8c0babd8d28381d231a8924f0163d48680d72e15345ff6ffa02cc057cb9f936a852426cc38861
+  checksum: 10/000fd57f22997a90555f344c64efa1535b8dec853937763b41abc0fb1735e96b3a64115cd6a9a3269477aeaac21f4954ed806d74c92e47372e76498f388519b7
   languageName: node
   linkType: hard
 
@@ -5982,13 +5971,6 @@ __metadata:
   dependencies:
     sjcl: "npm:^1.0.8"
   checksum: 10/745a611fdb655a1f1200dd29d0b409e7969e60f2d13455503f356eb9a5757ba545a9b1d5d48a97a5e74847da37829968dc76259c4edad480c523fbda818556dd
-  languageName: node
-  linkType: hard
-
-"@webbtc/webln-types@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@webbtc/webln-types@npm:2.1.0"
-  checksum: 10/18bb0e33e7961f9de8040332448ee6d4b02fbd2b63c92c05b3bc19dfd955379e419a0c102753ed7af9dac03c09029e5f7a10a30ec1a20a8856173a41cba3ab6c
   languageName: node
   linkType: hard
 
@@ -13466,7 +13448,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@cloudflare/workers-types": "npm:^4.20230307.0"
-    "@tauri-apps/cli": "npm:^1.5.11"
+    "@tauri-apps/cli": "npm:^1.5.14"
     eslint: "npm:^8.48.0"
     prettier: "npm:^3.0.3"
     typedoc: "npm:^0.25.7"
@@ -14569,7 +14551,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.6.2, tslib@npm:^2.0.0, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:^2.6.1, tslib@npm:^2.6.2":
+"tslib@npm:2.6.2, tslib@npm:^2.0.0, tslib@npm:^2.4.0, tslib@npm:^2.6.1, tslib@npm:^2.6.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 10/bd26c22d36736513980091a1e356378e8b662ded04204453d353a7f34a4c21ed0afc59b5f90719d4ba756e581a162ecbf93118dc9c6be5acf70aa309188166ca
@@ -15333,16 +15315,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webcrypto-core@npm:^1.7.7":
-  version: 1.7.7
-  resolution: "webcrypto-core@npm:1.7.7"
+"webcrypto-core@npm:^1.7.9":
+  version: 1.7.9
+  resolution: "webcrypto-core@npm:1.7.9"
   dependencies:
-    "@peculiar/asn1-schema": "npm:^2.3.6"
+    "@peculiar/asn1-schema": "npm:^2.3.8"
     "@peculiar/json-schema": "npm:^1.1.12"
     asn1js: "npm:^3.0.1"
-    pvtsutils: "npm:^1.3.2"
-    tslib: "npm:^2.4.0"
-  checksum: 10/e87ac59d7d05c2aa96117c8f589e99ec9556dfc9ff3cd7fe9464de32e60ed6ff237cdfd35ed53c93546dd0d548bab67b244be381e97b162fe87b6d826e8765ae
+    pvtsutils: "npm:^1.3.5"
+    tslib: "npm:^2.6.2"
+  checksum: 10/515140c6330024f49142a8dd7d84cdb5adddfc09827b6d3aad5fdec398038465fe8f2b48a3a2d9f67a34ab2ac5324c150ec68d552c9313b65a3130d23629da16
   languageName: node
   linkType: hard
 

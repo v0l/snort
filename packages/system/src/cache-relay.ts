@@ -14,4 +14,9 @@ export interface CacheRelay {
    * Read event from cache relay
    */
   query(req: ReqCommand): Promise<Array<NostrEvent>>;
+
+  /**
+   * Delete events by filter
+   */
+  delete(req: ReqCommand): Promise<Array<string>>;
 }

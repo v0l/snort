@@ -80,6 +80,13 @@ export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements R
     return ret;
   }
 
+  delete(filter: ReqFilter) {
+    const forDelete = this.req("ids-for-delete", { ...filter, ids_only: true }) as Array<string>;
+    forDelete.forEach(a => this.#events.delete(a));
+
+    return forDelete;
+  }
+
   setEventMetadata(_id: string, _meta: EventMetadata) {
     return;
   }
