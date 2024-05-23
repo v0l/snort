@@ -1,6 +1,6 @@
 {
   "name": "@snort/system",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Snort nostr system package",
   "type": "module",
   "main": "dist/index.js",
