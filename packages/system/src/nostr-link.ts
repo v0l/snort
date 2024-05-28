@@ -17,10 +17,16 @@ import { findTag } from "./utils";
  */
 export interface ToNostrEventTag {
   toEventTag(): Array<string> | undefined;
+  equals(other: ToNostrEventTag): boolean;
 }
 
 export class NostrHashtagLink implements ToNostrEventTag {
-  constructor(readonly tag: string) {}
+  constructor(readonly tag: string) { }
+
+  equals(other: ToNostrEventTag): boolean {
+    const otherTag = other.toEventTag();
+    return otherTag?.at(0) === "t" && otherTag?.at(1) === this.tag;
+  }
 
   toEventTag() {
     return ["t", this.tag];
@@ -28,7 +34,14 @@ export class NostrHashtagLink implements ToNostrEventTag {
 }
 
 export class UnknownTag implements ToNostrEventTag {
-  constructor(readonly value: Array<string>) {}
+  constructor(readonly value: Array<string>) { }
+
+  equals(other: ToNostrEventTag): boolean {
+    const otherTag = other.toEventTag();
+    return otherTag?.at(0) === this.value.at(0) &&
+      otherTag?.at(1) === this.value.at(1)
+  }
+
   toEventTag(): string[] | undefined {
     return this.value;
   }
