@@ -55,7 +55,16 @@ const TidalEmbed = ({ link }: { link: string }) => {
   }
   const iframe = (
     // eslint-disable-next-line react/no-unknown-property
-    <iframe src={source} style={extraStyles} width="100%" allow="encrypted-media *; clipboard-write *; clipboard-read *" sandbox="allow-scripts allow-popups allow-forms allow-same-origin"  title="TIDAL Embed" frameBorder={0} credentialless="" />
+    <iframe
+      src={source}
+      style={extraStyles}
+      width="100%"
+      allow="encrypted-media *; clipboard-write *; clipboard-read *"
+      sandbox="allow-scripts allow-popups allow-forms allow-same-origin"
+      title="TIDAL Embed"
+      frameBorder={0}
+      credentialless=""
+    />
   );
   return (
     <>
