@@ -20,7 +20,7 @@ export default function SyncAccountTool() {
     const relays = Object.entries(myRelays)
       .filter(([, v]) => v.write)
       .map(([k]) => k);
-    const sync = new RangeSync(system);
+    const sync = RangeSync.forSystem(system);
     sync.on("event", evs => {
       setResults(r => [...r, ...evs]);
     });

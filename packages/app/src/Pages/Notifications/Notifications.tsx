@@ -2,7 +2,7 @@ import "./Notifications.css";
 
 import { unwrap } from "@snort/shared";
 import { NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
-import { lazy, Suspense, useEffect, useMemo } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 
 import { AutoLoadMore } from "@/Components/Event/LoadMore";
 import PageSpinner from "@/Components/PageSpinner";
@@ -19,6 +19,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
   const login = useLogin();
   const { isMuted } = useModeration();
   const groupInterval = 3600 * 6;
+  const [limit, setLimit] = useState(100);
 
   useEffect(() => {
     markNotificationsRead(login);
@@ -32,14 +33,16 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
   };
 
   const myNotifications = useMemo(() => {
-    return notifications.filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey));
-  }, [notifications, login.publicKey]);
+    return notifications
+      .sort((a, b) => a.created_at > b.created_at ? -1 : 1)
+      .slice(0, limit)
+      .filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey));
+  }, [notifications, login.publicKey, limit]);
 
   const timeGrouped = useMemo(() => {
     return myNotifications.reduce((acc, v) => {
-      const key = `${timeKey(v)}:${getNotificationContext(v as TaggedNostrEvent)?.encode(CONFIG.eventLinkPrefix)}:${
-        v.kind
-      }`;
+      const key = `${timeKey(v)}:${getNotificationContext(v as TaggedNostrEvent)?.encode(CONFIG.eventLinkPrefix)}:${v.kind
+        }`;
       if (acc.has(key)) {
         unwrap(acc.get(key)).push(v as TaggedNostrEvent);
       } else {
@@ -54,13 +57,13 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
       <div className="main-content">
         {CONFIG.features.notificationGraph && (
           <Suspense fallback={<PageSpinner />}>
-            <NotificationGraph evs={myNotifications} />
+            <NotificationGraph evs={notifications} />
           </Suspense>
         )}
         {login.publicKey &&
           [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
 
-        <AutoLoadMore onClick={() => {}} />
+        <AutoLoadMore onClick={() => { setLimit(l => l + 100) }} />
       </div>
     </>
   );

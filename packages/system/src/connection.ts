@@ -8,9 +8,11 @@ import { DefaultConnectTimeout } from "./const";
 import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
-import { EventExt } from "./event-ext";
+import { EventExt, EventType } from "./event-ext";
 import { NegentropyFlow } from "./negentropy/negentropy-flow";
 import { ConnectionType, ConnectionTypeEvents } from "./connection-pool";
+import { RangeSync } from "./sync";
+import { NoteCollection } from "./note-collection";
 
 /**
  * Relay settings
@@ -395,15 +397,36 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       } else if (cmd[0] === "SYNC") {
         const [_, id, eventSet, ...filters] = cmd;
         const lastResortSync = () => {
-          if (filters.some(a => a.since || a.until || a.ids)) {
+          const isReplacableSync = filters.every(a => a.kinds?.every(b => EventExt.getType(b) === EventType.Replaceable || EventExt.getType(b) === EventType.ParameterizedReplaceable) ?? false);
+          if (filters.some(a => a.since || a.until || a.ids || a.limit) || isReplacableSync) {
             this.request(["REQ", id, ...filters], item.cb);
           } else {
+            const rs = RangeSync.forFetcher(async (rb, cb) => {
+              return await new Promise((resolve, reject) => {
+                const results = new NoteCollection();
+                const f = rb.buildRaw();
+                this.on("event", (c, e) => {
+                  if (rb.id === c) {
+                    cb?.([e]);
+                    results.add(e);
+                  }
+                });
+                this.on("eose", s => {
+                  if (s === rb.id) {
+                    resolve(results.takeSnapshot());
+                  }
+                });
+                this.request(["REQ", rb.id, ...f], undefined);
+              });
+            });
             const latest = eventSet.reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
-            const newFilters = filters.map(a => ({
-              ...a,
-              since: latest + 1,
-            }));
-            this.request(["REQ", id, ...newFilters], item.cb);
+            rs.setStartPoint(latest + 1);
+            rs.on("event", ev => {
+              ev.forEach(e => this.emit("event", id, e));
+            });
+            for (const f of filters) {
+              rs.sync(f);
+            }
           }
         };
         if (this.info?.negentropy === "v1") {

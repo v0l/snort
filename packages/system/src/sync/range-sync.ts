@@ -1,6 +1,7 @@
 import { unixNow } from "@snort/shared";
 import EventEmitter from "eventemitter3";
 import { ReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from "..";
+import { v4 as uuid } from "uuid";
 
 /**
  * When nostr was created
@@ -16,11 +17,25 @@ interface RangeSyncEvents {
  * A simple time based sync for pulling lots of data from nostr
  */
 export class RangeSync extends EventEmitter<RangeSyncEvents> {
+  #id = uuid();
   #start: number = NostrBirthday;
   #windowSize: number = 60 * 60 * 12;
+  #fetcher!: SystemInterface["Fetch"];
 
-  constructor(readonly system: SystemInterface) {
+  private constructor() {
     super();
+  }
+
+  static forSystem(system: SystemInterface) {
+    const rs = new RangeSync();
+    rs.#fetcher = (r, c) => system.Fetch(r, c);
+    return rs;
+  }
+
+  static forFetcher(fn: SystemInterface["Fetch"]) {
+    const rs = new RangeSync();
+    rs.#fetcher = fn;
+    return rs;
   }
 
   /**
@@ -52,18 +67,15 @@ export class RangeSync extends EventEmitter<RangeSyncEvents> {
       throw new Error("Filter must not contain since/until/limit");
     }
 
-    if (!this.system.requestRouter) {
-      throw new Error("RangeSync cannot work without request router!");
-    }
-
     const now = unixNow();
+    let ctr = 1;
     for (let end = now; end > this.#start; end -= this.#windowSize) {
-      const rb = new RequestBuilder(`range-query:${end}`);
+      const rb = new RequestBuilder(`${this.#id}+${ctr++}`);
       rb.withBareFilter(filter)
         .since(end - this.#windowSize)
         .until(end);
       this.emit("scan", end);
-      const results = await this.system.Fetch(rb);
+      const results = await this.#fetcher(rb);
       this.emit("event", results);
     }
   }
