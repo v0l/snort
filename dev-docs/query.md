@@ -26,4 +26,5 @@ In this way only 1 subscription is maintained, the "root" query trace.
 Each time a new set of filters is created from `buildDiff` we push the same `REQ` again with the new filters which **should** result in no new results from the relays as we expect there to be none `since` the current time is the time of the latest message.
 
 ## Proposed solution (Timeline)
+
 TBD
