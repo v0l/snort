@@ -388,7 +388,5 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     }
   }
 
-  #fixMissingTags(db: Database) {
-
-  }
+  #fixMissingTags(db: Database) {}
 }
