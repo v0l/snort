@@ -95,12 +95,7 @@ export interface SystemConfig {
   /**
    * Pick a fallback sync method when negentropy is not available
    */
-  fallbackSync: FallbackSyncMethod;
-}
-
-export enum FallbackSyncMethod {
-  Since = "since",
-  RangeSync = "range-sync",
+  fallbackSync: "since" | "range-sync";
 }
 
 export interface SystemInterface {

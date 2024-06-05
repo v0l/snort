@@ -1,6 +1,6 @@
-import { NostrEvent } from "./types";
+import { NostrEvent } from "../types";
 import { SqliteRelay } from "./sqlite-relay";
-import { debugLog } from "./debug";
+import { debugLog } from "../debug";
 
 const log = (msg: string, ...args: Array<any>) => debugLog("SqliteRelay:migrations", msg, ...args);
 

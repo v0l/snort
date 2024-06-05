@@ -13,6 +13,7 @@ export const Relay = new WorkerRelayInterface(
 );
 export async function initRelayWorker() {
   try {
+    await Relay.debug("");
     await Relay.init({
       databasePath: "relay.db",
       insertBatchSize: 100,

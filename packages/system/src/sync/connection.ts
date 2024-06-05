@@ -1,16 +1,16 @@
 import { Connection, SyncCommand } from "../connection";
-import { FallbackSyncMethod } from "../system";
 import { EventExt, EventType } from "../event-ext";
 import { NoteCollection } from "../note-collection";
 import { RangeSync } from "./range-sync";
 import { NegentropyFlow } from "../negentropy/negentropy-flow";
+import { SystemConfig } from "../system";
 
 export interface ConnectionSyncModule {
   sync: (c: Connection, item: SyncCommand, cb?: () => void) => void;
 }
 
 export class DefaultSyncModule implements ConnectionSyncModule {
-  constructor(readonly method: FallbackSyncMethod) {}
+  constructor(readonly method: SystemConfig["fallbackSync"]) {}
 
   sync(c: Connection, item: SyncCommand, cb?: () => void) {
     const [_, id, eventSet, ...filters] = item;
@@ -49,9 +49,9 @@ export class DefaultSyncModule implements ConnectionSyncModule {
     );
     if (filters.some(a => a.since || a.until || a.ids || a.limit) || isReplaceableSync) {
       c.request(["REQ", id, ...filters], cb);
-    } else if (this.method === FallbackSyncMethod.Since) {
+    } else if (this.method === "since") {
       this.#syncSince(c, item, cb);
-    } else if (this.method === FallbackSyncMethod.RangeSync) {
+    } else if (this.method === "range-sync") {
       this.#syncRangeSync(c, item, cb);
     } else {
       throw new Error("No fallback sync method");

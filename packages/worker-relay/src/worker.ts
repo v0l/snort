@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-import { SqliteRelay } from "./sqlite-relay";
+import { SqliteRelay } from "./sqlite/sqlite-relay";
 import { InMemoryRelay } from "./memory-relay";
 import { setLogging } from "./debug";
 import { WorkQueueItem, barrierQueue, processWorkQueue } from "./queue";
