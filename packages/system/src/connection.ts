@@ -1,18 +1,16 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
 import WebSocket from "isomorphic-ws";
-import { unixNowMs, dedupe } from "@snort/shared";
+import { unixNowMs } from "@snort/shared";
 import { EventEmitter } from "eventemitter3";
 
 import { DefaultConnectTimeout } from "./const";
 import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
-import { EventExt, EventType } from "./event-ext";
-import { NegentropyFlow } from "./negentropy/negentropy-flow";
+import { EventExt } from "./event-ext";
 import { ConnectionType, ConnectionTypeEvents } from "./connection-pool";
-import { RangeSync } from "./sync";
-import { NoteCollection } from "./note-collection";
+import { ConnectionSyncModule } from "./sync/connection";
 
 /**
  * Relay settings
@@ -46,6 +44,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   #downCount = 0;
   #activeRequests = new Set<string>();
   #connectStarted = false;
+  #syncModule?: ConnectionSyncModule;
 
   id: string;
   readonly address: string;
@@ -64,7 +63,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   AwaitingAuth: Map<string, boolean>;
   Authed = false;
 
-  constructor(addr: string, options: RelaySettings, ephemeral: boolean = false) {
+  constructor(addr: string, options: RelaySettings, ephemeral: boolean = false, syncModule?: ConnectionSyncModule) {
     super();
     this.id = uuid();
     this.address = addr;
@@ -72,6 +71,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     this.EventsCallback = new Map();
     this.AwaitingAuth = new Map();
     this.#ephemeral = ephemeral;
+    this.#syncModule = syncModule;
     this.#log = debug("Connection").extend(addr);
   }
 
@@ -395,58 +395,10 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
         this.#activeRequests.add(cmd[1]);
         this.#send(cmd);
       } else if (cmd[0] === "SYNC") {
-        const [_, id, eventSet, ...filters] = cmd;
-        const lastResortSync = () => {
-          const isReplacableSync = filters.every(a => a.kinds?.every(b => EventExt.getType(b) === EventType.Replaceable || EventExt.getType(b) === EventType.ParameterizedReplaceable) ?? false);
-          if (filters.some(a => a.since || a.until || a.ids || a.limit) || isReplacableSync) {
-            this.request(["REQ", id, ...filters], item.cb);
-          } else {
-            const rs = RangeSync.forFetcher(async (rb, cb) => {
-              return await new Promise((resolve, reject) => {
-                const results = new NoteCollection();
-                const f = rb.buildRaw();
-                this.on("event", (c, e) => {
-                  if (rb.id === c) {
-                    cb?.([e]);
-                    results.add(e);
-                  }
-                });
-                this.on("eose", s => {
-                  if (s === rb.id) {
-                    resolve(results.takeSnapshot());
-                  }
-                });
-                this.request(["REQ", rb.id, ...f], undefined);
-              });
-            });
-            const latest = eventSet.reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
-            rs.setStartPoint(latest + 1);
-            rs.on("event", ev => {
-              ev.forEach(e => this.emit("event", id, e));
-            });
-            for (const f of filters) {
-              rs.sync(f);
-            }
-          }
-        };
-        if (this.info?.negentropy === "v1") {
-          const newFilters = filters;
-          const neg = new NegentropyFlow(id, this, eventSet, newFilters);
-          neg.once("finish", filters => {
-            if (filters.length > 0) {
-              this.request(["REQ", cmd[1], ...filters], item.cb);
-            } else {
-              // no results to query, emulate closed
-              this.emit("closed", id, "Nothing to sync");
-            }
-          });
-          neg.once("error", () => {
-            lastResortSync();
-          });
-          neg.start();
-        } else {
-          lastResortSync();
+        if (!this.#syncModule) {
+          throw new Error("no sync module");
         }
+        this.#syncModule.sync(this, cmd, item.cb);
       }
     } catch (e) {
       console.error(e);

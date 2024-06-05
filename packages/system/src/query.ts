@@ -412,8 +412,12 @@ export class Query extends EventEmitter<QueryEvents> {
       }
     });
     const eventHandler = (sub: string, ev: TaggedNostrEvent) => {
-      if (this.request.options?.fillStore ?? true) {
-        this.handleEvent(sub, ev);
+      if ((this.request.options?.fillStore ?? true) && qt.id === sub) {
+        if (qt.filters.some(v => eventMatchesFilter(ev, v))) {
+          this.feed.add(ev);
+        } else {
+          this.#log("Event did not match filter, rejecting %O %O", ev, qt);
+        }
       }
     };
     const eoseHandler = (sub: string) => {

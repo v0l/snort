@@ -5,6 +5,7 @@ import { EventEmitter } from "eventemitter3";
 import { Connection, RelaySettings, SyncCommand } from "./connection";
 import { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "./nostr";
 import { RelayInfo, SystemInterface } from ".";
+import { ConnectionSyncModule, DefaultSyncModule } from "./sync/connection";
 
 /**
  * Events which the ConnectionType must emit
@@ -93,6 +94,7 @@ export type ConnectionBuilder<T extends ConnectionType> = (
   address: string,
   options: RelaySettings,
   ephemeral: boolean,
+  syncModule?: ConnectionSyncModule,
 ) => Promise<T> | T;
 
 /**
@@ -104,6 +106,11 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
 {
   #system: SystemInterface;
   #log = debug("ConnectionPool");
+
+  /**
+   * Track if a connection request has started
+   */
+  #connectStarted = new Set<string>();
 
   /**
    * All currently connected websockets
@@ -122,7 +129,8 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
       this.#connectionBuilder = builder;
     } else {
       this.#connectionBuilder = (addr, options, ephemeral) => {
-        return new Connection(addr, options, ephemeral) as unknown as T;
+        const sync = new DefaultSyncModule(this.#system.config.fallbackSync);
+        return new Connection(addr, options, ephemeral, sync) as unknown as T;
       };
     }
   }
@@ -140,12 +148,14 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
    */
   async connect(address: string, options: RelaySettings, ephemeral: boolean) {
     const addr = unwrap(sanitizeRelayUrl(address));
+    if (this.#connectStarted.has(addr)) return;
+    this.#connectStarted.add(addr);
+
     try {
       const existing = this.#sockets.get(addr);
       if (!existing) {
         const c = await this.#connectionBuilder(addr, options, ephemeral);
         this.#sockets.set(addr, c);
-
         c.on("event", (s, e) => {
           if (this.#system.checkSigs && !this.#system.optimizer.schnorrVerify(e)) {
             this.#log("Reject invalid event %o", e);
@@ -177,6 +187,8 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
       this.#log("%O", e);
       this.emit("connectFailed", addr);
       this.#sockets.delete(addr);
+    } finally {
+      this.#connectStarted.delete(addr);
     }
   }
 

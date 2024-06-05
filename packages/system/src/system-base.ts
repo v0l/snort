@@ -5,14 +5,19 @@ import { EventsCache } from "./cache/events";
 import { UserFollowsCache } from "./cache/user-follows-lists";
 import { UserRelaysCache, UserProfileCache, RelayMetricCache, NostrEvent } from "./index";
 import { DefaultOptimizer, Optimizer } from "./query-optimizer";
-import { NostrSystemEvents, SystemConfig } from "./system";
+import { FallbackSyncMethod, NostrSystemEvents, SystemConfig } from "./system";
 import { EventEmitter } from "eventemitter3";
 
 export abstract class SystemBase extends EventEmitter<NostrSystemEvents> {
   #config: SystemConfig;
 
+  get config() {
+    return this.#config;
+  }
+
   constructor(props: Partial<SystemConfig>) {
     super();
+
     this.#config = {
       relays: props.relays ?? new UserRelaysCache(props.db?.userRelays),
       profiles: props.profiles ?? new UserProfileCache(props.db?.users),
@@ -25,6 +30,7 @@ export abstract class SystemBase extends EventEmitter<NostrSystemEvents> {
       db: props.db,
       automaticOutboxModel: props.automaticOutboxModel ?? true,
       buildFollowGraph: props.buildFollowGraph ?? false,
+      fallbackSync: props.fallbackSync ?? FallbackSyncMethod.Since,
     };
   }
 

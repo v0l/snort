@@ -34,15 +34,16 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
 
   const myNotifications = useMemo(() => {
     return notifications
-      .sort((a, b) => a.created_at > b.created_at ? -1 : 1)
+      .sort((a, b) => (a.created_at > b.created_at ? -1 : 1))
       .slice(0, limit)
       .filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey));
   }, [notifications, login.publicKey, limit]);
 
   const timeGrouped = useMemo(() => {
     return myNotifications.reduce((acc, v) => {
-      const key = `${timeKey(v)}:${getNotificationContext(v as TaggedNostrEvent)?.encode(CONFIG.eventLinkPrefix)}:${v.kind
-        }`;
+      const key = `${timeKey(v)}:${getNotificationContext(v as TaggedNostrEvent)?.encode(CONFIG.eventLinkPrefix)}:${
+        v.kind
+      }`;
       if (acc.has(key)) {
         unwrap(acc.get(key)).push(v as TaggedNostrEvent);
       } else {
@@ -63,7 +64,11 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
         {login.publicKey &&
           [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
 
-        <AutoLoadMore onClick={() => { setLimit(l => l + 100) }} />
+        <AutoLoadMore
+          onClick={() => {
+            setLimit(l => l + 100);
+          }}
+        />
       </div>
     </>
   );

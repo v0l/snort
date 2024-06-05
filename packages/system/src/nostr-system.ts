@@ -1,97 +1,33 @@
 import debug from "debug";
-import { EventEmitter } from "eventemitter3";
 
-import { CachedTable, unixNowMs } from "@snort/shared";
+import { unixNowMs } from "@snort/shared";
 import { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr";
 import { RelaySettings } from "./connection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
-  CachedMetadata,
   ProfileLoaderService,
-  RelayMetrics,
   SystemInterface,
   SystemSnapshot,
-  UserProfileCache,
-  UserRelaysCache,
-  RelayMetricCache,
-  UsersRelays,
   QueryLike,
   OutboxModel,
   socialGraphInstance,
   EventKind,
-  UsersFollows,
   ID,
-  NostrSystemEvents,
   SystemConfig,
 } from ".";
-import { EventsCache } from "./cache/events";
 import { RelayMetadataLoader } from "./outbox";
-import { Optimizer, DefaultOptimizer } from "./query-optimizer";
 import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
 import { QueryManager } from "./query-manager";
-import { CacheRelay } from "./cache-relay";
 import { RequestRouter } from "./request-router";
-import { UserFollowsCache } from "./cache/user-follows-lists";
+import { SystemBase } from "./system-base";
 
 /**
  * Manages nostr content retrieval system
  */
-export class NostrSystem extends EventEmitter<NostrSystemEvents> implements SystemInterface {
+export class NostrSystem extends SystemBase implements SystemInterface {
   #log = debug("System");
   #queryManager: QueryManager;
-  #config: SystemConfig;
-
-  /**
-   * Storage class for user relay lists
-   */
-  get relayCache(): CachedTable<UsersRelays> {
-    return this.#config.relays;
-  }
-
-  /**
-   * Storage class for user profiles
-   */
-  get profileCache(): CachedTable<CachedMetadata> {
-    return this.#config.profiles;
-  }
-
-  /**
-   * Storage class for relay metrics (connects/disconnects)
-   */
-  get relayMetricsCache(): CachedTable<RelayMetrics> {
-    return this.#config.relayMetrics;
-  }
-
-  /**
-   * Optimizer instance, contains optimized functions for processing data
-   */
-  get optimizer(): Optimizer {
-    return this.#config.optimizer;
-  }
-
-  get eventsCache(): CachedTable<NostrEvent> {
-    return this.#config.events;
-  }
-
-  get userFollowsCache(): CachedTable<UsersFollows> {
-    return this.#config.contactLists;
-  }
-
-  get cacheRelay(): CacheRelay | undefined {
-    return this.#config.cachingRelay;
-  }
-
-  /**
-   * Check event signatures (recommended)
-   */
-  get checkSigs(): boolean {
-    return this.#config.checkSigs;
-  }
-
-  set checkSigs(v: boolean) {
-    this.#config.checkSigs = v;
-  }
 
   readonly profileLoader: ProfileLoaderService;
   readonly relayMetricsHandler: RelayMetricHandler;
@@ -100,39 +36,26 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
   readonly requestRouter: RequestRouter | undefined;
 
   constructor(props: Partial<SystemConfig>) {
-    super();
-    this.#config = {
-      relays: props.relays ?? new UserRelaysCache(props.db?.userRelays),
-      profiles: props.profiles ?? new UserProfileCache(props.db?.users),
-      relayMetrics: props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics),
-      events: props.events ?? new EventsCache(props.db?.events),
-      contactLists: props.contactLists ?? new UserFollowsCache(props.db?.contacts),
-      optimizer: props.optimizer ?? DefaultOptimizer,
-      checkSigs: props.checkSigs ?? false,
-      cachingRelay: props.cachingRelay,
-      db: props.db,
-      automaticOutboxModel: props.automaticOutboxModel ?? true,
-      buildFollowGraph: props.buildFollowGraph ?? false,
-    };
+    super(props);
 
     this.profileLoader = new ProfileLoaderService(this, this.profileCache);
     this.relayMetricsHandler = new RelayMetricHandler(this.relayMetricsCache);
     this.relayLoader = new RelayMetadataLoader(this, this.relayCache);
 
     // if automatic outbox model, setup request router as OutboxModel
-    if (this.#config.automaticOutboxModel) {
+    if (this.config.automaticOutboxModel) {
       this.requestRouter = OutboxModel.fromSystem(this);
     }
 
     // Cache everything
-    if (this.#config.cachingRelay) {
+    if (this.config.cachingRelay) {
       this.on("event", async (_, ev) => {
-        await this.#config.cachingRelay?.event(ev);
+        await this.config.cachingRelay?.event(ev);
       });
     }
 
     // Hook on-event when building follow graph
-    if (this.#config.buildFollowGraph) {
+    if (this.config.buildFollowGraph) {
       let evBuf: Array<TaggedNostrEvent> = [];
       let t: ReturnType<typeof setTimeout> | undefined;
       this.on("event", (_, ev) => {
@@ -213,7 +136,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
 
   async PreloadSocialGraph() {
     // Insert data to socialGraph from cache
-    if (this.#config.buildFollowGraph) {
+    if (this.config.buildFollowGraph) {
       for (const list of this.userFollowsCache.snapshot()) {
         const user = ID(list.pubkey);
         for (const fx of list.follows) {
