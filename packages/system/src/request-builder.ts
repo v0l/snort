@@ -59,6 +59,7 @@ export class RequestBuilder {
   #builders: Array<RequestFilterBuilder>;
   #options?: RequestBuilderOptions;
   #log = debug("RequestBuilder");
+  #rawCached?: Array<ReqFilter>;
 
   constructor(id: string) {
     this.instance = uuid();
@@ -83,17 +84,20 @@ export class RequestBuilder {
    */
   add(other: RequestBuilder) {
     this.#builders.push(...other.#builders);
+    this.#rawCached = undefined;
   }
 
   withFilter() {
     const ret = new RequestFilterBuilder();
     this.#builders.push(ret);
+    this.#rawCached = undefined;
     return ret;
   }
 
   withBareFilter(f: ReqFilter) {
     const ret = new RequestFilterBuilder(f);
     this.#builders.push(ret);
+    this.#rawCached = undefined;
     return ret;
   }
 
@@ -105,12 +109,15 @@ export class RequestBuilder {
     return this;
   }
 
-  buildRaw(): Array<ReqFilter> {
-    return this.#builders.map(f => f.filter);
+  buildRaw(system?: SystemInterface): Array<ReqFilter> {
+    if (!this.#rawCached && system) {
+      this.#rawCached = system.optimizer.compress(this.#builders.map(f => f.filter));
+    }
+    return this.#rawCached ?? [];
   }
 
   build(system: SystemInterface): Array<BuiltRawReqFilter> {
-    let rawFilters = this.buildRaw();
+    let rawFilters = this.buildRaw(system);
     if (system.requestRouter) {
       rawFilters = system.requestRouter.forAllRequest(rawFilters);
     }
@@ -124,7 +131,7 @@ export class RequestBuilder {
   buildDiff(system: SystemInterface, prev: Array<ReqFilter>): Array<BuiltRawReqFilter> {
     const start = unixNowMs();
 
-    let rawFilters = this.buildRaw();
+    let rawFilters = this.buildRaw(system);
     if (system.requestRouter) {
       rawFilters = system.requestRouter.forAllRequest(rawFilters);
     }
@@ -133,7 +140,7 @@ export class RequestBuilder {
       const ret = this.#groupFlatByRelay(system, diff);
       const ts = unixNowMs() - start;
       if (ts >= 100) {
-        this.#log("slow diff %s %d ms, consider separate query ids, or use skipDiff: %O", this.id, ts, ret);
+        this.#log("slow diff %s %d ms, consider separate query ids, or use skipDiff: %O", this.id, ts, prev);
       }
       return ret;
     }

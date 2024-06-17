@@ -168,6 +168,11 @@ export class Query extends EventEmitter<QueryEvents> {
 
   #log = debug("Query");
 
+  /**
+   * Compressed cached trace filters
+   */
+  #cachedFilters?: Array<ReqFilter>;
+
   constructor(system: SystemInterface, req: RequestBuilder) {
     super();
     this.request = req;
@@ -193,7 +198,6 @@ export class Query extends EventEmitter<QueryEvents> {
   addRequest(req: RequestBuilder) {
     if (req.instance === this.request.instance) {
       // same requst, do nothing
-      this.#log("Same query %O === %O", req, this.request);
       return;
     }
     this.#log("Add query %O to %s", req, this.id);
@@ -214,7 +218,10 @@ export class Query extends EventEmitter<QueryEvents> {
    * Recompute the complete set of compressed filters from all query traces
    */
   get filters() {
-    return this.#tracing.flatMap(a => a.filters);
+    if (this.#system && !this.#cachedFilters) {
+      this.#cachedFilters = this.#system.optimizer.compress(this.#tracing.flatMap(a => a.filters));
+    }
+    return this.#cachedFilters ?? this.#tracing.flatMap(a => a.filters);
   }
 
   get feed() {
@@ -432,6 +439,7 @@ export class Query extends EventEmitter<QueryEvents> {
       c.off("closed", eoseHandler);
     });
     this.#tracing.push(qt);
+    this.#cachedFilters = undefined;
 
     if (q.syncFrom !== undefined) {
       c.request(["SYNC", qt.id, q.syncFrom, ...qt.filters], () => qt.sentToRelay());
