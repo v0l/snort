@@ -2,12 +2,13 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
 
+import { unixNow } from "@snort/shared";
 import { SnortContext } from "@snort/system-react";
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 
-import { initRelayWorker, preload, UserCache } from "@/Cache";
+import { initRelayWorker, preload, Relay, UserCache } from "@/Cache";
 import { ThreadRoute } from "@/Components/Event/Thread/ThreadRoute";
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
 import { db } from "@/Db";
@@ -43,6 +44,7 @@ import { hasWasm, wasmInit, WasmPath } from "@/Utils/wasm";
 import { Wallets } from "@/Wallet";
 import { setupWebLNWalletConfig } from "@/Wallet";
 
+import { Day } from "./Utils/Const";
 import { LoginStore } from "./Utils/Login";
 
 async function initSite() {
@@ -68,6 +70,9 @@ async function initSite() {
       }
     }
   });
+
+  // cleanup
+  Relay.delete(["REQ", "cleanup", { kinds: [1, 7, 9735], until: unixNow() - (Day * 30) }]);
 
   return null;
 }
