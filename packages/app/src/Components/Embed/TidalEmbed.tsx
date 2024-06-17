@@ -54,7 +54,6 @@ const TidalEmbed = ({ link }: { link: string }) => {
     );
   }
   const iframe = (
-    // eslint-disable-next-line react/no-unknown-property
     <iframe
       src={source}
       style={extraStyles}
@@ -63,7 +62,6 @@ const TidalEmbed = ({ link }: { link: string }) => {
       sandbox="allow-scripts allow-popups allow-forms allow-same-origin"
       title="TIDAL Embed"
       frameBorder={0}
-      credentialless=""
     />
   );
   return (
