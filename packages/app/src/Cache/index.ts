@@ -30,14 +30,20 @@ async function tryUseCacheRelay(url: string) {
 }
 
 export async function initRelayWorker() {
-  if (!cacheRelay) {
-    let conn = await tryUseCacheRelay("ws://localhost:4869");
-    if (!conn) {
-      conn = await tryUseCacheRelay("ws://umbrel:4848");
+
+  try {
+    if (!cacheRelay) {
+      let conn = await tryUseCacheRelay("ws://localhost:4869");
+      if (!conn) {
+        conn = await tryUseCacheRelay("ws://umbrel:4848");
+      }
+      if (conn) return;
+    } else if (Relay instanceof ConnectionCacheRelay) {
+      await Relay.connection.connect(true);
+      return;
     }
-    if (conn) return;
-  } else if (Relay instanceof ConnectionCacheRelay) {
-    await Relay.connection.connect();
+  } catch (e) {
+    console.error(e);
   }
 
   try {
