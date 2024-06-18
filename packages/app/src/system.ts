@@ -30,7 +30,6 @@ System.on("auth", async (c, r, cb) => {
 });
 
 System.on("event", (_, ev) => {
-  Relay.event(ev);
   EventsCache.discover(ev);
   UserCache.discover(ev);
   addEventToFuzzySearch(ev);

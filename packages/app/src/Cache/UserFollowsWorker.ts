@@ -1,16 +1,15 @@
 import { CachedTable, CacheEvents, removeUndefined, unixNowMs, unwrap } from "@snort/shared";
-import { EventKind, NostrEvent, UsersFollows } from "@snort/system";
-import { WorkerRelayInterface } from "@snort/worker-relay";
+import { CacheRelay, EventKind, NostrEvent, UsersFollows } from "@snort/system";
 import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 
 export class UserFollowsWorker extends EventEmitter<CacheEvents> implements CachedTable<UsersFollows> {
-  #relay: WorkerRelayInterface;
+  #relay: CacheRelay;
   #keys = new Set<string>();
   #cache = new Map<string, UsersFollows>();
   #log = debug("UserFollowsWorker");
 
-  constructor(relay: WorkerRelayInterface) {
+  constructor(relay: CacheRelay) {
     super();
     this.#relay = relay;
   }

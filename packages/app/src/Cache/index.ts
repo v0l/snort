@@ -1,4 +1,4 @@
-import { RelayMetricCache, UserRelaysCache } from "@snort/system";
+import { CacheRelay, Connection, ConnectionCacheRelay, RelayMetricCache, UserRelaysCache } from "@snort/system";
 import { SnortSystemDb } from "@snort/system-web";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 import WorkerVite from "@snort/worker-relay/src/worker?worker";
@@ -8,13 +8,41 @@ import { GiftWrapCache } from "./GiftWrapCache";
 import { ProfileCacheRelayWorker } from "./ProfileWorkerCache";
 import { UserFollowsWorker } from "./UserFollowsWorker";
 
-export const Relay = new WorkerRelayInterface(
+const cacheRelay = localStorage.getItem("cache-relay");
+
+const workerRelay = new WorkerRelayInterface(
   import.meta.env.DEV ? new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url) : new WorkerVite(),
 );
-export async function initRelayWorker() {
+
+export const Relay: CacheRelay = cacheRelay
+  ? new ConnectionCacheRelay(new Connection(cacheRelay, { read: true, write: true }))
+  : workerRelay;
+
+async function tryUseCacheRelay(url: string) {
   try {
-    await Relay.debug("");
-    await Relay.init({
+    const conn = new Connection(url, { read: true, write: true });
+    await conn.connect(true);
+    localStorage.setItem("cache-relay", url);
+    return conn;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function initRelayWorker() {
+  if (!cacheRelay) {
+    let conn = await tryUseCacheRelay("ws://localhost:4869");
+    if (!conn) {
+      conn = await tryUseCacheRelay("ws://umbrel:4848");
+    }
+    if (conn) return;
+  } else if (Relay instanceof ConnectionCacheRelay) {
+    await Relay.connection.connect();
+  }
+
+  try {
+    await workerRelay.debug("");
+    await workerRelay.init({
       databasePath: "relay.db",
       insertBatchSize: 100,
     });

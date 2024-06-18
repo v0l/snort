@@ -28,6 +28,8 @@ export * from "./encrypted";
 export * from "./outbox";
 export * from "./sync";
 export * from "./user-state";
+export * from "./cache-relay";
+export * from "./connection-cache-relay";
 
 export * from "./impl/nip4";
 export * from "./impl/nip7";

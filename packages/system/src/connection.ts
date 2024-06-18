@@ -100,7 +100,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     return [...this.#activeRequests];
   }
 
-  async connect() {
+  async connect(awaitOpen = false) {
     // already connected
     if (this.isOpen || this.isConnecting) return;
     // wait for re-connect timer
@@ -131,24 +131,31 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       // ignored
     }
 
-    const wasReconnect = this.Socket !== null;
-    if (this.Socket) {
-      this.id = uuid();
-      if (this.isOpen) {
-        this.Socket.close();
+    try {
+      const wasReconnect = this.Socket !== null;
+      if (this.Socket) {
+        this.id = uuid();
+        if (this.isOpen) {
+          this.Socket.close();
+        }
+        this.Socket.onopen = null;
+        this.Socket.onmessage = null;
+        this.Socket.onerror = null;
+        this.Socket.onclose = null;
+        this.Socket = null;
       }
-      this.Socket.onopen = null;
-      this.Socket.onmessage = null;
-      this.Socket.onerror = null;
-      this.Socket.onclose = null;
-      this.Socket = null;
+      this.Socket = new WebSocket(this.address);
+      this.Socket.onopen = () => this.#onOpen(wasReconnect);
+      this.Socket.onmessage = e => this.#onMessage(e);
+      this.Socket.onerror = e => this.#onError(e);
+      this.Socket.onclose = e => this.#onClose(e);
+      if (awaitOpen) {
+        await new Promise(resolve => this.once("connected", resolve));
+      }
+    } catch (e) {
+      this.#connectStarted = false;
+      throw e;
     }
-    this.Socket = new WebSocket(this.address);
-    this.Socket.onopen = () => this.#onOpen(wasReconnect);
-    this.Socket.onmessage = e => this.#onMessage(e);
-    this.Socket.onerror = e => this.#onError(e);
-    this.Socket.onclose = e => this.#onClose(e);
-    this.#connectStarted = false;
   }
 
   close() {
@@ -158,6 +165,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
 
   #onOpen(wasReconnect: boolean) {
     this.#downCount = 0;
+    this.#connectStarted = false;
     this.#log(`Open!`);
     this.#setupEphemeral();
     this.emit("connected", wasReconnect);

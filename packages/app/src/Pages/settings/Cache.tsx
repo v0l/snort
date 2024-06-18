@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { GiftsCache, Relay, RelayMetrics } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import useLogin from "@/Hooks/useLogin";
+import { WorkerRelayInterface } from "@snort/worker-relay";
 
 export function CacheSettings() {
   return (
@@ -56,9 +57,11 @@ function RelayCacheStats() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    Relay.summary().then(setCounts);
-    if (login.publicKey) {
-      Relay.count(["REQ", "my", { authors: [login.publicKey] }]).then(setMyEvents);
+    if (Relay instanceof WorkerRelayInterface) {
+      Relay.summary().then(setCounts);
+      if (login.publicKey) {
+        Relay.count(["REQ", "my", { authors: [login.publicKey] }]).then(setMyEvents);
+      }
     }
   }, []);
 
