@@ -36,7 +36,10 @@ export async function initRelayWorker() {
       if (!conn) {
         conn = await tryUseCacheRelay("ws://umbrel:4848");
       }
-      if (conn) return;
+      if (conn) {
+        window.location.reload();
+        return;
+      }
     } else if (Relay instanceof ConnectionCacheRelay) {
       await Relay.connection.connect(true);
       return;
@@ -44,6 +47,9 @@ export async function initRelayWorker() {
   } catch (e) {
     localStorage.removeItem("cache-relay");
     console.error(e);
+    if (cacheRelay) {
+      window.location.reload();
+    }
   }
 
   try {

@@ -45,6 +45,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   #activeRequests = new Set<string>();
   #connectStarted = false;
   #syncModule?: ConnectionSyncModule;
+  #wasUp = false;
 
   id: string;
   readonly address: string;
@@ -169,6 +170,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   #onOpen(wasReconnect: boolean) {
     this.#downCount = 0;
     this.#connectStarted = false;
+    this.#wasUp = true;
     this.#log(`Open!`);
     this.#setupEphemeral();
     this.emit("connected", wasReconnect);
@@ -176,12 +178,12 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   }
 
   #onClose(e: WebSocket.CloseEvent) {
-    // remote server closed the connection, dont re-connect
-    if (!this.#closing) {
+    // if not explicity closed or closed after, start re-connect timer
+    if (this.#wasUp && !this.#closing) {
       this.#downCount++;
       this.#reconnectTimer(e);
     } else {
-      this.#log(`Closed!`);
+      this.#log(`Closed: connecting=${this.#connectStarted}, closing=${this.#closing}`);
       this.#downCount = 0;
       if (this.ReconnectTimer) {
         clearTimeout(this.ReconnectTimer);
@@ -206,9 +208,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       this.ReconnectTimer = undefined;
       try {
         this.connect();
-      } catch {
-        this.emit("disconnect", -1);
-      }
+      } catch {}
     }, this.ConnectTimeout);
   }
 
