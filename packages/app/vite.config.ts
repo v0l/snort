@@ -15,7 +15,7 @@ export default defineConfig({
     }),
     VitePWA({
       strategies: "injectManifest",
-      injectRegister: "inline",
+      injectRegister: "script",
       srcDir: "src",
       filename: "service-worker.ts",
       registerType: "autoUpdate",
