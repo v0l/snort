@@ -30,7 +30,6 @@ async function tryUseCacheRelay(url: string) {
 }
 
 export async function initRelayWorker() {
-
   try {
     if (!cacheRelay) {
       let conn = await tryUseCacheRelay("ws://localhost:4869");
