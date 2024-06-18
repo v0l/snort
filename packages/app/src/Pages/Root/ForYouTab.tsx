@@ -112,7 +112,7 @@ export const ForYouTab = memo(function ForYouTab() {
     if (!getForYouFeedPromise && Relay instanceof WorkerRelayInterface) {
       getForYouFeedPromise = Relay.forYouFeed(login.publicKey);
     }
-    getForYouFeedPromise!.then(notes => {
+    getForYouFeedPromise?.then(notes => {
       getForYouFeedPromise = null;
       if (notes.length < 10) {
         setTimeout(() => {
