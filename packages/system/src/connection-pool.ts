@@ -13,6 +13,7 @@ import { ConnectionSyncModule, DefaultSyncModule } from "./sync/connection";
 export interface ConnectionTypeEvents {
   change: () => void;
   connected: (wasReconnect: boolean) => void;
+  error: () => void;
   event: (sub: string, e: TaggedNostrEvent) => void;
   eose: (sub: string) => void;
   closed: (sub: string, reason: string) => void;

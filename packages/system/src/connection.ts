@@ -150,7 +150,10 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       this.Socket.onerror = e => this.#onError(e);
       this.Socket.onclose = e => this.#onClose(e);
       if (awaitOpen) {
-        await new Promise(resolve => this.once("connected", resolve));
+        await new Promise((resolve, reject) => {
+          this.once("connected", resolve);
+          this.once("error", reject);
+        });
       }
     } catch (e) {
       this.#connectStarted = false;
@@ -276,6 +279,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   #onError(e: WebSocket.Event) {
     this.#log("Error: %O", e);
     this.emit("change");
+    this.emit("error");
   }
 
   /**
