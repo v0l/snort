@@ -113,7 +113,7 @@ export class RequestBuilder {
     if (!this.#rawCached && system) {
       this.#rawCached = system.optimizer.compress(this.#builders.map(f => f.filter));
     }
-    return this.#rawCached ?? [];
+    return this.#rawCached ?? this.#builders.map(f => f.filter);
   }
 
   build(system: SystemInterface): Array<BuiltRawReqFilter> {

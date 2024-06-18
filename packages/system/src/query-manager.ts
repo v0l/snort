@@ -76,7 +76,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    * Async fetch results
    */
   async fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
-    const filters = req.buildRaw();
+    const filters = req.buildRaw(this.#system);
     const q = this.query(req);
     if (cb) {
       q.on("event", cb);
