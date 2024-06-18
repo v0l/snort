@@ -187,7 +187,7 @@ export const ForYouTab = memo(function ForYouTab() {
         latest={[]}
         displayAs={displayAs}
         loadMore={() => latestFeed.loadMore()}
-        showLatest={() => { }}
+        showLatest={() => {}}
       />
     </>
   );
