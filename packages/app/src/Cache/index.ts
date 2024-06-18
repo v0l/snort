@@ -42,6 +42,7 @@ export async function initRelayWorker() {
       return;
     }
   } catch (e) {
+    localStorage.removeItem("cache-relay");
     console.error(e);
   }
 
