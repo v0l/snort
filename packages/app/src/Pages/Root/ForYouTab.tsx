@@ -1,4 +1,5 @@
 import { EventKind, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { WorkerRelayInterface } from "@snort/worker-relay";
 import { memo, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, useNavigationType } from "react-router-dom";
@@ -108,14 +109,16 @@ export const ForYouTab = memo(function ForYouTab() {
     if (!login.publicKey) {
       return [];
     }
-    if (!getForYouFeedPromise) {
+    if (!getForYouFeedPromise && Relay instanceof WorkerRelayInterface) {
       getForYouFeedPromise = Relay.forYouFeed(login.publicKey);
     }
     getForYouFeedPromise!.then(notes => {
       getForYouFeedPromise = null;
       if (notes.length < 10) {
         setTimeout(() => {
-          getForYouFeedPromise = Relay.forYouFeed(login.publicKey!);
+          if (Relay instanceof WorkerRelayInterface) {
+            getForYouFeedPromise = Relay.forYouFeed(login.publicKey!);
+          }
         }, 1000);
       }
       forYouFeed = {
@@ -184,7 +187,7 @@ export const ForYouTab = memo(function ForYouTab() {
         latest={[]}
         displayAs={displayAs}
         loadMore={() => latestFeed.loadMore()}
-        showLatest={() => {}}
+        showLatest={() => { }}
       />
     </>
   );
