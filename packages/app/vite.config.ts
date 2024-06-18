@@ -35,6 +35,7 @@ export default defineConfig({
       command: "git describe --always --tags",
       ifMeta: false,
       ifLog: false,
+      ifGlobal: false,
     }),
   ],
   assetsInclude: ["**/*.md", "**/*.wasm"],
