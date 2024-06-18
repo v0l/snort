@@ -152,7 +152,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       if (awaitOpen) {
         await new Promise((resolve, reject) => {
           this.once("connected", resolve);
-          this.once("error", reject);
+          this.once("disconnect", reject);
         });
       }
     } catch (e) {
