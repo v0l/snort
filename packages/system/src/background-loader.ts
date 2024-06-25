@@ -79,6 +79,9 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
               resolve(existing);
               this.UntrackKeys(key);
               this.cache.off("change", handler);
+            } else {
+              // should never happen
+              reject(new Error("Not found"));
             }
           }
         };

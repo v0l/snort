@@ -8,6 +8,7 @@ import Text from "@/Components/Text/Text";
 import FollowedBy from "@/Components/User/FollowedBy";
 
 import useLogin from "../../Hooks/useLogin";
+import { UserDebug } from "./Debug";
 import FollowButton from "./FollowButton";
 import ProfileImage from "./ProfileImage";
 import { UserWebsiteLink } from "./UserWebsiteLink";
@@ -26,6 +27,7 @@ export function ProfileCard({
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [t, setT] = useState<ReturnType<typeof setTimeout>>();
   const { publicKey: myPublicKey } = useLogin(s => ({ publicKey: s.publicKey }));
+  const debug = Boolean(localStorage.getItem("debug"));
 
   useEffect(() => {
     if (show) {
@@ -71,6 +73,7 @@ export function ProfileCard({
         />
         <UserWebsiteLink user={user} />
         {myPublicKey && <FollowedBy pubkey={pubkey} />}
+        {debug && <UserDebug pubkey={pubkey} />}
       </div>
     </ControlledMenu>
   );
