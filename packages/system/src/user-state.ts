@@ -134,15 +134,6 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
 
       await this.#relays.persist(signer, system);
     }
-
-    // migrate mutes into blocks
-    const muteList = this.#standardLists.get(EventKind.MuteList);
-    if (muteList && muteList.tags.length > 0 && signer) {
-      this.#log("Migrating mutes into blocks mutes=%i, blocks=%i", muteList.tags.length, muteList.encryptedTags.length);
-      muteList.replace([], false);
-      muteList.add(muteList!.tags, true);
-      await muteList.persist(signer, system);
-    }
   }
 
   get version() {
