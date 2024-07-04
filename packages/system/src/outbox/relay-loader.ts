@@ -27,7 +27,6 @@ export class RelayMetadataLoader extends BackgroundLoader<UsersRelays> {
   protected override buildSub(missing: string[]): RequestBuilder {
     const rb = new RequestBuilder("relay-loader");
     rb.withOptions({
-      skipDiff: true,
       timeout: 10000,
       outboxPickN: 4,
     });

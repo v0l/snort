@@ -76,7 +76,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    * Async fetch results
    */
   async fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
-    const filters = req.buildRaw(this.#system);
+    const filters = req.buildRaw();
     const q = this.query(req);
     if (cb) {
       q.on("event", cb);
@@ -101,15 +101,6 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     for (const qfl of this.#queryCacheLayers) {
       qSend = await qfl.processFilter(q, qSend);
     }
-    if (this.#system.cacheRelay) {
-      // fetch results from cache first, flag qSend for sync
-      const data = await this.#system.cacheRelay.query(["REQ", q.id, ...qSend.filters]);
-      if (data.length > 0) {
-        qSend.syncFrom = data as Array<TaggedNostrEvent>;
-        this.#log("Adding from cache: %O", data);
-        q.feed.add(data.map(a => ({ ...a, relays: [] })));
-      }
-    }
 
     // automated outbox model, load relays for queried authors
     for (const f of qSend.filters) {
@@ -119,19 +110,42 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     }
 
     // check for empty filters
-    const fNew = trimFilters(qSend.filters);
-    if (fNew.length === 0) {
+    qSend.filters = trimFilters(qSend.filters);
+
+    // fetch results from cache first, flag qSend for sync
+    if (this.#system.cacheRelay) {
+      const data = await this.#system.cacheRelay.query(["REQ", q.id, ...qSend.filters]);
+      if (data.length > 0) {
+        qSend.syncFrom = data as Array<TaggedNostrEvent>;
+        this.#log("Adding from cache: %O", data);
+        q.feed.add(data.map(a => ({ ...a, relays: [] })));
+      }
+    }
+
+    // remove satisfied filters
+    if (qSend.syncFrom && qSend.syncFrom.length > 0) {
+      // only remove the "ids" filters
+      const newFilters = qSend.filters.filter(
+        a => !a.ids || (a.ids && !qSend.syncFrom?.some(b => eventMatchesFilter(b, a))),
+      );
+      if (newFilters.length !== qSend.filters.length) {
+        this.#log("Removing satisfied filters %o %o", newFilters, qSend.filters);
+        qSend.filters = newFilters;
+      }
+    }
+
+    // nothing left to send
+    if (qSend.filters.length === 0) {
       this.#log("Dropping %s %o", q.id, qSend);
       return;
     }
-    qSend.filters = fNew;
 
     if (qSend.relay) {
-      this.#log("Sending query to %s %s %O", qSend.relay, q.id, qSend);
       const nc = await this.#system.pool.connect(qSend.relay, { read: true, write: true }, true);
       if (nc) {
         const qt = q.sendToRelay(nc, qSend);
         if (qt) {
+          this.#log("Sent query %s to %s %s %O", qt.id, qSend.relay, q.id, qSend);
           return [qt];
         } else {
           this.#log("Query not sent to %s: %O", qSend.relay, qSend);
@@ -143,9 +157,9 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       const ret = [];
       for (const [a, s] of this.#system.pool) {
         if (!s.ephemeral) {
-          this.#log("Sending query to %s %s %O", a, q.id, qSend);
           const qt = q.sendToRelay(s, qSend);
           if (qt) {
+            this.#log("Sent query %s to %s %s %O", qt.id, qSend.relay, q.id, qSend);
             ret.push(qt);
           } else {
             this.#log("Query not sent to %s: %O", a, qSend);

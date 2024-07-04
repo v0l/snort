@@ -1,9 +1,8 @@
-import debug from "debug";
 import { v4 as uuid } from "uuid";
-import { appendDedupe, dedupe, removeUndefined, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
+import { appendDedupe, dedupe, removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
 
 import EventKind from "./event-kind";
-import { FlatReqFilter, NostrLink, NostrPrefix, SystemInterface, ToNostrEventTag } from ".";
+import { NostrLink, NostrPrefix, ToNostrEventTag } from ".";
 import { ReqFilter, u256, HexKey, TaggedNostrEvent } from "./nostr";
 import { RequestRouter } from "./request-router";
 
@@ -24,11 +23,6 @@ export interface RequestBuilderOptions {
   leaveOpen?: boolean;
 
   /**
-   * Do not apply diff logic and always use full filters for query
-   */
-  skipDiff?: boolean;
-
-  /**
    * Pick N relays per pubkey when using outbox strategy
    */
   outboxPickN?: number;
@@ -42,12 +36,6 @@ export interface RequestBuilderOptions {
    * How many milli-seconds to wait to allow grouping
    */
   groupingDelay?: number;
-
-  /**
-   * If events should be added automatically to the internal NoteCollection
-   * default=true
-   */
-  fillStore?: boolean;
 }
 
 /**
@@ -58,8 +46,6 @@ export class RequestBuilder {
   instance: string;
   #builders: Array<RequestFilterBuilder>;
   #options?: RequestBuilderOptions;
-  #log = debug("RequestBuilder");
-  #rawCached?: Array<ReqFilter>;
 
   constructor(id: string) {
     this.instance = uuid();
@@ -84,20 +70,17 @@ export class RequestBuilder {
    */
   add(other: RequestBuilder) {
     this.#builders.push(...other.#builders);
-    this.#rawCached = undefined;
   }
 
   withFilter() {
     const ret = new RequestFilterBuilder();
     this.#builders.push(ret);
-    this.#rawCached = undefined;
     return ret;
   }
 
   withBareFilter(f: ReqFilter) {
     const ret = new RequestFilterBuilder(f);
     this.#builders.push(ret);
-    this.#rawCached = undefined;
     return ret;
   }
 
@@ -109,67 +92,8 @@ export class RequestBuilder {
     return this;
   }
 
-  buildRaw(system?: SystemInterface): Array<ReqFilter> {
-    if (!this.#rawCached && system) {
-      this.#rawCached = system.optimizer.compress(this.#builders.map(f => f.filter));
-    }
-    return this.#rawCached ?? this.#builders.map(f => f.filter);
-  }
-
-  build(system: SystemInterface): Array<BuiltRawReqFilter> {
-    let rawFilters = this.buildRaw(system);
-    if (system.requestRouter) {
-      rawFilters = system.requestRouter.forAllRequest(rawFilters);
-    }
-    const expanded = rawFilters.flatMap(a => system.optimizer.expandFilter(a));
-    return this.#groupFlatByRelay(system, expanded);
-  }
-
-  /**
-   * Detects a change in request from a previous set of filters
-   */
-  buildDiff(system: SystemInterface, prev: Array<ReqFilter>): Array<BuiltRawReqFilter> {
-    const start = unixNowMs();
-
-    let rawFilters = this.buildRaw(system);
-    if (system.requestRouter) {
-      rawFilters = system.requestRouter.forAllRequest(rawFilters);
-    }
-    const diff = system.optimizer.getDiff(prev, rawFilters);
-    if (diff.length > 0) {
-      const ret = this.#groupFlatByRelay(system, diff);
-      const ts = unixNowMs() - start;
-      if (ts >= 100) {
-        this.#log("slow diff %s %d ms, consider separate query ids, or use skipDiff: %O", this.id, ts, prev);
-      }
-      return ret;
-    }
-    return [];
-  }
-
-  #groupFlatByRelay(system: SystemInterface, filters: Array<FlatReqFilter>) {
-    const relayMerged = filters.reduce((acc, v) => {
-      const relay = v.relay ?? "";
-      // delete relay from filter
-      delete v.relay;
-      const existing = acc.get(relay);
-      if (existing) {
-        existing.push(v);
-      } else {
-        acc.set(relay, [v]);
-      }
-      return acc;
-    }, new Map<string, Array<FlatReqFilter>>());
-
-    const ret = [];
-    for (const [k, v] of relayMerged.entries()) {
-      const filters = system.optimizer.flatMerge(v);
-      ret.push({
-        relay: k,
-        filters,
-      } as BuiltRawReqFilter);
-    }
-    return ret;
+  buildRaw(): Array<ReqFilter> {
+    return this.#builders.map(f => f.filter);
   }
 }
 

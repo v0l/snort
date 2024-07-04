@@ -21,7 +21,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const link = useMemo(() => NostrLink.fromEvent(ev), [ev.id]);
   const [showReactions, setShowReactions] = useState(false);
 
-  const related = useReactions(`reactions:${link.tagKey}`, link);
+  const related = useReactions("reactions", link);
   const { replies, reactions, zaps, reposts } = useEventReactions(link, related);
   const { positive } = reactions;
 

@@ -3,11 +3,10 @@ import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 import { unixNowMs, unwrap } from "@snort/shared";
 
-import { ReqFilter, Nips, TaggedNostrEvent, SystemInterface, ParsedFragment } from ".";
+import { ReqFilter, Nips, TaggedNostrEvent, SystemInterface, ParsedFragment, FlatReqFilter } from ".";
 import { NoteCollection } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { eventMatchesFilter } from "./request-matcher";
-import { LRUCache } from "lru-cache";
 import { ConnectionType } from "./connection-pool";
 
 interface QueryTraceEvents {
@@ -103,23 +102,16 @@ export interface QueryEvents {
   done: () => void;
 }
 
-const QueryCache = new LRUCache<string, Array<TaggedNostrEvent>>({
-  ttl: 60_000 * 3,
-  ttlAutopurge: true,
-});
-
 /**
  * Active or queued query on the system
  */
 export class Query extends EventEmitter<QueryEvents> {
-  get id() {
-    return this.request.id;
-  }
+  id: string;
 
   /**
    * RequestBuilder instance
    */
-  request: RequestBuilder;
+  requests: Array<ReqFilter> = [];
 
   /**
    * Nostr system interface
@@ -175,7 +167,7 @@ export class Query extends EventEmitter<QueryEvents> {
 
   constructor(system: SystemInterface, req: RequestBuilder) {
     super();
-    this.request = req;
+    this.id = req.id;
     this.#system = system;
     this.#feed = new NoteCollection();
     this.#leaveOpen = req.options?.leaveOpen ?? false;
@@ -183,11 +175,7 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#groupingDelay = req.options?.groupingDelay ?? 100;
     this.#checkTraces();
 
-    const cached = QueryCache.get(this.request.id);
-    if (cached) {
-      this.#log("Restored %o for %s", cached, this.request.id);
-      this.feed.add(cached);
-    }
+    this.requests.push(...req.buildRaw());
     this.feed.on("event", evs => this.emit("event", evs));
     this.#start();
   }
@@ -196,12 +184,8 @@ export class Query extends EventEmitter<QueryEvents> {
    * Adds another request to this one
    */
   addRequest(req: RequestBuilder) {
-    if (req.instance === this.request.instance) {
-      // same requst, do nothing
-      return;
-    }
     this.#log("Add query %O to %s", req, this.id);
-    this.request.add(req);
+    this.requests.push(...req.buildRaw());
     this.#start();
     return true;
   }
@@ -263,8 +247,6 @@ export class Query extends EventEmitter<QueryEvents> {
     }
     this.#stopCheckTraces();
     this.emit("end");
-    QueryCache.set(this.request.id, this.feed.snapshot);
-    this.#log("Saved %O for %s", this.feed.snapshot, this.request.id);
   }
 
   /**
@@ -345,16 +327,39 @@ export class Query extends EventEmitter<QueryEvents> {
 
   async #emitFilters() {
     this.#log("Starting emit of %s", this.id);
-    const existing = this.filters;
-    if (!(this.request.options?.skipDiff ?? false) && existing.length > 0) {
-      const filters = this.request.buildDiff(this.#system, existing);
-      this.#log("Build %s %O", this.id, filters);
-      filters.forEach(f => this.emit("request", this.id, f));
-    } else {
-      const filters = this.request.build(this.#system);
-      this.#log("Build %s %O", this.id, filters);
-      filters.forEach(f => this.emit("request", this.id, f));
+    let rawFilters = [...this.requests];
+    this.requests = [];
+    if (this.#system.requestRouter) {
+      rawFilters = this.#system.requestRouter.forAllRequest(rawFilters);
     }
+    const expanded = rawFilters.flatMap(a => this.#system.optimizer.expandFilter(a));
+    const fx = this.#groupFlatByRelay(expanded);
+    fx.forEach(a => this.emit("request", this.id, a));
+  }
+
+  #groupFlatByRelay(filters: Array<FlatReqFilter>) {
+    const relayMerged = filters.reduce((acc, v) => {
+      const relay = v.relay ?? "";
+      // delete relay from filter
+      delete v.relay;
+      const existing = acc.get(relay);
+      if (existing) {
+        existing.push(v);
+      } else {
+        acc.set(relay, [v]);
+      }
+      return acc;
+    }, new Map<string, Array<FlatReqFilter>>());
+
+    const ret = [];
+    for (const [k, v] of relayMerged.entries()) {
+      const filters = this.#system.optimizer.flatMerge(v);
+      ret.push({
+        relay: k,
+        filters,
+      } as BuiltRawReqFilter);
+    }
+    return ret;
   }
 
   #stopCheckTraces() {
@@ -419,7 +424,7 @@ export class Query extends EventEmitter<QueryEvents> {
       }
     });
     const eventHandler = (sub: string, ev: TaggedNostrEvent) => {
-      if ((this.request.options?.fillStore ?? true) && qt.id === sub) {
+      if (qt.id === sub) {
         if (qt.filters.some(v => eventMatchesFilter(ev, v))) {
           this.feed.add(ev);
         } else {
