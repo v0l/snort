@@ -2,7 +2,7 @@ import "./Timeline.css";
 
 import { unixNow } from "@snort/shared";
 import { EventKind, NostrEvent, RequestBuilder } from "@snort/system";
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import useFollowsControls from "@/Hooks/useFollowControls";
@@ -41,14 +41,20 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     firstChunkSize: Hour * 2,
   });
 
-  const builder = (rb: RequestBuilder) => {
-    rb.withFilter().authors(followList).kinds([EventKind.TextNote, EventKind.Repost, EventKind.Polls]);
-  };
+  const builder = useCallback(
+    (rb: RequestBuilder) => {
+      rb.withFilter().authors(followList).kinds([EventKind.TextNote, EventKind.Repost, EventKind.Polls]);
+    },
+    [followList],
+  );
 
-  const filterEvents = (a: NostrEvent) =>
-    (props.noteFilter?.(a) ?? true) &&
-    (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true) &&
-    (isFollowing(a.pubkey) || a.tags.filter(a => a[0] === "t").length < 5);
+  const filterEvents = useCallback(
+    (a: NostrEvent) =>
+      (props.noteFilter?.(a) ?? true) &&
+      (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true) &&
+      (isFollowing(a.pubkey) || a.tags.filter(a => a[0] === "t").length < 5),
+    [props.noteFilter, props.postsOnly, followList],
+  );
 
   return (
     <>
