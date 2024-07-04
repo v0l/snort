@@ -1,4 +1,4 @@
-import { NostrEvent, ReqFilter } from "./nostr";
+import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
 
 export function eventMatchesFilter(ev: NostrEvent, filter: ReqFilter) {
   if (filter.since && ev.created_at < filter.since) {
@@ -17,4 +17,10 @@ export function eventMatchesFilter(ev: NostrEvent, filter: ReqFilter) {
     return false;
   }
   return true;
+}
+
+export function isRequestSatisfied(filter: ReqFilter, results: Array<TaggedNostrEvent>) {
+  if (filter.ids && filter.ids.every(a => results.some(b => b.id === a))) {
+    return true;
+  }
 }

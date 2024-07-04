@@ -3,7 +3,7 @@ import { EventEmitter } from "eventemitter3";
 import { BuiltRawReqFilter, FlatReqFilter, ReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from ".";
 import { Query, TraceReport } from "./query";
 import { trimFilters } from "./request-trim";
-import { eventMatchesFilter } from "./request-matcher";
+import { eventMatchesFilter, isRequestSatisfied } from "./request-matcher";
 
 interface QueryManagerEvents {
   change: () => void;
@@ -107,7 +107,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       const data = await this.#system.cacheRelay.query(["REQ", q.id, ...filters]);
       if (data.length > 0) {
         syncFrom = data.map(a => ({ ...a, relays: [] }));
-        this.#log("Adding from cache: %O", data);
+        this.#log("Adding from cache %s %O", q.id, data);
         q.feed.add(syncFrom);
       }
     }
@@ -115,7 +115,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     // remove satisfied filters
     if (syncFrom.length > 0) {
       // only remove the "ids" filters
-      const newFilters = filters.filter(a => !a.ids || (a.ids && !syncFrom.some(b => eventMatchesFilter(b, a))));
+      const newFilters = filters.filter(a => !isRequestSatisfied(a, syncFrom));
       if (newFilters.length !== filters.length) {
         this.#log("Removing satisfied filters %o %o", newFilters, filters);
         filters = newFilters;
