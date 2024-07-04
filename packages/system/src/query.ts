@@ -3,7 +3,7 @@ import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 import { unixNowMs, unwrap } from "@snort/shared";
 
-import { ReqFilter, Nips, TaggedNostrEvent, SystemInterface, ParsedFragment, FlatReqFilter } from ".";
+import { ReqFilter, Nips, TaggedNostrEvent } from ".";
 import { NoteCollection } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { eventMatchesFilter } from "./request-matcher";
@@ -96,7 +96,7 @@ export interface TraceReport {
 
 export interface QueryEvents {
   trace: (report: TraceReport) => void;
-  request: (subId: string, req: BuiltRawReqFilter) => void;
+  request: (subId: string, req: Array<ReqFilter>) => void;
   event: (evs: Array<TaggedNostrEvent>) => void;
   end: () => void;
   done: () => void;
@@ -112,11 +112,6 @@ export class Query extends EventEmitter<QueryEvents> {
    * RequestBuilder instance
    */
   requests: Array<ReqFilter> = [];
-
-  /**
-   * Nostr system interface
-   */
-  #system: SystemInterface;
 
   /**
    * Which relays this query has already been executed on
@@ -160,15 +155,9 @@ export class Query extends EventEmitter<QueryEvents> {
 
   #log = debug("Query");
 
-  /**
-   * Compressed cached trace filters
-   */
-  #cachedFilters?: Array<ReqFilter>;
-
-  constructor(system: SystemInterface, req: RequestBuilder) {
+  constructor(req: RequestBuilder) {
     super();
     this.id = req.id;
-    this.#system = system;
     this.#feed = new NoteCollection();
     this.#leaveOpen = req.options?.leaveOpen ?? false;
     this.#timeout = req.options?.timeout ?? 5_000;
@@ -202,10 +191,7 @@ export class Query extends EventEmitter<QueryEvents> {
    * Recompute the complete set of compressed filters from all query traces
    */
   get filters() {
-    if (this.#system && !this.#cachedFilters) {
-      this.#cachedFilters = this.#system.optimizer.compress(this.#tracing.flatMap(a => a.filters));
-    }
-    return this.#cachedFilters ?? this.#tracing.flatMap(a => a.filters);
+    return this.#tracing.flatMap(a => a.filters);
   }
 
   get feed() {
@@ -329,37 +315,7 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#log("Starting emit of %s", this.id);
     let rawFilters = [...this.requests];
     this.requests = [];
-    if (this.#system.requestRouter) {
-      rawFilters = this.#system.requestRouter.forAllRequest(rawFilters);
-    }
-    const expanded = rawFilters.flatMap(a => this.#system.optimizer.expandFilter(a));
-    const fx = this.#groupFlatByRelay(expanded);
-    fx.forEach(a => this.emit("request", this.id, a));
-  }
-
-  #groupFlatByRelay(filters: Array<FlatReqFilter>) {
-    const relayMerged = filters.reduce((acc, v) => {
-      const relay = v.relay ?? "";
-      // delete relay from filter
-      delete v.relay;
-      const existing = acc.get(relay);
-      if (existing) {
-        existing.push(v);
-      } else {
-        acc.set(relay, [v]);
-      }
-      return acc;
-    }, new Map<string, Array<FlatReqFilter>>());
-
-    const ret = [];
-    for (const [k, v] of relayMerged.entries()) {
-      const filters = this.#system.optimizer.flatMerge(v);
-      ret.push({
-        relay: k,
-        filters,
-      } as BuiltRawReqFilter);
-    }
-    return ret;
+    this.emit("request", this.id, rawFilters);
   }
 
   #stopCheckTraces() {
@@ -444,7 +400,6 @@ export class Query extends EventEmitter<QueryEvents> {
       c.off("closed", eoseHandler);
     });
     this.#tracing.push(qt);
-    this.#cachedFilters = undefined;
 
     if (q.syncFrom !== undefined) {
       c.request(["SYNC", qt.id, q.syncFrom, ...qt.filters], () => qt.sentToRelay());

@@ -1,8 +1,7 @@
 import debug from "debug";
 import { EventEmitter } from "eventemitter3";
-import { BuiltRawReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from ".";
+import { BuiltRawReqFilter, FlatReqFilter, ReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from ".";
 import { Query, TraceReport } from "./query";
-import { FilterCacheLayer } from "./filter-cache-layer";
 import { trimFilters } from "./request-trim";
 import { eventMatchesFilter } from "./request-matcher";
 
@@ -28,11 +27,6 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    */
   #system: SystemInterface;
 
-  /**
-   * Query cache processing layers which can take data from a cache
-   */
-  #queryCacheLayers: Array<FilterCacheLayer> = [];
-
   constructor(system: SystemInterface) {
     super();
     this.#system = system;
@@ -55,11 +49,10 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       }
       return existing;
     } else {
-      const q = new Query(this.#system, req);
+      const q = new Query(req);
       q.on("trace", r => this.emit("trace", r));
       q.on("request", (id, fx) => {
         this.#send(q, fx);
-        this.emit("request", id, fx);
       });
 
       this.#queries.set(req.id, q);
@@ -97,49 +90,79 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     }
   }
 
-  async #send(q: Query, qSend: BuiltRawReqFilter) {
-    for (const qfl of this.#queryCacheLayers) {
-      qSend = await qfl.processFilter(q, qSend);
-    }
+  async #send(q: Query, filters: Array<ReqFilter>) {
+    // check for empty filters
+    filters = trimFilters(filters);
 
     // automated outbox model, load relays for queried authors
-    for (const f of qSend.filters) {
+    for (const f of filters) {
       if (f.authors) {
         this.#system.relayLoader.TrackKeys(f.authors);
       }
     }
 
-    // check for empty filters
-    qSend.filters = trimFilters(qSend.filters);
-
+    let syncFrom: Array<TaggedNostrEvent> = [];
     // fetch results from cache first, flag qSend for sync
     if (this.#system.cacheRelay) {
-      const data = await this.#system.cacheRelay.query(["REQ", q.id, ...qSend.filters]);
+      const data = await this.#system.cacheRelay.query(["REQ", q.id, ...filters]);
       if (data.length > 0) {
-        qSend.syncFrom = data as Array<TaggedNostrEvent>;
+        syncFrom = data.map(a => ({ ...a, relays: [] }));
         this.#log("Adding from cache: %O", data);
-        q.feed.add(data.map(a => ({ ...a, relays: [] })));
+        q.feed.add(syncFrom);
       }
     }
 
     // remove satisfied filters
-    if (qSend.syncFrom && qSend.syncFrom.length > 0) {
+    if (syncFrom.length > 0) {
       // only remove the "ids" filters
-      const newFilters = qSend.filters.filter(
-        a => !a.ids || (a.ids && !qSend.syncFrom?.some(b => eventMatchesFilter(b, a))),
-      );
-      if (newFilters.length !== qSend.filters.length) {
-        this.#log("Removing satisfied filters %o %o", newFilters, qSend.filters);
-        qSend.filters = newFilters;
+      const newFilters = filters.filter(a => !a.ids || (a.ids && !syncFrom.some(b => eventMatchesFilter(b, a))));
+      if (newFilters.length !== filters.length) {
+        this.#log("Removing satisfied filters %o %o", newFilters, filters);
+        filters = newFilters;
       }
     }
 
     // nothing left to send
-    if (qSend.filters.length === 0) {
-      this.#log("Dropping %s %o", q.id, qSend);
+    if (filters.length === 0) {
+      this.#log("Dropping %s %o", q.id);
       return;
     }
 
+    if (this.#system.requestRouter) {
+      filters = this.#system.requestRouter.forAllRequest(filters);
+    }
+    const expanded = filters.flatMap(a => this.#system.optimizer.expandFilter(a));
+    const qSend = this.#groupFlatByRelay(expanded);
+    qSend.forEach(a => (a.syncFrom = syncFrom));
+    await Promise.all(qSend.map(a => this.#sendToRelays(q, a)));
+  }
+
+  #groupFlatByRelay(filters: Array<FlatReqFilter>) {
+    const relayMerged = filters.reduce((acc, v) => {
+      const relay = v.relay ?? "";
+      // delete relay from filter
+      delete v.relay;
+      const existing = acc.get(relay);
+      if (existing) {
+        existing.push(v);
+      } else {
+        acc.set(relay, [v]);
+      }
+      return acc;
+    }, new Map<string, Array<FlatReqFilter>>());
+
+    const ret = [];
+    for (const [k, v] of relayMerged.entries()) {
+      const filters = this.#system.optimizer.flatMerge(v);
+      ret.push({
+        relay: k,
+        filters,
+      } as BuiltRawReqFilter);
+    }
+    return ret;
+  }
+
+  async #sendToRelays(q: Query, qSend: BuiltRawReqFilter) {
     if (qSend.relay) {
       const nc = await this.#system.pool.connect(qSend.relay, { read: true, write: true }, true);
       if (nc) {
@@ -168,6 +191,8 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       }
       return ret;
     }
+
+    this.emit("request", q.id, qSend);
   }
 
   #cleanup() {
