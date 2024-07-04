@@ -60,7 +60,7 @@ async function initSite() {
 
   const login = LoginStore.snapshot();
   preload(login.state.follows).then(async () => {
-    await System.PreloadSocialGraph();
+    await System.PreloadSocialGraph(login.state.follows);
 
     for (const ev of UserCache.snapshot()) {
       try {
