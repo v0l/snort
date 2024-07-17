@@ -24,15 +24,17 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
   eose?: number;
   close?: number;
   #wasForceClosed = false;
+  filters: Array<ReqFilter>;
 
   constructor(
     readonly relay: string,
-    readonly filters: Array<ReqFilter>,
+    filters: Array<ReqFilter>,
     readonly connId: string,
   ) {
     super();
     this.id = uuid();
     this.start = unixNowMs();
+    this.filters = filters;
   }
 
   sentToRelay() {
@@ -153,6 +155,11 @@ export class Query extends EventEmitter<QueryEvents> {
    */
   #groupTimeout?: ReturnType<typeof setTimeout>;
 
+  /**
+   * If the query should only every replace a previous trace on the same connection
+   */
+  #replaceable: boolean = false;
+
   #log = debug("Query");
 
   constructor(req: RequestBuilder) {
@@ -162,6 +169,7 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#leaveOpen = req.options?.leaveOpen ?? false;
     this.#timeout = req.options?.timeout ?? 5_000;
     this.#groupingDelay = req.options?.groupingDelay ?? 100;
+    this.#replaceable = req.options?.replaceable ?? false;
     this.#checkTraces();
 
     this.requests.push(...req.buildRaw());
@@ -315,6 +323,9 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#log("Starting emit of %s", this.id);
     let rawFilters = [...this.requests];
     this.requests = [];
+    if (this.#replaceable) {
+      rawFilters.push(...this.filters);
+    }
     this.emit("request", this.id, rawFilters);
   }
 
@@ -363,11 +374,10 @@ export class Query extends EventEmitter<QueryEvents> {
     return true;
   }
 
-  #sendQueryInternal(c: ConnectionType, q: BuiltRawReqFilter) {
-    let filters = q.filters;
-    const qt = new QueryTrace(c.address, filters, c.id);
+  #setupNewTrace(c: ConnectionType, q: BuiltRawReqFilter) {
+    const qt = new QueryTrace(c.address, q.filters, c.id);
     qt.on("close", x => c.closeRequest(x));
-    qt.on("eose", (id, connId, forced) => {
+    qt.on("eose", (id, _connId, forced) => {
       this.emit("trace", {
         id,
         conn: c,
@@ -400,6 +410,16 @@ export class Query extends EventEmitter<QueryEvents> {
       c.off("closed", eoseHandler);
     });
     this.#tracing.push(qt);
+    return qt;
+  }
+
+  #sendQueryInternal(c: ConnectionType, q: BuiltRawReqFilter) {
+    const qt = this.#replaceable
+      ? this.#tracing.find(a => a.connId === c.id) ?? this.#setupNewTrace(c, q)
+      : this.#setupNewTrace(c, q);
+
+    //always replace filters array
+    qt.filters = [...q.filters];
 
     if (q.syncFrom !== undefined) {
       c.request(["SYNC", qt.id, q.syncFrom, ...qt.filters], () => qt.sentToRelay());

@@ -36,6 +36,13 @@ export interface RequestBuilderOptions {
    * How many milli-seconds to wait to allow grouping
    */
   groupingDelay?: number;
+
+  /**
+   * Replace the query every time a change in the query is detected
+   *
+   * eg. Live stream chat reactions
+   */
+  replaceable?: boolean;
 }
 
 /**
