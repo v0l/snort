@@ -1,11 +1,5 @@
 import { dedupe, ExternalStore, FeedCache, removeUndefined } from "@snort/shared";
-import {
-  EventKind,
-  NostrEvent,
-  RequestBuilder,
-  SystemInterface,
-  TaggedNostrEvent,
-} from "@snort/system";
+import { EventKind, NostrEvent, RequestBuilder, SystemInterface, TaggedNostrEvent } from "@snort/system";
 
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "@/chat";
 import { LoginSession } from "@/Utils/Login";

@@ -173,7 +173,7 @@ export function createEmptyChatObject(id: string, messages?: Array<TaggedNostrEv
 
 export function useChatSystem(chat: ChatSystem) {
   const login = useLogin();
-  const {publisher} = useEventPublisher();
+  const { publisher } = useEventPublisher();
   const sub = useMemo(() => {
     return chat.subscription(login);
   }, [chat, login]);
@@ -181,7 +181,7 @@ export function useChatSystem(chat: ChatSystem) {
   const { isMuted } = useModeration();
 
   useEffect(() => {
-    if(publisher) {
+    if (publisher) {
       chat.processEvents(publisher, data);
     }
   }, [data, publisher]);
