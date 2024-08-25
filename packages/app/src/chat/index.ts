@@ -13,7 +13,7 @@ import {
   UserMetadata,
 } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { useEmptyChatSystem } from "@/Hooks/useEmptyChatSystem";
 import useLogin from "@/Hooks/useLogin";
@@ -24,6 +24,7 @@ import { LoginSession } from "@/Utils/Login";
 import { Nip4Chats, Nip4ChatSystem } from "./nip4";
 import { Nip17Chats, Nip17ChatSystem } from "./nip17";
 import { Nip28Chats, Nip28ChatSystem } from "./nip28";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 
 export enum ChatType {
   DirectMessage = 1,
@@ -70,6 +71,11 @@ export interface ChatSystem {
    * Create a list of chats for a given pubkey and set of events
    */
   listChats(pk: string, evs: Array<TaggedNostrEvent>): Array<Chat>;
+
+  /**
+   * Process events received from the subscription
+   */
+  processEvents(pub: EventPublisher, evs: Array<TaggedNostrEvent>): Promise<void>;
 }
 
 /**
@@ -167,11 +173,18 @@ export function createEmptyChatObject(id: string, messages?: Array<TaggedNostrEv
 
 export function useChatSystem(chat: ChatSystem) {
   const login = useLogin();
+  const {publisher} = useEventPublisher();
   const sub = useMemo(() => {
     return chat.subscription(login);
   }, [chat, login]);
   const data = useRequestBuilder(sub);
   const { isMuted } = useModeration();
+
+  useEffect(() => {
+    if(publisher) {
+      chat.processEvents(publisher, data);
+    }
+  }, [data, publisher]);
 
   return useMemo(() => {
     if (login.publicKey) {
@@ -185,11 +198,11 @@ export function useChatSystem(chat: ChatSystem) {
 }
 
 export function useChatSystems() {
-  const nip4 = useChatSystem(Nip4Chats);
+  //const nip4 = useChatSystem(Nip4Chats);
   const nip28 = useChatSystem(Nip28Chats);
   const nip17 = useChatSystem(Nip17Chats);
 
-  return [...nip4, ...nip28, ...nip17];
+  return [...nip28, ...nip17];
 }
 
 export function useChat(id: string) {

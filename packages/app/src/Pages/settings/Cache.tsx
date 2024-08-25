@@ -1,4 +1,5 @@
 import { FeedCache } from "@snort/shared";
+import { WorkerRelayInterface } from "@snort/worker-relay";
 import { ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { GiftsCache, Relay, RelayMetrics } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import useLogin from "@/Hooks/useLogin";
-import { WorkerRelayInterface } from "@snort/worker-relay";
 
 export function CacheSettings() {
   return (

@@ -3,9 +3,11 @@ import {
   decodeTLV,
   encodeTLVEntries,
   EventKind,
+  EventPublisher,
   NostrEvent,
   NostrPrefix,
   RequestBuilder,
+  TaggedNostrEvent,
   TLVEntry,
   TLVEntryType,
 } from "@snort/system";
@@ -19,6 +21,7 @@ import { GetPowWorker } from "@/Utils/wasm";
 
 export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   #cache: GiftWrapCache;
+  #seenEvents: Set<string> = new Set();
 
   constructor(cache: GiftWrapCache) {
     super();
@@ -33,6 +36,12 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     const rb = new RequestBuilder(`nip17:${pk.slice(0, 12)}`);
     rb.withFilter().kinds([EventKind.GiftWrap]).tag("p", [pk]);
     return rb;
+  }
+
+  async processEvents(pub: EventPublisher, evs: Array<TaggedNostrEvent>) {
+    const evsPrcess = evs.filter(a => !this.#seenEvents.has(a.id) && !this.#cache.keysOnTable().includes(a.id));
+    await this.#cache.onEvent(evsPrcess, "", pub);
+    evsPrcess.forEach(a => this.#seenEvents.add(a.id));
   }
 
   listChats(pk: string): Chat[] {
@@ -131,7 +140,7 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
   }
 
   #nip24Events() {
-    const sn = this.#cache.takeSnapshot();
+    const sn = this.#cache.snapshot();
     return sn.filter(a => a.inner.kind === EventKind.SealedRumor);
   }
 }

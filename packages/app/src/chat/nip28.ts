@@ -43,6 +43,11 @@ export class Nip28ChatSystem implements ChatSystem {
     return rb;
   }
 
+  processEvents(): Promise<void> {
+    // nothing to do
+    return Promise.resolve();
+  }
+
   listChats(pk: string, evs: Array<TaggedNostrEvent>): Chat[] {
     const chats = this.#chatChannels(evs);
     const ret = Object.entries(chats).map(([k, v]) => {
