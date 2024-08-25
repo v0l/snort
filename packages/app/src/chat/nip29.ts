@@ -1,5 +1,11 @@
 import { dedupe, ExternalStore, FeedCache, removeUndefined } from "@snort/shared";
-import { EventKind, NostrEvent, RequestBuilder, SystemInterface, TaggedNostrEvent } from "@snort/system";
+import {
+  EventKind,
+  NostrEvent,
+  RequestBuilder,
+  SystemInterface,
+  TaggedNostrEvent,
+} from "@snort/system";
 
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "@/chat";
 import { LoginSession } from "@/Utils/Login";
@@ -10,6 +16,10 @@ export class Nip29ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
   constructor(cache: FeedCache<NostrEvent>) {
     super();
     this.#cache = cache;
+  }
+
+  processEvents(): Promise<void> {
+    return Promise.resolve();
   }
 
   takeSnapshot(): Chat[] {
