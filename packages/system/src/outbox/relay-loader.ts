@@ -10,14 +10,18 @@ export class RelayMetadataLoader extends BackgroundLoader<UsersRelays> {
   }
 
   override onEvent(e: Readonly<TaggedNostrEvent>): UsersRelays | undefined {
-    const relays = parseRelaysFromKind(e);
-    if (!relays) return;
-    return {
-      relays: relays,
-      pubkey: e.pubkey,
-      created: e.created_at,
-      loaded: unixNowMs(),
-    };
+    try {
+      const relays = parseRelaysFromKind(e);
+      if (!relays) return;
+      return {
+        relays: relays,
+        pubkey: e.pubkey,
+        created: e.created_at,
+        loaded: unixNowMs(),
+      };
+    } catch (e) {
+      // ignored
+    }
   }
 
   override getExpireCutoff(): number {
