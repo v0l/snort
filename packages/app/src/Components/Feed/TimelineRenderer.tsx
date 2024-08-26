@@ -114,7 +114,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
   };
 
   return (
-    <div ref={containerRef} className="pb-[10vh]">
+    <div ref={containerRef}>
       {props.latest.length > 0 && (
         <>
           <div className="card latest-notes" onClick={() => props.showLatest(false)} ref={ref}>
