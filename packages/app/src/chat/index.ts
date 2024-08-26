@@ -16,6 +16,7 @@ import { useRequestBuilder } from "@snort/system-react";
 import { useEffect, useMemo } from "react";
 
 import { useEmptyChatSystem } from "@/Hooks/useEmptyChatSystem";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
 import { findTag } from "@/Utils";
@@ -24,7 +25,6 @@ import { LoginSession } from "@/Utils/Login";
 import { Nip4Chats, Nip4ChatSystem } from "./nip4";
 import { Nip17Chats, Nip17ChatSystem } from "./nip17";
 import { Nip28Chats, Nip28ChatSystem } from "./nip28";
-import useEventPublisher from "@/Hooks/useEventPublisher";
 
 export enum ChatType {
   DirectMessage = 1,

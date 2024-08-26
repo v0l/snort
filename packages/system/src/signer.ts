@@ -2,10 +2,8 @@ import { bytesToHex } from "@noble/curves/abstract/utils";
 import { getPublicKey } from "@snort/shared";
 import { EventExt } from "./event-ext";
 import { Nip4WebCryptoEncryptor } from "./impl/nip4";
-import { XChaCha20Encryptor } from "./impl/nip44";
-import { MessageEncryptorVersion, decodeEncryptionPayload, encodeEncryptionPayload } from "./index";
+import { Nip44Encryptor } from "./impl/nip44";
 import { NostrEvent, NotSignedNostrEvent } from "./nostr";
-import { base64 } from "@scure/base";
 
 export type SignerSupports = "nip04" | "nip44" | string;
 
@@ -49,41 +47,24 @@ export class PrivateKeySigner implements EventSigner {
     return this.#publicKey;
   }
 
-  async nip4Encrypt(content: string, key: string) {
-    const enc = new Nip4WebCryptoEncryptor();
-    const secret = enc.getSharedSecret(this.privateKey, key);
-    const data = await enc.encryptData(content, secret);
-    return `${base64.encode(data.ciphertext)}?iv=${base64.encode(data.nonce)}`;
+  async nip4Encrypt(content: string, otherKey: string) {
+    const enc = new Nip4WebCryptoEncryptor(this.privateKey, otherKey);
+    return await enc.encryptData(content);
   }
 
   async nip4Decrypt(content: string, otherKey: string) {
-    const enc = new Nip4WebCryptoEncryptor();
-    const secret = enc.getSharedSecret(this.privateKey, otherKey);
-    const [ciphertext, iv] = content.split("?iv=");
-    return await enc.decryptData(
-      {
-        ciphertext: base64.decode(ciphertext),
-        nonce: base64.decode(iv),
-        v: MessageEncryptorVersion.Nip4,
-      },
-      secret,
-    );
+    const enc = new Nip4WebCryptoEncryptor(this.privateKey, otherKey);
+    return await enc.decryptData(content);
   }
 
-  async nip44Encrypt(content: string, key: string) {
-    const enc = new XChaCha20Encryptor();
-    const shared = enc.getSharedSecret(this.#privateKey, key);
-    const data = enc.encryptData(content, shared);
-    return encodeEncryptionPayload(data);
+  async nip44Encrypt(content: string, otherKey: string) {
+    const enc = new Nip44Encryptor(this.#privateKey, otherKey);
+    return enc.encryptData(content);
   }
 
   async nip44Decrypt(content: string, otherKey: string) {
-    const payload = decodeEncryptionPayload(content);
-    if (payload.v !== MessageEncryptorVersion.XChaCha20) throw new Error("Invalid payload version");
-
-    const enc = new XChaCha20Encryptor();
-    const shared = enc.getSharedSecret(this.#privateKey, otherKey);
-    return enc.decryptData(payload, shared);
+    const enc = new Nip44Encryptor(this.#privateKey, otherKey);
+    return enc.decryptData(content);
   }
 
   sign(ev: NostrEvent): Promise<NostrEvent> {

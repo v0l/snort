@@ -1,6 +1,6 @@
 import { schnorr, secp256k1 } from "@noble/curves/secp256k1";
 import { Nip4WebCryptoEncryptor } from "../src/impl/nip4";
-import { XChaCha20Encryptor } from "../src/impl/nip44";
+import { Nip44Encryptor } from "../src/impl/nip44";
 import { bytesToHex } from "@noble/curves/abstract/utils";
 
 const aKey = secp256k1.utils.randomPrivateKey();
@@ -29,7 +29,7 @@ describe("NIP-04", () => {
 describe("NIP-44", () => {
   it("should encrypt/decrypt", () => {
     const msg = "test hello, 123";
-    const enc = new XChaCha20Encryptor();
+    const enc = new Nip44Encryptor();
     const sec = enc.getSharedSecret(bytesToHex(aKey), bytesToHex(bPubKey));
 
     const payload = enc.encryptData(msg, sec);
@@ -37,7 +37,7 @@ describe("NIP-44", () => {
     expect(payload).toHaveProperty("nonce");
     expect(payload.v).toBe(1);
 
-    const dec = new XChaCha20Encryptor();
+    const dec = new Nip44Encryptor();
     const sec2 = enc.getSharedSecret(bytesToHex(bKey), bytesToHex(aPubKey));
     const plaintext = dec.decryptData(payload, sec2);
     expect(plaintext).toEqual(msg);
