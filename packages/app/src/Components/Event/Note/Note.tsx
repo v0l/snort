@@ -1,12 +1,13 @@
 import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { LRUCache } from "typescript-lru-cache";
 
 import { Relay } from "@/Cache";
+import { CollapsedSection } from "@/Components/Collapsed";
 import NoteHeader from "@/Components/Event/Note/NoteHeader";
 import NoteQuote from "@/Components/Event/Note/NoteQuote";
 import { NoteText } from "@/Components/Event/Note/NoteText";
@@ -179,12 +180,11 @@ function handleNonTextNote(ev: TaggedNostrEvent) {
     return <Reaction ev={ev} />;
   } else {
     return (
-      <>
-        <h4>
-          <FormattedMessage {...messages.UnknownEventKind} values={{ kind: ev.kind }} />
-        </h4>
-        <pre>{JSON.stringify(ev, undefined, "  ")}</pre>
-      </>
+      <div className="card">
+        <CollapsedSection title={<FormattedMessage {...messages.UnknownEventKind} values={{ kind: ev.kind }} />}>
+          <pre className="text-xs">{JSON.stringify(ev, undefined, "  ")}</pre>
+        </CollapsedSection>
+      </div>
     );
   }
 }

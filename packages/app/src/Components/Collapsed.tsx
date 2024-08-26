@@ -4,7 +4,7 @@ import { ReactNode, useState } from "react";
 import Icon from "@/Components/Icons/Icon";
 
 interface CollapsedProps {
-  text?: string;
+  text?: ReactNode;
   children: ReactNode;
   collapsed: boolean;
   setCollapsed(b: boolean): void;
