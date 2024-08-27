@@ -26,7 +26,7 @@ export class Nip28ChatSystem implements ChatSystem {
   ];
 
   subscription(session: LoginSession): RequestBuilder | undefined {
-    const chats = (session.extraChats ?? []).filter(a => a.startsWith("chat281"));
+    const chats = (session.extraChats ?? []).filter(a => a.startsWith(NostrPrefix.Chat28));
     if (chats.length === 0) return;
 
     const chatId = (v: string) => unwrap(decodeTLV(v).find(a => a.type === TLVEntryType.Special)).value as string;
@@ -57,7 +57,7 @@ export class Nip28ChatSystem implements ChatSystem {
   }
 
   static chatId(id: string) {
-    return encodeTLVEntries("chat28" as NostrPrefix, {
+    return encodeTLVEntries(NostrPrefix.Chat28, {
       type: TLVEntryType.Special,
       value: id,
       length: id.length,

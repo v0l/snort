@@ -53,7 +53,7 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
         .filter(a => a !== pk);
 
       return encodeTLVEntries(
-        "chat17" as NostrPrefix,
+        NostrPrefix.Chat17,
         ...pTags.map(
           v =>
             ({

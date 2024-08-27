@@ -1,4 +1,4 @@
-import { decodeTLV, EventKind } from "@snort/system";
+import { decodeTLV, EventKind, NostrPrefix } from "@snort/system";
 import { useUserSearch } from "@snort/system-react";
 import React, { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
@@ -125,7 +125,7 @@ export default function NewChatWindow() {
                       const evList = await publisher?.generic(eb => {
                         eb.kind(EventKind.PublicChatsList);
                         chats.forEach(c => {
-                          if (c.startsWith("chat281")) {
+                          if (c.startsWith(NostrPrefix.Chat28)) {
                             eb.tag(["e", decodeTLV(c)[0].value as string]);
                           }
                         });

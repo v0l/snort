@@ -74,9 +74,9 @@ const AvatarSection = ({
               <IconButton
                 onClick={() =>
                   navigate(
-                    `/messages/${encodeTLVEntries("chat4" as NostrPrefix, {
+                    `/messages/${encodeTLVEntries(NostrPrefix.Chat17, {
                       type: TLVEntryType.Author,
-                      length: 32,
+                      length: 64,
                       value: id,
                     })}`,
                   )

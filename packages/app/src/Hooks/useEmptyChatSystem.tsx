@@ -1,5 +1,5 @@
 import { unwrap } from "@snort/shared";
-import { decodeTLV, EventKind, RequestBuilder, TLVEntryType } from "@snort/system";
+import { decodeTLV, EventKind, NostrPrefix, RequestBuilder, TLVEntryType } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
@@ -9,7 +9,7 @@ export function useEmptyChatSystem(id?: string) {
   const sub = useMemo(() => {
     if (!id) return;
 
-    if (id.startsWith("chat281")) {
+    if (id.startsWith(NostrPrefix.Chat28)) {
       const cx = unwrap(decodeTLV(id).find(a => a.type === TLVEntryType.Special)).value as string;
       const rb = new RequestBuilder(`nip28:${id}`);
       rb.withFilter().ids([cx]).kinds([EventKind.PublicChatChannel, EventKind.PublicChatMetadata]);
