@@ -50,11 +50,6 @@ export const DefaultImgProxy = {
 };
 
 /**
- * NIP06-defined derivation path for private keys
- */
-export const DerivationPath = "m/44'/1237'/0'/0/0";
-
-/**
  * Blaster relays
  */
 export const Blasters = ["wss://nostr.mutinywallet.com"];

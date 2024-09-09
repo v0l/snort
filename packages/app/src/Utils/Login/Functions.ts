@@ -1,5 +1,6 @@
 import * as utils from "@noble/curves/abstract/utils";
 import * as secp from "@noble/curves/secp256k1";
+import { bytesToHex } from "@noble/hashes/utils";
 import { unixNowMs } from "@snort/shared";
 import {
   EventPublisher,
@@ -47,9 +48,8 @@ export async function generateNewLogin(
   pin: (key: string) => Promise<KeyStorage>,
   profile: UserMetadata,
 ) {
-  const ent = generateBip39Entropy();
-  const entropy = utils.bytesToHex(ent);
-  const privateKey = entropyToPrivateKey(ent);
+  const entropy = generateBip39Entropy();
+  const privateKey = await entropyToPrivateKey(entropy);
   const newRelays = {} as Record<string, RelaySettings>;
 
   // Use current timezone info to determine approx location
@@ -95,7 +95,7 @@ export async function generateNewLogin(
   system.BroadcastEvent(ev3);
   Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev3)));
 
-  LoginStore.loginWithPrivateKey(await pin(privateKey), entropy, newRelays);
+  LoginStore.loginWithPrivateKey(await pin(privateKey), bytesToHex(entropy), newRelays);
 }
 
 export function generateRandomKey() {

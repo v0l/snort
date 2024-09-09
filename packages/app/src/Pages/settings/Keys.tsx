@@ -6,7 +6,7 @@ import { FormattedMessage } from "react-intl";
 import Copy from "@/Components/Copy/Copy";
 import useLogin from "@/Hooks/useLogin";
 import { hexToBech32 } from "@/Utils";
-import { hexToMnemonic } from "@/Utils/nip6";
+import { seedToMnemonic } from "@/Utils/nip6";
 
 export default function ExportKeys() {
   const { publicKey, privateKeyData, generatedEntropy } = useLogin();
@@ -44,7 +44,7 @@ export default function ExportKeys() {
             <FormattedMessage defaultMessage="Mnemonic" />
           </div>
           <div className="mnemonic-grid">
-            {hexToMnemonic(generatedEntropy ?? "")
+            {seedToMnemonic(generatedEntropy ?? "")
               .split(" ")
               .map((a, i) => (
                 <div key={a} className="flex items-center word">

@@ -1,11 +1,15 @@
 import * as utils from "@noble/curves/abstract/utils";
+import { bytesToHex } from "@noble/hashes/utils";
 import { HDKey } from "@scure/bip32";
 import * as bip39 from "@scure/bip39";
 import { wordlist } from "@scure/bip39/wordlists/english";
 
-import { DerivationPath } from "@/Utils/Const";
+/**
+ * NIP06-defined derivation path for private keys
+ */
+export const DerivationPath = "m/44'/1237'/0'/0/0";
 
-export function generateBip39Entropy(mnemonic?: string): Uint8Array {
+export function generateBip39Entropy(mnemonic?: string) {
   try {
     const mn = mnemonic ?? bip39.generateMnemonic(wordlist, 256);
     return bip39.mnemonicToEntropy(mn, wordlist);
@@ -15,9 +19,9 @@ export function generateBip39Entropy(mnemonic?: string): Uint8Array {
 }
 
 /**
- * Convert hex-encoded entropy into mnemonic phrase
+ * Convert hex-encoded seed into mnemonic phrase
  */
-export function hexToMnemonic(hex: string): string {
+export function seedToMnemonic(hex: string) {
   const bytes = utils.hexToBytes(hex);
   return bip39.entropyToMnemonic(bytes, wordlist);
 }
@@ -25,8 +29,8 @@ export function hexToMnemonic(hex: string): string {
 /**
  * Derrive NIP-06 private key from master key
  */
-export function entropyToPrivateKey(entropy: Uint8Array): string {
-  const masterKey = HDKey.fromMasterSeed(entropy);
+export function seedToPrivateKey(seed: Uint8Array) {
+  const masterKey = HDKey.fromMasterSeed(seed);
   const newKey = masterKey.derive(DerivationPath);
 
   if (!newKey.privateKey) {
@@ -34,4 +38,17 @@ export function entropyToPrivateKey(entropy: Uint8Array): string {
   }
 
   return utils.bytesToHex(newKey.privateKey);
+}
+
+export async function entropyToPrivateKey(entropy: Uint8Array) {
+  const mm = bip39.entropyToMnemonic(entropy, wordlist);
+  const seed = await bip39.mnemonicToSeed(mm);
+  const masterKey = HDKey.fromMasterSeed(seed);
+  const newKey = masterKey.derive(DerivationPath);
+
+  if (!newKey.privateKey) {
+    throw new Error("INVALID KEY DERIVATION");
+  }
+
+  return bytesToHex(newKey.privateKey);
 }

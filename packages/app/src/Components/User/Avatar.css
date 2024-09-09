@@ -4,6 +4,7 @@
   width: 210px;
   background-color: var(--gray);
   z-index: 2;
+  background-size: cover;
 }
 
 .avatar[data-domain="iris.to"],

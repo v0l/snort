@@ -33,9 +33,9 @@ export default function useLoginHandler() {
       if (!hasSubtleCrypto) {
         throw new Error(insecureMsg);
       }
-      const ent = generateBip39Entropy(key);
-      const hexKey = entropyToPrivateKey(ent);
-      LoginStore.loginWithPrivateKey(await pin(hexKey));
+      const entropy = generateBip39Entropy(key);
+      const privKey = await entropyToPrivateKey(entropy);
+      LoginStore.loginWithPrivateKey(await pin(privKey));
       return;
     } else if (key.length === 64) {
       if (!hasSubtleCrypto) {
