@@ -1,5 +1,5 @@
 import { fetchNostrAddress, unwrap } from "@snort/shared";
-import { KeyStorage, Nip46Signer } from "@snort/system";
+import { KeyStorage, Nip46Signer, NostrPrefix, tryParseNostrLink } from "@snort/system";
 import { useIntl } from "react-intl";
 
 import { bech32ToHex } from "@/Utils";
@@ -46,9 +46,12 @@ export default function useLoginHandler() {
     }
 
     // public key logins
-    if (key.startsWith("npub")) {
-      const hexKey = bech32ToHex(key);
-      LoginStore.loginWithPubkey(hexKey, LoginSessionType.PublicKey);
+    if (key.startsWith("npub") || key.startsWith("nprofile")) {
+      const link = tryParseNostrLink(key, NostrPrefix.PublicKey);
+      if (!link) {
+        throw new Error("Invalid public key");
+      }
+      LoginStore.loginWithPubkey(link.id, LoginSessionType.PublicKey);
     } else if (key.match(EmailRegex)) {
       const [name, domain] = key.split("@");
       const json = await fetchNostrAddress(name, domain);
