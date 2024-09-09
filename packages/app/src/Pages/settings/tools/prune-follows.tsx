@@ -153,7 +153,7 @@ export function PruneFollowList() {
               );
             })}
       </div>
-      <div className="px-4 pb-5 pt-2 rounded-2xl bg-bg-secondary">
+      <div className="px-4 pb-5 pt-2 rounded-2xl bg-secondary">
         <p>
           <FormattedMessage
             defaultMessage="New follow list length {length}"

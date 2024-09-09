@@ -100,7 +100,7 @@ export function Note(props: NoteProps) {
     <div
       className={classNames(baseClassName, {
         active: highlight,
-        "hover:bg-nearly-bg-color cursor-pointer": !opt?.isRoot,
+        "hover:bg-nearly-bg-background cursor-pointer": !opt?.isRoot,
       })}
       onClick={e => goToEvent(e, ev)}
       ref={ref}>

@@ -98,7 +98,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
       {mediaEl}
       <div className="absolute flex flex-row items-center gap-4 left-0 top-0 p-4">
         <span
-          className="p-2 bg-bg-color rounded-full cursor-pointer opacity-80 hover:opacity-70"
+          className="p-2 bg-background rounded-full cursor-pointer opacity-80 hover:opacity-70"
           onClick={props.onClose}>
           <Icon name="x-close" size={24} />
         </span>

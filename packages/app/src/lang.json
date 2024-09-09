@@ -71,9 +71,6 @@
   "0BUTMv": {
     "defaultMessage": "Search..."
   },
-  "0HFX0T": {
-    "defaultMessage": "Use Exact Location"
-  },
   "0MndVW": {
     "defaultMessage": "Generic LNDHub wallet (BTCPayServer / Alby / LNBits)"
   },
@@ -95,9 +92,6 @@
   "0zASjL": {
     "defaultMessage": "Go",
     "description": "Button text after entering username in quick signup"
-  },
-  "1H4Keq": {
-    "defaultMessage": "{n} users"
   },
   "1Mo59U": {
     "defaultMessage": "Are you sure you want to remove this note from bookmarks?"
@@ -373,6 +367,9 @@
   "B6H7eJ": {
     "defaultMessage": "nsec, npub, nip-05, hex"
   },
+  "B7wvUM": {
+    "defaultMessage": "You can add a single or multiple relays, one per line."
+  },
   "BGCM48": {
     "defaultMessage": "Write access to Snort relay, with 1 year of event retention"
   },
@@ -381,6 +378,10 @@
   },
   "BjNwZW": {
     "defaultMessage": "Nostr address (nip05)"
+  },
+  "Blxcdx": {
+    "defaultMessage": "Relay",
+    "description": "Relay name (URL)"
   },
   "C1LjMx": {
     "defaultMessage": "Lightning Donation"
@@ -617,6 +618,9 @@
   "IoQq+a": {
     "defaultMessage": "Click here to load anyway"
   },
+  "IvjoDS": {
+    "defaultMessage": "Connected"
+  },
   "Ix8l+B": {
     "defaultMessage": "Trending Notes"
   },
@@ -662,6 +666,9 @@
   "JkLHGw": {
     "defaultMessage": "Website"
   },
+  "JmcxzF": {
+    "defaultMessage": "Relays are servers you connect to for sending and receiving events. Aim for 4-8 relays."
+  },
   "JymXbw": {
     "defaultMessage": "Private Key"
   },
@@ -685,9 +692,6 @@
   },
   "LBAnc7": {
     "defaultMessage": "View as user?"
-  },
-  "LF5kYT": {
-    "defaultMessage": "Other Connections"
   },
   "LKw/ue": {
     "defaultMessage": "Check out the code {link}"
@@ -867,6 +871,9 @@
   "Rs4kCE": {
     "defaultMessage": "Bookmark"
   },
+  "SFuk1v": {
+    "defaultMessage": "Permissions"
+  },
   "SLZGPn": {
     "defaultMessage": "Enter a pin to encrypt your private key, you must enter this pin every time you open {site}."
   },
@@ -969,9 +976,6 @@
   },
   "UxgyeY": {
     "defaultMessage": "Your referral code is {code}"
-  },
-  "VL900k": {
-    "defaultMessage": "Recommended Relays"
   },
   "VOjC1i": {
     "defaultMessage": "Pick which upload service you want to upload attachments to"
@@ -1391,9 +1395,6 @@
   "jMzO1S": {
     "defaultMessage": "Internal error: {msg}"
   },
-  "jTrbGf": {
-    "defaultMessage": "{n} km - {location}"
-  },
   "jvo0vs": {
     "defaultMessage": "Save"
   },
@@ -1628,6 +1629,9 @@
   "sZQzjQ": {
     "defaultMessage": "Failed to parse zap split: {input}"
   },
+  "saInmO": {
+    "defaultMessage": "The relay name shown is not the same as the full URL entered."
+  },
   "sfL/O+": {
     "defaultMessage": "Muted notes will not be shown"
   },
@@ -1648,6 +1652,9 @@
   },
   "ttxS0b": {
     "defaultMessage": "Supporter Badge"
+  },
+  "tzMNF3": {
+    "defaultMessage": "Status"
   },
   "u/vOPu": {
     "defaultMessage": "Paid"
@@ -1729,6 +1736,9 @@
   },
   "wtLjP6": {
     "defaultMessage": "Copy ID"
+  },
+  "x+3fl6": {
+    "defaultMessage": "My Relays"
   },
   "x/Fx2P": {
     "defaultMessage": "Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"

@@ -1,16 +1,13 @@
-import "./Relay.css";
-
 import { RelaySettings } from "@snort/system";
 import classNames from "classnames";
-import { useMemo } from "react";
+import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import { AsyncIcon } from "@/Components/Button/AsyncIcon";
 import useRelayState from "@/Feed/RelayState";
 import useLogin from "@/Hooks/useLogin";
 import { getRelayName } from "@/Utils";
 
-import { RelayFavicon } from "./RelaysMetadata";
+import Icon from "../Icons/Icon";
 
 export interface RelayProps {
   addr: string;
@@ -19,67 +16,68 @@ export interface RelayProps {
 export default function Relay(props: RelayProps) {
   const navigate = useNavigate();
   const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
-
-  const name = useMemo(() => getRelayName(props.addr), [props.addr]);
   const connection = useRelayState(props.addr);
 
-  const relaySettings = state.relays?.find(a => a.url === props.addr)?.settings;
-  if (!relaySettings || !connection) return;
+  const settings = state.relays?.find(a => a.url === props.addr)?.settings;
+  if (!connection || !settings) return;
 
   async function configure(o: RelaySettings) {
     await state.updateRelay(props.addr, o);
   }
 
+  const name = connection.info?.name ?? getRelayName(props.addr);
   return (
-    <>
-      <div className="relay bg-dark">
-        <div className={classNames("flex items-center", connection.isOpen ? "bg-success" : "bg-error")}>
-          <RelayFavicon url={props.addr} />
-        </div>
-        <div className="flex flex-col g8">
-          <div>
-            <b>{name}</b>
-          </div>
-          {!connection?.ephemeral && (
-            <div className="flex g8">
-              <AsyncIcon
-                iconName="write"
-                iconSize={16}
-                className={classNames("button-icon-sm transparent", { active: relaySettings.write })}
-                onClick={() =>
-                  configure({
-                    write: !relaySettings.write,
-                    read: relaySettings.read,
-                  })
-                }
-              />
-              <AsyncIcon
-                iconName="read"
-                iconSize={16}
-                className={classNames("button-icon-sm transparent", { active: relaySettings.read })}
-                onClick={() =>
-                  configure({
-                    write: relaySettings.write,
-                    read: !relaySettings.read,
-                  })
-                }
-              />
-              <AsyncIcon
-                iconName="trash"
-                iconSize={16}
-                className="button-icon-sm transparent trash-icon"
-                onClick={() => state.removeRelay(props.addr)}
-              />
-              <AsyncIcon
-                iconName="gear"
-                iconSize={16}
-                className="button-icon-sm transparent"
-                onClick={() => navigate(connection?.id ?? "")}
-              />
-            </div>
+    <tr>
+      <td className="text-ellipsis" title={props.addr}>
+        {name.length > 20 ? <>{name.slice(0, 20)}...</> : name}
+      </td>
+      <td>
+        <div className="flex gap-1 items-center">
+          <div
+            className={classNames("rounded-full w-4 h-4", {
+              "bg-success": connection.isOpen,
+              "bg-error": !connection.isOpen,
+            })}></div>
+          {connection.isOpen ? (
+            <FormattedMessage defaultMessage="Connected" />
+          ) : (
+            <FormattedMessage defaultMessage="Offline" />
           )}
         </div>
-      </div>
-    </>
+      </td>
+      <td>
+        <div className="flex gap-2 cursor-pointer select-none justify-center">
+          <div
+            className={settings.read ? "" : "text-gray"}
+            onClick={() =>
+              configure({
+                read: !settings.read,
+                write: settings.write,
+              })
+            }>
+            <FormattedMessage defaultMessage="Read" />
+          </div>
+          <div
+            className={settings.write ? "" : "text-gray"}
+            onClick={() =>
+              configure({
+                read: settings.read,
+                write: !settings.write,
+              })
+            }>
+            <FormattedMessage defaultMessage="Write" />
+          </div>
+        </div>
+      </td>
+      <td>
+        <Icon
+          name="trash"
+          className="text-gray-light cursor-pointer"
+          onClick={() => {
+            state.removeRelay(props.addr, true);
+          }}
+        />
+      </td>
+    </tr>
   );
 }

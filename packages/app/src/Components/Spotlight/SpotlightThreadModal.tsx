@@ -43,7 +43,7 @@ export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
               onPrev={props.onPrev}
             />
           </div>
-          <div className="hidden md:flex w-1/3 min-w-[400px] flex-shrink-0 overflow-y-auto bg-bg-color">
+          <div className="hidden md:flex w-1/3 min-w-[400px] flex-shrink-0 overflow-y-auto bg-background">
             <Thread onBack={onBack} disableSpotlight={true} />
           </div>
         </div>

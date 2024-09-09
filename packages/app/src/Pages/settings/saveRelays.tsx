@@ -9,7 +9,7 @@ export async function saveRelays(
 ) {
   if (publisher) {
     const ev = await publisher.relayList(relays);
-    await system.BroadcastEvent(ev);
-    await Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev)));
+    system.BroadcastEvent(ev);
+    Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev)));
   }
 }

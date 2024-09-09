@@ -134,9 +134,7 @@ export default function SearchBox() {
           className="absolute top-full mt-2 w-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-black shadow-lg rounded-lg z-10 overflow-hidden"
           ref={resultListRef}>
           <div
-            className={`p-2 cursor-pointer ${
-              activeIndex === 0 ? "bg-bg-secondary" : "bg-bg-color hover:bg-bg-secondary"
-            }`}
+            className={`p-2 cursor-pointer ${activeIndex === 0 ? "bg-secondary" : "bg-background hover:bg-secondary"}`}
             onMouseEnter={() => setActiveIndex(0)}
             onClick={() => navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })}>
             <FormattedMessage defaultMessage="Search notes" />: <b>{search}</b>
@@ -145,7 +143,7 @@ export default function SearchBox() {
             <div
               key={idx}
               className={`p-2 cursor-pointer ${
-                activeIndex === idx + 1 ? "bg-bg-secondary" : "bg-bg-color hover:bg-bg-secondary"
+                activeIndex === idx + 1 ? "bg-secondary" : "bg-background hover:bg-secondary"
               }`}
               onMouseEnter={() => setActiveIndex(idx + 1)}>
               <ProfileImage pubkey={result.pubkey} showProfileCard={false} />

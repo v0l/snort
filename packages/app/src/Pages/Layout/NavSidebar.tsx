@@ -65,7 +65,7 @@ const MENU_ITEMS = [
 
 const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
   const baseClasses =
-    "rounded-full p-3 flex flex-row items-center transition-colors duration-200 hover:bg-bg-secondary hover:no-underline";
+    "rounded-full p-3 flex flex-row items-center transition-colors duration-200 hover:bg-secondary hover:no-underline";
   const activeClasses = "active font-bold";
 
   return classNames(baseClasses, {
@@ -159,7 +159,7 @@ export default function NavSidebar({ narrow = false }: { narrow?: boolean }) {
       {publicKey && (
         <>
           <ProfileLink pubkey={publicKey} user={profile} className="hover:no-underline">
-            <div className="mt-2 flex flex-row items-center justify-center font-bold text-md p-1 xl:px-4 xl:py-3 hover:bg-bg-secondary rounded-full cursor-pointer">
+            <div className="mt-2 flex flex-row items-center justify-center font-bold text-md p-1 xl:px-4 xl:py-3 hover:bg-secondary rounded-full cursor-pointer">
               <Avatar pubkey={publicKey} user={profile} size={40} icons={readOnlyIcon} />
               {!narrow && <span className="hidden xl:inline ml-3">{profile?.name}</span>}
             </div>
