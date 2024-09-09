@@ -4,7 +4,10 @@ import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent, ToNostrEventTag, Un
 import useLogin from "@/Hooks/useLogin";
 
 export class MutedWordTag implements ToNostrEventTag {
-  constructor(readonly word: string) {}
+  constructor(readonly word: string) { }
+  equals(other: ToNostrEventTag): boolean {
+    return other instanceof MutedWordTag && other.word === this.word;
+  }
 
   toEventTag(): string[] | undefined {
     return ["word", this.word.toLowerCase()];
@@ -16,7 +19,7 @@ export default function useModeration() {
 
   function isMuted(id: string) {
     const link = NostrLink.publicKey(id);
-    return state.muted.includes(link);
+    return state.muted.some(a => a.equals(link));
   }
 
   async function unmute(id: string) {

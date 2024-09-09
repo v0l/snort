@@ -1,24 +1,23 @@
-import { HexKey } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import useModeration from "@/Hooks/useModeration";
 
-import messages from "../messages";
+import AsyncButton from "../Button/AsyncButton";
 
 interface MuteButtonProps {
-  pubkey: HexKey;
+  pubkey: string;
 }
 
 const MuteButton = ({ pubkey }: MuteButtonProps) => {
   const { mute, unmute, isMuted } = useModeration();
   return isMuted(pubkey) ? (
-    <button className="secondary" type="button" onClick={() => unmute(pubkey)}>
-      <FormattedMessage {...messages.Unmute} />
-    </button>
+    <AsyncButton className="secondary" type="button" onClick={() => unmute(pubkey)}>
+      <FormattedMessage defaultMessage="Unmute" />
+    </AsyncButton>
   ) : (
-    <button type="button" onClick={() => mute(pubkey)}>
-      <FormattedMessage {...messages.Mute} />
-    </button>
+    <AsyncButton type="button" onClick={() => mute(pubkey)}>
+      <FormattedMessage defaultMessage="Mute" />
+    </AsyncButton>
   );
 };
 

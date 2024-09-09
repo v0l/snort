@@ -101,11 +101,7 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
 
   async sync(signer: EventSigner | undefined, system: SystemInterface) {
     await this.#sync.sync(system);
-
-    if (this.#sync.value?.content && this.contentEncrypted && signer) {
-      const decrypted = await signer.nip4Decrypt(this.#sync.value.content, await signer.getPubKey());
-      this.#decryptedContent = decrypted;
-    }
+    await this.#afterSync(signer);
   }
 
   /**
@@ -123,6 +119,15 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
       next.content = await signer.nip4Encrypt(next.content, await signer.getPubKey());
     }
     await this.#sync.update(next, signer, system, !isNew);
+    await this.#afterSync(signer);
+  }
+
+  async #afterSync(signer: EventSigner | undefined) {
+    if (this.#sync.value?.content && this.contentEncrypted && signer) {
+      const decrypted = await signer.nip4Decrypt(this.#sync.value.content, await signer.getPubKey());
+      this.#decryptedContent = decrypted;
+      this.emit("change");
+    }
   }
 
   #nextEvent(content?: string): NotSignedNostrEvent {
@@ -141,6 +146,7 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
     // apply changes onto next
     next.tags = this.#applyChanges(next.tags, this.#changes);
     if (this.#changesEncrypted.length > 0 && !content) {
+      debugger;
       const encryptedTags = this.#applyChanges(isNew ? [] : this.encryptedTags, this.#changesEncrypted);
       next.content = JSON.stringify(encryptedTags);
     } else if (content) {

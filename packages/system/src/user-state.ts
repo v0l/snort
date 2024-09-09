@@ -117,12 +117,13 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     }
     await Promise.all(tasks);
     this.#log(
-      "Init results: profile=%O, contacts=%O, relays=%O, appdata=%O, lists=%O",
+      "Init results: signer=%s, profile=%O, contacts=%O, relays=%O, appdata=%O, lists=%O",
+      signer ? "yes" : "no",
       this.#profile.json,
       this.#contacts.value,
       this.#relays.value,
       this.#appdata?.json,
-      [...this.#standardLists.values()].map(a => a.value),
+      [...this.#standardLists.values()].map(a => [a.value, a.encryptedTags]),
     );
 
     // update relay metadata with value from contact list if not found

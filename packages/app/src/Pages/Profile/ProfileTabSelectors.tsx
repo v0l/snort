@@ -59,15 +59,6 @@ const ProfileTabSelectors = {
     ),
     value: ProfileTabType.MUTED,
   },
-  Blocked: {
-    text: (
-      <>
-        <Icon name="block" size={16} />
-        <FormattedMessage defaultMessage="Blocked" />
-      </>
-    ),
-    value: ProfileTabType.BLOCKED,
-  },
   Relays: {
     text: (
       <>

@@ -15,9 +15,11 @@ import Avatar from "@/Components/User/Avatar";
 import FollowButton from "@/Components/User/FollowButton";
 import ProfileImage from "@/Components/User/ProfileImage";
 import ZapModal from "@/Components/ZapModal/ZapModal";
+import useModeration from "@/Hooks/useModeration";
 import { hexToBech32 } from "@/Utils";
 import { LoginSessionType, LoginStore } from "@/Utils/Login";
 import { ZapTarget } from "@/Utils/Zapper";
+import MuteButton from "@/Components/User/MuteButton";
 
 const AvatarSection = ({
   user,
@@ -36,11 +38,14 @@ const AvatarSection = ({
   const [modalImage, setModalImage] = useState<string>("");
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [prefix, setPrefix] = useState<NostrPrefix>(CONFIG.profileLinkPrefix);
+
+  const { mute, unmute, isMuted } = useModeration();
   const navigate = useNavigate();
   const relays = UserRelays.getFromCache(id);
   const isMe = loginPubKey === id;
   const canWrite = !!loginPubKey && !readonly;
   const intl = useIntl();
+  const muted = id ? isMuted(id) : false;
 
   const profileId = useMemo(() => {
     if (!id) return;
@@ -107,6 +112,19 @@ const AvatarSection = ({
                 icon={{ name: "envelope", size: 16 }}
               />
             )}
+            {canWrite && muted && <MuteButton pubkey={id} />}
+            {canWrite && !muted && <IconButton
+              className={muted ? "bg-success" : "!bg-error"}
+              onClick={async () => {
+                if (muted) {
+                  await unmute(id);
+                } else {
+                  await mute(id);
+                }
+              }}
+              icon={{ name: "mute", size: 16 }}
+            />
+            }
             {!canWrite && !isMe && (
               <IconButton
                 onClick={() => {
