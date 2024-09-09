@@ -1,7 +1,6 @@
 import { RelaySettings } from "@snort/system";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
-import { useNavigate } from "react-router-dom";
 
 import useRelayState from "@/Feed/RelayState";
 import useLogin from "@/Hooks/useLogin";
@@ -14,7 +13,6 @@ export interface RelayProps {
 }
 
 export default function Relay(props: RelayProps) {
-  const navigate = useNavigate();
   const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
   const connection = useRelayState(props.addr);
 
