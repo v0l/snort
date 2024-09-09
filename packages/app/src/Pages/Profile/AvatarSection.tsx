@@ -1,9 +1,11 @@
 import { LNURL } from "@snort/shared";
-import { CachedMetadata, encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/system";
+import { CachedMetadata, encodeTLVEntries, NostrLink, NostrPrefix, TLVEntryType } from "@snort/system";
 import React, { useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
+import { UserRelays } from "@/Cache";
+import AsyncButton from "@/Components/Button/AsyncButton";
 import IconButton from "@/Components/Button/IconButton";
 import Copy from "@/Components/Copy/Copy";
 import Modal from "@/Components/Modal/Modal";
@@ -33,11 +35,24 @@ const AvatarSection = ({
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
   const [modalImage, setModalImage] = useState<string>("");
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
-  const profileId = useMemo(() => hexToBech32(CONFIG.profileLinkPrefix, id), [id]);
+  const [prefix, setPrefix] = useState<NostrPrefix>(CONFIG.profileLinkPrefix);
   const navigate = useNavigate();
+  const relays = UserRelays.getFromCache(id);
   const isMe = loginPubKey === id;
   const canWrite = !!loginPubKey && !readonly;
   const intl = useIntl();
+
+  const profileId = useMemo(() => {
+    if (!id) return;
+
+    if (prefix === NostrPrefix.PublicKey) {
+      return hexToBech32(NostrPrefix.PublicKey, id);
+    } else if (prefix === NostrPrefix.Profile) {
+      return NostrLink.profile(id, relays?.relays
+        .filter(a => a.settings.write)
+        .map(a => a.url)).encode();
+    }
+  }, [id, relays, prefix]);
 
   const renderButtons = () => {
     if (!id) return null;
@@ -48,9 +63,17 @@ const AvatarSection = ({
         {showProfileQr && (
           <Modal id="profile-qr" className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id} />
-            <div className="flex flex-col items-center">
-              <QrCode data={`nostr:${profileId}`} className="m10" />
-              <Copy text={profileId} className="py-3" />
+            <div className="flex flex-col items-center gap-3">
+              <div className="grid gap-2 grid-cols-2">
+                <AsyncButton onClick={() => setPrefix(NostrPrefix.PublicKey)}>
+                  NPUB
+                </AsyncButton>
+                <AsyncButton onClick={() => setPrefix(NostrPrefix.Profile)}>
+                  NPROFILE
+                </AsyncButton>
+              </div>
+              <QrCode data={`nostr:${profileId}`} />
+              <Copy text={profileId ?? ""} />
             </div>
           </Modal>
         )}
@@ -118,14 +141,14 @@ const AvatarSection = ({
         targets={
           lnurl?.lnurl && id
             ? [
-                {
-                  type: "lnurl",
-                  value: lnurl.lnurl,
-                  weight: 1,
-                  name: user?.display_name || user?.name,
-                  zap: { pubkey: id, anon: false },
-                } as ZapTarget,
-              ]
+              {
+                type: "lnurl",
+                value: lnurl.lnurl,
+                weight: 1,
+                name: user?.display_name || user?.name,
+                zap: { pubkey: id, anon: false },
+              } as ZapTarget,
+            ]
             : undefined
         }
         show={showLnQr}

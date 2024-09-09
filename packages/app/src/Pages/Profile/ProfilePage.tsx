@@ -112,7 +112,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       }
       case ProfileTabType.FOLLOWS: {
         if (isMe) {
-          return <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={false} className="p" />;
+          return <FollowsList pubkeys={follows ?? []} showFollowAll={!isMe} showAbout={false} className="p" />;
         } else {
           return <FollowsTab id={id} />;
         }
