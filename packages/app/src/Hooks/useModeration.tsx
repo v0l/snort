@@ -4,7 +4,7 @@ import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent, ToNostrEventTag, Un
 import useLogin from "@/Hooks/useLogin";
 
 export class MutedWordTag implements ToNostrEventTag {
-  constructor(readonly word: string) { }
+  constructor(readonly word: string) {}
   equals(other: ToNostrEventTag): boolean {
     return other instanceof MutedWordTag && other.word === this.word;
   }

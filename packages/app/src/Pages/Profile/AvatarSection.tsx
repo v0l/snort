@@ -53,9 +53,7 @@ const AvatarSection = ({
     if (prefix === NostrPrefix.PublicKey) {
       return hexToBech32(NostrPrefix.PublicKey, id);
     } else if (prefix === NostrPrefix.Profile) {
-      return NostrLink.profile(id, relays?.relays
-        .filter(a => a.settings.write)
-        .map(a => a.url)).encode();
+      return NostrLink.profile(id, relays?.relays.filter(a => a.settings.write).map(a => a.url)).encode();
     }
   }, [id, relays, prefix]);
 
@@ -70,12 +68,8 @@ const AvatarSection = ({
             <ProfileImage pubkey={id} />
             <div className="flex flex-col items-center gap-3">
               <div className="grid gap-2 grid-cols-2">
-                <AsyncButton onClick={() => setPrefix(NostrPrefix.PublicKey)}>
-                  NPUB
-                </AsyncButton>
-                <AsyncButton onClick={() => setPrefix(NostrPrefix.Profile)}>
-                  NPROFILE
-                </AsyncButton>
+                <AsyncButton onClick={() => setPrefix(NostrPrefix.PublicKey)}>NPUB</AsyncButton>
+                <AsyncButton onClick={() => setPrefix(NostrPrefix.Profile)}>NPROFILE</AsyncButton>
               </div>
               <QrCode data={`nostr:${profileId}`} />
               <Copy text={profileId ?? ""} />
@@ -113,18 +107,19 @@ const AvatarSection = ({
               />
             )}
             {canWrite && muted && <MuteButton pubkey={id} />}
-            {canWrite && !muted && <IconButton
-              className={muted ? "bg-success" : "!bg-error"}
-              onClick={async () => {
-                if (muted) {
-                  await unmute(id);
-                } else {
-                  await mute(id);
-                }
-              }}
-              icon={{ name: "mute", size: 16 }}
-            />
-            }
+            {canWrite && !muted && (
+              <IconButton
+                className={muted ? "bg-success" : "!bg-error"}
+                onClick={async () => {
+                  if (muted) {
+                    await unmute(id);
+                  } else {
+                    await mute(id);
+                  }
+                }}
+                icon={{ name: "mute", size: 16 }}
+              />
+            )}
             {!canWrite && !isMe && (
               <IconButton
                 onClick={() => {
@@ -159,14 +154,14 @@ const AvatarSection = ({
         targets={
           lnurl?.lnurl && id
             ? [
-              {
-                type: "lnurl",
-                value: lnurl.lnurl,
-                weight: 1,
-                name: user?.display_name || user?.name,
-                zap: { pubkey: id, anon: false },
-              } as ZapTarget,
-            ]
+                {
+                  type: "lnurl",
+                  value: lnurl.lnurl,
+                  weight: 1,
+                  name: user?.display_name || user?.name,
+                  zap: { pubkey: id, anon: false },
+                } as ZapTarget,
+              ]
             : undefined
         }
         show={showLnQr}

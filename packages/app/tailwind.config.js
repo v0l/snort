@@ -16,8 +16,8 @@ module.exports = {
         "nostr-red": "var(--heart)",
         "nostr-purple": "var(--highlight)",
         secondary: "var(--font-secondary-color)",
-        "warning": "var(--warning)",
-        "error": "var(--error)"
+        warning: "var(--warning)",
+        error: "var(--error)",
       },
       spacing: {
         px: "1px",
