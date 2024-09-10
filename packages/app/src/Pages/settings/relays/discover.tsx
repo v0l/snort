@@ -36,6 +36,9 @@ export function DiscoverRelays() {
             <FormattedMessage defaultMessage="Recommended Relays" />
           </h4>
         }>
+        <small>
+          <FormattedMessage defaultMessage="Popular relays used by people you follow." />
+        </small>
         <table className="table">
           <thead>
             <tr className="text-gray-light uppercase">

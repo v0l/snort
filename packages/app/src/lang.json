@@ -895,6 +895,9 @@
   "SP0+yi": {
     "defaultMessage": "Buy Subscription"
   },
+  "SW3TFA": {
+    "defaultMessage": "Popular relays used by people you follow."
+  },
   "SYQtZ7": {
     "defaultMessage": "LN Address Proxy"
   },
