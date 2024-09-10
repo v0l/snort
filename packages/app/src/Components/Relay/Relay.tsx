@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl";
 
 import useRelayState from "@/Feed/RelayState";
 import useLogin from "@/Hooks/useLogin";
+import RelayUptime from "@/Pages/settings/relays/uptime";
 import { getRelayName } from "@/Utils";
 
 import Icon from "../Icons/Icon";
@@ -66,6 +67,9 @@ export default function Relay(props: RelayProps) {
             <FormattedMessage defaultMessage="Write" />
           </div>
         </div>
+      </td>
+      <td className="text-center">
+        <RelayUptime url={props.addr} />
       </td>
       <td>
         <Icon

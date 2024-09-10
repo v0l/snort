@@ -258,6 +258,9 @@
   "6uMqL1": {
     "defaultMessage": "Unpaid"
   },
+  "6xap9L": {
+    "defaultMessage": "Good"
+  },
   "7+Domh": {
     "defaultMessage": "Notes"
   },
@@ -342,6 +345,9 @@
   },
   "AkCxS/": {
     "defaultMessage": "Reason"
+  },
+  "AktAk2": {
+    "defaultMessage": "Great"
   },
   "Am8glJ": {
     "defaultMessage": "Game"
@@ -775,6 +781,9 @@
   "NndBJE": {
     "defaultMessage": "New users page"
   },
+  "NxzeNU": {
+    "defaultMessage": "Dead"
+  },
   "O3Jz4E": {
     "defaultMessage": "Use your invite code to earn sats!"
   },
@@ -977,6 +986,9 @@
   "UxgyeY": {
     "defaultMessage": "Your referral code is {code}"
   },
+  "VL900k": {
+    "defaultMessage": "Recommended Relays"
+  },
   "VOjC1i": {
     "defaultMessage": "Pick which upload service you want to upload attachments to"
   },
@@ -1042,6 +1054,9 @@
   },
   "Xopqkl": {
     "defaultMessage": "Your default zap amount is {number} sats, example values are calculated from this."
+  },
+  "YDMrKK": {
+    "defaultMessage": "Users"
   },
   "YDURw6": {
     "defaultMessage": "Service URL"
@@ -1232,6 +1247,9 @@
   },
   "ejEGdx": {
     "defaultMessage": "Home"
+  },
+  "eoV49s": {
+    "defaultMessage": "Poor"
   },
   "f1OxTe": {
     "defaultMessage": "Community leaders are individuals who grow the nostr ecosystem by being active in their local communities and helping onboard new users. Anyone can become a community leader, but few hold the current honorary title."
@@ -1658,6 +1676,9 @@
   },
   "u/vOPu": {
     "defaultMessage": "Paid"
+  },
+  "u81G9+": {
+    "defaultMessage": "Uptime"
   },
   "u9NoC1": {
     "defaultMessage": "Name must be less than {limit} characters"

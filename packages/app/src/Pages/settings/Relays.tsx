@@ -10,6 +10,8 @@ import useRelays from "@/Hooks/useRelays";
 import { saveRelays } from "@/Pages/settings/saveRelays";
 import { sanitizeRelayUrl } from "@/Utils";
 
+import { DiscoverRelays } from "./relays/discover";
+
 const RelaySettingsPage = () => {
   const { publisher, system } = useEventPublisher();
   const relays = useRelays();
@@ -79,6 +81,10 @@ const RelaySettingsPage = () => {
               <th>
                 <FormattedMessage defaultMessage="Permissions" />
               </th>
+              <th>
+                <FormattedMessage defaultMessage="Uptime" />
+              </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -100,6 +106,7 @@ const RelaySettingsPage = () => {
     <div className="flex flex-col gap-4">
       {myRelays()}
       {addRelay()}
+      <DiscoverRelays />
     </div>
   );
 };
