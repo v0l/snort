@@ -25,10 +25,6 @@ module.exports = {
         "gray-superdark": "var(--gray-superdark)",
         "gray-ultradark": "var(--gray-ultradark)",
       },
-      backgroundColor: {
-        background: "var(--bg-color)",
-        secondary: "var(--bg-secondary)",
-      },
       textColor: {
         secondary: "var(--font-secondary-color)",
       },
@@ -40,6 +36,8 @@ module.exports = {
       },
       backgroundColor: {
         header: "var(--header-bg-color)",
+        background: "var(--bg-color)",
+        secondary: "var(--bg-secondary)",
       },
     },
   },

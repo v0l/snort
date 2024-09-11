@@ -989,9 +989,6 @@
   "UxgyeY": {
     "defaultMessage": "Your referral code is {code}"
   },
-  "VL900k": {
-    "defaultMessage": "Recommended Relays"
-  },
   "VOjC1i": {
     "defaultMessage": "Pick which upload service you want to upload attachments to"
   },
@@ -1431,6 +1428,9 @@
   "k7sKNy": {
     "defaultMessage": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
   },
+  "k9SQm1": {
+    "defaultMessage": "Relays which you have connected to before and appear to be reliable."
+  },
   "kEZUR8": {
     "defaultMessage": "Register an Iris username"
   },
@@ -1556,6 +1556,9 @@
   },
   "p9Ps2l": {
     "defaultMessage": "{x}/{y} have relays ({percent})"
+  },
+  "pEEBFk": {
+    "defaultMessage": "Reliable Relays"
   },
   "pI+77w": {
     "defaultMessage": "Downloadable backups from Snort relay"
@@ -1811,6 +1814,9 @@
   },
   "yCLnBC": {
     "defaultMessage": "LNURL or Lightning Address"
+  },
+  "yLzgxH": {
+    "defaultMessage": "Popular Relays"
   },
   "z3UjXR": {
     "defaultMessage": "Debug"
