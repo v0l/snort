@@ -1,20 +1,13 @@
 import { sanitizeRelayUrl, unixNow } from "@snort/shared";
 import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
-import classNames from "classnames";
 import { useMemo } from "react";
-import { FormattedMessage } from "react-intl";
 
 import { findTag } from "@/Utils";
-import { Day } from "@/Utils/Const";
+import { Day, MonitorRelays } from "@/Utils/Const";
+
 import UptimeLabel from "./uptime-label";
 
-const MonitorRelays = [
-  "wss://relaypag.es",
-  "wss://relay.nostr.watch",
-  "wss://history.nostr.watch",
-  "wss://monitorlizard.nostr1.com",
-];
 export default function RelayUptime({ url }: { url: string }) {
   const sub = useMemo(() => {
     const u = sanitizeRelayUrl(url);

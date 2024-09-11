@@ -1,19 +1,21 @@
+/* eslint-disable max-lines */
 import { dedupe, removeUndefined, sanitizeRelayUrl } from "@snort/shared";
 import { OutboxModel } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { useContext, useMemo, useSyncExternalStore } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, FormattedNumber } from "react-intl";
 import { Link } from "react-router-dom";
 
 import { RelayMetrics } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { CollapsedSection } from "@/Components/Collapsed";
 import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
+import RelayUptime from "@/Components/Relay/uptime";
+import UptimeLabel from "@/Components/Relay/uptime-label";
 import useLogin from "@/Hooks/useLogin";
 import { getRelayName } from "@/Utils";
-
-import RelayUptime from "./uptime";
-import UptimeLabel from "./uptime-label";
+import { useCloseRelays } from "@/Hooks/useCloseRelays";
+import Uptime from "@/Components/Relay/uptime";
 
 export function DiscoverRelays() {
   const { follows, relays, state } = useLogin(l => ({
@@ -56,6 +58,7 @@ export function DiscoverRelays() {
     [relays, metrics],
   );
 
+  const closeRelays = useCloseRelays();
   return (
     <div className="flex flex-col gap-4">
       <CollapsedSection
@@ -158,6 +161,68 @@ export function DiscoverRelays() {
                 </td>
               </tr>
             ))}
+          </tbody>
+        </table>
+      </CollapsedSection>
+
+      <CollapsedSection
+        title={
+          <div className="text-xl">
+            <FormattedMessage defaultMessage="Close Relays" />
+          </div>
+        }>
+        <small>
+          <FormattedMessage defaultMessage="Relays close to your geographic location." />
+        </small>
+        <table className="table">
+          <thead>
+            <tr className="text-gray-light uppercase">
+              <th>
+                <FormattedMessage defaultMessage="Relay" description="Relay name (URL)" />
+              </th>
+              <th>
+                <FormattedMessage defaultMessage="Distance" />
+              </th>
+              <th>
+                <FormattedMessage defaultMessage="Uptime" />
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {closeRelays
+              .filter(a => !isNaN(a.distance))
+              .slice(0, 100)
+              .map(a => (
+                <tr key={a.addr}>
+                  <td title={a.addr}>
+                    <Link to={`/settings/relays/${encodeURIComponent(a.addr)}`} className="flex gap-2 items-center">
+                      <RelayFavicon url={a.addr} />
+                      {getRelayName(a.addr)}
+                    </Link>
+                  </td>
+                  <td className="text-center">
+                    <FormattedMessage
+                      defaultMessage="{n} km"
+                      values={{
+                        n: <FormattedNumber value={a.distance / 1000} maximumFractionDigits={0} />,
+                      }}
+                    />
+                  </td>
+                  <td className="text-center">
+                    <Uptime url={a.addr} />
+                  </td>
+                  <td className="text-end">
+                    <AsyncButton
+                      className="!py-1 mb-1"
+                      onClick={async () => {
+                        await state.addRelay(a.addr, { read: true, write: true });
+                      }}>
+                      <FormattedMessage defaultMessage="Add" />
+                    </AsyncButton>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </CollapsedSection>

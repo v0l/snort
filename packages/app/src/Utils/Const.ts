@@ -160,3 +160,13 @@ export const MaxAboutLength = 1000;
  * Snort backend publishes rates
  */
 export const SnortPubkey = "npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x6802npjqhjjtws";
+
+/**
+ * List of relay monitor relays
+ */
+export const MonitorRelays = [
+  "wss://relaypag.es",
+  "wss://relay.nostr.watch",
+  "wss://history.nostr.watch",
+  "wss://monitorlizard.nostr1.com",
+];

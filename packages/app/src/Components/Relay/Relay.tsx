@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 
 import useRelayState from "@/Feed/RelayState";
 import useLogin from "@/Hooks/useLogin";
-import RelayUptime from "@/Pages/settings/relays/uptime";
 import { getRelayName } from "@/Utils";
 
 import Icon from "../Icons/Icon";
 import RelayPermissions from "./permissions";
 import RelayStatusLabel from "./status-label";
+import RelayUptime from "./uptime";
 
 export interface RelayProps {
   addr: string;

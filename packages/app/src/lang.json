@@ -333,6 +333,9 @@
   "7hp70g": {
     "defaultMessage": "NIP-05"
   },
+  "7pFGAQ": {
+    "defaultMessage": "Close Relays"
+  },
   "8/vBbP": {
     "defaultMessage": "Reposts ({n})"
   },
@@ -952,6 +955,9 @@
   "P7nJT9": {
     "defaultMessage": "Total today (UTC): {amount} sats"
   },
+  "P8JC58": {
+    "defaultMessage": "Distance"
+  },
   "PCSt5T": {
     "defaultMessage": "Preferences"
   },
@@ -1050,6 +1056,9 @@
   },
   "StKzTE": {
     "defaultMessage": "The author has marked this note as a <i>sensitive topic</i>"
+  },
+  "T83nqf": {
+    "defaultMessage": "Relays close to your geographic location."
   },
   "TDR5ge": {
     "defaultMessage": "Media in notes will automatically be shown for selected people, otherwise only the link will show"
@@ -1255,6 +1264,9 @@
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
+  },
+  "abbGKq": {
+    "defaultMessage": "{n} km"
   },
   "b12Goz": {
     "defaultMessage": "Mnemonic"

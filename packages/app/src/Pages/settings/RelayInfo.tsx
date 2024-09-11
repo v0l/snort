@@ -11,11 +11,10 @@ import RelayPermissions from "@/Components/Relay/permissions";
 import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
 import RelaySoftware from "@/Components/Relay/software";
 import RelayStatusLabel from "@/Components/Relay/status-label";
+import RelayUptime from "@/Components/Relay/uptime";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useRelayState from "@/Feed/RelayState";
 import { getRelayName, parseId } from "@/Utils";
-
-import RelayUptime from "./relays/uptime";
 
 const RelayInfo = () => {
   const params = useParams();
