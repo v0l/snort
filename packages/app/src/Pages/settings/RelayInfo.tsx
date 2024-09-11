@@ -1,126 +1,212 @@
-import { Connection } from "@snort/system";
-import { FormattedMessage } from "react-intl";
-import { useNavigate, useParams } from "react-router-dom";
+import { RelayInfo as RI } from "@snort/system";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { FormattedMessage, FormattedNumber } from "react-intl";
+import { Link, useParams } from "react-router-dom";
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import ProfilePreview from "@/Components/User/ProfilePreview";
+import { RelayMetrics } from "@/Cache";
+import { CollapsedSection } from "@/Components/Collapsed";
+import NipDescription from "@/Components/nip";
+import RelayPaymentLabel from "@/Components/Relay/paid";
+import RelayPermissions from "@/Components/Relay/permissions";
+import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
+import RelaySoftware from "@/Components/Relay/software";
+import RelayStatusLabel from "@/Components/Relay/status-label";
+import ProfileImage from "@/Components/User/ProfileImage";
 import useRelayState from "@/Feed/RelayState";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
-import { parseId, unwrap } from "@/Utils";
+import { getRelayName, parseId } from "@/Utils";
 
-import messages from "./messages";
+import RelayUptime from "./relays/uptime";
 
 const RelayInfo = () => {
   const params = useParams();
-  const navigate = useNavigate();
-  const login = useLogin();
-  const { system } = useEventPublisher();
+  const [info, setInfo] = useState<RI>();
 
-  const conn = [...system.pool].find(([, a]) => a.id === params.id)?.[1];
+  const conn = useRelayState(params.id ?? "");
 
-  const stats = useRelayState(conn?.address ?? "");
+  async function loadRelayInfo() {
+    const u = new URL(params.id ?? "");
+    const rsp = await fetch(`${u.protocol === "wss:" ? "https:" : "http:"}//${u.host}`, {
+      headers: {
+        accept: "application/nostr+json",
+      },
+    });
+    if (rsp.ok) {
+      const data = await rsp.json();
+      for (const [k, v] of Object.entries(data)) {
+        if (v === "unset" || v === "" || v === "~") {
+          data[k] = undefined;
+        }
+      }
+      setInfo(data);
+    }
+  }
+
+  useEffect(() => {
+    loadRelayInfo().catch(console.error);
+  }, []);
+
+  const stats = useSyncExternalStore(
+    c => RelayMetrics.hook(c, "*"),
+    () => RelayMetrics.snapshot(),
+  ).find(a => a.addr === params.id);
+
   return (
     <>
-      <h3 className="pointer" onClick={() => navigate("/settings/relays")}>
-        <FormattedMessage {...messages.Relays} />
-      </h3>
-      <div>
-        <h3>{stats?.info?.name}</h3>
-        <p>{stats?.info?.description}</p>
-
-        {stats?.info?.pubkey && (
-          <>
-            <h4>
-              <FormattedMessage {...messages.Owner} />
-            </h4>
-            <ProfilePreview pubkey={parseId(stats.info.pubkey)} />
-          </>
-        )}
-        {stats?.info?.software && (
-          <div className="flex">
-            <h4 className="grow">
-              <FormattedMessage {...messages.Software} />
-            </h4>
-            <div className="flex flex-col">
-              {stats.info.software.startsWith("http") ? (
-                <a href={stats.info.software} target="_blank" rel="noreferrer">
-                  {stats.info.software}
-                </a>
-              ) : (
-                <>{stats.info.software}</>
-              )}
-              <small>
-                {!stats.info.version?.startsWith("v") && "v"}
-                {stats.info.version}
-              </small>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between">
+          <div className="flex gap-4 items-center">
+            <RelayFavicon url={params.id ?? ""} size={80} />
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold">{info?.name ?? getRelayName(params.id ?? "")}</div>
+                {info && <RelayPaymentLabel info={info} />}
+              </div>
+              <div className="text-gray-light">{params.id}</div>
             </div>
           </div>
-        )}
-        {stats?.info?.contact && (
-          <div className="flex">
-            <h4 className="grow">
-              <FormattedMessage {...messages.Contact} />
-            </h4>
-            <a
-              href={`${stats.info.contact.startsWith("mailto:") ? "" : "mailto:"}${stats.info.contact}`}
-              target="_blank"
-              rel="noreferrer">
-              {stats.info.contact}
-            </a>
-          </div>
-        )}
-        {stats?.info?.supported_nips && (
-          <>
-            <h4>
-              <FormattedMessage {...messages.Supports} />
-            </h4>
-            <div className="grow">
-              {stats.info?.supported_nips?.map(a => (
-                <a key={a} target="_blank" rel="noreferrer" href={`https://nips.be/${a}`} className="pill">
-                  NIP-{a.toString().padStart(2, "0")}
-                </a>
-              ))}
-            </div>
-          </>
-        )}
-        {conn instanceof Connection && (
-          <>
-            <h4>
-              <FormattedMessage defaultMessage="Active Subscriptions" />
-            </h4>
-            <div className="grow">
-              {conn.ActiveRequests.map(a => (
-                <span className="pill" key={a}>
-                  {a}
-                </span>
-              ))}
-            </div>
-          </>
-        )}
-        {conn instanceof Connection && (
-          <>
-            <h4>
-              <FormattedMessage defaultMessage="Pending Subscriptions" />
-            </h4>
-            <div className="grow">
-              {conn.PendingRequests.map(a => (
-                <span className="pill" key={a.obj[1]}>
-                  {a.obj[1]}
-                </span>
-              ))}
-            </div>
-          </>
-        )}
-        <div className="flex mt10 justify-end">
-          <AsyncButton
-            onClick={async () => {
-              await login.state.removeRelay(unwrap(conn).address, true);
-              navigate("/settings/relays");
-            }}>
-            <FormattedMessage {...messages.Remove} />
-          </AsyncButton>
         </div>
+
+        {info && (
+          <div className="grid grid-cols-3 gap-4">
+            <div className="flex flex-col gap-2">
+              <div className="uppercase text-secondary font-bold text-sm">
+                <FormattedMessage defaultMessage="Admin" />
+              </div>
+              <div>{info?.pubkey && <ProfileImage pubkey={parseId(info.pubkey)} size={30} />}</div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="uppercase text-secondary font-bold text-sm">
+                <FormattedMessage defaultMessage="Contact" />
+              </div>
+              <div>
+                {info?.contact && (
+                  <a
+                    href={`${info.contact.startsWith("mailto:") ? "" : "mailto:"}${info.contact}`}
+                    target="_blank"
+                    rel="noreferrer">
+                    {info.contact.replace("mailto:", "")}
+                  </a>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="uppercase text-secondary font-bold text-sm">
+                <FormattedMessage defaultMessage="Software" />
+              </div>
+              <div>{info?.software && <RelaySoftware software={info.software} />}</div>
+            </div>
+            {conn && (
+              <>
+                <div className="flex flex-col gap-2">
+                  <div className="uppercase text-secondary font-bold text-sm">
+                    <FormattedMessage defaultMessage="Status" />
+                  </div>
+                  <div>
+                    <RelayStatusLabel conn={conn} />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="uppercase text-secondary font-bold text-sm">
+                    <FormattedMessage defaultMessage="Permissions" />
+                  </div>
+                  <div>
+                    <RelayPermissions conn={conn} />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="uppercase text-secondary font-bold text-sm">
+                    <FormattedMessage defaultMessage="Uptime" />
+                  </div>
+                  <div>
+                    <RelayUptime url={conn.address} />
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        <hr className="border-border-color" />
+
+        {stats && (
+          <CollapsedSection
+            title={
+              <div className="text-xl font-semibold">
+                <FormattedMessage defaultMessage="Relay Stats" />
+              </div>
+            }
+            startClosed={false}>
+            <ul className="list-disc">
+              <li>
+                <span className="text-gray-light">
+                  <FormattedMessage defaultMessage="Total Events:" />
+                </span>
+                &nbsp;
+                <FormattedNumber value={stats.events} />
+              </li>
+              <li>
+                <span className="text-gray-light">
+                  <FormattedMessage defaultMessage="Connection Success:" />
+                </span>
+                &nbsp;
+                <FormattedNumber value={stats.connects} />
+              </li>
+              <li>
+                <span className="text-gray-light">
+                  <FormattedMessage defaultMessage="Connection Failed:" />
+                </span>
+                &nbsp;
+                <FormattedNumber value={stats.disconnects} />
+              </li>
+              <li>
+                <span className="text-gray-light">
+                  <FormattedMessage defaultMessage="Average Latency:" />
+                </span>
+                &nbsp;
+                <FormattedMessage
+                  defaultMessage="{n} ms"
+                  values={{
+                    n: (
+                      <FormattedNumber
+                        maximumFractionDigits={0}
+                        value={stats.latency.reduce((acc, v) => acc + v, 0) / stats.latency.length}
+                      />
+                    ),
+                  }}
+                />
+              </li>
+              <li>
+                <span className="text-gray-light">
+                  <FormattedMessage defaultMessage="Last Seen:" />
+                </span>
+                &nbsp;
+                {new Date(stats.lastSeen).toLocaleString()}
+              </li>
+            </ul>
+          </CollapsedSection>
+        )}
+        <hr className="border-border-color" />
+        {info?.supported_nips && (
+          <CollapsedSection
+            title={
+              <div className="text-xl font-semibold">
+                <FormattedMessage defaultMessage="Supported NIPs" />
+              </div>
+            }
+            startClosed={false}>
+            <ul className="list-disc">
+              {info.supported_nips.map(n => (
+                <li key={n}>
+                  <Link
+                    target="_blank"
+                    to={`https://github.com/nostr-protocol/nips/blob/master/${n.toString().padStart(2, "0")}.md`}>
+                    <NipDescription nip={n} />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </CollapsedSection>
+        )}
       </div>
     </>
   );

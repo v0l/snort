@@ -3,6 +3,7 @@ import { OutboxModel } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { useContext, useMemo, useSyncExternalStore } from "react";
 import { FormattedMessage } from "react-intl";
+import { Link } from "react-router-dom";
 
 import { RelayMetrics } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
@@ -89,9 +90,11 @@ export function DiscoverRelays() {
               .slice(0, 20)
               .map(a => (
                 <tr key={a.relay}>
-                  <td className="flex gap-2 items-center">
-                    <RelayFavicon url={a.relay} />
-                    {getRelayName(a.relay)}
+                  <td>
+                    <Link to={`/settings/relays/${encodeURIComponent(a.relay)}`} className="flex gap-2 items-center">
+                      <RelayFavicon url={a.relay} />
+                      {getRelayName(a.relay)}
+                    </Link>
                   </td>
                   <td className="text-center">
                     <RelayUptime url={a.relay} />
@@ -135,9 +138,11 @@ export function DiscoverRelays() {
           <tbody>
             {reliableRelays.slice(0, 40).map(a => (
               <tr key={a.addr}>
-                <td className="flex gap-2 items-center" title={a.addr}>
-                  <RelayFavicon url={a.addr} />
-                  {getRelayName(a.addr)}
+                <td title={a.addr}>
+                  <Link to={`/settings/relays/${encodeURIComponent(a.addr)}`} className="flex gap-2 items-center">
+                    <RelayFavicon url={a.addr} />
+                    {getRelayName(a.addr)}
+                  </Link>
                 </td>
                 <td className="text-center">
                   <UptimeLabel avgPing={a.avgLatency} />

@@ -54,6 +54,7 @@
   --primary-bg: #ff3f15;
   --cashu-gradient: linear-gradient(90deg, #40b039, #adff2a);
   --pro: #ffdd65;
+  --free: #1a5aff;
 }
 
 ::-webkit-scrollbar {
@@ -119,6 +120,10 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+ul {
+  padding-inline-start: 2rem;
 }
 
 a {
@@ -227,7 +232,8 @@ a.ext {
 small {
   color: var(--font-secondary-color);
   font-size: 14px;
-  line-height: 22px; /* 157.143% */
+  line-height: 22px;
+  /* 157.143% */
 }
 
 .button {
@@ -898,6 +904,7 @@ svg.repeat {
   border: 1px solid var(--border-color);
   box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
 }
+
 .light button.primary {
   background: var(--primary-bg);
   color: #fff;
@@ -909,6 +916,7 @@ svg.repeat {
 .light button.secondary:hover {
   box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px !important;
 }
+
 .light button.primary:hover {
   box-shadow: 0px 0px 10px var(--primary-bg) !important;
 }
@@ -923,7 +931,8 @@ svg.repeat {
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  display: none;
+  /* Safari and Chrome */
 }
 
 .pb-safe-area {
