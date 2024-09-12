@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { LRUCache } from "typescript-lru-cache";
 
 import { Relay } from "@/Cache";
-import { CollapsedSection } from "@/Components/Collapsed";
 import NoteHeader from "@/Components/Event/Note/NoteHeader";
 import NoteQuote from "@/Components/Event/Note/NoteQuote";
 import { NoteText } from "@/Components/Event/Note/NoteText";
@@ -15,16 +14,13 @@ import { TranslationInfo } from "@/Components/Event/Note/TranslationInfo";
 import { NoteTranslation } from "@/Components/Event/Note/types";
 import Username from "@/Components/User/Username";
 import useModeration from "@/Hooks/useModeration";
-import { findTag } from "@/Utils";
 import { chainKey } from "@/Utils/Thread/ChainKey";
 
-import messages from "../../messages";
-import Text from "../../Text/Text";
 import { NoteProps } from "../EventComponent";
 import HiddenNote from "../HiddenNote";
 import Poll from "../Poll";
-import NoteFooter from "./NoteFooter/NoteFooter";
 import NoteAppHandler from "./NoteAppHandler";
+import NoteFooter from "./NoteFooter/NoteFooter";
 
 const defaultOptions = {
   showHeader: true,
@@ -160,7 +156,7 @@ function Reaction({ ev }: { ev: TaggedNostrEvent }) {
   return (
     <div className="note card">
       <div className="text-gray-medium font-bold">
-        <Username pubkey={ev.pubkey} onLinkVisit={() => {}} />
+        <Username pubkey={ev.pubkey} onLinkVisit={() => { }} />
         <span> </span>
         <FormattedMessage defaultMessage="liked" />
       </div>
