@@ -15,10 +15,12 @@ export const NoteCreatorButton = ({
   className,
   alwaysShow,
   showText,
+  withModal,
 }: {
   className?: string;
   alwaysShow?: boolean;
   showText?: boolean;
+  withModal: boolean;
 }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
@@ -79,7 +81,7 @@ export const NoteCreatorButton = ({
           )}
         </button>
       )}
-      <NoteCreator key="global-note-creator" />
+      {withModal && <NoteCreator key="global-note-creator" />}
     </>
   );
 };

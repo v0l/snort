@@ -780,12 +780,6 @@ button.tall {
   }
 }
 
-.note-creator-modal .rta__textarea {
-  /* Fix width calculation to account for 32px padding on input */
-  width: calc(100% - 32px) !important;
-  font-size: 15px !important;
-}
-
 .ctx-menu {
   color: var(--font-color) !important;
   background: transparent !important;
@@ -802,9 +796,12 @@ button.tall {
   background: #1e1e1e !important;
   padding: 8px 24px !important;
   display: grid !important;
-  grid-template-columns: 2rem auto !important;
   font-size: 16px;
   font-weight: 600;
+}
+
+.ctx-menu:not(.no-icons) li {
+  grid-template-columns: 2rem auto !important;
 }
 
 .light .ctx-menu li {

@@ -22,6 +22,7 @@ interface NoteCreatorDataSnapshot {
   sending?: Array<NostrEvent>;
   sendStarted: boolean;
   hashTags: Array<string>;
+  filePicker: "hidden" | "compact" | "wide";
   reset: () => void;
   update: (fn: (v: NoteCreatorDataSnapshot) => void) => void;
 }
@@ -38,6 +39,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
       active: false,
       advanced: false,
       sendStarted: false,
+      filePicker: "hidden",
       hashTags: [],
       reset: () => {
         this.#reset(this.#data);
@@ -68,6 +70,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
     d.sending = undefined;
     d.extraTags = undefined;
     d.hashTags = [];
+    d.filePicker = "hidden";
   }
 
   takeSnapshot(): NoteCreatorDataSnapshot {

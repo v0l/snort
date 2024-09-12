@@ -51,7 +51,7 @@ export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: Tagged
 
   return (
     <>
-      <Modal id="broadcaster" className="note-creator-modal" onClose={onClose}>
+      <Modal id="broadcaster" onClose={onClose}>
         {renderRelayCustomisation()}
         <div className="flex g8">
           <button className="secondary" onClick={onClose}>

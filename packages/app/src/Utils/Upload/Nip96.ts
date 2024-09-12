@@ -1,11 +1,12 @@
 import { base64 } from "@scure/base";
 import { throwIfOffline } from "@snort/shared";
-import { EventKind, EventPublisher } from "@snort/system";
+import { EventKind, EventPublisher, NostrEvent } from "@snort/system";
 
-import { FileExtensionRegex } from "../Const";
-import { Uploader, UploadResult } from ".";
+import { addExtensionToNip94Url, readNip94Tags, UploadResult } from ".";
 
-export class Nip96Uploader implements Uploader {
+export class Nip96Uploader {
+  #info?: Nip96Info;
+
   constructor(
     readonly url: string,
     readonly publisher: EventPublisher,
@@ -21,67 +22,43 @@ export class Nip96Uploader implements Uploader {
     const u = new URL(this.url);
 
     const rsp = await fetch(`${u.protocol}//${u.host}/.well-known/nostr/nip96.json`);
-    return (await rsp.json()) as Nip96Info;
+    this.#info = (await rsp.json()) as Nip96Info;
+    return this.#info;
+  }
+
+  async listFiles(page = 0, count = 50) {
+    const rsp = await this.#req(`?page=${page}&count=${count}`, "GET");
+    if (rsp.ok) {
+      return (await rsp.json()) as Nip96FileList;
+    }
   }
 
   async upload(file: File | Blob, filename: string): Promise<UploadResult> {
-    throwIfOffline();
-    const auth = async (url: string, method: string) => {
-      const auth = await this.publisher.generic(eb => {
-        return eb.kind(EventKind.HttpAuthentication).tag(["u", url]).tag(["method", method]);
-      });
-      return `Nostr ${base64.encode(new TextEncoder().encode(JSON.stringify(auth)))}`;
-    };
-
-    const info = await this.loadInfo();
     const fd = new FormData();
     fd.append("size", file.size.toString());
     fd.append("caption", filename);
     fd.append("media_type", file.type);
     fd.append("file", file);
 
-    let u = info.api_url;
-    if (u.startsWith("/")) {
-      u = `${this.url}${u.slice(1)}`;
-    }
-    const rsp = await fetch(u, {
-      body: fd,
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        authorization: await auth(u, "POST"),
-      },
-    });
+    const rsp = await this.#req("", "POST", fd);
     if (rsp.ok) {
-      throwIfOffline();
       const data = (await rsp.json()) as Nip96Result;
       if (data.status === "success") {
-        const dim = data.nip94_event.tags
-          .find(a => a[0] === "dim")
-          ?.at(1)
-          ?.split("x");
-        const mime = data.nip94_event.tags.find(a => a[0] === "m")?.at(1) ?? "";
-        let url = data.nip94_event.tags.find(a => a[0] === "url")?.at(1) ?? "";
-        if (!url.match(FileExtensionRegex) && mime) {
-          switch (mime) {
-            case "image/webp": {
-              url += ".webp";
-              break;
-            }
-            default: {
-              url += ".jpg";
-              break;
-            }
-          }
+        const meta = readNip94Tags(data.nip94_event.tags);
+        if (
+          meta.dimensions === undefined ||
+          meta.dimensions.length !== 2 ||
+          meta.dimensions[0] === 0 ||
+          meta.dimensions[1] === 0
+        ) {
+          return {
+            error: `Invalid dimensions: "${meta.dimensions?.join("x")}"`,
+          };
         }
         return {
-          url,
-          metadata: {
-            width: dim?.at(0) ? Number(dim[0]) : undefined,
-            height: dim?.at(1) ? Number(dim[1]) : undefined,
-            blurhash: data.nip94_event.tags.find(a => a[0] === "blurhash")?.at(1),
-            hash: data.nip94_event.tags.find(a => a[0] === "x")?.at(1),
-          },
+          url: addExtensionToNip94Url(meta),
+          header: data.nip94_event,
+          metadata: meta,
         };
       }
       return {
@@ -101,6 +78,31 @@ export class Nip96Uploader implements Uploader {
       }
     }
   }
+
+  async #req(path: string, method: "GET" | "POST" | "DELETE", body?: BodyInit) {
+    throwIfOffline();
+    const auth = async (url: string, method: string) => {
+      const auth = await this.publisher.generic(eb => {
+        return eb.kind(EventKind.HttpAuthentication).tag(["u", url]).tag(["method", method]);
+      });
+      return `Nostr ${base64.encode(new TextEncoder().encode(JSON.stringify(auth)))}`;
+    };
+
+    const info = this.#info ?? (await this.loadInfo());
+    let u = info.api_url;
+    if (u.startsWith("/")) {
+      u = `${this.url}${u.slice(1)}`;
+    }
+    u += path;
+    return await fetch(u, {
+      method,
+      body,
+      headers: {
+        accept: "application/json",
+        authorization: await auth(u, method),
+      },
+    });
+  }
 }
 
 export interface Nip96Info {
@@ -112,8 +114,12 @@ export interface Nip96Result {
   status: string;
   message: string;
   processing_url?: string;
-  nip94_event: {
-    tags: Array<Array<string>>;
-    content: string;
-  };
+  nip94_event: NostrEvent;
+}
+
+export interface Nip96FileList {
+  count: number;
+  total: number;
+  page: number;
+  files: Array<NostrEvent>;
 }

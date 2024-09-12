@@ -16,6 +16,7 @@ module.exports = {
         warning: "var(--warning)",
         error: "var(--error)",
         success: "var(--success)",
+        "gray-superlight": "var(--gray-superlight)",
         "gray-light": "var(--gray-light)",
         "gray-medium": "var(--gray-medium)",
         gray: "var(--gray)",

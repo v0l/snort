@@ -25,7 +25,7 @@ const MENU_ITEMS: MenuItem[] = [
   {
     el: (
       <div className="flex flex-grow items-center justify-center">
-        <NoteCreatorButton alwaysShow={true} />
+        <NoteCreatorButton alwaysShow={true} withModal={true} />
       </div>
     ),
     hideReadOnly: true,

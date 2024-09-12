@@ -59,6 +59,9 @@
   "/d6vEc": {
     "defaultMessage": "Make your profile easier to find and share"
   },
+  "/ioUrF": {
+    "defaultMessage": "From File"
+  },
   "/n5KSF": {
     "defaultMessage": "{n} ms"
   },
@@ -191,6 +194,9 @@
   },
   "3gOsZq": {
     "defaultMessage": "Translators"
+  },
+  "3kbIhS": {
+    "defaultMessage": "Untitled"
   },
   "3qnJlS": {
     "defaultMessage": "You are voting with {amount} sats"
@@ -1163,6 +1169,9 @@
   "W9355R": {
     "defaultMessage": "Unmute"
   },
+  "WeLEuL": {
+    "defaultMessage": "From Server"
+  },
   "WmZhfL": {
     "defaultMessage": "Automatically translate notes to your local language"
   },
@@ -1225,6 +1234,9 @@
   },
   "Z7kkeJ": {
     "defaultMessage": "Delegated Event Signing"
+  },
+  "ZFe9tl": {
+    "defaultMessage": "Compose a note"
   },
   "ZKORll": {
     "defaultMessage": "Activate Now"
@@ -1306,6 +1318,9 @@
   },
   "c35bj2": {
     "defaultMessage": "If you have an enquiry about your NIP-05 order please DM {link}"
+  },
+  "c3LlRO": {
+    "defaultMessage": "{n}KiB"
   },
   "c3g2hL": {
     "defaultMessage": "Broadcast Again"
@@ -1454,6 +1469,9 @@
   },
   "fsB/4p": {
     "defaultMessage": "Saved"
+  },
+  "fucxlm": {
+    "defaultMessage": "Attach Media"
   },
   "furjvW": {
     "defaultMessage": "Watch Stream"
@@ -1611,6 +1629,9 @@
   "kJYo0u": {
     "defaultMessage": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"
   },
+  "kQAf2d": {
+    "defaultMessage": "Select"
+  },
   "kaaf1E": {
     "defaultMessage": "now"
   },
@@ -1685,6 +1706,9 @@
   },
   "n1Whvj": {
     "defaultMessage": "Switch"
+  },
+  "n8k1SG": {
+    "defaultMessage": "{n}MiB"
   },
   "nDejmx": {
     "defaultMessage": "Unblock"

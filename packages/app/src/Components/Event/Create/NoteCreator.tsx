@@ -1,8 +1,8 @@
 /* eslint-disable max-lines */
-import "./NoteCreator.css";
-
 import { fetchNip05Pubkey, unixNow } from "@snort/shared";
 import { EventBuilder, EventKind, NostrLink, NostrPrefix, TaggedNostrEvent, tryParseNostrLink } from "@snort/system";
+import { useUserProfile } from "@snort/system-react";
+import { Menu, MenuItem } from "@szhsin/react-menu";
 import classNames from "classnames";
 import { ClipboardEventHandler, DragEvent, useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -10,21 +10,24 @@ import { FormattedMessage, useIntl } from "react-intl";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { AsyncIcon } from "@/Components/Button/AsyncIcon";
 import CloseButton from "@/Components/Button/CloseButton";
+import IconButton from "@/Components/Button/IconButton";
 import { sendEventToRelays } from "@/Components/Event/Create/util";
 import Note from "@/Components/Event/EventComponent";
+import Flyout from "@/Components/flyout";
 import Icon from "@/Components/Icons/Icon";
 import { ToggleSwitch } from "@/Components/Icons/Toggle";
 import Modal from "@/Components/Modal/Modal";
 import Textarea from "@/Components/Textarea/Textarea";
 import { Toastore } from "@/Components/Toaster/Toaster";
-import ProfileImage from "@/Components/User/ProfileImage";
+import { MediaServerFileList } from "@/Components/Upload/file-picker";
+import Avatar from "@/Components/User/Avatar";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
 import useRelays from "@/Hooks/useRelays";
 import { useNoteCreator } from "@/State/NoteCreator";
 import { openFile, trackEvent } from "@/Utils";
-import useFileUpload from "@/Utils/Upload";
+import useFileUpload, { addExtensionToNip94Url, nip94TagsToIMeta, readNip94Tags } from "@/Utils/Upload";
 import { GetPowWorker } from "@/Utils/wasm";
 import { ZapTarget } from "@/Utils/Zapper";
 
@@ -59,6 +62,7 @@ export function NoteCreator() {
   const { formatMessage } = useIntl();
   const uploader = useFileUpload();
   const publicKey = useLogin(s => s.publicKey);
+  const profile = useUserProfile(publicKey);
   const pow = usePreferences(s => s.pow);
   const relays = useRelays();
   const { system, publisher: pub } = useEventPublisher();
@@ -145,6 +149,18 @@ export function NoteCreator() {
           extraTags ??= [];
           extraTags.push(...note.hashTags.map(a => ["t", a.toLowerCase()]));
         }
+
+        for (const ex of note.otherEvents ?? []) {
+          const meta = readNip94Tags(ex.tags);
+          if (!meta.url) continue;
+          if (!note.note.endsWith("\n")) {
+            note.note += "\n";
+          }
+          note.note += addExtensionToNip94Url(meta);
+          extraTags ??= [];
+          extraTags.push(nip94TagsToIMeta(meta));
+        }
+
         // add quote repost
         if (note.quote) {
           if (!note.note.endsWith("\n")) {
@@ -211,19 +227,16 @@ export function NoteCreator() {
       }
       trackEvent("PostNote", props);
 
-      const events = (note.otherEvents ?? []).concat(ev);
-      events.map(a =>
-        sendEventToRelays(system, a, note.selectedCustomRelays, r => {
-          if (CONFIG.noteCreatorToast) {
-            r.forEach(rr => {
-              Toastore.push({
-                element: c => <OkResponseRow rsp={rr} close={c} />,
-                expire: unixNow() + (rr.ok ? 5 : 55555),
-              });
+      sendEventToRelays(system, ev, note.selectedCustomRelays, r => {
+        if (CONFIG.noteCreatorToast) {
+          r.forEach(rr => {
+            Toastore.push({
+              element: c => <OkResponseRow rsp={rr} close={c} />,
+              expire: unixNow() + (rr.ok ? 5 : 55555),
             });
-          }
-        }),
-      );
+          });
+        }
+      });
       note.update(n => n.reset());
       localStorage.removeItem("msgDraft");
     }
@@ -252,25 +265,13 @@ export function NoteCreator() {
         const rx = await uploader.upload(file, file.name);
         note.update(v => {
           if (rx.header) {
-            const link = `nostr:${new NostrLink(NostrPrefix.Event, rx.header.id, rx.header.kind).encode(
-              CONFIG.eventLinkPrefix,
-            )}`;
-            v.note = `${v.note ? `${v.note}\n` : ""}${link}`;
-            v.otherEvents = [...(v.otherEvents ?? []), rx.header];
+            v.otherEvents ??= [];
+            v.otherEvents.push(rx.header);
           } else if (rx.url) {
             v.note = `${v.note ? `${v.note}\n` : ""}${rx.url}`;
             if (rx.metadata) {
               v.extraTags ??= [];
-              const imeta = ["imeta", `url ${rx.url}`];
-              if (rx.metadata.blurhash) {
-                imeta.push(`blurhash ${rx.metadata.blurhash}`);
-              }
-              if (rx.metadata.width && rx.metadata.height) {
-                imeta.push(`dim ${rx.metadata.width}x${rx.metadata.height}`);
-              }
-              if (rx.metadata.hash) {
-                imeta.push(`x ${rx.metadata.hash}`);
-              }
+              const imeta = nip94TagsToIMeta(rx.metadata);
               v.extraTags.push(imeta);
             }
           } else if (rx?.error) {
@@ -369,12 +370,12 @@ export function NoteCreator() {
 
   function renderRelayCustomisation() {
     return (
-      <div className="flex flex-col g8">
+      <div className="flex flex-col gap-2">
         {Object.entries(relays)
           .filter(el => el[1].write)
           .map(a => a[0])
           .map((r, i, a) => (
-            <div className="p flex justify-between note-creator-relay" key={r}>
+            <div className="p flex items-center justify-between bg-gray br" key={r}>
               <div>{r}</div>
               <div>
                 <input
@@ -470,7 +471,7 @@ export function NoteCreator() {
                     }
                   />
                 </div>
-                <div className="flex flex-col s g4">
+                <div className="flex flex-col g4">
                   <div>&nbsp;</div>
                   <Icon
                     name="close"
@@ -488,20 +489,14 @@ export function NoteCreator() {
             </button>
           </div>
           <span className="warning">
-            <FormattedMessage
-              defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured"
-              id="6bgpn+"
-            />
+            <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" />
           </span>
         </div>
         <div className="flex flex-col g8">
           <h4>
             <FormattedMessage defaultMessage="Sensitive Content" />
           </h4>
-          <FormattedMessage
-            defaultMessage="Users must accept the content warning to show the content of your note."
-            id="UUPFlt"
-          />
+          <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." />
           <input
             className="w-max"
             type="text"
@@ -525,29 +520,43 @@ export function NoteCreator() {
   function noteCreatorFooter() {
     return (
       <div className="flex justify-between">
-        <div className="flex items-center g8">
-          <ProfileImage
-            pubkey={publicKey ?? ""}
-            className="note-creator-icon"
-            link=""
-            showUsername={false}
-            showFollowDistance={false}
-            showProfileCard={false}
-          />
+        <div className="flex items-center gap-4 text-gray-light cursor-pointer">
+          <Avatar pubkey={publicKey ?? ""} user={profile} size={28} showTitle={true} />
+          <Menu
+            menuButton={
+              <AsyncIcon iconName="attachment" iconSize={24} className="hover:text-gray-superlight transition" />
+            }
+            menuClassName="ctx-menu no-icons">
+            <div className="close-menu-container">
+              {/* This menu item serves as a "close menu" button;
+          it allows the user to click anywhere nearby the menu to close it. */}
+              <MenuItem>
+                <div className="close-menu" />
+              </MenuItem>
+            </div>
+            <MenuItem onClick={() => note.update(s => (s.filePicker = "compact"))}>
+              <FormattedMessage defaultMessage="From Server" />
+            </MenuItem>
+            <MenuItem onClick={() => attachFile()}>
+              <FormattedMessage defaultMessage="From File" />
+            </MenuItem>
+          </Menu>
+
           {note.pollOptions === undefined && !note.replyTo && (
             <AsyncIcon
-              iconName="list"
+              iconName="bar-chart"
               iconSize={24}
               onClick={() => note.update(v => (v.pollOptions = ["A", "B"]))}
-              className={classNames("note-creator-icon", { active: note.pollOptions !== undefined })}
+              className={classNames("hover:text-gray-superlight transition", {
+                "text-white": note.pollOptions !== undefined,
+              })}
             />
           )}
-          <AsyncIcon iconName="image-plus" iconSize={24} onClick={attachFile} className="note-creator-icon" />
           <AsyncIcon
-            iconName="settings-04"
+            iconName="settings-outline"
             iconSize={24}
             onClick={() => note.update(v => (v.advanced = !v.advanced))}
-            className={classNames("note-creator-icon", { active: note.advanced })}
+            className={classNames("hover:text-gray-superlight transition", { "text-white": note.advanced })}
           />
           <span className="sm:inline hidden">
             <FormattedMessage defaultMessage="Preview" />
@@ -558,14 +567,9 @@ export function NoteCreator() {
             className={classNames({ active: Boolean(note.preview) })}
           />
         </div>
-        <div className="flex g8">
-          <button className="secondary" onClick={cancel}>
-            <FormattedMessage defaultMessage="Cancel" />
-          </button>
-          <AsyncButton onClick={onSubmit} className="primary">
-            {note.replyTo ? <FormattedMessage defaultMessage="Reply" /> : <FormattedMessage defaultMessage="Send" />}
-          </AsyncButton>
-        </div>
+        <AsyncButton onClick={onSubmit} className="primary">
+          {note.replyTo ? <FormattedMessage defaultMessage="Reply" /> : <FormattedMessage defaultMessage="Send" />}
+        </AsyncButton>
       </div>
     );
   }
@@ -634,13 +638,22 @@ export function NoteCreator() {
         )}
         {note.preview && getPreviewNote()}
         {!note.preview && (
-          <>
-            <div onPaste={handlePaste} className={classNames("note-creator", { poll: Boolean(note.pollOptions) })}>
+          <div className="flex flex-col gap-4">
+            <div className="font-medium flex justify-between items-center">
+              <FormattedMessage defaultMessage="Compose a note" />
+              <AsyncIcon
+                iconName="x"
+                className="bg-gray rounded-full items-center justify-center flex p-1 cursor-pointer"
+                onClick={cancel}
+              />
+            </div>
+            <div onPaste={handlePaste} className={classNames({ poll: Boolean(note.pollOptions) })}>
               <Textarea
+                className="!border-none !resize-none !p-0 !rounded-none !text-sm"
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                autoFocus
+                autoFocus={true}
                 onChange={c => onChange(c)}
                 value={note.note}
                 onFocus={() => note.update(v => (v.active = true))}
@@ -652,12 +665,74 @@ export function NoteCreator() {
               />
               {renderPollOptions()}
             </div>
-          </>
+          </div>
         )}
         {uploader.progress.length > 0 && <FileUploadProgress progress={uploader.progress} />}
+        {(note.otherEvents?.length ?? 0) > 0 && !note.preview && (
+          <div className="flex gap-2 flex-wrap">
+            {note.otherEvents
+              ?.map(a => ({
+                event: a,
+                tags: readNip94Tags(a.tags),
+              }))
+              .filter(a => a.tags.url)
+              .map(a => (
+                <div key={a.tags.url} className="relative">
+                  <img
+                    className="object-cover w-[80px] h-[80px] !mt-0 rounded-lg"
+                    src={addExtensionToNip94Url(a.tags)}
+                  />
+                  <Icon
+                    name="x"
+                    className="absolute -top-[0.25rem] -right-[0.25rem] bg-gray rounded-full cursor-pointer"
+                    onClick={() =>
+                      note.update(
+                        n => (n.otherEvents = n.otherEvents?.filter(b => readNip94Tags(b.tags).url !== a.tags.url)),
+                      )
+                    }
+                  />
+                </div>
+              ))}
+          </div>
+        )}
         {noteCreatorFooter()}
         {note.error && <span className="error">{note.error}</span>}
         {note.advanced && noteCreatorAdvanced()}
+        <Flyout
+          show={note.filePicker !== "hidden"}
+          width={note.filePicker !== "compact" ? "70vw" : undefined}
+          onClose={() => note.update(v => (v.filePicker = "hidden"))}
+          side="right"
+          title={
+            <div className="text-xl font-medium">
+              <FormattedMessage defaultMessage="Attach Media" />
+            </div>
+          }
+          actions={
+            <>
+              <IconButton
+                icon={{
+                  name: "expand",
+                }}
+                onClick={() => note.update(n => (n.filePicker = n.filePicker === "wide" ? "compact" : "wide"))}
+              />
+            </>
+          }>
+          <div className="overflow-y-auto h-[calc(100%-2rem)]">
+            {note.filePicker !== "hidden" && (
+              <MediaServerFileList
+                onPicked={files => {
+                  note.update(n => {
+                    n.otherEvents ??= [];
+                    n.otherEvents?.push(...files);
+                    n.filePicker = "hidden";
+                  });
+                }}
+                cols={note.filePicker === "compact" ? 2 : 6}
+              />
+            )}
+          </div>
+        </Flyout>
       </>
     );
   }
@@ -670,11 +745,7 @@ export function NoteCreator() {
 
   if (!note.show) return null;
   return (
-    <Modal
-      id="note-creator"
-      bodyClassName="modal-body flex flex-col gap-4"
-      className="note-creator-modal"
-      onClose={reset}>
+    <Modal id="note-creator" bodyClassName="modal-body gap-4" onClose={reset}>
       {noteCreatorForm()}
     </Modal>
   );
