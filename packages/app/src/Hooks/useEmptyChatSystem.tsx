@@ -7,9 +7,7 @@ import { createEmptyChatObject } from "@/chat";
 
 export function useEmptyChatSystem(id?: string) {
   const sub = useMemo(() => {
-    if (!id) return;
-
-    if (id.startsWith(NostrPrefix.Chat28)) {
+    if (id?.startsWith(NostrPrefix.Chat28)) {
       const cx = unwrap(decodeTLV(id).find(a => a.type === TLVEntryType.Special)).value as string;
       const rb = new RequestBuilder(`nip28:${id}`);
       rb.withFilter().ids([cx]).kinds([EventKind.PublicChatChannel, EventKind.PublicChatMetadata]);
@@ -18,6 +16,8 @@ export function useEmptyChatSystem(id?: string) {
         .kinds([EventKind.PublicChatChannel, EventKind.PublicChatMessage, EventKind.PublicChatMetadata]);
 
       return rb;
+    } else {
+      return new RequestBuilder(id ?? "");
     }
   }, [id]);
 

@@ -28,19 +28,19 @@ export default function useLoginFeed() {
   }, [login, publisher, system]);
 
   const subLogin = useMemo(() => {
-    if (!login || !pubKey) return null;
-
     if (CONFIG.features.subscriptions && !login.readonly) {
-      const b = new RequestBuilder(`login:${pubKey.slice(0, 12)}`);
+      const b = new RequestBuilder(`login`);
       b.withOptions({
         leaveOpen: true,
       });
-      b.withFilter()
-        .relay("wss://relay.snort.social/")
-        .kinds([EventKind.SnortSubscriptions])
-        .authors([bech32ToHex(SnortPubKey)])
-        .tag("p", [pubKey])
-        .limit(10);
+      if (pubKey) {
+        b.withFilter()
+          .relay("wss://relay.snort.social/")
+          .kinds([EventKind.SnortSubscriptions])
+          .authors([bech32ToHex(SnortPubKey)])
+          .tag("p", [pubKey])
+          .limit(10);
+      }
       return b;
     }
   }, [pubKey, login]);

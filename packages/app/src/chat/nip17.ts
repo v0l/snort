@@ -31,10 +31,11 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
 
   subscription(session: LoginSession) {
     const pk = session.publicKey;
-    if (!pk || session.readonly) return;
+    const rb = new RequestBuilder(`nip17:${pk?.slice(0, 12)}`);
 
-    const rb = new RequestBuilder(`nip17:${pk.slice(0, 12)}`);
-    rb.withFilter().kinds([EventKind.GiftWrap]).tag("p", [pk]);
+    if (pk && !session.readonly) {
+      rb.withFilter().kinds([EventKind.GiftWrap]).tag("p", [pk]);
+    }
     return rb;
   }
 

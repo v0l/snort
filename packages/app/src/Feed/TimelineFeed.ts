@@ -34,10 +34,6 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
   const { isEventMuted } = useModeration();
 
   const createBuilder = useCallback(() => {
-    if (subject.type !== "global" && subject.items.length === 0) {
-      return null;
-    }
-
     const kinds =
       subject.kinds ??
       (subject.type === "profile_keyword"
@@ -80,19 +76,17 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
   const sub = useMemo(() => {
     const rb = createBuilder();
-    if (rb) {
-      for (const filter of rb.filterBuilders) {
-        if (options.method === "LIMIT_UNTIL") {
-          filter.until(until).limit(50);
-        } else {
-          filter.since(since).until(until);
-          if (since === undefined) {
-            filter.limit(50);
-          }
+    for (const filter of rb.filterBuilders) {
+      if (options.method === "LIMIT_UNTIL") {
+        filter.until(until).limit(50);
+      } else {
+        filter.since(since).until(until);
+        if (since === undefined) {
+          filter.limit(50);
         }
       }
-      return rb;
     }
+    return rb;
   }, [until, since, options.method, createBuilder]);
 
   const mainQuery = useRequestBuilderAdvanced(sub);
@@ -108,7 +102,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
   const subRealtime = useMemo(() => {
     const rb = createBuilder();
-    if (rb && !autoShowLatest && options.method !== "LIMIT_UNTIL") {
+    if (!autoShowLatest && options.method !== "LIMIT_UNTIL") {
       rb.withOptions({
         leaveOpen: true,
       });
@@ -116,8 +110,11 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       for (const filter of rb.filterBuilders) {
         filter.limit(1).since(now);
       }
-      return rb;
+    } else {
+      rb.clear();
     }
+
+    return rb;
   }, [autoShowLatest, createBuilder]);
 
   const latestQuery = useRequestBuilderAdvanced(subRealtime);

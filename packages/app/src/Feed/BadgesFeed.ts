@@ -11,9 +11,10 @@ type BadgeAwards = {
 
 export default function useProfileBadges(pubkey?: HexKey) {
   const sub = useMemo(() => {
-    if (!pubkey) return null;
-    const b = new RequestBuilder(`badges:${pubkey.slice(0, 12)}`);
-    b.withFilter().kinds([EventKind.ProfileBadges]).tag("d", ["profile_badges"]).authors([pubkey]);
+    const b = new RequestBuilder("badges");
+    if (pubkey) {
+      b.withFilter().kinds([EventKind.ProfileBadges]).tag("d", ["profile_badges"]).authors([pubkey]);
+    }
     return b;
   }, [pubkey]);
 
@@ -47,10 +48,11 @@ export default function useProfileBadges(pubkey?: HexKey) {
 
   const awardsSub = useMemo(() => {
     const ids = Object.keys(profile);
-    if (!pubkey || ids.length === 0) return null;
-    const b = new RequestBuilder(`profile_awards:${pubkey.slice(0, 12)}`);
-    b.withFilter().kinds([EventKind.BadgeAward]).ids(ids);
-    b.withFilter().kinds([EventKind.Badge]).tag("d", ds).authors(pubkeys);
+    const b = new RequestBuilder(`profile_awards`);
+    if (pubkey && ids.length > 0) {
+      b.withFilter().kinds([EventKind.BadgeAward]).ids(ids);
+      b.withFilter().kinds([EventKind.Badge]).tag("d", ds).authors(pubkeys);
+    }
     return b;
   }, [profile, ds]);
 

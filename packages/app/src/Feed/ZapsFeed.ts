@@ -4,9 +4,10 @@ import { useMemo } from "react";
 
 export default function useZapsFeed(link?: NostrLink) {
   const sub = useMemo(() => {
-    if (!link) return null;
-    const b = new RequestBuilder(`zaps:${link.encode()}`);
-    b.withFilter().kinds([EventKind.ZapReceipt]).replyToLink([link]);
+    const b = new RequestBuilder(`zaps:${link?.encode()}`);
+    if (link) {
+      b.withFilter().kinds([EventKind.ZapReceipt]).replyToLink([link]);
+    }
     return b;
   }, [link]);
 

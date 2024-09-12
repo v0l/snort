@@ -30,7 +30,7 @@ export function useReactions(
       }
     }
     others?.(rb);
-    return rb.numFilters > 0 ? rb : undefined;
+    return rb;
   }, [ids]);
 
   return useRequestBuilder(sub);

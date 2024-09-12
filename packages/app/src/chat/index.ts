@@ -63,7 +63,7 @@ export interface ChatSystem {
   /**
    * Create a request for this system to get updates
    */
-  subscription(session: LoginSession): RequestBuilder | undefined;
+  subscription(session: LoginSession): RequestBuilder;
 
   /**
    * Create a list of chats for a given pubkey and set of events

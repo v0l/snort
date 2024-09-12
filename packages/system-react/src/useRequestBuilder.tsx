@@ -5,25 +5,20 @@ import { SnortContext } from "./context";
 /**
  * Send a query to the relays and wait for data
  */
-export function useRequestBuilder(rb: RequestBuilder | null | undefined) {
+export function useRequestBuilder(rb: RequestBuilder) {
   const system = useContext(SnortContext);
   return useSyncExternalStore(
     v => {
-      if (rb) {
-        const q = system.Query(rb);
-        q.on("event", v);
-        q.uncancel();
-        return () => {
-          q.off("event", v);
-          q.cancel();
-        };
-      }
+      const q = system.Query(rb);
+      q.on("event", v);
+      q.uncancel();
       return () => {
-        // noop
+        q.off("event", v);
+        q.cancel();
       };
     },
     () => {
-      const q = system.GetQuery(rb?.id ?? "");
+      const q = system.GetQuery(rb.id);
       if (q) {
         return q.snapshot;
       } else {
@@ -36,14 +31,12 @@ export function useRequestBuilder(rb: RequestBuilder | null | undefined) {
 /**
  * More advanced hook which returns the Query object
  */
-export function useRequestBuilderAdvanced(rb: RequestBuilder | null | undefined) {
+export function useRequestBuilderAdvanced(rb: RequestBuilder) {
   const system = useContext(SnortContext);
   const q = useMemo(() => {
-    if (rb) {
-      const q = system.Query(rb);
-      q.uncancel();
-      return q;
-    }
+    const q = system.Query(rb);
+    q.uncancel();
+    return q;
   }, [rb]);
   useEffect(() => {
     return () => {

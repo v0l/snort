@@ -7,14 +7,13 @@ import { findTag } from "@/Utils";
 
 export function useStatusFeed(id?: string, leaveOpen = false) {
   const sub = useMemo(() => {
-    if (!id) return null;
-
     const rb = new RequestBuilder(`statud:${id}`);
     rb.withOptions({ leaveOpen });
-    rb.withFilter()
-      .kinds([30315 as EventKind])
-      .authors([id]);
-
+    if (id) {
+      rb.withFilter()
+        .kinds([30315 as EventKind])
+        .authors([id]);
+    }
     return rb;
   }, [id]);
 

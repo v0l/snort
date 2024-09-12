@@ -56,7 +56,9 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       });
 
       this.#queries.set(req.id, q);
-      this.emit("change");
+      if (req.numFilters > 0) {
+        this.emit("change");
+      }
       return q;
     }
   }

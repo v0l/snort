@@ -59,6 +59,7 @@
 
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -939,6 +940,15 @@ svg.repeat {
 @media (max-width: 768px) {
   .pb-safe-area-plus-footer {
     padding-bottom: calc(env(safe-area-inset-bottom) + 56px);
+  }
+  .sm-hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .sm-hide-scrollbar::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
   }
 }
 

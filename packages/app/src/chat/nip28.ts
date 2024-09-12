@@ -25,21 +25,20 @@ export class Nip28ChatSystem implements ChatSystem {
     EventKind.PublicChatMuteUser,
   ];
 
-  subscription(session: LoginSession): RequestBuilder | undefined {
+  subscription(session: LoginSession): RequestBuilder {
     const chats = (session.extraChats ?? []).filter(a => a.startsWith(NostrPrefix.Chat28));
-    if (chats.length === 0) return;
-
     const chatId = (v: string) => unwrap(decodeTLV(v).find(a => a.type === TLVEntryType.Special)).value as string;
 
     const rb = new RequestBuilder(`nip28:${session.id}`);
-    rb.withFilter()
-      .ids(chats.map(v => chatId(v)))
-      .kinds([EventKind.PublicChatChannel, EventKind.PublicChatMetadata]);
-    for (const c of chats) {
-      const id = chatId(c);
-      rb.withFilter().tag("e", [id]).kinds(this.ChannelKinds);
+    if (chats.length > 0) {
+      rb.withFilter()
+        .ids(chats.map(v => chatId(v)))
+        .kinds([EventKind.PublicChatChannel, EventKind.PublicChatMetadata]);
+      for (const c of chats) {
+        const id = chatId(c);
+        rb.withFilter().tag("e", [id]).kinds(this.ChannelKinds);
+      }
     }
-
     return rb;
   }
 

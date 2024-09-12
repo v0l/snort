@@ -4,9 +4,10 @@ import { useMemo } from "react";
 
 export default function useFollowersFeed(pubkey?: HexKey) {
   const sub = useMemo(() => {
-    if (!pubkey) return null;
-    const b = new RequestBuilder(`followers:${pubkey.slice(0, 12)}`);
-    b.withFilter().kinds([EventKind.ContactList]).tag("p", [pubkey]);
+    const b = new RequestBuilder(`followers`);
+    if (pubkey) {
+      b.withFilter().kinds([EventKind.ContactList]).tag("p", [pubkey]);
+    }
     return b;
   }, [pubkey]);
 

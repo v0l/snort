@@ -72,6 +72,11 @@ export class RequestBuilder {
     return this.#options;
   }
 
+  clear() {
+    this.#builders = [];
+    this.#options = undefined;
+  }
+
   /**
    * Add another request builders filters to this one
    */

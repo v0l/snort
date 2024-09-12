@@ -11,14 +11,14 @@ import UptimeLabel from "./uptime-label";
 export default function RelayUptime({ url }: { url: string }) {
   const sub = useMemo(() => {
     const u = sanitizeRelayUrl(url);
-    if (!u) return;
-
     const rb = new RequestBuilder(`uptime`);
-    rb.withFilter()
-      .kinds([30_166 as EventKind])
-      .tag("d", [u])
-      .since(unixNow() - Day)
-      .relay(MonitorRelays);
+    if (u) {
+      rb.withFilter()
+        .kinds([30_166 as EventKind])
+        .tag("d", [u])
+        .since(unixNow() - Day)
+        .relay(MonitorRelays);
+    }
     return rb;
   }, [url]);
 

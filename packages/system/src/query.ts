@@ -181,10 +181,13 @@ export class Query extends EventEmitter<QueryEvents> {
    * Adds another request to this one
    */
   addRequest(req: RequestBuilder) {
-    this.#log("Add query %O to %s", req, this.id);
-    this.requests.push(...req.buildRaw());
-    this.#start();
-    return true;
+    if (req.numFilters > 0) {
+      this.#log("Add query %O to %s", req, this.id);
+      this.requests.push(...req.buildRaw());
+      this.#start();
+      return true;
+    }
+    return false;
   }
 
   isOpen() {
@@ -326,7 +329,9 @@ export class Query extends EventEmitter<QueryEvents> {
     if (this.#replaceable) {
       rawFilters.push(...this.filters);
     }
-    this.emit("request", this.id, rawFilters);
+    if (rawFilters.length > 0) {
+      this.emit("request", this.id, rawFilters);
+    }
   }
 
   #stopCheckTraces() {

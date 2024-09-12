@@ -4,9 +4,10 @@ import { useMemo } from "react";
 
 export default function useRelaysFeed(pubkey?: HexKey) {
   const sub = useMemo(() => {
-    if (!pubkey) return null;
-    const b = new RequestBuilder(`relays:${pubkey.slice(0, 12)}`);
-    b.withFilter().authors([pubkey]).kinds([EventKind.Relays]);
+    const b = new RequestBuilder(`relays:${pubkey ?? ""}`);
+    if (pubkey) {
+      b.withFilter().authors([pubkey]).kinds([EventKind.Relays]);
+    }
     return b;
   }, [pubkey]);
 
