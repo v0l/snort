@@ -31,7 +31,6 @@ import useFileUpload, { addExtensionToNip94Url, nip94TagsToIMeta, readNip94Tags 
 import { GetPowWorker } from "@/Utils/wasm";
 import { ZapTarget } from "@/Utils/Zapper";
 
-import FileUploadProgress from "../FileUpload";
 import { OkResponseRow } from "./OkResponseRow";
 
 const previewNoteOptions = {
@@ -667,7 +666,6 @@ export function NoteCreator() {
             </div>
           </div>
         )}
-        {uploader.progress.length > 0 && <FileUploadProgress progress={uploader.progress} />}
         {(note.otherEvents?.length ?? 0) > 0 && !note.preview && (
           <div className="flex gap-2 flex-wrap">
             {note.otherEvents
@@ -711,6 +709,7 @@ export function NoteCreator() {
           actions={
             <>
               <IconButton
+                className="max-lg:!hidden"
                 icon={{
                   name: "expand",
                 }}

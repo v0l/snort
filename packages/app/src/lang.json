@@ -74,9 +74,6 @@
   "08zn6O": {
     "defaultMessage": "Export Keys"
   },
-  "0AmhUh": {
-    "defaultMessage": "Popular media servers used by people you follow."
-  },
   "0Azlrb": {
     "defaultMessage": "Manage"
   },
@@ -1219,6 +1216,9 @@
   },
   "YDURw6": {
     "defaultMessage": "Service URL"
+  },
+  "YH2RKk": {
+    "defaultMessage": "Popular media servers."
   },
   "YQZY/S": {
     "defaultMessage": "It looks like you dont follow enough people, take a look at {newUsersPage} to discover people to follow!"

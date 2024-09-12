@@ -98,7 +98,7 @@ function Nip96File({ file, checked, onClick }: { file: NostrEvent; checked: bool
   return (
     <div onClick={() => onClick()}>
       <div
-        className="relative bg-layer-2 rounded-lg overflow-hidden aspect-square cursor-pointer hover:outline outline-highlight bg-cover bg-center"
+        className="relative bg-layer-2 rounded-lg overflow-hidden aspect-square cursor-pointer hover:outline outline-highlight bg-cover bg-center m-1"
         style={{
           backgroundImage: backgroundImage(),
         }}>
