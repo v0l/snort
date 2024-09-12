@@ -898,9 +898,6 @@
   "NAuFNH": {
     "defaultMessage": "You already have a subscription of this type, please renew or pay"
   },
-  "NdOYJJ": {
-    "defaultMessage": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!"
-  },
   "NepkXH": {
     "defaultMessage": "Can't vote with {amount} sats, please set a different default zap amount"
   },
@@ -1216,6 +1213,9 @@
   },
   "YDURw6": {
     "defaultMessage": "Service URL"
+  },
+  "YQZY/S": {
+    "defaultMessage": "It looks like you dont follow enough people, take a look at {newUsersPage} to discover people to follow!"
   },
   "YR2I9M": {
     "defaultMessage": "No keys, no {app}, There is no way to reset it if you don't back up. It only takes a minute."
@@ -1577,6 +1577,9 @@
   },
   "iYc3Ld": {
     "defaultMessage": "Payments"
+  },
+  "icCxlA": {
+    "defaultMessage": "new users page"
   },
   "ieGrWo": {
     "defaultMessage": "Follow"

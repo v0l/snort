@@ -11,6 +11,7 @@ import useLogin from "@/Hooks/useLogin";
 
 import { BackupKeyTask } from "./BackupKey";
 import { DonateTask } from "./DonateTask";
+import { FollowMorePeopleTask } from "./FollowMorePeople";
 import { Nip5Task } from "./Nip5Task";
 import { NoticeZapPoolDefault } from "./NoticeZapPool";
 import { RenewSubTask } from "./RenewSubscription";
@@ -20,7 +21,7 @@ class TaskStore extends ExternalStore<Array<UITask>> {
 
   constructor() {
     super();
-    const AllTasks: Array<UITask> = [new BackupKeyTask(), new Nip5Task()];
+    const AllTasks: Array<UITask> = [new BackupKeyTask(), new FollowMorePeopleTask(), new Nip5Task()];
     if (CONFIG.features.zapPool) {
       AllTasks.push(new NoticeZapPoolDefault());
     }

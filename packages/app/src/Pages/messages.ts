@@ -4,10 +4,6 @@ export default defineMessages({
   Login: { defaultMessage: "Login", id: "AyGauy" },
   Global: { defaultMessage: "Global", id: "EWyQH5" },
   NewUsers: { defaultMessage: "New users page", id: "NndBJE" },
-  NoFollows: {
-    defaultMessage: "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!",
-    id: "NdOYJJ",
-  },
   Reactions: { defaultMessage: "Reactions", id: "XgWvGA" },
   Followers: { defaultMessage: "Followers", id: "pzTOmv" },
   FollowersCount: { defaultMessage: "{n} Followers", id: "3tVy+Z" },
