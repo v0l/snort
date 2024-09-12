@@ -156,7 +156,7 @@ function Reaction({ ev }: { ev: TaggedNostrEvent }) {
   return (
     <div className="note card">
       <div className="text-gray-medium font-bold">
-        <Username pubkey={ev.pubkey} onLinkVisit={() => { }} />
+        <Username pubkey={ev.pubkey} onLinkVisit={() => {}} />
         <span> </span>
         <FormattedMessage defaultMessage="liked" />
       </div>
