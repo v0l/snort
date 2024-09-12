@@ -11,11 +11,11 @@ import AsyncButton from "@/Components/Button/AsyncButton";
 import { CollapsedSection } from "@/Components/Collapsed";
 import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
 import RelayUptime from "@/Components/Relay/uptime";
+import Uptime from "@/Components/Relay/uptime";
 import UptimeLabel from "@/Components/Relay/uptime-label";
+import { useCloseRelays } from "@/Hooks/useCloseRelays";
 import useLogin from "@/Hooks/useLogin";
 import { getRelayName } from "@/Utils";
-import { useCloseRelays } from "@/Hooks/useCloseRelays";
-import Uptime from "@/Components/Relay/uptime";
 
 export function DiscoverRelays() {
   const { follows, relays, state } = useLogin(l => ({

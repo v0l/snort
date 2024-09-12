@@ -2,7 +2,7 @@ import { EventPublisher, NostrEvent } from "@snort/system";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { useMediaServerList } from "@/Hooks/useMediaServerList";
-import { bech32ToHex, randomSample, unwrap } from "@/Utils";
+import { bech32ToHex, randomSample } from "@/Utils";
 import { FileExtensionRegex, KieranPubKey } from "@/Utils/Const";
 
 import { Nip96Uploader } from "./Nip96";

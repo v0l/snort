@@ -13,13 +13,13 @@ import QrCode from "@/Components/QrCode";
 import { SpotlightMediaModal } from "@/Components/Spotlight/SpotlightMedia";
 import Avatar from "@/Components/User/Avatar";
 import FollowButton from "@/Components/User/FollowButton";
+import MuteButton from "@/Components/User/MuteButton";
 import ProfileImage from "@/Components/User/ProfileImage";
 import ZapModal from "@/Components/ZapModal/ZapModal";
 import useModeration from "@/Hooks/useModeration";
 import { hexToBech32 } from "@/Utils";
 import { LoginSessionType, LoginStore } from "@/Utils/Login";
 import { ZapTarget } from "@/Utils/Zapper";
-import MuteButton from "@/Components/User/MuteButton";
 
 const AvatarSection = ({
   user,
