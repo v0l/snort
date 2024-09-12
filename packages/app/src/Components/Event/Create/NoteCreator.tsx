@@ -261,7 +261,7 @@ export function NoteCreator() {
 
   async function uploadFile(file: File) {
     try {
-      if (file) {
+      if (file && uploader) {
         const rx = await uploader.upload(file, file.name);
         note.update(v => {
           if (rx.header) {

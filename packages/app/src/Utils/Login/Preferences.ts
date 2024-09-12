@@ -44,11 +44,6 @@ export interface UserPreferences {
   showDebugMenus: boolean;
 
   /**
-   * File uploading service to upload attachments to
-   */
-  fileUploader: "void.cat" | "nostr.build" | "nostrimg.com" | "void.cat-NIP96" | "nostrcheck.me" | "nip96";
-
-  /**
    * Use imgproxy to optimize images
    */
   imgProxyConfig?: ImgProxySettings;
@@ -117,7 +112,6 @@ export const DefaultPreferences = {
   confirmReposts: false,
   showDebugMenus: true,
   autoShowLatest: false,
-  fileUploader: "nostr.build",
   imgProxyConfig: DefaultImgProxy,
   defaultRootTab: "following",
   defaultZapAmount: 50,

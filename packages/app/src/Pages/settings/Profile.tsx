@@ -131,7 +131,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     try {
       setError(undefined);
       const file = await openFile();
-      if (file) {
+      if (file && uploader) {
         const rsp = await uploader.upload(file, file.name);
         if (typeof rsp?.error === "string") {
           throw new Error(`Upload failed ${rsp.error}`);

@@ -14,8 +14,7 @@ import {
 } from "@snort/system";
 
 import { GiftsCache } from "@/Cache";
-import SnortApi from "@/External/SnortApi";
-import { bech32ToHex, dedupeById, deleteRefCode, getCountry, sanitizeRelayUrl, unwrap } from "@/Utils";
+import { bech32ToHex, dedupeById, deleteRefCode, unwrap } from "@/Utils";
 import { Blasters } from "@/Utils/Const";
 import { LoginSession, LoginSessionType, LoginStore, SnortAppData } from "@/Utils/Login/index";
 import { entropyToPrivateKey, generateBip39Entropy } from "@/Utils/nip6";
@@ -41,31 +40,26 @@ export function clearEntropy(state: LoginSession) {
 }
 
 /**
- * Generate a new key and login with this generated key
+ * Generate a new key
+ */
+export async function generateNewLoginKeys() {
+  const entropy = generateBip39Entropy();
+  const privateKey = await entropyToPrivateKey(entropy);
+  return { entropy, privateKey };
+}
+
+/**
+ * Login with newly generated key
  */
 export async function generateNewLogin(
+  keys: { entropy: Uint8Array; privateKey: string },
   system: SystemInterface,
   pin: (key: string) => Promise<KeyStorage>,
   profile: UserMetadata,
 ) {
-  const entropy = generateBip39Entropy();
-  const privateKey = await entropyToPrivateKey(entropy);
+  const { entropy, privateKey } = keys;
   const newRelays = {} as Record<string, RelaySettings>;
 
-  // Use current timezone info to determine approx location
-  // use closest 5 relays
-  const country = getCountry();
-  const api = new SnortApi();
-  const closeRelays = await api.closeRelays(country.lat, country.lon, 20);
-  for (const cr of closeRelays.sort((a, b) => (a.distance > b.distance ? 1 : -1)).filter(a => !a.is_paid)) {
-    const rr = sanitizeRelayUrl(cr.url);
-    if (rr) {
-      newRelays[rr] = { read: true, write: true };
-      if (Object.keys(newRelays).length >= 5) {
-        break;
-      }
-    }
-  }
   for (const [k, v] of Object.entries(CONFIG.defaultRelays)) {
     if (!newRelays[k]) {
       newRelays[k] = v;
@@ -75,8 +69,8 @@ export async function generateNewLogin(
   // connect to new relays
   await Promise.all(Object.entries(newRelays).map(([k, v]) => system.ConnectToRelay(k, v)));
 
-  const publicKey = utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
   const publisher = EventPublisher.privateKey(privateKey);
+  const publicKey = publisher.pubKey;
 
   // Create new contact list following self and site account
   const contactList = [publicKey, ...CONFIG.signUp.defaultFollows.map(a => bech32ToHex(a))].map(a => ["p", a]) as Array<

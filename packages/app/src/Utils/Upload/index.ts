@@ -1,16 +1,9 @@
-import { removeUndefined } from "@snort/shared";
-import { EventKind, NostrEvent } from "@snort/system";
-import { useState } from "react";
-import { v4 as uuid } from "uuid";
+import { EventPublisher, NostrEvent } from "@snort/system";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
-import usePreferences from "@/Hooks/usePreferences";
+import { useMediaServerList } from "@/Hooks/useMediaServerList";
 import { bech32ToHex, randomSample, unwrap } from "@/Utils";
 import { FileExtensionRegex, KieranPubKey } from "@/Utils/Const";
-import NostrBuild from "@/Utils/Upload/NostrBuild";
-import NostrImg from "@/Utils/Upload/NostrImg";
-import VoidCat from "@/Utils/Upload/VoidCat";
 
 import { Nip96Uploader } from "./Nip96";
 
@@ -81,117 +74,18 @@ export interface UploadProgress {
 
 export type UploadStage = "starting" | "hashing" | "uploading" | "done" | undefined;
 
-export default function useFileUpload(): Uploader {
-  const fileUploader = usePreferences(s => s.fileUploader);
-  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
+export default function useFileUpload(privKey?: string) {
   const { publisher } = useEventPublisher();
-  const [progress, setProgress] = useState<Array<UploadProgress>>([]);
-  const [stage, setStage] = useState<UploadStage>();
+  const { servers } = useMediaServerList();
 
-  const defaultUploader = {
-    upload: async (f, n) => {
-      const id = uuid();
-      setProgress(s => [
-        ...s,
-        {
-          id,
-          file: f,
-          progress: 0,
-          stage: undefined,
-        },
-      ]);
-      const px = (n: number) => {
-        setProgress(s =>
-          s.map(v =>
-            v.id === id
-              ? {
-                  ...v,
-                  progress: n,
-                }
-              : v,
-          ),
-        );
-      };
-      const ret = await VoidCat(f, n, publisher, px, s => setStage(s));
-      setProgress(s => s.filter(a => a.id !== id));
-      return ret;
-    },
-    progress,
-    stage,
-  } as Uploader;
-
-  switch (fileUploader) {
-    case "nostr.build": {
-      return {
-        upload: f => NostrBuild(f, publisher),
-        progress: [],
-      } as Uploader;
-    }
-    case "void.cat-NIP96": {
-      return new Nip96Uploader("https://void.cat/nostr", unwrap(publisher));
-    }
-    case "nostrcheck.me": {
-      return new Nip96Uploader("https://nostrcheck.me/api/v2/nip96", unwrap(publisher));
-    }
-    case "nostrimg.com": {
-      return {
-        upload: NostrImg,
-        progress: [],
-      } as Uploader;
-    }
-    case "nip96": {
-      const servers = removeUndefined(state.getList(EventKind.StorageServerList).map(a => a.toEventTag()?.at(1)));
-      if (servers.length > 0) {
-        const random = randomSample(servers, 1)[0];
-        return new Nip96Uploader(random, unwrap(publisher));
-      } else {
-        return defaultUploader;
-      }
-    }
-    default: {
-      return defaultUploader;
-    }
+  const pub = privKey ? EventPublisher.privateKey(privKey) : publisher;
+  if (servers.length > 0 && pub) {
+    const random = randomSample(servers, 1)[0];
+    return new Nip96Uploader(random, pub);
+  } else if (pub) {
+    return new Nip96Uploader("https://nostr.build", pub);
   }
 }
-
-export const ProgressStream = (file: File | Blob, progress: (n: number) => void) => {
-  let offset = 0;
-  const DefaultChunkSize = 1024 * 32;
-
-  const readChunk = async (offset: number, size: number) => {
-    if (offset > file.size) {
-      return new Uint8Array(0);
-    }
-    const end = Math.min(offset + size, file.size);
-    const blob = file.slice(offset, end, file.type);
-    const data = await blob.arrayBuffer();
-    return new Uint8Array(data);
-  };
-
-  const rsBase = new ReadableStream(
-    {
-      start: async () => {},
-      pull: async controller => {
-        const chunk = await readChunk(offset, controller.desiredSize ?? DefaultChunkSize);
-        if (chunk.byteLength === 0) {
-          controller.close();
-          return;
-        }
-        progress((offset + chunk.byteLength) / file.size);
-        offset += chunk.byteLength;
-        controller.enqueue(chunk);
-      },
-      cancel: reason => {
-        console.log(reason);
-      },
-      type: "bytes",
-    },
-    {
-      highWaterMark: DefaultChunkSize,
-    },
-  );
-  return rsBase;
-};
 
 export function addExtensionToNip94Url(meta: Nip94Tags) {
   if (!meta.url?.match(FileExtensionRegex) && meta.mimeType) {

@@ -10,10 +10,11 @@ import useFileUpload from "@/Utils/Upload";
 interface AvatarEditorProps {
   picture?: string;
   onPictureChange?: (newPicture: string) => void;
+  privKey?: string;
 }
 
-export default function AvatarEditor({ picture, onPictureChange }: AvatarEditorProps) {
-  const uploader = useFileUpload();
+export default function AvatarEditor({ picture, onPictureChange, privKey }: AvatarEditorProps) {
+  const uploader = useFileUpload(privKey);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +23,7 @@ export default function AvatarEditor({ picture, onPictureChange }: AvatarEditorP
     setLoading(true);
     try {
       const f = await openFile();
-      if (f) {
+      if (f && uploader) {
         const rsp = await uploader.upload(f, f.name);
         console.log(rsp);
         if (typeof rsp?.error === "string") {

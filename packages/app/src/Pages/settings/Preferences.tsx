@@ -454,33 +454,6 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col g8">
-        <h4>
-          <FormattedMessage {...messages.FileUpload} />
-        </h4>
-        <small>
-          <FormattedMessage {...messages.FileUploadHelp} />
-        </small>
-        <select
-          value={pref.fileUploader}
-          onChange={e =>
-            setPref({
-              ...pref,
-              fileUploader: e.target.value,
-            } as UserPreferences)
-          }>
-          <option value="nip96">
-            <FormattedMessage defaultMessage="NIP-96" />
-          </option>
-          <option value="void.cat">
-            void.cat <FormattedMessage {...messages.Default} />
-          </option>
-          <option value="void.cat-NIP96">void.cat (NIP-96)</option>
-          <option value="nostr.build">nostr.build</option>
-          <option value="nostrimg.com">nostrimg.com</option>
-          <option value="nostrcheck.me">nostrcheck.me (NIP-96)</option>
-        </select>
-      </div>
       <div className="flex justify-between">
         <div className="flex flex-col g8">
           <h4>

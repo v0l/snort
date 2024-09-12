@@ -24,7 +24,6 @@ import {
 import { EventBuilder } from "./event-builder";
 import { findTag } from "./utils";
 import { Nip7Signer } from "./impl/nip7";
-import { base64 } from "@scure/base";
 import { Nip10 } from "./impl/nip10";
 
 type EventBuilderHook = (ev: EventBuilder) => EventBuilder;

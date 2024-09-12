@@ -1,10 +1,13 @@
 import { unwrap } from "@snort/shared";
 import { EventKind, UnknownTag } from "@snort/system";
 import { useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import IconButton from "@/Components/Button/IconButton";
+import { CollapsedSection } from "@/Components/Collapsed";
+import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
+import useDiscoverMediaServers from "@/Hooks/useDiscoverMediaServers";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { Nip96Uploader } from "@/Utils/Upload/Nip96";
@@ -15,13 +18,14 @@ export default function MediaSettingsPage() {
   const list = state.getList(EventKind.StorageServerList);
   const [newServer, setNewServer] = useState("");
   const [error, setError] = useState("");
+  const knownServers = useDiscoverMediaServers();
 
-  async function validateServer() {
+  async function validateServer(url: string) {
     if (!publisher) return;
 
     setError("");
     try {
-      const svc = new Nip96Uploader(newServer, publisher);
+      const svc = new Nip96Uploader(url, publisher);
       await svc.loadInfo();
 
       return true;
@@ -79,7 +83,7 @@ export default function MediaSettingsPage() {
           />
           <AsyncButton
             onClick={async () => {
-              if (await validateServer()) {
+              if (await validateServer(newServer)) {
                 await state.addToList(
                   EventKind.StorageServerList,
                   [new UnknownTag(["server", new URL(newServer).toString()])],
@@ -93,6 +97,57 @@ export default function MediaSettingsPage() {
         </div>
         {error && <b className="text-warning">{error}</b>}
       </div>
+      <CollapsedSection
+        title={
+          <div className="text-xl font-medium">
+            <FormattedMessage defaultMessage="Popular Servers" />
+          </div>
+        }>
+        <small>
+          <FormattedMessage defaultMessage="Popular media servers." />
+        </small>
+        <table className="table">
+          <thead>
+            <tr className="uppercase text-secondary">
+              <th>
+                <FormattedMessage defaultMessage="Server" />
+              </th>
+              <th>
+                <FormattedMessage defaultMessage="Users" />
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.entries(knownServers)
+              .sort((a, b) => (b[1] < a[1] ? -1 : 1))
+              .filter(([k]) => !list.some(b => b.equals(new UnknownTag(["server", k]))))
+              .slice(0, 20)
+              .map(([k, v]) => (
+                <tr key={k}>
+                  <td className="flex gap-2 items-center">
+                    <RelayFavicon url={k} />
+                    {k}
+                  </td>
+                  <td className="text-center">
+                    <FormattedNumber value={v} />
+                  </td>
+                  <td className="text-end">
+                    <AsyncButton
+                      className="!py-1 mb-1"
+                      onClick={async () => {
+                        if (await validateServer(k)) {
+                          await state.addToList(EventKind.StorageServerList, [new UnknownTag(["server", k])], true);
+                        }
+                      }}>
+                      <FormattedMessage defaultMessage="Add" />
+                    </AsyncButton>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </CollapsedSection>
     </div>
   );
 }

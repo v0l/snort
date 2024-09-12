@@ -74,6 +74,9 @@
   "08zn6O": {
     "defaultMessage": "Export Keys"
   },
+  "0AmhUh": {
+    "defaultMessage": "Popular media servers used by people you follow."
+  },
   "0Azlrb": {
     "defaultMessage": "Manage"
   },
@@ -476,6 +479,9 @@
   "C81/uG": {
     "defaultMessage": "Logout"
   },
+  "C8FsOr": {
+    "defaultMessage": "Popular Servers"
+  },
   "C8HhVE": {
     "defaultMessage": "Suggested Follows"
   },
@@ -577,6 +583,9 @@
   },
   "EnCOBJ": {
     "defaultMessage": "Buy"
+  },
+  "F/6VqP": {
+    "defaultMessage": "Server"
   },
   "F3l7xL": {
     "defaultMessage": "Add Account"
@@ -758,9 +767,6 @@
   },
   "JSx7y9": {
     "defaultMessage": "Subscribe to {site_name} {plan} for {price} and receive the following rewards"
-  },
-  "JTht/T": {
-    "defaultMessage": "NIP-96"
   },
   "JeoS4y": {
     "defaultMessage": "Repost"

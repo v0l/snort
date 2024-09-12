@@ -45,16 +45,6 @@ export class Nip96Uploader {
       const data = (await rsp.json()) as Nip96Result;
       if (data.status === "success") {
         const meta = readNip94Tags(data.nip94_event.tags);
-        if (
-          meta.dimensions === undefined ||
-          meta.dimensions.length !== 2 ||
-          meta.dimensions[0] === 0 ||
-          meta.dimensions[1] === 0
-        ) {
-          return {
-            error: `Invalid dimensions: "${meta.dimensions?.join("x")}"`,
-          };
-        }
         return {
           url: addExtensionToNip94Url(meta),
           header: data.nip94_event,
