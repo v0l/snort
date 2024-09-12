@@ -64,7 +64,6 @@ export class WorkerRelayInterface {
   }
 
   async delete(req: ReqCommand) {
-    console.debug("DELETE", req);
     return await this.#workerRpc<ReqCommand, Array<string>>("delete", req);
   }
 

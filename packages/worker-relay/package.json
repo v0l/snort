@@ -18,7 +18,7 @@
     "dist"
   ],
   "dependencies": {
-    "@sqlite.org/sqlite-wasm": "^3.45.3-build3",
+    "@sqlite.org/sqlite-wasm": "^3.46.1-build3",
     "eventemitter3": "^5.0.1",
     "uuid": "^9.0.1"
   },

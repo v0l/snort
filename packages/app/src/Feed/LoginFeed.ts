@@ -28,11 +28,11 @@ export default function useLoginFeed() {
   }, [login, publisher, system]);
 
   const subLogin = useMemo(() => {
+    const b = new RequestBuilder(`login:sub`);
+    b.withOptions({
+      leaveOpen: true,
+    });
     if (CONFIG.features.subscriptions && !login.readonly) {
-      const b = new RequestBuilder(`login`);
-      b.withOptions({
-        leaveOpen: true,
-      });
       if (pubKey) {
         b.withFilter()
           .relay("wss://relay.snort.social/")
@@ -41,8 +41,8 @@ export default function useLoginFeed() {
           .tag("p", [pubKey])
           .limit(10);
       }
-      return b;
     }
+    return b;
   }, [pubKey, login]);
 
   const loginFeed = useRequestBuilder(subLogin);

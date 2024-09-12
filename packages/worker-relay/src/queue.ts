@@ -4,7 +4,7 @@ export interface WorkQueueItem {
   reject(e: unknown): void;
 }
 
-export async function processWorkQueue(queue?: Array<WorkQueueItem>, queueDelay = 200) {
+export async function processWorkQueue(queue?: Array<WorkQueueItem>) {
   while (queue && queue.length > 0) {
     const v = queue.shift();
     if (v) {
@@ -16,7 +16,6 @@ export async function processWorkQueue(queue?: Array<WorkQueueItem>, queueDelay 
       }
     }
   }
-  setTimeout(() => processWorkQueue(queue, queueDelay), queueDelay);
 }
 
 export const barrierQueue = async <T>(queue: Array<WorkQueueItem>, then: () => Promise<T>): Promise<T> => {

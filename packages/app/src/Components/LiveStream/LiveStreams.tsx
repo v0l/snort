@@ -5,7 +5,6 @@ import { CSSProperties, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import useFollowsControls from "@/Hooks/useFollowControls";
 import useImgProxy from "@/Hooks/useImgProxy";
 import { findTag } from "@/Utils";
 import { Hour } from "@/Utils/Const";
@@ -13,21 +12,16 @@ import { Hour } from "@/Utils/Const";
 import Avatar from "../User/Avatar";
 
 export function LiveStreams() {
-  const { followList } = useFollowsControls();
   const sub = useMemo(() => {
-    const rb = new RequestBuilder("follows:streams");
-    if (followList.length > 0) {
-      rb.withFilter()
-        .kinds([EventKind.LiveEvent])
-        .authors(followList)
-        .since(unixNow() - Hour);
-      rb.withFilter()
-        .kinds([EventKind.LiveEvent])
-        .tag("p", followList)
-        .since(unixNow() - Hour);
-    }
+    const rb = new RequestBuilder("streams");
+    rb.withFilter()
+      .kinds([EventKind.LiveEvent])
+      .since(unixNow() - Hour);
+    rb.withFilter()
+      .kinds([EventKind.LiveEvent])
+      .since(unixNow() - Hour);
     return rb;
-  }, [followList.length]);
+  }, []);
 
   const streams = useRequestBuilder(sub);
   if (streams.length === 0) return null;
@@ -72,16 +66,22 @@ function LiveStreamEvent({ ev }: { ev: NostrEvent }) {
               backgroundImage: `url(${imageProxy})`,
             } as CSSProperties
           }></div>
-        <div className="absolute left-0 top-7 w-full overflow-hidden">
-          <div className="whitespace-nowrap px-2 text-ellipsis overflow-hidden text-xs">{title}</div>
+        <div className="absolute left-0 top-0 w-full overflow-hidden">
+          <div
+            className="whitespace-nowrap px-1 text-ellipsis overflow-hidden text-xs font-medium bg-background opacity-70 text-center"
+            title={title}>
+            {title}
+          </div>
         </div>
-        <div className="absolute top-1 left-1 bg-heart rounded-md px-2 uppercase font-bold">{status}</div>
-        <div className="absolute right-1 top-1">
+        <div className="absolute bottom-1 left-1 bg-heart rounded-md px-2 uppercase font-bold">{status}</div>
+        <div className="absolute right-1 bottom-1">
           <Avatar pubkey={host} user={hostProfile} size={25} className="outline outline-2 outline-highlight" />
         </div>
-        <div className="absolute left-1 bottom-1 rounded-md px-2 py-1 text-xs bg-gray font-medium">
-          <FormattedMessage defaultMessage="{n} viewers" values={{ n: viewers }} />
-        </div>
+        {viewers && (
+          <div className="absolute left-1 bottom-7 rounded-md px-2 py-1 text-xs bg-gray font-medium">
+            <FormattedMessage defaultMessage="{n} viewers" values={{ n: viewers }} />
+          </div>
+        )}
       </div>
     </Link>
   );

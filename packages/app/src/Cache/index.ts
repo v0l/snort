@@ -25,7 +25,7 @@ async function tryUseCacheRelay(url: string) {
     localStorage.setItem("cache-relay", url);
     return conn;
   } catch (e) {
-    console.error(e);
+    console.warn(e);
   }
 }
 
@@ -53,7 +53,7 @@ export async function initRelayWorker() {
   }
 
   try {
-    await workerRelay.debug("");
+    await workerRelay.debug("*");
     await workerRelay.init({
       databasePath: "relay.db",
       insertBatchSize: 100,

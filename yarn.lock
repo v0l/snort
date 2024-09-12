@@ -4842,7 +4842,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snort/worker-relay@workspace:packages/worker-relay"
   dependencies:
-    "@sqlite.org/sqlite-wasm": "npm:^3.45.3-build3"
+    "@sqlite.org/sqlite-wasm": "npm:^3.46.1-build3"
     "@types/debug": "npm:^4.1.12"
     "@types/sharedworker": "npm:^0.0.112"
     "@types/uuid": "npm:^9.0.7"
@@ -4860,12 +4860,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sqlite.org/sqlite-wasm@npm:^3.45.3-build3":
-  version: 3.45.3-build3
-  resolution: "@sqlite.org/sqlite-wasm@npm:3.45.3-build3"
+"@sqlite.org/sqlite-wasm@npm:^3.46.1-build3":
+  version: 3.46.1-build3
+  resolution: "@sqlite.org/sqlite-wasm@npm:3.46.1-build3"
   bin:
     sqlite-wasm: bin/index.js
-  checksum: 10/58dd96936973c8bb3989a7d23d6d6021b05e4b35ae997d617d28b5faf5f370196aaf71d1a060eb1822fed3636acb4b5e0d444807d86687bff2a6efa637f9f1dc
+  checksum: 10/a64225fd784ed2ee8c8bf82f042d05b567b4707fba22a9508fbe3ac42cf1cf7e722d2ede0e1d91556bfec66b140aeb3cf3967546249693f39cc81475d7be90ff
   languageName: node
   linkType: hard
 
