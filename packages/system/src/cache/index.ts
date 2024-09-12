@@ -57,7 +57,7 @@ export interface UsersFollows {
 }
 
 export function mapEventToProfile(ev: NostrEvent) {
-  if (ev.kind !== 0) return;
+  if (ev.kind !== 0 && ev.kind !== 31990) return;
   try {
     const data: UserMetadata = JSON.parse(ev.content);
     let ret = {

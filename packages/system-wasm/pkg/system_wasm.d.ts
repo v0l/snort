@@ -58,10 +58,10 @@ export interface InitOutput {
   readonly pow: (a: number, b: number, c: number) => void;
   readonly schnorr_verify: (a: number, b: number, c: number, d: number) => void;
   readonly schnorr_verify_event: (a: number, b: number) => void;
-  readonly rustsecp256k1_v0_9_1_context_create: (a: number) => number;
-  readonly rustsecp256k1_v0_9_1_context_destroy: (a: number) => void;
-  readonly rustsecp256k1_v0_9_1_default_illegal_callback_fn: (a: number, b: number) => void;
-  readonly rustsecp256k1_v0_9_1_default_error_callback_fn: (a: number, b: number) => void;
+  readonly rustsecp256k1_v0_10_0_context_create: (a: number) => number;
+  readonly rustsecp256k1_v0_10_0_context_destroy: (a: number) => void;
+  readonly rustsecp256k1_v0_10_0_default_illegal_callback_fn: (a: number, b: number) => void;
+  readonly rustsecp256k1_v0_10_0_default_error_callback_fn: (a: number, b: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;

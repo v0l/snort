@@ -24,6 +24,7 @@ import { NoteProps } from "../EventComponent";
 import HiddenNote from "../HiddenNote";
 import Poll from "../Poll";
 import NoteFooter from "./NoteFooter/NoteFooter";
+import NoteAppHandler from "./NoteAppHandler";
 
 const defaultOptions = {
   showHeader: true,
@@ -169,22 +170,9 @@ function Reaction({ ev }: { ev: TaggedNostrEvent }) {
 }
 
 function handleNonTextNote(ev: TaggedNostrEvent) {
-  const alt = findTag(ev, "alt");
-  if (alt) {
-    return (
-      <div className="note-quote">
-        <Text id={ev.id} content={alt} tags={[]} creator={ev.pubkey} />
-      </div>
-    );
-  } else if (ev.kind === EventKind.Reaction) {
+  if (ev.kind === EventKind.Reaction) {
     return <Reaction ev={ev} />;
   } else {
-    return (
-      <div className="card">
-        <CollapsedSection title={<FormattedMessage {...messages.UnknownEventKind} values={{ kind: ev.kind }} />}>
-          <pre className="text-xs">{JSON.stringify(ev, undefined, "  ")}</pre>
-        </CollapsedSection>
-      </div>
-    );
+    return <NoteAppHandler ev={ev} />;
   }
 }
