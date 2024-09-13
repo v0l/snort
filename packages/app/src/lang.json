@@ -548,6 +548,9 @@
   "Dx4ey3": {
     "defaultMessage": "Toggle all"
   },
+  "E3oB+t": {
+    "defaultMessage": "Browser"
+  },
   "E5ZIPD": {
     "defaultMessage": "<big>{amount}</big> <small>sats</small>"
   },
@@ -1075,6 +1078,9 @@
   "TJo5E6": {
     "defaultMessage": "Preview"
   },
+  "TOG64f": {
+    "defaultMessage": "Use Local Relay"
+  },
   "TP/cMX": {
     "defaultMessage": "Ended"
   },
@@ -1168,6 +1174,9 @@
   },
   "W2PiAr": {
     "defaultMessage": "{n} Blocked"
+  },
+  "W4SaxY": {
+    "defaultMessage": "Local"
   },
   "W9355R": {
     "defaultMessage": "Unmute"
@@ -1701,6 +1710,9 @@
   "mErPop": {
     "defaultMessage": "It looks like you dont have any, check {link} to buy one!"
   },
+  "mFtdYh": {
+    "defaultMessage": "{type} Worker Relay"
+  },
   "mKAr6h": {
     "defaultMessage": "Follow all"
   },
@@ -2036,9 +2048,6 @@
   },
   "xPCyu+": {
     "defaultMessage": "nostr: URI scheme"
-  },
-  "xSoIUU": {
-    "defaultMessage": "Worker Relay"
   },
   "xaj9Ba": {
     "defaultMessage": "Provider"

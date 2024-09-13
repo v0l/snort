@@ -1,10 +1,11 @@
 import { FeedCache } from "@snort/shared";
+import { ConnectionCacheRelay } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 import { ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import { GiftsCache, Relay, RelayMetrics } from "@/Cache";
+import { GiftsCache, Relay, RelayMetrics, tryUseLocalRelay } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import useLogin from "@/Hooks/useLogin";
 
@@ -65,11 +66,24 @@ function RelayCacheStats() {
     }
   }, []);
 
+  function relayType() {
+    if (Relay instanceof WorkerRelayInterface) {
+      return <FormattedMessage defaultMessage="Browser" />;
+    } else if (Relay instanceof ConnectionCacheRelay) {
+      return <FormattedMessage defaultMessage="Local" />;
+    }
+  }
+
   return (
     <div className="flex justify-between br p bg-superdark">
       <div className="flex flex-col g4 w-64">
-        <FormattedMessage defaultMessage="Worker Relay" />
-        {myEvents && (
+        <FormattedMessage
+          defaultMessage="{type} Worker Relay"
+          values={{
+            type: relayType(),
+          }}
+        />
+        {myEvents > 0 && (
           <p>
             <FormattedMessage
               defaultMessage="My events: {n}"
@@ -114,7 +128,7 @@ function RelayCacheStats() {
         </AsyncButton>
         <AsyncButton
           onClick={async () => {
-            const data = await Relay.dump();
+            const data = new Uint8Array();
             const url = URL.createObjectURL(
               new File([data], "snort.db", {
                 type: "application/octet-stream",
@@ -130,6 +144,19 @@ function RelayCacheStats() {
         <AsyncButton onClick={() => navigate("/cache-debug")}>
           <FormattedMessage defaultMessage="Debug" />
         </AsyncButton>
+
+        {!(Relay instanceof ConnectionCacheRelay) && (
+          <AsyncButton
+            onClick={async () => {
+              if (await tryUseLocalRelay()) {
+                window.location.reload();
+              } else {
+                alert("No local relay found");
+              }
+            }}>
+            <FormattedMessage defaultMessage="Use Local Relay" />
+          </AsyncButton>
+        )}
       </div>
     </div>
   );
