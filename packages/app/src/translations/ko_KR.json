@@ -17,7 +17,6 @@
   "/JE/X+": "계정 지원",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "익명 사용량 지표 보내기",
-  "/clOBU": "주간",
   "/d6vEc": "프로필을 더 쉽게 찾고 공유하세요",
   "/ioUrF": "From File",
   "/n5KSF": "{n} ms",
@@ -339,7 +338,6 @@
   "RhDAoS": "{id}삭제하시겠습니까?",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "릴레이",
-  "RrCui3": "요약",
   "Rs4kCE": "북마크",
   "SFuk1v": "Permissions",
   "SLZGPn": "개인 키를 암호화하려면 핀을 입력하세요. {site}을 열 때마다 이 핀을 입력해야 합니다.",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} 읽는 데 걸리는 시간(분)",
   "zonsdq": "LNURL 서비스를 로드하지 못했습니다.",
-  "zvCDao": "최신 노트 자동 표시",
-  "zxvhnE": "일간"
+  "zvCDao": "최신 노트 자동 표시"
 }

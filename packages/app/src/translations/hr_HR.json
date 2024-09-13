@@ -17,7 +17,6 @@
   "/JE/X+": "Podrška za račun",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "Send anonymous usage metrics",
-  "/clOBU": "Weekly",
   "/d6vEc": "Olakšajte pronalazak i dijeljenje svog profila",
   "/ioUrF": "From File",
   "/n5KSF": "{n} mikrosekundi",
@@ -339,7 +338,6 @@
   "RhDAoS": "Jeste li sigurni da želite obrisati {id}",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "Releji",
-  "RrCui3": "Summary",
   "Rs4kCE": "Oznaka",
   "SFuk1v": "Permissions",
   "SLZGPn": "Enter a pin to encrypt your private key, you must enter this pin every time you open {site}.",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} mins to read",
   "zonsdq": "Neuspješno učitavanje LNURL usluge",
-  "zvCDao": "Automatski prikaži najnovije bilješke",
-  "zxvhnE": "Daily"
+  "zvCDao": "Automatski prikaži najnovije bilješke"
 }

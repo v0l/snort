@@ -17,7 +17,6 @@
   "/JE/X+": "கணக்கு உதவி",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "அடையாளம் காட்டாமல் பயன்பாட்டு புள்ளிவிவரங்களை அனுப்புக",
-  "/clOBU": "ஒவ்வொரு வாரமும்",
   "/d6vEc": "உங்கள் சுயவிவரத்தை கண்டறிவதையும் பகிர்வதையும் எளிதாக்குங்கள்",
   "/ioUrF": "From File",
   "/n5KSF": "{n} மில்லி வினாடிகள்",
@@ -339,7 +338,6 @@
   "RhDAoS": "{id} ஐ நிச்சயமாக நீக்க விரும்புகிறீர்களா",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "ரிலேகள்",
-  "RrCui3": "Summary",
   "Rs4kCE": "புக்மார்க்",
   "SFuk1v": "Permissions",
   "SLZGPn": "Enter a pin to encrypt your private key, you must enter this pin every time you open {site}.",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} mins to read",
   "zonsdq": "LNURL சேவையை ஏற்றுவதில் தோல்வி",
-  "zvCDao": "சமீபத்திய குறிப்புகளைத் தானாகக் காட்டு",
-  "zxvhnE": "Daily"
+  "zvCDao": "சமீபத்திய குறிப்புகளைத் தானாகக் காட்டு"
 }

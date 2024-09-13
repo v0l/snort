@@ -17,7 +17,6 @@
   "/JE/X+": "Konto Hilfe",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "Anonyme Nutzungsmetriken senden",
-  "/clOBU": "Wöchentlich",
   "/d6vEc": "Mach dein Profil leichter zu finden und zu teilen",
   "/ioUrF": "From File",
   "/n5KSF": "{n} ms",
@@ -339,7 +338,6 @@
   "RhDAoS": "Sind sie sicher, dass sie {id} löschen möchten?",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "Relais",
-  "RrCui3": "Übersicht",
   "Rs4kCE": "Lesezeichen",
   "SFuk1v": "Permissions",
   "SLZGPn": "Gib eine PIN ein, um deinen privaten Schlüssel zu verschlüsseln. Du musst diese PIN jedes Mal eingeben, wenn du {site} öffnest.",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} Minuten zum Lesen",
   "zonsdq": "Fehler beim Laden des LNURL-Dienstes",
-  "zvCDao": "Neueste Notes automatisch anzeigen",
-  "zxvhnE": "Täglich"
+  "zvCDao": "Neueste Notes automatisch anzeigen"
 }

@@ -17,7 +17,6 @@
   "/JE/X+": "アカウントサポート",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "匿名で利用状況を送信します",
-  "/clOBU": "ウィークリー",
   "/d6vEc": "プロフィールを見つけやすく、共有しやすくなる",
   "/ioUrF": "From File",
   "/n5KSF": "{n}ミリ秒",
@@ -339,7 +338,6 @@
   "RhDAoS": "{id}を削除しますか？",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "リレー",
-  "RrCui3": "概要",
   "Rs4kCE": "ブックマーク",
   "SFuk1v": "Permissions",
   "SLZGPn": "秘密鍵を暗号化するためにピンを入力します。 {site}を開くたびにこのピンを入力する必要があります。",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} 分",
   "zonsdq": "LNURLサービスの読み込みに失敗しました",
-  "zvCDao": "最新の記事を自動で表示する",
-  "zxvhnE": "毎日"
+  "zvCDao": "最新の記事を自動で表示する"
 }

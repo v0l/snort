@@ -17,7 +17,6 @@
   "/JE/X+": "Segítség",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "Anonimizált használati adatok küldése",
-  "/clOBU": "Heti",
   "/d6vEc": "Legyen a fiókod könnyebben megtalálható és megosztható",
   "/ioUrF": "From File",
   "/n5KSF": "{n} ms",
@@ -339,7 +338,6 @@
   "RhDAoS": "Biztos hogy törölni akarod a {id}",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "Csomópontok",
-  "RrCui3": "Összegzés",
   "Rs4kCE": "Könyvjelző",
   "SFuk1v": "Permissions",
   "SLZGPn": "A privát kulcs titkosításához adjon meg egy PIN-kódot. Ezt a PIN-kódot minden alkalommal meg kell adnod, amikor a(z) {site}-ot megnyitod.",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} perc az olvasásig",
   "zonsdq": "Az LNURL szolgáltatás betöltése nem sikerült",
-  "zvCDao": "Automatikusan a legfrissebb bejegyzéseket mutassa",
-  "zxvhnE": "Napi"
+  "zvCDao": "Automatikusan a legfrissebb bejegyzéseket mutassa"
 }

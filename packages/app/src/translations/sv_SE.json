@@ -17,7 +17,6 @@
   "/JE/X+": "Konto Support",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "Skicka anonyma användarvärden",
-  "/clOBU": "Veckovis",
   "/d6vEc": "Gör din profil enklare att hitta och dela",
   "/ioUrF": "From File",
   "/n5KSF": "{n} ms",
@@ -339,7 +338,6 @@
   "RhDAoS": "Är du säker på att du vill radera {id}",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "Reläer",
-  "RrCui3": "Sammanfattning",
   "Rs4kCE": "Bokmärke",
   "SFuk1v": "Permissions",
   "SLZGPn": "Ange en pin för att kryptera din privata nyckel, du måste ange denna pin varje gång du öppnar {site}.",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} min att läsa",
   "zonsdq": "Det gick inte att ladda LNURL-tjänsten",
-  "zvCDao": "Visa automatiskt de senaste anteckningarna",
-  "zxvhnE": "Dagligen"
+  "zvCDao": "Visa automatiskt de senaste anteckningarna"
 }

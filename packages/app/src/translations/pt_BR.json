@@ -17,7 +17,6 @@
   "/JE/X+": "Suporte da conta",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "Envie métricas de uso anônimas",
-  "/clOBU": "Semanal",
   "/d6vEc": "Faça seu perfil seja mais fácil de achar e compartilhar",
   "/ioUrF": "From File",
   "/n5KSF": "{n} ms",
@@ -339,7 +338,6 @@
   "RhDAoS": "Tem certeza de que deseja excluir {id}",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "Relés",
-  "RrCui3": "Resumo",
   "Rs4kCE": "Favoritar",
   "SFuk1v": "Permissions",
   "SLZGPn": "Insira um PIN para criptografar sua chave privada. Você deve inserir esse PIN sempre que abrir o site {site}.",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} minutos para ler",
   "zonsdq": "Falha ao carregar o serviço LNURL",
-  "zvCDao": "Mostrar automaticamente as últimas notas",
-  "zxvhnE": "Diariamente"
+  "zvCDao": "Mostrar automaticamente as últimas notas"
 }

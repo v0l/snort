@@ -17,7 +17,6 @@
   "/JE/X+": "Tilituki",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "Lähetä nimettömiä käyttötietoja",
-  "/clOBU": "Viikoittain",
   "/d6vEc": "Tee profiilistasi helpompi löytää ja jakaa",
   "/ioUrF": "From File",
   "/n5KSF": "{n} ms",
@@ -339,7 +338,6 @@
   "RhDAoS": "Haluatko varmasti poistaa {id}",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "Välittäjät",
-  "RrCui3": "Yhteenveto",
   "Rs4kCE": "Kirjanmerkki",
   "SFuk1v": "Permissions",
   "SLZGPn": "Syötä pin yksityisen avaimesi salaamista varten, sinun on syötettävä tämä pin joka kerta, kun avaat {site}.",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} minuuttia lukea",
   "zonsdq": "Epäonnistunut LNURL-palvelun lataus",
-  "zvCDao": "Näytä uusimmat viestit automaattisesti",
-  "zxvhnE": "Päivittäin"
+  "zvCDao": "Näytä uusimmat viestit automaattisesti"
 }

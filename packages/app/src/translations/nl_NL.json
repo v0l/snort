@@ -17,7 +17,6 @@
   "/JE/X+": "Account hulp",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "Anoniem gebruiksgegevens verzenden",
-  "/clOBU": "Wekelijks",
   "/d6vEc": "Maak je profiel gemakkelijker om te vinden en te delen",
   "/ioUrF": "From File",
   "/n5KSF": "{n} ms",
@@ -339,7 +338,6 @@
   "RhDAoS": "Weet u zeker dat u dit wilt verwijderen {id}",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "Relays",
-  "RrCui3": "Samenvatting",
   "Rs4kCE": "Bladwijzers",
   "SFuk1v": "Permissions",
   "SLZGPn": "Voer een pincode in om je privésleutel te coderen. Je moet deze pincode elke keer invoeren als je {site}opent.",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} mins om te lezen",
   "zonsdq": "Laden van LNURL service mislukt",
-  "zvCDao": "Recente notities automatisch weergeven",
-  "zxvhnE": "Dagelijks"
+  "zvCDao": "Recente notities automatisch weergeven"
 }

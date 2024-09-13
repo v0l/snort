@@ -17,7 +17,6 @@
   "/JE/X+": "帳戶支持",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "傳送匿名使用資料",
-  "/clOBU": "每週",
   "/d6vEc": "使你的帳號可更方便地被找到及分享",
   "/ioUrF": "From File",
   "/n5KSF": "{n} 毫秒",
@@ -339,7 +338,6 @@
   "RhDAoS": "是否確定要刪除 {id}",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "中繼器",
-  "RrCui3": "概要",
   "Rs4kCE": "收藏",
   "SFuk1v": "Permissions",
   "SLZGPn": "輸入一個 PIN 碼來加密你的私鑰，每次開啟 {site} 時都必須輸入此 PIN 碼。",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} 分鐘閱讀時間",
   "zonsdq": "加載 LNURL 服務失敗",
-  "zvCDao": "自動顯示最新筆記",
-  "zxvhnE": "每天"
+  "zvCDao": "自動顯示最新筆記"
 }

@@ -17,7 +17,6 @@
   "/JE/X+": "Dukungan Akun",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "Kirim metrik penggunaan anonim",
-  "/clOBU": "Mingguan",
   "/d6vEc": "Jadikan profil Anda lebih mudah untuk ditemukan dan dibagikan",
   "/ioUrF": "From File",
   "/n5KSF": "{n} ms",
@@ -339,7 +338,6 @@
   "RhDAoS": "Anda yakin ingin menghapus {id}",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "Relai-relai",
-  "RrCui3": "Ringkasan",
   "Rs4kCE": "Penanda buku",
   "SFuk1v": "Permissions",
   "SLZGPn": "Masukkan pin untuk mengenkripsi kunci pribadi Anda, Anda harus memasukkan pin ini setiap kali Anda membuka {site}.",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} menit untuk membaca",
   "zonsdq": "Gagal memuat layanan LNURL",
-  "zvCDao": "Tampilkan catatan terbaru secara otomatis",
-  "zxvhnE": "Setiap hari"
+  "zvCDao": "Tampilkan catatan terbaru secara otomatis"
 }

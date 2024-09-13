@@ -17,7 +17,6 @@
   "/JE/X+": "Account Support",
   "/T7HId": "HTTP File Storage Integration",
   "/Xf4UW": "Send anonymous usage metrics",
-  "/clOBU": "Minggu",
   "/d6vEc": "Make your profile easier to find and share",
   "/ioUrF": "From File",
   "/n5KSF": "{n} ms",
@@ -339,7 +338,6 @@
   "RhDAoS": "Anda yakin ingin memadam {id} ke?",
   "RmxSZo": "Data Vending Machines",
   "RoOyAh": "relay-relay",
-  "RrCui3": "Summary",
   "Rs4kCE": "Penanda",
   "SFuk1v": "Permissions",
   "SLZGPn": "Enter a pin to encrypt your private key, you must enter this pin every time you open {site}.",
@@ -698,6 +696,5 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} mins to read",
   "zonsdq": "Failed to load LNURL service",
-  "zvCDao": "Automatically show latest notes",
-  "zxvhnE": "Daily"
+  "zvCDao": "Automatically show latest notes"
 }
