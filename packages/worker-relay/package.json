@@ -1,6 +1,6 @@
 {
   "name": "@snort/worker-relay",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A nostr relay in a service worker",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
