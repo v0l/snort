@@ -12,6 +12,8 @@ import Icon from "@/Components/Icons/Icon";
 import useModeration from "@/Hooks/useModeration";
 import { eventLink, getDisplayName, hexToBech32 } from "@/Utils";
 
+import NoteFooter from "./Note/NoteFooter/NoteFooter";
+
 export interface NoteReactionProps {
   data: TaggedNostrEvent;
   root?: TaggedNostrEvent;
@@ -85,13 +87,13 @@ export default function NoteReaction(props: NoteReactionProps) {
         <Icon name="repeat" size={18} />
         <FormattedMessage
           defaultMessage="{name} reposted"
-          id="+xliwN"
           values={{
             name: getDisplayName(profile, ev.pubkey),
           }}
         />
       </div>
       {root ? <Note data={root} options={opt} depth={props.depth} /> : null}
+      <NoteFooter ev={ev} />
       {!root && refEvent ? (
         <p>
           <Link to={eventLink(refEvent[1] ?? "", refEvent[2])}>
