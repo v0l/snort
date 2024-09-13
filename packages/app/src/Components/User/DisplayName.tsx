@@ -13,8 +13,8 @@ interface DisplayNameProps {
 }
 
 const DisplayName = ({ pubkey, user }: DisplayNameProps) => {
-  const profile = useUserProfile(user ? undefined : pubkey);
-  const [name, isPlaceHolder] = useMemo(() => getDisplayNameOrPlaceHolder(profile ?? user, pubkey), [profile, pubkey]);
+  const profile = useUserProfile(user ? undefined : pubkey) ?? user;
+  const [name, isPlaceHolder] = useMemo(() => getDisplayNameOrPlaceHolder(profile, pubkey), [profile, pubkey]);
 
   return <span className={classNames({ placeholder: isPlaceHolder })}>{name}</span>;
 };
