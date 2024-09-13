@@ -15,7 +15,6 @@
     "subscriptions": true,
     "deck": true,
     "zapPool": true,
-    "notificationGraph": false,
     "communityLeaders": true
   },
   "defaultPreferences": {

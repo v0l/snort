@@ -15,7 +15,6 @@
     "subscriptions": true,
     "deck": true,
     "zapPool": true,
-    "notificationGraph": true,
     "communityLeaders": true,
     "nostrAddress": true,
     "pushNotifications": true

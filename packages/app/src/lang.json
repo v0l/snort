@@ -53,9 +53,6 @@
   "/Xf4UW": {
     "defaultMessage": "Send anonymous usage metrics"
   },
-  "/clOBU": {
-    "defaultMessage": "Weekly"
-  },
   "/d6vEc": {
     "defaultMessage": "Make your profile easier to find and share"
   },
@@ -1023,9 +1020,6 @@
   },
   "RoOyAh": {
     "defaultMessage": "Relays"
-  },
-  "RrCui3": {
-    "defaultMessage": "Summary"
   },
   "Rs4kCE": {
     "defaultMessage": "Bookmark"
@@ -2105,8 +2099,5 @@
   },
   "zvCDao": {
     "defaultMessage": "Automatically show latest notes"
-  },
-  "zxvhnE": {
-    "defaultMessage": "Daily"
   }
 }

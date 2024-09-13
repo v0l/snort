@@ -15,7 +15,6 @@
     "subscriptions": false,
     "deck": false,
     "zapPool": false,
-    "notificationGraph": true,
     "communityLeaders": false,
     "nostrAddress": false,
     "pushNotifications": false

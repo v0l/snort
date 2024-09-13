@@ -57,7 +57,6 @@ declare const CONFIG: {
     subscriptions: boolean;
     deck: boolean;
     zapPool: boolean;
-    notificationGraph: boolean;
     communityLeaders: boolean;
     nostrAddress: boolean;
     pushNotifications: boolean;
