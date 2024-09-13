@@ -16,7 +16,7 @@ import Username from "@/Components/User/Username";
 import useModeration from "@/Hooks/useModeration";
 import { chainKey } from "@/Utils/Thread/ChainKey";
 
-import { NoteProps } from "../EventComponent";
+import { NoteProps, NotePropsOptions } from "../EventComponent";
 import HiddenNote from "../HiddenNote";
 import Poll from "../Poll";
 import NoteAppHandler from "./NoteAppHandler";
@@ -108,10 +108,10 @@ export function Note(props: NoteProps) {
   return !ignoreModeration && isEventMuted(ev) ? <HiddenNote>{noteElement}</HiddenNote> : noteElement;
 }
 
-function useGoToEvent(props, options) {
+function useGoToEvent(props: NoteProps, options: NotePropsOptions) {
   const navigate = useNavigate();
   return useCallback(
-    (e, eTarget) => {
+    (e: React.MouseEvent, eTarget: TaggedNostrEvent) => {
       if (options?.canClick === false) {
         return;
       }
@@ -130,11 +130,20 @@ function useGoToEvent(props, options) {
       }
 
       e.stopPropagation();
+
+      // prevent navigation if selecting text
+      const cellText = document.getSelection();
+      if (cellText?.type === "Range") {
+        return;
+      }
+
+      // custom onclick handler
       if (props.onClick) {
         props.onClick(eTarget);
         return;
       }
 
+      // link to event
       const link = NostrLink.fromEvent(eTarget);
       if (e.metaKey) {
         window.open(`/${link.encode(CONFIG.eventLinkPrefix)}`, "_blank");
