@@ -35,8 +35,8 @@ const RelaysMetadata = ({ relays }: RelaysMetadataProps) => {
             <RelayFavicon url={url} />
             <code className="grow f-ellipsis">{url}</code>
             <div className="flex g8">
-              <Icon name="read" className={settings.read ? "relay-active" : "disabled"} />
-              <Icon name="write" className={settings.write ? "relay-active" : "disabled"} />
+              <Icon name="read" className={settings.read ? "text-highlight" : "disabled"} />
+              <Icon name="write" className={settings.write ? "text-highlight" : "disabled"} />
             </div>
           </div>
         );
