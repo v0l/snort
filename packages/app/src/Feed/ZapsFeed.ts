@@ -15,9 +15,8 @@ export default function useZapsFeed(link?: NostrLink) {
 
   const zaps = useMemo(() => {
     if (zapsFeed) {
-      const profileZaps = zapsFeed.map(a => parseZap(a)).filter(z => z.valid);
-      profileZaps.sort((a, b) => b.amount - a.amount);
-      return profileZaps;
+      const parsedZaps = zapsFeed.map(a => parseZap(a)).filter(z => z.valid);
+      return parsedZaps.sort((a, b) => b.amount - a.amount);
     }
     return [];
   }, [zapsFeed]);

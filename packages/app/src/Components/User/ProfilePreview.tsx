@@ -15,6 +15,7 @@ export interface ProfilePreviewProps {
     linkToProfile?: boolean;
     profileCards?: boolean;
   };
+  subHeader?: ReactNode;
   profile?: UserMetadata;
   actions?: ReactNode;
   className?: string;
@@ -50,7 +51,7 @@ export default memo(function ProfilePreview(props: ProfilePreviewProps) {
               pubkey={pubkey}
               profile={props.profile}
               link={options.linkToProfile ?? true ? undefined : ""}
-              subHeader={options.about ? <div className="about">{user?.about}</div> : undefined}
+              subHeader={options.about ? <div className="about">{user?.about}</div> : props.subHeader}
               showProfileCard={options.profileCards}
             />
             {props.actions ?? (

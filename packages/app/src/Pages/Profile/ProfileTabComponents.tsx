@@ -1,33 +1,69 @@
-import { EventKind, HexKey, NostrLink, NostrPrefix } from "@snort/system";
+import { EventKind, HexKey, NostrLink, NostrPrefix, ParsedZap } from "@snort/system";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { Note } from "@/Components/Event/Note/Note";
-import Zap from "@/Components/Event/Zap";
 import Timeline from "@/Components/Feed/Timeline";
 import RelaysMetadata from "@/Components/Relay/RelaysMetadata";
 import Bookmarks from "@/Components/User/Bookmarks";
 import FollowsList from "@/Components/User/FollowListBase";
+import ProfilePreview from "@/Components/User/ProfilePreview";
+import ZapAmount from "@/Components/zap-amount";
 import useFollowersFeed from "@/Feed/FollowersFeed";
 import useFollowsFeed from "@/Feed/FollowsFeed";
 import useRelaysFeed from "@/Feed/RelaysFeed";
 import { TimelineSubject } from "@/Feed/TimelineFeed";
 import useZapsFeed from "@/Feed/ZapsFeed";
 import { useBookmarkList, usePinList } from "@/Hooks/useLists";
-import messages from "@/Pages/messages";
-import { formatShort } from "@/Utils/Number";
 
 export function ZapsProfileTab({ id }: { id: HexKey }) {
   const zaps = useZapsFeed(new NostrLink(NostrPrefix.PublicKey, id));
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
+  const fromGrouped = zaps.reduce(
+    (acc, v) => {
+      if (!v.sender) return acc;
+      acc[v.sender] ??= [];
+      acc[v.sender].push(v);
+      return acc;
+    },
+    {} as Record<string, Array<ParsedZap>>,
+  );
+
   return (
     <>
-      <h2 className="p">
-        <FormattedMessage {...messages.Sats} values={{ n: formatShort(zapsTotal) }} />
-      </h2>
-      {zaps.map(z => (
-        <Zap key={z.id} showZapped={false} zap={z} />
-      ))}
+      <div className="p text-2xl font-medium flex justify-between">
+        <div>
+          <FormattedMessage defaultMessage="Profile Zaps" />
+        </div>
+        <ZapAmount n={zapsTotal} />
+      </div>
+      {Object.entries(fromGrouped)
+        .map(a => ({
+          pubkey: a[0],
+          total: a[1].reduce((acc, v) => acc + v.amount, 0),
+          topZap: a[1].reduce((acc, v) => (v.amount > acc.amount ? v : acc), a[1][0]),
+          zaps: a[1],
+        }))
+        .sort((a, b) => {
+          return b.total > a.total ? 1 : -1;
+        })
+        .map(a => (
+          <div
+            className="px-4 py-1 hover:bg-gray-dark cursor:pointer rounded-xl flex items-center justify-between"
+            key={a.pubkey}>
+            <ProfilePreview
+              pubkey={a.pubkey}
+              subHeader={a.topZap.content ? <div className="about">&quot;{a.topZap.content}&quot;</div> : undefined}
+              options={{
+                about: false,
+              }}
+              actions={<></>}
+            />
+            <div>
+              <ZapAmount n={a.total} />
+            </div>
+          </div>
+        ))}
     </>
   );
 }

@@ -16,7 +16,7 @@ import { ProfileLink } from "./ProfileLink";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
-  subHeader?: JSX.Element;
+  subHeader?: ReactNode;
   showUsername?: boolean;
   className?: string;
   link?: string;

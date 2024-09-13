@@ -10,7 +10,7 @@ import Icon from "@/Components/Icons/Icon";
 import Modal from "@/Components/Modal/Modal";
 import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
 import ProfileImage from "@/Components/User/ProfileImage";
-import { formatShort } from "@/Utils/Number";
+import ZapAmount from "@/Components/zap-amount";
 
 import messages from "../../messages";
 
@@ -84,10 +84,7 @@ const ReactionsModal = ({ onClose, event, initialTab = 0 }: ReactionsModalProps)
             z =>
               z.sender && (
                 <div key={z.id} className="reactions-item">
-                  <div className="zap-reaction-icon">
-                    <Icon name="zap-solid" size={20} className="text-zap" />
-                    <span className="zap-amount">{formatShort(z.amount)}</span>
-                  </div>
+                  <ZapAmount n={z.amount} />
                   <ProfileImage
                     showProfileCard={true}
                     pubkey={z.anonZap ? "" : z.sender}
