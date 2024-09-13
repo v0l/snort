@@ -3,12 +3,12 @@ const TwitchEmbed = ({ link }: { link: string }) => {
 
   const args = `?channel=${channel}&parent=${window.location.hostname}&muted=true`;
   return (
-    <>
-      <iframe src={`https://player.twitch.tv/${args}`} className="w-max" allowFullScreen={true} />
-      <a href={link} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="ext">
-        {link}
-      </a>
-    </>
+    <iframe
+      src={`https://player.twitch.tv/${args}`}
+      className="aspect-video w-full"
+      allowFullScreen={true}
+      loading="lazy"
+    />
   );
 };
 

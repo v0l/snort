@@ -1,4 +1,4 @@
-import { bech32ToHex, hexToBech32, isHex, removeUndefined, unwrap } from "@snort/shared";
+import { bech32ToHex, hexToBech32, isHex, removeUndefined, unwrap, Bech32Regex } from "@snort/shared";
 import {
   decodeTLV,
   encodeTLV,
@@ -283,7 +283,7 @@ export function trimNostrLink(link: string) {
   let entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
 
   // trim any non-bech32 chars
-  entity = entity.match(/(n(?:pub|profile|event|ote|addr|req)1[acdefghjklmnpqrstuvwxyz023456789]+)/)?.[0] ?? entity;
+  entity = entity.match(Bech32Regex)?.[0] ?? entity;
   return entity;
 }
 

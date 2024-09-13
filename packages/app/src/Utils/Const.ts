@@ -84,9 +84,10 @@ export const InvoiceRegex = /(lnbc\w+)/i;
 
 /**
  * YouTube URL regex
+ * https://music.youtube.com/watch?v=KyF9hKd-EC4&list=RDTMAK5uy_kset8DisdE7LSD4TNjEVvrKRTmG7a56sY
  */
 export const YoutubeUrlRegex =
-  /(?:https?:\/\/)?(?:www|m\.)?(?:youtu\.be\/|youtube\.com\/(?:live\/|shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/;
+  /(?:https?:\/\/)?(?:www|m\.)?(?:youtu\.be\/|youtube\.com\/(?:live\/|shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})((?:&list=)(?:(\w|-)+))?/;
 
 /**
  * Hashtag regex

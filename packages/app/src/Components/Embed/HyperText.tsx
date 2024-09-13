@@ -1,3 +1,4 @@
+import { Bech32Regex } from "@snort/shared";
 import { ReactNode } from "react";
 
 import AppleMusicEmbed from "@/Components/Embed/AppleMusicEmbed";
@@ -10,11 +11,11 @@ import SpotifyEmbed from "@/Components/Embed/SpotifyEmbed";
 import TidalEmbed from "@/Components/Embed/TidalEmbed";
 import TwitchEmbed from "@/Components/Embed/TwitchEmbed";
 import WavlakeEmbed from "@/Components/Embed/WavlakeEmbed";
+import YoutubeEmbed from "@/Components/Embed/YoutubeEmbed";
 import { magnetURIDecode } from "@/Utils";
 import {
   AppleMusicRegex,
   MixCloudRegex,
-  NostrNestsRegex,
   SoundCloudRegex,
   SpotifyRegex,
   TidalRegex,
@@ -34,57 +35,23 @@ export default function HyperText({ link, depth, showLinkPreview, children }: Hy
   const a = link;
   try {
     const url = new URL(a);
-    const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
-    const tidalId = TidalRegex.test(a) && RegExp.$1;
-    const soundcloundId = SoundCloudRegex.test(a) && RegExp.$1;
-    const mixcloudId = MixCloudRegex.test(a) && RegExp.$1;
-    const isSpotifyLink = SpotifyRegex.test(a);
-    const isTwitchLink = TwitchRegex.test(a);
-    const isAppleMusicLink = AppleMusicRegex.test(a);
-    const isNostrNestsLink = NostrNestsRegex.test(a);
-    const isWavlakeLink = WavlakeRegex.test(a);
 
-    if (youtubeId) {
-      return (
-        <>
-          <iframe
-            // eslint-disable-next-line react/no-unknown-property
-            credentialless=""
-            className="-mx-4 md:mx-0 w-max my-2"
-            src={`https://www.youtube.com/embed/${youtubeId}`}
-            title="YouTube video player"
-            key={youtubeId}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen={true}
-          />
-          <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-            {a}
-          </a>
-        </>
-      );
-    } else if (tidalId) {
+    let m = null;
+    if (a.match(YoutubeUrlRegex)) {
+      return <YoutubeEmbed link={a} />;
+    } else if (a.match(TidalRegex)) {
       return <TidalEmbed link={a} />;
-    } else if (soundcloundId) {
+    } else if (a.match(SoundCloudRegex)) {
       return <SoundCloudEmbed link={a} />;
-    } else if (mixcloudId) {
+    } else if (a.match(MixCloudRegex)) {
       return <MixCloudEmbed link={a} />;
-    } else if (isSpotifyLink) {
+    } else if (a.match(SpotifyRegex)) {
       return <SpotifyEmbed link={a} />;
-    } else if (isTwitchLink) {
+    } else if (a.match(TwitchRegex)) {
       return <TwitchEmbed link={a} />;
-    } else if (isAppleMusicLink) {
+    } else if (a.match(AppleMusicRegex)) {
       return <AppleMusicEmbed link={a} />;
-    } else if (isNostrNestsLink) {
-      return (
-        <>
-          <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-            {children ?? a}
-          </a>
-          {/*<NostrNestsEmbed link={a} />,*/}
-        </>
-      );
-    } else if (isWavlakeLink) {
+    } else if (a.match(WavlakeRegex)) {
       return <WavlakeEmbed link={a} />;
     } else if (url.protocol === "nostr:" || url.protocol === "web+nostr:") {
       return <NostrLink link={a} depth={depth} />;
@@ -93,6 +60,8 @@ export default function HyperText({ link, depth, showLinkPreview, children }: Hy
       if (parsed) {
         return <MagnetLink magnet={parsed} />;
       }
+    } else if ((m = a.match(Bech32Regex)) != null) {
+      return <NostrLink link={`nostr:${m[1]}`} depth={depth} />;
     } else if (showLinkPreview ?? true) {
       return <LinkPreview url={a} />;
     }

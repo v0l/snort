@@ -53,7 +53,7 @@ const TidalEmbed = ({ link }: { link: string }) => {
       </a>
     );
   }
-  const iframe = (
+  return (
     <iframe
       src={source}
       style={extraStyles}
@@ -62,15 +62,8 @@ const TidalEmbed = ({ link }: { link: string }) => {
       sandbox="allow-scripts allow-popups allow-forms allow-same-origin"
       title="TIDAL Embed"
       frameBorder={0}
+      loading="lazy"
     />
-  );
-  return (
-    <>
-      {iframe}
-      <a href={link} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="ext">
-        {link}
-      </a>
-    </>
   );
 };
 
