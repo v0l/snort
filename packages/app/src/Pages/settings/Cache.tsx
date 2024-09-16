@@ -123,24 +123,35 @@ function RelayCacheStats() {
         </table>
       </div>
       <div className="flex flex-col gap-2">
-        <AsyncButton onClick={() => {}}>
-          <FormattedMessage defaultMessage="Clear" />
-        </AsyncButton>
-        <AsyncButton
-          onClick={async () => {
-            const data = new Uint8Array();
-            const url = URL.createObjectURL(
-              new File([data], "snort.db", {
-                type: "application/octet-stream",
-              }),
-            );
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "snort.db";
-            a.click();
-          }}>
-          <FormattedMessage defaultMessage="Dump" />
-        </AsyncButton>
+        {Relay instanceof WorkerRelayInterface && (
+          <>
+            <AsyncButton
+              onClick={async () => {
+                if (Relay instanceof WorkerRelayInterface) {
+                  await Relay.wipe();
+                }
+              }}>
+              <FormattedMessage defaultMessage="Clear" />
+            </AsyncButton>
+            <AsyncButton
+              onClick={async () => {
+                const data = Relay instanceof WorkerRelayInterface ? await Relay.dump() : undefined;
+                if (data) {
+                  const url = URL.createObjectURL(
+                    new File([data], "snort.db", {
+                      type: "application/octet-stream",
+                    }),
+                  );
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = "snort.db";
+                  a.click();
+                }
+              }}>
+              <FormattedMessage defaultMessage="Dump" />
+            </AsyncButton>
+          </>
+        )}
         <AsyncButton onClick={() => navigate("/cache-debug")}>
           <FormattedMessage defaultMessage="Debug" />
         </AsyncButton>

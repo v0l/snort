@@ -1,6 +1,6 @@
 import "./ReactionsModal.css";
 
-import { NostrLink, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions, useReactions } from "@snort/system-react";
 import { useMemo, useState } from "react";
 import { FormattedMessage, MessageDescriptor, useIntl } from "react-intl";
@@ -11,6 +11,7 @@ import Modal from "@/Components/Modal/Modal";
 import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
 import ProfileImage from "@/Components/User/ProfileImage";
 import ZapAmount from "@/Components/zap-amount";
+import useWoT from "@/Hooks/useWoT";
 
 import messages from "../../messages";
 
@@ -29,10 +30,7 @@ const ReactionsModal = ({ onClose, event, initialTab = 0 }: ReactionsModalProps)
   const { reactions, zaps, reposts } = useEventReactions(link, related);
   const { positive, negative } = reactions;
 
-  const sortEvents = (events: Array<TaggedNostrEvent>) =>
-    events.sort(
-      (a, b) => socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey),
-    );
+  const { sortEvents } = useWoT();
 
   const likes = useMemo(() => sortEvents([...positive]), [positive]);
   const dislikes = useMemo(() => sortEvents([...negative]), [negative]);

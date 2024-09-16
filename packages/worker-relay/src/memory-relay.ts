@@ -34,11 +34,17 @@ export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements R
   }
 
   dump(): Promise<Uint8Array> {
-    return Promise.resolve(new Uint8Array());
+    const enc = new TextEncoder();
+    return Promise.resolve(enc.encode(JSON.stringify(this.#events.values())));
   }
 
   close(): void {
     // nothing
+  }
+
+  wipe() {
+    this.#events = new Map();
+    return Promise.resolve();
   }
 
   event(ev: NostrEvent) {

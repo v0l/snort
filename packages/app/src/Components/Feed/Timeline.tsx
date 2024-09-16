@@ -1,7 +1,7 @@
 import "./Timeline.css";
 
 import { unixNow } from "@snort/shared";
-import { socialGraphInstance, TaggedNostrEvent } from "@snort/system";
+import { TaggedNostrEvent } from "@snort/system";
 import { useCallback, useMemo, useState } from "react";
 
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
@@ -9,6 +9,7 @@ import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";
 import useHistoryState from "@/Hooks/useHistoryState";
 import useLogin from "@/Hooks/useLogin";
+import useWoT from "@/Hooks/useWoT";
 import { dedupeByPubkey } from "@/Utils";
 
 export interface TimelineProps {
@@ -41,6 +42,7 @@ const Timeline = (props: TimelineProps) => {
   const feed: TimelineFeed = useTimelineFeed(props.subject, feedOptions);
   const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
+  const wot = useWoT();
 
   const filterPosts = useCallback(
     (nts: readonly TaggedNostrEvent[]) => {
@@ -48,7 +50,7 @@ const Timeline = (props: TimelineProps) => {
         if (props.followDistance === undefined) {
           return true;
         }
-        const followDistance = socialGraphInstance.getFollowDistance(a.pubkey);
+        const followDistance = wot.followDistance(a.pubkey);
         return followDistance === props.followDistance;
       };
       return nts

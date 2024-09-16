@@ -79,6 +79,10 @@ export class WorkerRelayInterface {
     return await this.#workerRpc<void, Uint8Array>("dumpDb");
   }
 
+  async wipe() {
+    return await this.#workerRpc<void, boolean>("wipe");
+  }
+
   async forYouFeed(pubkey: string) {
     return await this.#workerRpc<string, Array<NostrEvent>>("forYouFeed", pubkey);
   }

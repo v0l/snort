@@ -13,7 +13,8 @@ export type WorkerMessageCommand =
   | "forYouFeed"
   | "setEventMetadata"
   | "debug"
-  | "delete";
+  | "delete"
+  | "wipe";
 
 export interface WorkerMessage<T> {
   id: string;
@@ -73,6 +74,7 @@ export interface RelayHandler extends EventEmitter<RelayHandlerEvents> {
   dump(): Promise<Uint8Array>;
   delete(req: ReqFilter): Array<string>;
   setEventMetadata(id: string, meta: EventMetadata): void;
+  wipe(): Promise<void>;
 }
 
 export interface RelayHandlerEvents {

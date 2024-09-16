@@ -107,8 +107,8 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     // fetch results from cache first, flag qSend for sync
     if (this.#system.cacheRelay) {
       const data = await this.#system.cacheRelay.query(["REQ", q.id, ...filters]);
+      syncFrom = data;
       if (data.length > 0) {
-        syncFrom = data.map(a => ({ ...a, relays: [] }));
         this.#log("Adding from cache %s %O", q.id, data);
         q.feed.add(syncFrom);
       }

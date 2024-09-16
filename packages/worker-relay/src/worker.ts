@@ -154,6 +154,11 @@ const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: Mes
         reply(msg.id, res);
         break;
       }
+      case "wipe": {
+        await relay!.wipe();
+        reply(msg.id, true);
+        break;
+      }
       case "forYouFeed": {
         const res = await getForYouFeed(relay!, msg.args as string);
         reply(msg.id, res);

@@ -10,6 +10,7 @@ const migrations = [
   { version: 3, script: migrate_v3 },
   { version: 4, script: migrate_v4 },
   { version: 5, script: migrate_v5 },
+  { version: 6, script: migrate_v6 },
 ];
 
 async function migrate(relay: SqliteRelay) {
@@ -98,6 +99,15 @@ async function migrate_v5(relay: SqliteRelay) {
   relay.db?.transaction(db => {
     db.exec("CREATE INDEX seen_at_IDX ON events (seen_at)");
     db.exec("insert into __migration values(5, ?)", {
+      bind: [new Date().getTime() / 1000],
+    });
+  });
+}
+
+async function migrate_v6(relay: SqliteRelay) {
+  relay.db?.transaction(db => {
+    db.exec("ALTER TABLE events ADD COLUMN relays TEXT");
+    db.exec("insert into __migration values(6, ?)", {
       bind: [new Date().getTime() / 1000],
     });
   });
