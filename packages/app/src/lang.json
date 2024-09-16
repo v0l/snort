@@ -297,6 +297,9 @@
   "6OSOXl": {
     "defaultMessage": "Reason: <i>{reason}</i>"
   },
+  "6WWD34": {
+    "defaultMessage": "Looking for: {noteId}"
+  },
   "6bgpn+": {
     "defaultMessage": "Not all clients support this, you may still receive some zaps as if zap splits was not configured"
   },
@@ -1246,6 +1249,9 @@
   },
   "Yf3DwC": {
     "defaultMessage": "Connect a wallet to send instant payments"
+  },
+  "YuoEb9": {
+    "defaultMessage": "Try another relay"
   },
   "Z4BMCZ": {
     "defaultMessage": "Enter pairing phrase"
