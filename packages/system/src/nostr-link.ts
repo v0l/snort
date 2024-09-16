@@ -1,15 +1,5 @@
 import { bech32ToHex, hexToBech32, isHex, removeUndefined, unwrap, Bech32Regex } from "@snort/shared";
-import {
-  decodeTLV,
-  encodeTLV,
-  EventExt,
-  EventKind,
-  NostrEvent,
-  NostrPrefix,
-  Tag,
-  TaggedNostrEvent,
-  TLVEntryType,
-} from ".";
+import { decodeTLV, encodeTLV, EventExt, EventKind, NostrEvent, NostrPrefix, TaggedNostrEvent, TLVEntryType } from ".";
 import { findTag } from "./utils";
 
 /**
