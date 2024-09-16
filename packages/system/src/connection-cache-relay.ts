@@ -23,7 +23,7 @@ export class ConnectionCacheRelay implements CacheRelay {
     return await this.connection.publish(ev);
   }
 
-  query(req: ReqCommand): Promise<NostrEvent[]> {
+  query(req: ReqCommand): Promise<Array<TaggedNostrEvent>> {
     const id = uuid();
     return new Promise((resolve, reject) => {
       const results = new NoteCollection();
