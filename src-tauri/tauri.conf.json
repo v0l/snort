@@ -1,51 +1,47 @@
 {
   "build": {
     "beforeBuildCommand": "yarn build",
-    "beforeDevCommand": "yarn start",
-    "devPath": "http://localhost:5173",
-    "distDir": "../packages/app/build"
+    "beforeDevCommand": "yarn workspace @snort/app start",
+    "frontendDist": "../packages/app/build",
+    "devUrl": "http://localhost:5173"
   },
-  "package": {
-    "productName": "snort",
-    "version": "0.2.0"
-  },
-  "tauri": {
-    "allowlist": {
-      "all": false
+  "bundle": {
+    "active": true,
+    "category": "DeveloperTool",
+    "copyright": "",
+    "targets": "all",
+    "externalBin": [],
+    "icon": [
+      "icons/128x128.png",
+      "icons/128x128@2x.png"
+    ],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
     },
-    "bundle": {
-      "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
+    "longDescription": "",
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null
+    },
+    "resources": [],
+    "shortDescription": "",
+    "linux": {
       "deb": {
         "depends": []
-      },
-      "externalBin": [],
-      "icon": ["icons/128x128.png", "icons/128x128@2x.png"],
-      "identifier": "social.snort.app",
-      "longDescription": "",
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": null
-      },
-      "resources": [],
-      "shortDescription": "",
-      "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
       }
-    },
-    "security": {
-      "csp": null
-    },
-    "updater": {
-      "active": false
-    },
+    }
+  },
+  "productName": "snort",
+  "mainBinaryName": "snort",
+  "version": "0.2.0",
+  "identifier": "social.snort.app",
+  "plugins": {},
+  "app": {
     "windows": [
       {
         "fullscreen": false,
@@ -54,6 +50,9 @@
         "title": "snort.social",
         "width": 800
       }
-    ]
+    ],
+    "security": {
+      "csp": "script-src 'wasm-unsafe-eval'; connect-src ipc: http://ipc.localhost"
+    }
   }
 }
