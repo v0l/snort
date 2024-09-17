@@ -1,6 +1,7 @@
 import "./SearchBox.css";
 
-import { NostrLink, tryParseNostrLink } from "@snort/system";
+import { bitcoinExplorer, PlebNameData, PlebNameHistory } from "@plebnames/core";
+import { NostrLink, NostrPrefix, tryParseNostrLink } from "@snort/system";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,7 +9,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Icon from "@/Components/Icons/Icon";
 import Spinner from "@/Components/Icons/Spinner";
 import ProfileImage from "@/Components/User/ProfileImage";
+import { FuzzySearchResult } from "@/Db/FuzzySearch";
 import useProfileSearch from "@/Hooks/useProfileSearch";
+import { bech32ToHex, hexToBech32 } from "@/Utils";
 import { fetchNip05Pubkey } from "@/Utils/Nip05/Verifier";
 
 const MAX_RESULTS = 3;
@@ -18,6 +21,7 @@ export default function SearchBox() {
   const [search, setSearch] = useState("");
   const [searching, setSearching] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [plebname, setPlebname] = useState<FuzzySearchResult|undefined>(undefined)
   const navigate = useNavigate();
   const location = useLocation();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -26,6 +30,9 @@ export default function SearchBox() {
   const resultListRef = useRef<HTMLDivElement | null>(null);
 
   const results = useProfileSearch(search);
+  if (plebname && plebname.name === search) {
+    results.unshift(plebname)
+  }
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -81,6 +88,21 @@ export default function SearchBox() {
       navigate(`/${val.trim()}`);
       e.preventDefault();
     } else {
+      if (val.endsWith('.btc')) {
+        bitcoinExplorer.followNameHistory(val.substring(0, '.btc'.length)).then((nameHistory: PlebNameHistory|'unclaimed') => {
+          if (nameHistory === 'unclaimed') {
+            return
+          }
+          const nameData: PlebNameData = nameHistory.getData()
+          if (!nameData.nostr) {
+            return
+          }
+          setPlebname({
+            pubkey: bech32ToHex(nameData.nostr),
+            name: val
+          })
+        }).catch(reason => console.warn(`failed to fetch history of plebname '${val}'`, reason))
+      }
       setSearch(val);
     }
   };
@@ -146,11 +168,29 @@ export default function SearchBox() {
                 activeIndex === idx + 1 ? "bg-secondary" : "bg-background hover:bg-secondary"
               }`}
               onMouseEnter={() => setActiveIndex(idx + 1)}>
-              <ProfileImage pubkey={result.pubkey} showProfileCard={false} />
+              <ProfileImage pubkey={result.pubkey} subHeader={getSubHeader(result)} showProfileCard={false} />
             </div>
           ))}
         </div>
       )}
     </div>
   );
+}
+
+function getSubHeader(result: FuzzySearchResult): JSX.Element {
+  if (result.name && result.name.endsWith('.btc')) {
+    return <span style={{color: 'orange'}}>{result.name}</span>
+  }
+
+  if (result.nip05) {
+    return <span style={{color: 'teal'}}>{result.nip05}</span>
+  }
+  
+  try {
+    const npub: string = hexToBech32(NostrPrefix.PublicKey, result.pubkey)
+    return <span style={{color: 'purple'}}>{npub.slice(0, 12)}...{npub.slice(-12)}</span>
+  } catch (error) {
+    console.warn(`"${result.pubkey}" is not a valid pubkey`, error)
+    return <span>invalid pubkey</span>
+  }
 }
