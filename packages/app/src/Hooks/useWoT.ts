@@ -1,11 +1,11 @@
-import { TaggedNostrEvent } from "@snort/system";
-import { socialGraphInstance } from "@snort/system/dist/SocialGraph/SocialGraph";
+import { socialGraphInstance, TaggedNostrEvent } from "@snort/system";
 
 export default function useWoT() {
-  const sg = socialGraphInstance;
   return {
     sortEvents: (events: Array<TaggedNostrEvent>) =>
-      events.sort((a, b) => sg.getFollowDistance(a.pubkey) - sg.getFollowDistance(b.pubkey)),
-    followDistance: sg.getFollowDistance,
+      events.sort(
+        (a, b) => socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey),
+      ),
+    followDistance: (pk: string) => socialGraphInstance.getFollowDistance(pk),
   };
 }

@@ -9,6 +9,7 @@ import { ReplyButton } from "@/Components/Event/Note/NoteFooter/ReplyButton";
 import { RepostButton } from "@/Components/Event/Note/NoteFooter/RepostButton";
 import ReactionsModal from "@/Components/Event/Note/ReactionsModal";
 import useLogin from "@/Hooks/useLogin";
+import useModeration from "@/Hooks/useModeration";
 import usePreferences from "@/Hooks/usePreferences";
 
 export interface NoteFooterProps {
@@ -20,9 +21,13 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { ev } = props;
   const link = useMemo(() => NostrLink.fromEvent(ev), [ev.id]);
   const [showReactions, setShowReactions] = useState(false);
+  const { isMuted } = useModeration();
 
   const related = useReactions("reactions", link);
-  const { replies, reactions, zaps, reposts } = useEventReactions(link, related);
+  const { replies, reactions, zaps, reposts } = useEventReactions(
+    link,
+    related.filter(a => !isMuted(a.pubkey)),
+  );
   const { positive } = reactions;
 
   const readonly = useLogin(s => s.readonly);

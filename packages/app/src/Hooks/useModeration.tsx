@@ -3,6 +3,8 @@ import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent, ToNostrEventTag, Un
 
 import useLogin from "@/Hooks/useLogin";
 
+import useWoT from "./useWoT";
+
 export class MutedWordTag implements ToNostrEventTag {
   constructor(readonly word: string) {}
   equals(other: ToNostrEventTag): boolean {
@@ -16,10 +18,12 @@ export class MutedWordTag implements ToNostrEventTag {
 
 export default function useModeration() {
   const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
+  const wot = useWoT();
 
-  function isMuted(id: string) {
-    const link = NostrLink.publicKey(id);
-    return state.muted.some(a => a.equals(link));
+  function isMuted(pubkey: string) {
+    const link = NostrLink.publicKey(pubkey);
+    const distance = wot.followDistance(pubkey);
+    return state.muted.some(a => a.equals(link)) || (state.appdata?.preferences.muteWithWoT && distance > 2);
   }
 
   async function unmute(id: string) {

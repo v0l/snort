@@ -185,6 +185,40 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
+            <FormattedMessage defaultMessage="WoT Filter" />
+          </h4>
+          <small>
+            <FormattedMessage defaultMessage="Mute notes from people who are outside your web of trust" />
+          </small>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={pref.muteWithWoT}
+            onChange={e => setPref({ ...pref, muteWithWoT: e.target.checked })}
+          />
+        </div>
+      </div>
+      <div className="flex justify-between">
+        <div className="flex flex-col g8">
+          <h4>
+            <FormattedMessage defaultMessage="Hide muted notes" />
+          </h4>
+          <small>
+            <FormattedMessage defaultMessage="Muted notes will not be shown" />
+          </small>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={pref.hideMutedNotes}
+            onChange={e => setPref({ ...pref, hideMutedNotes: e.target.checked })}
+          />
+        </div>
+      </div>
+      <div className="flex justify-between w-max">
+        <div className="flex flex-col g8">
+          <h4>
             <FormattedMessage defaultMessage="Auto Translate" />
           </h4>
           <small>
@@ -471,23 +505,7 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="flex justify-between">
-        <div className="flex flex-col g8">
-          <h4>
-            <FormattedMessage defaultMessage="Hide muted notes" />
-          </h4>
-          <small>
-            <FormattedMessage defaultMessage="Muted notes will not be shown" />
-          </small>
-        </div>
-        <div>
-          <input
-            type="checkbox"
-            checked={pref.hideMutedNotes}
-            onChange={e => setPref({ ...pref, hideMutedNotes: e.target.checked })}
-          />
-        </div>
-      </div>
+
       <AsyncButton onClick={() => update(pref)}>
         <FormattedMessage defaultMessage="Save" />
       </AsyncButton>

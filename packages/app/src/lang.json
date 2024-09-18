@@ -342,6 +342,9 @@
   "7hp70g": {
     "defaultMessage": "NIP-05"
   },
+  "7nAz/z": {
+    "defaultMessage": "Mute notes from people who are outside your web of trust"
+  },
   "7pFGAQ": {
     "defaultMessage": "Close Relays"
   },
@@ -753,9 +756,6 @@
   "J2HeQ+": {
     "defaultMessage": "Use commas to separate words e.g. word1, word2, word3"
   },
-  "JA+tz3": {
-    "defaultMessage": "Looking up thread..."
-  },
   "JCIgkj": {
     "defaultMessage": "Username"
   },
@@ -1032,6 +1032,9 @@
   },
   "Rs4kCE": {
     "defaultMessage": "Bookmark"
+  },
+  "S/NV2G": {
+    "defaultMessage": "Loading note: {id}"
   },
   "SFuk1v": {
     "defaultMessage": "Permissions"
@@ -1389,6 +1392,9 @@
   "d+6YsV": {
     "defaultMessage": "Lists to mute:"
   },
+  "d0qim7": {
+    "defaultMessage": "WoT Filter"
+  },
   "d2ebEu": {
     "defaultMessage": "Not Subscribed to Push"
   },
@@ -1712,6 +1718,9 @@
   },
   "lvlPhZ": {
     "defaultMessage": "Pay Invoice"
+  },
+  "mCEKiZ": {
+    "defaultMessage": "{n} notes have been muted"
   },
   "mErPop": {
     "defaultMessage": "It looks like you dont have any, check {link} to buy one!"

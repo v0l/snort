@@ -2,7 +2,8 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
 
-import { unixNow } from "@snort/shared";
+import { unixNow, unixNowMs } from "@snort/shared";
+import { socialGraphInstance } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
@@ -60,7 +61,15 @@ async function initSite() {
 
   const login = LoginStore.snapshot();
   preload(login.state.follows).then(async () => {
-    queueMicrotask(() => System.PreloadSocialGraph(login.state.follows));
+    queueMicrotask(async () => {
+      const start = unixNowMs();
+      await System.PreloadSocialGraph(login.state.follows);
+      console.debug(
+        `Social graph loaded in ${(unixNowMs() - start).toFixed(2)}ms, followDistances=${
+          socialGraphInstance.followDistanceByUser.size
+        }`,
+      );
+    });
 
     for (const ev of UserCache.snapshot()) {
       try {

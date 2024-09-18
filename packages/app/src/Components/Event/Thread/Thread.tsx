@@ -57,8 +57,6 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
           waitUntilInView={false}
         />
       );
-    } else {
-      return <NoteGhost className={className}>Loading thread root.. ({thread.data?.length} notes loaded)</NoteGhost>;
     }
   }
 
@@ -75,16 +73,18 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
   function renderCurrent() {
     if (thread.current) {
       const note = thread.data.find(n => n.id === thread.current);
-      return (
-        note && (
+      if (note) {
+        return (
           <Note
             data={note}
             options={{ showReactionsLink: true, showMediaSpotlight: true }}
             threadChains={thread.chains}
             onClick={navigateThread}
           />
-        )
-      );
+        );
+      } else {
+        return <NoteGhost link={thread.current} />;
+      }
     }
   }
 
@@ -100,7 +100,6 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
 
   const parentText = formatMessage({
     defaultMessage: "Parent",
-    id: "ADmfQT",
     description: "Link to parent note in thread",
   });
 
@@ -134,10 +133,15 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
         {thread.root && renderRoot(thread.root)}
         {thread.root && renderChain(chainKey(thread.root))}
         {!thread.root && renderCurrent()}
-        {!thread.root && !thread.current && (
-          <NoteGhost>
-            <FormattedMessage defaultMessage="Looking up thread..." />
-          </NoteGhost>
+        {thread.mutedData.length > 0 && (
+          <div className="p br b mx-2 my-3 bg-gray-ultradark text-gray-light font-medium cursor-pointer">
+            <FormattedMessage
+              defaultMessage="{n} notes have been muted"
+              values={{
+                n: thread.mutedData.length,
+              }}
+            />
+          </div>
         )}
       </div>
     </>

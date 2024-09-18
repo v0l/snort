@@ -1,21 +1,15 @@
-import "../EventComponent.css";
-
-import ProfileImage from "@/Components/User/ProfileImage";
+import classNames from "classnames";
+import { FormattedMessage } from "react-intl";
 
 interface NoteGhostProps {
   className?: string;
-  children: React.ReactNode;
+  link: string;
 }
 
 export default function NoteGhost(props: NoteGhostProps) {
-  const className = `note card ${props.className ?? ""}`;
   return (
-    <div className={className}>
-      <div className="header">
-        <ProfileImage pubkey="" />
-      </div>
-      <div className="body">{props.children}</div>
-      <div className="footer"></div>
+    <div className={classNames("p bb", props.className)}>
+      <FormattedMessage defaultMessage="Loading note: {id}" values={{ id: props.link }} />
     </div>
   );
 }
