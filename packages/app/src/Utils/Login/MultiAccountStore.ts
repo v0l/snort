@@ -17,7 +17,7 @@ import { v4 as uuid } from "uuid";
 
 import { createPublisher, LoginSession, LoginSessionType, SnortAppData } from "@/Utils/Login/index";
 
-import { DefaultPreferences } from "./Preferences";
+import { DefaultPreferences, UserPreferences } from "./Preferences";
 
 const AccountStoreKey = "sessions";
 const LoggedOut = {
@@ -358,6 +358,13 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         if ("showContentWarningPosts" in acc.state.appdata) {
           delete acc.state.appdata["showContentWarningPosts"];
           didMigrate = true;
+        }
+
+        if (acc.state.appdata.preferences) {
+          if (!("muteWithWoT" in acc.state.appdata.preferences)) {
+            (acc.state.appdata.preferences as UserPreferences)["muteWithWoT"] = true;
+            didMigrate = true;
+          }
         }
       }
     }
