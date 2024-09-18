@@ -1,50 +1,30 @@
-import { unixNow } from "@snort/shared";
-import { EventKind, NostrEvent, NostrLink, RequestBuilder } from "@snort/system";
-import { useRequestBuilder, useUserProfile } from "@snort/system-react";
-import { CSSProperties, useMemo } from "react";
+import { NostrEvent, NostrLink } from "@snort/system";
+import { useUserProfile } from "@snort/system-react";
+import classNames from "classnames";
+import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
 import useImgProxy from "@/Hooks/useImgProxy";
+import useLiveStreams from "@/Hooks/useLiveStreams";
 import { findTag } from "@/Utils";
-import { Hour } from "@/Utils/Const";
 
 import Avatar from "../User/Avatar";
 
 export function LiveStreams() {
-  const sub = useMemo(() => {
-    const rb = new RequestBuilder("streams");
-    rb.withFilter()
-      .kinds([EventKind.LiveEvent])
-      .since(unixNow() - Hour);
-    rb.withFilter()
-      .kinds([EventKind.LiveEvent])
-      .since(unixNow() - Hour);
-    return rb;
-  }, []);
-
-  const streams = useRequestBuilder(sub);
+  const streams = useLiveStreams();
   if (streams.length === 0) return null;
 
   return (
     <div className="flex mx-2 gap-4 overflow-x-auto sm-hide-scrollbar">
-      {streams
-        .filter(a => {
-          return findTag(a, "status") === "live";
-        })
-        .sort((a, b) => {
-          const sA = Number(findTag(a, "starts"));
-          const sB = Number(findTag(b, "starts"));
-          return sA > sB ? -1 : 1;
-        })
-        .map(v => (
-          <LiveStreamEvent ev={v} key={`${v.kind}:${v.pubkey}:${findTag(v, "d")}`} />
-        ))}
+      {streams.map(v => (
+        <LiveStreamEvent ev={v} key={`${v.kind}:${v.pubkey}:${findTag(v, "d")}`} className="h-[80px]" />
+      ))}
     </div>
   );
 }
 
-function LiveStreamEvent({ ev }: { ev: NostrEvent }) {
+export function LiveStreamEvent({ ev, className }: { ev: NostrEvent; className?: string }) {
   const { proxy } = useImgProxy();
   const title = findTag(ev, "title");
   const image = findTag(ev, "image");
@@ -57,7 +37,7 @@ function LiveStreamEvent({ ev }: { ev: NostrEvent }) {
   const imageProxy = proxy(image ?? "");
 
   return (
-    <Link className="flex gap-2 h-[80px]" to={`https://zap.stream/${link}`} target="_blank">
+    <Link className={classNames("flex gap-2", className)} to={`https://zap.stream/${link}`} target="_blank">
       <div className="relative aspect-video">
         <div
           className="absolute h-full w-full bg-center bg-cover bg-gray-ultradark rounded-lg"

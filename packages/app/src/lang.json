@@ -306,9 +306,6 @@
   "6ewQqw": {
     "defaultMessage": "Likes ({n})"
   },
-  "6k7xfM": {
-    "defaultMessage": "Trending notes"
-  },
   "6mr8WU": {
     "defaultMessage": "Followed by"
   },
@@ -505,9 +502,6 @@
   },
   "CYkOCI": {
     "defaultMessage": "and {count} others you follow"
-  },
-  "CbM2hK": {
-    "defaultMessage": "Trending hashtags"
   },
   "CmZ9ls": {
     "defaultMessage": "{n} Muted"
@@ -1151,6 +1145,9 @@
   "UrKTqQ": {
     "defaultMessage": "You have an active iris.to account"
   },
+  "UsCzPc": {
+    "defaultMessage": "Share a personalized invitation with friends!"
+  },
   "UxgyeY": {
     "defaultMessage": "Your referral code is {code}"
   },
@@ -1307,6 +1304,9 @@
   "abbGKq": {
     "defaultMessage": "{n} km"
   },
+  "ak3MTf": {
+    "defaultMessage": "Invite Friends"
+  },
   "b12Goz": {
     "defaultMessage": "Mnemonic"
   },
@@ -1406,6 +1406,9 @@
   },
   "dOQCL8": {
     "defaultMessage": "Display name"
+  },
+  "ddd3JX": {
+    "defaultMessage": "Popular Hashtags"
   },
   "deEeEI": {
     "defaultMessage": "Register"
@@ -1700,6 +1703,9 @@
   },
   "lTbT3s": {
     "defaultMessage": "Wallet password"
+  },
+  "lbr3Lq": {
+    "defaultMessage": "Copy link"
   },
   "lfOesV": {
     "defaultMessage": "Non-Zap"

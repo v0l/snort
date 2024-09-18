@@ -1,6 +1,6 @@
 import "./ZapButton.css";
 
-import { HexKey } from "@snort/system";
+import { HexKey, NostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useState } from "react";
 
@@ -17,7 +17,7 @@ const ZapButton = ({
   pubkey: HexKey;
   lnurl?: string;
   children?: React.ReactNode;
-  event?: string;
+  event?: NostrLink;
 }) => {
   const profile = useUserProfile(pubkey);
   const [zap, setZap] = useState(false);
@@ -37,12 +37,11 @@ const ZapButton = ({
             value: service,
             weight: 1,
             name: profile?.display_name || profile?.name,
-            zap: { pubkey: pubkey },
+            zap: { pubkey: pubkey, event },
           } as ZapTarget,
         ]}
         show={zap}
         onClose={() => setZap(false)}
-        note={event}
       />
     </>
   );
