@@ -4,6 +4,8 @@
   "dependencies": {
     "@cashu/cashu-ts": "^1.0.0-rc.3",
     "@here/maps-api-for-javascript": "^1.50.0",
+    "@livekit/components-react": "^2.5.4",
+    "@livekit/protocol": "^1.22.0",
     "@noble/curves": "^1.4.0",
     "@noble/hashes": "^1.4.0",
     "@scure/base": "^1.1.6",
@@ -29,6 +31,7 @@
     "highlight.js": "^11.8.0",
     "latlon-geohash": "^2.0.0",
     "light-bolt11-decoder": "^2.1.0",
+    "livekit-client": "^2.5.2",
     "lottie-react": "^2.4.0",
     "marked": "^9.1.0",
     "marked-footnote": "^1.0.0",
