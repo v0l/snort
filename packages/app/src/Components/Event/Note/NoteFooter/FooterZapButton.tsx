@@ -1,6 +1,7 @@
 import { barrierQueue } from "@snort/shared";
 import { NostrLink, ParsedZap, TaggedNostrEvent } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
+import { Zapper, ZapTarget } from "@snort/wallet";
 import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
@@ -13,7 +14,6 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
 import { getDisplayName } from "@/Utils";
-import { Zapper, ZapTarget } from "@/Utils/Zapper";
 import { ZapPoolController } from "@/Utils/ZapPoolController";
 import { useWallet } from "@/Wallet";
 
@@ -140,13 +140,7 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
             <ZapsSummary zaps={zaps} onClick={onClickZappers ?? (() => {})} />
           </div>
           {showZapModal && (
-            <ZapModal
-              targets={getZapTarget()}
-              onClose={() => setShowZapModal(false)}
-              note={ev.id}
-              show={true}
-              allocatePool={true}
-            />
+            <ZapModal targets={getZapTarget()} onClose={() => setShowZapModal(false)} show={true} allocatePool={true} />
           )}
         </>
       )}

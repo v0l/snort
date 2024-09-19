@@ -1,8 +1,7 @@
 import { ExternalStore } from "@snort/shared";
 import { NostrEvent, TaggedNostrEvent } from "@snort/system";
+import { ZapTarget } from "@snort/wallet";
 import { useSyncExternalStoreWithSelector } from "use-sync-external-store/with-selector";
-
-import { ZapTarget } from "@/Utils/Zapper";
 
 interface NoteCreatorDataSnapshot {
   show: boolean;

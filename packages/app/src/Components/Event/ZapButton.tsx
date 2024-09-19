@@ -2,11 +2,11 @@ import "./ZapButton.css";
 
 import { HexKey, NostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
+import { ZapTarget } from "@snort/wallet";
 import { useState } from "react";
 
 import Icon from "@/Components/Icons/Icon";
 import ZapModal from "@/Components/ZapModal/ZapModal";
-import { ZapTarget } from "@/Utils/Zapper";
 
 const ZapButton = ({
   pubkey,

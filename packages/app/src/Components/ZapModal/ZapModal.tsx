@@ -1,6 +1,7 @@
 import "./ZapModal.css";
 
 import { LNURLSuccessAction } from "@snort/shared";
+import { Zapper, ZapTarget, ZapTargetResult } from "@snort/wallet";
 import { ReactNode, useEffect, useState } from "react";
 
 import CloseButton from "@/Components/Button/CloseButton";
@@ -12,7 +13,6 @@ import { ZapModalTitle } from "@/Components/ZapModal/ZapModalTitle";
 import { ZapType } from "@/Components/ZapModal/ZapType";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { debounce } from "@/Utils";
-import { Zapper, ZapTarget, ZapTargetResult } from "@/Utils/Zapper";
 import { useWallet } from "@/Wallet";
 
 export interface SendSatsProps {

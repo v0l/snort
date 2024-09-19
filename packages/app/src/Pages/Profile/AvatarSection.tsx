@@ -1,5 +1,6 @@
 import { LNURL } from "@snort/shared";
 import { CachedMetadata, encodeTLVEntries, NostrLink, NostrPrefix, TLVEntryType } from "@snort/system";
+import { ZapTarget } from "@snort/wallet";
 import React, { useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,7 +20,6 @@ import ZapModal from "@/Components/ZapModal/ZapModal";
 import useModeration from "@/Hooks/useModeration";
 import { hexToBech32 } from "@/Utils";
 import { LoginSessionType, LoginStore } from "@/Utils/Login";
-import { ZapTarget } from "@/Utils/Zapper";
 
 const AvatarSection = ({
   user,
