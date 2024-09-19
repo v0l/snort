@@ -12,6 +12,7 @@ export interface Tab {
 interface TabsProps {
   tabs: Tab[];
   tab: Tab;
+  className?: string;
   setTab: (t: Tab) => void;
 }
 
@@ -23,7 +24,7 @@ export const TabSelector = ({ t, tab, setTab }: TabElementProps) => {
   return (
     <div
       className={classNames(
-        "px-4 py-2 my-1 border border-border-color rounded-full cursor-pointer font-semibold bg-gray-dark",
+        "flex gap-2 items-center px-4 py-2 my-1 border border-border-color rounded-full cursor-pointer font-semibold bg-gray-dark",
         "hover:drop-shadow-sm hover:bg-gray",
         {
           "": tab.value === t.value,
@@ -36,10 +37,10 @@ export const TabSelector = ({ t, tab, setTab }: TabElementProps) => {
   );
 };
 
-const TabSelectors = ({ tabs, tab, setTab }: TabsProps) => {
+const TabSelectors = ({ tabs, tab, className, setTab }: TabsProps) => {
   const horizontalScroll = useHorizontalScroll();
   return (
-    <div className="flex gap-2 overflow-y-auto hide-scrollbar" ref={horizontalScroll}>
+    <div className={classNames(className, "flex gap-2 overflow-y-auto hide-scrollbar")} ref={horizontalScroll}>
       {tabs.map((t, index) => (
         <TabSelector key={index} tab={tab} setTab={setTab} t={t} />
       ))}
