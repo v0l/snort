@@ -1,15 +1,21 @@
 import { useUserProfile } from "@snort/system-react";
 
 import { UserRelays } from "@/Cache";
+import useWoT from "@/Hooks/useWoT";
 import { getRelayName } from "@/Utils";
 
 export function UserDebug({ pubkey }: { pubkey: string }) {
   const profile = useUserProfile(pubkey);
   const relays = UserRelays.getFromCache(pubkey);
+  const wot = useWoT();
 
   return (
     <div className="text-xs">
       <div className="flex flex-col overflow-wrap">
+        <div className="flex justify-between gap-1">
+          <div>WoT Distance:</div>
+          <div>{wot.followDistance(pubkey)}</div>
+        </div>
         {Object.entries(profile ?? {}).map(([k, v]) => {
           let vv = <div>{v}</div>;
 

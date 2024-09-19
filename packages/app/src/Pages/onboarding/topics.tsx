@@ -18,7 +18,13 @@ export function Topics() {
     const active = topics.includes(name);
     return (
       <div
-        className={classNames("tab", { "!bg-white !text-black": active })}
+        className={classNames(
+          "flex gap-2 items-center px-4 py-2 my-1 border border-border-color rounded-full cursor-pointer font-semibold bg-gray-dark",
+          "hover:drop-shadow-sm hover:bg-gray",
+          {
+            "!bg-white !text-black": active,
+          },
+        )}
         onClick={() => setTopics(s => (active ? s.filter(a => a !== name) : appendDedupe(s, [name])))}>
         {text}
       </div>
@@ -30,7 +36,9 @@ export function Topics() {
       <h1>
         <FormattedMessage defaultMessage="Pick a few topics of interest" />
       </h1>
-      <div className="tabs flex-wrap justify-center">{Object.entries(FixedTopics).map(([k, v]) => tab(k, v.text))}</div>
+      <div className="flex gap-2 flex-wrap justify-center">
+        {Object.entries(FixedTopics).map(([k, v]) => tab(k, v.text))}
+      </div>
       <AsyncButton
         className="primary"
         onClick={async () => {

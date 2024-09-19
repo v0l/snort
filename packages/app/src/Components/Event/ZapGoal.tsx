@@ -1,6 +1,7 @@
 import "./ZapGoal.css";
 
 import { NostrEvent, NostrLink } from "@snort/system";
+import { Zapper } from "@snort/wallet";
 import { useState } from "react";
 import { FormattedNumber } from "react-intl";
 
@@ -10,7 +11,6 @@ import ZapModal from "@/Components/ZapModal/ZapModal";
 import useZapsFeed from "@/Feed/ZapsFeed";
 import { findTag } from "@/Utils";
 import { formatShort } from "@/Utils/Number";
-import { Zapper } from "@/Utils/Zapper";
 
 export function ZapGoal({ ev }: { ev: NostrEvent }) {
   const [zap, setZap] = useState(false);

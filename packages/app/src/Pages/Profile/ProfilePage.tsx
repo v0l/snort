@@ -8,11 +8,10 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { ProxyImg } from "@/Components/ProxyImg";
 import { SpotlightMediaModal } from "@/Components/Spotlight/SpotlightMedia";
-import { Tab, TabSelector } from "@/Components/TabSelectors/TabSelectors";
+import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
 import FollowsList from "@/Components/User/FollowListBase";
 import MutedList from "@/Components/User/MutedList";
 import useFollowsFeed from "@/Feed/FollowsFeed";
-import useHorizontalScroll from "@/Hooks/useHorizontalScroll";
 import useLogin from "@/Hooks/useLogin";
 import AvatarSection from "@/Pages/Profile/AvatarSection";
 import ProfileDetails from "@/Pages/Profile/ProfileDetails";
@@ -67,7 +66,6 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   const optionalTabs = [ProfileTabSelectors.Zaps, ProfileTabSelectors.Relays, ProfileTabSelectors.Bookmarks].filter(a =>
     unwrap(a),
   ) as Tab[];
-  const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
     if (
@@ -112,7 +110,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       }
       case ProfileTabType.FOLLOWS: {
         if (isMe) {
-          return <FollowsList pubkeys={follows ?? []} showFollowAll={!isMe} showAbout={false} className="p" />;
+          return <FollowsList pubkeys={follows ?? []} showFollowAll={!isMe} className="p" />;
         } else {
           return <FollowsTab id={id} />;
         }
@@ -133,10 +131,6 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         return <MutedList />;
       }
     }
-  }
-
-  function renderTabSelector(v: Tab) {
-    return <TabSelector key={v.value} t={v} tab={tab} setTab={setTab} />;
   }
 
   const bannerWidth = Math.min(window.innerWidth, 940);
@@ -167,16 +161,17 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         </div>
       </div>
       <div className="main-content">
-        <div className="tabs p" ref={horizontalScroll}>
-          {[
+        <TabSelectors
+          tabs={[
             ProfileTabSelectors.Notes,
             ProfileTabSelectors.Reactions,
             ProfileTabSelectors.Followers,
             ProfileTabSelectors.Follows,
-          ].map(renderTabSelector)}
-          {optionalTabs.map(renderTabSelector)}
-          {isMe && renderTabSelector(ProfileTabSelectors.Muted)}
-        </div>
+          ].concat(isMe ? [...optionalTabs, ProfileTabSelectors.Muted] : optionalTabs)}
+          className="p"
+          tab={tab}
+          setTab={setTab}
+        />
       </div>
       <div className="main-content">{tabContent()}</div>
       {modalImage && <SpotlightMediaModal onClose={() => setModalImage("")} media={[modalImage]} idx={0} />}

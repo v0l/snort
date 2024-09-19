@@ -59,7 +59,7 @@ export class EventPublisher {
   /**
    * Create an EventPublisher for a private key
    */
-  static privateKey(privateKey: string) {
+  static privateKey(privateKey: string | Uint8Array) {
     const signer = new PrivateKeySigner(privateKey);
     return new EventPublisher(signer, signer.getPubKey());
   }

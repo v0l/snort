@@ -102,6 +102,11 @@ export interface UserPreferences {
    * Show posts with content warning
    */
   showContentWarningPosts: boolean;
+
+  /**
+   * Mute notes outside your WoT
+   */
+  muteWithWoT: boolean;
 }
 
 export const DefaultPreferences = {
@@ -122,5 +127,6 @@ export const DefaultPreferences = {
   checkSigs: true,
   autoTranslate: true,
   hideMutedNotes: false,
+  muteWithWoT: false,
   showContentWarningPosts: false,
 } as UserPreferences;

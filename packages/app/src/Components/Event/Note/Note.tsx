@@ -1,4 +1,5 @@
 import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { WorkerRelayInterface } from "@snort/worker-relay";
 import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -41,7 +42,7 @@ export function Note(props: NoteProps) {
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "2000px" });
   const { ref: setSeenAtRef, inView: setSeenAtInView } = useInView({ rootMargin: "0px", threshold: 1 });
   const [showTranslation, setShowTranslation] = useState(true);
-  const [translated, setTranslated] = useState<NoteTranslation>(translationCache.get(ev.id));
+  const [translated, setTranslated] = useState<NoteTranslation | null>(translationCache.get(ev.id));
   const cachedSetTranslated = useCallback(
     (translation: NoteTranslation) => {
       translationCache.set(ev.id, translation);
@@ -54,7 +55,9 @@ export function Note(props: NoteProps) {
     let timeout: ReturnType<typeof setTimeout>;
     if (setSeenAtInView) {
       timeout = setTimeout(() => {
-        Relay.setEventMetadata(ev.id, { seen_at: Math.round(Date.now() / 1000) });
+        if (Relay instanceof WorkerRelayInterface) {
+          Relay.setEventMetadata(ev.id, { seen_at: Math.round(Date.now() / 1000) });
+        }
       }, 1000);
     }
     return () => clearTimeout(timeout);

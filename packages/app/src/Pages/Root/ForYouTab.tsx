@@ -1,38 +1,16 @@
 import { EventKind, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 import { memo, useEffect, useMemo, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { Link, useNavigationType } from "react-router-dom";
+import { useNavigationType } from "react-router-dom";
 
 import { Relay } from "@/Cache";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
-import { TaskList } from "@/Components/Tasks/TaskList";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useHistoryState from "@/Hooks/useHistoryState";
 import useLogin from "@/Hooks/useLogin";
-import messages from "@/Pages/messages";
 import { System } from "@/system";
-
-const FollowsHint = () => {
-  const publicKey = useLogin(s => s.publicKey);
-  const { followList } = useFollowsControls();
-  if (followList.length === 0 && publicKey) {
-    return (
-      <FormattedMessage
-        {...messages.NoFollows}
-        values={{
-          newUsersPage: (
-            <Link to={"/discover"}>
-              <FormattedMessage {...messages.NewUsers} />
-            </Link>
-          ),
-        }}
-      />
-    );
-  }
-};
 
 let forYouFeed = {
   events: [] as NostrEvent[],
@@ -180,8 +158,6 @@ export const ForYouTab = memo(function ForYouTab() {
   return (
     <>
       <DisplayAsSelector activeSelection={displayAs} onSelect={a => setDisplayAs(a)} />
-      <FollowsHint />
-      <TaskList />
       <TimelineRenderer
         frags={frags}
         latest={[]}

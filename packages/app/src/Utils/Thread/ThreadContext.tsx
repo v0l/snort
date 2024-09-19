@@ -7,6 +7,7 @@ export interface ThreadContextState {
   root?: TaggedNostrEvent;
   chains: Map<string, Array<TaggedNostrEvent>>;
   data: Array<TaggedNostrEvent>;
+  mutedData: Array<TaggedNostrEvent>;
   setCurrent: (i: string) => void;
 }
 

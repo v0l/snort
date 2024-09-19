@@ -424,7 +424,10 @@ export class Query extends EventEmitter<QueryEvents> {
       : this.#setupNewTrace(c, q);
 
     //always replace filters array
-    qt.filters = [...q.filters];
+    qt.filters = q.filters.map(a => {
+      delete a["relays"];
+      return a;
+    });
 
     if (q.syncFrom !== undefined) {
       c.request(["SYNC", qt.id, q.syncFrom, ...qt.filters], () => qt.sentToRelay());

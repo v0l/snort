@@ -1,10 +1,9 @@
-import { LNWallet } from "@snort/wallet";
+import { LNWallet, ZapTargetResult } from "@snort/wallet";
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 
 import Copy from "@/Components/Copy/Copy";
 import QrCode from "@/Components/QrCode";
-import { ZapTargetResult } from "@/Utils/Zapper";
 
 export function ZapModalInvoice(props: {
   invoice: Array<ZapTargetResult>;

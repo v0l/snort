@@ -65,7 +65,6 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
   return (
     <FollowListBase
       pubkeys={ids}
-      showAbout={true}
       className={className}
       title={findTag(ev, "title") ?? findTag(ev, "d")}
       actions={
@@ -81,6 +80,11 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
           </AsyncButton>
         </>
       }
+      profilePreviewProps={{
+        options: {
+          about: true,
+        },
+      }}
     />
   );
 }

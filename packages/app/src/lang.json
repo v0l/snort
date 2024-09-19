@@ -53,6 +53,9 @@
   "/Xf4UW": {
     "defaultMessage": "Send anonymous usage metrics"
   },
+  "/b1IHW": {
+    "defaultMessage": "Group Chat Message"
+  },
   "/d6vEc": {
     "defaultMessage": "Make your profile easier to find and share"
   },
@@ -147,6 +150,9 @@
   "2BBGxX": {
     "defaultMessage": "Subject tag in text events"
   },
+  "2HIqeO": {
+    "defaultMessage": "User emoji list"
+  },
   "2IFGap": {
     "defaultMessage": "Donate"
   },
@@ -155,6 +161,9 @@
   },
   "2O2sfp": {
     "defaultMessage": "Finish"
+  },
+  "2Qsf9/": {
+    "defaultMessage": "Generic lists"
   },
   "2a2YiP": {
     "defaultMessage": "{n} Bookmarks"
@@ -174,6 +183,12 @@
   "2ukA4d": {
     "defaultMessage": "{n} hours"
   },
+  "2z7Kky": {
+    "defaultMessage": "Latest Articles"
+  },
+  "3/onCd": {
+    "defaultMessage": "Replies"
+  },
   "39AHJm": {
     "defaultMessage": "Sign Up"
   },
@@ -182,6 +197,9 @@
   },
   "3KNMbJ": {
     "defaultMessage": "Articles"
+  },
+  "3MKdAw": {
+    "defaultMessage": "Blobs stored on mediaservers"
   },
   "3QwfJR": {
     "defaultMessage": "~{amount}"
@@ -225,6 +243,9 @@
   "47FYwb": {
     "defaultMessage": "Cancel"
   },
+  "48zn4v": {
+    "defaultMessage": "Bid"
+  },
   "4IPzdn": {
     "defaultMessage": "Primary Developers"
   },
@@ -264,6 +285,9 @@
   "5PRWs7": {
     "defaultMessage": "Notifications API Enabled"
   },
+  "5dfmvv": {
+    "defaultMessage": "Zap Goal"
+  },
   "5oTnfy": {
     "defaultMessage": "Buy Handle"
   },
@@ -282,6 +306,9 @@
   "6/hB3S": {
     "defaultMessage": "Watch Replay"
   },
+  "60kEE3": {
+    "defaultMessage": "Mute list"
+  },
   "62nsdy": {
     "defaultMessage": "Retry"
   },
@@ -294,6 +321,12 @@
   "65BmHb": {
     "defaultMessage": "Failed to proxy image from {host}, click here to load directly"
   },
+  "6D4Hhn": {
+    "defaultMessage": "Recommend Relay"
+  },
+  "6KGebm": {
+    "defaultMessage": "Seal"
+  },
   "6OSOXl": {
     "defaultMessage": "Reason: <i>{reason}</i>"
   },
@@ -305,9 +338,6 @@
   },
   "6ewQqw": {
     "defaultMessage": "Likes ({n})"
-  },
-  "6k7xfM": {
-    "defaultMessage": "Trending notes"
   },
   "6mr8WU": {
     "defaultMessage": "Followed by"
@@ -327,6 +357,12 @@
   "712i26": {
     "defaultMessage": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node"
   },
+  "753yX5": {
+    "defaultMessage": "Label"
+  },
+  "769A8p": {
+    "defaultMessage": "Wiki article"
+  },
   "77nkEO": {
     "defaultMessage": "Relay Information Document"
   },
@@ -339,8 +375,17 @@
   "7YkSA2": {
     "defaultMessage": "Community Leader"
   },
+  "7gMmSL": {
+    "defaultMessage": "Reaction"
+  },
   "7hp70g": {
     "defaultMessage": "NIP-05"
+  },
+  "7jfPsW": {
+    "defaultMessage": "Modular Article Content"
+  },
+  "7nAz/z": {
+    "defaultMessage": "Mute notes from people who are outside your web of trust"
   },
   "7pFGAQ": {
     "defaultMessage": "Close Relays"
@@ -369,6 +414,9 @@
   "8Y6bZQ": {
     "defaultMessage": "Invalid zap split: {input}"
   },
+  "8ZGqWl": {
+    "defaultMessage": "Group Thread"
+  },
   "8g2vyB": {
     "defaultMessage": "name too long"
   },
@@ -378,6 +426,12 @@
   "8v1NN+": {
     "defaultMessage": "Pairing phrase"
   },
+  "8xdDLn": {
+    "defaultMessage": "Follow sets"
+  },
+  "8za9Pq": {
+    "defaultMessage": "Draft Classified Listing"
+  },
   "9+Ddtu": {
     "defaultMessage": "Next"
   },
@@ -386,6 +440,9 @@
   },
   "9SvQep": {
     "defaultMessage": "Follows {n}"
+  },
+  "9V0wg3": {
+    "defaultMessage": "Calendar Event RSVP"
   },
   "9WRlF4": {
     "defaultMessage": "Send"
@@ -402,6 +459,9 @@
   "9wO4wJ": {
     "defaultMessage": "Lightning Invoice"
   },
+  "A86fJ+": {
+    "defaultMessage": "Generic Repost"
+  },
   "ADmfQT": {
     "defaultMessage": "Parent",
     "description": "Link to parent note in thread"
@@ -415,6 +475,9 @@
   "ASRK0S": {
     "defaultMessage": "This author has been muted"
   },
+  "AedFVZ": {
+    "defaultMessage": "Create or update a product"
+  },
   "Ai8VHU": {
     "defaultMessage": "Unlimited note retention on Snort relay"
   },
@@ -426,6 +489,9 @@
   },
   "Am8glJ": {
     "defaultMessage": "Game"
+  },
+  "AqGfF4": {
+    "defaultMessage": "Channel Creation"
   },
   "Aujn2T": {
     "defaultMessage": "Count"
@@ -454,11 +520,17 @@
   "BGCM48": {
     "defaultMessage": "Write access to Snort relay, with 1 year of event retention"
   },
+  "BGGacK": {
+    "defaultMessage": "AI Embeddings / Vector lists"
+  },
   "BQW4gi": {
     "defaultMessage": "Relay-based Groups"
   },
   "BWpuKl": {
     "defaultMessage": "Update"
+  },
+  "BfuAQ5": {
+    "defaultMessage": "Marketplace UI/UX"
   },
   "BjNwZW": {
     "defaultMessage": "Nostr address (nip05)"
@@ -473,6 +545,9 @@
   "C1LjMx": {
     "defaultMessage": "Lightning Donation"
   },
+  "C6Lhhp": {
+    "defaultMessage": "Live Event"
+  },
   "C7642/": {
     "defaultMessage": "Quote Repost"
   },
@@ -484,6 +559,9 @@
   },
   "C8HhVE": {
     "defaultMessage": "Suggested Follows"
+  },
+  "CA1efg": {
+    "defaultMessage": "Video sets"
   },
   "CHTbO3": {
     "defaultMessage": "Failed to load invoice"
@@ -503,11 +581,14 @@
   "CYkOCI": {
     "defaultMessage": "and {count} others you follow"
   },
-  "CbM2hK": {
-    "defaultMessage": "Trending hashtags"
+  "Cdxwi0": {
+    "defaultMessage": "Repository announcements"
   },
   "CmZ9ls": {
     "defaultMessage": "{n} Muted"
+  },
+  "Coy6SH": {
+    "defaultMessage": "Calendar"
   },
   "CsCUYo": {
     "defaultMessage": "{n} sats"
@@ -524,8 +605,14 @@
   "D+KzKd": {
     "defaultMessage": "Automatically zap every note when loaded"
   },
+  "D09wbg": {
+    "defaultMessage": "Badge Definition"
+  },
   "D3idYv": {
     "defaultMessage": "Settings"
+  },
+  "D9xTLE": {
+    "defaultMessage": "Channel Hide Message"
   },
   "DBiVK1": {
     "defaultMessage": "Cache"
@@ -541,6 +628,9 @@
   },
   "Dn82AL": {
     "defaultMessage": "Live"
+  },
+  "DqUmXt": {
+    "defaultMessage": "Product sold as an auction"
   },
   "DrZqav": {
     "defaultMessage": "About must be less than {limit} characters"
@@ -569,11 +659,17 @@
   "EQKRE4": {
     "defaultMessage": "Show badges on profile pages"
   },
+  "EWeVrH": {
+    "defaultMessage": "Reaction to a website"
+  },
   "EWyQH5": {
     "defaultMessage": "Global"
   },
   "Ebl/B2": {
     "defaultMessage": "Translate to {lang}"
+  },
+  "Ec+xLY": {
+    "defaultMessage": "Curation sets"
   },
   "EcZF24": {
     "defaultMessage": "Custom Relays"
@@ -590,6 +686,9 @@
   "EnCOBJ": {
     "defaultMessage": "Buy"
   },
+  "EsHX35": {
+    "defaultMessage": "Sorry, we dont understand this event kind ({name}), please try one of the following apps instead!"
+  },
   "F/6VqP": {
     "defaultMessage": "Server"
   },
@@ -602,6 +701,9 @@
   "FDguSC": {
     "defaultMessage": "{n} Zaps"
   },
+  "FHWpHC": {
+    "defaultMessage": "Wallet Response"
+  },
   "FHvSk3": {
     "defaultMessage": "Authentication of clients to relays"
   },
@@ -610,6 +712,9 @@
   },
   "FSYL8G": {
     "defaultMessage": "Trending Users"
+  },
+  "FWJR1B": {
+    "defaultMessage": "User groups"
   },
   "FcNSft": {
     "defaultMessage": "Redirect issues HTTP redirect to the supplied lightning address"
@@ -656,6 +761,9 @@
   "Gcn9NQ": {
     "defaultMessage": "Magnet Link"
   },
+  "GpkNYn": {
+    "defaultMessage": "Torrent"
+  },
   "GqQeu/": {
     "defaultMessage": "Invalid Lightning Address"
   },
@@ -678,6 +786,9 @@
   "H0OG3T": {
     "defaultMessage": "Leader Info"
   },
+  "H1GTaC": {
+    "defaultMessage": "Bookmark list"
+  },
   "H6/kLh": {
     "defaultMessage": "Order Paid!"
   },
@@ -699,11 +810,17 @@
   "HhcAVH": {
     "defaultMessage": "You don't follow this person, click here to load media from <i>{link}</i>, or update <a><i>your preferences</i></a> to always load media from everybody."
   },
+  "HpAmQZ": {
+    "defaultMessage": "Relay reviews"
+  },
   "HqRNN8": {
     "defaultMessage": "Support"
   },
   "HzSFeV": {
     "defaultMessage": "Expiration Timestamp"
+  },
+  "I0tYZf": {
+    "defaultMessage": "Create or update a stall"
   },
   "I1AoOu": {
     "defaultMessage": "Last post {time}"
@@ -753,8 +870,8 @@
   "J2HeQ+": {
     "defaultMessage": "Use commas to separate words e.g. word1, word2, word3"
   },
-  "JA+tz3": {
-    "defaultMessage": "Looking up thread..."
+  "J2Q92B": {
+    "defaultMessage": "Emoji sets"
   },
   "JCIgkj": {
     "defaultMessage": "Username"
@@ -776,6 +893,9 @@
   },
   "JeoS4y": {
     "defaultMessage": "Repost"
+  },
+  "Jh5zKH": {
+    "defaultMessage": "Search relays list"
   },
   "JjGgXI": {
     "defaultMessage": "Search users"
@@ -807,6 +927,9 @@
   "KGmQjH": {
     "defaultMessage": "Highlights"
   },
+  "KJryGq": {
+    "defaultMessage": "Live Chat Message"
+  },
   "KQvWvD": {
     "defaultMessage": "Deleted"
   },
@@ -821,6 +944,9 @@
   },
   "KtsyO0": {
     "defaultMessage": "Enter Pin"
+  },
+  "KyRp/q": {
+    "defaultMessage": "Wallet Request"
   },
   "LBAnc7": {
     "defaultMessage": "View as user?"
@@ -877,6 +1003,12 @@
   "MWTx65": {
     "defaultMessage": "Default Page"
   },
+  "MYBYdJ": {
+    "defaultMessage": "Short Text Note"
+  },
+  "MYUBaG": {
+    "defaultMessage": "Client Authentication"
+  },
   "MiMipu": {
     "defaultMessage": "Set as primary Nostr address (nip05)"
   },
@@ -909,6 +1041,9 @@
   },
   "NAuFNH": {
     "defaultMessage": "You already have a subscription of this type, please renew or pay"
+  },
+  "NDTFsp": {
+    "defaultMessage": "Job Feedback"
   },
   "NepkXH": {
     "defaultMessage": "Can't vote with {amount} sats, please set a different default zap amount"
@@ -948,6 +1083,9 @@
   },
   "ORGv1Q": {
     "defaultMessage": "Created"
+  },
+  "ORa81+": {
+    "defaultMessage": "Merge Requests"
   },
   "OoZgbB": {
     "defaultMessage": "Failed to update, please try again"
@@ -997,6 +1135,9 @@
   "QWhotP": {
     "defaultMessage": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)"
   },
+  "QpaLA3": {
+    "defaultMessage": "Channel Message"
+  },
   "Qxv0B2": {
     "defaultMessage": "You currently have {number} sats in your zap pool."
   },
@@ -1012,11 +1153,17 @@
   "RDha9y": {
     "defaultMessage": "Service Worker Not Running"
   },
+  "RRz1cA": {
+    "defaultMessage": "Repository state announcements"
+  },
   "RSr2uB": {
     "defaultMessage": "Username must only contain lowercase letters and numbers"
   },
   "RahCRH": {
     "defaultMessage": "Expired"
+  },
+  "RefZpK": {
+    "defaultMessage": "Short-form Portrait Video Event"
   },
   "RfhLwC": {
     "defaultMessage": "By: {author}"
@@ -1032,6 +1179,9 @@
   },
   "Rs4kCE": {
     "defaultMessage": "Bookmark"
+  },
+  "S/NV2G": {
+    "defaultMessage": "Loading note: {id}"
   },
   "SFuk1v": {
     "defaultMessage": "Permissions"
@@ -1054,6 +1204,12 @@
   "SYQtZ7": {
     "defaultMessage": "LN Address Proxy"
   },
+  "Sd0PKc": {
+    "defaultMessage": "Relay sets"
+  },
+  "SfwSIm": {
+    "defaultMessage": "Problem Tracker"
+  },
   "ShdEie": {
     "defaultMessage": "Mark all read"
   },
@@ -1066,6 +1222,9 @@
   "Ss0sWu": {
     "defaultMessage": "Pay Now"
   },
+  "SsUQnC": {
+    "defaultMessage": "Application-specific Data"
+  },
   "StKzTE": {
     "defaultMessage": "The author has marked this note as a <i>sensitive topic</i>"
   },
@@ -1074,6 +1233,9 @@
   },
   "TDR5ge": {
     "defaultMessage": "Media in notes will automatically be shown for selected people, otherwise only the link will show"
+  },
+  "TGc5nI": {
+    "defaultMessage": "Handler information"
   },
   "TH1fFo": {
     "defaultMessage": "Telegram"
@@ -1096,6 +1258,9 @@
   "TdtZQ5": {
     "defaultMessage": "Crypto"
   },
+  "Tdv6NY": {
+    "defaultMessage": "Interest sets"
+  },
   "TgDKhI": {
     "defaultMessage": "Calendar Events"
   },
@@ -1112,11 +1277,11 @@
   "TwyMau": {
     "defaultMessage": "Account"
   },
-  "TzeMlV": {
-    "defaultMessage": "Sorry, we dont understand this event kind, please try one of the following apps instead!"
-  },
   "U1aPPi": {
     "defaultMessage": "Stop listening"
+  },
+  "U30H69": {
+    "defaultMessage": "Community Definition"
   },
   "UJTWqI": {
     "defaultMessage": "Remove from my relays"
@@ -1147,6 +1312,9 @@
   },
   "UrKTqQ": {
     "defaultMessage": "You have an active iris.to account"
+  },
+  "UsCzPc": {
+    "defaultMessage": "Share a personalized invitation with friends!"
   },
   "UxgyeY": {
     "defaultMessage": "Your referral code is {code}"
@@ -1186,6 +1354,9 @@
   },
   "WeLEuL": {
     "defaultMessage": "From Server"
+  },
+  "Wj5TbN": {
+    "defaultMessage": "Issues"
   },
   "WmZhfL": {
     "defaultMessage": "Automatically translate notes to your local language"
@@ -1253,6 +1424,9 @@
   "YuoEb9": {
     "defaultMessage": "Try another relay"
   },
+  "Z48UEo": {
+    "defaultMessage": "Channel Metadata"
+  },
   "Z4BMCZ": {
     "defaultMessage": "Enter pairing phrase"
   },
@@ -1273,6 +1447,9 @@
   },
   "Zff6lu": {
     "defaultMessage": "Username iris.to/<b>{name}</b> is reserved for you!"
+  },
+  "ZlIh4/": {
+    "defaultMessage": "Encrypted Direct Messages"
   },
   "ZlmK/p": {
     "defaultMessage": "{name} invited you to {app}"
@@ -1303,6 +1480,9 @@
   },
   "abbGKq": {
     "defaultMessage": "{n} km"
+  },
+  "ak3MTf": {
+    "defaultMessage": "Invite Friends"
   },
   "b12Goz": {
     "defaultMessage": "Mnemonic"
@@ -1337,8 +1517,14 @@
   "bxv59V": {
     "defaultMessage": "Just now"
   },
+  "c+1p0i": {
+    "defaultMessage": "Kind mute sets"
+  },
   "c+JYNI": {
     "defaultMessage": "No thanks"
+  },
+  "c2T+1B": {
+    "defaultMessage": "Redirects"
   },
   "c35bj2": {
     "defaultMessage": "If you have an enquiry about your NIP-05 order please DM {link}"
@@ -1358,6 +1544,9 @@
   "cHCwbF": {
     "defaultMessage": "Photography"
   },
+  "cKbMRX": {
+    "defaultMessage": "Direct Message"
+  },
   "cPIKU2": {
     "defaultMessage": "Following"
   },
@@ -1374,6 +1563,9 @@
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
   },
+  "cnwHgH": {
+    "defaultMessage": "OpenTimestamps"
+  },
   "cuP16y": {
     "defaultMessage": "Multi account support"
   },
@@ -1389,6 +1581,9 @@
   "d+6YsV": {
     "defaultMessage": "Lists to mute:"
   },
+  "d0qim7": {
+    "defaultMessage": "WoT Filter"
+  },
   "d2ebEu": {
     "defaultMessage": "Not Subscribed to Push"
   },
@@ -1401,6 +1596,12 @@
   "dOQCL8": {
     "defaultMessage": "Display name"
   },
+  "dZZIGe": {
+    "defaultMessage": "Modular Article Header"
+  },
+  "ddd3JX": {
+    "defaultMessage": "Popular Hashtags"
+  },
   "deEeEI": {
     "defaultMessage": "Register"
   },
@@ -1409,6 +1610,9 @@
   },
   "djNL6D": {
     "defaultMessage": "Read-only"
+  },
+  "dmcsBA": {
+    "defaultMessage": "Classified Listing"
   },
   "dmsiLv": {
     "defaultMessage": "A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}"
@@ -1436,6 +1640,9 @@
   },
   "eSzf2G": {
     "defaultMessage": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool."
+  },
+  "eW/Bj9": {
+    "defaultMessage": "Feed"
   },
   "eXT2QQ": {
     "defaultMessage": "Group Chat"
@@ -1491,6 +1698,9 @@
   "fqwcJ1": {
     "defaultMessage": "On-chain Donation"
   },
+  "fr+XYA": {
+    "defaultMessage": "Lightning Pub RPC"
+  },
   "fsB/4p": {
     "defaultMessage": "Saved"
   },
@@ -1527,6 +1737,9 @@
   "gl1NeW": {
     "defaultMessage": "Lists"
   },
+  "go2/QF": {
+    "defaultMessage": "User server list"
+  },
   "grQ+mI": {
     "defaultMessage": "Proof of Work"
   },
@@ -1538,6 +1751,9 @@
   },
   "h8XMJL": {
     "defaultMessage": "Badges"
+  },
+  "h9M0rW": {
+    "defaultMessage": "User Metadata"
   },
   "hF6IN2": {
     "defaultMessage": "Prune Follow List"
@@ -1568,6 +1784,9 @@
   },
   "hniz8Z": {
     "defaultMessage": "here"
+  },
+  "hv/eRj": {
+    "defaultMessage": "Blocked relays list"
   },
   "hvFRBo": {
     "defaultMessage": "Interaction"
@@ -1608,6 +1827,9 @@
   "ieGrWo": {
     "defaultMessage": "Follow"
   },
+  "igUUst": {
+    "defaultMessage": "Group Chat Threaded Reply"
+  },
   "ipHVx5": {
     "defaultMessage": "Generate Invoice"
   },
@@ -1631,6 +1853,9 @@
   },
   "jMzO1S": {
     "defaultMessage": "Internal error: {msg}"
+  },
+  "jiAVXu": {
+    "defaultMessage": "Video Event"
   },
   "jvo0vs": {
     "defaultMessage": "Save"
@@ -1656,6 +1881,12 @@
   "kJYo0u": {
     "defaultMessage": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"
   },
+  "kKC9ya": {
+    "defaultMessage": "Wallet Info"
+  },
+  "kNd2FL": {
+    "defaultMessage": "Tidal login"
+  },
   "kQAf2d": {
     "defaultMessage": "Select"
   },
@@ -1664,6 +1895,9 @@
   },
   "kc79d3": {
     "defaultMessage": "Topics"
+  },
+  "klCm96": {
+    "defaultMessage": "Community Post Approval"
   },
   "kqPQJD": {
     "defaultMessage": "Configure zap pool"
@@ -1695,6 +1929,9 @@
   "lTbT3s": {
     "defaultMessage": "Wallet password"
   },
+  "lbr3Lq": {
+    "defaultMessage": "Copy link"
+  },
   "lfOesV": {
     "defaultMessage": "Non-Zap"
   },
@@ -1712,6 +1949,15 @@
   },
   "lvlPhZ": {
     "defaultMessage": "Pay Invoice"
+  },
+  "m/59y2": {
+    "defaultMessage": "Zap Request"
+  },
+  "m6h2Eg": {
+    "defaultMessage": "Handler recommendation"
+  },
+  "mCEKiZ": {
+    "defaultMessage": "{n} notes have been muted"
   },
   "mErPop": {
     "defaultMessage": "It looks like you dont have any, check {link} to buy one!"
@@ -1737,8 +1983,14 @@
   "n1Whvj": {
     "defaultMessage": "Switch"
   },
+  "n5l7tP": {
+    "defaultMessage": "Time-Based Calendar Event"
+  },
   "n8k1SG": {
     "defaultMessage": "{n}MiB"
+  },
+  "nD4frR": {
+    "defaultMessage": "Bid confirmation"
   },
   "nDejmx": {
     "defaultMessage": "Unblock"
@@ -1751,6 +2003,9 @@
   },
   "nIchMQ": {
     "defaultMessage": "Searching for account activity ({progress})"
+  },
+  "nPHrqp": {
+    "defaultMessage": "Coinjoin Pool"
   },
   "nUT0Lv": {
     "defaultMessage": "Tools"
@@ -1779,6 +2034,9 @@
   "ojzbwv": {
     "defaultMessage": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}"
   },
+  "ozZ2Cj": {
+    "defaultMessage": "Badge Award"
+  },
   "p4N05H": {
     "defaultMessage": "Upload"
   },
@@ -1797,6 +2055,9 @@
   "plOM0t": {
     "defaultMessage": "Custom Emoji"
   },
+  "plg2Ua": {
+    "defaultMessage": "Channel Mute User"
+  },
   "puLNUJ": {
     "defaultMessage": "Pin"
   },
@@ -1806,11 +2067,23 @@
   "pzTOmv": {
     "defaultMessage": "Followers"
   },
+  "q3OuMw": {
+    "defaultMessage": "Torrent Comment"
+  },
+  "qAY40L": {
+    "defaultMessage": "Date-Based Calendar Event"
+  },
+  "qBYNMb": {
+    "defaultMessage": "Group Thread Reply"
+  },
   "qD9EUF": {
     "defaultMessage": "Email <> DM bridge for your Snort nostr address"
   },
   "qDwvZ4": {
     "defaultMessage": "Unknown error"
+  },
+  "qFIVx4": {
+    "defaultMessage": "Profile Badges"
   },
   "qMePPG": {
     "defaultMessage": "Note"
@@ -1863,6 +2136,9 @@
   "rAQG0X": {
     "defaultMessage": "Relay List Metadata"
   },
+  "rIsVe+": {
+    "defaultMessage": "Public chats list"
+  },
   "rMgF34": {
     "defaultMessage": "Back up now"
   },
@@ -1890,6 +2166,9 @@
   "rx1i0i": {
     "defaultMessage": "Short link"
   },
+  "sFUkSN": {
+    "defaultMessage": "Bookmark sets"
+  },
   "sKDn4e": {
     "defaultMessage": "Show Badges"
   },
@@ -1911,6 +2190,12 @@
   "t79a6U": {
     "defaultMessage": "Connection Success:"
   },
+  "tDDiRL": {
+    "defaultMessage": "Interests list"
+  },
+  "tFpT/O": {
+    "defaultMessage": "Release artifact sets"
+  },
   "tO1oq9": {
     "defaultMessage": "Video Events"
   },
@@ -1922,6 +2207,9 @@
   },
   "tU0ADf": {
     "defaultMessage": "Unknown NIP-{x}"
+  },
+  "tVuVg9": {
+    "defaultMessage": "Video View Event"
   },
   "tf1lIh": {
     "defaultMessage": "Free"
@@ -1947,6 +2235,9 @@
   "u/vOPu": {
     "defaultMessage": "Paid"
   },
+  "u4I8q8": {
+    "defaultMessage": "Pin list"
+  },
   "u81G9+": {
     "defaultMessage": "Uptime"
   },
@@ -1958,6 +2249,9 @@
   },
   "uD7Els": {
     "defaultMessage": "External Identities in Profiles"
+  },
+  "uJaMkO": {
+    "defaultMessage": "Relay list to receive DMs"
   },
   "uSV4Ti": {
     "defaultMessage": "Reposts need to be manually confirmed"
@@ -1982,6 +2276,9 @@
   },
   "vB3oQ/": {
     "defaultMessage": "Must be a contact list or pubkey list"
+  },
+  "vBsZhD": {
+    "defaultMessage": "Communities list"
   },
   "vN5UH8": {
     "defaultMessage": "Profile Image"
@@ -2013,6 +2310,9 @@
   "wEQDC6": {
     "defaultMessage": "Edit"
   },
+  "wOyDTB": {
+    "defaultMessage": "File storage server list"
+  },
   "wSZR47": {
     "defaultMessage": "Submit"
   },
@@ -2024,6 +2324,9 @@
   },
   "wih7iJ": {
     "defaultMessage": "name is blocked"
+  },
+  "wlWMuh": {
+    "defaultMessage": "Patches"
   },
   "wofVHy": {
     "defaultMessage": "Moderation"
@@ -2088,8 +2391,14 @@
   "yLzgxH": {
     "defaultMessage": "Popular Relays"
   },
+  "yeX8yA": {
+    "defaultMessage": "Native App"
+  },
   "z3UjXR": {
     "defaultMessage": "Debug"
+  },
+  "z3Ukvq": {
+    "defaultMessage": "Draft Long-form Content"
   },
   "zCb8fX": {
     "defaultMessage": "Weight"

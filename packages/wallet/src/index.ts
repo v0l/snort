@@ -7,6 +7,8 @@ import { NostrConnectWallet } from "./NostrWalletConnect";
 import { WebLNWallet } from "./WebLN";
 import EventEmitter from "eventemitter3";
 
+export * from "./zapper";
+
 export const enum WalletKind {
   LNDHub = 1,
   LNC = 2,

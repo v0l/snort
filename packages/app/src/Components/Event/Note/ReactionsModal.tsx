@@ -1,11 +1,8 @@
-import "./ReactionsModal.css";
-
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions, useReactions } from "@snort/system-react";
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { FormattedMessage, MessageDescriptor, useIntl } from "react-intl";
 
-import CloseButton from "@/Components/Button/CloseButton";
 import Icon from "@/Components/Icons/Icon";
 import Modal from "@/Components/Modal/Modal";
 import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
@@ -58,45 +55,42 @@ const ReactionsModal = ({ onClose, event, initialTab = 0 }: ReactionsModalProps)
   const [tab, setTab] = useState(tabs[initialTab]);
 
   const renderReactionItem = (ev: TaggedNostrEvent, icon: string, iconClass?: string, size?: number) => (
-    <div key={ev.id} className="reactions-item">
-      <div className="reaction-icon">
+    <Fragment key={ev.id}>
+      <div className="mx-auto">
         <Icon name={icon} size={size} className={iconClass} />
       </div>
       <ProfileImage pubkey={ev.pubkey} showProfileCard={true} />
-    </div>
+    </Fragment>
   );
 
   return (
-    <Modal id="reactions" className="reactions-modal" onClose={onClose}>
-      <CloseButton onClick={onClose} className="absolute right-4 top-3" />
-      <div className="reactions-header">
-        <h2>
-          <FormattedMessage {...messages.ReactionsCount} values={{ n: total }} />
-        </h2>
+    <Modal id="reactions" onClose={onClose}>
+      <div className="text-lg font-semibold mb-2">
+        <FormattedMessage defaultMessage="Reactions ({n})" values={{ n: total }} />
       </div>
       <TabSelectors tabs={tabs} tab={tab} setTab={setTab} />
-      <div className="reactions-body" key={tab.value}>
-        {tab.value === 0 && likes.map(ev => renderReactionItem(ev, "heart-solid", "text-heart"))}
-        {tab.value === 1 &&
-          zaps.map(
-            z =>
-              z.sender && (
-                <div key={z.id} className="reactions-item">
-                  <ZapAmount n={z.amount} />
-                  <ProfileImage
-                    showProfileCard={true}
-                    pubkey={z.anonZap ? "" : z.sender}
-                    subHeader={<div title={z.content}>{z.content}</div>}
-                    link={z.anonZap ? "" : undefined}
-                    overrideUsername={
-                      z.anonZap ? formatMessage({ defaultMessage: "Anonymous", id: "LXxsbk" }) : undefined
-                    }
-                  />
-                </div>
-              ),
-          )}
-        {tab.value === 2 && sortedReposts.map(ev => renderReactionItem(ev, "repost", "text-repost", 16))}
-        {tab.value === 3 && dislikes.map(ev => renderReactionItem(ev, "dislike"))}
+      <div className="h-[30vh] overflow-y-auto">
+        <div className="grid grid-cols-[100px_auto] gap-y-2 items-center py-2" key={tab.value}>
+          {tab.value === 0 && likes.map(ev => renderReactionItem(ev, "heart-solid", "text-heart"))}
+          {tab.value === 1 &&
+            zaps.map(
+              z =>
+                z.sender && (
+                  <Fragment key={z.id}>
+                    <ZapAmount n={z.amount} />
+                    <ProfileImage
+                      showProfileCard={true}
+                      pubkey={z.anonZap ? "" : z.sender}
+                      subHeader={<div title={z.content}>{z.content}</div>}
+                      link={z.anonZap ? "" : undefined}
+                      overrideUsername={z.anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
+                    />
+                  </Fragment>
+                ),
+            )}
+          {tab.value === 2 && sortedReposts.map(ev => renderReactionItem(ev, "repost", "text-repost", 16))}
+          {tab.value === 3 && dislikes.map(ev => renderReactionItem(ev, "dislike"))}
+        </div>
       </div>
     </Modal>
   );

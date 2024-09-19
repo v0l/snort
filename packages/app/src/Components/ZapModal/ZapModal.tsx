@@ -1,8 +1,8 @@
 import "./ZapModal.css";
 
 import { LNURLSuccessAction } from "@snort/shared";
-import { HexKey } from "@snort/system";
-import React, { ReactNode, useEffect, useState } from "react";
+import { Zapper, ZapTarget, ZapTargetResult } from "@snort/wallet";
+import { ReactNode, useEffect, useState } from "react";
 
 import CloseButton from "@/Components/Button/CloseButton";
 import Modal from "@/Components/Modal/Modal";
@@ -13,7 +13,6 @@ import { ZapModalTitle } from "@/Components/ZapModal/ZapModalTitle";
 import { ZapType } from "@/Components/ZapModal/ZapType";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { debounce } from "@/Utils";
-import { Zapper, ZapTarget, ZapTargetResult } from "@/Utils/Zapper";
 import { useWallet } from "@/Wallet";
 
 export interface SendSatsProps {
@@ -23,7 +22,6 @@ export interface SendSatsProps {
   invoice?: string; // shortcut to invoice qr tab
   title?: ReactNode;
   notice?: string;
-  note?: HexKey;
   allocatePool?: boolean;
 }
 

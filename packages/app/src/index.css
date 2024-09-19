@@ -175,6 +175,10 @@ a.ext {
   -webkit-text-fill-color: transparent;
 }
 
+.text-outline {
+  -webkit-text-stroke: 1px black;
+}
+
 .br {
   border-radius: 16px;
 }
@@ -941,6 +945,7 @@ svg.repeat {
   .pb-safe-area-plus-footer {
     padding-bottom: calc(env(safe-area-inset-bottom) + 56px);
   }
+
   .sm-hide-scrollbar {
     scrollbar-width: none;
     -ms-overflow-style: none;

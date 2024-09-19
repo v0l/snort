@@ -17,7 +17,16 @@ const PROFILES = 1;
 const Profiles = ({ keyword }: { keyword: string }) => {
   const results = useProfileSearch(keyword);
   const ids = useMemo(() => results.map(r => r.pubkey), [results]);
-  const content = keyword ? <FollowListBase pubkeys={ids} showAbout={true} /> : <TrendingUsers />;
+  const content = keyword ? (
+    <FollowListBase
+      pubkeys={ids}
+      profilePreviewProps={{
+        options: { about: true },
+      }}
+    />
+  ) : (
+    <TrendingUsers />
+  );
   return <div className="px-3">{content}</div>;
 };
 

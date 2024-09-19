@@ -1,3 +1,4 @@
+import { Zapper } from "@snort/wallet";
 import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -9,7 +10,6 @@ import { ZapTypeSelector } from "@/Components/ZapModal/ZapTypeSelector";
 import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
 import { formatShort } from "@/Utils/Number";
-import { Zapper } from "@/Utils/Zapper";
 
 export interface SendSatsInputSelection {
   amount: number;

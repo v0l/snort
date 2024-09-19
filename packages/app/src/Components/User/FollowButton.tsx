@@ -1,4 +1,5 @@
 import { HexKey } from "@snort/system";
+import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
@@ -17,11 +18,10 @@ export default function FollowButton(props: FollowButtonProps) {
   const readonly = useLogin(s => s.readonly);
   const control = useFollowsControls();
   const isFollowing = control.isFollowing(pubkey);
-  const baseClassname = props.className ? `${props.className} ` : "";
 
   return (
     <AsyncButton
-      className={isFollowing ? `${baseClassname} secondary` : `${baseClassname} primary`}
+      className={classNames(props.className, "secondary")}
       disabled={readonly}
       onClick={async e => {
         e.stopPropagation();

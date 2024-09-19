@@ -22,7 +22,7 @@ export interface ProfileImageProps {
   link?: string;
   defaultNip?: string;
   verifyNip?: boolean;
-  overrideUsername?: string;
+  overrideUsername?: ReactNode;
   profile?: UserMetadata;
   size?: number;
   onClick?: (e: React.MouseEvent) => void;
@@ -57,12 +57,12 @@ export default function ProfileImage({
 
   const handleMouseEnter = useCallback(() => {
     hoverTimeoutRef.current && clearTimeout(hoverTimeoutRef.current);
-    hoverTimeoutRef.current = setTimeout(() => setIsHovering(true), 100); // Adjust timeout as needed
+    hoverTimeoutRef.current = setTimeout(() => setIsHovering(true), 100);
   }, []);
 
   const handleMouseLeave = useCallback(() => {
     hoverTimeoutRef.current && clearTimeout(hoverTimeoutRef.current);
-    hoverTimeoutRef.current = setTimeout(() => setIsHovering(false), 300); // Adjust timeout as needed
+    hoverTimeoutRef.current = setTimeout(() => setIsHovering(false), 300);
   }, []);
 
   function handleClick(e: React.MouseEvent) {

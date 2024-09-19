@@ -2,13 +2,21 @@ import { HexKey } from "@snort/system";
 import { ReactNode } from "react";
 
 import PageSpinner from "@/Components/PageSpinner";
-import FollowListBase from "@/Components/User/FollowListBase";
+import FollowListBase, { FollowListBaseProps } from "@/Components/User/FollowListBase";
 import NostrBandApi from "@/External/NostrBand";
 import useCachedFetch from "@/Hooks/useCachedFetch";
 
 import { ErrorOrOffline } from "../ErrorOrOffline";
 
-export default function TrendingUsers({ title, count = Infinity }: { title?: ReactNode; count?: number }) {
+export default function TrendingUsers({
+  title,
+  count = Infinity,
+  followListProps,
+}: {
+  title?: ReactNode;
+  count?: number;
+  followListProps?: Omit<FollowListBaseProps, "pubkeys">;
+}) {
   const api = new NostrBandApi();
   const trendingProfilesUrl = api.trendingProfilesUrl();
   const storageKey = `nostr-band-${trendingProfilesUrl}`;
@@ -27,5 +35,17 @@ export default function TrendingUsers({ title, count = Infinity }: { title?: Rea
     return <PageSpinner />;
   }
 
-  return <FollowListBase pubkeys={trendingUsersData.slice(0, count) as HexKey[]} showAbout={true} title={title} />;
+  return (
+    <FollowListBase
+      pubkeys={trendingUsersData.slice(0, count) as HexKey[]}
+      title={title}
+      showFollowAll={true}
+      profilePreviewProps={{
+        options: {
+          about: true,
+        },
+      }}
+      {...followListProps}
+    />
+  );
 }

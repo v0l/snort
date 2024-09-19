@@ -1,8 +1,8 @@
 import { HexKey } from "@snort/system";
-import { ReactNode, useMemo } from "react";
+import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 
-import ProfilePreview from "@/Components/User/ProfilePreview";
+import ProfilePreview, { ProfilePreviewProps } from "@/Components/User/ProfilePreview";
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
 
@@ -13,25 +13,21 @@ export interface FollowListBaseProps {
   pubkeys: HexKey[];
   title?: ReactNode;
   showFollowAll?: boolean;
-  showAbout?: boolean;
   className?: string;
   actions?: ReactNode;
-  profileActions?: (pk: string) => ReactNode;
+  profilePreviewProps?: Omit<ProfilePreviewProps, "pubkey">;
 }
 
 export default function FollowListBase({
   pubkeys,
   title,
   showFollowAll,
-  showAbout,
   className,
   actions,
-  profileActions,
+  profilePreviewProps,
 }: FollowListBaseProps) {
   const control = useFollowsControls();
   const login = useLogin();
-
-  const profilePreviewOptions = useMemo(() => ({ about: showAbout, profileCards: true }), [showAbout]);
 
   async function followAll() {
     await control.addFollow(pubkeys);
@@ -50,13 +46,7 @@ export default function FollowListBase({
       )}
       <div className={className}>
         {pubkeys?.map((a, index) => (
-          <ProfilePreview
-            pubkey={a}
-            key={a}
-            options={profilePreviewOptions}
-            actions={profileActions?.(a)}
-            waitUntilInView={index > 10}
-          />
+          <ProfilePreview pubkey={a} key={a} waitUntilInView={index > 10} {...profilePreviewProps} />
         ))}
       </div>
     </div>

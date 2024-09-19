@@ -1,8 +1,6 @@
 import { isHex, LNURL } from "@snort/shared";
 import { EventPublisher, NostrEvent, NostrLink, SystemInterface } from "@snort/system";
-import { LNWallet, WalletInvoiceState } from "@snort/wallet";
-
-import { generateRandomKey } from "@/Utils/Login";
+import { LNWallet, WalletInvoiceState } from ".";
 
 export interface ZapTarget {
   type: "lnurl" | "pubkey";
@@ -105,7 +103,12 @@ export class Zapper {
           throw new Error(`Failed to get invoice from ${t.value}`);
         }
         const relays = [...this.system.pool].filter(([, v]) => !v.ephemeral).map(([k]) => k);
-        const pub = t.zap?.anon ?? false ? EventPublisher.privateKey(generateRandomKey().privateKey) : this.publisher;
+        let pub = this.publisher;
+        if (t.zap?.anon ?? false) {
+          const newKey = new Uint8Array(32);
+          crypto.getRandomValues(newKey);
+          pub = EventPublisher.privateKey(newKey);
+        }
         const zap =
           t.zap && svc.canZap
             ? await pub?.zap(toSend * 1000, t.zap.pubkey, relays, t.zap?.event, t.memo, eb => {

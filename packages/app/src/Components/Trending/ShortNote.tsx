@@ -5,25 +5,34 @@ import NoteTime from "@/Components/Event/Note/NoteTime";
 import Text from "@/Components/Text/Text";
 import ProfileImage from "@/Components/User/ProfileImage";
 
-export default function ShortNote({ event }: { event: TaggedNostrEvent }) {
+import DisplayName from "../User/DisplayName";
+
+export default function TrendingNote({ event }: { event: TaggedNostrEvent }) {
   // replace newlines with spaces, replace double spaces with single spaces
   const content = event.content.slice(0, 80).replace(/\n/g, " ").replace(/  +/g, " ");
   return (
-    <Link to={`/${NostrLink.fromEvent(event).encode(CONFIG.eventLinkPrefix)}`} className="flex flex-col">
+    <Link to={`/${NostrLink.fromEvent(event).encode(CONFIG.eventLinkPrefix)}`} className="flex flex-col gap-1">
       <div className="flex flex-row justify-between">
-        <ProfileImage pubkey={event.pubkey} size={32} showProfileCard={true} />
-        <NoteTime from={event.created_at * 1000} />
-      </div>
-      <div className="ml-10">
-        <Text
-          id={event.id + "short"}
-          tags={event.tags}
-          creator={event.pubkey}
-          content={content}
-          truncate={75}
-          disableMedia={true}
+        <ProfileImage
+          pubkey={event.pubkey}
+          size={28}
+          showProfileCard={true}
+          overrideUsername={
+            <>
+              <DisplayName pubkey={event.pubkey} className="font-semibold" />
+              <NoteTime from={event.created_at * 1000} className="font-normal text-sm" />
+            </>
+          }
         />
       </div>
+      <Text
+        id={event.id + "short"}
+        tags={event.tags}
+        creator={event.pubkey}
+        content={content}
+        truncate={75}
+        disableMedia={true}
+      />
     </Link>
   );
 }

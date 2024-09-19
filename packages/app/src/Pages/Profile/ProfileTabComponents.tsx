@@ -53,7 +53,9 @@ export function ZapsProfileTab({ id }: { id: HexKey }) {
             key={a.pubkey}>
             <ProfilePreview
               pubkey={a.pubkey}
-              subHeader={a.topZap.content ? <div className="about">&quot;{a.topZap.content}&quot;</div> : undefined}
+              profileImageProps={{
+                subHeader: a.topZap.content ? <div className="about">&quot;{a.topZap.content}&quot;</div> : undefined,
+              }}
               options={{
                 about: false,
               }}

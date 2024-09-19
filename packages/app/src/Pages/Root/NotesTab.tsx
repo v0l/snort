@@ -2,7 +2,6 @@ import { NostrEvent, NostrLink } from "@snort/system";
 import { useContext, useMemo } from "react";
 
 import TimelineFollows from "@/Components/Feed/TimelineFollows";
-import { TaskList } from "@/Components/Tasks/TaskList";
 import { DeckContext } from "@/Pages/Deck/DeckLayout";
 
 export const NotesTab = () => {
@@ -18,10 +17,5 @@ export const NotesTab = () => {
     return undefined;
   }, [deckContext]);
 
-  return (
-    <>
-      <TaskList />
-      <TimelineFollows postsOnly={true} noteOnClick={noteOnClick} />
-    </>
-  );
+  return <TimelineFollows postsOnly={true} noteOnClick={noteOnClick} />;
 };

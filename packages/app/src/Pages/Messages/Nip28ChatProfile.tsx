@@ -12,7 +12,10 @@ export default function Nip28ChatProfile({ id, onClick }: { id: string; onClick:
       <ProfilePreview
         pubkey=""
         profile={meta}
-        options={{ about: false, linkToProfile: false }}
+        profileImageProps={{
+          link: "",
+        }}
+        options={{ about: false }}
         actions={<></>}
         onClick={() => onClick(id)}
       />

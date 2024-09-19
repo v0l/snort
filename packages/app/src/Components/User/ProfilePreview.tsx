@@ -2,27 +2,25 @@ import "./ProfilePreview.css";
 
 import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { memo, ReactNode } from "react";
+import { ReactNode } from "react";
 import { useInView } from "react-intersection-observer";
 
 import FollowButton from "@/Components/User/FollowButton";
-import ProfileImage from "@/Components/User/ProfileImage";
+import ProfileImage, { ProfileImageProps } from "@/Components/User/ProfileImage";
 
 export interface ProfilePreviewProps {
   pubkey: HexKey;
   options?: {
     about?: boolean;
-    linkToProfile?: boolean;
-    profileCards?: boolean;
   };
-  subHeader?: ReactNode;
   profile?: UserMetadata;
   actions?: ReactNode;
   className?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   waitUntilInView?: boolean;
+  profileImageProps?: Omit<ProfileImageProps, "pubkey" | "profile">;
 }
-export default memo(function ProfilePreview(props: ProfilePreviewProps) {
+export default function ProfilePreview(props: ProfilePreviewProps) {
   const pubkey = props.pubkey;
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "500px" });
   const user = useUserProfile(inView ? pubkey : undefined);
@@ -50,9 +48,8 @@ export default memo(function ProfilePreview(props: ProfilePreviewProps) {
             <ProfileImage
               pubkey={pubkey}
               profile={props.profile}
-              link={options.linkToProfile ?? true ? undefined : ""}
-              subHeader={options.about ? <div className="about">{user?.about}</div> : props.subHeader}
-              showProfileCard={options.profileCards}
+              subHeader={options.about && <div className="about">{user?.about}</div>}
+              {...props.profileImageProps}
             />
             {props.actions ?? (
               <div className="whitespace-nowrap">
@@ -64,4 +61,4 @@ export default memo(function ProfilePreview(props: ProfilePreviewProps) {
       </div>
     </>
   );
-});
+}

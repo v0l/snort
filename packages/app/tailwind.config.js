@@ -28,6 +28,7 @@ module.exports = {
       },
       textColor: {
         secondary: "var(--font-secondary-color)",
+        "font-color": "var(--font-color)",
       },
       spacing: {
         px: "1px",
