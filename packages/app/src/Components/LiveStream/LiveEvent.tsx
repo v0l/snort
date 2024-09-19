@@ -11,18 +11,19 @@ import NoteAppHandler from "../Event/Note/NoteAppHandler";
 import ProfileImage from "../User/ProfileImage";
 const LiveKitRoom = lazy(() => import("./livekit"));
 
-
 export function LiveEvent({ ev }: { ev: TaggedNostrEvent }) {
   const service = ev.tags.find(a => a[0] === "streaming")?.at(1);
   function inner() {
     if (service?.endsWith(".m3u8")) {
-      return <LiveStreamEvent ev={ev} />
+      return <LiveStreamEvent ev={ev} />;
     } else if (service?.startsWith("wss+livekit://")) {
-      return <Suspense>
-        <LiveKitRoom ev={ev} canJoin={true} />
-      </Suspense>
+      return (
+        <Suspense>
+          <LiveKitRoom ev={ev} canJoin={true} />
+        </Suspense>
+      );
     }
-    return <NoteAppHandler ev={ev} />
+    return <NoteAppHandler ev={ev} />;
   }
 
   return inner();
