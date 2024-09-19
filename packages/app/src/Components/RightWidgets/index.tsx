@@ -3,7 +3,7 @@ export enum RightColumnWidget {
   TrendingNotes,
   TrendingPeople,
   TrendingHashtags,
-  TrendingArticls,
+  LatestArticls,
   LiveStreams,
   InviteFriends,
 }

@@ -1,15 +1,10 @@
 import { useContext } from "react";
 
+import Note, { NoteProps } from "@/Components/Event/EventComponent";
 import { useArticles } from "@/Feed/ArticlesFeed";
 import { DeckContext } from "@/Pages/Deck/DeckLayout";
 
-import Note from "../../Components/Event/EventComponent";
-
-const options = {
-  longFormPreview: true,
-};
-
-export default function Articles() {
+export default function Articles({ noteProps }: { noteProps?: Omit<NoteProps, "data"> }) {
   const data = useArticles();
   const deck = useContext(DeckContext);
 
@@ -19,9 +14,14 @@ export default function Articles() {
         <Note
           data={a}
           key={a.id}
-          options={options}
+          {...noteProps}
+          options={{
+            longFormPreview: true,
+            ...noteProps?.options,
+          }}
           onClick={ev => {
             deck?.setArticle(ev);
+            noteProps?.onClick?.(ev);
           }}
         />
       ))}

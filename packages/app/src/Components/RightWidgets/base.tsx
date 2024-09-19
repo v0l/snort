@@ -11,16 +11,16 @@ export interface BaseWidgetProps {
 }
 export function BaseWidget({ children, title, icon, iconClassName, contextMenu }: BaseWidgetProps) {
   return (
-    <div className="br p bg-gray-ultradark">
+    <div className="b br p bg-gray-ultradark">
       {title && (
         <div className="flex justify-between items-center">
-          <div className="flex gap-2 items-center text-xl text-white font-semibold mb-1">
+          <div className="flex gap-2 items-center text-xl text-white font-semibold mb-2">
             {icon && (
               <div className="p-2 bg-gray-dark rounded-full">
                 <Icon name={icon} className={iconClassName} />
               </div>
             )}
-            <div>{title}</div>
+            <div className="text-font-color">{title}</div>
           </div>
           {contextMenu}
         </div>

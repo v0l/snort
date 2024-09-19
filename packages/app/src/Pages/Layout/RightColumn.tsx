@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 
 import { RightColumnWidget } from "@/Components/RightWidgets";
+import LatestArticlesWidget from "@/Components/RightWidgets/articles";
 import { BaseWidget } from "@/Components/RightWidgets/base";
 import InviteFriendsWidget from "@/Components/RightWidgets/invite-friends";
 import MiniStreamWidget from "@/Components/RightWidgets/mini-stream";
@@ -23,6 +24,7 @@ export default function RightColumn() {
         RightColumnWidget.InviteFriends,
         //RightColumnWidget.LiveStreams,
         RightColumnWidget.TrendingNotes,
+        RightColumnWidget.LatestArticls,
         RightColumnWidget.TrendingPeople,
         RightColumnWidget.TrendingHashtags,
       ]
@@ -65,6 +67,8 @@ export default function RightColumn() {
         return <InviteFriendsWidget />;
       case RightColumnWidget.LiveStreams:
         return <MiniStreamWidget />;
+      case RightColumnWidget.LatestArticls:
+        return <LatestArticlesWidget />;
     }
   };
 
