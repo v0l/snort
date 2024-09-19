@@ -1,5 +1,5 @@
 import { HexKey } from "@snort/system";
-import { ReactNode, useMemo } from "react";
+import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 
 import ProfilePreview, { ProfilePreviewProps } from "@/Components/User/ProfilePreview";
