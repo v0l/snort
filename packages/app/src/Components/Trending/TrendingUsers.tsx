@@ -11,15 +11,11 @@ import { ErrorOrOffline } from "../ErrorOrOffline";
 export default function TrendingUsers({
   title,
   count = Infinity,
-  followAll = true,
-  actions,
-  profileActions,
+  followListProps,
 }: {
   title?: ReactNode;
   count?: number;
-  followAll?: boolean;
-  actions?: FollowListBaseProps["actions"];
-  profileActions?: FollowListBaseProps["profileActions"];
+  followListProps?: Omit<FollowListBaseProps, "pubkeys">;
 }) {
   const api = new NostrBandApi();
   const trendingProfilesUrl = api.trendingProfilesUrl();
@@ -42,11 +38,14 @@ export default function TrendingUsers({
   return (
     <FollowListBase
       pubkeys={trendingUsersData.slice(0, count) as HexKey[]}
-      showAbout={true}
       title={title}
-      showFollowAll={followAll}
-      actions={actions}
-      profileActions={profileActions}
+      showFollowAll={true}
+      profilePreviewProps={{
+        options: {
+          about: true,
+        },
+      }}
+      {...followListProps}
     />
   );
 }

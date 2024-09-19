@@ -32,8 +32,10 @@ export default function InviteFriendsWidget() {
       <div className="flex flex-col gap-2">
         <FormattedMessage defaultMessage="Share a personalized invitation with friends!" />
         <div>
-          <AsyncButton onClick={() => copy.copy(`https://${window.location.host}?ref=${refCode?.code}`)}>
-            <Icon name="copy" />
+          <AsyncButton
+            className="secondary"
+            onClick={() => copy.copy(`https://${window.location.host}?ref=${refCode?.code}`)}>
+            <Icon name={copy.copied ? "check" : "copy"} />
             <FormattedMessage defaultMessage="Copy link" />
           </AsyncButton>
         </div>

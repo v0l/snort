@@ -60,7 +60,14 @@ export default function SuggestedProfiles() {
           {/*<option value={Provider.SemisolDev}>semisol.dev</option>*/}
         </select>
       </div>
-      <FollowListBase pubkeys={userList as HexKey[]} showAbout={true} />
+      <FollowListBase
+        pubkeys={userList as HexKey[]}
+        profilePreviewProps={{
+          options: {
+            about: true,
+          },
+        }}
+      />
     </>
   );
 }

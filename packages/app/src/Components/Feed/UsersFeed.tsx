@@ -27,5 +27,14 @@ export default function UsersFeed({ keyword, sortPopular = true }: { keyword: st
 
   if (!usersFeed) return <PageSpinner />;
 
-  return <FollowListBase pubkeys={usersFeed} showAbout={true} />;
+  return (
+    <FollowListBase
+      pubkeys={usersFeed}
+      profilePreviewProps={{
+        options: {
+          about: true,
+        },
+      }}
+    />
+  );
 }

@@ -1,4 +1,3 @@
-import { HexKey, NostrPrefix } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import MuteButton from "@/Components/User/MuteButton";
@@ -8,7 +7,7 @@ import useModeration from "@/Hooks/useModeration";
 import messages from "../messages";
 
 export interface MutedListProps {
-  pubkeys: HexKey[];
+  pubkeys: Array<string>;
 }
 
 export default function MutedList() {
@@ -22,15 +21,15 @@ export default function MutedList() {
         </div>
       </div>
       {muteList?.map(a => {
-        switch (a.type) {
-          case NostrPrefix.Profile:
-          case NostrPrefix.PublicKey: {
+        const tag = a.toEventTag();
+        switch (tag?.at(0)) {
+          case "p": {
             return (
               <ProfilePreview
-                actions={<MuteButton pubkey={a.id} />}
-                pubkey={a.id}
+                actions={<MuteButton pubkey={tag[1]} />}
+                pubkey={tag[1]}
                 options={{ about: false }}
-                key={a.id}
+                key={tag[1]}
               />
             );
           }

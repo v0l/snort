@@ -105,7 +105,10 @@ export default function NewChatWindow() {
                     <ProfilePreview
                       pubkey={a}
                       key={`option-${a}`}
-                      options={{ about: false, linkToProfile: false }}
+                      profileImageProps={{
+                        link: "",
+                      }}
+                      options={{ about: false }}
                       actions={<></>}
                       onClick={() => togglePubkey(a)}
                       className={newChat.includes(a) ? "active" : undefined}

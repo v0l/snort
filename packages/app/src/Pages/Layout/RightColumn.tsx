@@ -41,7 +41,18 @@ export default function RightColumn() {
       case RightColumnWidget.TrendingPeople:
         return (
           <BaseWidget title={<FormattedMessage defaultMessage="Trending People" />}>
-            <TrendingUsers count={6} followAll={false} profileActions={pubkey ? () => undefined : () => <></>} />
+            <TrendingUsers
+              count={6}
+              followListProps={{
+                showFollowAll: false,
+                profilePreviewProps: {
+                  actions: pubkey ? undefined : <></>,
+                  profileImageProps: {
+                    size: 32,
+                  },
+                },
+              }}
+            />
           </BaseWidget>
         );
       case RightColumnWidget.TrendingHashtags:
@@ -68,7 +79,7 @@ export default function RightColumn() {
       <div>
         <SearchBox />
       </div>
-      <div className="flex flex-col gap-4 overflow-y-auto">{widgets.map(getWidget)}</div>
+      <div className="flex flex-col gap-4 overflow-y-auto hide-scrollbar">{widgets.map(getWidget)}</div>
     </div>
   );
 }

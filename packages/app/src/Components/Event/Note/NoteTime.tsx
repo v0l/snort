@@ -4,13 +4,14 @@ import { FormattedMessage } from "react-intl";
 export interface NoteTimeProps {
   from: number;
   fallback?: string;
+  className?: string;
 }
 
 const secondsInAMinute = 60;
 const secondsInAnHour = secondsInAMinute * 60;
 const secondsInADay = secondsInAnHour * 24;
 
-const NoteTime: React.FC<NoteTimeProps> = ({ from, fallback }) => {
+const NoteTime: React.FC<NoteTimeProps> = ({ from, fallback, className }) => {
   const calcTime = useCallback((fromTime: number) => {
     const currentTime = new Date();
     const timeDifference = Math.floor((currentTime.getTime() - fromTime) / 1000);
@@ -52,7 +53,7 @@ const NoteTime: React.FC<NoteTimeProps> = ({ from, fallback }) => {
   const isoDate = useMemo(() => new Date(from).toISOString(), [from]);
 
   return (
-    <time dateTime={isoDate} title={absoluteTime}>
+    <time dateTime={isoDate} title={absoluteTime} className={className}>
       {time || fallback}
     </time>
   );

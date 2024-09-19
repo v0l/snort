@@ -10,7 +10,7 @@ import ImageGridItem from "@/Components/Feed/ImageGridItem";
 import { useLocale } from "@/Components/IntlProvider/useLocale";
 import PageSpinner from "@/Components/PageSpinner";
 import { SpotlightThreadModal } from "@/Components/Spotlight/SpotlightThreadModal";
-import ShortNote from "@/Components/Trending/ShortNote";
+import TrendingNote from "@/Components/Trending/ShortNote";
 import NostrBandApi from "@/External/NostrBand";
 import useCachedFetch from "@/Hooks/useCachedFetch";
 import useLogin from "@/Hooks/useLogin";
@@ -83,7 +83,7 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
   const renderList = () => {
     return filteredAndLimitedPosts.map((e, index) =>
       small ? (
-        <ShortNote key={e.id} event={e as TaggedNostrEvent} />
+        <TrendingNote key={e.id} event={e as TaggedNostrEvent} />
       ) : (
         <Note key={e.id} data={e as TaggedNostrEvent} depth={0} options={options} waitUntilInView={index > 5} />
       ),
@@ -91,7 +91,7 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
   };
 
   return (
-    <div className={classNames("flex flex-col", { "gap-6": small, "py-4": small })}>
+    <div className={classNames("flex flex-col", { "gap-4": small, "py-4": small })}>
       {!small && <DisplayAsSelector activeSelection={displayAs} onSelect={a => setDisplayAs(a)} />}
       {displayAs === "grid" ? renderGrid() : renderList()}
       {modalThread && (
