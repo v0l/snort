@@ -1,5 +1,4 @@
-import "./TabSelectors.css";
-
+import classNames from "classnames";
 import { ReactNode } from "react";
 
 import useHorizontalScroll from "@/Hooks/useHorizontalScroll";
@@ -23,7 +22,14 @@ interface TabElementProps extends Omit<TabsProps, "tabs"> {
 export const TabSelector = ({ t, tab, setTab }: TabElementProps) => {
   return (
     <div
-      className={`tab${tab.value === t.value ? " active" : ""}${t.disabled ? " disabled" : ""}`}
+      className={classNames(
+        "px-4 py-2 my-1 border border-border-color rounded-full cursor-pointer font-semibold bg-gray-dark",
+        "hover:drop-shadow-sm hover:bg-gray",
+        {
+          "": tab.value === t.value,
+          disabled: t.disabled,
+        },
+      )}
       onClick={() => !t.disabled && setTab(t)}>
       {t.text}
     </div>
@@ -33,7 +39,7 @@ export const TabSelector = ({ t, tab, setTab }: TabElementProps) => {
 const TabSelectors = ({ tabs, tab, setTab }: TabsProps) => {
   const horizontalScroll = useHorizontalScroll();
   return (
-    <div className="tabs" ref={horizontalScroll}>
+    <div className="flex gap-2 overflow-y-auto hide-scrollbar" ref={horizontalScroll}>
       {tabs.map((t, index) => (
         <TabSelector key={index} tab={tab} setTab={setTab} t={t} />
       ))}

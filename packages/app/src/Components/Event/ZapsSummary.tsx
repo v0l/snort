@@ -26,13 +26,9 @@ export const ZapsSummary = ({ zaps, onClick }: ZapsSummaryProps) => {
   };
 
   return (
-    <div className="zaps-summary" onClick={myOnClick}>
-      <div className={`top-zap`}>
-        <div className="summary">
-          <AvatarGroup ids={sortedZappers} onClick={() => {}} />
-          {zaps.length > 3 && <div className="hidden md:flex -ml-2">+{zaps.length - 3}</div>}
-        </div>
-      </div>
+    <div className="flex items-center cursor-pointer" onClick={myOnClick}>
+      <AvatarGroup ids={sortedZappers} onClick={() => {}} />
+      {zaps.length > 3 && <div className="hidden md:inline-flex">+{zaps.length - 3}</div>}
     </div>
   );
 };
