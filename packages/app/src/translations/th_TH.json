@@ -330,6 +330,7 @@
   "M6C/px": "Become a leader",
   "MBAYRO": "แสดง \"Copy ID\" และ \"Copy Event JSON\" ในเมนูของแต่ละข้อความ",
   "MI2jkA": "ไม่พร้อมใช้งาน:",
+  "MKDHEa": "Join Room",
   "MP54GY": "รหัสผ่าน wallet",
   "MWTx65": "หน้าเริ่มต้น",
   "MYBYdJ": "Short Text Note",
@@ -805,5 +806,6 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} mins to read",
   "zonsdq": "ไม่สามารถโหลดบริการ LNURL",
-  "zvCDao": "โชว์โน้ตแบบย่ออัตโนมัติ"
+  "zvCDao": "โชว์โน้ตแบบย่ออัตโนมัติ",
+  "zx0myy": "Participants"
 }

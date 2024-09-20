@@ -330,6 +330,7 @@
   "M6C/px": "리더 되기",
   "MBAYRO": "각 메시지의 컨텍스트 메뉴에 'ID 복사' 및 '이벤트 JSON 복사'를 표시합니다.",
   "MI2jkA": "사용할 수 없습니다:",
+  "MKDHEa": "Join Room",
   "MP54GY": "지갑 비밀번호",
   "MWTx65": "기본 페이지",
   "MYBYdJ": "Short Text Note",
@@ -805,5 +806,6 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} 읽는 데 걸리는 시간(분)",
   "zonsdq": "LNURL 서비스를 로드하지 못했습니다.",
-  "zvCDao": "최신 노트 자동 표시"
+  "zvCDao": "최신 노트 자동 표시",
+  "zx0myy": "Participants"
 }

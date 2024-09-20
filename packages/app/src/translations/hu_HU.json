@@ -330,6 +330,7 @@
   "M6C/px": "Legyél vezető",
   "MBAYRO": "Mutasd az \"Egyedi azonosítót\" és a \"JSON esetet\" minden üzenet szövegmezőjében",
   "MI2jkA": "Nem elérhető:",
+  "MKDHEa": "Join Room",
   "MP54GY": "Pénztárca jelszava",
   "MWTx65": "Alapértelmezett oldal",
   "MYBYdJ": "Short Text Note",
@@ -805,5 +806,6 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} perc az olvasásig",
   "zonsdq": "Az LNURL szolgáltatás betöltése nem sikerült",
-  "zvCDao": "Automatikusan a legfrissebb bejegyzéseket mutassa"
+  "zvCDao": "Automatikusan a legfrissebb bejegyzéseket mutassa",
+  "zx0myy": "Participants"
 }

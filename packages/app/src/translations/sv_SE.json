@@ -330,6 +330,7 @@
   "M6C/px": "Bli en ledare",
   "MBAYRO": "Visar \"Kopiera ID\" och \"Kopiera händelse JSON\" i kontextmenyn på varje meddelande",
   "MI2jkA": "Inte tillgänglig:",
+  "MKDHEa": "Join Room",
   "MP54GY": "Plånbokens lösenord",
   "MWTx65": "Förvald Sida",
   "MYBYdJ": "Short Text Note",
@@ -805,5 +806,6 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} min att läsa",
   "zonsdq": "Det gick inte att ladda LNURL-tjänsten",
-  "zvCDao": "Visa automatiskt de senaste anteckningarna"
+  "zvCDao": "Visa automatiskt de senaste anteckningarna",
+  "zx0myy": "Participants"
 }

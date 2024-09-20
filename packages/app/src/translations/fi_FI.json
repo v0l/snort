@@ -330,6 +330,7 @@
   "M6C/px": "Ryhdy johtajaksi",
   "MBAYRO": "Näyttää \"Kopioi tunniste\" ja \"Kopioi tapahtuman JSON\" jokaisen viestin valikossa",
   "MI2jkA": "Ei saatavilla:",
+  "MKDHEa": "Join Room",
   "MP54GY": "Lompakon salasana",
   "MWTx65": "Oletussivu",
   "MYBYdJ": "Short Text Note",
@@ -805,5 +806,6 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} minuuttia lukea",
   "zonsdq": "Epäonnistunut LNURL-palvelun lataus",
-  "zvCDao": "Näytä uusimmat viestit automaattisesti"
+  "zvCDao": "Näytä uusimmat viestit automaattisesti",
+  "zx0myy": "Participants"
 }

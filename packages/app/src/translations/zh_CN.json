@@ -330,6 +330,7 @@
   "M6C/px": "成为领袖",
   "MBAYRO": "在每条消息的上下文菜单中显示“复制 ID”和“复制事件 JSON”",
   "MI2jkA": "无法使用：",
+  "MKDHEa": "Join Room",
   "MP54GY": "钱包密码",
   "MWTx65": "默认页面",
   "MYBYdJ": "Short Text Note",
@@ -805,5 +806,6 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} 分钟阅读时间",
   "zonsdq": "加载 LNURL 服务失败",
-  "zvCDao": "自动显示最新笔记"
+  "zvCDao": "自动显示最新笔记",
+  "zx0myy": "Participants"
 }

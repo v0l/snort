@@ -330,6 +330,7 @@
   "M6C/px": "Anführer werden",
   "MBAYRO": "Zeigt \"ID kopieren\" und \"Event JSON kopieren\" im Kontextmenu jeder Nachricht an",
   "MI2jkA": "Nicht verfügbar:",
+  "MKDHEa": "Join Room",
   "MP54GY": "Wallet Passwort",
   "MWTx65": "Standardseite",
   "MYBYdJ": "Short Text Note",
@@ -805,5 +806,6 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} Minuten zum Lesen",
   "zonsdq": "Fehler beim Laden des LNURL-Dienstes",
-  "zvCDao": "Neueste Notes automatisch anzeigen"
+  "zvCDao": "Neueste Notes automatisch anzeigen",
+  "zx0myy": "Participants"
 }
