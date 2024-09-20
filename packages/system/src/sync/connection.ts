@@ -14,7 +14,7 @@ export class DefaultSyncModule implements ConnectionSyncModule {
 
   sync(c: Connection, item: SyncCommand, cb?: () => void) {
     const [_, id, eventSet, ...filters] = item;
-    if (c.info?.negentropy === "v1") {
+    if ((c.info?.negentropy ?? NaN) >= 1) {
       const newFilters = filters;
       const neg = new NegentropyFlow(id, c, eventSet, newFilters);
       neg.once("finish", filters => {

@@ -996,6 +996,9 @@
   "MI2jkA": {
     "defaultMessage": "Not available:"
   },
+  "MKDHEa": {
+    "defaultMessage": "Join Room"
+  },
   "MP54GY": {
     "defaultMessage": "Wallet password",
     "description": "Wallet password input placeholder"
@@ -2426,5 +2429,8 @@
   },
   "zvCDao": {
     "defaultMessage": "Automatically show latest notes"
+  },
+  "zx0myy": {
+    "defaultMessage": "Participants"
   }
 }
