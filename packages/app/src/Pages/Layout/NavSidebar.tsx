@@ -1,20 +1,19 @@
-import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import NavLink from "@/Components/Button/NavLink";
 import { NoteCreatorButton } from "@/Components/Event/Create/NoteCreatorButton";
 import Icon from "@/Components/Icons/Icon";
-import Avatar from "@/Components/User/Avatar";
-import { ProfileLink } from "@/Components/User/ProfileLink";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import useWindowSize from "@/Hooks/useWindowSize";
 import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
 import { WalletBalance } from "@/Pages/Layout/WalletBalance";
 import { subscribeToNotifications } from "@/Utils/Notifications";
 
 import { LogoHeader } from "./LogoHeader";
+import ProfileMenu from "./ProfileMenu";
 
 const MENU_ITEMS = [
   {
@@ -79,20 +78,17 @@ export default function NavSidebar({ narrow = false }: { narrow?: boolean }) {
     publicKey: s.publicKey,
     readonly: s.readonly,
   }));
-  const profile = useUserProfile(publicKey);
+
   const navigate = useNavigate();
   const { publisher } = useEventPublisher();
-  const { formatMessage } = useIntl();
+
+  const pageSize = useWindowSize();
+  const isMobile = pageSize.width <= 768; //max-md
+  if (isMobile) return;
 
   const className = classNames(
     { "xl:w-56 xl:gap-2 xl:items-start": !narrow },
-    "select-none overflow-y-auto hide-scrollbar sticky items-center border-r border-border-color top-0 z-20 h-screen max-h-screen hidden md:flex flex-col px-2 py-4 flex-shrink-0 gap-1",
-  );
-
-  const readOnlyIcon = readonly && (
-    <span style={{ transform: "rotate(135deg)" }} title={formatMessage({ defaultMessage: "Read-only", id: "djNL6D" })}>
-      <Icon name="openeye" className="text-nostr-red" size={20} />
-    </span>
+    "select-none overflow-y-auto hide-scrollbar sticky items-center border-r border-border-color top-0 z-20 h-screen max-h-screen flex flex-col px-2 py-4 flex-shrink-0 gap-1",
   );
 
   return (
@@ -156,21 +152,7 @@ export default function NavSidebar({ narrow = false }: { narrow?: boolean }) {
           )}
         </div>
       </div>
-      {publicKey && (
-        <>
-          <ProfileLink pubkey={publicKey} user={profile} className="hover:no-underline">
-            <div className="mt-2 flex flex-row items-center justify-center font-bold text-md p-1 xl:px-4 xl:py-3 hover:bg-secondary rounded-full cursor-pointer">
-              <Avatar pubkey={publicKey} user={profile} size={40} icons={readOnlyIcon} />
-              {!narrow && <span className="hidden xl:inline ml-3">{profile?.name}</span>}
-            </div>
-          </ProfileLink>
-          {readonly && (
-            <div className="hidden xl:block text-nostr-red text-sm m-3">
-              <FormattedMessage defaultMessage="Read-only" />
-            </div>
-          )}
-        </>
-      )}
+      <ProfileMenu />
     </div>
   );
 }

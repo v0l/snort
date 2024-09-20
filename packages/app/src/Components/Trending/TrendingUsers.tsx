@@ -40,6 +40,7 @@ export default function TrendingUsers({
       pubkeys={trendingUsersData.slice(0, count) as HexKey[]}
       title={title}
       showFollowAll={true}
+      className="flex flex-col gap-2"
       profilePreviewProps={{
         options: {
           about: true,

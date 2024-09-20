@@ -10,7 +10,7 @@ export function useArticles() {
   const sub = useMemo(() => {
     const rb = new RequestBuilder("articles");
     if (followList.length > 0) {
-      rb.withFilter().kinds([EventKind.LongFormTextNote]).authors(followList).limit(20);
+      rb.withFilter().kinds([EventKind.LongFormTextNote]).authors(followList);
     }
     return rb;
   }, [followList]);

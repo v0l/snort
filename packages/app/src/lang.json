@@ -348,6 +348,9 @@
   "6uMqL1": {
     "defaultMessage": "Unpaid"
   },
+  "6xNr8c": {
+    "defaultMessage": "Switch accounts"
+  },
   "6xap9L": {
     "defaultMessage": "Good"
   },
@@ -1611,9 +1614,6 @@
   "djLctd": {
     "defaultMessage": "Amount in sats"
   },
-  "djNL6D": {
-    "defaultMessage": "Read-only"
-  },
   "dmcsBA": {
     "defaultMessage": "Classified Listing"
   },
@@ -1982,6 +1982,9 @@
   },
   "mfe8RW": {
     "defaultMessage": "Option: {n}"
+  },
+  "mmPSWH": {
+    "defaultMessage": "Read Only"
   },
   "n1Whvj": {
     "defaultMessage": "Switch"

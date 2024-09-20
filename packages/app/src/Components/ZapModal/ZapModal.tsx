@@ -86,9 +86,9 @@ export default function ZapModal(props: SendSatsProps) {
   if (!(props.show ?? false)) return null;
   return (
     <Modal id="send-sats" className="lnurl-modal" onClose={onClose}>
-      <div className="p flex flex-col g12">
-        <div className="flex g12">
-          <div className="flex items-center grow">
+      <div className="p flex flex-col gap-3">
+        <div className="flex gap-3">
+          <div className="flex items-center grow gap-3">
             {props.title || <ZapModalTitle amount={amount} targets={props.targets} zapper={zapper} />}
           </div>
           <CloseButton onClick={onClose} />

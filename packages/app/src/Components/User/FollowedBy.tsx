@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl";
 
 import { AvatarGroup } from "@/Components/User/AvatarGroup";
 import DisplayName from "@/Components/User/DisplayName";
-import FollowDistanceIndicator from "@/Components/User/FollowDistanceIndicator";
 import { ProfileLink } from "@/Components/User/ProfileLink";
 
 const MAX_FOLLOWED_BY_FRIENDS = 3;
@@ -31,9 +30,8 @@ export default function FollowedBy({ pubkey }: { pubkey: HexKey }) {
   };
 
   return (
-    <div className="flex flex-row items-center">
-      <div className="flex flex-row items-center">
-        <FollowDistanceIndicator className="p-2" pubkey={pubkey} />
+    <div className="flex items-center gap-2">
+      <div className="flex items-center">
         <AvatarGroup ids={followedByFriendsArray} />
       </div>
       {totalFollowedByFriends > 0 && (

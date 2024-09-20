@@ -1,6 +1,5 @@
 import { HexKey, socialGraphInstance } from "@snort/system";
 import classNames from "classnames";
-import React from "react";
 
 import Icon from "@/Components/Icons/Icon";
 
@@ -31,8 +30,10 @@ export default function FollowDistanceIndicator({ pubkey, className }: FollowDis
   }
 
   return (
-    <span className={classNames("icon-circle", className)} title={title}>
+    <div
+      className={classNames("w-5 h-5 bg-gray-superdark rounded-full flex items-center justify-center", className)}
+      title={title}>
       <Icon name="check" className={followDistanceColor} size={10} />
-    </span>
+    </div>
   );
 }

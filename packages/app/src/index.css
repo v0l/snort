@@ -799,7 +799,6 @@ button.tall {
 
 .ctx-menu li {
   background: #1e1e1e !important;
-  padding: 8px 24px !important;
   display: grid !important;
   font-size: 16px;
   font-weight: 600;
@@ -807,6 +806,7 @@ button.tall {
 
 .ctx-menu:not(.no-icons) li {
   grid-template-columns: 2rem auto !important;
+  padding: 8px 24px !important;
 }
 
 .light .ctx-menu li {

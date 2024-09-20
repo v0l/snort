@@ -1,7 +1,15 @@
 import { ID, STR, UID } from "./UniqueIds";
 import { HexKey, NostrEvent } from "..";
+import EventEmitter from "eventemitter3";
+import { unixNowMs } from "@snort/shared";
+import debug from "debug";
 
-export default class SocialGraph {
+export interface SocialGraphEvents {
+  changeRoot: () => void;
+}
+
+export default class SocialGraph extends EventEmitter<SocialGraphEvents> {
+  #log = debug("SocialGraph");
   root: UID;
   followDistanceByUser = new Map<UID, number>();
   usersByFollowDistance = new Map<number, Set<UID>>();
@@ -10,6 +18,7 @@ export default class SocialGraph {
   latestFollowEventTimestamps = new Map<UID, number>();
 
   constructor(root: HexKey) {
+    super();
     this.root = ID(root);
     this.followDistanceByUser.set(this.root, 0);
     this.usersByFollowDistance.set(0, new Set([this.root]));
@@ -20,6 +29,7 @@ export default class SocialGraph {
     if (rootId === this.root) {
       return;
     }
+    const start = unixNowMs();
     this.root = rootId;
     this.followDistanceByUser.clear();
     this.usersByFollowDistance.clear();
@@ -45,6 +55,8 @@ export default class SocialGraph {
         }
       }
     }
+    this.emit("changeRoot");
+    this.#log(`Rebuilding root took ${(unixNowMs() - start).toFixed(2)} ms`);
   }
 
   handleEvent(evs: NostrEvent | Array<NostrEvent>) {

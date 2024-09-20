@@ -1,5 +1,4 @@
 import { HexKey } from "@snort/system";
-import React from "react";
 
 import ProfileImage from "@/Components/User/ProfileImage";
 
@@ -13,6 +12,8 @@ export function AvatarGroup({ ids, onClick, size }: { ids: HexKey[]; onClick?: (
         pubkey={a}
         size={size ?? 24}
         showUsername={false}
+        showBadges={false}
+        showProfileCard={false}
       />
     </div>
   ));
