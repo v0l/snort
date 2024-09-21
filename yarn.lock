@@ -4799,6 +4799,7 @@ __metadata:
     tailwindcss: "npm:^3.3.3"
     three: "npm:^0.157.0"
     tinybench: "npm:^2.5.1"
+    tslib: "npm:^2.7.0"
     typescript: "npm:^5.2.2"
     typescript-lru-cache: "npm:^2.0.0"
     use-long-press: "npm:^3.2.0"
@@ -4888,7 +4889,6 @@ __metadata:
     "@stablelib/xchacha20": "npm:^1.0.1"
     "@types/debug": "npm:^4.1.8"
     "@types/jest": "npm:^29.5.11"
-    "@types/lokijs": "npm:^1.5.14"
     "@types/node": "npm:^20.5.9"
     "@types/uuid": "npm:^9.0.2"
     "@types/ws": "npm:^8.5.5"
@@ -4897,7 +4897,6 @@ __metadata:
     isomorphic-ws: "npm:^5.0.0"
     jest: "npm:^29.5.0"
     jest-environment-jsdom: "npm:^29.5.0"
-    lokijs: "npm:^1.5.12"
     lru-cache: "npm:^10.2.0"
     nostr-social-graph: "npm:^1.0.3"
     ts-jest: "npm:^29.1.0"
@@ -5500,13 +5499,6 @@ __metadata:
   version: 2.0.3
   resolution: "@types/latlon-geohash@npm:2.0.3"
   checksum: 10/dd238573da1057bf1a458211bc65d9b05da3eb2ac11340702902c68bd85d41731789d4b1ebab1c82813a6b73ec9e57a4f0f13e4d7b7a5cb14b0d640d66901ba0
-  languageName: node
-  linkType: hard
-
-"@types/lokijs@npm:^1.5.14":
-  version: 1.5.14
-  resolution: "@types/lokijs@npm:1.5.14"
-  checksum: 10/e728a87f80252f7b9a1ff1a44e9a0e15624d98d3d489d5e7f6ee057353909761ad3681bc1db428cc6bcb35f83060448a0f6ba36b1b41f2a35d481e91d360fc5f
   languageName: node
   linkType: hard
 
@@ -11292,13 +11284,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lokijs@npm:^1.5.12":
-  version: 1.5.12
-  resolution: "lokijs@npm:1.5.12"
-  checksum: 10/08b11b257210901b1ee293a4573a0e0dbfd37c49161db69950415b668546ea01e983c9b370d8b847933546ef188effa87df2d5eacb2a0b6fc5b739cbcf4a2b16
-  languageName: node
-  linkType: hard
-
 "loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
@@ -14780,7 +14765,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.7.0, tslib@npm:^2.1.0":
+"tslib@npm:2.7.0, tslib@npm:^2.1.0, tslib@npm:^2.7.0":
   version: 2.7.0
   resolution: "tslib@npm:2.7.0"
   checksum: 10/9a5b47ddac65874fa011c20ff76db69f97cf90c78cff5934799ab8894a5342db2d17b4e7613a087046bc1d133d21547ddff87ac558abeec31ffa929c88b7fce6
