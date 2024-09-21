@@ -3,7 +3,6 @@ import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import AsyncButton from "@/Components/Button/AsyncButton";
 import Icon from "@/Components/Icons/Icon";
 import ProfileImage from "@/Components/User/ProfileImage";
 import ProfilePreview from "@/Components/User/ProfilePreview";
@@ -79,11 +78,6 @@ export default function ProfileMenu({ className }: { className?: string }) {
               />
             </MenuItem>
           ))}
-        <MenuItem>
-          <AsyncButton className="!bg-gray-light !text-white">
-            <FormattedMessage defaultMessage="Add Account" />
-          </AsyncButton>
-        </MenuItem>
       </Menu>
     </div>
   );

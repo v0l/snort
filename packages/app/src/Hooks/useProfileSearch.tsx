@@ -1,9 +1,10 @@
-import { socialGraphInstance } from "@snort/system";
 import { useEffect, useMemo, useState } from "react";
 
 import fuzzySearch from "@/Db/FuzzySearch";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
 import { debounce } from "@/Utils";
+
+import useWoT from "./useWoT";
 
 const options: TimelineFeedOptions = { method: "LIMIT_UNTIL" };
 
@@ -34,6 +35,7 @@ export default function useProfileSearch(search: string) {
 }
 
 export function userSearch(search: string) {
+  const wot = useWoT();
   const searchString = search.trim();
   const fuseResults = fuzzySearch.search(searchString);
 
@@ -44,7 +46,7 @@ export function userSearch(search: string) {
     .map(result => {
       const fuseScore = result.score === undefined ? 1 : result.score;
 
-      const followDistance = wotScore(result.item.pubkey) / followDistanceNormalizationFactor;
+      const followDistance = wot.followDistance(result.item.pubkey) / followDistanceNormalizationFactor;
 
       const startsWithSearchString = [result.item.name, result.item.display_name, result.item.nip05].some(
         field => field && field.toLowerCase?.().startsWith(searchString.toLowerCase()),
@@ -71,12 +73,4 @@ export function userSearch(search: string) {
     });
 
   return combinedResults.map(r => r.item);
-}
-
-export function wotScore(pubkey: string) {
-  return socialGraphInstance.getFollowDistance(pubkey);
-}
-
-export function sortByWoT(pubkeys: Array<string>) {
-  return pubkeys.sort((a, b) => (wotScore(a) > wotScore(b) ? 1 : -1));
 }

@@ -22,7 +22,6 @@
     "@peculiar/webcrypto": "^1.4.6",
     "@types/debug": "^4.1.8",
     "@types/jest": "^29.5.11",
-    "@types/lokijs": "^1.5.14",
     "@types/node": "^20.5.9",
     "@types/uuid": "^9.0.2",
     "@types/ws": "^8.5.5",
@@ -43,8 +42,8 @@
     "debug": "^4.3.4",
     "eventemitter3": "^5.0.1",
     "isomorphic-ws": "^5.0.0",
-    "lokijs": "^1.5.12",
     "lru-cache": "^10.2.0",
+    "nostr-social-graph": "^1.0.3",
     "uuid": "^9.0.0",
     "ws": "^8.14.0"
   }

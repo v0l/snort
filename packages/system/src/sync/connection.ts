@@ -44,13 +44,7 @@ export class DefaultSyncModule implements ConnectionSyncModule {
 
     // if the event is replaceable there is no need to use any special sync query,
     // just send the filters directly
-    const isReplaceableSync = filters.every(
-      a =>
-        a.kinds?.every(
-          b =>
-            EventExt.getType(b) === EventType.Replaceable || EventExt.getType(b) === EventType.ParameterizedReplaceable,
-        ) ?? false,
-    );
+    const isReplaceableSync = filters.every(a => a.kinds?.every(b => EventExt.isReplaceable(b) ?? false));
     if (filters.some(a => a.since || a.until || a.ids || a.limit) || isReplaceableSync) {
       c.request(["REQ", id, ...filters], cb);
     } else if (this.method === "since") {

@@ -33,7 +33,7 @@
   },
   "communityLeaders": null,
   "noteCreatorToast": true,
-  "hideFromNavbar": ["/graph"],
+  "hideFromNavbar": [],
   "deckSubKind": 1,
   "showPowIcon": true,
   "eventLinkPrefix": "nevent",

@@ -3,7 +3,6 @@ import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
 
 import { unixNow, unixNowMs } from "@snort/shared";
-import { socialGraphInstance } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
@@ -24,7 +23,6 @@ import HelpPage from "@/Pages/HelpPage";
 import Layout from "@/Pages/Layout";
 import { ListFeedPage } from "@/Pages/ListFeedPage";
 import MessagesPage from "@/Pages/Messages/MessagesPage";
-import NetworkGraph from "@/Pages/NetworkGraph/NetworkGraph";
 import NostrAddressPage from "@/Pages/NostrAddressPage";
 import NostrLinkHandler from "@/Pages/NostrLinkHandler";
 import NotificationsPage from "@/Pages/Notifications/Notifications";
@@ -63,11 +61,10 @@ async function initSite() {
   preload(login.state.follows).then(async () => {
     queueMicrotask(async () => {
       const start = unixNowMs();
-      await System.PreloadSocialGraph(login.state.follows);
+      await System.PreloadSocialGraph(login.state.follows, login.publicKey);
       console.debug(
-        `Social graph loaded in ${(unixNowMs() - start).toFixed(2)}ms, followDistances=${
-          socialGraphInstance.followDistanceByUser.size
-        }`,
+        `Social graph loaded in ${(unixNowMs() - start).toFixed(2)}ms`,
+        System.config.socialGraphInstance.size(),
       );
     });
 
@@ -136,10 +133,6 @@ const mainRoutes = [
   {
     path: "/about",
     element: <AboutPage />,
-  },
-  {
-    path: "/graph",
-    element: <NetworkGraph />,
   },
   {
     path: "/wallet",

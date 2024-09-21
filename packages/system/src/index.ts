@@ -1,9 +1,7 @@
 export { NostrSystem } from "./nostr-system";
 export { NDKSystem } from "./ndk-system";
 export { default as EventKind } from "./event-kind";
-export { default as SocialGraph, socialGraphInstance } from "./SocialGraph/SocialGraph";
 export * from "./system";
-export * from "./SocialGraph/UniqueIds";
 export * from "./nostr";
 export * from "./links";
 export * from "./nips";

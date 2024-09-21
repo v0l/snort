@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import NoteTime from "@/Components/Event/Note/NoteTime";
 import Icon from "@/Components/Icons/Icon";
 import ProfileImage from "@/Components/User/ProfileImage";
-import { sortByWoT } from "@/Hooks/useProfileSearch";
+import useWoT from "@/Hooks/useWoT";
 import { dedupe, getDisplayName } from "@/Utils";
 import { formatShort } from "@/Utils/Number";
 
@@ -25,6 +25,7 @@ export function NotificationGroup({
 }) {
   const { ref, inView } = useInView({ triggerOnce: true });
   const { formatMessage } = useIntl();
+  const wot = useWoT();
   const kind = evs[0].kind;
   const navigate = useNavigate();
 
@@ -127,7 +128,8 @@ export function NotificationGroup({
           <div className="flex flex-col w-max g12">
             <div className="flex flex-row w-max overflow-hidden justify-between items-center">
               <div className="flex flex-row">
-                {sortByWoT(pubkeys.filter(a => a !== "anon"))
+                {wot
+                  .sortPubkeys(pubkeys.filter(a => a !== "anon"))
                   .slice(0, 12)
                   .map(v => (
                     <ProfileImage

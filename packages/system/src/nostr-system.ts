@@ -11,9 +11,7 @@ import {
   SystemSnapshot,
   QueryLike,
   OutboxModel,
-  socialGraphInstance,
   EventKind,
-  ID,
   SystemConfig,
 } from ".";
 import { RelayMetadataLoader } from "./outbox";
@@ -21,6 +19,7 @@ import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
 import { QueryManager } from "./query-manager";
 import { RequestRouter } from "./request-router";
 import { SystemBase } from "./system-base";
+import { SerializedSocialGraph, SocialGraph, UniqueIds } from "nostr-social-graph";
 
 /**
  * Manages nostr content retrieval system
@@ -72,7 +71,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
           evBuf.push(ev);
           if (!t) {
             t = setTimeout(() => {
-              socialGraphInstance.handleEvent(evBuf);
+              this.config.socialGraphInstance.handleEvent(evBuf);
               evBuf = [];
             }, 500);
           }
@@ -134,17 +133,34 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     await this.PreloadSocialGraph(follows);
   }
 
-  async PreloadSocialGraph(follows?: Array<string>) {
+  async PreloadSocialGraph(follows?: Array<string>, root?: string) {
     // Insert data to socialGraph from cache
     if (this.config.buildFollowGraph) {
-      for (const list of this.userFollowsCache.snapshot()) {
-        if (follows && !follows.includes(list.pubkey)) continue;
-        const user = ID(list.pubkey);
-        for (const fx of list.follows) {
-          if (fx[0] === "p" && fx[1]?.length === 64) {
-            socialGraphInstance.addFollower(ID(fx[1]), user);
+      // load saved social graph
+      if ("localStorage" in globalThis) {
+        const saved = localStorage.getItem("social-graph");
+        if (saved) {
+          try {
+            const data = JSON.parse(saved) as SerializedSocialGraph;
+            this.config.socialGraphInstance = new SocialGraph(root ?? "", data);
+          } catch (e) {
+            this.#log("Failed to load serialzied social-graph: %O", e);
+            localStorage.removeItem("social-graph");
           }
         }
+      }
+      this.config.socialGraphInstance.setRoot(root ?? "");
+      for (const list of this.userFollowsCache.snapshot()) {
+        if (follows && !follows.includes(list.pubkey)) continue;
+        this.config.socialGraphInstance.handleEvent({
+          id: "",
+          sig: "",
+          content: "",
+          kind: 3,
+          pubkey: list.pubkey,
+          created_at: list.created,
+          tags: list.follows,
+        });
       }
     }
   }

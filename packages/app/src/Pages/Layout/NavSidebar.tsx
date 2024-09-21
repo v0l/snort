@@ -45,11 +45,6 @@ const MENU_ITEMS = [
     link: "/deck",
   },
   {
-    label: <FormattedMessage defaultMessage="Social Graph" />,
-    icon: "graph",
-    link: "/graph",
-  },
-  {
     label: <FormattedMessage defaultMessage="About" />,
     icon: "info",
     link: "/donate",

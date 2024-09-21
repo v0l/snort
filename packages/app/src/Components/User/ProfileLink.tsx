@@ -1,9 +1,7 @@
-import { CachedMetadata, NostrLink, NostrPrefix, UserMetadata } from "@snort/system";
-import { SnortContext } from "@snort/system-react";
-import { ReactNode, useContext } from "react";
+import { CachedMetadata, UserMetadata } from "@snort/system";
+import { ReactNode } from "react";
 import { Link, LinkProps } from "react-router-dom";
 
-import { randomSample } from "@/Utils";
 import { useProfileLink } from "@/Hooks/useProfileLink";
 
 export function ProfileLink({
