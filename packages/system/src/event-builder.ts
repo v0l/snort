@@ -98,7 +98,7 @@ export class EventBuilder {
       pubkey: this.#pubkey ?? "",
       content: this.#content ?? "",
       kind: this.#kind,
-      created_at: (this.#createdAt ?? unixNow()) - (this.#jitter ? jitter(this.#jitter) : 0),
+      created_at: (this.#createdAt ?? unixNow()) - (this.#jitter ? Math.floor(jitter(this.#jitter)) : 0),
       tags: this.#tags.sort((a, b) => a[0].localeCompare(b[0])),
     } as NostrEvent;
     ev.id = EventExt.createId(ev);
