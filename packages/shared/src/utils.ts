@@ -44,7 +44,7 @@ export function unixNowMs() {
 }
 
 export function jitter(n: number) {
-  return n * 2 * Math.random() - n;
+  return n * Math.random();
 }
 
 export function deepClone<T>(obj: T) {

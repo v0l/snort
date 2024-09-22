@@ -105,7 +105,7 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
       participants,
       messages: messages.map(m => ({
         id: m.id,
-        created_at: m.created_at,
+        created_at: m.inner.created_at,
         from: m.inner.pubkey,
         tags: m.tags,
         content: "",
