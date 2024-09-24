@@ -129,9 +129,9 @@ export default function NavSidebar({ narrow = false }: { narrow?: boolean }) {
               </NavLink>
             );
           })}
-          {publicKey ? (
+          {publicKey && !readonly ? (
             <div className="mt-2">
-              <NoteCreatorButton alwaysShow={true} showText={!narrow} withModal={false} />
+              <NoteCreatorButton alwaysShow={false} showText={!narrow} withModal={true} />
             </div>
           ) : (
             <div className="mt-2">
