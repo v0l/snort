@@ -1,7 +1,7 @@
 import "./SearchBox.css";
 
-import { bitcoinExplorer, PlebNameData, PlebNameHistory } from "@plebnames/core";
 import { NostrLink, NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { bitcoinExplorer, PlebNameData, PlebNameHistory } from "plebnames";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";

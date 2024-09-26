@@ -4115,7 +4115,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/hashes@npm:1.5.0, @noble/hashes@npm:^1.2.0, @noble/hashes@npm:~1.5.0":
+"@noble/hashes@npm:1.5.0, @noble/hashes@npm:~1.5.0":
   version: 1.5.0
   resolution: "@noble/hashes@npm:1.5.0"
   checksum: 10/da7fc7af52af7afcf59810a7eea6155075464ff462ffda2572dc6d57d53e2669b1ea2ec774e814f6273f1697e567f28d36823776c9bf7068cba2a2855140f26e
@@ -4242,17 +4242,6 @@ __metadata:
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
   checksum: 10/115e8ceeec6bc69dff2048b35c0ab4f8bbee12d8bb6c1f4af758604586d802b6e669dcb02dda61d078de42c2b4ddce41b3d9e726d7daa6b4b850f4adbf7333ff
-  languageName: node
-  linkType: hard
-
-"@plebnames/core@npm:@jsr/plebnames__core@^0.2.1":
-  version: 0.2.1
-  resolution: "@jsr/plebnames__core@npm:0.2.1::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fplebnames__core%2F0.2.1.tgz"
-  dependencies:
-    bech32: "npm:2.0.0"
-    bs58: "npm:6.0.0"
-    bs58check: "npm:4.0.0"
-  checksum: 10/c97280b876832e2f57a1a78214b4c6c5515364839d3e093004d8ebbf449023aad9a92d4f85ec943e11e51085843fee2d418b5f3827419d1fd728e72b5c20c7cf
   languageName: node
   linkType: hard
 
@@ -4652,7 +4641,6 @@ __metadata:
     "@here/maps-api-for-javascript": "npm:^1.50.0"
     "@noble/curves": "npm:^1.4.0"
     "@noble/hashes": "npm:^1.4.0"
-    "@plebnames/core": "npm:@jsr/plebnames__core@^0.2.1"
     "@scure/base": "npm:^1.1.6"
     "@scure/bip32": "npm:^1.5.0"
     "@scure/bip39": "npm:^1.4.0"
@@ -4707,6 +4695,7 @@ __metadata:
     marked: "npm:^9.1.0"
     marked-footnote: "npm:^1.0.0"
     match-sorter: "npm:^6.3.1"
+    plebnames: "npm:^0.2.4"
     postcss: "npm:^8.4.31"
     postcss-preset-env: "npm:^9.2.0"
     prettier: "npm:2.8.3"
@@ -6802,13 +6791,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base-x@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "base-x@npm:5.0.0"
-  checksum: 10/fa82bc9a963f7a765a3287ba632661669fe553d06ee0d4d4e282640335bff30ec685e3c3b1714e265f697b234facd02a310f1e2465db88f4f1a448e6267fbc65
-  languageName: node
-  linkType: hard
-
 "base64-js@npm:^1.3.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
@@ -6823,17 +6805,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bech32@npm:2.0.0":
-  version: 2.0.0
-  resolution: "bech32@npm:2.0.0"
-  checksum: 10/fa15acb270b59aa496734a01f9155677b478987b773bf701f465858bf1606c6a970085babd43d71ce61895f1baa594cb41a2cd1394bd2c6698f03cc2d811300e
-  languageName: node
-  linkType: hard
-
 "bech32@npm:^1.1.2":
   version: 1.1.4
   resolution: "bech32@npm:1.1.4"
   checksum: 10/63ff37c0ce43be914c685ce89700bba1589c319af0dac1ea04f51b33d0e5ecfd40d14c24f527350b94f0a4e236385373bb9122ec276410f354ddcdbf29ca13f4
+  languageName: node
+  linkType: hard
+
+"bech32@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "bech32@npm:2.0.0"
+  checksum: 10/fa15acb270b59aa496734a01f9155677b478987b773bf701f465858bf1606c6a970085babd43d71ce61895f1baa594cb41a2cd1394bd2c6698f03cc2d811300e
   languageName: node
   linkType: hard
 
@@ -6913,25 +6895,6 @@ __metadata:
   dependencies:
     fast-json-stable-stringify: "npm:2.x"
   checksum: 10/e6d3ff82698bb3f20ce64fb85355c5716a3cf267f3977abe93bf9c32a2e46186b253f48a028ae5b96ab42bacd2c826766d9ae8cf6892f9b944656be9113cf212
-  languageName: node
-  linkType: hard
-
-"bs58@npm:6.0.0, bs58@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "bs58@npm:6.0.0"
-  dependencies:
-    base-x: "npm:^5.0.0"
-  checksum: 10/7c9bb2b2d93d997a8c652de3510d89772007ac64ee913dc4e16ba7ff47624caad3128dcc7f360763eb6308760c300b3e9fd91b8bcbd489acd1a13278e7949c4e
-  languageName: node
-  linkType: hard
-
-"bs58check@npm:4.0.0":
-  version: 4.0.0
-  resolution: "bs58check@npm:4.0.0"
-  dependencies:
-    "@noble/hashes": "npm:^1.2.0"
-    bs58: "npm:^6.0.0"
-  checksum: 10/cf5691bdfdf317574f722582360a834f01a36e8f6c850bd5791f04e040b334a0800b7c322ad24c77979c3ed6ef6cf31a6373366b4018223e3005278d491d8799
   languageName: node
   linkType: hard
 
@@ -12276,6 +12239,15 @@ __metadata:
     mlly: "npm:^1.2.0"
     pathe: "npm:^1.1.0"
   checksum: 10/e17e1819ce579c9ea390e4c41a9ed9701d8cff14b463f9577cc4f94688da8917c66dabc40feacd47a21eb3de9b532756a78becd882b76add97053af307c1240a
+  languageName: node
+  linkType: hard
+
+"plebnames@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "plebnames@npm:0.2.4"
+  dependencies:
+    bech32: "npm:^2.0.0"
+  checksum: 10/c79704a87d205c5b955c95f807f113703154546072ca5db65b0456a9225bd81559b16f152f8640c461434e409bedeb4f6122a93ca6ec24f26aecc021abd3a570
   languageName: node
   linkType: hard
 
