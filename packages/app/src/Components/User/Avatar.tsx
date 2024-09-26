@@ -1,8 +1,6 @@
-import "./Avatar.css";
-
 import type { UserMetadata } from "@snort/system";
 import classNames from "classnames";
-import { ReactNode, useMemo } from "react";
+import { HTMLProps, ReactNode, useMemo } from "react";
 
 import { ProxyImg } from "@/Components/ProxyImg";
 import { defaultAvatar, getDisplayName } from "@/Utils";
@@ -22,14 +20,15 @@ interface AvatarProps {
 const Avatar = ({
   pubkey,
   user,
-  size,
+  size = 48,
   onClick,
   image,
   imageOverlay,
   icons,
   className,
   showTitle = true,
-}: AvatarProps) => {
+  ...others
+}: AvatarProps & Omit<HTMLProps<HTMLDivElement>, "onClick" | "style" | "className">) => {
   const defaultImg = defaultAvatar(pubkey);
   const url = useMemo(() => {
     if ((image?.length ?? 0) > 0) return image;
@@ -51,22 +50,39 @@ const Avatar = ({
       onClick={onClick}
       style={style}
       className={classNames(
-        "avatar relative flex items-center justify-center",
-        { "with-overlay": imageOverlay },
+        "relative rounded-full aspect-square flex items-center justify-center gap-2 bg-gray",
         { "outline outline-2 outline-nostr-purple m-[2px]": isDefault },
         className,
       )}
       data-domain={domain?.toLowerCase()}
-      title={showTitle ? getDisplayName(user, "") : undefined}>
+      title={showTitle ? getDisplayName(user, "") : undefined}
+      {...others}>
       <ProxyImg
-        className="rounded-full object-cover aspect-square"
+        className="absolute rounded-full w-full h-full object-cover"
         src={url}
         size={s}
         alt={getDisplayName(user, "")}
         promptToLoadDirectly={false}
       />
-      {icons && <div className="icons">{icons}</div>}
-      {imageOverlay && <div className="overlay">{imageOverlay}</div>}
+      {icons && (
+        <div
+          className="absolute flex items-center justify-center w-full h-full origin-center"
+          style={{
+            transform: "rotate(-135deg) translateY(50%)",
+          }}>
+          <div
+            style={{
+              transform: "rotate(135deg)",
+            }}>
+            {icons}
+          </div>
+        </div>
+      )}
+      {imageOverlay && (
+        <div className="absolute rounded-full bg-black/40 w-full h-full flex items-center justify-center">
+          {imageOverlay}
+        </div>
+      )}
     </div>
   );
 };

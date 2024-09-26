@@ -19,6 +19,7 @@ export const System = new NostrSystem({
   optimizer: hasWasm ? WasmOptimizer : undefined,
   db: SystemDb,
   buildFollowGraph: true,
+  automaticOutboxModel: true,
 });
 
 System.on("auth", async (c, r, cb) => {

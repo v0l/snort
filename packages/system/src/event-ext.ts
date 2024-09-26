@@ -24,7 +24,7 @@ export interface Thread {
 export const enum EventType {
   Regular,
   Replaceable,
-  ParameterizedReplaceable,
+  Addressable,
 }
 
 export abstract class EventExt {
@@ -164,7 +164,7 @@ export abstract class EventExt {
   static getType(kind: number) {
     const legacyReplaceable = [0, 3, 41];
     if (kind >= 30_000 && kind < 40_000) {
-      return EventType.ParameterizedReplaceable;
+      return EventType.Addressable;
     } else if (kind >= 10_000 && kind < 20_000) {
       return EventType.Replaceable;
     } else if (legacyReplaceable.includes(kind)) {
@@ -174,9 +174,14 @@ export abstract class EventExt {
     }
   }
 
+  static isReplaceable(kind: number) {
+    const t = EventExt.getType(kind);
+    return t === EventType.Replaceable || t === EventType.Addressable;
+  }
+
   static isValid(ev: NostrEvent) {
     const type = EventExt.getType(ev.kind);
-    if (type === EventType.ParameterizedReplaceable) {
+    if (type === EventType.Addressable) {
       if (!findTag(ev, "d")) return false;
     }
     return ev.sig !== undefined;

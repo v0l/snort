@@ -130,7 +130,7 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
       this.#connectionBuilder = builder;
     } else {
       this.#connectionBuilder = (addr, options, ephemeral) => {
-        const sync = new DefaultSyncModule(this.#system.config.fallbackSync);
+        const sync = new DefaultSyncModule(this.#system.config.fallbackSync, this.#system);
         return new Connection(addr, options, ephemeral, sync) as unknown as T;
       };
     }

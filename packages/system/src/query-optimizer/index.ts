@@ -29,6 +29,7 @@ export interface Optimizer {
   flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter>;
   compress(all: Array<ReqFilter>): Array<ReqFilter>;
   schnorrVerify(ev: NostrEvent): boolean;
+  batchVerify(evs: Array<NostrEvent>): Array<boolean>;
 }
 
 export const DefaultOptimizer = {

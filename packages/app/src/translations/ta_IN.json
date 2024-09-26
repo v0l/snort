@@ -115,6 +115,7 @@
   "6mr8WU": "Followed by",
   "6pdxsi": "Extra metadata fields and tags",
   "6uMqL1": "கட்டணம் செலுத்தப்படாத",
+  "6xNr8c": "Switch accounts",
   "6xap9L": "Good",
   "7+Domh": "குறிப்புகள்",
   "712i26": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node",
@@ -330,6 +331,7 @@
   "M6C/px": "Become a leader",
   "MBAYRO": "ஒவ்வொரு செய்தியிலும் சூழல் மெனுவில் \"IDஐ நகலெடு\" மற்றும் \"நிகழ்வு JSONஐ நகலெடு\" ஆகியவற்றைக் காட்டுகிறது",
   "MI2jkA": "கிடைக்கவில்லை:",
+  "MKDHEa": "Join Room",
   "MP54GY": "பணப்பை கடவுச்சொல்",
   "MWTx65": "இயல்புநிலை பக்கம்",
   "MYBYdJ": "Short Text Note",
@@ -533,7 +535,6 @@
   "ddd3JX": "Popular Hashtags",
   "deEeEI": "Register",
   "djLctd": "Amount in sats",
-  "djNL6D": "Read-only",
   "dmcsBA": "Classified Listing",
   "dmsiLv": "A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}",
   "e5x8FT": "Kind",
@@ -588,7 +589,6 @@
   "hRTfTR": "PRO",
   "hY4lzx": "ஆதரவு",
   "hYOE+U": "Invite",
-  "ha8JKG": "Show graph",
   "hicxcO": "பதில்களைக் காட்டு",
   "hmZ3Bz": "Media",
   "hniz8Z": "இங்கே",
@@ -657,6 +657,7 @@
   "mKhgP9": "{n,plural,=0{} =1{ஜாப் செய்தார்} other{ஜாப் செய்தனர்}}",
   "mOFG3K": "Start",
   "mfe8RW": "விருப்பம்: {n}",
+  "mmPSWH": "Read Only",
   "n1Whvj": "மாற்று",
   "n5l7tP": "Time-Based Calendar Event",
   "n8k1SG": "{n}MiB",
@@ -805,5 +806,6 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} mins to read",
   "zonsdq": "LNURL சேவையை ஏற்றுவதில் தோல்வி",
-  "zvCDao": "சமீபத்திய குறிப்புகளைத் தானாகக் காட்டு"
+  "zvCDao": "சமீபத்திய குறிப்புகளைத் தானாகக் காட்டு",
+  "zx0myy": "Participants"
 }

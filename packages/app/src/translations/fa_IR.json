@@ -115,6 +115,7 @@
   "6mr8WU": "دنبال شده توسط",
   "6pdxsi": "Extra metadata fields and tags",
   "6uMqL1": "پرداخت نشده",
+  "6xNr8c": "Switch accounts",
   "6xap9L": "Good",
   "7+Domh": "یادداشت ها",
   "712i26": "این پراکسی از صورتحساب برای بازارسال پرداخت ها استفاده می کند، که کلید عمومی گره شما را پنهان می کند.",
@@ -330,6 +331,7 @@
   "M6C/px": "Become a leader",
   "MBAYRO": "\"کپی شناسه\" و \"کپی JSON رویداد\" را در منو زمینه هر پیام نشان می دهد",
   "MI2jkA": "در دسترس نیست:",
+  "MKDHEa": "Join Room",
   "MP54GY": "گذرواژه کیف پول",
   "MWTx65": "صفحه پیش‌فرض",
   "MYBYdJ": "Short Text Note",
@@ -533,7 +535,6 @@
   "ddd3JX": "Popular Hashtags",
   "deEeEI": "ثبت نام",
   "djLctd": "Amount in sats",
-  "djNL6D": "فقط خواندنی",
   "dmcsBA": "Classified Listing",
   "dmsiLv": "یک تقسیم استخر زپ {n} برای توسعه دهندگان {site} به طور پیش فرض تنظیم شده است، اگر بخواهید می توانید آن را در {link} خاموش کنید.",
   "e5x8FT": "Kind",
@@ -588,7 +589,6 @@
   "hRTfTR": "PRO",
   "hY4lzx": "پشتیبانی",
   "hYOE+U": "Invite",
-  "ha8JKG": "نمایش نمودار",
   "hicxcO": "نمایش پاسخ ها",
   "hmZ3Bz": "رسانه",
   "hniz8Z": "اینجا",
@@ -657,6 +657,7 @@
   "mKhgP9": "{n,plural,one {}=0{} =1{زپ شده} other{زپ شده}}",
   "mOFG3K": "Start",
   "mfe8RW": "گزینه: {n}",
+  "mmPSWH": "Read Only",
   "n1Whvj": "تعویض",
   "n5l7tP": "Time-Based Calendar Event",
   "n8k1SG": "{n}MiB",
@@ -805,5 +806,6 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} دقیقه مطالعه",
   "zonsdq": "خدمات LNURL بارگیری نشد",
-  "zvCDao": "به طور خودکار یادداشت های اخیر را نشان بده"
+  "zvCDao": "به طور خودکار یادداشت های اخیر را نشان بده",
+  "zx0myy": "Participants"
 }

@@ -240,7 +240,6 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
             return;
           }
           this.emit("event", msg[1] as string, ev);
-          // todo: stats events received
           break;
         }
         case "EOSE": {

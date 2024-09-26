@@ -129,10 +129,7 @@ export class SafeSync extends EventEmitter<SafeSyncEvents> {
     if (prevTag && prevTag[1] !== this.#base.id) {
       throw new Error("Previous tag does not match our version");
     }
-    if (
-      EventExt.getType(ev.kind) !== EventType.Replaceable &&
-      EventExt.getType(ev.kind) !== EventType.ParameterizedReplaceable
-    ) {
+    if (EventExt.getType(ev.kind) !== EventType.Replaceable && EventExt.getType(ev.kind) !== EventType.Addressable) {
       throw new Error("Not a replacable event kind");
     }
     if (this.#base.created_at >= ev.created_at) {

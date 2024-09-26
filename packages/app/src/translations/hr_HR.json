@@ -115,6 +115,7 @@
   "6mr8WU": "Followed by",
   "6pdxsi": "Extra metadata fields and tags",
   "6uMqL1": "Neplaćeno",
+  "6xNr8c": "Switch accounts",
   "6xap9L": "Good",
   "7+Domh": "Bilješke",
   "712i26": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node",
@@ -330,6 +331,7 @@
   "M6C/px": "Become a leader",
   "MBAYRO": "Prikazuje \"Kopiraj ID\" i \"Kopiraj JSON događaja\" u kontekstnom izborniku svake poruke",
   "MI2jkA": "Nije dostupno:",
+  "MKDHEa": "Join Room",
   "MP54GY": "Lozinka za novčanik",
   "MWTx65": "Zadana Stranica",
   "MYBYdJ": "Short Text Note",
@@ -533,7 +535,6 @@
   "ddd3JX": "Popular Hashtags",
   "deEeEI": "Register",
   "djLctd": "Amount in sats",
-  "djNL6D": "Read-only",
   "dmcsBA": "Classified Listing",
   "dmsiLv": "A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}",
   "e5x8FT": "Kind",
@@ -588,7 +589,6 @@
   "hRTfTR": "PRO",
   "hY4lzx": "Podržava",
   "hYOE+U": "Invite",
-  "ha8JKG": "Show graph",
   "hicxcO": "Pokaži odgovore",
   "hmZ3Bz": "Media",
   "hniz8Z": "ovdje",
@@ -657,6 +657,7 @@
   "mKhgP9": "{n,plural,=0{} =1{zappan} other{zappano}}",
   "mOFG3K": "Start",
   "mfe8RW": "Mogućnosti: {n}",
+  "mmPSWH": "Read Only",
   "n1Whvj": "Promijeni",
   "n5l7tP": "Time-Based Calendar Event",
   "n8k1SG": "{n}MiB",
@@ -805,5 +806,6 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} mins to read",
   "zonsdq": "Neuspješno učitavanje LNURL usluge",
-  "zvCDao": "Automatski prikaži najnovije bilješke"
+  "zvCDao": "Automatski prikaži najnovije bilješke",
+  "zx0myy": "Participants"
 }

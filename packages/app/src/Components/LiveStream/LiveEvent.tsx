@@ -1,18 +1,36 @@
-import { NostrEvent, NostrLink } from "@snort/system";
-import { useState } from "react";
+import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { lazy, Suspense, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
 import Icon from "@/Components/Icons/Icon";
 import { findTag } from "@/Utils";
+import { extractStreamInfo } from "@/Utils/stream";
 
+import NoteAppHandler from "../Event/Note/NoteAppHandler";
 import ProfileImage from "../User/ProfileImage";
+const LiveKitRoom = lazy(() => import("./livekit"));
 
-export function LiveEvent({ ev }: { ev: NostrEvent }) {
-  const title = findTag(ev, "title");
-  const status = findTag(ev, "status");
-  const starts = Number(findTag(ev, "starts"));
-  const host = ev.tags.find(a => a[0] === "p" && a[3] === "host")?.[1] ?? ev.pubkey;
+export function LiveEvent({ ev }: { ev: TaggedNostrEvent }) {
+  const service = ev.tags.find(a => a[0] === "streaming")?.at(1);
+  function inner() {
+    if (service?.endsWith(".m3u8")) {
+      return <LiveStreamEvent ev={ev} />;
+    } else if (service?.startsWith("wss+livekit://")) {
+      return (
+        <Suspense>
+          <LiveKitRoom ev={ev} canJoin={true} />
+        </Suspense>
+      );
+    }
+    return <NoteAppHandler ev={ev} />;
+  }
+
+  return inner();
+}
+
+function LiveStreamEvent({ ev }: { ev: TaggedNostrEvent }) {
+  const { title, status, starts, host } = extractStreamInfo(ev);
   const [play, setPlay] = useState(false);
 
   function statusLine() {
@@ -38,7 +56,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
         return (
           <b className="uppercase">
             {new Intl.DateTimeFormat(undefined, { dateStyle: "full", timeStyle: "short" }).format(
-              new Date(starts * 1000),
+              new Date(Number(starts) * 1000),
             )}
           </b>
         );
@@ -73,8 +91,6 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
     const link = `https://zap.stream/embed/${NostrLink.fromEvent(ev).encode()}`;
     return (
       <iframe
-        // eslint-disable-next-line react/no-unknown-property
-        credentialless=""
         src={link}
         width="100%"
         style={{
@@ -86,7 +102,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
   return (
     <div className="sm:flex g12 br p24 bg-primary items-center">
       <div>
-        <ProfileImage pubkey={host} showUsername={false} size={56} />
+        <ProfileImage pubkey={host!} showUsername={false} size={56} />
       </div>
       <div className="flex flex-col g8 grow">
         <div className="font-semibold text-3xl">{title}</div>

@@ -1,5 +1,3 @@
-import "./ProfileImage.css";
-
 import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
@@ -31,6 +29,7 @@ export interface ProfileImageProps {
   icons?: ReactNode;
   showProfileCard?: boolean;
   showBadges?: boolean;
+  displayNameClassName?: string;
 }
 
 export default function ProfileImage({
@@ -48,6 +47,7 @@ export default function ProfileImage({
   icons,
   showProfileCard = false,
   showBadges = false,
+  displayNameClassName,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const [isHovering, setIsHovering] = useState(false);
@@ -75,30 +75,29 @@ export default function ProfileImage({
   function inner() {
     return (
       <>
-        <div className="avatar-wrapper" onMouseEnter={handleMouseEnter}>
-          <Avatar
-            pubkey={pubkey}
-            user={user}
-            size={size}
-            imageOverlay={imageOverlay}
-            showTitle={!showProfileCard}
-            icons={
-              showFollowDistance || icons ? (
-                <>
-                  {icons}
-                  {showFollowDistance && <FollowDistanceIndicator pubkey={pubkey} />}
-                </>
-              ) : undefined
-            }
-          />
-        </div>
+        <Avatar
+          pubkey={pubkey}
+          user={user}
+          size={size}
+          imageOverlay={imageOverlay}
+          showTitle={!showProfileCard}
+          onMouseEnter={handleMouseEnter}
+          icons={
+            showFollowDistance || icons ? (
+              <>
+                {icons}
+                {showFollowDistance && <FollowDistanceIndicator pubkey={pubkey} />}
+              </>
+            ) : undefined
+          }
+        />
         {showUsername && (
-          <div className="f-ellipsis">
+          <div className={displayNameClassName}>
             <div className="flex gap-2 items-center font-medium">
               {overrideUsername ? overrideUsername : <DisplayName pubkey={pubkey} user={user} />}
               {leader && showBadges && CONFIG.features.communityLeaders && <LeaderBadge />}
             </div>
-            <div className="subheader">{subHeader}</div>
+            {subHeader}
           </div>
         )}
       </>
@@ -108,7 +107,7 @@ export default function ProfileImage({
   function profileCard() {
     if (showProfileCard && user && isHovering) {
       return (
-        <div className="absolute shadow-lg z-10 fade-in">
+        <div className="absolute shadow-lg fade-in">
           <ProfileCard pubkey={pubkey} user={user} show={true} delay={100} />
         </div>
       );
@@ -116,10 +115,17 @@ export default function ProfileImage({
     return null;
   }
 
+  const classNamesOverInner = classNames(
+    "min-w-0",
+    {
+      "grid grid-cols-[min-content_auto] gap-3 items-center": showUsername,
+    },
+    className,
+  );
   if (link === "") {
     return (
       <>
-        <div className={classNames("pfp", className)} onClick={handleClick}>
+        <div className={classNamesOverInner} onClick={handleClick}>
           {inner()}
         </div>
         {profileCard()}
@@ -127,12 +133,12 @@ export default function ProfileImage({
     );
   } else {
     return (
-      <div className="relative" onMouseLeave={handleMouseLeave}>
+      <div onMouseLeave={handleMouseLeave}>
         <ProfileLink
           pubkey={pubkey}
-          className={classNames("pfp", className)}
           user={user}
           explicitLink={link}
+          className={classNamesOverInner}
           onClick={handleClick}>
           {inner()}
         </ProfileLink>

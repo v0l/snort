@@ -7,6 +7,7 @@ import { UserRelaysCache, UserProfileCache, RelayMetricCache, NostrEvent } from 
 import { DefaultOptimizer, Optimizer } from "./query-optimizer";
 import { NostrSystemEvents, SystemConfig } from "./system";
 import { EventEmitter } from "eventemitter3";
+import { SocialGraph } from "nostr-social-graph";
 
 export abstract class SystemBase extends EventEmitter<NostrSystemEvents> {
   #config: SystemConfig;
@@ -31,6 +32,7 @@ export abstract class SystemBase extends EventEmitter<NostrSystemEvents> {
       automaticOutboxModel: props.automaticOutboxModel ?? true,
       buildFollowGraph: props.buildFollowGraph ?? false,
       fallbackSync: props.fallbackSync ?? "since",
+      socialGraphInstance: props.socialGraphInstance ?? new SocialGraph(""),
     };
   }
 

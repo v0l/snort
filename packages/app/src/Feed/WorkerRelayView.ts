@@ -8,14 +8,14 @@ export function useNotificationsView() {
   const publicKey = useLogin(s => s.publicKey);
   const kinds = [EventKind.TextNote, EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt];
   const req = useMemo(() => {
+    const rb = new RequestBuilder("notifications");
+    rb.withOptions({
+      leaveOpen: true,
+    });
     if (publicKey) {
-      const rb = new RequestBuilder("notifications");
-      rb.withOptions({
-        leaveOpen: true,
-      });
       rb.withFilter().kinds(kinds).tag("p", [publicKey]);
-      return rb;
     }
+    return rb;
   }, [publicKey]);
   return useRequestBuilder(req);
 }

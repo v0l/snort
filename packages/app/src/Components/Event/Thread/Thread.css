@@ -42,7 +42,7 @@
   top: 48px;
   border-left: 1px solid var(--border-color);
   height: 100%;
-  z-index: 1;
+  z-index: -1;
 }
 
 .subthread-container.subthread-mid:not(.subthread-last) .line-container:before {
@@ -52,7 +52,7 @@
   left: calc(48px / 2 + 16px);
   top: 0;
   height: 48px;
-  z-index: 1;
+  z-index: -1;
 }
 
 .subthread-container.subthread-last .line-container:before {
@@ -62,7 +62,7 @@
   left: calc(48px / 2 + 16px);
   top: 0;
   height: 48px;
-  z-index: 1;
+  z-index: -1;
 }
 
 .divider {

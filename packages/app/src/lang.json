@@ -348,6 +348,9 @@
   "6uMqL1": {
     "defaultMessage": "Unpaid"
   },
+  "6xNr8c": {
+    "defaultMessage": "Switch accounts"
+  },
   "6xap9L": {
     "defaultMessage": "Good"
   },
@@ -996,6 +999,9 @@
   "MI2jkA": {
     "defaultMessage": "Not available:"
   },
+  "MKDHEa": {
+    "defaultMessage": "Join Room"
+  },
   "MP54GY": {
     "defaultMessage": "Wallet password",
     "description": "Wallet password input placeholder"
@@ -1608,9 +1614,6 @@
   "djLctd": {
     "defaultMessage": "Amount in sats"
   },
-  "djNL6D": {
-    "defaultMessage": "Read-only"
-  },
   "dmcsBA": {
     "defaultMessage": "Classified Listing"
   },
@@ -1772,9 +1775,6 @@
   },
   "hYOE+U": {
     "defaultMessage": "Invite"
-  },
-  "ha8JKG": {
-    "defaultMessage": "Show graph"
   },
   "hicxcO": {
     "defaultMessage": "Show replies"
@@ -1979,6 +1979,9 @@
   },
   "mfe8RW": {
     "defaultMessage": "Option: {n}"
+  },
+  "mmPSWH": {
+    "defaultMessage": "Read Only"
   },
   "n1Whvj": {
     "defaultMessage": "Switch"
@@ -2426,5 +2429,8 @@
   },
   "zvCDao": {
     "defaultMessage": "Automatically show latest notes"
+  },
+  "zx0myy": {
+    "defaultMessage": "Participants"
   }
 }

@@ -10,20 +10,20 @@ export default function AccountsPage() {
   const sub = getActiveSubscriptions(LoginStore.allSubscriptions());
 
   return (
-    <div className="flex flex-col g12">
+    <div className="flex flex-col gap-2">
       <h3>
         <FormattedMessage defaultMessage="Logins" />
       </h3>
       {logins.map(a => (
-        <div className="card flex" key={a.id}>
+        <div className="" key={a.id}>
           <ProfilePreview
             pubkey={a.pubkey}
             options={{
               about: false,
             }}
             actions={
-              <div className="flex-1">
-                <button className="mb10" onClick={() => LoginStore.switchAccount(a.id)}>
+              <div className="align-end flex gap-2">
+                <button onClick={() => LoginStore.switchAccount(a.id)}>
                   <FormattedMessage defaultMessage="Switch" />
                 </button>
                 <button onClick={() => LoginStore.removeSession(a.id)}>

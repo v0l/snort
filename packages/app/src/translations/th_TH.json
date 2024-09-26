@@ -115,6 +115,7 @@
   "6mr8WU": "Followed by",
   "6pdxsi": "Extra metadata fields and tags",
   "6uMqL1": "ยังไม่ได้ชำระ",
+  "6xNr8c": "Switch accounts",
   "6xap9L": "Good",
   "7+Domh": "โน้ต",
   "712i26": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node",
@@ -330,6 +331,7 @@
   "M6C/px": "Become a leader",
   "MBAYRO": "แสดง \"Copy ID\" และ \"Copy Event JSON\" ในเมนูของแต่ละข้อความ",
   "MI2jkA": "ไม่พร้อมใช้งาน:",
+  "MKDHEa": "Join Room",
   "MP54GY": "รหัสผ่าน wallet",
   "MWTx65": "หน้าเริ่มต้น",
   "MYBYdJ": "Short Text Note",
@@ -533,7 +535,6 @@
   "ddd3JX": "Popular Hashtags",
   "deEeEI": "Register",
   "djLctd": "Amount in sats",
-  "djNL6D": "Read-only",
   "dmcsBA": "Classified Listing",
   "dmsiLv": "A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}",
   "e5x8FT": "Kind",
@@ -588,7 +589,6 @@
   "hRTfTR": "PRO",
   "hY4lzx": "สนับสนุน",
   "hYOE+U": "Invite",
-  "ha8JKG": "Show graph",
   "hicxcO": "แสดงการตอบกลับ",
   "hmZ3Bz": "Media",
   "hniz8Z": "ที่นี่",
@@ -657,6 +657,7 @@
   "mKhgP9": "{n,plural,=0{} =1{zapped} other{zapped}}",
   "mOFG3K": "Start",
   "mfe8RW": "ตัวเลือก: {n}",
+  "mmPSWH": "Read Only",
   "n1Whvj": "สลับ",
   "n5l7tP": "Time-Based Calendar Event",
   "n8k1SG": "{n}MiB",
@@ -805,5 +806,6 @@
   "zi9MdS": "Chess (PGN)",
   "zm6qS1": "{n} mins to read",
   "zonsdq": "ไม่สามารถโหลดบริการ LNURL",
-  "zvCDao": "โชว์โน้ตแบบย่ออัตโนมัติ"
+  "zvCDao": "โชว์โน้ตแบบย่ออัตโนมัติ",
+  "zx0myy": "Participants"
 }

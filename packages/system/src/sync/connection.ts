@@ -3,18 +3,22 @@ import { EventExt, EventType } from "../event-ext";
 import { NoteCollection } from "../note-collection";
 import { RangeSync } from "./range-sync";
 import { NegentropyFlow } from "../negentropy/negentropy-flow";
-import { SystemConfig } from "../system";
+import { SystemConfig, SystemInterface } from "../system";
+import { findTag } from "../utils";
 
 export interface ConnectionSyncModule {
   sync: (c: Connection, item: SyncCommand, cb?: () => void) => void;
 }
 
 export class DefaultSyncModule implements ConnectionSyncModule {
-  constructor(readonly method: SystemConfig["fallbackSync"]) {}
+  constructor(
+    readonly method: SystemConfig["fallbackSync"],
+    readonly system: SystemInterface,
+  ) {}
 
   sync(c: Connection, item: SyncCommand, cb?: () => void) {
     const [_, id, eventSet, ...filters] = item;
-    if (c.info?.negentropy === "v1") {
+    if ((c.info?.negentropy ?? NaN) >= 1) {
       const newFilters = filters;
       const neg = new NegentropyFlow(id, c, eventSet, newFilters);
       neg.once("finish", filters => {
@@ -40,13 +44,7 @@ export class DefaultSyncModule implements ConnectionSyncModule {
 
     // if the event is replaceable there is no need to use any special sync query,
     // just send the filters directly
-    const isReplaceableSync = filters.every(
-      a =>
-        a.kinds?.every(
-          b =>
-            EventExt.getType(b) === EventType.Replaceable || EventExt.getType(b) === EventType.ParameterizedReplaceable,
-        ) ?? false,
-    );
+    const isReplaceableSync = filters.every(a => a.kinds?.every(b => EventExt.isReplaceable(b) ?? false));
     if (filters.some(a => a.since || a.until || a.ids || a.limit) || isReplaceableSync) {
       c.request(["REQ", id, ...filters], cb);
     } else if (this.method === "since") {
@@ -59,6 +57,36 @@ export class DefaultSyncModule implements ConnectionSyncModule {
   }
 
   /**
+   * Split a set of filters down into individual filters
+   * which can be used to since request updates to replaceable events
+   */
+  #breakdownReplaceable(item: SyncCommand) {
+    const [type, id, eventSet, ...filters] = item;
+
+    const flat = filters.flatMap(a => this.system.optimizer.expandFilter(a));
+    const mapped = flat.map(a => {
+      if (!a.kinds || !a.authors) return a;
+      if (EventExt.isReplaceable(a.kinds)) {
+        const latest = eventSet.find(
+          b => b.kind === a.kinds && b.pubkey === a.authors && (!a["#d"] || findTag(b, "d") === a["#d"]),
+        );
+        if (latest) {
+          return {
+            ...a,
+            since: latest.created_at + 1,
+          };
+        }
+      }
+      return a;
+    });
+    const compressed = this.system.optimizer.flatMerge(mapped);
+    if (compressed.length !== filters.length) {
+      console.debug("COMPRESSED", id, filters, compressed);
+    }
+    return compressed;
+  }
+
+  /**
    * Using the latest data, fetch only newer items
    *
    * The downfall of this method is when the dataset is truncated by the relay (ie. limit results to 1000 items)
@@ -66,11 +94,17 @@ export class DefaultSyncModule implements ConnectionSyncModule {
   #syncSince(c: Connection, item: SyncCommand, cb?: () => void) {
     const [type, id, eventSet, ...filters] = item;
     if (type !== "SYNC") throw new Error("Must be a SYNC command");
-    const latest = eventSet.reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
-    const newFilters = filters.map(a => ({
-      ...a,
-      since: latest + 1,
-    }));
+    //const broken = this.#breakdownReplaceable(item);
+    const latest = eventSet
+      //.filter(a => !EventExt.isReplaceable(a.kind))
+      .reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
+    const newFilters = filters.map(a => {
+      if (a.since || latest === 0) return a;
+      return {
+        ...a,
+        since: latest + 1,
+      };
+    });
     c.request(["REQ", id, ...newFilters], cb);
   }
 

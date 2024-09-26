@@ -100,7 +100,7 @@ export class NoteCollection extends KeyedReplaceableNoteStore {
   constructor() {
     super(e => {
       switch (EventExt.getType(e.kind)) {
-        case EventType.ParameterizedReplaceable:
+        case EventType.Addressable:
           return `${e.kind}:${e.pubkey}:${findTag(e, "d")}`;
         case EventType.Replaceable:
           return `${e.kind}:${e.pubkey}`;

@@ -11,6 +11,7 @@ import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RequestRouter } from "./request-router";
 import { QueryEvents } from "./query";
 import EventEmitter from "eventemitter3";
+import { SocialGraph } from "nostr-social-graph";
 
 export type QueryLike = {
   get progress(): number;
@@ -96,6 +97,11 @@ export interface SystemConfig {
    * Pick a fallback sync method when negentropy is not available
    */
   fallbackSync: "since" | "range-sync";
+
+  /**
+   * Internal social graph used for WoT filtering
+   */
+  socialGraphInstance: SocialGraph;
 }
 
 export interface SystemInterface {

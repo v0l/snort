@@ -12,11 +12,16 @@ import TrendingHashtags from "@/Components/Trending/TrendingHashtags";
 import TrendingNotes from "@/Components/Trending/TrendingPosts";
 import TrendingUsers from "@/Components/Trending/TrendingUsers";
 import useLogin from "@/Hooks/useLogin";
+import useWindowSize from "@/Hooks/useWindowSize";
 
 export default function RightColumn() {
   const { pubkey } = useLogin(s => ({ pubkey: s.publicKey }));
   const hideRightColumnPaths = ["/login", "/new", "/messages"];
   const show = !hideRightColumnPaths.some(path => globalThis.location.pathname.startsWith(path));
+
+  const pageSize = useWindowSize();
+  const isDesktop = pageSize.width >= 1024; //max-xl
+  if (!isDesktop) return;
 
   const widgets = pubkey
     ? [

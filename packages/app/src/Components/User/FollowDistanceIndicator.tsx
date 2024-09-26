@@ -1,16 +1,16 @@
-import { HexKey, socialGraphInstance } from "@snort/system";
 import classNames from "classnames";
-import React from "react";
 
 import Icon from "@/Components/Icons/Icon";
+import useWoT from "@/Hooks/useWoT";
 
 interface FollowDistanceIndicatorProps {
-  pubkey: HexKey;
+  pubkey: string;
   className?: string;
 }
 
 export default function FollowDistanceIndicator({ pubkey, className }: FollowDistanceIndicatorProps) {
-  const followDistance = socialGraphInstance.getFollowDistance(pubkey);
+  const wot = useWoT();
+  const followDistance = wot.followDistance(pubkey);
   let followDistanceColor = "";
   let title = "";
 
@@ -21,7 +21,7 @@ export default function FollowDistanceIndicator({ pubkey, className }: FollowDis
     followDistanceColor = "success";
     title = "Following";
   } else if (followDistance === 2) {
-    const followedByFriendsCount = socialGraphInstance.followedByFriendsCount(pubkey);
+    const followedByFriendsCount = wot.followedByCount(pubkey);
     if (followedByFriendsCount > 10) {
       followDistanceColor = "text-nostr-orange";
     }
@@ -31,8 +31,10 @@ export default function FollowDistanceIndicator({ pubkey, className }: FollowDis
   }
 
   return (
-    <span className={classNames("icon-circle", className)} title={title}>
+    <div
+      className={classNames("w-5 h-5 bg-gray-superdark rounded-full flex items-center justify-center", className)}
+      title={title}>
       <Icon name="check" className={followDistanceColor} size={10} />
-    </span>
+    </div>
   );
 }

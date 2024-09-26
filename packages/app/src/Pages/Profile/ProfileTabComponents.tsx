@@ -72,12 +72,32 @@ export function ZapsProfileTab({ id }: { id: HexKey }) {
 
 export function FollowersTab({ id }: { id: HexKey }) {
   const followers = useFollowersFeed(id);
-  return <FollowsList pubkeys={followers} showAbout={true} className="p" />;
+  return (
+    <FollowsList
+      pubkeys={followers}
+      className="p"
+      profilePreviewProps={{
+        options: {
+          about: true,
+        },
+      }}
+    />
+  );
 }
 
 export function FollowsTab({ id }: { id: HexKey }) {
   const follows = useFollowsFeed(id);
-  return <FollowsList pubkeys={follows} showAbout={true} className="p" />;
+  return (
+    <FollowsList
+      pubkeys={follows}
+      className="p"
+      profilePreviewProps={{
+        options: {
+          about: true,
+        },
+      }}
+    />
+  );
 }
 
 export function RelaysTab({ id }: { id: HexKey }) {

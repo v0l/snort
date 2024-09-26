@@ -314,6 +314,7 @@ export class EventPublisher {
       eb.pow(powTarget, powMiner);
     }
     eb.content(await signer.nip44Encrypt(JSON.stringify(inner), pTag));
+    eb.jitter(60 * 60 * 24);
 
     return await eb.buildAndSign(secret);
   }

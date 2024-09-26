@@ -4,13 +4,19 @@ import { EventSigner, NostrEvent } from "..";
 const Nip7Queue: Array<WorkQueueItem> = [];
 processWorkQueue(Nip7Queue);
 
-declare interface Nip44Window {
-  nostr?: {
-    nip44?: {
-      encrypt(recipientHexPubKey: string, value: string): Promise<string>;
-      decrypt(senderHexPubKey: string, value: string): Promise<string>;
+declare global {
+  interface NostrEncryptor {
+    encrypt(recipientHexPubKey: string, value: string): Promise<string>;
+    decrypt(senderHexPubKey: string, value: string): Promise<string>;
+  }
+  interface Window {
+    nostr?: {
+      getPublicKey: () => Promise<string>;
+      signEvent: (ev: NostrEvent) => Promise<NostrEvent>;
+      nip04?: NostrEncryptor;
+      nip44?: NostrEncryptor;
     };
-  };
+  }
 }
 
 export class Nip7Signer implements EventSigner {
@@ -56,7 +62,7 @@ export class Nip7Signer implements EventSigner {
       throw new Error("Cannot use NIP-07 signer, not found!");
     }
     return await barrierQueue(Nip7Queue, async () => {
-      const window = globalThis.window as Nip44Window;
+      const window = globalThis.window;
       return await window.nostr!.nip44!.encrypt(key, content);
     });
   }
@@ -66,7 +72,7 @@ export class Nip7Signer implements EventSigner {
       throw new Error("Cannot use NIP-07 signer, not found!");
     }
     return await barrierQueue(Nip7Queue, async () => {
-      const window = globalThis.window as Nip44Window;
+      const window = globalThis.window;
       return await window.nostr!.nip44!.decrypt(otherKey, content);
     });
   }

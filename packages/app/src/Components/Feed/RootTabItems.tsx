@@ -84,17 +84,6 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       ),
     },
     {
-      tab: "global",
-      path: `${base}/global`,
-      show: true,
-      element: (
-        <>
-          <Icon name="globe" />
-          <FormattedMessage defaultMessage="Global" />
-        </>
-      ),
-    },
-    {
       tab: "tags",
       path: `${base}/topics`,
       show: tags.length > 0,
