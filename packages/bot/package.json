@@ -1,0 +1,23 @@
+{
+  "name": "@snort/bot",
+  "version": "1.1.1",
+  "description": "Simple bot framework",
+  "type": "module",
+  "module": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "https://git.v0l.io/Kieran/snort",
+  "author": "Kieran",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf dist && tsc"
+  },
+  "dependencies": {
+    "@snort/system": "^1.5.1",
+    "eventemitter3": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.8",
+    "typescript": "^5.2.2"
+  }
+}

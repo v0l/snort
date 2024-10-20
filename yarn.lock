@@ -4792,6 +4792,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@snort/bot@workspace:packages/bot":
+  version: 0.0.0-use.local
+  resolution: "@snort/bot@workspace:packages/bot"
+  dependencies:
+    "@snort/system": "npm:^1.5.1"
+    "@types/debug": "npm:^4.1.8"
+    eventemitter3: "npm:^5.0.1"
+    typescript: "npm:^5.2.2"
+  languageName: unknown
+  linkType: soft
+
 "@snort/shared@npm:^1.0.14, @snort/shared@npm:^1.0.17, @snort/shared@npm:^1.0.6, @snort/shared@workspace:*, @snort/shared@workspace:packages/shared":
   version: 0.0.0-use.local
   resolution: "@snort/shared@workspace:packages/shared"
