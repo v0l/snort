@@ -4,6 +4,7 @@ import { EventExt } from "./event-ext";
 import { Nip4WebCryptoEncryptor } from "./impl/nip4";
 import { Nip44Encryptor } from "./impl/nip44";
 import { NostrEvent, NotSignedNostrEvent } from "./nostr";
+import { randomBytes } from "@noble/hashes/utils";
 
 export type SignerSupports = "nip04" | "nip44" | string;
 
@@ -29,6 +30,14 @@ export class PrivateKeySigner implements EventSigner {
       this.#privateKey = bytesToHex(privateKey);
     }
     this.#publicKey = getPublicKey(this.#privateKey);
+  }
+
+  /**
+   * Generate a new private key
+   */
+  static random() {
+    const k = randomBytes(32);
+    return new PrivateKeySigner(k);
   }
 
   get supports(): string[] {

@@ -1,6 +1,6 @@
 {
   "name": "@snort/bot",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Simple bot framework",
   "type": "module",
   "module": "src/index.ts",
@@ -13,7 +13,7 @@
     "build": "rm -rf dist && tsc"
   },
   "dependencies": {
-    "@snort/system": "^1.5.1",
+    "@snort/system": "^1.5.2",
     "eventemitter3": "^5.0.1"
   },
   "devDependencies": {
