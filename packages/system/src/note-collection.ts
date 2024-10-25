@@ -72,7 +72,7 @@ export class KeyedReplaceableNoteStore extends HookedNoteStore {
       const existing = this.#events.get(keyOnEvent);
       if (a.created_at > (existing?.created_at ?? 0)) {
         if (existing) {
-          a.relays = dedupe([...existing.relays, ...a.relays]);
+          a.relays = dedupe([...(existing.relays ?? []), ...a.relays]);
         }
         this.#events.set(keyOnEvent, a);
         changes.push(a);
