@@ -1,7 +1,7 @@
-import { WorkerRelayInterface } from "@snort/worker-relay";
+import { WorkerRelayInterface } from "@nostrwatch/worker-relay";
 
 // when using Vite import the worker script directly (for production)
-import WorkerVite from "@snort/worker-relay/src/worker?worker";
+import WorkerVite from "@nostrwatch/worker-relay/src/worker?worker";
 
 // in dev mode import esm module, i have no idea why it has to work like this
 const workerScript = import.meta.env.DEV
