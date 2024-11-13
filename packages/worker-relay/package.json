@@ -10,8 +10,9 @@
   "author": "Kieran",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc && yarn build:esm",
-    "build:esm": "esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs --loader:.wasm=copy"
+    "build": "rm -rf dist && tsc && yarn copy:wasm && yarn build:esm",
+    "build:esm": "esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs --loader:.wasm=copy",
+    "copy:wasm": "cp src/sqlite/sqlite3.wasm dist/sqlite/sqlite3.wasm"
   },
   "files": [
     "src",

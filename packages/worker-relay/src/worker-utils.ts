@@ -13,7 +13,7 @@ import {
     RelayHandler,
   } from "./types";
 
-import { getForYouFeed } from "forYouFeed";
+import { getForYouFeed } from "./forYouFeed";
 
 export interface InitAargs {
   databasePath: string;
@@ -45,6 +45,66 @@ export async function insertBatch(state: WorkerState) {
   setTimeout(() => insertBatch(state), 100);
 }
 
+export const relayInit = async (state: WorkerState, args: InitAargs) => {
+  state.insertBatchSize = args.insertBatchSize ?? 10;
+  try {
+    if ("WebAssembly" in state.self) {
+      state.relay = new SqliteRelay();
+    } else {
+      state.relay = new InMemoryRelay();
+    }
+    await state.relay.init(args.databasePath);
+  } catch (e) {
+    console.error("Fallback to InMemoryRelay", e);
+    state.relay = new InMemoryRelay();
+    await state.relay.init(args.databasePath);
+  }
+}
+
+export const relayEvent = (state: WorkerState, ev: NostrEvent) => {
+  state.eventWriteQueue.push(ev);
+}
+export const relayClose = (state: WorkerState) => {
+  return state.relay?.close();
+}
+
+export const relayReq = (state: WorkerState, req: ReqCommand): (string | NostrEvent)[] => {
+  const filters = req.slice(2) as Array<ReqFilter>;
+  const results: Array<string | NostrEvent> = [];
+  const ids = new Set<string>();
+  for (const r of filters) {
+    const rx = state.relay!.req(req[1], r);
+    for (const x of rx) {
+      if ((typeof x === "string" && ids.has(x)) || ids.has((x as NostrEvent).id)) {
+        continue;
+      }
+      ids.add(typeof x === "string" ? x : (x as NostrEvent).id);
+      results.push(x);
+    }
+  }
+  return results;
+}
+
+export const relayCount = (state: WorkerState, req: ReqCommand): number => {
+  let results = 0;
+  const filters = req.slice(2) as Array<ReqFilter>;
+  for (const r of filters) {
+    const c = state.relay!.count(r);
+    results += c;
+  }
+  return results;
+}
+
+export const relayDelete = (state: WorkerState, req: ReqCommand): string[] => {
+  let results = [];
+  const filters = req.slice(2) as Array<ReqFilter>;
+  for (const r of filters) {
+    const c = state.relay!.delete(r);
+    results.push(...c);
+  }
+  return results
+}
+
 export const handleMsg = async (state: WorkerState, ev: MessageEvent, port?: MessagePort) => {
   async function reply<T>(id: string, obj?: T) {
     const _port = (port ?? state.self) as MessagePort | DedicatedWorkerGlobalScope;
@@ -64,26 +124,14 @@ export const handleMsg = async (state: WorkerState, ev: MessageEvent, port?: Mes
         break;
       }
       case "init": {
-        const args = msg.args as InitAargs;
-        state.insertBatchSize = args.insertBatchSize ?? 10;
-        try {
-          if ("WebAssembly" in state.self) {
-            state.relay = new SqliteRelay();
-          } else {
-            state.relay = new InMemoryRelay();
-          }
-          await state.relay.init(args.databasePath);
-        } catch (e) {
-          console.error("Fallback to InMemoryRelay", e);
-          state.relay = new InMemoryRelay();
-          await state.relay.init(args.databasePath);
-        }
+        const args = msg.args as InitAargs; 
+        await relayInit(state, args)
         reply(msg.id, true);
         break;
       }
       case "event": {
         const ev = msg.args as NostrEvent;
-        state.eventWriteQueue.push(ev);
+        relayEvent(state, ev);
         reply(msg.id, {
           ok: true,
           id: ev.id,
@@ -92,47 +140,25 @@ export const handleMsg = async (state: WorkerState, ev: MessageEvent, port?: Mes
         break;
       }
       case "close": {
-        const res = state.relay!.close();
+        const res = relayClose(state) //but this returns void?
         reply(msg.id, res);
         break;
       }
       case "req": {
         const req = msg.args as ReqCommand;
-        const filters = req.slice(2) as Array<ReqFilter>;
-        const results: Array<string | NostrEvent> = [];
-        const ids = new Set<string>();
-        for (const r of filters) {
-          const rx = state.relay!.req(req[1], r);
-          for (const x of rx) {
-            if ((typeof x === "string" && ids.has(x)) || ids.has((x as NostrEvent).id)) {
-              continue;
-            }
-            ids.add(typeof x === "string" ? x : (x as NostrEvent).id);
-            results.push(x);
-          }
-        }
+        const results = relayReq(state, req);
         reply(msg.id, results);
         break;
       }
       case "count": {
         const req = msg.args as ReqCommand;
-        let results = 0;
-        const filters = req.slice(2) as Array<ReqFilter>;
-        for (const r of filters) {
-          const c = state.relay!.count(r);
-          results += c;
-        }
+        const results = relayCount(state, req);
         reply(msg.id, results);
         break;
       }
       case "delete": {
         const req = msg.args as ReqCommand;
-        let results = [];
-        const filters = req.slice(2) as Array<ReqFilter>;
-        for (const r of filters) {
-          const c = state.relay!.delete(r);
-          results.push(...c);
-        }
+        const results = relayDelete(state, req);
         reply(msg.id, results);
         break;
       }

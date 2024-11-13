@@ -16,7 +16,7 @@ try {
 }
 
 if ("SharedWorkerGlobalScope" in globalThis) {
-  onconnect = e => {
+  onconnect = (e: MessageEvent) => {
     const port = e.ports[0];
     port.onmessage = (msg: MessageEvent) => handleMsg(state, msg, port);
     port.start();
