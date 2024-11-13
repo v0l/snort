@@ -150,7 +150,7 @@ export const handleMsg = async (state: WorkerState, port: MessagePort | Dedicate
         break;
       }
       case "forYouFeed": {
-        const res = await getForYouFeed(relay!, msg.args as string);
+        const res = await getForYouFeed(state.relay!, msg.args as string);
         reply(msg.id, res);
         break;
       }
