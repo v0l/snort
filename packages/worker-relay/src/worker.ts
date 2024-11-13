@@ -3,6 +3,7 @@
 import { handleMsg, insertBatch, WorkerState } from "./worker-utils";
 
 const state: WorkerState = {
+  self: self as DedicatedWorkerGlobalScope,
   relay: undefined,
   insertBatchSize: 10,
   eventWriteQueue: []

@@ -21,6 +21,7 @@ export interface InitAargs {
 }
 
 export interface WorkerState {
+  self: DedicatedWorkerGlobalScope;
   relay: RelayHandler | undefined;
   insertBatchSize: number;
   eventWriteQueue: Array<NostrEvent>;
@@ -65,7 +66,7 @@ export const handleMsg = async (state: WorkerState, port: MessagePort | Dedicate
         const args = msg.args as InitAargs;
         state.insertBatchSize = args.insertBatchSize ?? 10;
         try {
-          if ("WebAssembly" in self) {
+          if ("WebAssembly" in state.self) {
             state.relay = new SqliteRelay();
           } else {
             state.relay = new InMemoryRelay();
