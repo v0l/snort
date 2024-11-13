@@ -112,7 +112,8 @@ export function eventMatchesFilter(ev: NostrEvent, filter: ReqFilter) {
   }
   const andTags = Object.entries(filter).filter(([k]) => k.startsWith("&"));
   for (const [k, v] of andTags) {
-    const allMatch = (v as string[]).every(x => ev.tags.some(tag => tag[0] === k.slice(1) && tag[1] === x));
+    const vargs = v as Array<string>;
+    const allMatch = vargs.every(x => ev.tags.some(tag => tag[0] === k.slice(1) && tag[1] === x));
     if (!allMatch) {
       return false;
     }
