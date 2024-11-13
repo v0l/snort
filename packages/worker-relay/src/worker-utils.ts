@@ -21,7 +21,7 @@ export interface InitAargs {
 }
 
 export interface WorkerState {
-  self: DedicatedWorkerGlobalScope;
+  self: DedicatedWorkerGlobalScope | SharedWorkerGlobalScope;
   relay: RelayHandler | undefined;
   insertBatchSize: number;
   eventWriteQueue: Array<NostrEvent>;
@@ -45,9 +45,10 @@ export async function insertBatch(state: WorkerState) {
   setTimeout(() => insertBatch(state), 100);
 }
 
-export const handleMsg = async (state: WorkerState, port: MessagePort | DedicatedWorkerGlobalScope, ev: MessageEvent) => {
+export const handleMsg = async (state: WorkerState, ev: MessageEvent, port?: MessagePort) => {
   async function reply<T>(id: string, obj?: T) {
-    port.postMessage({
+    const _port = (port ?? state.self) as MessagePort | DedicatedWorkerGlobalScope;
+    _port.postMessage({
       id,
       cmd: "reply",
       args: obj,
