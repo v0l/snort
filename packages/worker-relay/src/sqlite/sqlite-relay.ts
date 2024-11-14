@@ -325,9 +325,9 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
       operation = "delete";
     }
     let sql = `${operation} from events`;
-    const tags = Object.entries(req).filter(([k]) => k.startsWith("#"));
+    const orTags = Object.entries(req).filter(([k]) => k.startsWith("#"));
     let tx = 0;
-    for (const [key, values] of tags) {
+    for (const [key, values] of orTags) {
       const vArray = values as Array<string>;
       sql += ` inner join tags t_${tx} on events.id = t_${tx}.event_id and t_${tx}.key = ? and t_${tx}.value in (${this.#repeatParams(
         vArray.length,
@@ -335,6 +335,15 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
       params.push(key.slice(1));
       params.push(...vArray);
       tx++;
+    }
+    const andTags = Object.entries(req).filter(([k]) => k.startsWith("&"));
+    for (const [key, values] of andTags) {
+      for (const value of values as Array<string>) {
+        sql += ` inner join tags t_${tx} on events.id = t_${tx}.event_id and t_${tx}.key = ? and t_${tx}.value = ?`;
+        params.push(key.slice(1));
+        params.push(value);
+        tx++;
+      }
     }
     if (req.search) {
       sql += " inner join search_content on search_content.id = events.id";
