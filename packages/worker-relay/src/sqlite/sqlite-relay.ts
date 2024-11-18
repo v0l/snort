@@ -34,7 +34,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     await this.#open(path);
     if (this.db) {
       await migrate(this);
-      // dont await to avoid timeout
+      // don't await to avoid timeout
       runFixers(this);
     }
   }
@@ -128,69 +128,82 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
   #insertEvent(db: Database, ev: NostrEvent) {
     if (this.#seenInserts.has(ev.id)) return false;
 
-    const legacyReplacable = [0, 3, 41];
-    if (legacyReplacable.includes(ev.kind) || (ev.kind >= 10_000 && ev.kind < 20_000)) {
-      const oldEvents = db.selectValues("select id from events where kind = ? and pubkey = ? and created <= ?", [
-        ev.kind,
-        ev.pubkey,
-        ev.created_at,
-      ]) as Array<string>;
-      if (oldEvents.includes(ev.id)) {
-        // we already have this event, return
-        this.#seenInserts.add(ev.id);
-        if (oldEvents.length > 1) {
-          const toDelete = oldEvents.filter(a => a !== ev.id);
-          this.#deleteById(db, toDelete);
-        }
-        return false;
-      } else {
-        // delete older versions
-        this.#deleteById(db, oldEvents);
-      }
-    }
-    if (ev.kind >= 30_000 && ev.kind < 40_000) {
-      const dTag = ev.tags.find(a => a[0] === "d")![1];
+    const legacyReplaceableKinds = [0, 3, 41];
+
+    // Handle legacy and standard replaceable events (kinds 0, 3, 41, 10000-19999)
+    if (legacyReplaceableKinds.includes(ev.kind) || (ev.kind >= 10_000 && ev.kind < 20_000)) {
       const oldEvents = db.selectValues(
-        "select id from events where id in (select id from events, tags where events.id = tags.event_id and tags.key = ? and tags.value = ?)",
-        ["d", dTag],
+        `SELECT id FROM events WHERE kind = ? AND pubkey = ? AND created <= ?`,
+        [ev.kind, ev.pubkey, ev.created_at]
       ) as Array<string>;
+
       if (oldEvents.includes(ev.id)) {
-        // we have this version
+        // Already have this event
         this.#seenInserts.add(ev.id);
-        if (oldEvents.length > 1) {
-          const toDelete = oldEvents.filter(a => a !== ev.id);
-          this.#deleteById(db, toDelete);
-        }
         return false;
       } else {
-        // delete older versions
+        // Delete older events of the same kind and pubkey
         this.#deleteById(db, oldEvents);
       }
     }
 
-    // remove relays from event json
-    const evInsert = {
-      ...ev,
-    } as NostrEvent;
-    delete evInsert["relays"];
+    // Handle parameterized replaceable events (kinds 30000-39999)
+    if (ev.kind >= 30_000 && ev.kind < 40_000) {
+      const dTag = ev.tags.find(a => a[0] === "d")?.[1] ?? "";
 
-    db.exec("insert or ignore into events(id, pubkey, created, kind, json, relays) values(?,?,?,?,?,?)", {
-      bind: [ev.id, ev.pubkey, ev.created_at, ev.kind, JSON.stringify(evInsert), (ev.relays ?? []).join(",")],
-    });
+      const oldEvents = db.selectValues(
+        `SELECT e.id
+         FROM events e
+         JOIN tags t ON e.id = t.event_id
+         WHERE e.kind = ? AND e.pubkey = ? AND t.key = ? AND t.value = ? AND created <= ?`,
+        [ev.kind, ev.pubkey, "d", dTag, ev.created_at]
+      ) as Array<string>;
+
+      if (oldEvents.includes(ev.id)) {
+        // Already have this event
+        this.#seenInserts.add(ev.id);
+        return false;
+      } else {
+        // Delete older events with the same kind, pubkey, and d tag
+        this.#deleteById(db, oldEvents);
+      }
+    }
+
+    // Proceed to insert the new event
+    const evInsert = { ...ev };
+    delete evInsert["relays"]; // Remove non-DB fields
+
+    db.exec(
+      `INSERT OR IGNORE INTO events(id, pubkey, created, kind, json, relays) 
+       VALUES(?,?,?,?,?,?)`,
+      {
+        bind: [
+          ev.id,
+          ev.pubkey,
+          ev.created_at,
+          ev.kind,
+          JSON.stringify(evInsert),
+          (ev.relays ?? []).join(","),
+        ],
+      }
+    );
+
     const insertedEvents = db.changes();
     if (insertedEvents > 0) {
+      // Insert tags
       for (const t of ev.tags.filter(a => a[0].length === 1)) {
-        db.exec("insert into tags(event_id, key, value) values(?, ?, ?)", {
+        db.exec("INSERT INTO tags(event_id, key, value) VALUES(?, ?, ?)", {
           bind: [ev.id, t[0], t[1]],
         });
       }
       this.insertIntoSearchIndex(db, ev);
     } else {
       this.#updateRelays(db, ev);
-      return 0;
+      return false;
     }
+
     this.#seenInserts.add(ev.id);
-    return insertedEvents;
+    return true;
   }
 
   /**
@@ -331,15 +344,6 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
       params.push(key.slice(1));
       params.push(...vArray);
       tx++;
-    }
-    const andTags = Object.entries(req).filter(([k]) => k.startsWith("&"));
-    for (const [key, values] of andTags) {
-      for (const value of values as Array<string>) {
-        sql += ` inner join tags t_${tx} on events.id = t_${tx}.event_id and t_${tx}.key = ? and t_${tx}.value = ?`;
-        params.push(key.slice(1));
-        params.push(value);
-        tx++;
-      }
     }
     if (req.search) {
       sql += " inner join search_content on search_content.id = events.id";
