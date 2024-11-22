@@ -20,7 +20,7 @@ export interface ToNostrEventTag {
 }
 
 export class NostrHashtagLink implements ToNostrEventTag {
-  constructor(readonly tag: string) { }
+  constructor(readonly tag: string) {}
 
   equals(other: ToNostrEventTag): boolean {
     const otherTag = other.toEventTag();
@@ -33,7 +33,7 @@ export class NostrHashtagLink implements ToNostrEventTag {
 }
 
 export class UnknownTag implements ToNostrEventTag {
-  constructor(readonly value: Array<string>) { }
+  constructor(readonly value: Array<string>) {}
 
   equals(other: ToNostrEventTag): boolean {
     const otherTag = other.toEventTag();
@@ -241,7 +241,9 @@ export class NostrLink implements ToNostrEventTag {
   static fromEvent(ev: TaggedNostrEvent | NostrEvent) {
     let relays = "relays" in ev ? ev.relays : undefined;
     const eventRelays = removeUndefined(
-      ev.tags.filter(a => a[0] === "relays" || a[0] === "relay" || a[0] === "r").flatMap(a => a.slice(1).map(b => sanitizeRelayUrl(b))),
+      ev.tags
+        .filter(a => a[0] === "relays" || a[0] === "relay" || a[0] === "r")
+        .flatMap(a => a.slice(1).map(b => sanitizeRelayUrl(b))),
     );
     relays = appendDedupe(relays, eventRelays);
 
