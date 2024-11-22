@@ -48,7 +48,7 @@ import { Day } from "./Utils/Const";
 import { LoginStore } from "./Utils/Login";
 
 async function initSite() {
-  EventBuilder.ClientTag = ["snort", __SNORT_VERSION__];
+  EventBuilder.ClientTag = ["client", "snort"];
   storeRefCode();
   if (hasWasm) {
     await wasmInit(WasmPath);
