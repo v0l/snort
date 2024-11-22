@@ -1,4 +1,4 @@
-import { bech32ToHex, hexToBech32, isHex, removeUndefined, unwrap, Bech32Regex } from "@snort/shared";
+import { bech32ToHex, hexToBech32, isHex, removeUndefined, unwrap, Bech32Regex, sanitizeRelayUrl, appendDedupe } from "@snort/shared";
 import { decodeTLV, encodeTLV, EventExt, EventKind, NostrEvent, NostrPrefix, TaggedNostrEvent, TLVEntryType } from ".";
 import { findTag } from "./utils";
 
@@ -11,7 +11,7 @@ export interface ToNostrEventTag {
 }
 
 export class NostrHashtagLink implements ToNostrEventTag {
-  constructor(readonly tag: string) {}
+  constructor(readonly tag: string) { }
 
   equals(other: ToNostrEventTag): boolean {
     const otherTag = other.toEventTag();
@@ -24,7 +24,7 @@ export class NostrHashtagLink implements ToNostrEventTag {
 }
 
 export class UnknownTag implements ToNostrEventTag {
-  constructor(readonly value: Array<string>) {}
+  constructor(readonly value: Array<string>) { }
 
   equals(other: ToNostrEventTag): boolean {
     const otherTag = other.toEventTag();
@@ -226,8 +226,13 @@ export class NostrLink implements ToNostrEventTag {
     );
   }
 
+  /**
+   * Create an event link from an existing nostr event
+   */
   static fromEvent(ev: TaggedNostrEvent | NostrEvent) {
-    const relays = "relays" in ev ? ev.relays : undefined;
+    let relays = "relays" in ev ? ev.relays : undefined;
+    const eventRelays = removeUndefined(ev.tags.filter(a => a[0] === "relays" || a[0] === "relay" || a[0] === "r").map(a => sanitizeRelayUrl(a[1])));
+    relays = appendDedupe(relays, eventRelays);
 
     if (ev.kind >= 30_000 && ev.kind < 40_000) {
       const dTag = unwrap(findTag(ev, "d"));

@@ -5,6 +5,11 @@ import { EventExt } from "./event-ext";
 import { NostrLink, tryParseNostrLink } from "./nostr-link";
 
 export class EventBuilder {
+  /**
+   * Client tag to attach to all events
+   */
+  static ClientTag: Array<string> | undefined = ["client", "snort_system"];
+
   #kind?: EventKind;
   #content?: string;
   #createdAt?: number;
@@ -101,6 +106,9 @@ export class EventBuilder {
       created_at: (this.#createdAt ?? unixNow()) - (this.#jitter ? Math.floor(jitter(this.#jitter)) : 0),
       tags: this.#tags.sort((a, b) => a[0].localeCompare(b[0])),
     } as NostrEvent;
+    if (EventBuilder.ClientTag && EventBuilder.ClientTag[0] === "client" && EventBuilder.ClientTag.length > 1) {
+      ev.tags.push(EventBuilder.ClientTag);
+    }
     ev.id = EventExt.createId(ev);
     return ev;
   }

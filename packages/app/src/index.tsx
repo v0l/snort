@@ -3,6 +3,7 @@ import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
 
 import { unixNow, unixNowMs } from "@snort/shared";
+import { EventBuilder } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
@@ -47,6 +48,7 @@ import { Day } from "./Utils/Const";
 import { LoginStore } from "./Utils/Login";
 
 async function initSite() {
+  EventBuilder.ClientTag = ["snort", __SNORT_VERSION__];
   storeRefCode();
   if (hasWasm) {
     await wasmInit(WasmPath);
