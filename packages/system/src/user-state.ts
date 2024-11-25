@@ -137,6 +137,10 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     }
   }
 
+  get signer() {
+    return this.#signer;
+  }
+
   get version() {
     return this.#version;
   }
