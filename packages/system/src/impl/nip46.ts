@@ -69,6 +69,8 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
 
     if (u.hash.length > 1) {
       this.#token = u.hash.substring(1);
+    } else {
+      this.#token = u.searchParams.get("secret") || undefined;
     }
     if (this.#localPubkey.startsWith("npub")) {
       this.#localPubkey = bech32ToHex(this.#localPubkey);
@@ -83,7 +85,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   }
 
   get supports(): string[] {
-    return ["nip04"];
+    return ["nip44"];
   }
 
   get relays() {
@@ -222,7 +224,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
       throw new Error("Unknown event kind");
     }
 
-    const decryptedContent = await this.#insideSigner.nip4Decrypt(e.content, e.pubkey);
+    const decryptedContent = await this.#insideSigner.nip44Decrypt(e.content, e.pubkey);
     const reply = JSON.parse(decryptedContent) as Nip46Request | Nip46Response;
 
     let id = reply.id;
@@ -286,7 +288,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
 
     const eb = new EventBuilder();
     eb.kind(NIP46_KIND as EventKind)
-      .content(await this.#insideSigner.nip4Encrypt(JSON.stringify(payload), target))
+      .content(await this.#insideSigner.nip44Encrypt(JSON.stringify(payload), target))
       .tag(["p", target]);
 
     this.#log("Send: %O", payload);
