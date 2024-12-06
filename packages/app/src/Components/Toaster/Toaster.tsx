@@ -36,8 +36,11 @@ class ToasterSlots extends ExternalStore<Array<ToastNotification>> {
 
   #eatToast() {
     const now = unixNow();
-    this.#stack = this.#stack.filter(a => (a.expire ?? 0) > now);
-    this.notifyChange();
+    const newStack = this.#stack.filter(a => (a.expire ?? 0) > now);
+    if (newStack.length !== this.#stack.length) {
+      this.#stack = newStack;
+      this.notifyChange();
+    }
   }
 }
 

@@ -13,7 +13,7 @@ export function useNotificationsView() {
       leaveOpen: true,
     });
     if (publicKey) {
-      rb.withFilter().kinds(kinds).tag("p", [publicKey]);
+      rb.withFilter().kinds(kinds).tag("p", [publicKey]).limit(100);
     }
     return rb;
   }, [publicKey]);

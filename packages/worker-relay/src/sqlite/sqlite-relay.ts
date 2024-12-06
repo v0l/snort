@@ -49,10 +49,6 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     this.#pool = await this.#sqlite.installOpfsSAHPoolVfs({});
     this.db = new this.#pool.OpfsSAHPoolDb(path);
     this.#log(`Opened ${this.db.filename}`);
-    /*this.db.exec(
-      `PRAGMA cache_size=${32 * 1024
-      }; PRAGMA page_size=8192; PRAGMA journal_mode=MEMORY; PRAGMA temp_store=MEMORY;`,
-    );*/
   }
 
   /**
@@ -237,7 +233,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
         };
       }) ?? [];
     const time = unixNowMs() - start;
-    this.#log(`Query ${id} results took ${time.toLocaleString()}ms`);
+    this.#log(`Query ${id} results took ${time.toLocaleString()}ms`, req);
     return results;
   }
 

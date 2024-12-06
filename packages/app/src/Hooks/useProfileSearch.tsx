@@ -1,43 +1,15 @@
-import { useEffect, useMemo, useState } from "react";
-
 import fuzzySearch from "@/Db/FuzzySearch";
-import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
-import { debounce } from "@/Utils";
 
 import useWoT from "./useWoT";
 
-const options: TimelineFeedOptions = { method: "LIMIT_UNTIL" };
-
-export default function useProfileSearch(search: string) {
-  const [debouncedSearch, setDebouncedSearch] = useState(search);
-
-  useEffect(() => {
-    return debounce(500, () => {
-      setDebouncedSearch(search);
-    });
-  }, [search]);
-
-  const subject = useMemo(
-    () =>
-      ({
-        type: "profile_keyword",
-        items: debouncedSearch ? [debouncedSearch] : [],
-        discriminator: debouncedSearch,
-      }) as TimelineSubject,
-    [debouncedSearch],
-  );
-  const feed = useTimelineFeed(subject, options);
-  const results = useMemo(() => {
-    return userSearch(search);
-  }, [search, feed]);
-
-  return results;
+export default function useProfileSearch(search: string | undefined) {
+  return userSearch(search);
 }
 
-export function userSearch(search: string) {
+export function userSearch(search: string | undefined) {
   const wot = useWoT();
-  const searchString = search.trim();
-  const fuseResults = fuzzySearch.search(searchString);
+  const searchString = search?.trim() ?? "";
+  const fuseResults = (searchString?.length ?? 0) > 0 ? fuzzySearch.search(searchString) : [];
 
   const followDistanceNormalizationFactor = 3;
   const seenIds = new Set();

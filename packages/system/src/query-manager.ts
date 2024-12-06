@@ -96,6 +96,11 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     // check for empty filters
     filters = trimFilters(filters);
 
+    if (filters.length === 0) {
+      this.#log("Dropping %s %o", q.id);
+      return;
+    }
+
     // automated outbox model, load relays for queried authors
     for (const f of filters) {
       if (f.authors) {

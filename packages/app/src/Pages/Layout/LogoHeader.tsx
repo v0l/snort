@@ -20,7 +20,7 @@ const getExtra = () => {
 };
 
 export function LogoHeader({ showText = false }: { showText: boolean }) {
-  const { subscriptions } = useLogin();
+  const subscriptions = useLogin(s => s.subscriptions);
   const currentSubscription = getCurrentSubscription(subscriptions);
 
   const appName = CONFIG.appName === "iris" && isStPatricksDay() ? "Irish" : CONFIG.appName;

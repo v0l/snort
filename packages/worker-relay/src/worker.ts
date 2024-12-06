@@ -3,7 +3,6 @@
 import { SqliteRelay } from "./sqlite/sqlite-relay";
 import { InMemoryRelay } from "./memory-relay";
 import { setLogging } from "./debug";
-import { WorkQueueItem, barrierQueue, processWorkQueue } from "./queue";
 import {
   NostrEvent,
   RelayHandler,
@@ -42,7 +41,6 @@ async function insertBatch() {
   setTimeout(() => insertBatch(), 100);
 }
 
-const cmdQueue: Array<WorkQueueItem> = [];
 try {
   setTimeout(() => insertBatch(), 100);
 } catch (e) {

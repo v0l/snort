@@ -1,19 +1,11 @@
 import { useMemo } from "react";
 
-import { useNotificationsView } from "@/Feed/WorkerRelayView";
 import useLogin from "@/Hooks/useLogin";
 
 export function HasNotificationsMarker() {
   const readNotifications = useLogin(s => s.readNotifications);
-  const notifications = useNotificationsView();
-  const latestNotification = useMemo(
-    () => notifications.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0),
-    [notifications],
-  );
-  const hasNotifications = useMemo(
-    () => latestNotification * 1000 > readNotifications,
-    [notifications, readNotifications],
-  );
+  const latestNotification = 0; // TODO: get latest timestamp
+  const hasNotifications = useMemo(() => latestNotification * 1000 > readNotifications, [readNotifications]);
 
   if (hasNotifications) {
     return (
