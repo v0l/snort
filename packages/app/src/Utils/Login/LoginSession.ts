@@ -18,6 +18,7 @@ export const enum LoginSessionType {
   Nip7 = "nip7",
   Nip46 = "nip46",
   Nip7os = "nip7_os",
+  Nip55 = "nip55",
 }
 
 export interface SnortAppData {

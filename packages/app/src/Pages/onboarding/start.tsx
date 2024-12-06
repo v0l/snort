@@ -1,5 +1,4 @@
-import { unwrap } from "@snort/shared";
-import { NotEncrypted } from "@snort/system";
+import { Nip7Signer, Nip55Signer, NotEncrypted } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import classNames from "classnames";
 import { FormEvent, useContext, useState } from "react";
@@ -16,6 +15,8 @@ import { NewUserState } from ".";
 
 const NSEC_NPUB_REGEX = /(nsec1|npub1)[a-zA-Z0-9]{20,65}/gi;
 
+const signer = new Nip55Signer();
+
 export function SignIn() {
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
@@ -25,12 +26,20 @@ export function SignIn() {
   const loginHandler = useLoginHandler();
 
   const hasNip7 = "nostr" in window;
+  const hasNip55 = true;
+
   async function doNip07Login() {
-    /*const relays =
-      "getRelays" in unwrap(window.nostr) ? await unwrap(window.nostr?.getRelays).call(window.nostr) : undefined;*/
-    const pubKey = await unwrap(window.nostr).getPublicKey();
+    const signer = new Nip7Signer();
+    const pubKey = await signer.getPubKey();
     LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip7);
     trackEvent("Login", { type: "NIP7" });
+    navigate("/");
+  }
+
+  async function doNip55Login() {
+    const pubKey = await signer.getPubKey();
+    LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip55);
+    trackEvent("Login", { type: "NIP55" });
     navigate("/");
   }
 
@@ -69,7 +78,7 @@ export function SignIn() {
     }
   };
 
-  const nip7Login = hasNip7 && !useKey;
+  const signerExtLogin = (hasNip7 || hasNip55) && !useKey;
   return (
     <div className="flex flex-col g24">
       <img src={CONFIG.icon} width={48} height={48} className="br mr-auto ml-auto" />
@@ -77,16 +86,22 @@ export function SignIn() {
         <h1>
           <FormattedMessage defaultMessage="Sign In" />
         </h1>
-        {nip7Login && <FormattedMessage defaultMessage="Use a nostr signer extension to sign in" />}
+        {signerExtLogin && <FormattedMessage defaultMessage="Use a nostr signer extension to sign in" />}
       </div>
-      <div className={classNames("flex flex-col g16", { "items-center": nip7Login })}>
-        {hasNip7 && !useKey && (
+      <div className={classNames("flex flex-col g16", { "items-center": signerExtLogin })}>
+        {signerExtLogin && (
           <>
             <AsyncButton onClick={doNip07Login}>
               <div className="circle bg-warning p12 text-white">
                 <Icon name="key" />
               </div>
               <FormattedMessage defaultMessage="Sign in with Nostr Extension" />
+            </AsyncButton>
+            <AsyncButton onClick={doNip55Login}>
+              <div className="circle bg-warning p12 text-white">
+                <Icon name="key" />
+              </div>
+              <FormattedMessage defaultMessage="Sign in with Android signer" />
             </AsyncButton>
             <Link to="" className="highlight">
               <FormattedMessage defaultMessage="Supported Extensions" />
@@ -96,13 +111,12 @@ export function SignIn() {
             </AsyncButton>
           </>
         )}
-        {(!hasNip7 || useKey) && (
+        {(!signerExtLogin || useKey) && (
           <form onSubmit={onSubmit} className="flex flex-col gap-4">
             <input
               type="text"
               placeholder={formatMessage({
                 defaultMessage: "nsec, npub, nip-05, hex, mnemonic",
-                id: "X7xU8J",
               })}
               value={key}
               onChange={onChange}

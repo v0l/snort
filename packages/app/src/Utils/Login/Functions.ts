@@ -7,6 +7,7 @@ import {
   KeyStorage,
   Nip7Signer,
   Nip46Signer,
+  Nip55Signer,
   PrivateKeySigner,
   RelaySettings,
   SystemInterface,
@@ -156,6 +157,9 @@ export function createPublisher(l: LoginSession) {
     }
     case LoginSessionType.Nip7: {
       return new EventPublisher(new Nip7Signer(), unwrap(l.publicKey));
+    }
+    case LoginSessionType.Nip55: {
+      return new EventPublisher(new Nip55Signer(), unwrap(l.publicKey));
     }
   }
 }

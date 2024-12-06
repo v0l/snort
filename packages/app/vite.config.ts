@@ -1,3 +1,4 @@
+import basicSsl from "@vitejs/plugin-basic-ssl";
 import react from "@vitejs/plugin-react";
 import appConfig from "config";
 import { visualizer } from "rollup-plugin-visualizer";
@@ -7,6 +8,7 @@ import { vitePluginVersionMark } from "vite-plugin-version-mark";
 
 export default defineConfig({
   plugins: [
+    basicSsl(),
     react({
       jsxImportSource: "@welldone-software/why-did-you-render",
       babel: {

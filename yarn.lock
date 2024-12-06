@@ -4724,6 +4724,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^6.1.0"
     "@typescript-eslint/parser": "npm:^6.1.0"
     "@uidotdev/usehooks": "npm:^2.4.1"
+    "@vitejs/plugin-basic-ssl": "npm:^1.2.0"
     "@vitejs/plugin-react": "npm:^4.2.0"
     "@void-cat/api": "npm:^1.0.12"
     "@webbtc/webln-types": "npm:^3.0.0"
@@ -4823,7 +4824,7 @@ __metadata:
   resolution: "@snort/system-react@workspace:packages/system-react"
   dependencies:
     "@snort/shared": "npm:^1.0.17"
-    "@snort/system": "npm:^1.5.6"
+    "@snort/system": "npm:^1.5.7"
     "@types/react": "npm:^18.2.14"
     react: "npm:^18.2.0"
     typescript: "npm:^5.2.2"
@@ -4858,7 +4859,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snort/system@npm:^1.0.21, @snort/system@npm:^1.2.11, @snort/system@npm:^1.5.2, @snort/system@npm:^1.5.6, @snort/system@workspace:*, @snort/system@workspace:packages/system":
+"@snort/system@npm:^1.0.21, @snort/system@npm:^1.2.11, @snort/system@npm:^1.5.2, @snort/system@npm:^1.5.7, @snort/system@workspace:*, @snort/system@workspace:packages/system":
   version: 0.0.0-use.local
   resolution: "@snort/system@workspace:packages/system"
   dependencies:
@@ -4898,7 +4899,7 @@ __metadata:
     "@lightninglabs/lnc-web": "npm:^0.3.1-alpha"
     "@scure/base": "npm:^1.1.6"
     "@snort/shared": "npm:^1.0.17"
-    "@snort/system": "npm:^1.5.6"
+    "@snort/system": "npm:^1.5.7"
     "@types/debug": "npm:^4.1.12"
     "@webbtc/webln-types": "npm:^3.0.0"
     debug: "npm:^4.3.4"
@@ -6008,6 +6009,15 @@ __metadata:
   version: 1.2.0
   resolution: "@ungap/structured-clone@npm:1.2.0"
   checksum: 10/c6fe89a505e513a7592e1438280db1c075764793a2397877ff1351721fe8792a966a5359769e30242b3cd023f2efb9e63ca2ca88019d73b564488cc20e3eab12
+  languageName: node
+  linkType: hard
+
+"@vitejs/plugin-basic-ssl@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@vitejs/plugin-basic-ssl@npm:1.2.0"
+  peerDependencies:
+    vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
+  checksum: 10/34def4ab7838901f1f51bbff21fefac5f56346331f4ff1a8a3059d68e4cd43b62e1581a5ad39971d5d908343ee3217e782a0b506d97e0653c3373e27757ecedf
   languageName: node
   linkType: hard
 

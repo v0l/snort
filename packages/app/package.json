@@ -105,6 +105,7 @@
     "@types/webtorrent": "^0.109.3",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
+    "@vitejs/plugin-basic-ssl": "^1.2.0",
     "@vitejs/plugin-react": "^4.2.0",
     "@webbtc/webln-types": "^3.0.0",
     "@webscopeio/react-textarea-autocomplete": "^4.9.2",

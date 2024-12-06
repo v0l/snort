@@ -38,6 +38,7 @@ Snort supports the following NIP's:
 - [x] NIP-50: Search
 - [x] NIP-51: Lists
 - [x] NIP-53: Live Events
+- [x] NIP-55: Android signer application
 - [x] NIP-57: Zaps
 - [x] NIP-58: Badges
 - [x] NIP-59: Gift Wrap
