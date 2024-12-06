@@ -1,0 +1,49 @@
+{
+  "appName": "Soloco",
+  "appNameCapitalized": "Soloco",
+  "appTitle": "Soloco",
+  "hostname": "soloco.nl",  
+  "nip05Domain": "soloco.nl",
+  "icon": "/nostrich_512.png",
+  "favicon": "public/favicon.ico",
+  "appleTouchIconUrl": "/nostrich_512.png",
+  "navLogo": null,
+  "publicDir": "public/snort",
+  "httpCache": "",
+  "animalNamePlaceholders": false,
+  "defaultZapPoolFee": 0,
+  "features": {
+    "analytics": false,
+    "subscriptions": false,
+    "deck": false,
+    "zapPool": false,
+    "communityLeaders": false,
+    "nostrAddress": false,
+    "pushNotifications": true
+  },
+  "signUp": {
+    "quickStart": false,
+    "defaultFollows": []
+  },
+  "defaultPreferences": {
+    "hideMutedNotes": false,
+    "defaultRootTab": "following",
+    "language": "nl"
+  },
+  "media": {
+    "bypassImgProxyError": false,
+    "preferLargeMedia": true
+  },
+  "communityLeaders": null,
+  "noteCreatorToast": true,
+  "hideFromNavbar": [],
+  "deckSubKind": 1,
+  "showPowIcon": true,
+  "eventLinkPrefix": "nevent",
+  "profileLinkPrefix": "nprofile",
+  "defaultRelays": {
+    "wss://soloco.nl/": { "read": true, "write": false }
+  },
+  "alby": null,
+  "chatChannels": null
+}
