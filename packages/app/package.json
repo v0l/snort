@@ -36,6 +36,7 @@
     "marked": "^9.1.0",
     "marked-footnote": "^1.0.0",
     "match-sorter": "^6.3.1",
+    "plebnames": "^0.2.4",
     "qr-code-styling": "^1.6.0-rc.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

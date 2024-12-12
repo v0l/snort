@@ -4755,6 +4755,7 @@ __metadata:
     marked: "npm:^9.1.0"
     marked-footnote: "npm:^1.0.0"
     match-sorter: "npm:^6.3.1"
+    plebnames: "npm:^0.2.4"
     postcss: "npm:^8.4.31"
     postcss-preset-env: "npm:^9.2.0"
     prettier: "npm:2.8.3"
@@ -6880,6 +6881,13 @@ __metadata:
   version: 1.1.4
   resolution: "bech32@npm:1.1.4"
   checksum: 10/63ff37c0ce43be914c685ce89700bba1589c319af0dac1ea04f51b33d0e5ecfd40d14c24f527350b94f0a4e236385373bb9122ec276410f354ddcdbf29ca13f4
+  languageName: node
+  linkType: hard
+
+"bech32@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "bech32@npm:2.0.0"
+  checksum: 10/fa15acb270b59aa496734a01f9155677b478987b773bf701f465858bf1606c6a970085babd43d71ce61895f1baa594cb41a2cd1394bd2c6698f03cc2d811300e
   languageName: node
   linkType: hard
 
@@ -12159,6 +12167,15 @@ __metadata:
     mlly: "npm:^1.2.0"
     pathe: "npm:^1.1.0"
   checksum: 10/e17e1819ce579c9ea390e4c41a9ed9701d8cff14b463f9577cc4f94688da8917c66dabc40feacd47a21eb3de9b532756a78becd882b76add97053af307c1240a
+  languageName: node
+  linkType: hard
+
+"plebnames@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "plebnames@npm:0.2.4"
+  dependencies:
+    bech32: "npm:^2.0.0"
+  checksum: 10/c79704a87d205c5b955c95f807f113703154546072ca5db65b0456a9225bd81559b16f152f8640c461434e409bedeb4f6122a93ca6ec24f26aecc021abd3a570
   languageName: node
   linkType: hard
 
