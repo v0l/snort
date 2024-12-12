@@ -101,13 +101,21 @@ export function eventMatchesFilter(ev: NostrEvent, filter: ReqFilter) {
   if (!(filter.kinds?.includes(ev.kind) ?? true)) {
     return false;
   }
-  const tags = Object.entries(filter).filter(([k]) => k.startsWith("#"));
-  for (const [k, v] of tags) {
+  const orTags = Object.entries(filter).filter(([k]) => k.startsWith("#"));
+  for (const [k, v] of orTags) {
     const vargs = v as Array<string>;
     for (const x of vargs) {
       if (!ev.tags.find(a => a[0] === k.slice(1) && a[1] === x)) {
         return false;
       }
+    }
+  }
+  const andTags = Object.entries(filter).filter(([k]) => k.startsWith("&"));
+  for (const [k, v] of andTags) {
+    const vargs = v as Array<string>;
+    const allMatch = vargs.every(x => ev.tags.some(tag => tag[0] === k.slice(1) && tag[1] === x));
+    if (!allMatch) {
+      return false;
     }
   }
 
