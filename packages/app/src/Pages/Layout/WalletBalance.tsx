@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
+import { useEffect, useState } from "react";
+import { FormattedNumber } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import Icon from "@/Components/Icons/Icon";
+import { getCurrency } from "@/Components/IntlProvider/IntlProviderUtils";
 import { useRates } from "@/Hooks/useRates";
 import { useWallet } from "@/Wallet";
-import { getCurrency, getLocale } from "@/Components/IntlProvider/IntlProviderUtils";
 
 export const WalletBalance = () => {
   const [balance, setBalance] = useState<number>();
