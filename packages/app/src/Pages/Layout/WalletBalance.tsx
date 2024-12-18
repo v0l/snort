@@ -4,26 +4,22 @@ import { useNavigate } from "react-router-dom";
 
 import Icon from "@/Components/Icons/Icon";
 import { useRates } from "@/Hooks/useRates";
-import { Sats, useWallet } from "@/Wallet";
+import { useWallet } from "@/Wallet";
+import { getCurrency, getLocale } from "@/Components/IntlProvider/IntlProviderUtils";
 
 export const WalletBalance = () => {
-  const [balance, setBalance] = useState<Sats | null>(null);
+  const [balance, setBalance] = useState<number>();
   const wallet = useWallet();
-  const rates = useRates("BTCUSD");
+  const localCurrency = getCurrency();
+  const rates = useRates(`BTC${localCurrency}`);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setBalance(null);
+    setBalance(undefined);
     if (wallet.wallet && wallet.wallet.canGetBalance()) {
       wallet.wallet.getBalance().then(setBalance);
     }
   }, [wallet]);
-
-  const msgValues = useMemo(() => {
-    return {
-      amount: <FormattedNumber style="currency" currency="USD" value={(rates?.ask ?? 0) * (balance ?? 0) * 1e-8} />,
-    };
-  }, [balance, rates]);
 
   return (
     <div className="w-full flex flex-col max-xl:hidden pl-3 py-2 cursor-pointer" onClick={() => navigate("/wallet")}>
@@ -34,8 +30,25 @@ export const WalletBalance = () => {
         </div>
         <Icon name="dots" className="text-secondary" />
       </div>
-      <div className="text-secondary text-sm">
-        <FormattedMessage defaultMessage="~{amount}" values={msgValues} />
+      <div className="text-secondary text-xs flex justify-between items-center">
+        <div>
+          ~
+          <FormattedNumber
+            style="currency"
+            currency={localCurrency}
+            value={(rates?.ask ?? 0) * (balance ?? 0) * 1e-8}
+            currencyDisplay="narrowSymbol"
+          />
+        </div>
+        <div>
+          <FormattedNumber
+            style="currency"
+            currency={localCurrency}
+            value={rates?.ask ?? 0}
+            maximumFractionDigits={0}
+            currencyDisplay="narrowSymbol"
+          />
+        </div>
       </div>
     </div>
   );
