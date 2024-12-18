@@ -37,7 +37,7 @@ export class Nip96Uploader {
     const fd = new FormData();
     fd.append("size", file.size.toString());
     fd.append("caption", filename);
-    fd.append("media_type", file.type);
+    fd.append("content_type", file.type);
     fd.append("file", file);
 
     const rsp = await this.#req("", "POST", fd);
