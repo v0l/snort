@@ -137,8 +137,8 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     // Handle legacy and standard replaceable events (kinds 0, 3, 41, 10000-19999)
     if (legacyReplaceableKinds.includes(ev.kind) || (ev.kind >= 10_000 && ev.kind < 20_000)) {
       const oldEvents = db.selectValues(
-        `SELECT id FROM events WHERE kind = ? AND pubkey = ?`,
-        [ev.kind, ev.pubkey]
+        `SELECT id FROM events WHERE kind = ? AND pubkey = ? AND created <= ?`,
+        [ev.kind, ev.pubkey, ev.created_at]
       ) as Array<string>;
 
       if (oldEvents.includes(ev.id)) {
@@ -159,8 +159,8 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
         `SELECT e.id
          FROM events e
          JOIN tags t ON e.id = t.event_id
-         WHERE e.kind = ? AND e.pubkey = ? AND t.key = ? AND t.value = ?`,
-        [ev.kind, ev.pubkey, "d", dTag]
+         WHERE e.kind = ? AND e.pubkey = ? AND t.key = ? AND t.value = ? AND created <= ?`,
+        [ev.kind, ev.pubkey, "d", dTag, ev.created_at]
       ) as Array<string>;
 
       if (oldEvents.includes(ev.id)) {
