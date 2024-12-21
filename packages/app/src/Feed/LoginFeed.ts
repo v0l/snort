@@ -22,7 +22,7 @@ export default function useLoginFeed() {
   const { publisher, system } = useEventPublisher();
 
   useEffect(() => {
-    system.checkSigs = checkSigs;
+    //system.checkSigs = checkSigs;
   }, [system, checkSigs]);
 
   useEffect(() => {
