@@ -1,0 +1,8 @@
+snort:
+  android:
+    repository: https://github.com/v0l/snort
+    name: Snort
+    artifacts:
+      - snort-arm64-v8a-v%v.apk
+      - snort-armeabi-v7a-v%v.apk
+      - snort-x86_64-v%v.apk
