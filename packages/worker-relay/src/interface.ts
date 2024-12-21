@@ -1,4 +1,5 @@
-import { EventMetadata, NostrEvent, OkResponse, ReqCommand, WorkerMessage, WorkerMessageCommand } from "./types";
+import { debugLog, setLogging } from "./debug";
+import { EventMetadata, NostrEvent, OkResponse, ReqCommand, WorkerMessage, WorkerMessageCommand, unixNowMs } from "./types";
 import { v4 as uuid } from "uuid";
 
 export interface InitAargs {
@@ -92,6 +93,7 @@ export class WorkerRelayInterface {
   }
 
   async debug(v: string) {
+    setLogging(true);
     return await this.#workerRpc<string, boolean>("debug", v);
   }
 
@@ -102,6 +104,7 @@ export class WorkerRelayInterface {
       cmd,
       args,
     } as WorkerMessage<T>;
+    const start = unixNowMs();
     return await new Promise<R>((resolve, reject) => {
       this.#worker.postMessage(msg);
       const t = setTimeout(() => {
@@ -115,6 +118,7 @@ export class WorkerRelayInterface {
           reject(cmdReply.args.error);
           return;
         }
+        debugLog("interface", `${cmd} took ${(unixNowMs() - start).toFixed(1)}ms`, args);
         resolve(cmdReply.args);
       });
     });
