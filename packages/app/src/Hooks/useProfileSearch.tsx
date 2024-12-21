@@ -1,13 +1,13 @@
 import fuzzySearch from "@/Db/FuzzySearch";
 
-import useWoT from "./useWoT";
+import useWoT, { WoT } from "./useWoT";
 
-export default function useProfileSearch(search: string | undefined) {
-  return userSearch(search);
+export default function useProfileSearch() {
+  const wot = useWoT();
+  return (search: string | undefined) => userSearch(wot, search);
 }
 
-export function userSearch(search: string | undefined) {
-  const wot = useWoT();
+function userSearch(wot: WoT, search: string | undefined) {
   const searchString = search?.trim() ?? "";
   const fuseResults = (searchString?.length ?? 0) > 0 ? fuzzySearch.search(searchString) : [];
 

@@ -9,7 +9,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Avatar from "@/Components/User/Avatar";
 import Nip05 from "@/Components/User/Nip05";
 import { FuzzySearchResult } from "@/Db/FuzzySearch";
-import { userSearch } from "@/Hooks/useProfileSearch";
+import useProfileSearch from "@/Hooks/useProfileSearch";
 import searchEmoji from "@/Utils/emoji-search";
 
 import messages from "../messages";
@@ -58,6 +58,7 @@ interface TextareaProps {
 
 const Textarea = (props: TextareaProps) => {
   const { formatMessage } = useIntl();
+  const userSearch = useProfileSearch();
 
   const userDataProvider = (token: string) => {
     return userSearch(token).slice(0, 10);
