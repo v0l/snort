@@ -14,7 +14,7 @@ export interface TaggedNostrEvent extends NostrEvent {
   /**
    * A list of relays this event was seen on
    */
-  relays: Array<string>;
+  relays?: Array<string>;
 
   /**
    * Additional context
