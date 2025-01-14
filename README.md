@@ -92,3 +92,7 @@ yarn pre:commit
 ```
 
 This will create the source file `packages/app/src/translations/en.json`
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=v0l/snort&type=Date)](https://star-history.com/#v0l/snort&Date)
