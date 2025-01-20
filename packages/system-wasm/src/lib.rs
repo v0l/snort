@@ -1,9 +1,9 @@
 extern crate console_error_panic_hook;
 
-use secp256k1::{Message, XOnlyPublicKey, SECP256K1};
+use crate::filter::{FlatReqFilter, ReqFilter};
+use secp256k1::{XOnlyPublicKey, SECP256K1};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use crate::filter::{FlatReqFilter, ReqFilter};
 use wasm_bindgen::prelude::*;
 
 pub mod diff;
@@ -96,10 +96,11 @@ pub fn schnorr_verify(hash: JsValue, sig: JsValue, pub_key: JsValue) -> Result<b
     let sig_hex: String = serde_wasm_bindgen::from_value(sig)?;
     let pub_key_hex: String = serde_wasm_bindgen::from_value(pub_key)?;
 
-    let msg = Message::from_digest_slice(&hex::decode(msg_hex).unwrap()).unwrap();
     let key = XOnlyPublicKey::from_slice(&hex::decode(pub_key_hex).unwrap()).unwrap();
     let sig = secp256k1::schnorr::Signature::from_slice(&hex::decode(sig_hex).unwrap()).unwrap();
-    Ok(SECP256K1.verify_schnorr(&sig, &msg, &key).is_ok())
+    Ok(SECP256K1
+        .verify_schnorr(&sig, &hex::decode(msg_hex).unwrap(), &key)
+        .is_ok())
 }
 
 #[wasm_bindgen]
@@ -107,13 +108,23 @@ pub fn schnorr_verify_event(event: JsValue) -> Result<bool, JsValue> {
     console_error_panic_hook::set_once();
     let event_obj: Event = serde_wasm_bindgen::from_value(event)?;
 
-    let json = json!([0, event_obj.pubkey, event_obj.created_at, event_obj.kind, event_obj.tags, event_obj.content]);
+    let json = json!([
+        0,
+        event_obj.pubkey,
+        event_obj.created_at,
+        event_obj.kind,
+        event_obj.tags,
+        event_obj.content
+    ]);
     let id = sha256::digest(json.to_string().as_bytes());
 
-    let msg = Message::from_digest_slice(&hex::decode(id).unwrap()).unwrap();
     let key = XOnlyPublicKey::from_slice(&hex::decode(&event_obj.pubkey).unwrap()).unwrap();
-    let sig = secp256k1::schnorr::Signature::from_slice(&hex::decode(&event_obj.sig.unwrap()).unwrap()).unwrap();
-    Ok(SECP256K1.verify_schnorr(&sig, &msg, &key).is_ok())
+    let sig =
+        secp256k1::schnorr::Signature::from_slice(&hex::decode(&event_obj.sig.unwrap()).unwrap())
+            .unwrap();
+    Ok(SECP256K1
+        .verify_schnorr(&sig, &hex::decode(id).unwrap(), &key)
+        .is_ok())
 }
 #[cfg(test)]
 mod tests {

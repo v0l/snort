@@ -39,7 +39,7 @@ export function Note(props: NoteProps) {
   const { data: ev, highlight, options: opt, ignoreModeration = false, className, waitUntilInView } = props;
   const baseClassName = classNames("note min-h-[110px] flex flex-col gap-4 card", className ?? "");
   const { isEventMuted } = useModeration();
-  const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "2000px" });
+  const { ref, inView } = useInView({ triggerOnce: true });
   const { ref: setSeenAtRef, inView: setSeenAtInView } = useInView({ rootMargin: "0px", threshold: 1 });
   const [showTranslation, setShowTranslation] = useState(true);
   const [translated, setTranslated] = useState<NoteTranslation | null>(translationCache.get(ev.id));

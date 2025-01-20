@@ -31,7 +31,7 @@ export function useReactions(
     }
     others?.(rb);
     return rb;
-  }, [ids]);
+  }, [ids, others]);
 
   return useRequestBuilder(sub);
 }

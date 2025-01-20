@@ -160,12 +160,18 @@ export class Query extends EventEmitter<QueryEvents> {
    */
   #replaceable: boolean = false;
 
+  /**
+   * List of UUID request builder instance ids appended to this query
+   */
+  #builderInstances: Set<string>;
+
   #log = debug("Query");
 
   constructor(req: RequestBuilder) {
     super();
     this.id = req.id;
     this.#feed = new NoteCollection();
+    this.#builderInstances = new Set([req.instance]);
     this.#leaveOpen = req.options?.leaveOpen ?? false;
     this.#timeout = req.options?.timeout ?? 5_000;
     this.#groupingDelay = req.options?.groupingDelay ?? 100;
@@ -181,10 +187,14 @@ export class Query extends EventEmitter<QueryEvents> {
    * Adds another request to this one
    */
   addRequest(req: RequestBuilder) {
+    if (this.#builderInstances.has(req.instance)) {
+      return;
+    }
     if (req.numFilters > 0) {
       this.#log("Add query %O to %s", req, this.id);
       this.requests.push(...req.buildRaw());
       this.#start();
+      this.#builderInstances.add(req.instance);
       return true;
     }
     return false;
