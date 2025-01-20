@@ -44,6 +44,7 @@ import { hasWasm, wasmInit, WasmPath } from "@/Utils/wasm";
 import { Wallets } from "@/Wallet";
 import { setupWebLNWalletConfig } from "@/Wallet";
 
+import { Day } from "./Utils/Const";
 import { LoginStore } from "./Utils/Login";
 
 async function initSite() {
