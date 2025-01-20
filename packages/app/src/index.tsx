@@ -2,16 +2,17 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
 
-import { unixNowMs } from "@snort/shared";
+import { unixNow, unixNowMs } from "@snort/shared";
 import { EventBuilder } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 
-import { preload, UserCache } from "@/Cache";
+import { initRelayWorker, preload, Relay, UserCache } from "@/Cache";
 import { ThreadRoute } from "@/Components/Event/Thread/ThreadRoute";
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
+import { db } from "@/Db";
 import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch";
 import { AboutPage } from "@/Pages/About";
 import { DebugPage } from "@/Pages/CacheDebug";
@@ -39,6 +40,7 @@ import { WalletSendPage } from "@/Pages/wallet/send";
 import ZapPoolPage from "@/Pages/ZapPool/ZapPool";
 import { System } from "@/system";
 import { storeRefCode, unwrap } from "@/Utils";
+import { hasWasm, wasmInit, WasmPath } from "@/Utils/wasm";
 import { Wallets } from "@/Wallet";
 import { setupWebLNWalletConfig } from "@/Wallet";
 
@@ -51,10 +53,14 @@ async function initSite() {
     "31990:84de35e2584d2b144aae823c9ed0b0f3deda09648530b93d1a2a146d1dea9864:app-profile",
   ];
   storeRefCode();
+  if (hasWasm) {
+    await wasmInit(WasmPath);
+    await initRelayWorker();
+  }
 
   setupWebLNWalletConfig(Wallets);
 
-  //db.ready = await db.isAvailable();
+  db.ready = await db.isAvailable();
 
   const login = LoginStore.snapshot();
   preload(login.state.follows).then(async () => {
@@ -77,7 +83,7 @@ async function initSite() {
   });
 
   // cleanup
-  //Relay.delete(["REQ", "cleanup", { kinds: [1, 7, 9735], until: unixNow() - Day * 30 }]);
+  Relay.delete(["REQ", "cleanup", { kinds: [1, 7, 9735], until: unixNow() - Day * 30 }]);
 
   return null;
 }
