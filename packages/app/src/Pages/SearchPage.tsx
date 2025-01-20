@@ -15,7 +15,8 @@ const NOTES = 0;
 const PROFILES = 1;
 
 const Profiles = ({ keyword }: { keyword: string }) => {
-  const results = useProfileSearch(keyword);
+  const searchFn = useProfileSearch();
+  const results = useMemo(() => searchFn(keyword), [keyword, searchFn]);
   const ids = useMemo(() => results.map(r => r.pubkey), [results]);
   const content = keyword ? (
     <FollowListBase

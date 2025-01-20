@@ -7,8 +7,8 @@ export class UserProfileCache extends FeedCache<CachedMetadata> {
 
   constructor(table?: DexieTableLike<CachedMetadata>) {
     super("UserCache", table);
-    this.#processZapperQueue();
-    this.#processNip5Queue();
+    //this.#processZapperQueue();
+    //this.#processNip5Queue();
   }
 
   key(of: CachedMetadata): string {

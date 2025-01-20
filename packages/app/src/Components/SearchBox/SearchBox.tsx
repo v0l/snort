@@ -1,7 +1,7 @@
 import "./SearchBox.css";
 
 import { NostrLink, tryParseNostrLink } from "@snort/system";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -25,7 +25,8 @@ export default function SearchBox() {
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const resultListRef = useRef<HTMLDivElement | null>(null);
 
-  const results = useProfileSearch(search);
+  const searchFn = useProfileSearch();
+  const results = useMemo(() => searchFn(search), [search, searchFn]);
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
