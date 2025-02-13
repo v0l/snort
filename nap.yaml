@@ -1,0 +1,11 @@
+id: "social.snort.app"
+name: "Snort"
+description: ""
+icon: "https://snort.social/nostrich_256.png"
+images:
+  - "https://snort.social/nostrich_512.png"
+repository: "https://github.com/v0l/snort"
+license: "MIT"
+tags:
+  - "social"
+  - "twitter"
