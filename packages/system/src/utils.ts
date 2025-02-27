@@ -1,12 +1,19 @@
 import { equalProp } from "@snort/shared";
 import { FlatReqFilter } from "./query-optimizer";
-import { IMeta, NostrEvent, ReqFilter } from "./nostr";
+import { NostrEvent, ReqFilter } from "./nostr";
 
 export function findTag(e: NostrEvent, tag: string) {
   const maybeTag = e.tags.find(evTag => {
     return evTag[0] === tag;
   });
   return maybeTag && maybeTag[1];
+}
+
+export function findWholeTag(e: NostrEvent, tag: string) {
+  const maybeTag = e.tags.find(evTag => {
+    return evTag[0] === tag;
+  });
+  return maybeTag;
 }
 
 export function reqFilterEq(a: FlatReqFilter | ReqFilter, b: FlatReqFilter | ReqFilter): boolean {

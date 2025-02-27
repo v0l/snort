@@ -30,6 +30,7 @@ export * from "./encryption";
 export * from "./impl/nip4";
 export * from "./impl/nip7";
 export * from "./impl/nip10";
+export * from "./impl/nip22";
 export * from "./impl/nip44";
 export * from "./impl/nip46";
 export * from "./impl/nip57";

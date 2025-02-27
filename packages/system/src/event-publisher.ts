@@ -25,6 +25,7 @@ import { EventBuilder } from "./event-builder";
 import { findTag } from "./utils";
 import { Nip7Signer } from "./impl/nip7";
 import { Nip10 } from "./impl/nip10";
+import { Nip22 } from "./impl/nip22";
 
 type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
 
@@ -195,12 +196,19 @@ export class EventPublisher {
 
   /**
    * Reply to a note
+   *
+   * Replies to kind 1 notes are kind 1, otherwise kind 1111
    */
   async reply(replyTo: TaggedNostrEvent, msg: string, fnExtra?: EventBuilderHook) {
-    const eb = this.#eb(EventKind.TextNote);
+    const kind = replyTo.kind === EventKind.TextNote ? EventKind.TextNote : EventKind.Comment;
+    const eb = this.#eb(kind);
     eb.content(msg);
 
-    Nip10.replyTo(replyTo, eb);
+    if (kind === EventKind.TextNote) {
+      Nip10.replyTo(replyTo, eb);
+    } else {
+      Nip22.replyTo(replyTo, eb);
+    }
     eb.processContent();
     fnExtra?.(eb);
     return await this.#sign(eb);
@@ -211,6 +219,7 @@ export class EventPublisher {
     eb.content(content);
     eb.tag(unwrap(NostrLink.fromEvent(evRef).toEventTag()));
     eb.tag(["p", evRef.pubkey]);
+    eb.tag(["k", evRef.kind.toString()]);
     return await this.#sign(eb);
   }
 

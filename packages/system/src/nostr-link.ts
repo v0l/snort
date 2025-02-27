@@ -114,6 +114,32 @@ export class NostrLink implements ToNostrEventTag {
     }
   }
 
+  /**
+   * Create an event tag from this link as per NIP-22 (no marker position)
+   */
+  toEventTagNip22(root?: boolean) {
+    // emulate root flag by root marker
+    root ??= this.marker === "root";
+
+    const suffix: Array<string> = [];
+    if (this.relays && this.relays.length > 0) {
+      suffix.push(this.relays[0]);
+    }
+    if (this.type === NostrPrefix.PublicKey || this.type === NostrPrefix.Profile) {
+      return [root ? "P" : "p", this.id, ...suffix];
+    } else if (this.type === NostrPrefix.Note || this.type === NostrPrefix.Event) {
+      if (this.author) {
+        if (suffix[0] === undefined) {
+          suffix.push(""); // empty relay hint
+        }
+        suffix.push(this.author);
+      }
+      return [root ? "E" : "e", this.id, ...suffix];
+    } else if (this.type === NostrPrefix.Address) {
+      return [root ? "A" : "a", `${this.kind}:${this.author}:${this.id}`, ...suffix];
+    }
+  }
+
   matchesEvent(ev: NostrEvent) {
     if (this.type === NostrPrefix.Address) {
       const dTag = findTag(ev, "d");
@@ -194,11 +220,18 @@ export class NostrLink implements ToNostrEventTag {
   static fromTag(tag: Array<string>, author?: string, kind?: number) {
     const relays = tag.length > 2 ? [tag[2]] : undefined;
     switch (tag[0]) {
+      case "E": {
+        return new NostrLink(NostrPrefix.Event, tag[1], kind, author ?? tag[3], relays, "root");
+      }
       case "e": {
         return new NostrLink(NostrPrefix.Event, tag[1], kind, author ?? tag[4], relays, tag[3]);
       }
       case "p": {
         return new NostrLink(NostrPrefix.Profile, tag[1], kind, author, relays);
+      }
+      case "A": {
+        const [kind, author, dTag] = tag[1].split(":");
+        return new NostrLink(NostrPrefix.Address, dTag, Number(kind), author, relays, "root");
       }
       case "a": {
         const [kind, author, dTag] = tag[1].split(":");
@@ -242,7 +275,7 @@ export class NostrLink implements ToNostrEventTag {
     let relays = "relays" in ev ? ev.relays : undefined;
     const eventRelays = removeUndefined(
       ev.tags
-        .filter(a => a[0] === "relays" || a[0] === "relay" || a[0] === "r")
+        .filter(a => a[0] === "relays" || a[0] === "relay" || (a[0] === "r" && ev.kind == EventKind.Relays))
         .flatMap(a => a.slice(1).map(b => sanitizeRelayUrl(b))),
     );
     relays = appendDedupe(relays, eventRelays);

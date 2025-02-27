@@ -32,7 +32,14 @@ const defaultOptions = {
   showContextMenu: true,
 };
 
-const canRenderAsTextNote = [EventKind.TextNote, EventKind.Polls];
+const canRenderAsTextNote = [
+  EventKind.TextNote,
+  EventKind.Polls,
+  EventKind.Photo,
+  EventKind.Video,
+  EventKind.ShortVideo,
+  EventKind.Comment,
+];
 const translationCache = new LRUCache<string, NoteTranslation>({ maxSize: 300 });
 
 export function Note(props: NoteProps) {

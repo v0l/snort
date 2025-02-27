@@ -1,4 +1,4 @@
-import { EventKind, Nip10, NostrLink, RequestBuilder } from "@snort/system";
+import { EventKind, Nip10, Nip22, NostrLink, RequestBuilder } from "@snort/system";
 import { SnortContext, useRequestBuilder } from "@snort/system-react";
 import { useContext, useEffect, useMemo, useState } from "react";
 
@@ -34,7 +34,7 @@ export default function useThreadFeed(link: NostrLink) {
     for (const v of Object.values(grouped)) {
       sub
         .withFilter()
-        .kinds([EventKind.TextNote])
+        .kinds([EventKind.TextNote, EventKind.Comment])
         .replyToLink(v)
         .relay(rootRelays ?? []);
     }
@@ -48,7 +48,9 @@ export default function useThreadFeed(link: NostrLink) {
       const links = store
         .map(a => [
           NostrLink.fromEvent(a),
-          ...a.tags.filter(a => a[0] === "e" || a[0] === "a").map(v => NostrLink.fromTag(v)),
+          ...a.tags
+            .filter(a => a[0] === "e" || a[0] === "a" || a[0] === "E" || a[0] === "A")
+            .map(v => NostrLink.fromTag(v)),
         ])
         .flat();
       setAllEvents(links);
@@ -56,14 +58,19 @@ export default function useThreadFeed(link: NostrLink) {
       // load the thread structure from the current note
       const current = store.find(a => link.matchesEvent(a));
       if (current) {
-        const t = Nip10.parseThread(current);
-        if (t) {
-          const rootOrReplyAsRoot = t?.root ?? t?.replyTo;
-          if (rootOrReplyAsRoot) {
-            setRoot(rootOrReplyAsRoot);
+        if (current.kind === EventKind.TextNote) {
+          const t = Nip10.parseThread(current);
+          if (t) {
+            const rootOrReplyAsRoot = t?.root ?? t?.replyTo;
+            if (rootOrReplyAsRoot) {
+              setRoot(rootOrReplyAsRoot);
+            }
+          } else {
+            setRoot(link);
           }
         } else {
-          setRoot(link);
+          const root = Nip22.rootScopeOf(current);
+          setRoot(NostrLink.fromTag(root));
         }
       }
     }

@@ -139,7 +139,6 @@ export function NoteCreator() {
           extraTags ??= [];
           extraTags.push(["content-warning", note.sensitive]);
         }
-        const kind = note.pollOptions ? EventKind.Polls : EventKind.TextNote;
         if (note.pollOptions) {
           extraTags ??= [];
           extraTags.push(...note.pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
@@ -179,7 +178,9 @@ export function NoteCreator() {
         const hk = (eb: EventBuilder) => {
           extraTags?.forEach(t => eb.tag(t));
           note.extraTags?.forEach(t => eb.tag(t));
-          eb.kind(kind);
+          if (note.pollOptions) {
+            eb.kind(EventKind.Polls);
+          }
           return eb;
         };
         const ev = note.replyTo

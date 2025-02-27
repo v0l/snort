@@ -1,6 +1,6 @@
 import "./EventComponent.css";
 
-import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrEvent, parseIMeta, TaggedNostrEvent } from "@snort/system";
 import { memo, ReactNode } from "react";
 
 import PubkeyList from "@/Components/Embed/PubkeyList";
@@ -75,6 +75,21 @@ export default memo(function EventComponent(props: NoteProps) {
     case 9041: // Assuming 9041 is a valid EventKind
       content = <ZapGoal ev={ev} />;
       break;
+    case EventKind.Photo:
+    case EventKind.Video:
+    case EventKind.ShortVideo: {
+      // append media to note as if kind1 post
+      const media = parseIMeta(ev.tags);
+      // Sometimes we cann call this twice so check the URL's are not already
+      // in the content
+      const urls = Object.entries(media ?? {}).map(([k]) => k);
+      if (!urls.every(u => ev.content.includes(u))) {
+        const newContent = ev.content + " " + urls.join("\n");
+        props.data.content = newContent;
+      }
+      content = <Note {...props} />;
+      break;
+    }
     case EventKind.LongFormTextNote:
       content = (
         <LongFormText

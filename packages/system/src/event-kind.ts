@@ -12,12 +12,16 @@ const enum EventKind {
   SimpleChatMessage = 9, // NIP-29
   SealedRumor = 13, // NIP-59
   ChatRumor = 14, // NIP-24
+  Photo = 20, // NIP-68
+  Video = 21, // NIP-71
+  ShortVideo = 22, // NIP-71
   PublicChatChannel = 40, // NIP-28
   PublicChatMetadata = 41, // NIP-28
   PublicChatMessage = 42, // NIP-28
   PublicChatMuteMessage = 43, // NIP-28
   PublicChatMuteUser = 44, // NIP-28
   SnortSubscriptions = 1000, // NIP-XX
+  Comment = 1111, // NIP-22
   Polls = 6969, // NIP-69
   GiftWrap = 1059, // NIP-59
   FileHeader = 1063, // NIP-94
