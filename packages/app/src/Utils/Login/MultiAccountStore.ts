@@ -7,7 +7,6 @@ import {
   EventPublisher,
   HexKey,
   KeyStorage,
-  NotEncrypted,
   RelaySettings,
   UserState,
   UserStateObject,
@@ -63,6 +62,7 @@ const LoggedOut = {
 
 export class MultiAccountStore extends ExternalStore<LoginSession> {
   #activeAccount?: HexKey;
+  #saveDebounce?: ReturnType<typeof setTimeout>;
   #accounts: Map<string, LoginSession> = new Map();
   #publishers = new Map<string, EventPublisher>();
 
@@ -109,6 +109,10 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       );
       stateClass.checkIsStandardList(EventKind.StorageServerList); // track nip96 list
       stateClass.on("change", () => this.#save());
+      if (v.state instanceof UserState) {
+        v.state.destroy();
+      }
+      console.debug("UserState assign = ", stateClass);
       v.state = stateClass;
 
       // always activate signer
@@ -117,7 +121,6 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         this.#publishers.set(v.id, signer);
       }
     }
-    this.#loadIrisKeyIfExists();
   }
 
   getSessions() {
@@ -191,8 +194,8 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       stalker: stalker ?? false,
     } as LoginSession;
 
-    newSession.state.checkIsStandardList(EventKind.StorageServerList); // track nip96 list
-    newSession.state.on("change", () => this.#save());
+    newSession.state!.checkIsStandardList(EventKind.StorageServerList); // track nip96 list
+    newSession.state!.on("change", () => this.#save());
     const pub = createPublisher(newSession);
     if (pub) {
       this.#publishers.set(newSession.id, pub);
@@ -240,8 +243,8 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         appdataId: "snort",
       }),
     } as LoginSession;
-    newSession.state.checkIsStandardList(EventKind.StorageServerList); // track nip96 list
-    newSession.state.on("change", () => this.#save());
+    newSession.state!.checkIsStandardList(EventKind.StorageServerList); // track nip96 list
+    newSession.state!.on("change", () => this.#save());
 
     if ("nostr_os" in window && window?.nostr_os) {
       window?.nostr_os.saveKey(key.value);
@@ -278,22 +281,6 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     if (!s) return LoggedOut;
 
     return { ...s };
-  }
-
-  #loadIrisKeyIfExists() {
-    try {
-      const irisKeyJSON = window.localStorage.getItem("iris.myKey");
-      if (irisKeyJSON) {
-        const irisKeyObj = JSON.parse(irisKeyJSON);
-        if (irisKeyObj.priv) {
-          const privateKey = new NotEncrypted(irisKeyObj.priv);
-          this.loginWithPrivateKey(privateKey);
-          window.localStorage.removeItem("iris.myKey");
-        }
-      }
-    } catch (e) {
-      console.error("Failed to load iris key", e);
-    }
   }
 
   #migrate() {
@@ -367,27 +354,33 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   }
 
   #save() {
-    if (!this.#activeAccount && this.#accounts.size > 0) {
-      this.#activeAccount = this.#accounts.keys().next().value;
+    if (this.#saveDebounce !== undefined) {
+      clearTimeout(this.#saveDebounce);
     }
-    const toSave = [];
-    for (const v of this.#accounts.values()) {
-      if (v.privateKeyData instanceof KeyStorage) {
-        toSave.push({
-          ...v,
-          state: v.state instanceof UserState ? v.state.serialize() : v.state,
-          privateKeyData: v.privateKeyData.toPayload(),
-        });
-      } else {
-        toSave.push({
-          ...v,
-          state: v.state instanceof UserState ? v.state.serialize() : v.state,
-        });
-      }
-    }
-
-    console.debug("Trying to save", toSave);
-    window.localStorage.setItem(AccountStoreKey, JSON.stringify(toSave));
     this.notifyChange();
+    this.#saveDebounce = setTimeout(() => {
+      if (!this.#activeAccount && this.#accounts.size > 0) {
+        this.#activeAccount = this.#accounts.keys().next().value;
+      }
+      const toSave = [];
+      for (const v of this.#accounts.values()) {
+        if (v.privateKeyData instanceof KeyStorage) {
+          toSave.push({
+            ...v,
+            state: v.state instanceof UserState ? v.state.serialize() : v.state,
+            privateKeyData: v.privateKeyData.toPayload(),
+          });
+        } else {
+          toSave.push({
+            ...v,
+            state: v.state instanceof UserState ? v.state.serialize() : v.state,
+          });
+        }
+      }
+
+      console.debug("Trying to save", toSave);
+      window.localStorage.setItem(AccountStoreKey, JSON.stringify(toSave));
+      this.#saveDebounce = undefined;
+    }, 2000);
   }
 }

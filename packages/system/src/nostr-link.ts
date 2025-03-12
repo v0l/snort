@@ -150,7 +150,7 @@ export class NostrLink implements ToNostrEventTag {
       const ifSetCheck = <T>(a: T | undefined, b: T) => {
         return !Boolean(a) || a === b;
       };
-      return ifSetCheck(this.id, ev.id) && ifSetCheck(this.author, ev.pubkey) && ifSetCheck(this.kind, ev.kind);
+      return (EventExt.isReplaceable(ev.kind) || ifSetCheck(this.id, ev.id)) && ifSetCheck(this.author, ev.pubkey) && ifSetCheck(this.kind, ev.kind);
     }
 
     return false;

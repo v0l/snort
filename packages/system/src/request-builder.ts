@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import { appendDedupe, dedupe, removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
 
 import EventKind from "./event-kind";
-import { NostrLink, NostrPrefix, ToNostrEventTag } from ".";
+import { EventExt, NostrLink, NostrPrefix, ToNostrEventTag } from ".";
 import { ReqFilter, u256, HexKey, TaggedNostrEvent } from "./nostr";
 import { RequestRouter } from "./request-router";
 
@@ -208,7 +208,8 @@ export class RequestFilterBuilder {
         .kinds([unwrap(link.kind)])
         .authors([unwrap(link.author)]);
     } else {
-      if (link.id) {
+      // dont use id if link is replaceable kind
+      if (link.id && (link.kind === undefined || !EventExt.isReplaceable(link.kind))) {
         this.ids([link.id]);
       }
       if (link.author) {

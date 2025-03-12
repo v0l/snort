@@ -62,6 +62,9 @@ export interface LoginSession {
    */
   publicKey?: HexKey;
 
+  /**
+   * Login state for the current user
+   */
   state: UserState<SnortAppData>;
 
   /**

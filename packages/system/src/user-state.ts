@@ -50,11 +50,11 @@ export interface UserStateEvents {
  */
 export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   #log = debug("UserState");
-  #profile: JsonEventSync<UserMetadata | undefined>; // kind 0
-  #contacts: DiffSyncTags; // kind 3
-  #relays: DiffSyncTags; // kind 10_003
+  #profile?: JsonEventSync<UserMetadata | undefined>; // kind 0
+  #contacts?: DiffSyncTags; // kind 3
+  #relays?: DiffSyncTags; // kind 10_003
   #appdata?: JsonEventSync<TAppData>; // kind 30_0078
-  #standardLists: Map<EventKind, DiffSyncTags>; // NIP-51 lists
+  #standardLists?: Map<EventKind, DiffSyncTags>; // NIP-51 lists
 
   // init vars
   #signer?: EventSigner;
@@ -72,15 +72,15 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   ) {
     super();
     this.#stateObj = stateObj;
-    this.#standardLists = new Map();
+    this.#standardLists = pubkey ? new Map() : undefined;
 
-    this.#profile = new JsonEventSync<UserMetadata | undefined>(
+    this.#profile = pubkey ? new JsonEventSync<UserMetadata | undefined>(
       undefined,
-      new NostrLink(NostrPrefix.Event, "", EventKind.SetMetadata, pubkey),
+      new NostrLink(NostrPrefix.Event, pubkey, EventKind.SetMetadata, pubkey),
       false,
-    );
-    this.#contacts = new DiffSyncTags(new NostrLink(NostrPrefix.Event, "", EventKind.ContactList, pubkey), false);
-    this.#relays = new DiffSyncTags(new NostrLink(NostrPrefix.Event, "", EventKind.Relays, pubkey), false);
+    ) : undefined;
+    this.#contacts = pubkey ? new DiffSyncTags(new NostrLink(NostrPrefix.Event, pubkey, EventKind.ContactList, pubkey), false) : undefined;
+    this.#relays = pubkey ? new DiffSyncTags(new NostrLink(NostrPrefix.Event, pubkey, EventKind.Relays, pubkey), false) : undefined;
     if (options?.appdataId && options.initAppdata) {
       const link = new NostrLink(NostrPrefix.Address, options.appdataId, EventKind.AppData, pubkey);
       this.#appdata = new JsonEventSync<TAppData>(options.initAppdata, link, options.encryptAppdata ?? false);
@@ -90,10 +90,19 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     // always track mute list
     this.checkIsStandardList(EventKind.MuteList);
 
-    this.#profile.on("change", () => this.emit("change", UserStateChangeType.Profile));
-    this.#contacts.on("change", () => this.emit("change", UserStateChangeType.Contacts));
-    this.#relays.on("change", () => this.emit("change", UserStateChangeType.Relays));
+    this.#profile?.on("change", () => this.emit("change", UserStateChangeType.Profile));
+    this.#contacts?.on("change", () => this.emit("change", UserStateChangeType.Contacts));
+    this.#relays?.on("change", () => this.emit("change", UserStateChangeType.Relays));
     this.on("change", () => this.#version++);
+  }
+
+  get didInit() {
+    return this.#didInit;
+  }
+
+  destroy() {
+    this.#log("Shutdown");
+    this.removeAllListeners();
   }
 
   async init(signer: EventSigner | undefined, system: SystemInterface) {
@@ -105,35 +114,37 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     this.#signer = signer;
     this.#system = system;
     const tasks = [
-      this.#profile.sync(signer, system),
-      this.#contacts.sync(signer, system),
-      this.#relays.sync(signer, system),
+      this.#profile?.sync(signer, system),
+      this.#contacts?.sync(signer, system),
+      this.#relays?.sync(signer, system),
     ];
     if (this.#appdata) {
       tasks.push(this.#appdata.sync(signer, system));
     }
-    for (const list of this.#standardLists.values()) {
-      tasks.push(list.sync(signer, system));
+    if (this.#standardLists) {
+      for (const list of this.#standardLists.values()) {
+        tasks.push(list.sync(signer, system));
+      }
     }
     await Promise.all(tasks);
     this.#log(
       "Init results: signer=%s, profile=%O, contacts=%O, relays=%O, appdata=%O, lists=%O",
       signer ? "yes" : "no",
-      this.#profile.json,
-      this.#contacts.value,
-      this.#relays.value,
+      this.#profile?.json,
+      this.#contacts?.value,
+      this.#relays?.value,
       this.#appdata?.json,
-      [...this.#standardLists.values()].map(a => [a.value, a.encryptedTags]),
+      [...(this.#standardLists?.values() ?? [])].map(a => [a.link.kind, a.value, a.encryptedTags]),
     );
 
     // update relay metadata with value from contact list if not found
-    if (this.#relays.value === undefined && this.#contacts.value?.content !== undefined && signer) {
+    if (this.#relays?.value === undefined && this.#contacts?.value?.content !== undefined && signer) {
       this.#log("Saving relays to NIP-65 relay list using %O", this.relays);
       for (const r of this.relays ?? []) {
         await this.addRelay(r.url, r.settings, false);
       }
 
-      await this.#relays.persist(signer, system);
+      await this.#relays?.persist(signer, system);
     }
   }
 
@@ -149,16 +160,16 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
    * Users profile
    */
   get profile() {
-    return this.#profile.json ?? this.#stateObj?.profile;
+    return this.#profile?.json ?? this.#stateObj?.profile;
   }
 
   /**
    * Users configured relays
    */
   get relays() {
-    if (this.#relays.value) {
+    if (this.#relays?.value) {
       return parseRelayTags(this.#relays.tags);
-    } else if (this.#contacts.value) {
+    } else if (this.#contacts?.value) {
       return parseRelaysFromKind(this.#contacts.value);
     } else {
       return this.#stateObj?.relays;
@@ -169,7 +180,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
    * Followed pubkeys
    */
   get follows() {
-    if (this.#contacts.value) {
+    if (this.#contacts?.value) {
       const pTags = this.#contacts.tags.filter(a => a[0] === "p" && a[1].length === 64).map(a => a[1]) ?? [];
       return dedupe(pTags);
     } else {
@@ -188,7 +199,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
    * Get the standard mute list
    */
   get muted() {
-    const list = this.#standardLists.get(EventKind.MuteList);
+    const list = this.#standardLists?.get(EventKind.MuteList);
     if (list) {
       return NostrLink.fromAllTags(list.encryptedTags);
     }
@@ -202,12 +213,12 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     }
 
     const tag = link.toEventTag();
-    if (tag) {
+    if (tag && this.#contacts) {
       this.#contacts.add(tag);
       if (autoCommit) {
         await this.saveContacts();
       }
-    } else {
+    } else if (!tag) {
       throw new Error("Invalid link");
     }
   }
@@ -219,12 +230,12 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     }
 
     const tag = link.toEventTag();
-    if (tag) {
+    if (tag && this.#contacts) {
       this.#contacts.remove(tag);
       if (autoCommit) {
         await this.saveContacts();
       }
-    } else {
+    } else if (!tag) {
       throw new Error("Invalid link");
     }
   }
@@ -235,10 +246,12 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
       throw new Error("Cannot follow this type of link");
     }
 
-    const tags = removeUndefined(links.map(link => link.toEventTag()));
-    this.#contacts.replace(tags);
-    if (autoCommit) {
-      await this.saveContacts();
+    if (this.#contacts) {
+      const tags = removeUndefined(links.map(link => link.toEventTag()));
+      this.#contacts.replace(tags);
+      if (autoCommit) {
+        await this.saveContacts();
+      }
     }
   }
 
@@ -250,7 +263,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   async saveContacts() {
     this.#checkInit();
     const content = JSON.stringify(this.#relaysObject());
-    await this.#contacts.persist(this.#signer!, this.#system!, content);
+    await this.#contacts?.persist(this.#signer!, this.#system!, content);
   }
 
   async addRelay(addr: string, settings: RelaySettings, autoCommit = false) {
@@ -260,12 +273,12 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
       url: addr,
       settings,
     });
-    if (tag) {
+    if (tag && this.#relays) {
       this.#relays.add(tag);
       if (autoCommit) {
         await this.saveRelays();
       }
-    } else {
+    } else if (!tag) {
       throw new Error("Invalid relay options");
     }
   }
@@ -274,12 +287,12 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     this.#checkInit();
 
     const url = sanitizeRelayUrl(addr);
-    if (url) {
+    if (url && this.#relays) {
       this.#relays.remove(["r", url]);
       if (autoCommit) {
         await this.saveRelays();
       }
-    } else {
+    } else if (!url) {
       throw new Error("Invalid relay options");
     }
   }
@@ -292,12 +305,12 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
       settings,
     });
     const url = sanitizeRelayUrl(addr);
-    if (url && tag) {
+    if (url && tag && this.#relays) {
       this.#relays.update(tag);
       if (autoCommit) {
         await this.saveRelays();
       }
-    } else {
+    } else if (!url && !tag) {
       throw new Error("Invalid relay options");
     }
   }
@@ -309,7 +322,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
    */
   async saveRelays() {
     this.#checkInit();
-    await this.#relays.persist(this.#signer!, this.#system!);
+    await this.#relays?.persist(this.#signer!, this.#system!);
   }
 
   async setAppData(data: TAppData) {
@@ -336,7 +349,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   ) {
     this.checkIsStandardList(kind);
     this.#checkInit();
-    const list = this.#standardLists.get(kind);
+    const list = this.#standardLists?.get(kind);
     const tags = removeUndefined(Array.isArray(links) ? links.map(a => a.toEventTag()) : [links.toEventTag()]);
     if (list && tags.length > 0) {
       list.add(tags, encrypted);
@@ -361,7 +374,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   ) {
     this.checkIsStandardList(kind);
     this.#checkInit();
-    const list = this.#standardLists.get(kind);
+    const list = this.#standardLists?.get(kind);
     const tags = removeUndefined(Array.isArray(links) ? links.map(a => a.toEventTag()) : [links.toEventTag()]);
     if (list && tags.length > 0) {
       list.remove(tags, encrypted);
@@ -377,7 +390,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
    * used with `autocommit = false`
    */
   async saveList(kind: EventKind, content?: string) {
-    const list = this.#standardLists.get(kind);
+    const list = this.#standardLists?.get(kind);
     await list?.persist(this.#signer!, this.#system!, content);
   }
 
@@ -390,7 +403,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   }
 
   isOnList(kind: EventKind, link: ToNostrEventTag) {
-    const list = this.#standardLists.get(kind);
+    const list = this.#standardLists?.get(kind);
     const tag = link.toEventTag();
     if (list && tag) {
       return list.tags.some(a => a[0] === tag[0] && a[1] === tag[1]);
@@ -399,7 +412,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   }
 
   getList(kind: EventKind): Array<ToNostrEventTag> {
-    const list = this.#standardLists.get(kind);
+    const list = this.#standardLists?.get(kind);
     return NostrLink.fromAllTags(list?.tags ?? []);
   }
 
@@ -414,12 +427,12 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
 
   checkIsStandardList(kind: EventKind) {
     if (!(kind >= 10_000 && kind < 20_000)) {
-      throw new Error("Not a standar list");
+      throw new Error("Not a standard list");
     }
-    if (!this.#standardLists.has(kind)) {
-      const list = new DiffSyncTags(new NostrLink(NostrPrefix.Event, "", kind, this.pubkey), true);
+    if (this.#standardLists?.has(kind) === false) {
+      const list = new DiffSyncTags(new NostrLink(NostrPrefix.Event, this.pubkey, kind, this.pubkey), true);
       list.on("change", () => this.emit("change", UserStateChangeType.GenericList));
-      this.#standardLists.set(kind, list);
+      this.#standardLists?.set(kind, list);
     }
   }
 
