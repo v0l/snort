@@ -35,7 +35,7 @@ export default defineConfig({
       name: "snort",
       ifGitSHA: true,
       command: "git describe --always --tags",
-      ifMeta: false,
+      ifMeta: true,
       ifLog: false,
       ifGlobal: false,
     }),

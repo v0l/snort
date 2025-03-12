@@ -4782,7 +4782,7 @@ __metadata:
     vite: "npm:^5.2.8"
     vite-plugin-eslint: "npm:^1.8.1"
     vite-plugin-pwa: "npm:^0.19.2"
-    vite-plugin-version-mark: "npm:^0.0.10"
+    vite-plugin-version-mark: "npm:^0.1.4"
     vitest: "npm:^0.34.6"
     workbox-cacheable-response: "npm:^7.0.0"
     workbox-core: "npm:^6.4.2"
@@ -13433,6 +13433,7 @@ __metadata:
     prettier: "npm:^3.0.3"
     typedoc: "npm:^0.25.7"
     typescript: "npm:^5.2.2"
+    vite-plugin-version-mark: "npm:^0.1.4"
   languageName: unknown
   linkType: soft
 
@@ -15124,10 +15125,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-version-mark@npm:^0.0.10":
-  version: 0.0.10
-  resolution: "vite-plugin-version-mark@npm:0.0.10"
-  checksum: 10/a5120d2c09e428a0942dfbd27ad60aa6305599daf5d52ce110d50ae9da23da1591d4e78c62eae2d724919b37315ecda2a192cfa60601a4b0ad5a6b87941750f1
+"vite-plugin-version-mark@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "vite-plugin-version-mark@npm:0.1.4"
+  peerDependencies:
+    vite: "*"
+  checksum: 10/25f2320c02d5d885842e823c5fc239b73f67716b84ca6a12acb6a6e5511bff97ae455484b651242311645c8878c3314b79408e3827cf07ac59c1b053e62a1bf3
   languageName: node
   linkType: hard
 
