@@ -64,7 +64,11 @@ export function Header() {
       </>
     );
   } else if (nostrLink) {
-    if (nostrLink.type === NostrPrefix.Event || nostrLink.type === NostrPrefix.Note) {
+    if (
+      nostrLink.type === NostrPrefix.Event ||
+      nostrLink.type === NostrPrefix.Note ||
+      nostrLink.type === NostrPrefix.Address
+    ) {
       title = <NoteTitle link={nostrLink} />;
     } else if (nostrLink.type === NostrPrefix.PublicKey || nostrLink.type === NostrPrefix.Profile) {
       try {

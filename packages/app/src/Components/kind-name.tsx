@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { FormattedMessage } from "react-intl";
 
 export default function KindName({ kind }: { kind: number }) {
@@ -222,5 +223,9 @@ export default function KindName({ kind }: { kind: number }) {
       return <FormattedMessage defaultMessage="Video View Event" />;
     case 34550:
       return <FormattedMessage defaultMessage="Community Definition" />;
+    case 31337:
+      return <FormattedMessage defaultMessage="Zapstr Track" />;
+    default:
+      return kind;
   }
 }

@@ -270,6 +270,9 @@
   "4emo2p": {
     "defaultMessage": "Missing Relays"
   },
+  "4oPRxH": {
+    "defaultMessage": "Supported Kinds:"
+  },
   "4rYCjn": {
     "defaultMessage": "Note to Self"
   },
@@ -1148,6 +1151,9 @@
   "QWhotP": {
     "defaultMessage": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)"
   },
+  "QaGyuN": {
+    "defaultMessage": "Zapstr Track"
+  },
   "QpaLA3": {
     "defaultMessage": "Channel Message"
   },
@@ -1301,6 +1307,9 @@
   },
   "ULXFfP": {
     "defaultMessage": "Receive"
+  },
+  "ULsJTk": {
+    "defaultMessage": "Published by"
   },
   "UNjfWJ": {
     "defaultMessage": "Check all event signatures received from relays"

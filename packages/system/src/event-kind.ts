@@ -55,6 +55,7 @@ const enum EventKind {
   LiveEvent = 30311, // NIP-102
   UserStatus = 30315, // NIP-38
   ZapstrTrack = 31337,
+  ApplicationHandler = 31_990,
   SimpleChatMetadata = 39_000, // NIP-29
   ZapRequest = 9734, // NIP 57
   ZapReceipt = 9735, // NIP 57

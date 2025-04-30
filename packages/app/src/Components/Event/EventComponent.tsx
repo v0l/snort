@@ -6,14 +6,14 @@ import { memo, ReactNode } from "react";
 import PubkeyList from "@/Components/Embed/PubkeyList";
 import ZapstrEmbed from "@/Components/Embed/ZapstrEmbed";
 import ErrorBoundary from "@/Components/ErrorBoundary";
+import { ApplicationHandler } from "@/Components/Event/Application";
+import { LongFormText } from "@/Components/Event/LongFormText";
 import { NostrFileElement } from "@/Components/Event/NostrFileHeader";
+import { Note } from "@/Components/Event/Note/Note";
 import NoteReaction from "@/Components/Event/NoteReaction";
 import { ZapGoal } from "@/Components/Event/ZapGoal";
 import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
 import ProfilePreview from "@/Components/User/ProfilePreview";
-
-import { LongFormText } from "./LongFormText";
-import { Note } from "./Note/Note";
 
 export interface NotePropsOptions {
   isRoot?: boolean;
@@ -75,6 +75,10 @@ export default memo(function EventComponent(props: NoteProps) {
     case 9041: // Assuming 9041 is a valid EventKind
       content = <ZapGoal ev={ev} />;
       break;
+    case EventKind.ApplicationHandler: {
+      content = <ApplicationHandler ev={ev} />;
+      break;
+    }
     case EventKind.Photo:
     case EventKind.Video:
     case EventKind.ShortVideo: {
