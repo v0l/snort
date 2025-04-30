@@ -74,13 +74,19 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     this.#stateObj = stateObj;
     this.#standardLists = pubkey ? new Map() : undefined;
 
-    this.#profile = pubkey ? new JsonEventSync<UserMetadata | undefined>(
-      undefined,
-      new NostrLink(NostrPrefix.Event, pubkey, EventKind.SetMetadata, pubkey),
-      false,
-    ) : undefined;
-    this.#contacts = pubkey ? new DiffSyncTags(new NostrLink(NostrPrefix.Event, pubkey, EventKind.ContactList, pubkey), false) : undefined;
-    this.#relays = pubkey ? new DiffSyncTags(new NostrLink(NostrPrefix.Event, pubkey, EventKind.Relays, pubkey), false) : undefined;
+    this.#profile = pubkey
+      ? new JsonEventSync<UserMetadata | undefined>(
+          undefined,
+          new NostrLink(NostrPrefix.Event, pubkey, EventKind.SetMetadata, pubkey),
+          false,
+        )
+      : undefined;
+    this.#contacts = pubkey
+      ? new DiffSyncTags(new NostrLink(NostrPrefix.Event, pubkey, EventKind.ContactList, pubkey), false)
+      : undefined;
+    this.#relays = pubkey
+      ? new DiffSyncTags(new NostrLink(NostrPrefix.Event, pubkey, EventKind.Relays, pubkey), false)
+      : undefined;
     if (options?.appdataId && options.initAppdata) {
       const link = new NostrLink(NostrPrefix.Address, options.appdataId, EventKind.AppData, pubkey);
       this.#appdata = new JsonEventSync<TAppData>(options.initAppdata, link, options.encryptAppdata ?? false);

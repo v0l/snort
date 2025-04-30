@@ -179,6 +179,10 @@ a.ext {
   -webkit-text-stroke: 1px black;
 }
 
+.text-highlight {
+  color: var(--highlight);
+}
+
 .br {
   border-radius: 16px;
 }

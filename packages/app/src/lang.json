@@ -773,6 +773,10 @@
   "GspYR7": {
     "defaultMessage": "{n} Dislike"
   },
+  "GtIxzZ": {
+    "defaultMessage": "via {client}",
+    "description": "via {client name} tag"
+  },
   "Gxcr08": {
     "defaultMessage": "Broadcast Event"
   },

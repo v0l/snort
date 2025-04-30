@@ -226,7 +226,7 @@ export function normalizeReaction(content: string) {
   }
 }
 
-export class OfflineError extends Error { }
+export class OfflineError extends Error {}
 
 export function throwIfOffline() {
   if (isOffline()) {
@@ -243,8 +243,8 @@ export function isHex(s?: string) {
   // 48-57 = 0-9
   // 65-90 = A-Z
   // 97-122 = a-z
-  return s.length % 2 == 0 &&
-    [...s]
-      .map(v => v.charCodeAt(0))
-      .every(v => (v >= 48 && v <= 57) || (v >= 65 && v <= 90) || v >= 97 || v <= 122);
+  return (
+    s.length % 2 == 0 &&
+    [...s].map(v => v.charCodeAt(0)).every(v => (v >= 48 && v <= 57) || (v >= 65 && v <= 90) || v >= 97 || v <= 122)
+  );
 }

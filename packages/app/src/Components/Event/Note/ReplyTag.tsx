@@ -9,11 +9,13 @@ import DisplayName from "@/Components/User/DisplayName";
 import { ProfileLink } from "@/Components/User/ProfileLink";
 import { hexToBech32 } from "@/Utils";
 
+import { ClientTag } from "./ClientTag";
+
 export default function ReplyTag({ ev }: { ev: TaggedNostrEvent }) {
   const { formatMessage } = useIntl();
   const thread = EventExt.extractThread(ev);
   if (thread === undefined) {
-    return undefined;
+    return <ClientTag ev={ev} />;
   }
 
   const maxMentions = 2;
@@ -33,7 +35,7 @@ export default function ReplyTag({ ev }: { ev: TaggedNostrEvent }) {
       name: u?.name ?? shortNpub,
       link: (
         <ProfileLink pubkey={pk} user={u}>
-          <DisplayName pubkey={pk} user={u} />{" "}
+          <DisplayName pubkey={pk} user={u} className="text-highlight" />
         </ProfileLink>
       ),
     });
@@ -53,7 +55,7 @@ export default function ReplyTag({ ev }: { ev: TaggedNostrEvent }) {
   const others = mentions.length > maxMentions ? formatMessage(messages.Others, { n: othersLength }) : "";
   const link = replyLink?.encode(CONFIG.eventLinkPrefix);
   return (
-    <div className="reply">
+    <small className="text-xs">
       re:&nbsp;
       {(mentions?.length ?? 0) > 0 ? (
         <>
@@ -62,6 +64,7 @@ export default function ReplyTag({ ev }: { ev: TaggedNostrEvent }) {
       ) : (
         replyLink && <Link to={`/${link}`}>{link?.substring(0, 12)}</Link>
       )}
-    </div>
+      <ClientTag ev={ev} />
+    </small>
   );
 }

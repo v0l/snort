@@ -13433,7 +13433,6 @@ __metadata:
     prettier: "npm:^3.0.3"
     typedoc: "npm:^0.25.7"
     typescript: "npm:^5.2.2"
-    vite-plugin-version-mark: "npm:^0.1.4"
   languageName: unknown
   linkType: soft
 
