@@ -17,8 +17,17 @@
   "+Vxixo": {
     "defaultMessage": "Secret Group Chat"
   },
+  "+W+Kof": {
+    "defaultMessage": "Cashu Wallet History"
+  },
   "+aZY2h": {
     "defaultMessage": "Zap Type"
+  },
+  "+mO9i4": {
+    "defaultMessage": "Code Snippet"
+  },
+  "+sDqqq": {
+    "defaultMessage": "Peer-to-peer Order events"
   },
   "+tShPg": {
     "defaultMessage": "following"
@@ -52,9 +61,6 @@
   },
   "/Xf4UW": {
     "defaultMessage": "Send anonymous usage metrics"
-  },
-  "/b1IHW": {
-    "defaultMessage": "Group Chat Message"
   },
   "/d6vEc": {
     "defaultMessage": "Make your profile easier to find and share"
@@ -107,6 +113,9 @@
   },
   "1/BFEj": {
     "defaultMessage": "git stuff"
+  },
+  "1GvBMj": {
+    "defaultMessage": "internal reference"
   },
   "1Mo59U": {
     "defaultMessage": "Are you sure you want to remove this note from bookmarks?"
@@ -165,6 +174,9 @@
   "2Qsf9/": {
     "defaultMessage": "Generic lists"
   },
+  "2YxhJx": {
+    "defaultMessage": "Reserved Cashu Wallet Tokens"
+  },
   "2a2YiP": {
     "defaultMessage": "{n} Bookmarks"
   },
@@ -185,9 +197,6 @@
   },
   "2z7Kky": {
     "defaultMessage": "Latest Articles"
-  },
-  "3/onCd": {
-    "defaultMessage": "Replies"
   },
   "39AHJm": {
     "defaultMessage": "Sign Up"
@@ -258,6 +267,9 @@
   "4OB335": {
     "defaultMessage": "Dislike"
   },
+  "4OQuna": {
+    "defaultMessage": "Draft Event"
+  },
   "4P/kKm": {
     "defaultMessage": "Private Key Encryption"
   },
@@ -275,6 +287,12 @@
   },
   "4rYCjn": {
     "defaultMessage": "Note to Self"
+  },
+  "4rxi5n": {
+    "defaultMessage": "hardcopy reference"
+  },
+  "4tKMJS": {
+    "defaultMessage": "Software Application"
   },
   "4wgYpI": {
     "defaultMessage": "Recommended Application Handlers"
@@ -336,11 +354,20 @@
   "6WWD34": {
     "defaultMessage": "Looking for: {noteId}"
   },
+  "6Z3bDG": {
+    "defaultMessage": "Cashu Wallet Event"
+  },
   "6bgpn+": {
     "defaultMessage": "Not all clients support this, you may still receive some zaps as if zap splits was not configured"
   },
+  "6dmn4m": {
+    "defaultMessage": "Thread"
+  },
   "6ewQqw": {
     "defaultMessage": "Likes ({n})"
+  },
+  "6m1Zkw": {
+    "defaultMessage": "Relay Monitor Announcement"
   },
   "6mr8WU": {
     "defaultMessage": "Followed by"
@@ -387,9 +414,6 @@
   "7hp70g": {
     "defaultMessage": "NIP-05"
   },
-  "7jfPsW": {
-    "defaultMessage": "Modular Article Content"
-  },
   "7nAz/z": {
     "defaultMessage": "Mute notes from people who are outside your web of trust"
   },
@@ -405,6 +429,9 @@
   "8BDFvJ": {
     "defaultMessage": "Conventions for clients' use of e and p tags in text events"
   },
+  "8Cw1Fj": {
+    "defaultMessage": "Link Set"
+  },
   "8ED/4u": {
     "defaultMessage": "Reply To"
   },
@@ -419,9 +446,6 @@
   },
   "8Y6bZQ": {
     "defaultMessage": "Invalid zap split: {input}"
-  },
-  "8ZGqWl": {
-    "defaultMessage": "Group Thread"
   },
   "8g2vyB": {
     "defaultMessage": "name too long"
@@ -440,6 +464,9 @@
   },
   "9+Ddtu": {
     "defaultMessage": "Next"
+  },
+  "92gdbw": {
+    "defaultMessage": "Relay Discovery"
   },
   "9HU8vw": {
     "defaultMessage": "Reply"
@@ -511,6 +538,9 @@
   "AyGauy": {
     "defaultMessage": "Login"
   },
+  "Ayx8rG": {
+    "defaultMessage": "Curated Publication Index"
+  },
   "B4C47Y": {
     "defaultMessage": "name too short"
   },
@@ -571,6 +601,9 @@
   },
   "CHTbO3": {
     "defaultMessage": "Failed to load invoice"
+  },
+  "CJ0biq": {
+    "defaultMessage": "Poll Response"
   },
   "CJx5Nd": {
     "defaultMessage": "Profile Zaps"
@@ -758,6 +791,12 @@
   "GL8aXW": {
     "defaultMessage": "Bookmarks ({n})"
   },
+  "GLdw/8": {
+    "defaultMessage": "File Message"
+  },
+  "GQo+OV": {
+    "defaultMessage": "prompt reference"
+  },
   "GSye7T": {
     "defaultMessage": "Lightning Address"
   },
@@ -770,8 +809,14 @@
   "GpkNYn": {
     "defaultMessage": "Torrent"
   },
+  "GqKcVm": {
+    "defaultMessage": "App curation sets"
+  },
   "GqQeu/": {
     "defaultMessage": "Invalid Lightning Address"
+  },
+  "GrDnue": {
+    "defaultMessage": "Nutzap Mint Recommendation"
   },
   "GspYR7": {
     "defaultMessage": "{n} Dislike"
@@ -825,6 +870,9 @@
   },
   "HqRNN8": {
     "defaultMessage": "Support"
+  },
+  "Hqo/rL": {
+    "defaultMessage": "Curated Publication Content"
   },
   "HzSFeV": {
     "defaultMessage": "Expiration Timestamp"
@@ -1127,6 +1175,9 @@
   "P8JC58": {
     "defaultMessage": "Distance"
   },
+  "P8zI6H": {
+    "defaultMessage": "Slide Set"
+  },
   "PCSt5T": {
     "defaultMessage": "Preferences"
   },
@@ -1151,9 +1202,6 @@
   "QWhotP": {
     "defaultMessage": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)"
   },
-  "QaGyuN": {
-    "defaultMessage": "Zapstr Track"
-  },
   "QpaLA3": {
     "defaultMessage": "Channel Message"
   },
@@ -1165,6 +1213,9 @@
   },
   "R/6nsx": {
     "defaultMessage": "Subscription"
+  },
+  "R7x0mX": {
+    "defaultMessage": "Chat Message"
   },
   "R81upa": {
     "defaultMessage": "People you follow"
@@ -1238,6 +1289,12 @@
   "SmuYUd": {
     "defaultMessage": "What should we call you?"
   },
+  "So+Y+A": {
+    "defaultMessage": "Nutzap"
+  },
+  "SopQOK": {
+    "defaultMessage": "Web bookmarks"
+  },
   "Ss0sWu": {
     "defaultMessage": "Pay Now"
   },
@@ -1295,6 +1352,9 @@
   },
   "TwyMau": {
     "defaultMessage": "Account"
+  },
+  "U/fbvs": {
+    "defaultMessage": "Git Replies (deprecated)"
   },
   "U1aPPi": {
     "defaultMessage": "Stop listening"
@@ -1467,6 +1527,9 @@
   "ZS+jRE": {
     "defaultMessage": "Send zap splits to"
   },
+  "ZT17bG": {
+    "defaultMessage": "Cashu Wallet Tokens"
+  },
   "Zff6lu": {
     "defaultMessage": "Username iris.to/<b>{name}</b> is reserved for you!"
   },
@@ -1618,9 +1681,6 @@
   "dOQCL8": {
     "defaultMessage": "Display name"
   },
-  "dZZIGe": {
-    "defaultMessage": "Modular Article Header"
-  },
   "ddd3JX": {
     "defaultMessage": "Popular Hashtags"
   },
@@ -1764,6 +1824,9 @@
   },
   "gtNjNP": {
     "defaultMessage": "Basic protocol flow description"
+  },
+  "h1gtUi": {
+    "defaultMessage": "Poll"
   },
   "h7jvCs": {
     "defaultMessage": "{site} is more fun together!"
@@ -2137,6 +2200,9 @@
   "qtWLmt": {
     "defaultMessage": "Like"
   },
+  "qx+v3H": {
+    "defaultMessage": "Request to Vanish"
+  },
   "qyJtWy": {
     "defaultMessage": "Show less"
   },
@@ -2203,6 +2269,9 @@
   "saorw+": {
     "defaultMessage": "Event Deletion Request"
   },
+  "sbSCT3": {
+    "defaultMessage": "Private event relay list"
+  },
   "sfL/O+": {
     "defaultMessage": "Muted notes will not be shown"
   },
@@ -2226,9 +2295,6 @@
   },
   "tU0ADf": {
     "defaultMessage": "Unknown NIP-{x}"
-  },
-  "tVuVg9": {
-    "defaultMessage": "Video View Event"
   },
   "tf1lIh": {
     "defaultMessage": "Free"
@@ -2277,6 +2343,9 @@
   },
   "uc0din": {
     "defaultMessage": "Send sats splits to"
+  },
+  "uex/ui": {
+    "defaultMessage": "external web reference"
   },
   "ufvXH1": {
     "defaultMessage": "Found {n} events"
@@ -2355,6 +2424,9 @@
   },
   "wtLjP6": {
     "defaultMessage": "Copy ID"
+  },
+  "wvoA3H": {
+    "defaultMessage": "Picture"
   },
   "x+3fl6": {
     "defaultMessage": "My Relays"
