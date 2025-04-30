@@ -1,6 +1,10 @@
 /* eslint-disable max-lines */
 import { FormattedMessage } from "react-intl";
 
+// Take the markdown kinds table and find-replace with following regex:
+// FIND: ^\|\s+`([`\d\-]+)`\s+\| ([\w \-\(\)\/]+)[\s]*\|.*$
+// REPLACE: case $1:\n\treturn <FormattedMessage defaultMessage="$2" />;
+
 export default function KindName({ kind }: { kind: number }) {
   switch (kind) {
     case 0:
@@ -22,21 +26,37 @@ export default function KindName({ kind }: { kind: number }) {
     case 8:
       return <FormattedMessage defaultMessage="Badge Award" />;
     case 9:
-      return <FormattedMessage defaultMessage="Group Chat Message" />;
+      return <FormattedMessage defaultMessage="Chat Message" />;
     case 10:
       return <FormattedMessage defaultMessage="Group Chat Threaded Reply" />;
     case 11:
-      return <FormattedMessage defaultMessage="Group Thread" />;
+      return <FormattedMessage defaultMessage="Thread" />;
     case 12:
       return <FormattedMessage defaultMessage="Group Thread Reply" />;
     case 13:
       return <FormattedMessage defaultMessage="Seal" />;
     case 14:
       return <FormattedMessage defaultMessage="Direct Message" />;
+    case 15:
+      return <FormattedMessage defaultMessage="File Message" />;
     case 16:
       return <FormattedMessage defaultMessage="Generic Repost" />;
     case 17:
       return <FormattedMessage defaultMessage="Reaction to a website" />;
+    case 20:
+      return <FormattedMessage defaultMessage="Picture" />;
+    case 21:
+      return <FormattedMessage defaultMessage="Video Event" />;
+    case 22:
+      return <FormattedMessage defaultMessage="Short-form Portrait Video Event" />;
+    case 30:
+      return <FormattedMessage defaultMessage="internal reference" />;
+    case 31:
+      return <FormattedMessage defaultMessage="external web reference" />;
+    case 32:
+      return <FormattedMessage defaultMessage="hardcopy reference" />;
+    case 33:
+      return <FormattedMessage defaultMessage="prompt reference" />;
     case 40:
       return <FormattedMessage defaultMessage="Channel Creation" />;
     case 41:
@@ -47,10 +67,14 @@ export default function KindName({ kind }: { kind: number }) {
       return <FormattedMessage defaultMessage="Channel Hide Message" />;
     case 44:
       return <FormattedMessage defaultMessage="Channel Mute User" />;
+    case 62:
+      return <FormattedMessage defaultMessage="Request to Vanish" />;
     case 64:
       return <FormattedMessage defaultMessage="Chess (PGN)" />;
     case 818:
       return <FormattedMessage defaultMessage="Merge Requests" />;
+    case 1018:
+      return <FormattedMessage defaultMessage="Poll Response" />;
     case 1021:
       return <FormattedMessage defaultMessage="Bid" />;
     case 1022:
@@ -61,14 +85,20 @@ export default function KindName({ kind }: { kind: number }) {
       return <FormattedMessage defaultMessage="Gift Wrap" />;
     case 1063:
       return <FormattedMessage defaultMessage="File Metadata" />;
+    case 1068:
+      return <FormattedMessage defaultMessage="Poll" />;
+    case 1111:
+      return <FormattedMessage defaultMessage="Comment" />;
     case 1311:
       return <FormattedMessage defaultMessage="Live Chat Message" />;
+    case 1337:
+      return <FormattedMessage defaultMessage="Code Snippet" />;
     case 1617:
       return <FormattedMessage defaultMessage="Patches" />;
     case 1621:
       return <FormattedMessage defaultMessage="Issues" />;
     case 1622:
-      return <FormattedMessage defaultMessage="Replies" />;
+      return <FormattedMessage defaultMessage="Git Replies (deprecated)" />;
     case 1971:
       return <FormattedMessage defaultMessage="Problem Tracker" />;
     case 1984:
@@ -89,8 +119,16 @@ export default function KindName({ kind }: { kind: number }) {
       return <FormattedMessage defaultMessage="Community Post Approval" />;
     case 7000:
       return <FormattedMessage defaultMessage="Job Feedback" />;
+    case 7374:
+      return <FormattedMessage defaultMessage="Reserved Cashu Wallet Tokens" />;
+    case 7375:
+      return <FormattedMessage defaultMessage="Cashu Wallet Tokens" />;
+    case 7376:
+      return <FormattedMessage defaultMessage="Cashu Wallet History" />;
     case 9041:
       return <FormattedMessage defaultMessage="Zap Goal" />;
+    case 9321:
+      return <FormattedMessage defaultMessage="Nutzap" />;
     case 9467:
       return <FormattedMessage defaultMessage="Tidal login" />;
     case 9734:
@@ -117,8 +155,12 @@ export default function KindName({ kind }: { kind: number }) {
       return <FormattedMessage defaultMessage="Search relays list" />;
     case 10009:
       return <FormattedMessage defaultMessage="User groups" />;
+    case 10013:
+      return <FormattedMessage defaultMessage="Private event relay list" />;
     case 10015:
       return <FormattedMessage defaultMessage="Interests list" />;
+    case 10019:
+      return <FormattedMessage defaultMessage="Nutzap Mint Recommendation" />;
     case 10030:
       return <FormattedMessage defaultMessage="User emoji list" />;
     case 10050:
@@ -127,8 +169,12 @@ export default function KindName({ kind }: { kind: number }) {
       return <FormattedMessage defaultMessage="User server list" />;
     case 10096:
       return <FormattedMessage defaultMessage="File storage server list" />;
+    case 10166:
+      return <FormattedMessage defaultMessage="Relay Monitor Announcement" />;
     case 13194:
       return <FormattedMessage defaultMessage="Wallet Info" />;
+    case 17375:
+      return <FormattedMessage defaultMessage="Cashu Wallet Event" />;
     case 21000:
       return <FormattedMessage defaultMessage="Lightning Pub RPC" />;
     case 22242:
@@ -178,17 +224,23 @@ export default function KindName({ kind }: { kind: number }) {
     case 30030:
       return <FormattedMessage defaultMessage="Emoji sets" />;
     case 30040:
-      return <FormattedMessage defaultMessage="Modular Article Header" />;
+      return <FormattedMessage defaultMessage="Curated Publication Index" />;
     case 30041:
-      return <FormattedMessage defaultMessage="Modular Article Content" />;
+      return <FormattedMessage defaultMessage="Curated Publication Content" />;
     case 30063:
       return <FormattedMessage defaultMessage="Release artifact sets" />;
     case 30078:
       return <FormattedMessage defaultMessage="Application-specific Data" />;
+    case 30166:
+      return <FormattedMessage defaultMessage="Relay Discovery" />;
+    case 30267:
+      return <FormattedMessage defaultMessage="App curation sets" />;
     case 30311:
       return <FormattedMessage defaultMessage="Live Event" />;
     case 30315:
       return <FormattedMessage defaultMessage="User Statuses" />;
+    case 30388:
+      return <FormattedMessage defaultMessage="Slide Set" />;
     case 30402:
       return <FormattedMessage defaultMessage="Classified Listing" />;
     case 30403:
@@ -201,6 +253,10 @@ export default function KindName({ kind }: { kind: number }) {
       return <FormattedMessage defaultMessage="Wiki article" />;
     case 30819:
       return <FormattedMessage defaultMessage="Redirects" />;
+    case 31234:
+      return <FormattedMessage defaultMessage="Draft Event" />;
+    case 31388:
+      return <FormattedMessage defaultMessage="Link Set" />;
     case 31890:
       return <FormattedMessage defaultMessage="Feed" />;
     case 31922:
@@ -215,16 +271,14 @@ export default function KindName({ kind }: { kind: number }) {
       return <FormattedMessage defaultMessage="Handler recommendation" />;
     case 31990:
       return <FormattedMessage defaultMessage="Handler information" />;
-    case 34235:
-      return <FormattedMessage defaultMessage="Video Event" />;
-    case 34236:
-      return <FormattedMessage defaultMessage="Short-form Portrait Video Event" />;
-    case 34237:
-      return <FormattedMessage defaultMessage="Video View Event" />;
+    case 32267:
+      return <FormattedMessage defaultMessage="Software Application" />;
     case 34550:
       return <FormattedMessage defaultMessage="Community Definition" />;
-    case 31337:
-      return <FormattedMessage defaultMessage="Zapstr Track" />;
+    case 38383:
+      return <FormattedMessage defaultMessage="Peer-to-peer Order events" />;
+    case 39701:
+      return <FormattedMessage defaultMessage="Web bookmarks" />;
     default:
       return kind;
   }
