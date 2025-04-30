@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export function ClientTag({ ev }: { ev: TaggedNostrEvent }) {
   const tag = ev.tags.find(a => a[0] === "client");
   if (!tag) return;
-  const link = tag[2] && tag[2].includes(":") ? NostrLink.fromTag(["a", tag[2]]) : undefined;
+  const link = tag[2] && tag[2].includes(":") ? NostrLink.tryFromTag(["a", tag[2]]) : undefined;
   return (
     <span className="text-xs text-gray-light">
       {" "}
