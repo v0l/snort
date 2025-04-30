@@ -55,7 +55,7 @@ export class NostrLink implements ToNostrEventTag {
     readonly marker?: string,
   ) {
     if (type !== NostrPrefix.Address && !isHex(id)) {
-      throw new Error("ID must be hex");
+      throw new Error(`ID must be hex: ${JSON.stringify(id)}`);
     }
   }
 

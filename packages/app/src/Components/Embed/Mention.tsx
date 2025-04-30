@@ -26,7 +26,7 @@ export default function Mention({ link }: { link: NostrLink }) {
 
   return (
     <span className="highlight" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <ProfileLink pubkey={link.id} link={link} user={profile} onClick={e => e.stopPropagation()}>
+      <ProfileLink pubkey={link.id} user={profile} onClick={e => e.stopPropagation()}>
         @<DisplayName user={profile} pubkey={link.id} />
       </ProfileLink>
       {isHovering && <ProfileCard pubkey={link.id} user={profile} show={true} />}

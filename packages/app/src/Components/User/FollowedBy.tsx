@@ -13,7 +13,7 @@ export default function FollowedBy({ pubkey }: { pubkey: HexKey }) {
   const wot = useWoT();
   const followDistance = wot.followDistance(pubkey);
   const { followedByFriendsArray, totalFollowedByFriends } = useMemo(() => {
-    const followedByFriends = wot.followedByCount(pubkey);
+    const followedByFriends = wot.followedBy(pubkey);
     return {
       followedByFriendsArray: Array.from(followedByFriends).slice(0, MAX_FOLLOWED_BY_FRIENDS),
       totalFollowedByFriends: followedByFriends.size,

@@ -74,8 +74,8 @@ export function FollowersTab({ id }: { id: HexKey }) {
   const followers = useFollowersFeed(id);
   return (
     <FollowsList
-      pubkeys={followers}
-      className="p"
+      pubkeys={followers.map(a => a.pubkey)}
+      className="p flex flex-col gap-1"
       profilePreviewProps={{
         options: {
           about: true,
@@ -90,7 +90,7 @@ export function FollowsTab({ id }: { id: HexKey }) {
   return (
     <FollowsList
       pubkeys={follows}
-      className="p"
+      className="p flex flex-col gap-1"
       profilePreviewProps={{
         options: {
           about: true,
