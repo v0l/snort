@@ -94,6 +94,17 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
         </>
       ),
     },
+    {
+      tab: "media",
+      path: `${base}/media`,
+      show: true,
+      element: (
+        <>
+          <Icon name="camera-plus" />
+          <FormattedMessage defaultMessage="Media" />
+        </>
+      ),
+    },
   ] as Array<{
     tab: RootTabRoutePath;
     path: string;

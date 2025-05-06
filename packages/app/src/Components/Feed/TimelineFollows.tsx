@@ -15,12 +15,16 @@ import { AutoLoadMore } from "../Event/LoadMore";
 import TimelineChunk from "./TimelineChunk";
 
 export interface TimelineFollowsProps {
+  id?: string;
   postsOnly: boolean;
-  liveStreams?: boolean;
   noteFilter?: (ev: NostrEvent) => boolean;
   noteRenderer?: (ev: NostrEvent) => ReactNode;
   noteOnClick?: (ev: NostrEvent) => void;
   displayAs?: DisplayAs;
+  kinds?: Array<EventKind>;
+  showDisplayAsSelector?: boolean;
+  firstChunkSize?: number;
+  windowSize?: number;
 }
 
 /**
@@ -38,12 +42,15 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const { isFollowing, followList } = useFollowsControls();
   const { chunks, showMore } = useTimelineChunks({
     now: openedAt,
-    firstChunkSize: Hour * 2,
+    window: props.windowSize,
+    firstChunkSize: props.firstChunkSize ?? Hour * 2,
   });
 
   const builder = useCallback(
     (rb: RequestBuilder) => {
-      rb.withFilter().authors(followList).kinds([EventKind.TextNote, EventKind.Repost, EventKind.Polls]);
+      rb.withFilter()
+        .authors(followList)
+        .kinds(props.kinds ?? [EventKind.TextNote, EventKind.Repost, EventKind.Polls]);
     },
     [followList],
   );
@@ -58,11 +65,13 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
 
   return (
     <>
-      <DisplayAsSelector activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
+      {(props.showDisplayAsSelector ?? true) && (
+        <DisplayAsSelector activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
+      )}
       {chunks.map(c => (
         <TimelineChunk
           key={c.until}
-          id="follows"
+          id={`follows${props.id ? `:${props.id}` : ""}`}
           chunk={c}
           builder={builder}
           noteFilter={filterEvents}

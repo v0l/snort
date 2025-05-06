@@ -7,6 +7,7 @@ import { ConversationsTab } from "@/Pages/Root/ConversationsTab";
 import { DefaultTab } from "@/Pages/Root/DefaultTab";
 import { FollowedByFriendsTab } from "@/Pages/Root/FollowedByFriendsTab";
 import { ForYouTab } from "@/Pages/Root/ForYouTab";
+import MediaPosts from "@/Pages/Root/Media";
 import { NotesTab } from "@/Pages/Root/NotesTab";
 import { TagsTab } from "@/Pages/Root/TagsTab";
 import { TopicsPage } from "@/Pages/TopicsPage";
@@ -23,7 +24,8 @@ export type RootTabRoutePath =
   | "trending/hashtags"
   | "suggested"
   | "t/:tag"
-  | "topics";
+  | "topics"
+  | "media";
 
 export type RootTabRoute = {
   path: RootTabRoutePath;
@@ -82,5 +84,9 @@ export const RootTabRoutes: RootTabRoute[] = [
   {
     path: "topics",
     element: <TopicsPage />,
+  },
+  {
+    path: "media",
+    element: <MediaPosts />,
   },
 ];

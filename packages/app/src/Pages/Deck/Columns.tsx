@@ -59,7 +59,6 @@ export function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
       </div>
       <TimelineFollows
         postsOnly={true}
-        liveStreams={false}
         noteFilter={e => {
           const parsed = transformTextCached(e.id, e.content, e.tags);
           const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));

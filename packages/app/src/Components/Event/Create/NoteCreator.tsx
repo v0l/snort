@@ -1,6 +1,16 @@
 /* eslint-disable max-lines */
 import { fetchNip05Pubkey, unixNow } from "@snort/shared";
-import { EventBuilder, EventKind, NostrLink, NostrPrefix, TaggedNostrEvent, tryParseNostrLink } from "@snort/system";
+import {
+  addExtensionToNip94Url,
+  EventBuilder,
+  EventKind,
+  nip94TagsToIMeta,
+  NostrLink,
+  NostrPrefix,
+  readNip94Tags,
+  TaggedNostrEvent,
+  tryParseNostrLink,
+} from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { ZapTarget } from "@snort/wallet";
 import { Menu, MenuItem } from "@szhsin/react-menu";
@@ -28,7 +38,7 @@ import usePreferences from "@/Hooks/usePreferences";
 import useRelays from "@/Hooks/useRelays";
 import { useNoteCreator } from "@/State/NoteCreator";
 import { openFile, trackEvent } from "@/Utils";
-import useFileUpload, { addExtensionToNip94Url, nip94TagsToIMeta, readNip94Tags } from "@/Utils/Upload";
+import useFileUpload from "@/Utils/Upload";
 import { GetPowWorker } from "@/Utils/wasm";
 
 import { OkResponseRow } from "./OkResponseRow";

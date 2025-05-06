@@ -35,6 +35,8 @@ export * from "./impl/nip44";
 export * from "./impl/nip46";
 export * from "./impl/nip57";
 export * from "./impl/nip55";
+export * from "./impl/nip94";
+export * from "./impl/nip92";
 
 export * from "./cache/index";
 export * from "./cache/user-relays";
