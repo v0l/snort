@@ -1,5 +1,5 @@
 import { dedupe, unwrap } from "@snort/shared";
-import { EventKind, parseNostrLink } from "@snort/system";
+import { parseNostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
@@ -27,7 +27,8 @@ export function ListFeedPage() {
   );
 
   if (!data) return <PageSpinner />;
-  if (data.kind !== EventKind.ContactList && data.kind !== EventKind.FollowSet) {
+  const hasPTags = data.tags.some(a => a[0] === "p");
+  if (!hasPTags) {
     return (
       <b>
         <FormattedMessage defaultMessage="Must be a contact list or pubkey list" />

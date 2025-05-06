@@ -465,6 +465,9 @@
   "9HU8vw": {
     "defaultMessage": "Reply"
   },
+  "9RNiUn": {
+    "defaultMessage": "View Feed"
+  },
   "9SvQep": {
     "defaultMessage": "Follows {n}"
   },
@@ -492,9 +495,6 @@
   "ADmfQT": {
     "defaultMessage": "Parent",
     "description": "Link to parent note in thread"
-  },
-  "ALdW69": {
-    "defaultMessage": "Note by {name}"
   },
   "AN0Z7Q": {
     "defaultMessage": "Muted Words"
@@ -587,9 +587,6 @@
   "C8FsOr": {
     "defaultMessage": "Popular Servers"
   },
-  "C8HhVE": {
-    "defaultMessage": "Suggested Follows"
-  },
   "CA1efg": {
     "defaultMessage": "Video sets"
   },
@@ -607,6 +604,9 @@
   },
   "CM0k0d": {
     "defaultMessage": "Prune follow list"
+  },
+  "CSOaM+": {
+    "defaultMessage": "{note_type} by {name}{title}"
   },
   "CVWeJ6": {
     "defaultMessage": "Trending People"
@@ -1398,6 +1398,9 @@
   "V20Og0": {
     "defaultMessage": "Labeling"
   },
+  "V93INS": {
+    "defaultMessage": "<dark>Created by</dark> {name}"
+  },
   "VOjC1i": {
     "defaultMessage": "Pick which upload service you want to upload attachments to"
   },
@@ -1608,6 +1611,12 @@
   "c3g2hL": {
     "defaultMessage": "Broadcast Again"
   },
+  "c6BMLV": {
+    "defaultMessage": "Starter Pack"
+  },
+  "cF3ruj": {
+    "defaultMessage": "Follow All"
+  },
   "cFbU1B": {
     "defaultMessage": "Using Alby? Go to {link} to get your NWC config!"
   },
@@ -1786,6 +1795,9 @@
   "gDzDRs": {
     "defaultMessage": "Emoji to send when reactiong to a note"
   },
+  "gPxSgn": {
+    "defaultMessage": "Follow Sets"
+  },
   "gXgY3+": {
     "defaultMessage": "Not all clients support this yet"
   },
@@ -1809,6 +1821,9 @@
   },
   "grQ+mI": {
     "defaultMessage": "Proof of Work"
+  },
+  "grRQTM": {
+    "defaultMessage": "{n} people"
   },
   "gtNjNP": {
     "defaultMessage": "Basic protocol flow description"

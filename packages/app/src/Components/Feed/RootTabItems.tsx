@@ -62,17 +62,6 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       ),
     },
     {
-      tab: "suggested",
-      path: `${base}/suggested`,
-      show: Boolean(pubKey),
-      element: (
-        <>
-          <Icon name="thumbs-up" />
-          <FormattedMessage defaultMessage="Suggested Follows" />
-        </>
-      ),
-    },
-    {
       tab: "trending/hashtags",
       path: `${base}/trending/hashtags`,
       show: true,
@@ -102,6 +91,17 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
         <>
           <Icon name="camera-plus" />
           <FormattedMessage defaultMessage="Media" />
+        </>
+      ),
+    },
+    {
+      tab: "follow-sets",
+      path: `${base}/follow-sets`,
+      show: true,
+      element: (
+        <>
+          <Icon name="thumbs-up" />
+          <FormattedMessage defaultMessage="Follow Sets" />
         </>
       ),
     },

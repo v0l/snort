@@ -1,16 +1,16 @@
-import { HexKey } from "@snort/system";
+import classNames from "classnames";
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 
 import ProfilePreview, { ProfilePreviewProps } from "@/Components/User/ProfilePreview";
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
+import useWoT from "@/Hooks/useWoT";
 
 import AsyncButton from "../Button/AsyncButton";
-import messages from "../messages";
 
 export interface FollowListBaseProps {
-  pubkeys: HexKey[];
+  pubkeys: string[];
   title?: ReactNode;
   showFollowAll?: boolean;
   className?: string;
@@ -27,7 +27,8 @@ export default function FollowListBase({
   profilePreviewProps,
 }: FollowListBaseProps) {
   const control = useFollowsControls();
-  const login = useLogin();
+  const readonly = useLogin(s => s.readonly);
+  const wot = useWoT();
 
   async function followAll() {
     await control.addFollow(pubkeys);
@@ -37,15 +38,17 @@ export default function FollowListBase({
     <div className="flex flex-col gap-2">
       {(showFollowAll ?? true) && (
         <div className="flex items-center">
-          <div className="grow font-bold">{title}</div>
+          <div className="grow font-bold text-xl">{title}</div>
           {actions}
-          <AsyncButton className="transparent" type="button" onClick={() => followAll()} disabled={login.readonly}>
-            <FormattedMessage {...messages.FollowAll} />
+          <AsyncButton className="transparent" type="button" onClick={() => followAll()} disabled={readonly}>
+            <FormattedMessage defaultMessage="Follow All" />
           </AsyncButton>
         </div>
       )}
-      <div className={className}>
-        {pubkeys?.slice(0, 20).map(a => <ProfilePreview pubkey={a} key={a} {...profilePreviewProps} />)}
+      <div className={classNames("flex flex-col gap-2", className)}>
+        {wot.sortPubkeys(pubkeys).map(a => (
+          <ProfilePreview pubkey={a} key={a} {...profilePreviewProps} />
+        ))}
       </div>
     </div>
   );

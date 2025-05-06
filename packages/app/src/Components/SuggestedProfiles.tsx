@@ -1,4 +1,4 @@
-import { HexKey, NostrPrefix } from "@snort/system";
+import { NostrPrefix } from "@snort/system";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -61,7 +61,7 @@ export default function SuggestedProfiles() {
         </select>
       </div>
       <FollowListBase
-        pubkeys={userList as HexKey[]}
+        pubkeys={userList}
         profilePreviewProps={{
           options: {
             about: true,

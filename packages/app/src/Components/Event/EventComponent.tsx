@@ -62,6 +62,7 @@ export default memo(function EventComponent(props: NoteProps) {
     case EventKind.ZapstrTrack:
       content = <ZapstrEmbed ev={ev} />;
       break;
+    case EventKind.StarterPackSet:
     case EventKind.FollowSet:
     case EventKind.ContactList:
       content = <PubkeyList ev={ev} className={className} />;

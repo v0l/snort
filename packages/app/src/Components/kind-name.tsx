@@ -277,6 +277,8 @@ export default function KindName({ kind }: { kind: number }) {
       return <FormattedMessage defaultMessage="Community Definition" />;
     case 38383:
       return <FormattedMessage defaultMessage="Peer-to-peer Order events" />;
+    case 39089:
+      return <FormattedMessage defaultMessage="Starter Pack" />;
     case 39701:
       return <FormattedMessage defaultMessage="Web bookmarks" />;
     default:

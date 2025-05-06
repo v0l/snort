@@ -1,4 +1,3 @@
-import SuggestedProfiles from "@/Components/SuggestedProfiles";
 import TrendingHashtags from "@/Components/Trending/TrendingHashtags";
 import TrendingNotes from "@/Components/Trending/TrendingPosts";
 import Discover from "@/Pages/Discover";
@@ -6,6 +5,7 @@ import HashTagsPage from "@/Pages/HashTagsPage";
 import { ConversationsTab } from "@/Pages/Root/ConversationsTab";
 import { DefaultTab } from "@/Pages/Root/DefaultTab";
 import { FollowedByFriendsTab } from "@/Pages/Root/FollowedByFriendsTab";
+import FollowSetsPage from "@/Pages/Root/FollowSets";
 import { ForYouTab } from "@/Pages/Root/ForYouTab";
 import MediaPosts from "@/Pages/Root/Media";
 import { NotesTab } from "@/Pages/Root/NotesTab";
@@ -25,7 +25,8 @@ export type RootTabRoutePath =
   | "suggested"
   | "t/:tag"
   | "topics"
-  | "media";
+  | "media"
+  | "follow-sets";
 
 export type RootTabRoute = {
   path: RootTabRoutePath;
@@ -70,14 +71,6 @@ export const RootTabRoutes: RootTabRoute[] = [
     element: <TrendingHashtags />,
   },
   {
-    path: "suggested",
-    element: (
-      <div className="p">
-        <SuggestedProfiles />
-      </div>
-    ),
-  },
-  {
     path: "t/:tag",
     element: <HashTagsPage />,
   },
@@ -88,5 +81,9 @@ export const RootTabRoutes: RootTabRoute[] = [
   {
     path: "media",
     element: <MediaPosts />,
+  },
+  {
+    path: "follow-sets",
+    element: <FollowSetsPage />,
   },
 ];

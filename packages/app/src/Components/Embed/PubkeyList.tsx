@@ -12,6 +12,8 @@ import usePreferences from "@/Hooks/usePreferences";
 import { dedupe, findTag, getDisplayName, hexToBech32 } from "@/Utils";
 import { useWallet } from "@/Wallet";
 
+import { ProxyImg } from "../ProxyImg";
+
 export default function PubkeyList({ ev, className }: { ev: NostrEvent; className?: string }) {
   const wallet = useWallet();
   const defaultZapAmount = usePreferences(s => s.defaultZapAmount);
@@ -62,29 +64,33 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
     }
   }
 
+  const picture = findTag(ev, "image");
   return (
-    <FollowListBase
-      pubkeys={ids}
-      className={className}
-      title={findTag(ev, "title") ?? findTag(ev, "d")}
-      actions={
-        <>
-          <AsyncButton className="mr5 secondary" onClick={() => zapAll()}>
-            <FormattedMessage
-              defaultMessage="Zap all {n} sats"
-              id="IVbtTS"
-              values={{
-                n: <FormattedNumber value={defaultZapAmount * ids.length} />,
-              }}
-            />
-          </AsyncButton>
-        </>
-      }
-      profilePreviewProps={{
-        options: {
-          about: true,
-        },
-      }}
-    />
+    <>
+      {picture && <ProxyImg src={picture} className="br max-h-44 w-full object-cover mb-4" />}
+      <FollowListBase
+        pubkeys={ids}
+        className={className}
+        title={findTag(ev, "title") ?? findTag(ev, "d")}
+        actions={
+          <>
+            <AsyncButton className="mr5 secondary" onClick={() => zapAll()}>
+              <FormattedMessage
+                defaultMessage="Zap all {n} sats"
+                id="IVbtTS"
+                values={{
+                  n: <FormattedNumber value={defaultZapAmount * ids.length} />,
+                }}
+              />
+            </AsyncButton>
+          </>
+        }
+        profilePreviewProps={{
+          options: {
+            about: true,
+          },
+        }}
+      />
+    </>
   );
 }

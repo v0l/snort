@@ -1,5 +1,5 @@
-import { unwrap } from "@snort/shared";
-import { EventKind, NostrLink, NostrPrefix, parseNostrLink } from "@snort/system";
+import { Bech32Regex, unwrap } from "@snort/shared";
+import { EventKind, NostrLink, NostrPrefix, tryParseNostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 import classNames from "classnames";
 import React, { useCallback, useMemo } from "react";
@@ -9,24 +9,25 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { rootTabItems } from "@/Components/Feed/RootTabItems";
 import { RootTabs } from "@/Components/Feed/RootTabs";
 import Icon from "@/Components/Icons/Icon";
+import KindName from "@/Components/kind-name";
 import DisplayName from "@/Components/User/DisplayName";
 import useLogin from "@/Hooks/useLogin";
 import { LogoHeader } from "@/Pages/Layout/LogoHeader";
 import NotificationsHeader from "@/Pages/Layout/NotificationsHeader";
-import { bech32ToHex } from "@/Utils";
+import { bech32ToHex, findTag } from "@/Utils";
 
 export function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const pageName = decodeURIComponent(location.pathname.split("/")[1]);
+  const pathSplit = location.pathname.split("/");
+  const pageName = decodeURIComponent(pathSplit[1]);
 
   const nostrLink = useMemo(() => {
-    try {
-      return parseNostrLink(pageName);
-    } catch (e) {
-      return undefined;
+    const nostrEntity = pathSplit.find(a => a.match(Bech32Regex));
+    if (nostrEntity) {
+      return tryParseNostrLink(nostrEntity);
     }
-  }, [pageName]);
+  }, [pathSplit]);
 
   const { publicKey, tags } = useLogin(s => ({
     publicKey: s.publicKey,
@@ -115,17 +116,20 @@ export function Header() {
 function NoteTitle({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);
 
-  const values = useMemo(() => {
-    return { name: <DisplayName pubkey={ev?.pubkey ?? ""} /> };
-  }, [ev?.pubkey]);
-
   if (!ev?.pubkey) {
     return <FormattedMessage defaultMessage="Note" />;
   }
-
+  const title = findTag(ev, "title");
   return (
     <>
-      <FormattedMessage defaultMessage="Note by {name}" values={values} />
+      <FormattedMessage
+        defaultMessage="{note_type} by {name}{title}"
+        values={{
+          note_type: <KindName kind={ev.kind} />,
+          name: <DisplayName pubkey={ev.pubkey} />,
+          title: title ? ` - ${title}` : "",
+        }}
+      />
     </>
   );
 }
