@@ -14,7 +14,7 @@ import {
 
 import { GiftsCache } from "@/Cache";
 import { GiftWrapCache } from "@/Cache/GiftWrapCache";
-import { Chat, ChatSystem, ChatType, lastReadInChat } from "@/chat";
+import { Chat, ChatSystem, ChatType, lastReadInChat, setLastReadIn } from "@/chat";
 import { UnwrappedGift } from "@/Db";
 import { LoginSession } from "@/Utils/Login";
 import { GetPowWorker } from "@/Utils/wasm";
@@ -100,8 +100,8 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
       type: ChatType.PrivateDirectMessage,
       id,
       title: title.title,
-      unread: messages.reduce((acc, v) => (v.created_at > last ? acc++ : acc), 0),
-      lastMessage: messages.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0),
+      unread: messages.reduce((acc, v) => (v.inner.created_at > last ? acc + 1 : acc), 0),
+      lastMessage: messages.reduce((acc, v) => (v.inner.created_at > acc ? v.created_at : acc), 0),
       participants,
       messages: messages.map(m => ({
         id: m.id,
@@ -128,10 +128,17 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
           messages.push(recvSealedN);
         }
         messages.push(pub.giftWrap(await pub.sealRumor(gossip, pub.pubKey), pub.pubKey, powTarget, GetPowWorker()));
-        return await Promise.all(messages);
+        const ret = await Promise.all(messages);
+        Nip17Chats.notifyChange();
+        return ret;
       },
       sendMessage: (ev, system) => {
         ev.forEach(a => system.BroadcastEvent(a));
+      },
+      markRead: msgId => {
+        const msg = messages.find(a => a.id === msgId);
+        setLastReadIn(id, msg?.inner.created_at);
+        Nip17Chats.notifyChange();
       },
     } as Chat;
   }

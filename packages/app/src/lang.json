@@ -98,6 +98,9 @@
   "0mch2Y": {
     "defaultMessage": "name has disallowed characters"
   },
+  "0oMk/p": {
+    "defaultMessage": "Other Chats"
+  },
   "0siT4z": {
     "defaultMessage": "Politics"
   },
@@ -2406,9 +2409,6 @@
   },
   "wc9st7": {
     "defaultMessage": "Media Attachments"
-  },
-  "whSrs+": {
-    "defaultMessage": "Nostr Public Chat"
   },
   "wih7iJ": {
     "defaultMessage": "name is blocked"

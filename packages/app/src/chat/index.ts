@@ -1,4 +1,4 @@
-import { unixNow, unwrap } from "@snort/shared";
+import { ExternalStore, unixNow, unwrap } from "@snort/shared";
 import {
   encodeTLVEntries,
   EventKind,
@@ -13,7 +13,7 @@ import {
   UserMetadata,
 } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
@@ -55,6 +55,7 @@ export interface Chat {
   messages: Array<ChatMessage>;
   createMessage(msg: string, pub: EventPublisher): Promise<Array<NostrEvent>>;
   sendMessage(ev: Array<NostrEvent>, system: SystemInterface): void | Promise<void>;
+  markRead(id?: string): void;
 }
 
 export interface ChatSystem {
@@ -104,10 +105,13 @@ export function lastReadInChat(id: string) {
   return parseInt(window.localStorage.getItem(k) ?? "0");
 }
 
-export function setLastReadIn(id: string) {
-  const now = unixNow();
+export function setLastReadIn(id: string, time?: number) {
+  const now = time ?? unixNow();
   const k = `dm:seen:${id}`;
-  window.localStorage.setItem(k, now.toString());
+  const current = lastReadInChat(id);
+  if (current < now) {
+    window.localStorage.setItem(k, now.toString());
+  }
 }
 
 export function createChatLink(type: ChatType, ...params: Array<string>) {
@@ -144,24 +148,28 @@ export function createEmptyChatObject(id: string) {
   throw new Error("Cant create new empty chat, unknown id");
 }
 
-export function useChatSystem(chat: ChatSystem) {
+export function useChatSystem<T extends ChatSystem & ExternalStore<Array<Chat>>>(sys: T) {
   const login = useLogin();
   const { publisher } = useEventPublisher();
+  const chat = useSyncExternalStore(
+    s => sys.hook(s),
+    () => sys.snapshot(),
+  );
   const sub = useMemo(() => {
-    return chat.subscription(login);
-  }, [chat, login]);
+    return sys.subscription(login);
+  }, [login]);
   const data = useRequestBuilder(sub);
   const { isMuted } = useModeration();
 
   useEffect(() => {
     if (publisher) {
-      chat.processEvents(publisher, data);
+      sys.processEvents(publisher, data);
     }
   }, [data, publisher]);
 
   return useMemo(() => {
     if (login.publicKey) {
-      return chat.listChats(
+      return sys.listChats(
         login.publicKey,
         data.filter(a => !isMuted(a.pubkey)),
       );
@@ -177,12 +185,6 @@ export function useChatSystems() {
 }
 
 export function useChat(id: string) {
-  const getStore = () => {
-    if (id.startsWith(NostrPrefix.Chat17)) {
-      return Nip17Chats;
-    }
-    throw new Error("Unsupported chat system");
-  };
-  const ret = useChatSystem(getStore()).find(a => a.id === id);
+  const ret = useChatSystem(Nip17Chats).find(a => a.id === id);
   return ret;
 }

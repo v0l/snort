@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { Chat, ChatMessage, ChatType, setLastReadIn } from "@/chat";
+import { Chat, ChatMessage, ChatType } from "@/chat";
 import NoteTime from "@/Components/Event/Note/NoteTime";
 import messages from "@/Components/messages";
 import Text from "@/Components/Text/Text";
@@ -31,9 +31,7 @@ export default function DM(props: DMProps) {
     if (publisher) {
       const decrypted = await msg.decrypt(publisher);
       setContent(decrypted || "<ERROR>");
-      if (!isMe) {
-        setLastReadIn(msg.id);
-      }
+      props.chat.markRead(msg.id);
     }
   }
 

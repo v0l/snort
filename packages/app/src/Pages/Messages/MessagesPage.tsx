@@ -4,11 +4,13 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Chat, ChatType, useChatSystems } from "@/chat";
+import { CollapsedSection } from "@/Components/Collapsed";
 import NoteTime from "@/Components/Event/Note/NoteTime";
 import NoteToSelf from "@/Components/User/NoteToSelf";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useLogin from "@/Hooks/useLogin";
 import usePageDimensions from "@/Hooks/usePageDimensions";
+import useWoT from "@/Hooks/useWoT";
 import { ChatParticipantProfile } from "@/Pages/Messages/ChatParticipant";
 import DmWindow from "@/Pages/Messages/DmWindow";
 import NewChatWindow from "@/Pages/Messages/NewChatWindow";
@@ -24,8 +26,12 @@ export default function MessagesPage() {
   const { width: pageWidth } = usePageDimensions();
 
   const chats = useChatSystems();
+  const wot = useWoT();
+  const trustedChats = chats.filter(a => wot.followDistance(a.participants[0].id) <= 2);
+  const otherChats = chats.filter(a => wot.followDistance(a.participants[0].id) > 2);
 
-  const unreadCount = useMemo(() => chats.reduce((p, c) => p + c.unread, 0), [chats]);
+  const unreadTrustedCount = useMemo(() => trustedChats.reduce((p, c) => p + c.unread, 0), [trustedChats]);
+  const unreadOtherCount = useMemo(() => otherChats.reduce((p, c) => p + c.unread, 0), [otherChats]);
 
   function openChat(e: React.MouseEvent<HTMLDivElement>, type: ChatType, id: string) {
     e.stopPropagation();
@@ -81,26 +87,45 @@ export default function MessagesPage() {
     );
   }
 
+  function sortMessages(a: Chat, b: Chat) {
+    const aSelf = a.participants.length === 1 && a.participants[0].id === login.publicKey;
+    const bSelf = b.participants.length === 1 && b.participants[0].id === login.publicKey;
+    if (aSelf || bSelf) {
+      return aSelf ? -1 : 1;
+    }
+    return b.lastMessage > a.lastMessage ? 1 : -1;
+  }
+
   return (
     <div className="flex flex-1 md:h-screen md:overflow-hidden">
       {(pageWidth >= TwoCol || !id) && (
         <div className="overflow-y-auto md:h-screen p-1 w-full md:w-1/3 flex-shrink-0">
           <div className="flex items-center justify-between p-2">
-            <button disabled={unreadCount <= 0} type="button" className="text-sm font-semibold">
+            <button
+              disabled={unreadTrustedCount <= 0}
+              type="button"
+              className="text-sm font-semibold"
+              onClick={() => {
+                chats.forEach(c => c.markRead());
+              }}>
               <FormattedMessage defaultMessage="Mark all read" />
             </button>
             <NewChatWindow />
           </div>
-          {chats
-            .sort((a, b) => {
-              const aSelf = a.participants.length === 1 && a.participants[0].id === login.publicKey;
-              const bSelf = b.participants.length === 1 && b.participants[0].id === login.publicKey;
-              if (aSelf || bSelf) {
-                return aSelf ? -1 : 1;
-              }
-              return b.lastMessage > a.lastMessage ? 1 : -1;
-            })
-            .map(conversation)}
+          {trustedChats.sort(sortMessages).map(conversation)}
+          {otherChats.sort(sortMessages).length > 0 && (
+            <>
+              <CollapsedSection
+                title={
+                  <div className="text-xl flex items-center gap-4">
+                    <FormattedMessage defaultMessage="Other Chats" />
+                    {unreadOtherCount > 0 && <div className="has-unread" />}
+                  </div>
+                }>
+                {otherChats.map(conversation)}
+              </CollapsedSection>
+            </>
+          )}
         </div>
       )}
       {id ? <DmWindow id={id} /> : pageWidth >= TwoCol && <div className="flex-1 rt-border"></div>}
