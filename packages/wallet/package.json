@@ -19,8 +19,6 @@
   ],
   "packageManager": "yarn@4.1.1",
   "dependencies": {
-    "@cashu/cashu-ts": "^1.0.0-rc.3",
-    "@lightninglabs/lnc-web": "^0.3.1-alpha",
     "@scure/base": "^1.1.6",
     "@snort/shared": "^1.0.17",
     "@snort/system": "^1.6.1",

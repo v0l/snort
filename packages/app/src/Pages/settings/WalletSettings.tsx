@@ -2,10 +2,8 @@ import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import LndLogo from "@/assets/img/lnd-logo.png";
 import AlbyIcon from "@/Components/Icons/Alby";
 import BlueWallet from "@/Components/Icons/BlueWallet";
-//import CashuIcon from "@/Components/Icons/Cashu";
 import Icon from "@/Components/Icons/Icon";
 import NWCIcon from "@/Components/Icons/NWC";
 import { getAlbyOAuth } from "@/Pages/settings/wallet/utils";
@@ -58,23 +56,11 @@ const WalletSettings = () => {
           desc={<FormattedMessage defaultMessage="Native nostr wallet connection" />}
         />
         <WalletRow
-          logo={<img src={LndLogo} />}
-          name="LND via LNC"
-          url="/settings/wallet/lnc"
-          desc={<FormattedMessage defaultMessage="Connect to your own LND node with Lightning Node Connect" />}
-        />
-        <WalletRow
           logo={<BlueWallet width={64} height={64} />}
           name="LNDHub"
           url="/settings/wallet/lndhub"
           desc={<FormattedMessage defaultMessage="Generic LNDHub wallet (BTCPayServer / Alby / LNBits)" />}
         />
-        {/*<WalletRow
-          logo={<CashuIcon size={64} />}
-          name="Cashu"
-          url="/settings/wallet/cashu"
-          desc={<FormattedMessage defaultMessage="Cashu mint wallet"  />}
-        />*/}
         {CONFIG.alby && (
           <WalletRow
             logo={<AlbyIcon size={64} />}

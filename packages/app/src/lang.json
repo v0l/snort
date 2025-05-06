@@ -129,9 +129,6 @@
   "1UWegE": {
     "defaultMessage": "Be sure to back up your keys!"
   },
-  "1c4YST": {
-    "defaultMessage": "Connected to: {node} 🎉"
-  },
   "1nYUGC": {
     "defaultMessage": "{n} Following"
   },
@@ -167,9 +164,6 @@
   },
   "2IFGap": {
     "defaultMessage": "Donate"
-  },
-  "2LbrkB": {
-    "defaultMessage": "Enter password"
   },
   "2O2sfp": {
     "defaultMessage": "Finish"
@@ -455,9 +449,6 @@
   },
   "8jmwT8": {
     "defaultMessage": "bech32-encoded entities"
-  },
-  "8v1NN+": {
-    "defaultMessage": "Pairing phrase"
   },
   "8xdDLn": {
     "defaultMessage": "Follow sets"
@@ -1512,9 +1503,6 @@
   "Z48UEo": {
     "defaultMessage": "Channel Metadata"
   },
-  "Z4BMCZ": {
-    "defaultMessage": "Enter pairing phrase"
-  },
   "Z7kkeJ": {
     "defaultMessage": "Delegated Event Signing"
   },
@@ -1559,9 +1547,6 @@
   },
   "aRex7h": {
     "defaultMessage": "Paid {amount} sats, fee {fee} sats"
-  },
-  "aSGz4J": {
-    "defaultMessage": "Connect to your own LND node with Lightning Node Connect"
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
@@ -2007,9 +1992,6 @@
   },
   "lPWASz": {
     "defaultMessage": "Snort nostr address"
-  },
-  "lTbT3s": {
-    "defaultMessage": "Wallet password"
   },
   "lbr3Lq": {
     "defaultMessage": "Copy link"
