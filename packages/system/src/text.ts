@@ -12,6 +12,7 @@ import {
 import { NostrLink, validateNostrLink } from "./nostr-link";
 import { splitByUrl } from "./utils";
 import { IMeta } from "./nostr";
+import { Nip94Tags, readNip94TagsFromIMeta } from ".";
 
 export interface ParsedFragment {
   type:
@@ -254,33 +255,14 @@ function extractMarkdownCode(fragments: Fragment[]): (string | ParsedFragment)[]
 }
 
 export function parseIMeta(tags: Array<Array<string>>) {
-  let ret: Record<string, IMeta> | undefined;
+  let ret: Record<string, Nip94Tags> | undefined;
   const imetaTags = tags.filter(a => a[0] === "imeta");
   for (const imetaTag of imetaTags) {
-    ret ??= {};
-    let imeta: IMeta = {};
-    let url = "";
-    for (const t of imetaTag.slice(1)) {
-      const [k, v] = t.split(" ");
-      if (k === "url") {
-        url = v;
-      }
-      if (k === "dim") {
-        const [w, h] = v.split("x");
-        imeta.height = Number(h);
-        imeta.width = Number(w);
-      }
-      if (k === "blurhash") {
-        imeta.blurHash = v;
-      }
-      if (k === "x") {
-        imeta.sha256 = v;
-      }
-      if (k === "alt") {
-        imeta.alt = v;
-      }
+    const meta = readNip94TagsFromIMeta(imetaTag);
+    if (meta.url) {
+      ret ??= {};
+      ret[meta.url] = meta;
     }
-    ret[url] = imeta;
   }
   return ret;
 }

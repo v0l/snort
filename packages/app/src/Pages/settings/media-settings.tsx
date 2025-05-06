@@ -1,4 +1,4 @@
-import { unwrap } from "@snort/shared";
+import { sanitizeRelayUrl, unwrap } from "@snort/shared";
 import { EventKind, UnknownTag } from "@snort/system";
 import { useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
@@ -8,34 +8,14 @@ import IconButton from "@/Components/Button/IconButton";
 import { CollapsedSection } from "@/Components/Collapsed";
 import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
 import useDiscoverMediaServers from "@/Hooks/useDiscoverMediaServers";
-import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
-import { Nip96Uploader } from "@/Utils/Upload/Nip96";
+import { getRelayName } from "@/Utils";
 
 export default function MediaSettingsPage() {
   const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
-  const { publisher } = useEventPublisher();
-  const list = state.getList(EventKind.StorageServerList);
+  const list = state.getList(EventKind.BlossomServerList);
   const [newServer, setNewServer] = useState("");
-  const [error, setError] = useState("");
   const knownServers = useDiscoverMediaServers();
-
-  async function validateServer(url: string) {
-    if (!publisher) return;
-
-    setError("");
-    try {
-      const svc = new Nip96Uploader(url, publisher);
-      await svc.loadInfo();
-
-      return true;
-    } catch (e) {
-      if (e instanceof Error) {
-        setError(e.message);
-      }
-      return false;
-    }
-  }
 
   return (
     <div className="flex flex-col gap-3">
@@ -57,7 +37,7 @@ export default function MediaSettingsPage() {
                   size: 15,
                 }}
                 onClick={async () => {
-                  await state.removeFromList(EventKind.StorageServerList, [new UnknownTag(["server", addr])], true);
+                  await state.removeFromList(EventKind.BlossomServerList, [new UnknownTag(["server", addr])], true);
                 }}
               />
             </div>
@@ -83,9 +63,9 @@ export default function MediaSettingsPage() {
           />
           <AsyncButton
             onClick={async () => {
-              if (await validateServer(newServer)) {
+              if (sanitizeRelayUrl(newServer)) {
                 await state.addToList(
-                  EventKind.StorageServerList,
+                  EventKind.BlossomServerList,
                   [new UnknownTag(["server", new URL(newServer).toString()])],
                   true,
                 );
@@ -95,7 +75,6 @@ export default function MediaSettingsPage() {
             <FormattedMessage defaultMessage="Add" />
           </AsyncButton>
         </div>
-        {error && <b className="text-warning">{error}</b>}
       </div>
       <CollapsedSection
         title={
@@ -127,7 +106,7 @@ export default function MediaSettingsPage() {
                 <tr key={k}>
                   <td className="flex gap-2 items-center">
                     <RelayFavicon url={k} />
-                    {k}
+                    {getRelayName(k)}
                   </td>
                   <td className="text-center">
                     <FormattedNumber value={v} />
@@ -136,9 +115,7 @@ export default function MediaSettingsPage() {
                     <AsyncButton
                       className="!py-1 mb-1"
                       onClick={async () => {
-                        if (await validateServer(k)) {
-                          await state.addToList(EventKind.StorageServerList, [new UnknownTag(["server", k])], true);
-                        }
+                        await state.addToList(EventKind.BlossomServerList, [new UnknownTag(["server", k])], true);
                       }}>
                       <FormattedMessage defaultMessage="Add" />
                     </AsyncButton>

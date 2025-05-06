@@ -1,4 +1,3 @@
-import { NostrEvent } from "@snort/system";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
@@ -7,8 +6,7 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import useImgProxy from "@/Hooks/useImgProxy";
 import useLogin from "@/Hooks/useLogin";
 import { useMediaServerList } from "@/Hooks/useMediaServerList";
-import { findTag } from "@/Utils";
-import { Nip96Uploader } from "@/Utils/Upload/Nip96";
+import { BlobDescriptor, Blossom } from "@/Utils/Upload/blossom";
 
 import AsyncButton from "../Button/AsyncButton";
 
@@ -16,12 +14,12 @@ export function MediaServerFileList({
   onPicked,
   cols,
 }: {
-  onPicked: (files: Array<NostrEvent>) => void;
+  onPicked: (files: Array<BlobDescriptor>) => void;
   cols?: number;
 }) {
   const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
   const { publisher } = useEventPublisher();
-  const [fileList, setFilesList] = useState<Array<NostrEvent>>([]);
+  const [fileList, setFilesList] = useState<Array<BlobDescriptor>>([]);
   const [pickedFiles, setPickedFiles] = useState<Array<string>>([]);
   const servers = useMediaServerList();
 
@@ -30,11 +28,9 @@ export function MediaServerFileList({
     if (!publisher) return;
     for (const s of servers.servers) {
       try {
-        const sx = new Nip96Uploader(s, publisher);
-        const files = await sx.listFiles();
-        if (files?.files) {
-          res.push(...files.files);
-        }
+        const sx = new Blossom(s, publisher);
+        const files = await sx.list(state.pubkey);
+        res.push(...files);
       } catch (e) {
         console.error(e);
       }
@@ -42,14 +38,12 @@ export function MediaServerFileList({
     setFilesList(res);
   }
 
-  function toggleFile(ev: NostrEvent) {
-    const hash = findTag(ev, "x");
-    if (!hash) return;
+  function toggleFile(b: BlobDescriptor) {
     setPickedFiles(a => {
-      if (a.includes(hash)) {
-        return a.filter(a => a != hash);
+      if (a.includes(b.sha256)) {
+        return a.filter(a => a != b.sha256);
       } else {
-        return [...a, hash];
+        return [...a, b.sha256];
       }
     });
   }
@@ -58,6 +52,17 @@ export function MediaServerFileList({
     listFiles().catch(console.error);
   }, [servers.servers.length, state?.version]);
 
+  const finalFileList = fileList
+    .sort((a, b) => (b.uploaded ?? 0) - (a.uploaded ?? 0))
+    .reduce(
+      (acc, v) => {
+        acc[v.sha256] ??= [];
+        acc[v.sha256].push(v);
+        return acc;
+      },
+      {} as Record<string, Array<BlobDescriptor>>,
+    );
+
   return (
     <div>
       <div
@@ -65,33 +70,25 @@ export function MediaServerFileList({
           "grid-cols-2": cols === 2 || cols === undefined,
           "grid-cols-6": cols === 6,
         })}>
-        {fileList.map(a => (
-          <Nip96File
-            key={a.id}
-            file={a}
-            onClick={() => toggleFile(a)}
-            checked={pickedFiles.includes(findTag(a, "x") ?? "")}
-          />
+        {Object.entries(finalFileList).map(([k, v]) => (
+          <ServerFile key={k} file={v[0]} onClick={() => toggleFile(v[0])} checked={pickedFiles.includes(k)} />
         ))}
       </div>
       <AsyncButton
         disabled={pickedFiles.length === 0}
-        onClick={() => onPicked(fileList.filter(a => pickedFiles.includes(findTag(a, "x") ?? "")))}>
+        onClick={() => onPicked(fileList.filter(a => pickedFiles.includes(a.sha256)))}>
         <FormattedMessage defaultMessage="Select" />
       </AsyncButton>
     </div>
   );
 }
 
-function Nip96File({ file, checked, onClick }: { file: NostrEvent; checked: boolean; onClick: () => void }) {
-  const mime = findTag(file, "m");
-  const url = findTag(file, "url");
-  const size = findTag(file, "size");
+function ServerFile({ file, checked, onClick }: { file: BlobDescriptor; checked: boolean; onClick: () => void }) {
   const { proxy } = useImgProxy();
 
   function backgroundImage() {
-    if (url && (mime?.startsWith("image/") || mime?.startsWith("video/"))) {
-      return `url(${proxy(url, 512)})`;
+    if (file.url && (file.type?.startsWith("image/") || file.type?.startsWith("video/"))) {
+      return `url(${proxy(file.url, 512)})`;
     }
   }
 
@@ -103,26 +100,25 @@ function Nip96File({ file, checked, onClick }: { file: NostrEvent; checked: bool
           backgroundImage: backgroundImage(),
         }}>
         <div className="absolute w-full h-full opacity-0 bg-black hover:opacity-80 flex flex-col items-center justify-center gap-4">
-          <div>{file.content.length === 0 ? <FormattedMessage defaultMessage="Untitled" /> : file.content}</div>
           <div>
-            {Number(size) > 1024 * 1024 && (
+            {file.size > 1024 * 1024 && (
               <FormattedMessage
                 defaultMessage="{n}MiB"
                 values={{
-                  n: <FormattedNumber value={Number(size) / 1024 / 1024} />,
+                  n: <FormattedNumber value={file.size / 1024 / 1024} />,
                 }}
               />
             )}
-            {Number(size) < 1024 * 1024 && (
+            {file.size < 1024 * 1024 && (
               <FormattedMessage
                 defaultMessage="{n}KiB"
                 values={{
-                  n: <FormattedNumber value={Number(size) / 1024} />,
+                  n: <FormattedNumber value={file.size / 1024} />,
                 }}
               />
             )}
           </div>
-          <div>{new Date(file.created_at * 1000).toLocaleString()}</div>
+          <div>{file.uploaded && new Date(file.uploaded * 1000).toLocaleString()}</div>
         </div>
         <div
           className={classNames("w-4 h-4 border border-2 rounded-full right-1 top-1 absolute", {

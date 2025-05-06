@@ -5,7 +5,7 @@ import { useMediaServerList } from "@/Hooks/useMediaServerList";
 import { bech32ToHex, randomSample } from "@/Utils";
 import { KieranPubKey } from "@/Utils/Const";
 
-import { Nip96Uploader } from "./Nip96";
+import { Blossom } from "./blossom";
 
 export interface UploadResult {
   url?: string;
@@ -65,8 +65,8 @@ export default function useFileUpload(privKey?: string) {
   const pub = privKey ? EventPublisher.privateKey(privKey) : publisher;
   if (servers.length > 0 && pub) {
     const random = randomSample(servers, 1)[0];
-    return new Nip96Uploader(random, pub);
+    return new Blossom(random, pub);
   } else if (pub) {
-    return new Nip96Uploader("https://nostr.build", pub);
+    return new Blossom("https://blossom.build", pub);
   }
 }

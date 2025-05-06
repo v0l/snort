@@ -9,6 +9,9 @@ export function readNip94TagsFromIMeta(tag: Array<string>) {
 }
 
 export function nip94TagsToIMeta(meta: Nip94Tags) {
+  if (!meta.url) {
+    throw new Error("URL is required!");
+  }
   const ret: Array<string> = ["imeta"];
   const ifPush = (key: string, value?: string | number) => {
     if (value) {

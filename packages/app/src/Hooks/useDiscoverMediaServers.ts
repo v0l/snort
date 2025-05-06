@@ -6,7 +6,7 @@ import { useMemo } from "react";
 export default function useDiscoverMediaServers() {
   const sub = useMemo(() => {
     const rb = new RequestBuilder("media-servers-all");
-    rb.withFilter().kinds([EventKind.StorageServerList]);
+    rb.withFilter().kinds([EventKind.BlossomServerList]);
     return rb;
   }, []);
 

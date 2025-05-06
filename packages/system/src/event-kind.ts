@@ -38,6 +38,7 @@ const enum EventKind {
   SearchRelaysList = 10_007, // NIP-51
   InterestsList = 10_015, // NIP-51
   EmojisList = 10_030, // NIP-51
+  BlossomServerList = 10_063,
   StorageServerList = 10_096, // NIP-96 server list
 
   FollowSet = 30_000, // NIP-51

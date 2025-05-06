@@ -1,9 +1,9 @@
 /* eslint-disable max-lines */
 import { fetchNip05Pubkey, unixNow } from "@snort/shared";
 import {
-  addExtensionToNip94Url,
   EventBuilder,
   EventKind,
+  Nip94Tags,
   nip94TagsToIMeta,
   NostrLink,
   NostrPrefix,
@@ -158,15 +158,32 @@ export function NoteCreator() {
           extraTags.push(...note.hashTags.map(a => ["t", a.toLowerCase()]));
         }
 
-        for (const ex of note.otherEvents ?? []) {
-          const meta = readNip94Tags(ex.tags);
-          if (!meta.url) continue;
-          if (!note.note.endsWith("\n")) {
-            note.note += "\n";
-          }
-          note.note += addExtensionToNip94Url(meta);
+        // attach 1 link and use other duplicates as fallback urls
+        for (const [, v] of Object.entries(note.attachments ?? {})) {
+          const at = v[0];
+          note.note += note.note.length > 0 ? `\n${at.url}` : at.url;
+          console.debug(at);
+          const n94 =
+            (at.nip94?.length ?? 0) > 0
+              ? readNip94Tags(at.nip94!)
+              : ({
+                  url: at.url,
+                  hash: at.sha256,
+                  size: at.size,
+                  mimeType: at.type,
+                } as Nip94Tags);
+
+          // attach fallbacks
+          n94.fallback ??= [];
+          n94.fallback.push(
+            ...v
+              .slice(1)
+              .filter(a => a.url)
+              .map(a => a.url!),
+          );
+
           extraTags ??= [];
-          extraTags.push(nip94TagsToIMeta(meta));
+          extraTags.push(nip94TagsToIMeta(n94));
         }
 
         // add quote repost
@@ -272,20 +289,12 @@ export function NoteCreator() {
   async function uploadFile(file: File) {
     try {
       if (file && uploader) {
-        const rx = await uploader.upload(file, file.name);
+        const rx = await uploader.upload(file);
         note.update(v => {
-          if (rx.header) {
-            v.otherEvents ??= [];
-            v.otherEvents.push(rx.header);
-          } else if (rx.url) {
-            v.note = `${v.note ? `${v.note}\n` : ""}${rx.url}`;
-            if (rx.metadata) {
-              v.extraTags ??= [];
-              const imeta = nip94TagsToIMeta(rx.metadata);
-              v.extraTags.push(imeta);
-            }
-          } else if (rx?.error) {
-            v.error = rx.error;
+          if (rx.url) {
+            v.attachments ??= {};
+            v.attachments[rx.sha256] ??= [];
+            v.attachments[rx.sha256].push(rx);
           }
         });
       }
@@ -677,31 +686,25 @@ export function NoteCreator() {
             </div>
           </div>
         )}
-        {(note.otherEvents?.length ?? 0) > 0 && !note.preview && (
+        {Object.entries(note.attachments ?? {}).length > 0 && !note.preview && (
           <div className="flex gap-2 flex-wrap">
-            {note.otherEvents
-              ?.map(a => ({
-                event: a,
-                tags: readNip94Tags(a.tags),
-              }))
-              .filter(a => a.tags.url)
-              .map(a => (
-                <div key={a.tags.url} className="relative">
-                  <img
-                    className="object-cover w-[80px] h-[80px] !mt-0 rounded-lg"
-                    src={addExtensionToNip94Url(a.tags)}
-                  />
-                  <Icon
-                    name="x"
-                    className="absolute -top-[0.25rem] -right-[0.25rem] bg-gray rounded-full cursor-pointer"
-                    onClick={() =>
-                      note.update(
-                        n => (n.otherEvents = n.otherEvents?.filter(b => readNip94Tags(b.tags).url !== a.tags.url)),
-                      )
-                    }
-                  />
-                </div>
-              ))}
+            {Object.entries(note.attachments ?? {}).map(([k, v]) => (
+              <div key={k} className="relative">
+                <img className="object-cover w-[80px] h-[80px] !mt-0 rounded-lg" src={v[0].url} />
+                <Icon
+                  name="x"
+                  className="absolute -top-[0.25rem] -right-[0.25rem] bg-gray rounded-full cursor-pointer"
+                  onClick={() =>
+                    note.update(n => {
+                      if (n.attachments?.[k]) {
+                        delete n.attachments[k];
+                      }
+                      return n;
+                    })
+                  }
+                />
+              </div>
+            ))}
           </div>
         )}
         {noteCreatorFooter()}
@@ -733,8 +736,11 @@ export function NoteCreator() {
               <MediaServerFileList
                 onPicked={files => {
                   note.update(n => {
-                    n.otherEvents ??= [];
-                    n.otherEvents?.push(...files);
+                    for (const x of files) {
+                      n.attachments ??= {};
+                      n.attachments[x.sha256] ??= [];
+                      n.attachments[x.sha256].push(x);
+                    }
                     n.filePicker = "hidden";
                   });
                 }}

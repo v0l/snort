@@ -1,6 +1,6 @@
 import { IMeta } from "@snort/system";
 import classNames from "classnames";
-import React, { CSSProperties, useEffect, useMemo, useRef } from "react";
+import React, { CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { ProxyImg } from "@/Components/ProxyImg";
@@ -45,6 +45,8 @@ const ImageElement = ({ url, meta, onMediaClick, size }: ImageElementProps) => {
     return style;
   }, [imageRef?.current, meta]);
 
+  const [alternatives, setAlternatives] = useState<Array<string>>(meta?.fallback ?? []);
+  const [currentUrl, setCurrentUrl] = useState<string>(url);
   return (
     <div
       className={classNames("flex items-center -mx-4 md:mx-0 my-2", {
@@ -52,8 +54,8 @@ const ImageElement = ({ url, meta, onMediaClick, size }: ImageElementProps) => {
         "cursor-pointer": onMediaClick,
       })}>
       <ProxyImg
-        key={url}
-        src={url}
+        key={currentUrl}
+        src={currentUrl}
         size={size}
         sha256={meta?.sha256}
         onClick={onMediaClick}
@@ -62,6 +64,14 @@ const ImageElement = ({ url, meta, onMediaClick, size }: ImageElementProps) => {
         })}
         style={style}
         ref={imageRef}
+        onError={() => {
+          const next = alternatives.at(0);
+          if (next) {
+            console.warn("IMG FALLBACK", "Failed to load url, trying next: ", next);
+            setAlternatives(z => z.filter(y => y !== next));
+            setCurrentUrl(next);
+          }
+        }}
       />
     </div>
   );
