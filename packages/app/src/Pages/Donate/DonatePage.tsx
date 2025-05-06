@@ -1,7 +1,7 @@
 import { HexKey } from "@snort/system";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Telegram from "@/assets/img/telegram.svg";
 import AsyncButton from "@/Components/Button/AsyncButton";
@@ -21,7 +21,6 @@ const DonatePage = () => {
   const [today, setSumToday] = useState<RevenueToday>();
   const [onChain, setOnChain] = useState("");
   const api = new SnortApi(ApiHost);
-  const navigate = useNavigate();
 
   async function getOnChainAddress() {
     const { address } = await api.onChainDonation();
