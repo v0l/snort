@@ -14,7 +14,6 @@ export enum NostrPrefix {
   Address = "naddr",
   Req = "nreq",
   Chat17 = "nchat17",
-  Chat28 = "nchat28",
 }
 
 export enum TLVEntryType {

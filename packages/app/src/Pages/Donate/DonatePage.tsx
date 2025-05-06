@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
 import Telegram from "@/assets/img/telegram.svg";
-import { Nip28ChatSystem } from "@/chat/nip28";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import Copy from "@/Components/Copy/Copy";
 import ZapButton from "@/Components/Event/ZapButton";
@@ -102,18 +101,6 @@ const DonatePage = () => {
                       }}>
                       <img src={Telegram} width={24} height={24} />
                       <FormattedMessage defaultMessage="Telegram" />
-                    </AsyncButton>
-                  );
-                }
-                case "nip28": {
-                  return (
-                    <AsyncButton
-                      onClick={() => {
-                        const id = Nip28ChatSystem.chatId(a.value);
-                        navigate(`/messages/${id}`);
-                      }}>
-                      <img src={CONFIG.icon} width={24} height={24} className="rounded-full" />
-                      <FormattedMessage defaultMessage="Nostr Public Chat" />
                     </AsyncButton>
                   );
                 }

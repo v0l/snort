@@ -101,7 +101,7 @@ declare const CONFIG: {
 
   // public chat channels for site
   chatChannels?: Array<{
-    type: "nip28" | "telegram";
+    type: "telegram";
     value: string;
   }>;
 };

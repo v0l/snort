@@ -45,8 +45,7 @@
     "wss://relay.damus.io/": { "read": true, "write": true }
   },
   "chatChannels": [
-    { "type": "telegram", "value": "https://t.me/irismessenger" },
-    { "type": "nip28", "value": "23286a4602ada10cc10200553bff62a110e8dc0eacddf73277395a89ddf26a09" }
+    { "type": "telegram", "value": "https://t.me/irismessenger" }
   ],
   "alby": {
     "clientId": "5rYcHDrlDb",
