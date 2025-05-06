@@ -21,7 +21,7 @@ const RelaySettingsPage = () => {
   async function addNewRelay() {
     const urls = removeUndefined(
       (newRelay?.trim()?.split("\n") ?? []).map(a => {
-        if (!a.startsWith("wss://")) {
+        if (!a.startsWith("wss://") && !a.startsWith("ws://")) {
           a = `wss://${a}`;
         }
         return sanitizeRelayUrl(a);
