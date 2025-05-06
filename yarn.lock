@@ -4051,23 +4051,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lightninglabs/lnc-core@npm:0.3.1-alpha":
-  version: 0.3.1-alpha
-  resolution: "@lightninglabs/lnc-core@npm:0.3.1-alpha"
-  checksum: 10/8c77fbf7b9f69842009067c8d649505b13a05c91a6f5686f24ebd1548b367e329868214fb98f8120b585b8a1eeed2b8dd2418eaeec1fa5f5733973daf5f5090a
-  languageName: node
-  linkType: hard
-
-"@lightninglabs/lnc-web@npm:^0.3.1-alpha":
-  version: 0.3.1-alpha
-  resolution: "@lightninglabs/lnc-web@npm:0.3.1-alpha"
-  dependencies:
-    "@lightninglabs/lnc-core": "npm:0.3.1-alpha"
-    crypto-js: "npm:4.2.0"
-  checksum: 10/f3370525f8e98f967305457610f20568eb8ca6dacdfb15517ac24f03913da37007e6a39d6e71a017d1cbeeca30258df617b261889903c7106857950fff94412c
-  languageName: node
-  linkType: hard
-
 "@livekit/components-core@npm:0.11.5":
   version: 0.11.5
   resolution: "@livekit/components-core@npm:0.11.5"
@@ -4895,8 +4878,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snort/wallet@workspace:packages/wallet"
   dependencies:
-    "@cashu/cashu-ts": "npm:^1.0.0-rc.3"
-    "@lightninglabs/lnc-web": "npm:^0.3.1-alpha"
     "@scure/base": "npm:^1.1.6"
     "@snort/shared": "npm:^1.0.17"
     "@snort/system": "npm:^1.6.1"
@@ -7418,13 +7399,6 @@ __metadata:
     shebang-command: "npm:^2.0.0"
     which: "npm:^2.0.1"
   checksum: 10/e1a13869d2f57d974de0d9ef7acbf69dc6937db20b918525a01dacb5032129bd552d290d886d981e99f1b624cb03657084cc87bd40f115c07ecf376821c729ce
-  languageName: node
-  linkType: hard
-
-"crypto-js@npm:4.2.0":
-  version: 4.2.0
-  resolution: "crypto-js@npm:4.2.0"
-  checksum: 10/c7bcc56a6e01c3c397e95aa4a74e4241321f04677f9a618a8f48a63b5781617248afb9adb0629824792e7ec20ca0d4241a49b6b2938ae6f973ec4efc5c53c924
   languageName: node
   linkType: hard
 
