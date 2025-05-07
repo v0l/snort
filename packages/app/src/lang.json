@@ -1431,6 +1431,9 @@
   "W9355R": {
     "defaultMessage": "Unmute"
   },
+  "WTrOy3": {
+    "defaultMessage": "Chat"
+  },
   "WeLEuL": {
     "defaultMessage": "From Server"
   },
@@ -1484,6 +1487,9 @@
   },
   "YH2RKk": {
     "defaultMessage": "Popular media servers."
+  },
+  "YLGfQn": {
+    "defaultMessage": "Write message"
   },
   "YQZY/S": {
     "defaultMessage": "It looks like you dont follow enough people, take a look at {newUsersPage} to discover people to follow!"

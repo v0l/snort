@@ -118,7 +118,7 @@ export default function ProfileImage({
   const classNamesOverInner = classNames(
     "min-w-0",
     {
-      "grid grid-cols-[min-content_auto] gap-3 items-center": showUsername,
+      "grid grid-cols-[min-content_auto] gap-2 items-center": showUsername,
     },
     className,
   );

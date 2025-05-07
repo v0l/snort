@@ -54,7 +54,8 @@ const enum EventKind {
 
   LongFormTextNote = 30023, // NIP-23
   AppData = 30_078, // NIP-78
-  LiveEvent = 30311, // NIP-102
+  LiveEvent = 30311, // NIP-53
+  LiveEventChat = 1311, // NIP-53
   UserStatus = 30315, // NIP-38
   ZapstrTrack = 31337,
   ApplicationHandler = 31_990,

@@ -1,25 +1,43 @@
-import { LiveKitRoom as LiveKitRoomContext, RoomAudioRenderer, useParticipants } from "@livekit/components-react";
+/* eslint-disable max-lines */
+import {
+  LiveKitRoom as LiveKitRoomContext,
+  RoomAudioRenderer,
+  useEnsureRoom,
+  useParticipantPermissions,
+  useParticipants,
+} from "@livekit/components-react";
 import { dedupe, unixNow } from "@snort/shared";
-import { EventKind, NostrLink, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { EventKind, EventPublisher, NostrLink, RequestBuilder, SystemInterface, TaggedNostrEvent } from "@snort/system";
 import { useRequestBuilder, useUserProfile } from "@snort/system-react";
-import { LocalParticipant, RemoteParticipant } from "livekit-client";
+import classNames from "classnames";
+import { LocalParticipant, LocalTrackPublication, RemoteParticipant, RoomEvent, Track } from "livekit-client";
 import { useEffect, useMemo, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
+import Text from "@/Components/Text/Text";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { extractStreamInfo } from "@/Utils/stream";
 
 import AsyncButton from "../Button/AsyncButton";
+import IconButton from "../Button/IconButton";
 import { ProxyImg } from "../ProxyImg";
 import Avatar from "../User/Avatar";
 import { AvatarGroup } from "../User/AvatarGroup";
 import DisplayName from "../User/DisplayName";
+import ProfileImage from "../User/ProfileImage";
+import VuBar from "./VU";
+
+enum RoomTab {
+  Participants,
+  Chat,
+}
 
 export default function LiveKitRoom({ ev, canJoin }: { ev: TaggedNostrEvent; canJoin?: boolean }) {
   const { stream, service, id } = extractStreamInfo(ev);
-  const { publisher } = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const [join, setJoin] = useState(false);
   const [token, setToken] = useState<string>();
+  const [tab, setTab] = useState(RoomTab.Participants);
 
   async function getToken() {
     if (!service || !publisher) return;
@@ -43,6 +61,17 @@ export default function LiveKitRoom({ ev, canJoin }: { ev: TaggedNostrEvent; can
     }
   }
 
+  async function publishPresence(publisher: EventPublisher, system: SystemInterface) {
+    const e = await publisher.generic(eb => {
+      const aTag = NostrLink.fromEvent(ev).toEventTag();
+      return eb
+        .kind(10_312 as EventKind)
+        .tag(aTag!)
+        .tag(["expiration", (unixNow() + 60).toString()]);
+    });
+    await system.BroadcastEvent(e);
+  }
+
   useEffect(() => {
     if (join && !token) {
       getToken()
@@ -50,6 +79,18 @@ export default function LiveKitRoom({ ev, canJoin }: { ev: TaggedNostrEvent; can
         .catch(console.error);
     }
   }, [join]);
+
+  useEffect(() => {
+    if (token && publisher && system) {
+      publishPresence(publisher, system);
+      const t = setInterval(async () => {
+        if (token) {
+          publishPresence(publisher, system);
+        }
+      }, 60_000);
+      return () => clearInterval(t);
+    }
+  }, [token, publisher, system]);
 
   if (!join) {
     return (
@@ -65,8 +106,8 @@ export default function LiveKitRoom({ ev, canJoin }: { ev: TaggedNostrEvent; can
   }
   return (
     <LiveKitRoomContext token={token} serverUrl={stream?.replace("wss+livekit://", "wss://")} connect={true}>
-      <RoomAudioRenderer volume={1} />
-      <ParticipantList ev={ev} />
+      <RoomAudioRenderer volume={1} muted={false} />
+      <RoomBody ev={ev} tab={tab} onSelectTab={setTab} />
     </LiveKitRoomContext>
   );
 }
@@ -76,9 +117,9 @@ function RoomHeader({ ev }: { ev: TaggedNostrEvent }) {
   return (
     <div className="relative rounded-xl h-[140px] w-full overflow-hidden">
       {image ? <ProxyImg src={image} className="w-full" /> : <div className="absolute bg-gray-dark w-full h-full" />}
-      <div className="absolute left-4 top-4 w-full flex justify-between pr-4">
+      <div className="absolute left-4 top-4 w-full flex justify-between pr-8">
         <div className="text-2xl">{title}</div>
-        <div>
+        <div className="flex gap-2 items-center">
           <NostrParticipants ev={ev} />
         </div>
       </div>
@@ -86,19 +127,162 @@ function RoomHeader({ ev }: { ev: TaggedNostrEvent }) {
   );
 }
 
-function ParticipantList({ ev }: { ev: TaggedNostrEvent }) {
-  const participants = useParticipants();
+function RoomBody({ ev, tab, onSelectTab }: { ev: TaggedNostrEvent; tab: RoomTab; onSelectTab: (t: RoomTab) => void }) {
+  const participants = useParticipants({
+    updateOnlyOn: [
+      RoomEvent.ParticipantConnected,
+      RoomEvent.ParticipantDisconnected,
+      RoomEvent.ParticipantPermissionsChanged,
+      RoomEvent.TrackMuted,
+      RoomEvent.TrackPublished,
+      RoomEvent.TrackUnmuted,
+      RoomEvent.TrackUnmuted,
+    ],
+  });
   return (
     <div className="p">
       <RoomHeader ev={ev} />
-      <h3>
-        <FormattedMessage defaultMessage="Participants" />
-      </h3>
-      <div className="grid grid-cols-4">
-        {participants.map(a => (
-          <LiveKitUser p={a} key={a.identity} />
-        ))}
+      <MyControls />
+      <div className="flex text-center items-center text-xl font-medium mb-2">
+        <div
+          className={classNames("flex-1 py-2 cursor-pointer select-none border-b border-transparent", {
+            "!border-highlight": tab === RoomTab.Participants,
+          })}
+          onClick={() => onSelectTab(RoomTab.Participants)}>
+          <FormattedMessage defaultMessage="Participants" />
+        </div>
+        <div
+          className={classNames("flex-1 py-2 cursor-pointer select-none border-b border-transparent", {
+            "!border-highlight": tab === RoomTab.Chat,
+          })}
+          onClick={() => onSelectTab(RoomTab.Chat)}>
+          <FormattedMessage defaultMessage="Chat" />
+        </div>
       </div>
+      {tab === RoomTab.Participants && (
+        <div className="grid grid-cols-4">
+          {participants.map(a => (
+            <LiveKitUser p={a} key={a.identity} />
+          ))}
+        </div>
+      )}
+      {tab === RoomTab.Chat && (
+        <>
+          <RoomChat ev={ev} />
+          <WriteChatMessage ev={ev} />
+        </>
+      )}
+    </div>
+  );
+}
+
+function MyControls() {
+  const room = useEnsureRoom();
+  const p = room.localParticipant;
+  const permissions = useParticipantPermissions({
+    participant: p,
+  });
+  useEffect(() => {
+    if (permissions && p instanceof LocalParticipant) {
+      const handler = (lt: LocalTrackPublication) => {
+        lt.mute();
+      };
+      p.on("localTrackPublished", handler);
+      if (permissions.canPublish && p.audioTrackPublications.size === 0) {
+        p.setMicrophoneEnabled(true);
+      }
+      return () => {
+        p.off("localTrackPublished", handler);
+      };
+    }
+  }, [p, permissions]);
+  const isMuted = p.getTrackPublication(Track.Source.Microphone)?.isMuted ?? true;
+
+  return (
+    <div className="flex gap-2 items-center mt-2">
+      {p.permissions?.canPublish && (
+        <IconButton
+          icon={{ name: !isMuted ? "mic" : "mic-off", size: 20 }}
+          onClick={async () => {
+            if (isMuted) {
+              await p.setMicrophoneEnabled(true);
+            } else {
+              await p.setMicrophoneEnabled(false);
+            }
+          }}
+        />
+      )}
+      {/*<IconButton icon={{ name: "hand", size: 20 }} />*/}
+    </div>
+  );
+}
+
+function RoomChat({ ev }: { ev: TaggedNostrEvent }) {
+  const link = NostrLink.fromEvent(ev);
+  const sub = useMemo(() => {
+    const sub = new RequestBuilder(`room-chat:${link.tagKey}`);
+    sub.withOptions({ leaveOpen: true, replaceable: true });
+    sub.withFilter().replyToLink([link]).kinds([EventKind.LiveEventChat]).limit(100);
+    return sub;
+  }, [link.tagKey]);
+  const chat = useRequestBuilder(sub);
+
+  return (
+    <div className="flex h-[calc(100dvh-370px)] overflow-x-hidden overflow-y-scroll">
+      <div className="flex flex-col gap-1 flex-col-reverse w-full">
+        {chat
+          .sort((a, b) => b.created_at - a.created_at)
+          .map(e => (
+            <ChatMessage key={e.id} ev={e} />
+          ))}
+      </div>
+    </div>
+  );
+}
+
+function ChatMessage({ ev }: { ev: TaggedNostrEvent }) {
+  return (
+    <div className="grid grid-cols-[auto_1fr] items-center gap-2">
+      <ProfileImage
+        pubkey={ev.pubkey}
+        size={20}
+        showBadges={false}
+        showFollowDistance={false}
+        className="text-highlight"
+      />
+      <Text id={ev.id} content={ev.content} creator={ev.pubkey} tags={ev.tags} disableMedia={true} />
+    </div>
+  );
+}
+
+function WriteChatMessage({ ev }: { ev: TaggedNostrEvent }) {
+  const link = NostrLink.fromEvent(ev);
+  const [chat, setChat] = useState("");
+  const { publisher, system } = useEventPublisher();
+  const { formatMessage } = useIntl();
+
+  async function sendMessage() {
+    if (!publisher || !system || chat.length < 2) return;
+    const eChat = await publisher.generic(eb => eb.kind(EventKind.LiveEventChat).tag(link.toEventTag()!).content(chat));
+    await system.BroadcastEvent(eChat);
+    setChat("");
+  }
+
+  return (
+    <div className="flex gap-2 mt-2">
+      <input
+        type="text"
+        value={chat}
+        placeholder={formatMessage({ defaultMessage: "Write message" })}
+        onChange={e => setChat(e.target.value)}
+        className="grow"
+        onKeyDown={e => {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
+        }}
+      />
+      <IconButton icon={{ name: "arrow-right" }} onClick={sendMessage} />
     </div>
   );
 }
@@ -116,16 +300,27 @@ function NostrParticipants({ ev }: { ev: TaggedNostrEvent }) {
   }, [link.tagKey]);
 
   const presense = useRequestBuilder(sub);
-  return <AvatarGroup ids={dedupe(presense.map(a => a.pubkey))} size={32} />;
+  const filteredPresence = presense.filter(ev => ev.created_at > unixNow() - 600);
+  return <AvatarGroup ids={dedupe(filteredPresence.map(a => a.pubkey))} size={32} />;
 }
 
 function LiveKitUser({ p }: { p: RemoteParticipant | LocalParticipant }) {
   const pubkey = p.identity.startsWith("guest-") ? "anon" : p.identity;
   const profile = useUserProfile(pubkey);
+  const mic = p.getTrackPublication(Track.Source.Microphone);
+
   return (
     <div className="flex flex-col gap-2 items-center text-center">
-      <Avatar pubkey={pubkey} className={p.isSpeaking ? "outline" : ""} user={profile} size={48} />
-      <DisplayName pubkey={pubkey} user={pubkey === "anon" ? { name: "Anon" } : profile} />
+      <div className="relative w-[45px] h-[45px] flex items-center justify-center rounded-full overflow-hidden">
+        {mic?.audioTrack?.mediaStreamTrack && (
+          <VuBar track={mic.audioTrack?.mediaStreamTrack} className="absolute h-full w-full" />
+        )}
+        <Avatar pubkey={pubkey} user={profile} size={40} className="absolute" />
+      </div>
+      <div>
+        <DisplayName pubkey={pubkey} user={pubkey === "anon" ? { name: "Anon" } : profile} />
+        {p.permissions?.canPublish && <div className="text-highlight">Speaker</div>}
+      </div>
     </div>
   );
 }
