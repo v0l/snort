@@ -11,7 +11,7 @@ export default function useLiveStreams() {
     const rb = new RequestBuilder("streams");
     rb.withFilter()
       .kinds([EventKind.LiveEvent])
-      .since(unixNow() - Hour);
+      .since(unixNow() - 4 * Hour);
     return rb;
   }, []);
 

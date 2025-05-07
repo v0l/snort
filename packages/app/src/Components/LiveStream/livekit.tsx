@@ -6,7 +6,7 @@ import {
   useParticipantPermissions,
   useParticipants,
 } from "@livekit/components-react";
-import { dedupe, unixNow } from "@snort/shared";
+import { unixNow } from "@snort/shared";
 import { EventKind, EventPublisher, NostrLink, RequestBuilder, SystemInterface, TaggedNostrEvent } from "@snort/system";
 import { useRequestBuilder, useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
@@ -22,9 +22,9 @@ import AsyncButton from "../Button/AsyncButton";
 import IconButton from "../Button/IconButton";
 import { ProxyImg } from "../ProxyImg";
 import Avatar from "../User/Avatar";
-import { AvatarGroup } from "../User/AvatarGroup";
 import DisplayName from "../User/DisplayName";
 import ProfileImage from "../User/ProfileImage";
+import { NestsParticipants } from "./nests-participants";
 import VuBar from "./VU";
 
 enum RoomTab {
@@ -116,11 +116,15 @@ function RoomHeader({ ev }: { ev: TaggedNostrEvent }) {
   const { image, title } = extractStreamInfo(ev);
   return (
     <div className="relative rounded-xl h-[140px] w-full overflow-hidden">
-      {image ? <ProxyImg src={image} className="w-full" /> : <div className="absolute bg-gray-dark w-full h-full" />}
+      {image ? (
+        <ProxyImg src={image} className="w-full h-full object-cover object-center" />
+      ) : (
+        <div className="absolute bg-gray-dark w-full h-full" />
+      )}
       <div className="absolute left-4 top-4 w-full flex justify-between pr-8">
         <div className="text-2xl">{title}</div>
         <div className="flex gap-2 items-center">
-          <NostrParticipants ev={ev} />
+          <NestsParticipants ev={ev} />
         </div>
       </div>
     </div>
@@ -285,23 +289,6 @@ function WriteChatMessage({ ev }: { ev: TaggedNostrEvent }) {
       <IconButton icon={{ name: "arrow-right" }} onClick={sendMessage} />
     </div>
   );
-}
-
-function NostrParticipants({ ev }: { ev: TaggedNostrEvent }) {
-  const link = NostrLink.fromEvent(ev);
-  const sub = useMemo(() => {
-    const sub = new RequestBuilder(`livekit-participants:${link.tagKey}`);
-    sub
-      .withFilter()
-      .replyToLink([link])
-      .kinds([10_312 as EventKind])
-      .since(unixNow() - 600);
-    return sub;
-  }, [link.tagKey]);
-
-  const presense = useRequestBuilder(sub);
-  const filteredPresence = presense.filter(ev => ev.created_at > unixNow() - 600);
-  return <AvatarGroup ids={dedupe(filteredPresence.map(a => a.pubkey))} size={32} />;
 }
 
 function LiveKitUser({ p }: { p: RemoteParticipant | LocalParticipant }) {
