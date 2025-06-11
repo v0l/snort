@@ -1,12 +1,12 @@
 {
-  "appName": "Snort",
-  "appNameCapitalized": "Snort",
-  "appTitle": "Snort - Nostr",
-  "hostname": "snort.social",
-  "nip05Domain": "snort.social",
-  "icon": "/nostrich_512.png",
+  "appName": "Phoenix",
+  "appNameCapitalized": "Phoenix",
+  "appTitle": "Phoenix - Nostr",
+  "hostname": "phoenix.social",
+  "nip05Domain": "phoenix.social",
+  "icon": "/geometric-logo.png",
   "navLogo": null,
-  "publicDir": "public/snort",
+  "publicDir": "public/phoenix",
   "httpCache": "",
   "animalNamePlaceholders": false,
   "defaultZapPoolFee": 1,
@@ -58,9 +58,6 @@
       "write": true
     }
   },
-  "alby": {
-    "clientId": "pohiJjPhQR",
-    "clientSecret": "GAl1YKLA3FveK1gLBYok"
-  },
+  "alby": null,
   "chatChannels": []
 }

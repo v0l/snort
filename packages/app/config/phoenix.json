@@ -4,7 +4,7 @@
   "appTitle": "Phoenix - Nostr",
   "hostname": "phoenix.social",
   "nip05Domain": "phoenix.social",
-  "icon": "/nostrich_512.png",
+  "icon": "/geometric-logo.png",
   "navLogo": null,
   "publicDir": "public/phoenix",
   "httpCache": "",
@@ -58,9 +58,6 @@
       "write": true
     }
   },
-  "alby": {
-    "clientId": "pohiJjPhQR",
-    "clientSecret": "GAl1YKLA3FveK1gLBYok"
-  },
+  "alby": null,
   "chatChannels": []
 }
