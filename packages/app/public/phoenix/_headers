@@ -1,0 +1,4 @@
+/*
+  Content-Security-Policy: default-src 'self'; manifest-src *; child-src 'none'; worker-src 'self'; frame-src https://youtube.com https://www.youtube.com https://platform.twitter.com https://embed.tidal.com https://w.soundcloud.com https://www.mixcloud.com https://open.spotify.com https://player.twitch.tv https://embed.music.apple.com https://embed.wavlake.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; connect-src *; img-src * data: blob:; font-src 'self'; media-src * blob:; script-src 'self' 'wasm-unsafe-eval' https://platform.twitter.com https://embed.tidal.com https://challenges.cloudflare.com;
+/service-worker.js
+  Cache-Control: max-age=604800, must-revalidate;

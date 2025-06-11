@@ -1,0 +1,66 @@
+{
+  "appName": "Phoenix",
+  "appNameCapitalized": "Phoenix",
+  "appTitle": "Phoenix - Nostr",
+  "hostname": "phoenix.social",
+  "nip05Domain": "phoenix.social",
+  "icon": "/nostrich_512.png",
+  "navLogo": null,
+  "publicDir": "public/phoenix",
+  "httpCache": "",
+  "animalNamePlaceholders": false,
+  "defaultZapPoolFee": 1,
+  "features": {
+    "analytics": true,
+    "subscriptions": false,
+    "deck": false,
+    "zapPool": false,
+    "communityLeaders": false,
+    "nostrAddress": true,
+    "pushNotifications": true
+  },
+  "signUp": {
+    "quickStart": false,
+    "defaultFollows": ["npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x6802npjqhjjtws"]
+  },
+  "defaultPreferences": {
+    "hideMutedNotes": false,
+    "defaultRootTab": "following"
+  },
+  "media": {
+    "bypassImgProxyError": false,
+    "preferLargeMedia": true
+  },
+  "communityLeaders": {
+    "list": "naddr1qq4xc6tnw3ez6vp58y6rywpjxckngdtyxukngwr9vckkze33vcknzcnrxcenje35xqmn2cczyp3lucccm3v9s087z6qslpkap8schltk427zfgqgrn3g2menq5zw6qcyqqq82vqprpmhxue69uhhyetvv9ujuumwdae8gtnnda3kjctv7rajfl"
+  },
+  "noteCreatorToast": false,
+  "hideFromNavbar": [],
+  "deckSubKind": 1,
+  "showPowIcon": true,
+  "eventLinkPrefix": "nevent",
+  "profileLinkPrefix": "nprofile",
+  "defaultRelays": {
+    "wss://relay.snort.social/": {
+      "read": true,
+      "write": true
+    },
+    "wss://nostr.wine/": {
+      "read": true,
+      "write": false
+    },
+    "wss://relay.damus.io/": {
+      "read": true,
+      "write": true
+    },
+    "wss://nos.lol/": {
+      "read": true,
+      "write": true
+    }
+  },
+  "alby": {
+    "clientId": "pohiJjPhQR",
+    "clientSecret": "GAl1YKLA3FveK1gLBYok"
+  },
+  "chatChannels": []
+}
