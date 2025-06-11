@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Phoenix geometric logo - simple geometric bird design -->
+  <defs>
+    <linearGradient id="phoenixGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f7931e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffd23f;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main body -->
+  <path d="M256 100 L320 200 L256 300 L192 200 Z" fill="url(#phoenixGradient)" stroke="#333" stroke-width="2"/>
+  
+  <!-- Wings -->
+  <path d="M192 200 L120 160 L150 240 Z" fill="url(#phoenixGradient)" stroke="#333" stroke-width="2"/>
+  <path d="M320 200 L392 160 L362 240 Z" fill="url(#phoenixGradient)" stroke="#333" stroke-width="2"/>
+  
+  <!-- Tail feathers -->
+  <path d="M256 300 L230 380 L256 360 L282 380 Z" fill="url(#phoenixGradient)" stroke="#333" stroke-width="2"/>
+  
+  <!-- Head crest -->
+  <path d="M256 100 L240 60 L256 80 L272 60 Z" fill="url(#phoenixGradient)" stroke="#333" stroke-width="2"/>
+  
+  <!-- Eye -->
+  <circle cx="245" cy="150" r="8" fill="#333"/>
+</svg>

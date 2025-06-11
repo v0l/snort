@@ -4,7 +4,7 @@
   "appTitle": "Phoenix - Nostr",
   "hostname": "phoenix.social",
   "nip05Domain": "phoenix.social",
-  "icon": "/geometric-logo.png",
+  "icon": "/geometric-logo.svg",
   "navLogo": null,
   "publicDir": "public/phoenix",
   "httpCache": "",
