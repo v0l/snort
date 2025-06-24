@@ -1,12 +1,12 @@
 {
-  "appName": "Phoenix",
-  "appNameCapitalized": "Phoenix",
-  "appTitle": "Phoenix - Nostr",
-  "hostname": "phoenix.social",
-  "nip05Domain": "phoenix.social",
-  "icon": "/logo_256.png",
+  "appName": "Snort",
+  "appNameCapitalized": "Snort",
+  "appTitle": "Snort - Nostr",
+  "hostname": "snort.social",
+  "nip05Domain": "snort.social",
+  "icon": "/nostrich_512.png",
   "navLogo": null,
-  "publicDir": "public/phoenix",
+  "publicDir": "public/snort",
   "httpCache": "",
   "animalNamePlaceholders": false,
   "defaultZapPoolFee": 1,
@@ -41,7 +41,7 @@
   "eventLinkPrefix": "nevent",
   "profileLinkPrefix": "nprofile",
   "defaultRelays": {
-    "wss://relay.phoenix.social/": {
+    "wss://relay.snort.social/": {
       "read": true,
       "write": true
     },

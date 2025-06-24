@@ -46,7 +46,7 @@ registerRoute(
   ({ request, url }) => {
     return (
       request.destination === "image" &&
-      url.href.startsWith("https://imgproxy.snort.social/") &&
+      url.href.startsWith("https://imgproxy.v0l.io/") &&
       (url.pathname.includes("rs:fit:32:32") || url.pathname.includes("rs:fit:120:120"))
     );
   },

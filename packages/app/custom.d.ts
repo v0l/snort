@@ -64,6 +64,7 @@ declare const CONFIG: {
   defaultPreferences: {
     hideMutedNotes: boolean;
     defaultRootTab: "following" | "for-you";
+    imgProxyConfig: object | undefined;
   };
   signUp: {
     quickStart: boolean;
