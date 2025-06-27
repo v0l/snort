@@ -328,7 +328,7 @@ const PreferencesPage = () => {
           <div>
             <input
               type="checkbox"
-              checked={pref.imgProxyConfig !== null}
+              checked={pref.imgProxyConfig !== undefined}
               onChange={e =>
                 setPref({
                   ...pref,
