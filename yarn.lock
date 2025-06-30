@@ -4865,7 +4865,7 @@ __metadata:
     jest: "npm:^29.5.0"
     jest-environment-jsdom: "npm:^29.5.0"
     lru-cache: "npm:^10.2.0"
-    nostr-social-graph: "npm:^1.0.3"
+    nostr-social-graph: "npm:^1.0.17"
     ts-jest: "npm:^29.1.0"
     ts-node: "npm:^10.9.1"
     typescript: "npm:^5.2.2"
@@ -11673,10 +11673,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nostr-social-graph@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "nostr-social-graph@npm:1.0.3"
-  checksum: 10/dde599a75a743cc21710640ba9daf4b90aab3e54999c2d8a4ed9e2ee43abaf5d9d67d93994fc95575262f44e7ffed8caa8756fb576aabe0ad1be92ee17d1ee63
+"nostr-social-graph@npm:^1.0.17":
+  version: 1.0.17
+  resolution: "nostr-social-graph@npm:1.0.17"
+  checksum: 10/2f53e4a6b277e4ea3c4317b93933b3709fac4e2f633b2147ee0f5241ea2d4f2e40d2e8432aeadbb97418cc39b452c2bc1ea878880b3625dbddfb7a07d9b3503a
   languageName: node
   linkType: hard
 
