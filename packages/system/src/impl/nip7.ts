@@ -83,6 +83,9 @@ export class Nip7Signer implements EventSigner {
     }
     return await barrierQueue(Nip7Queue, async () => {
       const signed = await unwrap(window.nostr).signEvent(ev);
+      if (signed.id !== ev.id) {
+        throw new Error("Signer returned different event id! Please check your event format or contact the signer developer!")
+      }
       return {
         ...ev,
         sig: signed.sig,
