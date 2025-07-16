@@ -108,7 +108,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       }
     }
 
-    let syncFrom: Array<TaggedNostrEvent> = [];
+    let syncFrom: Array<TaggedNostrEvent> | undefined;
     // fetch results from cache first, flag qSend for sync
     if (this.#system.cacheRelay && !q.skipCache) {
       const data = await this.#system.cacheRelay.query(["REQ", q.id, ...filters]);
@@ -120,9 +120,9 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     }
 
     // remove satisfied filters
-    if (syncFrom.length > 0) {
+    if ((syncFrom?.length ?? 0) > 0) {
       // only remove the "ids" filters
-      const newFilters = filters.filter(a => !isRequestSatisfied(a, syncFrom));
+      const newFilters = filters.filter(a => !isRequestSatisfied(a, syncFrom!));
       if (newFilters.length !== filters.length) {
         this.#log("Removing satisfied filters %o %o", newFilters, filters);
         filters = newFilters;
