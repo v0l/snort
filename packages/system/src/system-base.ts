@@ -32,7 +32,7 @@ export abstract class SystemBase extends EventEmitter<NostrSystemEvents> {
       automaticOutboxModel: props.automaticOutboxModel ?? true,
       buildFollowGraph: props.buildFollowGraph ?? false,
       fallbackSync: props.fallbackSync ?? "since",
-      socialGraphInstance: props.socialGraphInstance ?? new SocialGraph(""),
+      socialGraphInstance: props.socialGraphInstance ?? new SocialGraph("00".repeat(32)),
     };
   }
 
