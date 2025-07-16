@@ -126,6 +126,11 @@ export class Query extends EventEmitter<QueryEvents> {
   #leaveOpen = false;
 
   /**
+   * Skip cache layer
+   */
+  skipCache = false;
+
+  /**
    * Time when this query can be removed
    */
   #cancelAt?: number;
@@ -173,6 +178,7 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#feed = new NoteCollection();
     this.#builderInstances = new Set([req.instance]);
     this.#leaveOpen = req.options?.leaveOpen ?? false;
+    this.skipCache = req.options?.skipCache ?? false;
     this.#timeout = req.options?.timeout ?? 5_000;
     this.#groupingDelay = req.options?.groupingDelay ?? 100;
     this.#replaceable = req.options?.replaceable ?? false;

@@ -43,6 +43,11 @@ export interface RequestBuilderOptions {
    * eg. Live stream chat reactions
    */
   replaceable?: boolean;
+
+  /***
+   * If this query should skip the cache system
+   */
+  skipCache?: boolean;
 }
 
 /**

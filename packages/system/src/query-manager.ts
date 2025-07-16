@@ -110,7 +110,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
 
     let syncFrom: Array<TaggedNostrEvent> = [];
     // fetch results from cache first, flag qSend for sync
-    if (this.#system.cacheRelay) {
+    if (this.#system.cacheRelay && !q.skipCache) {
       const data = await this.#system.cacheRelay.query(["REQ", q.id, ...filters]);
       syncFrom = data;
       if (data.length > 0) {
