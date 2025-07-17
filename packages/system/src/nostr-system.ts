@@ -149,7 +149,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
           }
         }
       }
-      this.config.socialGraphInstance.setRoot(root ?? "");
+      this.config.socialGraphInstance.setRoot(root ?? "00".repeat(32));
       for (const list of this.userFollowsCache.snapshot()) {
         if (follows && !follows.includes(list.pubkey)) continue;
         this.config.socialGraphInstance.handleEvent({
