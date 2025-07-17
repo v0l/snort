@@ -1,6 +1,6 @@
 {
   "name": "@snort/worker-relay",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "description": "A nostr relay in a service worker",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
     "dist"
   ],
   "dependencies": {
-    "@sqlite.org/sqlite-wasm": "^3.46.1-build3",
+    "@sqlite.org/sqlite-wasm": "^3.50.1-build1",
     "eventemitter3": "^5.0.1",
     "uuid": "^9.0.1"
   },

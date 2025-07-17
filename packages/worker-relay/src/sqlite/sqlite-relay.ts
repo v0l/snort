@@ -130,6 +130,38 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
 
     const legacyReplaceableKinds = [0, 3, 41];
 
+    // handle deletes
+    if (ev.kind === 5) {
+      // delete using a request filter, take e/a tags for making a filter
+      const eTags = ev.tags.filter((a) => a[0] === "e").map((a) => a[1]);
+      const deletedE = this.delete({
+        ids: eTags,
+        authors: [ev.pubkey]
+      });
+
+      // a tags are harder to delete, just delete one-by-one to avoid multiple authors/kinds
+      let aDeleted = 0;
+      const aTags = ev.tags.filter((a) => a[0] === "a").map((a) => a[1]);
+      for (const t in aTags) {
+        const aSplit = t.split(":");
+        // check if the event author is the author of the a tag
+        if (aSplit[1] !== ev.pubkey) {
+          this.#log("Skipping delete request for %s from %s, pubkey doesnt match", t, ev.pubkey);
+          continue;
+        }
+        const k = Number(aSplit[0]);
+        if (isNaN(k)) {
+          continue;
+        }
+        aDeleted += this.delete({
+          authors: [ev.pubkey],
+          kinds: [k],
+          ["#d"]: [aSplit[2]]
+        }).length;
+      }
+      return deletedE.length > 0 || aDeleted > 0;
+    }
+    
     // Handle legacy and standard replaceable events (kinds 0, 3, 41, 10000-19999)
     if (legacyReplaceableKinds.includes(ev.kind) || (ev.kind >= 10_000 && ev.kind < 20_000)) {
       const oldEvents = db.selectValues(`SELECT id FROM events WHERE kind = ? AND pubkey = ? AND created <= ?`, [
@@ -429,5 +461,5 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     }
   }
 
-  #fixMissingTags(db: Database) {}
+  #fixMissingTags(db: Database) { }
 }
