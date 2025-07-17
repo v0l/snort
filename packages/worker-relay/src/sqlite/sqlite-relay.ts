@@ -5,7 +5,7 @@ import migrate from "./migrations";
 import { debugLog } from "../debug";
 
 // import wasm file directly, this needs to be copied from https://sqlite.org/download.html
-import SqlitePath from "./sqlite3.wasm?url";
+import SqlitePath from "@sqlite.org/sqlite-wasm/sqlite3.wasm?url";
 import { runFixers } from "./fixers";
 
 export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements RelayHandler {
