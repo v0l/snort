@@ -386,6 +386,13 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     }
   }
 
+  /**
+   * Update filters for an active request (used by negentropy sync)
+   */
+  updateRequestFilters(id: string, filters: Array<ReqFilter>) {
+    this.emit("updateFilters", id, filters);
+  }
+
   #sendQueuedRequests() {
     const canSend = this.#maxSubscriptions - this.#activeRequests.size;
     if (canSend > 0) {

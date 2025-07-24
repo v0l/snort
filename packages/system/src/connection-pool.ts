@@ -3,7 +3,7 @@ import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 
 import { Connection, RelaySettings, SyncCommand } from "./connection";
-import { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "./nostr";
+import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { RelayInfo, SystemInterface } from ".";
 import { ConnectionSyncModule, DefaultSyncModule } from "./sync/connection";
 
@@ -21,6 +21,7 @@ export interface ConnectionTypeEvents {
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
   notice: (msg: string) => void;
   unknownMessage: (obj: Array<any>) => void;
+  updateFilters: (sub: string, filters: Array<ReqFilter>) => void;
 }
 
 export interface ConnectionSubscription {}

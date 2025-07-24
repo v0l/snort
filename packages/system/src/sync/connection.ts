@@ -23,6 +23,8 @@ export class DefaultSyncModule implements ConnectionSyncModule {
       const neg = new NegentropyFlow(id, c, eventSet, newFilters);
       neg.once("finish", filters => {
         if (filters.length > 0) {
+          // Update the query filters before sending the REQ
+          c.updateRequestFilters(id, filters);
           c.request(["REQ", id, ...filters], cb);
         } else {
           // no results to query, emulate closed

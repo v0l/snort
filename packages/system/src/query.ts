@@ -422,13 +422,21 @@ export class Query extends EventEmitter<QueryEvents> {
     const eoseHandler = (sub: string) => {
       this.handleEose(sub, c);
     };
+    const updateFiltersHandler = (subId: string, newFilters: Array<ReqFilter>) => {
+      if (qt.id === subId) {
+        qt.filters = newFilters;
+        this.#log("Updated filters for %s: %O", subId, newFilters);
+      }
+    };
     c.on("event", eventHandler);
     c.on("eose", eoseHandler);
     c.on("closed", eoseHandler);
+    c.on("updateFilters", updateFiltersHandler);
     this.on("end", () => {
       c.off("event", eventHandler);
       c.off("eose", eoseHandler);
       c.off("closed", eoseHandler);
+      c.off("updateFilters", updateFiltersHandler);
     });
     this.#tracing.push(qt);
     return qt;
