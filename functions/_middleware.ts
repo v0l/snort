@@ -18,7 +18,7 @@ export const onRequest: PagesFunction<Env> = async context => {
       if (!isEntityPath && nostrAddress) {
         id = `${id}@${HOST}`;
       }
-      const fetchApi = `https://nostr.api.v0l.io/api/v1/opengraph/${id}?canonical=${encodeURIComponent(
+      const fetchApi = `https://nostr-api.v0l.io/api/v1/opengraph/${id}?canonical=${encodeURIComponent(
         `https://${HOST}/%s`,
       )}`;
       console.log("Fetching tags from: ", fetchApi);
