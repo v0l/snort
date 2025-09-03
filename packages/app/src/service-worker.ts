@@ -87,7 +87,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url }) => url.origin === "https://nostr.api.v0l.io" && url.pathname.startsWith("/api/v1/preview"),
+  ({ url }) => url.origin === "https://nostr-api.v0l.io" && url.pathname.startsWith("/api/v1/preview"),
   new CacheFirst({
     cacheName: "preview-cache",
     plugins: [
@@ -286,7 +286,7 @@ function makeNotification(n: PushNotification) {
   };
   const ret = {
     body: body(),
-    icon: evx.author.avatar ?? `https://nostr.api.v0l.io/api/v1/avatar/robots/${evx.author.pubkey}.webp`,
+    icon: evx.author.avatar ?? `https://nostr-api.v0l.io/api/v1/avatar/robots/${evx.author.pubkey}.webp`,
     timestamp: evx.created_at * 1000,
     tag: evx.id,
     data: JSON.stringify(n),
