@@ -96,4 +96,8 @@ export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements R
   setEventMetadata(_id: string, _meta: EventMetadata) {
     return;
   }
+
+  configureSearchIndex(_kindTagsMapping: Record<number, string[]>) {
+    this.#log("configureSearchableTags not supported in InMemoryRelay");
+  }
 }

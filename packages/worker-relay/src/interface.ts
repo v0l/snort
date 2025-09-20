@@ -105,6 +105,10 @@ export class WorkerRelayInterface {
     return await this.#workerRpc<string, boolean>("debug", v);
   }
 
+  configureSearchIndex(config: Record<number, Array<string>>) {
+    return this.#workerRpc<Record<number, Array<string>>, void>("configureSearchIndex", config);
+  }
+
   async #workerRpc<T, R>(cmd: WorkerMessageCommand, args?: T) {
     const id = uuid();
     const msg = {

@@ -14,7 +14,8 @@ export type WorkerMessageCommand =
   | "setEventMetadata"
   | "debug"
   | "delete"
-  | "wipe";
+  | "wipe"
+  | "configureSearchIndex";
 
 export interface WorkerMessage<T> {
   id: string;
@@ -75,6 +76,7 @@ export interface RelayHandler extends EventEmitter<RelayHandlerEvents> {
   delete(req: ReqFilter): Array<string>;
   setEventMetadata(id: string, meta: EventMetadata): void;
   wipe(): Promise<void>;
+  configureSearchIndex(kindTagsMapping: Record<number, string[]>): void;
 }
 
 export interface RelayHandlerEvents {

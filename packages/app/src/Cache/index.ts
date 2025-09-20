@@ -57,6 +57,9 @@ export async function initRelayWorker() {
       databasePath: "relay.db",
       insertBatchSize: 100,
     });
+    await workerRelay.configureSearchIndex({
+      1: [] // add index for kind 1, dont index tags
+    });
   } catch (e) {
     console.error(e);
   }

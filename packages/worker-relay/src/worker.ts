@@ -167,6 +167,12 @@ const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: Mes
         relay!.setEventMetadata(id, metadata);
         break;
       }
+      case "configureSearchIndex": {
+        const kindTagsMapping = msg.args as Record<number, string[]>;
+        relay!.configureSearchIndex(kindTagsMapping);
+        reply(msg.id, true);
+        break;
+      }
       default: {
         reply(msg.id, { error: "Unknown command" });
         break;

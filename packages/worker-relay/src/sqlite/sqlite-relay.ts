@@ -14,6 +14,18 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
   db?: Database;
   #pool?: SAHPoolUtil;
   #seenInserts = new Set<string>();
+  #searchableTagsByKind = new Map<number, Set<string>>();
+
+  /**
+   * Configure which event tags should be indexed for full-text search by kind
+   */
+  configureSearchIndex(kindTagsMapping: Record<number, string[]>) {
+    this.#searchableTagsByKind.clear();
+    for (const [kind, tags] of Object.entries(kindTagsMapping)) {
+      this.#searchableTagsByKind.set(parseInt(kind), new Set(tags));
+    }
+    this.#log(`Updated searchable tags by kind:`, kindTagsMapping);
+  }
 
   /**
    * Initialize the SQLite driver
@@ -161,7 +173,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
       }
       return deletedE.length > 0 || aDeleted > 0;
     }
-    
+
     // Handle legacy and standard replaceable events (kinds 0, 3, 41, 10000-19999)
     if (legacyReplaceableKinds.includes(ev.kind) || (ev.kind >= 10_000 && ev.kind < 20_000)) {
       const oldEvents = db.selectValues(`SELECT id FROM events WHERE kind = ? AND pubkey = ? AND created <= ?`, [
@@ -432,7 +444,12 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
   }
 
   insertIntoSearchIndex(db: Database, ev: NostrEvent) {
+    let indexContent = "";
+    let shouldIndex = false;
+
+    // always index profiles
     if (ev.kind === 0) {
+      shouldIndex = true;
       const profile = JSON.parse(ev.content) as {
         name?: string;
         display_name?: string;
@@ -442,7 +459,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
         about?: string;
       };
       if (profile) {
-        const indexContent = [
+        indexContent = [
           profile.name,
           profile.display_name,
           profile.about,
@@ -450,14 +467,33 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
           profile.lud16,
           profile.nip05,
         ].join(" ");
+      }
+    }
+
+    // Check if this event kind has configured searchable tags
+    const searchableTags = this.#searchableTagsByKind.get(ev.kind);
+    let searchableTagContent = "";
+
+    if (searchableTags) {
+      shouldIndex = true;
+      searchableTagContent = ev.tags
+        .filter(tag => tag.length >= 2 && searchableTags.has(tag[0]))
+        .map(tag => tag[1])
+        .filter(value => value && value.trim().length > 0)
+        .join(" ");
+    }
+
+    if (shouldIndex) {
+      // Always include content + any searchable tag content
+      let fullContent = [ev.content, indexContent, searchableTagContent]
+        .filter(content => content && content.trim().length > 0)
+        .join(" ");
+
+      if (fullContent.trim().length > 0) {
         db.exec("insert into search_content values(?,?)", {
-          bind: [ev.id, indexContent],
+          bind: [ev.id, fullContent],
         });
       }
-    } else if (ev.kind === 1) {
-      db.exec("insert into search_content values(?,?)", {
-        bind: [ev.id, ev.content],
-      });
     }
   }
 
