@@ -18,13 +18,8 @@ export function getNotificationContext(ev: TaggedNostrEvent) {
       break;
     }
     case EventKind.Repost: {
-      if (ev.kind === EventKind.Repost && ev.content.startsWith("{")) {
-        const innerEvent = JSON.parse(ev.content) as NostrEvent;
-        return NostrLink.fromEvent(innerEvent);
-      } else {
-        const thread = Nip10.parseThread(ev);
-        return thread?.replyTo ?? thread?.root ?? thread?.mentions[0];
-      }
+      const thread = Nip10.parseThread(ev);
+      return thread?.replyTo ?? thread?.root ?? thread?.mentions[0];
     }
     case EventKind.Reaction: {
       const thread = Nip10.parseThread(ev);
