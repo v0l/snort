@@ -21,9 +21,7 @@
     }
   ],
   "screenshots": [],
-  "display_override": [
-    "fullscreen"
-  ],
+  "display_override": ["fullscreen"],
   "related_applications": [
     {
       "platform": "play",

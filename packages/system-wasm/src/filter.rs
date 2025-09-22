@@ -36,6 +36,8 @@ pub struct ReqFilter {
     pub g_tag: Option<HashSet<String>>,
     #[serde(rename = "#k", skip_serializing_if = "Option::is_none")]
     pub k_tag: Option<HashSet<String>>,
+    #[serde(rename = "#i", skip_serializing_if = "Option::is_none")]
+    pub i_tag: Option<HashSet<String>>,
     #[serde(rename = "relays", skip_serializing_if = "Option::is_none")]
     pub relays: Option<HashSet<String>>,
     #[serde(rename = "search", skip_serializing_if = "Option::is_none")]
@@ -79,6 +81,8 @@ pub struct FlatReqFilter {
     pub g_tag: Option<String>,
     #[serde(rename = "#k", skip_serializing_if = "Option::is_none")]
     pub k_tag: Option<String>,
+    #[serde(rename = "#i", skip_serializing_if = "Option::is_none")]
+    pub i_tag: Option<String>,
     #[serde(rename = "search", skip_serializing_if = "Option::is_none")]
     pub search: Option<String>,
     #[serde(rename = "relay", skip_serializing_if = "Option::is_none")]
@@ -134,6 +138,7 @@ impl Distance for FlatReqFilter {
         ret += prop_dist(&self.t_tag, &b.t_tag);
         ret += prop_dist(&self.g_tag, &b.g_tag);
         ret += prop_dist(&self.k_tag, &b.k_tag);
+        ret += prop_dist(&self.i_tag, &b.i_tag);
 
         ret
     }
@@ -169,6 +174,7 @@ impl From<Vec<&FlatReqFilter>> for ReqFilter {
             array_prop_append(&x.a_tag, &mut acc.a_tag);
             array_prop_append(&x.g_tag, &mut acc.g_tag);
             array_prop_append(&x.k_tag, &mut acc.k_tag);
+            array_prop_append(&x.i_tag, &mut acc.i_tag);
             acc.search = x.search.to_owned();
             acc.since = x.since;
             acc.until = x.until;
@@ -195,6 +201,7 @@ impl From<Vec<&ReqFilter>> for ReqFilter {
             array_prop_append_vec(&x.a_tag, &mut acc.a_tag);
             array_prop_append_vec(&x.g_tag, &mut acc.g_tag);
             array_prop_append_vec(&x.k_tag, &mut acc.k_tag);
+            array_prop_append_vec(&x.i_tag, &mut acc.i_tag);
             acc.search = x.search.to_owned();
             acc.since = x.since;
             acc.until = x.until;
@@ -292,6 +299,14 @@ impl Into<Vec<FlatReqFilter>> for &ReqFilter {
             let t_ids = k_tags
                 .iter()
                 .map(|z| StringOrNumberEntry::String(("k_tag", z)))
+                .collect();
+            inputs.push(t_ids);
+        }
+
+        if let Some(i_tags) = &self.i_tag {
+            let t_ids = i_tags
+                .iter()
+                .map(|z| StringOrNumberEntry::String(("i_tag", z)))
                 .collect();
             inputs.push(t_ids);
         }
@@ -394,6 +409,14 @@ impl Into<Vec<FlatReqFilter>> for &ReqFilter {
                     }
                     None
                 }),
+                i_tag: p.iter().find_map(|q| {
+                    if let StringOrNumberEntry::String((k, v)) = q {
+                        if (*k).eq("i_tag") {
+                            return Some((*v).to_string());
+                        }
+                    }
+                    None
+                }),
                 search: self.search.to_owned(),
                 since: self.since,
                 until: self.until,
@@ -420,6 +443,7 @@ impl Distance for ReqFilter {
         ret += prop_dist_vec(&self.a_tag, &b.a_tag);
         ret += prop_dist_vec(&self.g_tag, &b.g_tag);
         ret += prop_dist_vec(&self.k_tag, &b.k_tag);
+        ret += prop_dist_vec(&self.i_tag, &b.i_tag);
 
         ret
     }
