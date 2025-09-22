@@ -40,7 +40,7 @@ steps:
     commands:
       - dockerd &
       - docker login -u voidic -p $TOKEN
-      - docker buildx create --name mybuilder --bootstrap --use
+      - docker buildx create --platform linux/amd64,linux/arm64 --bootstrap --use
       - docker buildx build -t voidic/snort:latest --platform linux/amd64,linux/arm64 --push -f Dockerfile.prebuilt .
       - kill $(cat /var/run/docker.pid)
 volumes:
@@ -158,7 +158,7 @@ steps:
     commands:
       - dockerd &
       - docker login -u voidic -p $TOKEN
-      - docker buildx create --name mybuilder --bootstrap --use
+      - docker buildx create --platform linux/amd64,linux/arm64 --bootstrap --use
       - docker buildx build -t voidic/snort:$DRONE_TAG --platform linux/amd64,linux/arm64 --push -f Dockerfile.prebuilt .
       - kill $(cat /var/run/docker.pid)
 volumes:
