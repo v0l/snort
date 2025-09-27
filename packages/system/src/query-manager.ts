@@ -153,7 +153,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       return {
         relay: k,
         filters: v,
-        syncFrom,
+        syncFrom: this.#system.config.disableSyncModule ? undefined : syncFrom,
       } as BuiltRawReqFilter;
     });
     await Promise.all(qSend.map(a => this.#sendToRelays(q, a)));

@@ -102,6 +102,11 @@ export interface SystemConfig {
    * Internal social graph used for WoT filtering
    */
   socialGraphInstance: SocialGraph;
+
+  /**
+   * Disable negentropy / range-sync modules
+   */
+  disableSyncModule: boolean;
 }
 
 export interface SystemInterface {
