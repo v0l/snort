@@ -461,7 +461,7 @@ export function kvToObject<T>(o: string, sep?: string) {
 export function defaultAvatar(input?: string) {
   if (isOffline()) return Nostrich;
   const key = (input?.length ?? 0) === 0 ? "missing" : input;
-  return `https://nostr-api.v0l.io/api/v1/avatar/${isHalloween() ? "zombies" : "cyberpunks"}/${key}.webp`;
+  return `https://nostr-rs-api.v0l.io/avatar/${isHalloween() ? "zombies" : "cyberpunks"}/${key}.webp`;
 }
 
 export function isFormElement(target: HTMLElement): boolean {
