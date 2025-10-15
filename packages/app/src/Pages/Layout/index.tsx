@@ -1,5 +1,6 @@
 import "./Layout.css";
 
+import { TraceTimelineOverlay } from "@snort/system-react";
 import { useCallback, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
@@ -15,11 +16,12 @@ import useLogin from "@/Hooks/useLogin";
 import { useLoginRelays } from "@/Hooks/useLoginRelays";
 import usePreferences from "@/Hooks/usePreferences";
 import { useTheme } from "@/Hooks/useTheme";
-import Footer from "@/Pages/Layout/Footer";
-import { Header } from "@/Pages/Layout/Header";
+import { useTraceTimeline } from "@/Hooks/useTraceTimeline";
 import { isFormElement, trackEvent } from "@/Utils";
 import { LoginStore } from "@/Utils/Login";
 
+import Footer from "./Footer";
+import { Header } from "./Header";
 import NavSidebar from "./NavSidebar";
 import RightColumn from "./RightColumn";
 
@@ -30,6 +32,7 @@ export default function Index() {
     stalker: s.stalker ?? false,
   }));
   const telemetry = usePreferences(s => s.telemetry);
+  const traceTimeline = useTraceTimeline();
 
   useTheme();
   useLoginRelays();
@@ -47,6 +50,16 @@ export default function Index() {
     }
   }, []);
 
+  const handleTraceTimelineShortcut = useCallback(
+    (event: Event) => {
+      if (event.target && !isFormElement(event.target as HTMLElement)) {
+        event.preventDefault();
+        traceTimeline.toggle();
+      }
+    },
+    [traceTimeline],
+  );
+
   useEffect(() => {
     if (CONFIG.features.analytics && (telemetry ?? true)) {
       trackEvent("pageview");
@@ -54,6 +67,7 @@ export default function Index() {
   }, [location]);
 
   useKeyboardShortcut(".", handleKeyboardShortcut);
+  useKeyboardShortcut("t", handleTraceTimelineShortcut);
 
   const isStalker = !!stalker;
 
@@ -77,6 +91,7 @@ export default function Index() {
         <LoginUnlock />
         {isStalker && <StalkerModal id={id} />}
         {!shouldHideFooter && <Footer />}
+        <TraceTimelineOverlay isOpen={traceTimeline.isOpen} onClose={() => traceTimeline.close()} />
       </div>
     </ErrorBoundary>
   );

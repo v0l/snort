@@ -48,6 +48,14 @@ export interface RequestBuilderOptions {
    * If this query should skip the cache system
    */
   skipCache?: boolean;
+
+  /**
+   * Enable sync module (negentropy/range-sync)
+   * When true, will use sync protocol if cache data is available
+   * When false, will send plain REQ without sync
+   * Default: false
+   */
+  useSyncModule?: boolean;
 }
 
 /**

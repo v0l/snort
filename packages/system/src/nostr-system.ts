@@ -5,6 +5,7 @@ import { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr";
 import { RelaySettings } from "./connection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
+import { TraceTimeline } from "./trace-timeline";
 import {
   ProfileLoaderService,
   SystemInterface,
@@ -19,7 +20,7 @@ import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
 import { QueryManager } from "./query-manager";
 import { RequestRouter } from "./request-router";
 import { SystemBase } from "./system-base";
-import { SerializedSocialGraph, SocialGraph, UniqueIds } from "nostr-social-graph";
+import { SerializedSocialGraph, SocialGraph } from "nostr-social-graph";
 
 /**
  * Manages nostr content retrieval system
@@ -33,6 +34,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
   readonly pool: ConnectionPool;
   readonly relayLoader: RelayMetadataLoader;
   readonly requestRouter: RequestRouter | undefined;
+  readonly traceTimeline: TraceTimeline;
 
   constructor(props: Partial<SystemConfig>) {
     super(props);
@@ -40,6 +42,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     this.profileLoader = new ProfileLoaderService(this, this.profileCache);
     this.relayMetricsHandler = new RelayMetricHandler(this.relayMetricsCache);
     this.relayLoader = new RelayMetadataLoader(this, this.relayCache);
+    this.traceTimeline = new TraceTimeline();
 
     // if automatic outbox model, setup request router as OutboxModel
     if (this.config.automaticOutboxModel) {
@@ -87,11 +90,6 @@ export class NostrSystem extends SystemBase implements SystemInterface {
       const c = this.pool.getConnection(id);
       if (c) {
         this.relayMetricsHandler.onConnect(c.address);
-        if (wasReconnect) {
-          for (const [, q] of this.#queryManager) {
-            q.connectionRestored(c);
-          }
-        }
       }
     });
     this.pool.on("connectFailed", address => {
@@ -105,9 +103,6 @@ export class NostrSystem extends SystemBase implements SystemInterface {
       const c = this.pool.getConnection(id);
       if (c) {
         this.relayMetricsHandler.onDisconnect(c.address, code);
-        for (const [, q] of this.#queryManager) {
-          q.connectionLost(c.id);
-        }
       }
     });
     this.pool.on("auth", (_, c, r, cb) => this.emit("auth", c, r, cb));
@@ -115,8 +110,9 @@ export class NostrSystem extends SystemBase implements SystemInterface {
       this.#log("NOTICE: %s %s", addr, msg);
     });
     this.#queryManager.on("change", () => this.emit("change", this.takeSnapshot()));
-    this.#queryManager.on("trace", t => {
-      this.relayMetricsHandler.onTraceReport(t);
+    this.#queryManager.on("trace", (event, queryName) => {
+      this.relayMetricsHandler.onTraceEvent(event);
+      this.traceTimeline.addTrace(event, queryName);
     });
     this.#queryManager.on("request", (subId: string, f: BuiltRawReqFilter) => this.emit("request", subId, f));
   }

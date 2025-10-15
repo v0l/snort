@@ -1,5 +1,5 @@
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
-import { Connection } from "../connection";
+import { ConnectionType } from "../connection-pool";
 import { ReqFilter, TaggedNostrEvent } from "../nostr";
 import { Negentropy } from "./negentropy";
 import { NegentropyStorageVector } from "./vector-storage";
@@ -25,12 +25,12 @@ export class NegentropyFlow extends EventEmitter<NegentropyFlowEvents> {
   readonly idSize: number = 16;
   #log = debug("NegentropyFlow");
   #id: string;
-  #connection: Connection;
+  #connection: ConnectionType;
   #filters: Array<ReqFilter>;
   #negentropy: Negentropy;
   #need: Array<string> = [];
 
-  constructor(id: string, conn: Connection, set: Array<TaggedNostrEvent>, filters: Array<ReqFilter>) {
+  constructor(id: string, conn: ConnectionType, set: Array<TaggedNostrEvent>, filters: Array<ReqFilter>) {
     super();
     this.#id = id;
     this.#connection = conn;

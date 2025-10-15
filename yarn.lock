@@ -4991,7 +4991,9 @@ __metadata:
     "@snort/shared": "npm:^1.0.17"
     "@snort/system": "npm:^1.6.9"
     "@types/react": "npm:^18.2.14"
+    "@types/react-dom": "npm:^19.2.2"
     react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
     typescript: "npm:^5.2.2"
   languageName: unknown
   linkType: soft
@@ -5746,6 +5748,15 @@ __metadata:
   dependencies:
     "@types/react": "npm:*"
   checksum: 10/57ea7e9e210d95fa18fde82fc585cb6252c9118c8793a38b37b07ccbba05d09d14f88cf76af46eecda41c430b4400f789a4bbc505eec459a15cbaf13f56f887a
+  languageName: node
+  linkType: hard
+
+"@types/react-dom@npm:^19.2.2":
+  version: 19.2.2
+  resolution: "@types/react-dom@npm:19.2.2"
+  peerDependencies:
+    "@types/react": ^19.2.0
+  checksum: 10/73d5671e57ab73cb3f2acd7992faee8f90d5b4d155b972e76e91fa13e5871ebb5e224960b05039d57ea502cb3370746eb98beda5fa44e9712b4aee52653c237a
   languageName: node
   linkType: hard
 

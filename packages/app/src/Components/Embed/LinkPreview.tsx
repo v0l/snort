@@ -11,7 +11,7 @@ import { ProxyImg } from "../ProxyImg";
 import GenericPlayer from "./GenericPlayer";
 
 async function fetchUrlPreviewInfo(url: string) {
-  const api = new NostrServices("https://nostr-api.v0l.io");
+  const api = new NostrServices("https://nostr-rs-api.v0l.io");
   try {
     return await api.linkPreview(url.endsWith(")") ? url.slice(0, -1) : url);
   } catch (e) {

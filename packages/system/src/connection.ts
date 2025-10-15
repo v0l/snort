@@ -10,7 +10,6 @@ import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
 import { EventExt } from "./event-ext";
 import { ConnectionType, ConnectionTypeEvents } from "./connection-pool";
-import { ConnectionSyncModule } from "./sync/connection";
 
 /**
  * Relay settings
@@ -18,20 +17,6 @@ import { ConnectionSyncModule } from "./sync/connection";
 export interface RelaySettings {
   read: boolean;
   write: boolean;
-}
-
-/**
- * SYNC command is an internal command that requests the connection to devise a strategy
- * to synchronize based on a set of existing cached events and a filter set.
- */
-export type SyncCommand = ["SYNC", id: string, fromSet: Array<TaggedNostrEvent>, ...filters: Array<ReqFilter>];
-
-/**
- * Pending REQ queue
- */
-interface ConnectionQueueItem {
-  obj: ReqCommand | SyncCommand;
-  cb?: () => void;
 }
 
 export class Connection extends EventEmitter<ConnectionTypeEvents> implements ConnectionType {
@@ -44,7 +29,6 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   #downCount = 0;
   #activeRequests = new Set<string>();
   #connectStarted = false;
-  #syncModule?: ConnectionSyncModule;
   #wasUp = false;
 
   id: string;
@@ -52,7 +36,6 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   Socket: WebSocket | null = null;
 
   PendingRaw: Array<object> = [];
-  PendingRequests: Array<ConnectionQueueItem> = [];
 
   settings: RelaySettings;
   info: RelayInfo | undefined;
@@ -64,7 +47,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   AwaitingAuth: Map<string, boolean>;
   Authed = false;
 
-  constructor(addr: string, options: RelaySettings, ephemeral: boolean = false, syncModule?: ConnectionSyncModule) {
+  constructor(addr: string, options: RelaySettings, ephemeral: boolean = false) {
     super();
     this.id = uuid();
     this.address = addr;
@@ -72,7 +55,6 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     this.EventsCallback = new Map();
     this.AwaitingAuth = new Map();
     this.#ephemeral = ephemeral;
-    this.#syncModule = syncModule;
     this.#log = debug("Connection").extend(addr);
   }
 
@@ -350,30 +332,21 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   }
 
   /**
-   * Queue or send command to the relay
+   * Send command to the relay
    * @param cmd The REQ to send to the server
+   * @param cbSent Callback when sent to relay
    */
-  request(cmd: ReqCommand | SyncCommand, cbSent?: () => void) {
-    const filters = (cmd[0] === "REQ" ? cmd.slice(2) : cmd.slice(3)) as Array<ReqFilter>;
+  request(cmd: ReqCommand, cbSent?: () => void): void {
+    const filters = cmd.slice(2) as Array<ReqFilter>;
     const requestKinds = new Set(filters.flatMap(a => a.kinds ?? []));
     const ExpectAuth = [EventKind.DirectMessage, EventKind.GiftWrap];
     if (ExpectAuth.some(a => requestKinds.has(a)) && !this.#expectAuth) {
       this.#expectAuth = true;
       this.#log("Setting expectAuth flag %o", requestKinds);
     }
-    if (this.#activeRequests.size >= this.#maxSubscriptions) {
-      this.PendingRequests.push({
-        obj: cmd,
-        cb: cbSent,
-      });
-      this.#log("Queuing: %O", cmd);
-    } else {
-      this.#sendRequestCommand({
-        obj: cmd,
-        cb: cbSent,
-      });
-      cbSent?.();
-    }
+
+    this.#sendRequestCommand(cmd);
+    cbSent?.();
     this.emit("change");
   }
 
@@ -381,43 +354,22 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     if (this.#activeRequests.delete(id)) {
       this.#send(["CLOSE", id]);
       this.emit("eose", id);
-      this.#sendQueuedRequests();
       this.emit("change");
     }
   }
 
-  /**
-   * Update filters for an active request (used by negentropy sync)
-   */
-  updateRequestFilters(id: string, filters: Array<ReqFilter>) {
-    this.emit("updateFilters", id, filters);
+  get activeSubscriptions() {
+    return this.#activeRequests.size;
   }
 
-  #sendQueuedRequests() {
-    const canSend = this.#maxSubscriptions - this.#activeRequests.size;
-    if (canSend > 0) {
-      for (let x = 0; x < canSend; x++) {
-        const p = this.PendingRequests.shift();
-        if (p) {
-          this.#sendRequestCommand(p);
-          this.#log("Sent pending REQ %O", p.obj);
-        }
-      }
-    }
+  get maxSubscriptions() {
+    return this.info?.limitation?.max_subscriptions ?? 20;
   }
 
-  #sendRequestCommand(item: ConnectionQueueItem) {
+  #sendRequestCommand(cmd: ReqCommand) {
     try {
-      const cmd = item.obj;
-      if (cmd[0] === "REQ") {
-        this.#activeRequests.add(cmd[1]);
-        this.#send(cmd);
-      } else if (cmd[0] === "SYNC") {
-        if (!this.#syncModule) {
-          throw new Error("no sync module");
-        }
-        this.#syncModule.sync(this, cmd, item.cb);
-      }
+      this.#activeRequests.add(cmd[1]);
+      this.#send(cmd);
     } catch (e) {
       console.error(e);
     }
@@ -427,17 +379,9 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     // reset connection Id on disconnect, for query-tracking
     this.id = uuid();
     this.#expectAuth = false;
-    this.#log(
-      "Reset active=%O, pending=%O, raw=%O",
-      [...this.#activeRequests],
-      [...this.PendingRequests],
-      [...this.PendingRaw],
-    );
+    this.#log("Reset active=%O, raw=%O", [...this.#activeRequests], [...this.PendingRaw]);
     for (const active of this.#activeRequests) {
       this.emit("closed", active, "connection closed");
-    }
-    for (const pending of this.PendingRequests) {
-      this.emit("closed", pending.obj[1], "connection closed");
     }
     for (const raw of this.PendingRaw) {
       if (Array.isArray(raw) && raw[0] === "REQ") {
@@ -445,7 +389,6 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       }
     }
     this.#activeRequests.clear();
-    this.PendingRequests = [];
     this.PendingRaw = [];
 
     this.emit("change");
@@ -519,10 +462,6 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
 
       this.#sendOnWire(["AUTH", authEvent]);
     });
-  }
-
-  get #maxSubscriptions() {
-    return this.info?.limitation?.max_subscriptions ?? 20;
   }
 
   #setupEphemeral() {

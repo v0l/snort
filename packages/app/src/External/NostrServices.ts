@@ -14,6 +14,6 @@ export class NostrServices extends JsonApi {
   }
 
   linkPreview(url: string) {
-    return this.getJson<LinkPreviewData>(`/api/v1/preview?url=${encodeURIComponent(url)}`);
+    return this.getJson<LinkPreviewData>(`/preview?url=${encodeURIComponent(url)}`);
   }
 }

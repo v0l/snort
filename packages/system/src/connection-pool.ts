@@ -2,10 +2,9 @@ import { removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
 import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 
-import { Connection, RelaySettings, SyncCommand } from "./connection";
+import { Connection, RelaySettings } from "./connection";
 import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { RelayInfo, SystemInterface } from ".";
-import { ConnectionSyncModule, DefaultSyncModule } from "./sync/connection";
 
 /**
  * Events which the ConnectionType must emit
@@ -21,7 +20,6 @@ export interface ConnectionTypeEvents {
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
   notice: (msg: string) => void;
   unknownMessage: (obj: Array<any>) => void;
-  updateFilters: (sub: string, filters: Array<ReqFilter>) => void;
 }
 
 export interface ConnectionSubscription {}
@@ -35,6 +33,8 @@ export type ConnectionType = {
   readonly info: RelayInfo | undefined;
   readonly isDown: boolean;
   readonly isOpen: boolean;
+  readonly activeSubscriptions: number;
+  readonly maxSubscriptions: number;
   settings: RelaySettings;
   ephemeral: boolean;
 
@@ -54,9 +54,14 @@ export type ConnectionType = {
   publish: (ev: NostrEvent, timeout?: number) => Promise<OkResponse>;
 
   /**
-   * Queue request
+   * Send request to relay
    */
-  request: (req: ReqCommand | SyncCommand, cbSent?: () => void) => void;
+  request: (req: ReqCommand, cbSent?: () => void) => void;
+
+  /**
+   * Send raw json object on wire (used by negentropy sync)
+   */
+  sendRaw: (obj: object) => void;
 
   /**
    * Close a request
@@ -96,7 +101,6 @@ export type ConnectionBuilder<T extends ConnectionType> = (
   address: string,
   options: RelaySettings,
   ephemeral: boolean,
-  syncModule?: ConnectionSyncModule,
 ) => Promise<T> | T;
 
 /**
@@ -131,8 +135,7 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
       this.#connectionBuilder = builder;
     } else {
       this.#connectionBuilder = (addr, options, ephemeral) => {
-        const sync = new DefaultSyncModule(this.#system.config.fallbackSync, this.#system);
-        return new Connection(addr, options, ephemeral, sync) as unknown as T;
+        return new Connection(addr, options, ephemeral) as unknown as T;
       };
     }
   }

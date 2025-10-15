@@ -10,6 +10,7 @@ import { Optimizer } from "./query-optimizer";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RequestRouter } from "./request-router";
 import { QueryEvents } from "./query";
+import { TraceTimeline } from "./trace-timeline";
 import EventEmitter from "eventemitter3";
 import { SocialGraph } from "nostr-social-graph";
 
@@ -216,6 +217,11 @@ export interface SystemInterface {
    * Request router instance
    */
   get requestRouter(): RequestRouter | undefined;
+
+  /**
+   * Trace timeline for debugging and performance monitoring
+   */
+  get traceTimeline(): TraceTimeline | undefined;
 
   get config(): SystemConfig;
 }

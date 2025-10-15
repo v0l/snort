@@ -1,6 +1,6 @@
 import { CachedTable, unixNowMs } from "@snort/shared";
 import { RelayMetrics } from "./cache";
-import { TraceReport } from "./query";
+import { QueryTraceEvent, QueryTraceState } from "./query";
 
 export class RelayMetricHandler {
   readonly #cache: CachedTable<RelayMetrics>;
@@ -54,11 +54,24 @@ export class RelayMetricHandler {
     }
   }
 
-  onTraceReport(t: TraceReport) {
-    const v = this.#cache.getFromCache(t.conn.address);
-    if (v) {
-      v.latency.push(t.responseTime);
-      v.latency = v.latency.slice(-50);
+  onTraceEvent(event: QueryTraceEvent) {
+    // Only track latency for terminal states
+    if (
+      [
+        QueryTraceState.EOSE,
+        QueryTraceState.TIMEOUT,
+        QueryTraceState.DROP,
+        QueryTraceState.REMOTE_CLOSE,
+        QueryTraceState.LOCAL_CLOSE,
+      ].includes(event.state)
+    ) {
+      const v = this.#cache.getFromCache(event.relay);
+      if (v) {
+        // Calculate response time from timestamps (would need to track WAITING timestamp)
+        // For now, we can skip latency tracking or implement it differently
+        // v.latency.push(responseTime);
+        // v.latency = v.latency.slice(-50);
+      }
     }
   }
 
