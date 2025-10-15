@@ -3,7 +3,6 @@ import { mapEventToProfile, NostrEvent, NostrSystem } from "@snort/system";
 
 import { EventsCache, Relay, RelayMetrics, SystemDb, UserCache, UserFollows, UserRelays } from "@/Cache";
 import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
-import { getTraceTimelineEnabledState, setTraceTimelineEnabledState } from "@/Hooks/useTraceTimeline";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
 
@@ -35,15 +34,6 @@ System.on("event", (_, ev) => {
   EventsCache.discover(ev);
   UserCache.discover(ev);
   addEventToFuzzySearch(ev);
-});
-
-// Initialize trace timeline from persisted state
-const traceEnabled = getTraceTimelineEnabledState();
-System.traceTimeline.setEnabled(traceEnabled);
-
-// Persist trace timeline enabled state when it changes
-System.traceTimeline.hook(() => {
-  setTraceTimelineEnabledState(System.traceTimeline.enabled);
 });
 
 /**
