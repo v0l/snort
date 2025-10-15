@@ -17,7 +17,7 @@ export interface TraceTimelineSnapshot {
  */
 export class TraceTimeline extends ExternalStore<TraceTimelineSnapshot> {
   #entries: Array<TimelineEntry> = [];
-  #enabled: boolean = false;
+  #enabled: boolean = true;
   // Track last entry index for each trace ID to update runtime
   #lastEntryIndex: Map<string, number> = new Map();
 
