@@ -10,7 +10,6 @@ export default defineConfig({
   plugins: [
     basicSsl(),
     react({
-      jsxImportSource: "@welldone-software/why-did-you-render",
       babel: {
         configFile: true,
       },

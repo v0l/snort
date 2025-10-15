@@ -109,7 +109,6 @@
     "@vitejs/plugin-react": "^4.2.0",
     "@webbtc/webln-types": "^3.0.0",
     "@webscopeio/react-textarea-autocomplete": "^4.9.2",
-    "@welldone-software/why-did-you-render": "^8.0.1",
     "autoprefixer": "^10.4.16",
     "babel-plugin-formatjs": "^10.5.14",
     "config": "^3.3.9",
