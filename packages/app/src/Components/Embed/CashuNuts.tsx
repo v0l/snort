@@ -1,5 +1,3 @@
-import "./CashuNuts.css";
-
 import { useUserProfile } from "@snort/system-react";
 import { useEffect, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
@@ -9,16 +7,8 @@ import ECashIcon from "@/Components/Icons/ECash";
 import Icon from "@/Components/Icons/Icon";
 import { useCopy } from "@/Hooks/useCopy";
 import useLogin from "@/Hooks/useLogin";
-
-interface Token {
-  token: Array<{
-    mint: string;
-    proofs: Array<{
-      amount: number;
-    }>;
-  }>;
-  memo?: string;
-}
+import { WarningNotice } from "../WarningNotice/WarningNotice";
+import { getDecodedToken, Token } from "@cashu/cashu-ts";
 
 export default function CashuNuts({ token }: { token: string }) {
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
@@ -39,21 +29,29 @@ export default function CashuNuts({ token }: { token: string }) {
       if (!token.startsWith("cashuA") || token.length < 10) {
         return;
       }
-      import("@cashu/cashu-ts").then(({ getDecodedToken }) => {
-        const tkn = getDecodedToken(token);
-        setCashu(tkn);
-      });
-    } catch {
+      const tkn = getDecodedToken(token);
+      setCashu(tkn);
+    } catch (e) {
       // ignored
+      console.warn(e);
     }
   }, [token]);
 
-  if (!cashu) return <>{token}</>;
+  if (!cashu)
+    return (
+      <WarningNotice>
+        <FormattedMessage defaultMessage="Invalid cashu token" />
+      </WarningNotice>
+    );
 
-  const amount = cashu.token[0].proofs.reduce((acc, v) => acc + v.amount, 0);
+  const amount = cashu.proofs.reduce((acc, v) => acc + v.amount, 0);
   return (
-    <div className="cashu flex justify-between p24 br items-center">
-      <div className="flex flex-col gap-2 f-ellipsis">
+    <div
+      className="flex justify-between p-6 rounded-2xl items-center"
+      style={{
+        backgroundImage: "linear-gradient(90deg, #40b039, #adff2a)",
+      }}>
+      <div className="flex flex-col gap-2 min-w-0 truncate overflow-hidden text-ellipsis">
         <div className="flex items-center gap-4">
           <ECashIcon width={30} />
           <FormattedMessage

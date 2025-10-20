@@ -63,7 +63,7 @@ const ConnectLNDHub = () => {
           <FormattedMessage defaultMessage="Connect" />
         </AsyncButton>
       </div>
-      {error && <b className="error p10">{error}</b>}
+      {error && <b className="error p-2.5">{error}</b>}
     </>
   );
 };

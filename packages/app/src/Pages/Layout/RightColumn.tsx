@@ -80,7 +80,7 @@ export default function RightColumn() {
   return (
     <div
       className={classNames(
-        "text-secondary flex-col hidden lg:w-1/3 sticky top-0 h-screen py-3 px-4 border-l border-border-color",
+        "flex-col hidden lg:w-1/3 sticky top-0 h-screen py-3 px-4 border-l border-neutral-900 light:border-neutral-300",
         {
           "lg:flex": show,
         },

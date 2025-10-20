@@ -1,12 +1,11 @@
 /* eslint-disable max-lines */
-import { fetchNip05Pubkey, unixNow } from "@snort/shared";
+import { fetchNip05Pubkey, NostrPrefix, unixNow } from "@snort/shared";
 import {
   EventBuilder,
   EventKind,
   Nip94Tags,
   nip94TagsToIMeta,
   NostrLink,
-  NostrPrefix,
   readNip94Tags,
   TaggedNostrEvent,
   tryParseNostrLink,
@@ -394,7 +393,7 @@ export function NoteCreator() {
           .filter(el => el[1].write)
           .map(a => a[0])
           .map((r, i, a) => (
-            <div className="p flex items-center justify-between bg-gray br" key={r}>
+            <div className="px-3 py-2 flex items-center justify-between bg-neutral-600 rounded-lg" key={r}>
               <div>{r}</div>
               <div>
                 <input
@@ -449,15 +448,15 @@ export function NoteCreator() {
           </p>
           {renderRelayCustomisation()}
         </div>
-        <div className="flex flex-col g8">
+        <div className="flex flex-col gap-2">
           <h4>
             <FormattedMessage defaultMessage="Zap Splits" />
           </h4>
           <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." />
-          <div className="flex flex-col g8">
+          <div className="flex flex-col gap-2">
             {[...(note.zapSplits ?? [])].map((v: ZapTarget, i, arr) => (
-              <div className="flex items-center g8" key={`${v.name}-${v.value}`}>
-                <div className="flex flex-col flex-4 g4">
+              <div className="flex items-center gap-2" key={`${v.name}-${v.value}`}>
+                <div className="flex flex-col flex-4 gap-1">
                   <h4>
                     <FormattedMessage defaultMessage="Recipient" />
                   </h4>
@@ -472,7 +471,7 @@ export function NoteCreator() {
                     placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address", id: "WvGmZT" })}
                   />
                 </div>
-                <div className="flex flex-col flex-1 g4">
+                <div className="flex flex-col flex-1 gap-1">
                   <h4>
                     <FormattedMessage defaultMessage="Weight" />
                   </h4>
@@ -490,7 +489,7 @@ export function NoteCreator() {
                     }
                   />
                 </div>
-                <div className="flex flex-col g4">
+                <div className="flex flex-col gap-1">
                   <div>&nbsp;</div>
                   <Icon
                     name="close"
@@ -511,7 +510,7 @@ export function NoteCreator() {
             <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" />
           </span>
         </div>
-        <div className="flex flex-col g8">
+        <div className="flex flex-col gap-2">
           <h4>
             <FormattedMessage defaultMessage="Sensitive Content" />
           </h4>
@@ -641,7 +640,7 @@ export function NoteCreator() {
             <div className="max-h-64 overflow-y-auto">
               <Note className="hover:bg-transparent" data={note.replyTo} options={replyToNoteOptions} />
             </div>
-            <hr className="border-border-color border-1 -mx-6" />
+            <hr className="border-1 -mx-6" />
           </>
         )}
         {note.quote && (
@@ -652,7 +651,7 @@ export function NoteCreator() {
             <div className="max-h-64 overflow-y-auto">
               <Note className="hover:bg-transparent" data={note.quote} options={quoteNoteOptions} />
             </div>
-            <hr className="border-border-color border-1 -mx-6" />
+            <hr className="border-1 -mx-6" />
           </>
         )}
         {note.preview && getPreviewNote()}
@@ -662,7 +661,7 @@ export function NoteCreator() {
               <FormattedMessage defaultMessage="Compose a note" />
               <AsyncIcon
                 iconName="x"
-                className="bg-gray rounded-full items-center justify-center flex p-1 cursor-pointer"
+                className="bg-neutral-600 rounded-full items-center justify-center flex p-1 cursor-pointer"
                 onClick={cancel}
               />
             </div>
@@ -693,7 +692,7 @@ export function NoteCreator() {
                 <img className="object-cover w-[80px] h-[80px] !mt-0 rounded-lg" src={v[0].url} />
                 <Icon
                   name="x"
-                  className="absolute -top-[0.25rem] -right-[0.25rem] bg-gray rounded-full cursor-pointer"
+                  className="absolute -top-[0.25rem] -right-[0.25rem] bg-neutral-600 rounded-full cursor-pointer"
                   onClick={() =>
                     note.update(n => {
                       if (n.attachments?.[k]) {

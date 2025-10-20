@@ -1,5 +1,5 @@
-import { Bech32Regex, unwrap } from "@snort/shared";
-import { EventKind, NostrLink, NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { Bech32Regex, bech32ToHex, NostrPrefix, unwrap } from "@snort/shared";
+import { EventKind, NostrLink, tryParseNostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 import classNames from "classnames";
 import React, { useCallback, useMemo } from "react";
@@ -14,7 +14,7 @@ import DisplayName from "@/Components/User/DisplayName";
 import useLogin from "@/Hooks/useLogin";
 import { LogoHeader } from "@/Pages/Layout/LogoHeader";
 import NotificationsHeader from "@/Pages/Layout/NotificationsHeader";
-import { bech32ToHex, findTag } from "@/Utils";
+import { findTag } from "@/Utils";
 
 export function Header() {
   const navigate = useNavigate();

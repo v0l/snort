@@ -28,9 +28,9 @@ export const WalletBalance = () => {
           <Icon name="sats" size={28} />
           <FormattedNumber value={balance ?? 0} />
         </div>
-        <Icon name="dots" className="text-secondary" />
+        <Icon name="dots" className="text-neutral-400" />
       </div>
-      <div className="text-secondary text-xs flex justify-between items-center">
+      <div className="text-neutral-400 text-xs flex justify-between items-center">
         <div>
           ~
           <FormattedNumber

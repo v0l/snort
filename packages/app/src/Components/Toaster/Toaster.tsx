@@ -1,5 +1,3 @@
-import "./Toaster.css";
-
 import { ExternalStore, unixNow } from "@snort/shared";
 import { ReactNode, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
@@ -53,9 +51,9 @@ export default function Toaster() {
   );
 
   return createPortal(
-    <div className="toaster">
+    <div className="fixed bottom-0.5 left-0.5 flex flex-col-reverse z-[9999] gap-1">
       {toast.map(a => (
-        <div className="p br b flex bg-dark g8 fade-in" key={a.id}>
+        <div className="px-3 py-2 rounded-lg border border-neutral-600 flex bg-neutral-800 gap-2 fade-in" key={a.id}>
           {a.icon && <Icon name={a.icon} />}
           {typeof a.element === "function" ? a.element(() => Toastore.remove(a.id)) : a.element}
         </div>

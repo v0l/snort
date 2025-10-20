@@ -83,7 +83,7 @@ export default function NavSidebar({ narrow = false }: { narrow?: boolean }) {
 
   const className = classNames(
     { "xl:w-56 xl:gap-2 xl:items-start": !narrow },
-    "select-none overflow-y-auto hide-scrollbar sticky items-center border-r border-border-color top-0 z-20 h-screen max-h-screen flex flex-col px-2 py-4 flex-shrink-0 gap-1",
+    "select-none overflow-y-auto hide-scrollbar sticky items-center border-r border-neutral-800 light:border-neutral-300 top-0 z-20 h-screen max-h-screen flex flex-col px-2 py-4 flex-shrink-0 gap-1",
   );
 
   return (

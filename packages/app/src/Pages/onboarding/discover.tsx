@@ -12,7 +12,7 @@ export function Discover() {
   const state = location.state as NewUserState;
 
   return (
-    <div className="flex flex-col g24">
+    <div className="flex flex-col gap-6">
       <h1 className="text-center">
         <FormattedMessage
           defaultMessage="{site} is more fun together!"

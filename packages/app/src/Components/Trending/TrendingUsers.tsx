@@ -28,7 +28,7 @@ export default function TrendingUsers({
   } = useCachedFetch(trendingProfilesUrl, storageKey, data => data.profiles.map(a => a.pubkey));
 
   if (error && !trendingUsersData) {
-    return <ErrorOrOffline error={error} onRetry={() => {}} className="p" />;
+    return <ErrorOrOffline error={error} onRetry={() => {}} className="px-3 py-2" />;
   }
 
   if (isLoading) {

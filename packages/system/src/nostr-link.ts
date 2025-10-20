@@ -7,8 +7,12 @@ import {
   Bech32Regex,
   sanitizeRelayUrl,
   appendDedupe,
+  NostrPrefix,
+  encodeTLV,
+  decodeTLV,
+  TLVEntryType,
 } from "@snort/shared";
-import { decodeTLV, encodeTLV, EventExt, EventKind, NostrEvent, NostrPrefix, TaggedNostrEvent, TLVEntryType } from ".";
+import { EventExt, EventKind, NostrEvent, TaggedNostrEvent } from ".";
 import { findTag } from "./utils";
 
 /**
@@ -62,7 +66,7 @@ export class NostrLink implements ToNostrEventTag {
   encode(type?: NostrPrefix): string {
     try {
       // cant encode 'naddr' to 'note'/'nevent' because 'id' is not hex
-      let newType = this.type === NostrPrefix.Address ? this.type : type ?? this.type;
+      let newType = this.type === NostrPrefix.Address ? this.type : (type ?? this.type);
       if (newType === NostrPrefix.Note || newType === NostrPrefix.PrivateKey || newType === NostrPrefix.PublicKey) {
         return hexToBech32(newType, this.id);
       } else {

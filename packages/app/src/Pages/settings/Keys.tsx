@@ -1,18 +1,18 @@
 import "./Keys.css";
 
-import { encodeTLV, KeyStorage, NostrPrefix } from "@snort/system";
+import { KeyStorage } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import Copy from "@/Components/Copy/Copy";
 import useLogin from "@/Hooks/useLogin";
-import { hexToBech32 } from "@/Utils";
 import { seedToMnemonic } from "@/Utils/nip6";
+import { encodeTLV, hexToBech32, NostrPrefix } from "@snort/shared";
 
 export default function ExportKeys() {
   const { publicKey, privateKeyData, generatedEntropy } = useLogin();
-  const copyClass = "p-3 br border border-dashed border-[var(--gray-medium)]";
+  const copyClass = "p-3 rounded-lg border border-dashed border-[var(--gray-medium)]";
   return (
-    <div className="flex flex-col g12">
+    <div className="flex flex-col gap-3">
       <div className="text-xl">
         <FormattedMessage defaultMessage="Public Key" />
       </div>

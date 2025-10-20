@@ -10,12 +10,12 @@ import usePreferences from "@/Hooks/usePreferences";
 
 const TEXT_TRUNCATE_LENGTH = 400;
 export const NoteText = memo(function InnerContent(
-  props: NoteProps & { translated: NoteTranslation; showTranslation?: boolean },
+  props: NoteProps & { translated: NoteTranslation | undefined; showTranslation?: boolean },
 ) {
   const { data: ev, options, translated, showTranslation } = props;
   const showContentWarningPosts = usePreferences(s => s.showContentWarningPosts);
   const [showMore, setShowMore] = useState(false);
-  const body = translated && !translated.skipped && showTranslation ? translated.text : ev?.content ?? "";
+  const body = translated && !translated.skipped && showTranslation ? translated.text : (ev?.content ?? "");
   const id = translated && !translated.skipped && showTranslation ? `${ev.id}-translated` : ev.id;
   const shouldTruncate = options?.truncate && body.length > TEXT_TRUNCATE_LENGTH;
 

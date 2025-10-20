@@ -94,7 +94,7 @@ export default function LiveKitRoom({ ev, canJoin }: { ev: TaggedNostrEvent; can
 
   if (!join) {
     return (
-      <div className="p flex flex-col gap-2">
+      <div className="px-3 py-2 flex flex-col gap-2">
         <RoomHeader ev={ev} />
         {(canJoin ?? false) && (
           <AsyncButton onClick={() => setJoin(true)}>
@@ -119,7 +119,7 @@ function RoomHeader({ ev }: { ev: TaggedNostrEvent }) {
       {image ? (
         <ProxyImg src={image} className="w-full h-full object-cover object-center" />
       ) : (
-        <div className="absolute bg-gray-dark w-full h-full" />
+        <div className="absolute bg-neutral-800 w-full h-full" />
       )}
       <div className="absolute left-4 top-4 w-full flex justify-between pr-8">
         <div className="text-2xl">{title}</div>
@@ -144,7 +144,7 @@ function RoomBody({ ev, tab, onSelectTab }: { ev: TaggedNostrEvent; tab: RoomTab
     ],
   });
   return (
-    <div className="p">
+    <div className="px-3 py-2">
       <RoomHeader ev={ev} />
       <MyControls />
       <div className="flex text-center items-center text-xl font-medium mb-2">

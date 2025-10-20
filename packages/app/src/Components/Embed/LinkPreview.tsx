@@ -1,5 +1,3 @@
-import "./LinkPreview.css";
-
 import { useEffect, useState } from "react";
 import { LRUCache } from "typescript-lru-cache";
 
@@ -46,7 +44,7 @@ const LinkPreview = ({ url }: { url: string }) => {
 
   if (preview === null)
     return (
-      <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
+      <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="text-highlight">
         {url}
       </a>
     );
@@ -79,15 +77,16 @@ const LinkPreview = ({ url }: { url: string }) => {
   }
 
   return (
-    <div className="link-preview-container">
+    <div className="rounded-xl bg-neutral-900 overflow-hidden hover:cursor-pointer light:bg-neutral-200 light:border light:border-neutral-400 light:hover:shadow-md">
       {preview && (
-        <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-          {previewElement()}
-          <div className="link-preview-title">
-            <h1>{preview?.title}</h1>
-            {preview?.description && <small>{preview.description.slice(0, 160)}</small>}
-            <br />
-            <small className="host">{new URL(url).host}</small>
+        <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="!no-underline">
+          <div className="lg:min-h-[342px]">{previewElement()}</div>
+          <div className="px-3 pb-2 leading-[21px]">
+            <div className="font-bold leading-normal my-2">{preview?.title}</div>
+            {preview?.description && (
+              <small className="text-neutral-800 text-sm">{preview.description.slice(0, 160)}</small>
+            )}
+            <small className="text-xs">{new URL(url).host}</small>
           </div>
         </a>
       )}

@@ -1,7 +1,7 @@
-import { LNURL } from "@snort/shared";
-import { CachedMetadata, encodeTLVEntries, NostrLink, NostrPrefix, TLVEntryType } from "@snort/system";
+import { encodeTLVEntries, hexToBech32, LNURL, NostrPrefix, TLVEntryType } from "@snort/shared";
+import { CachedMetadata, NostrLink } from "@snort/system";
 import { ZapTarget } from "@snort/wallet";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -18,7 +18,6 @@ import MuteButton from "@/Components/User/MuteButton";
 import ProfileImage from "@/Components/User/ProfileImage";
 import ZapModal from "@/Components/ZapModal/ZapModal";
 import useModeration from "@/Hooks/useModeration";
-import { hexToBech32 } from "@/Utils";
 import { LoginSessionType, LoginStore } from "@/Utils/Login";
 
 const AvatarSection = ({
@@ -53,7 +52,10 @@ const AvatarSection = ({
     if (prefix === NostrPrefix.PublicKey) {
       return hexToBech32(NostrPrefix.PublicKey, id);
     } else if (prefix === NostrPrefix.Profile) {
-      return NostrLink.profile(id, relays?.relays.filter(a => a.settings.write).map(a => a.url)).encode();
+      return NostrLink.profile(
+        id,
+        relays?.relays.filter(a => a.settings.write).map(a => a.url),
+      ).encode();
     }
   }, [id, relays, prefix]);
 
@@ -137,7 +139,7 @@ const AvatarSection = ({
   };
 
   return (
-    <div className="flex justify-between w-full">
+    <div className="flex justify-between">
       <Avatar
         pubkey={id ?? ""}
         user={user}
@@ -145,7 +147,7 @@ const AvatarSection = ({
         className="pointer"
         size={100}
       />
-      <div className="profile-actions">
+      <div className="flex gap-2 items-center">
         {renderButtons()}
         {!isMe && id && <FollowButton pubkey={id} />}
       </div>

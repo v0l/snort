@@ -39,8 +39,8 @@ export default function ModerationSettingsPage() {
       <h3>
         <FormattedMessage defaultMessage="Muted Words" />
       </h3>
-      <div className="flex flex-col g12">
-        <div className="flex g8">
+      <div className="flex flex-col gap-3">
+        <div className="flex gap-2">
           <input
             type="text"
             placeholder="eg. crypto"
@@ -57,7 +57,9 @@ export default function ModerationSettingsPage() {
           </AsyncButton>
         </div>
         {getMutedWords().map(v => (
-          <div key={v} className="p br b flex items-center justify-between">
+          <div
+            key={v}
+            className="px-3 py-2 rounded-lg border border-neutral-800 light:border-neutral-200 flex items-center justify-between">
             <div>{v}</div>
             <AsyncButton onClick={() => removeMutedWord(v)}>
               <FormattedMessage defaultMessage="Delete" />

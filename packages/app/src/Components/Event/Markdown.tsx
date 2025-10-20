@@ -1,5 +1,3 @@
-import "./Markdown.css";
-
 import { transformText } from "@snort/system";
 import { marked, Token } from "marked";
 import markedFootnote, { Footnote, FootnoteRef, Footnotes } from "marked-footnote";

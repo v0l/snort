@@ -36,7 +36,7 @@ export default function ProfileMenu({ className }: { className?: string }) {
           showFollowDistance: false,
           displayNameClassName: "max-xl:hidden",
           subHeader: readonly ? (
-            <div className="max-xl:hidden text-nostr-red text-sm">
+            <div className="max-xl:hidden text-heart text-sm">
               <FormattedMessage defaultMessage="Read Only" />
             </div>
           ) : undefined,

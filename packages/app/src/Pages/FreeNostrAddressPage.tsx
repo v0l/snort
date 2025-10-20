@@ -1,12 +1,9 @@
 import { FormattedMessage } from "react-intl";
-
-import IrisAccount from "@/Components/IrisAccount/IrisAccount";
-
 import messages from "./messages";
 
 export default function FreeNostrAddressPage() {
   return (
-    <div className="main-content p">
+    <div className="px-3 py-2">
       <h2>
         <FormattedMessage defaultMessage="Get a free nostr address" />
       </h2>
@@ -27,8 +24,6 @@ export default function FreeNostrAddressPage() {
           <FormattedMessage {...messages.Funding} />
         </li>
       </ul>
-
-      <IrisAccount />
     </div>
   );
 }

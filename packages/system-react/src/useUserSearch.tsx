@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { NostrPrefix, UserProfileCache, tryParseNostrLink } from "@snort/system";
-import { fetchNip05Pubkey } from "@snort/shared";
+import { tryParseNostrLink } from "@snort/system";
+import { fetchNip05Pubkey, NostrPrefix } from "@snort/shared";
 import { SnortContext } from "./context";
 
 export function useUserSearch() {

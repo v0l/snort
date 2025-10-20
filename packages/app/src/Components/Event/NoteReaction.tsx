@@ -1,6 +1,4 @@
-import "./NoteReaction.css";
-
-import { EventExt, EventKind, NostrEvent, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+import { EventExt, EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useMemo } from "react";
 import { useInView } from "react-intersection-observer";
@@ -10,9 +8,10 @@ import { Link } from "react-router-dom";
 import Note from "@/Components/Event/EventComponent";
 import Icon from "@/Components/Icons/Icon";
 import useModeration from "@/Hooks/useModeration";
-import { eventLink, getDisplayName, hexToBech32 } from "@/Utils";
+import { eventLink, getDisplayName } from "@/Utils";
 
 import NoteFooter from "./Note/NoteFooter/NoteFooter";
+import { hexToBech32, NostrPrefix } from "@snort/shared";
 
 export interface NoteReactionProps {
   data: TaggedNostrEvent;
@@ -76,15 +75,15 @@ export default function NoteReaction(props: NoteReactionProps) {
   }
 
   if (!inView) {
-    return <div className="card reaction" ref={ref}></div>;
+    return <div className="card flex flex-col gap-2" ref={ref}></div>;
   }
   const isOpMuted = root && isMuted(root.pubkey);
   const shouldNotBeRendered = isOpMuted || root?.kind !== EventKind.TextNote;
 
   return shouldNotBeRendered ? null : (
-    <div className="card reaction">
-      <div className="flex g4">
-        <Icon name="repeat" size={18} />
+    <div className="card flex flex-col gap-2">
+      <div className="flex gap-1 text-base font-semibold">
+        <Icon className="opacity-50" name="repeat" size={18} />
         <FormattedMessage
           defaultMessage="{name} reposted"
           values={{

@@ -13,7 +13,7 @@ const ErrorPage = () => {
   console.error(error);
 
   const clearOPFSData = async () => {
-    if ("showDirectoryPicker" in window) {
+    if ("showDirectoryPicker" in window && typeof window.showDirectoryPicker === "function") {
       try {
         // Request access to the root directory
         const rootDirectoryHandle = await window.showDirectoryPicker();
@@ -49,9 +49,13 @@ const ErrorPage = () => {
       <AsyncButton onClick={handleClearData}>
         <FormattedMessage defaultMessage="Clear cache and reload" />
       </AsyncButton>
-      <h5>{error.message}</h5>
-      <div className="my-2">{error.message}</div>
-      <pre className="my-2 whitespace-pre-wrap">{error.stack}</pre>
+      {error instanceof Error && (
+        <>
+          <h5>{error.message}</h5>
+          <div className="my-2">{error.message}</div>
+          <pre className="my-2 whitespace-pre-wrap">{error.stack}</pre>
+        </>
+      )}
     </div>
   );
 };

@@ -9,7 +9,7 @@ import AsyncButton from "@/Components/Button/AsyncButton";
 import Icon from "@/Components/Icons/Icon";
 import useLoginHandler from "@/Hooks/useLoginHandler";
 import { trackEvent } from "@/Utils";
-import { generateNewLogin, LoginSessionType, LoginStore } from "@/Utils/Login";
+import { generateNewLogin, generateNewLoginKeys, LoginSessionType, LoginStore } from "@/Utils/Login";
 
 import { NewUserState } from ".";
 
@@ -43,7 +43,7 @@ export function SignIn() {
     navigate("/");
   }
 
-  async function onSubmit(e) {
+  async function onSubmit(e: Event) {
     e.preventDefault();
     doLogin(key);
   }
@@ -80,25 +80,25 @@ export function SignIn() {
 
   const signerExtLogin = (hasNip7 || hasNip55) && !useKey;
   return (
-    <div className="flex flex-col g24">
-      <img src={CONFIG.icon} width={48} height={48} className="br mr-auto ml-auto" />
-      <div className="flex flex-col g16 items-center">
+    <div className="flex flex-col gap-6">
+      <img src={CONFIG.icon} width={48} height={48} className="rounded-lg mr-auto ml-auto" />
+      <div className="flex flex-col gap-4 items-center">
         <h1>
           <FormattedMessage defaultMessage="Sign In" />
         </h1>
         {signerExtLogin && <FormattedMessage defaultMessage="Use a nostr signer extension to sign in" />}
       </div>
-      <div className={classNames("flex flex-col g16", { "items-center": signerExtLogin })}>
+      <div className={classNames("flex flex-col gap-4", { "items-center": signerExtLogin })}>
         {signerExtLogin && (
           <>
             <AsyncButton onClick={doNip07Login}>
-              <div className="circle bg-warning p12 text-white">
+              <div className="circle bg-warning p-3 text-white">
                 <Icon name="key" />
               </div>
               <FormattedMessage defaultMessage="Sign in with Nostr Extension" />
             </AsyncButton>
             <AsyncButton onClick={doNip55Login}>
-              <div className="circle bg-warning p12 text-white">
+              <div className="circle bg-warning p-3 text-white">
                 <Icon name="key" />
               </div>
               <FormattedMessage defaultMessage="Sign in with Android signer" />
@@ -131,7 +131,7 @@ export function SignIn() {
           </form>
         )}
       </div>
-      <div className="flex flex-col g16 items-center">
+      <div className="flex flex-col gap-4 items-center">
         <Link to={"/login/sign-up"}>
           <FormattedMessage defaultMessage="Don't have an account?" />
         </Link>
@@ -152,7 +152,7 @@ export function SignUp() {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (CONFIG.signUp.quickStart) {
-      return generateNewLogin(system, key => Promise.resolve(new NotEncrypted(key)), {
+      return generateNewLogin(await generateNewLoginKeys(), system, key => Promise.resolve(new NotEncrypted(key)), {
         name,
       }).then(() => {
         trackEvent("Login", { newAccount: true });
@@ -176,15 +176,15 @@ export function SignUp() {
   };
 
   return (
-    <div className="flex flex-col g24">
-      <img src={CONFIG.icon} width={48} height={48} className="br mr-auto ml-auto" />
-      <div className="flex flex-col g16 items-center">
+    <div className="flex flex-col gap-6">
+      <img src={CONFIG.icon} width={48} height={48} className="rounded-lg mr-auto ml-auto" />
+      <div className="flex flex-col gap-4 items-center">
         <h1>
           <FormattedMessage defaultMessage="Sign Up" />
         </h1>
         <FormattedMessage defaultMessage="What should we call you?" />
       </div>
-      <form onSubmit={onSubmit} className="flex flex-col g16">
+      <form onSubmit={onSubmit} className="flex flex-col gap-4">
         <input
           type="text"
           autoFocus={true}
@@ -208,7 +208,7 @@ export function SignUp() {
           )}
         </AsyncButton>
       </form>
-      <div className="flex flex-col g16 items-center">
+      <div className="flex flex-col gap-4 items-center">
         <Link to={"/login"}>
           <FormattedMessage defaultMessage="Already have an account?" />
         </Link>

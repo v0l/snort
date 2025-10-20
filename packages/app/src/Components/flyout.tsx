@@ -38,7 +38,7 @@ export default function Flyout({
         "right-0": side == "right",
         "left-0": side === "left",
       })}>
-      <div className="bg-gray-superdark px-3 py-4 h-[100vh] top-0" style={styles}>
+      <div className="bg-neutral-900 px-3 py-4 h-[100vh] top-0" style={styles}>
         <div className="flex justify-between items-center">
           {title}
           <div className="flex gap-2 items-center">

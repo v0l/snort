@@ -108,8 +108,8 @@ export function LongFormText(props: LongFormTextProps) {
     return (
       <>
         <NoteFooter ev={props.ev} />
-        <hr />
-        <div className="flex g8">
+        <hr className="border-0 h-px bg-neutral-600 m-[5px_0px]" />
+        <div className="flex gap-2">
           <div>
             <FormattedMessage
               defaultMessage="{n} mins to read"
@@ -121,21 +121,21 @@ export function LongFormText(props: LongFormTextProps) {
           </div>
           <div>‧</div>
           {!reading && (
-            <div className="pointer" onClick={() => readArticle()}>
+            <div className="cursor-pointer" onClick={() => readArticle()}>
               <FormattedMessage defaultMessage="Listen to this article" />
             </div>
           )}
           {reading && (
-            <div className="pointer" onClick={() => stopReading()}>
+            <div className="cursor-pointer" onClick={() => stopReading()}>
               <FormattedMessage defaultMessage="Stop listening" />
             </div>
           )}
         </div>
-        <hr />
+        <hr className="border-0 h-px bg-neutral-600 m-[5px_0px]" />
         {shouldTruncate && showMore && <ToggleShowMore />}
         <Markdown content={content} tags={props.ev.tags} ref={ref} />
         {shouldTruncate && !showMore && <ToggleShowMore />}
-        <hr />
+        <hr className="border-0 h-px bg-neutral-600 m-[5px_0px]" />
         <NoteFooter ev={props.ev} />
       </>
     );
@@ -143,7 +143,9 @@ export function LongFormText(props: LongFormTextProps) {
 
   return (
     <div
-      className={classNames("long-form-note flex flex-col g16 p break-words", { "cursor-pointer": props.isPreview })}
+      className={classNames("long-form-note flex flex-col gap-4 p-4 break-words", {
+        "cursor-pointer": props.isPreview,
+      })}
       onClick={props.onClick}>
       <ProfilePreview
         pubkey={props.ev.pubkey}
@@ -156,9 +158,9 @@ export function LongFormText(props: LongFormTextProps) {
           about: false,
         }}
       />
-      <h1>{title}</h1>
-      <small>{summary}</small>
-      {image && <div className="header-image" style={{ "--img": `url(${proxy(image)})` } as CSSProperties} />}
+      <h1 className="text-[32px] font-bold leading-10 m-0">{title}</h1>
+      <small className="font-normal leading-6">{summary}</small>
+      {image && <div className="h-[360px] bg-center bg-cover" style={{ backgroundImage: `url(${proxy(image)})` }} />}
       {props.isPreview ? previewText() : fullText()}
     </div>
   );

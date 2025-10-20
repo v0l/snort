@@ -1,5 +1,3 @@
-import "./Deck.css";
-
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { createContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
@@ -73,7 +71,7 @@ export function SnortDeckLayout() {
       <div className="deck-layout">
         <NavSidebar narrow={true} />
         <div>
-          <div className="flex flex-col gap-2 m-2 bg-dark p br">
+          <div className="flex flex-col gap-2 m-2 bg-dark px-3 py-2 rounded-lg">
             <div className="text-xl font-bold">
               <FormattedMessage
                 defaultMessage="You must be a {tier} subscriber to access {app} deck"

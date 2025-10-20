@@ -1,5 +1,3 @@
-import "./PinPrompt.css";
-
 import { unwrap } from "@snort/shared";
 import { EventPublisher, InvalidPinError, PinEncrypted } from "@snort/system";
 import { ReactNode, useRef, useState } from "react";
@@ -68,7 +66,7 @@ export function PinPrompt({
             submitButtonRef.current.click();
           }
         }}>
-        <div className="flex flex-col g12">
+        <div className="flex flex-col gap-3">
           <h2>
             <FormattedMessage defaultMessage="Enter Pin" />
           </h2>
@@ -80,9 +78,10 @@ export function PinPrompt({
             autoFocus={true}
             maxLength={20}
             minLength={4}
+            className="border border-border px-4 py-3 text-[80px] h-[1em] rounded-xl"
           />
-          {error && <b className="error">{error}</b>}
-          <div className="flex g8">
+          {error && <b className="text-error">{error}</b>}
+          <div className="flex gap-2">
             <button type="button" onClick={() => onCancel()}>
               <FormattedMessage defaultMessage="Cancel" />
             </button>

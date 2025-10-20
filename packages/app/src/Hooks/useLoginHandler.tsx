@@ -1,8 +1,7 @@
-import { fetchNostrAddress, unwrap } from "@snort/shared";
-import { KeyStorage, Nip46Signer, NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { bech32ToHex, fetchNostrAddress, NostrPrefix, unwrap } from "@snort/shared";
+import { KeyStorage, Nip46Signer, tryParseNostrLink } from "@snort/system";
 import { useIntl } from "react-intl";
 
-import { bech32ToHex } from "@/Utils";
 import { EmailRegex, MnemonicRegex } from "@/Utils/Const";
 import { LoginSessionType, LoginStore } from "@/Utils/Login";
 import { entropyToPrivateKey, generateBip39Entropy } from "@/Utils/nip6";

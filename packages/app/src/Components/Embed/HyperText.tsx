@@ -69,7 +69,12 @@ export default function HyperText({ link, depth, showLinkPreview, children }: Hy
     // Ignore the error.
   }
   return (
-    <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
+    <a
+      href={a}
+      onClick={e => e.stopPropagation()}
+      target="_blank"
+      rel="noreferrer"
+      className="ext text-highlight no-underline hover:underline">
       {children ?? a}
     </a>
   );

@@ -18,9 +18,9 @@
   "dependencies": {
     "@snort/shared": "^1.0.14",
     "@snort/system": "^1.2.11",
-    "dexie": "^3.2.4"
+    "dexie": "^4.2.1"
   },
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "typescript": "^5.9.3"
   }
 }

@@ -1,9 +1,9 @@
 import { v4 as uuid } from "uuid";
-import { appendDedupe, dedupe, removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
+import { appendDedupe, dedupe, NostrPrefix, removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
 
 import EventKind from "./event-kind";
-import { EventExt, NostrLink, NostrPrefix, ToNostrEventTag } from ".";
-import { ReqFilter, u256, HexKey, TaggedNostrEvent } from "./nostr";
+import { EventExt, NostrLink, ToNostrEventTag } from ".";
+import { ReqFilter, TaggedNostrEvent } from "./nostr";
 import { RequestRouter } from "./request-router";
 
 /**
@@ -151,12 +151,12 @@ export class RequestFilterBuilder {
     return this;
   }
 
-  ids(ids: Array<u256>) {
+  ids(ids: Array<string>) {
     this.#filter.ids = appendDedupe(this.#filter.ids, ids);
     return this;
   }
 
-  authors(authors?: Array<HexKey>) {
+  authors(authors?: Array<string>) {
     if (!authors) return this;
     this.#filter.authors = appendDedupe(this.#filter.authors, authors);
     this.#filter.authors = this.#filter.authors.filter(a => a.length === 64);

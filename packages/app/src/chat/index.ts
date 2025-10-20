@@ -1,15 +1,11 @@
-import { ExternalStore, unixNow, unwrap } from "@snort/shared";
+import { encodeTLVEntries, ExternalStore, NostrPrefix, TLVEntry, TLVEntryType, unixNow, unwrap } from "@snort/shared";
 import {
-  encodeTLVEntries,
   EventKind,
   EventPublisher,
   NostrEvent,
-  NostrPrefix,
   RequestBuilder,
   SystemInterface,
   TaggedNostrEvent,
-  TLVEntry,
-  TLVEntryType,
   UserMetadata,
 } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";

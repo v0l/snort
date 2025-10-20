@@ -30,7 +30,7 @@ export function LeaderBadge() {
             <div className="text-3xl font-semibold">
               <FormattedMessage defaultMessage="Community Leader" />
             </div>
-            <p className="text-secondary">
+            <p className="text-neutral-400">
               <FormattedMessage
                 defaultMessage="Community leaders are individuals who grow the nostr ecosystem by being active in their local communities and helping onboard new users. Anyone can become a community leader, but few hold the current honorary title."
                 id="f1OxTe"

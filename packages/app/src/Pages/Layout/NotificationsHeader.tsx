@@ -26,7 +26,7 @@ const NotificationsHeader = () => {
   }));
   const { publisher } = useEventPublisher();
 
-  if (!publicKey) {
+  if (!publicKey || !publisher) {
     return (
       <button onClick={() => navigate("/login/sign-up")} className="mr-3 primary p-2">
         <Icon name="sign-in" size={20} className="md:hidden" />

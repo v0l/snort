@@ -47,15 +47,15 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
   if (!sub) return;
   return (
     <>
-      <div className="flex g8">
-        <div className="flex flex-col g4">
+      <div className="flex gap-2">
+        <div className="flex flex-col gap-1">
           <small>
             <FormattedMessage defaultMessage="Months" />
           </small>
           <input type="number" value={months} onChange={e => setMonths(Number(e.target.value))} min={1} />
         </div>
 
-        <div className="flex flex-col g4">
+        <div className="flex flex-col gap-1">
           <span>&nbsp;</span>
           <AsyncButton onClick={() => renew(sub.id, months)}>
             {sub.state === "expired" ? (

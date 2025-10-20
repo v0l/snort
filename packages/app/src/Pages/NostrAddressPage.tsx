@@ -9,7 +9,7 @@ const Nip5Services = [SnortNostrAddressService];
 
 export default function NostrAddressPage() {
   return (
-    <div className="main-content p">
+    <div className="px-3 py-2">
       <h2>
         <FormattedMessage defaultMessage="Buy nostr address" />
       </h2>

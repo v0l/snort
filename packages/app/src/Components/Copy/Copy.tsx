@@ -1,5 +1,3 @@
-import "./Copy.css";
-
 import classNames from "classnames";
 
 import Icon from "@/Components/Icons/Icon";
@@ -23,12 +21,12 @@ export default function Copy({ text, maxSize = 32, className, showText, mask }: 
 
   return (
     <div
-      className={classNames("copy flex pointer g8 items-center", className)}
+      className={classNames("flex cursor-pointer gap-2 items-center", className)}
       onClick={e => {
         e.stopPropagation();
         copy(text);
       }}>
-      {(showText ?? true) && <span className="copy-body">{trimmed}</span>}
+      {(showText ?? true) && <span className="text-sm text-font-color">{trimmed}</span>}
       <span className="icon" style={{ color: copied ? "var(--success)" : "var(--highlight)" }}>
         {copied ? <Icon name="check" size={14} /> : <Icon name="copy-solid" size={14} />}
       </span>

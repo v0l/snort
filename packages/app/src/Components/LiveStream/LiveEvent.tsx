@@ -37,7 +37,7 @@ function LiveStreamEvent({ ev }: { ev: TaggedNostrEvent }) {
     switch (status) {
       case "live": {
         return (
-          <div className="flex g4 items-center">
+          <div className="flex gap-1 items-center">
             <Icon name="signal-01" />
             <b className="uppercase">
               <FormattedMessage defaultMessage="Live" />
@@ -100,11 +100,11 @@ function LiveStreamEvent({ ev }: { ev: TaggedNostrEvent }) {
     );
   }
   return (
-    <div className="sm:flex g12 br p24 bg-primary items-center">
+    <div className="sm:flex gap-4 rounded-lg p-6 bg-primary items-center text-white">
       <div>
         <ProfileImage pubkey={host!} showUsername={false} size={56} />
       </div>
-      <div className="flex flex-col g8 grow">
+      <div className="flex flex-col gap-2 grow">
         <div className="font-semibold text-3xl">{title}</div>
         <div>{statusLine()}</div>
       </div>

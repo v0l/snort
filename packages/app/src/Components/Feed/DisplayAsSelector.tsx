@@ -19,7 +19,7 @@ export const DisplayAsSelector = ({ activeSelection, onSelect, show }: DisplaySe
     const baseClasses = "border-highlight cursor-pointer flex justify-center flex-1 p-3";
     return activeSelection === displayType
       ? `${baseClasses} border-b border-1`
-      : `${baseClasses} hover:bg-nearly-bg-color text-secondary`;
+      : `${baseClasses} hover:bg-nearly-bg-color text-neutral-400`;
   };
 
   const myOnSelect = useCallback(

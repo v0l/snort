@@ -1,6 +1,7 @@
 import { CachedMetadata } from "@snort/system";
 
 import { LoginSession } from "@/Utils/Login";
+import { ReactElement } from "react";
 
 export interface UITask {
   id: string;
@@ -11,7 +12,7 @@ export interface UITask {
   check(user: CachedMetadata, session: LoginSession): boolean;
   mute(): void;
   load(cb: () => void): void;
-  render(): JSX.Element;
+  render(): ReactElement;
 }
 
 export interface UITaskState {
@@ -27,7 +28,7 @@ export abstract class BaseUITask implements UITask {
   abstract id: string;
   noBaseStyle = false;
   abstract check(user: CachedMetadata, session: LoginSession): boolean;
-  abstract render(): JSX.Element;
+  abstract render(): ReactElement;
 
   constructor() {
     this.state = {} as UITaskState;

@@ -1,6 +1,4 @@
-import "./Thread.css";
-
-import { EventExt, TaggedNostrEvent, u256 } from "@snort/system";
+import { EventExt, TaggedNostrEvent } from "@snort/system";
 import { ReactNode, useCallback, useContext, useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
@@ -60,7 +58,7 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
     }
   }
 
-  function renderChain(from: u256): ReactNode {
+  function renderChain(from: string): ReactNode {
     if (!from || thread.chains.size === 0) {
       return;
     }
@@ -107,7 +105,7 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
   return (
     <>
       {debug && (
-        <div className="main-content p xs">
+        <div className="px-3 py-2 xs">
           <h1>Chains</h1>
           <pre>
             {JSON.stringify(
@@ -125,16 +123,16 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
         </div>
       )}
       {parent && (
-        <div className="main-content p">
+        <div className="px-3 py-2">
           <BackButton onClick={goBack} text={parentText} />
         </div>
       )}
-      <div className="main-content">
+      <div>
         {thread.root && renderRoot(thread.root)}
         {thread.root && renderChain(chainKey(thread.root))}
         {!thread.root && renderCurrent()}
         {thread.mutedData.length > 0 && (
-          <div className="p br b mx-2 my-3 bg-gray-ultradark text-gray-light font-medium cursor-pointer">
+          <div className="px-3 py-2 rounded-lg border border-neutral-800 light:border-neutral-200 mx-2 my-3 bg-neutral-900 text-gray-light font-medium cursor-pointer">
             <FormattedMessage
               defaultMessage="{n} notes have been muted"
               values={{

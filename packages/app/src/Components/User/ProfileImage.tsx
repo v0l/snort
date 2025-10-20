@@ -1,4 +1,4 @@
-import { HexKey, UserMetadata } from "@snort/system";
+import { UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
 import React, { ReactNode, useCallback, useRef, useState } from "react";
@@ -13,7 +13,7 @@ import { ProfileCard } from "./ProfileCard";
 import { ProfileLink } from "./ProfileLink";
 
 export interface ProfileImageProps {
-  pubkey: HexKey;
+  pubkey: string;
   subHeader?: ReactNode;
   showUsername?: boolean;
   className?: string;
@@ -107,7 +107,7 @@ export default function ProfileImage({
   function profileCard() {
     if (showProfileCard && user && isHovering) {
       return (
-        <div className="absolute shadow-lg fade-in">
+        <div className="absolute shadow-lg">
           <ProfileCard pubkey={pubkey} user={user} show={true} delay={100} />
         </div>
       );

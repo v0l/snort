@@ -7,7 +7,7 @@ import AsyncButton from "./Button/AsyncButton";
 
 export function Offline({ onRetry, className }: { onRetry?: () => void | Promise<void>; className?: string }) {
   return (
-    <div className={classNames("flex items-center g8", className)}>
+    <div className={classNames("flex items-center gap-2", className)}>
       <Icon name="wifi-off" className="error" />
       <div className="error">
         <FormattedMessage defaultMessage="Offline" />

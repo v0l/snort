@@ -1,5 +1,5 @@
-import { sha256 } from "@noble/hashes/sha256";
-import { bytesToHex } from "@noble/hashes/utils";
+import { sha256 } from "@noble/hashes/sha2.js";
+import { bytesToHex, utf8ToBytes } from "@noble/hashes/utils.js";
 
 export interface NostrPowEvent {
   id: string;
@@ -29,7 +29,7 @@ export function minePow(e: NostrPowEvent, target: number) {
 
 function createId(e: NostrPowEvent) {
   const payload = [0, e.pubkey, e.created_at, e.kind, e.tags, e.content];
-  return bytesToHex(sha256(JSON.stringify(payload)));
+  return bytesToHex(sha256(utf8ToBytes(JSON.stringify(payload))));
 }
 
 export function countLeadingZeros(hex: string) {

@@ -1,6 +1,6 @@
-import { EventKind, HexKey, NostrPrefix, NostrEvent, EventSigner, PowMiner, NotSignedNostrEvent } from ".";
+import { EventKind, NostrEvent, EventSigner, PowMiner } from ".";
 import { HashtagRegex, MentionNostrEntityRegex } from "./const";
-import { getPublicKey, jitter, unixNow } from "@snort/shared";
+import { getPublicKey, jitter, NostrPrefix, unixNow } from "@snort/shared";
 import { EventExt } from "./event-ext";
 import { NostrLink, tryParseNostrLink } from "./nostr-link";
 
@@ -117,7 +117,7 @@ export class EventBuilder {
    * Build and sign event
    * @param pk Private key to sign event with
    */
-  async buildAndSign(pk: HexKey | EventSigner) {
+  async buildAndSign(pk: string | EventSigner) {
     if (typeof pk === "string") {
       const ev = this.pubKey(getPublicKey(pk)).build();
       return EventExt.sign(await this.#mine(ev), pk);

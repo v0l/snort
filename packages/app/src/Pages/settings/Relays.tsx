@@ -71,7 +71,7 @@ const RelaySettingsPage = () => {
         </small>
         <table className="table">
           <thead>
-            <tr className="uppercase text-secondary">
+            <tr className="uppercase text-neutral-400">
               <th>
                 <FormattedMessage defaultMessage="Relay" description="Relay name (URL)" />
               </th>

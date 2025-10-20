@@ -11,7 +11,7 @@ import useLogin from "@/Hooks/useLogin";
 
 export function CacheSettings() {
   return (
-    <div className="flex flex-col g8">
+    <div className="flex flex-col gap-2">
       <h3>
         <FormattedMessage defaultMessage="Cache" />
       </h3>
@@ -29,8 +29,8 @@ function CacheDetails<T>({ cache, name }: { cache: FeedCache<T>; name: ReactNode
   );
 
   return (
-    <div className="flex justify-between br p bg-superdark">
-      <div className="flex flex-col g4">
+    <div className="flex justify-between rounded-lg px-3 py-2 bg-superdark">
+      <div className="flex flex-col gap-1">
         {name}
         <small>
           <FormattedMessage
@@ -75,8 +75,8 @@ function RelayCacheStats() {
   }
 
   return (
-    <div className="flex justify-between br p bg-superdark">
-      <div className="flex flex-col g4 w-64">
+    <div className="flex justify-between rounded-lg px-3 py-2 bg-superdark">
+      <div className="flex flex-col gap-1 w-64">
         <FormattedMessage
           defaultMessage="{type} Worker Relay"
           values={{
@@ -93,7 +93,7 @@ function RelayCacheStats() {
             />
           </p>
         )}
-        <table className="text-secondary">
+        <table className="text-neutral-400">
           <thead>
             <tr>
               <th className="text-left">
@@ -138,7 +138,7 @@ function RelayCacheStats() {
                 const data = Relay instanceof WorkerRelayInterface ? await Relay.dump() : undefined;
                 if (data) {
                   const url = URL.createObjectURL(
-                    new File([data], "snort.db", {
+                    new File([data.buffer as ArrayBuffer], "snort.db", {
                       type: "application/octet-stream",
                     }),
                   );

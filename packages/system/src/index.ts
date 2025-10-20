@@ -2,7 +2,6 @@ export { NostrSystem } from "./nostr-system";
 export { default as EventKind } from "./event-kind";
 export * from "./system";
 export * from "./nostr";
-export * from "./links";
 export * from "./nips";
 export * from "./relay-info";
 export * from "./event-ext";

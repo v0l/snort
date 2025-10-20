@@ -1,4 +1,3 @@
-import { NostrPrefix } from "./links";
 import { NostrLink, ToNostrEventTag } from "./nostr-link";
 import { DiffSyncTags, JsonEventSync } from "./sync";
 import EventKind from "./event-kind";
@@ -12,7 +11,7 @@ import {
   parseRelaysFromKind,
   settingsToRelayTag,
 } from ".";
-import { dedupe, removeUndefined, sanitizeRelayUrl } from "@snort/shared";
+import { dedupe, removeUndefined, sanitizeRelayUrl, NostrPrefix } from "@snort/shared";
 import debug from "debug";
 import EventEmitter from "eventemitter3";
 

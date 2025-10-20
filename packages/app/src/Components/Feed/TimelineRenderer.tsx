@@ -117,10 +117,19 @@ export function TimelineRenderer(props: TimelineRendererProps) {
     <div ref={containerRef}>
       {props.latest.length > 0 && (
         <>
-          <div className="card latest-notes" onClick={() => props.showLatest(false)} ref={ref}>
-            {props.latest.slice(0, 3).map(p => {
-              return <ProfileImage key={p} pubkey={p} showUsername={false} link={""} showFollowDistance={false} />;
-            })}
+          <div
+            className="card cursor-pointer flex flex-row justify-center items-center py-1.5 px-6 gap-2"
+            onClick={() => props.showLatest(false)}
+            ref={ref}>
+            <div className="flex">
+              {props.latest.slice(0, 3).map((p, idx) => {
+                return (
+                  <div key={p} className={idx < 2 ? "-mr-[26px]" : "-mr-2"}>
+                    <ProfileImage pubkey={p} showUsername={false} link={""} showFollowDistance={false} />
+                  </div>
+                );
+              })}
+            </div>
             <FormattedMessage
               defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
               id="3t3kok"
@@ -131,20 +140,23 @@ export function TimelineRenderer(props: TimelineRendererProps) {
           {!inView && (
             <div
               ref={latestNotesFixedRef}
-              className="card latest-notes latest-notes-fixed pointer fade-in"
+              className="card cursor-pointer flex flex-row justify-center items-center py-1.5 px-6 gap-2 fixed top-[50px] w-auto z-[42] opacity-90 shadow-[0px_0px_15px_rgba(78,0,255,0.6)] text-white bg-highlight rounded-full border-none animate-fade-in"
               onClick={() => props.showLatest(true)}>
-              {props.latest.slice(0, 3).map(p => {
-                return (
-                  <ProfileImage
-                    key={p}
-                    pubkey={p}
-                    showProfileCard={false}
-                    showUsername={false}
-                    link={""}
-                    showFollowDistance={false}
-                  />
-                );
-              })}
+              <div className="flex">
+                {props.latest.slice(0, 3).map((p, idx) => {
+                  return (
+                    <div key={p} className={idx < 2 ? "-mr-[26px]" : "-mr-2"}>
+                      <ProfileImage
+                        pubkey={p}
+                        showProfileCard={false}
+                        showUsername={false}
+                        link={""}
+                        showFollowDistance={false}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
               <FormattedMessage
                 defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
                 id="3t3kok"

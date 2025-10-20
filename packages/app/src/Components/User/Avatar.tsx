@@ -50,7 +50,7 @@ const Avatar = ({
       onClick={onClick}
       style={style}
       className={classNames(
-        "relative rounded-full aspect-square flex items-center justify-center gap-2 bg-gray",
+        "relative rounded-full aspect-square flex items-center justify-center gap-2 bg-neutral-600",
         { "outline outline-2 outline-nostr-purple m-[2px]": isDefault },
         className,
       )}

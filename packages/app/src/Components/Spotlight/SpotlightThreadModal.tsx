@@ -32,12 +32,12 @@ export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
   const link = props.event ? NostrLink.fromEvent(props.event) : props.thread;
 
   return (
-    <Modal className={props.className} onClose={onClose} bodyClassName={"flex flex-1"}>
+    <Modal id="spotlight-media-modal" className={props.className} onClose={onClose} bodyClassName={"flex flex-1"}>
       <ThreadContextWrapper link={link!}>
         <div className="flex flex-row h-screen w-screen">
           <div className="flex w-full md:w-2/3 items-center justify-center overflow-hidden" onClick={onClickBg}>
             <SpotlightFromEvent
-              event={props.event || thread.root}
+              event={props.event || props.thread}
               onClose={onClose}
               onNext={props.onNext}
               onPrev={props.onPrev}

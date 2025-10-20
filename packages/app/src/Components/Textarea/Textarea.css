@@ -5,42 +5,15 @@
 .rta__list {
   border: none;
 }
+
 .rta__item:not(:last-child) {
   border: none;
 }
+
 .rta__entity--selected .user-item,
 .rta__entity--selected .emoji-item {
   text-decoration: none;
   background: var(--gray-secondary);
-}
-
-.user-item,
-.emoji-item {
-  color: var(--font-color);
-  background: var(--gray-superdark);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: 16px;
-  padding: 10px;
-}
-
-.user-item:hover,
-.emoji-item:hover {
-  background: var(--gray-tertiary);
-}
-
-.user-item .picture {
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
-}
-
-.user-picture {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 8px;
 }
 
 .user-picture .avatar {
@@ -49,25 +22,6 @@
   height: 40px;
 }
 
-.user-details {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
 .user-item .nip05 {
   font-size: var(--font-size-tiny);
-}
-
-.emoji-item {
-  font-size: var(--font-size-tiny);
-}
-
-.emoji-item .emoji {
-  margin-right: 0.2em;
-  min-width: 20px;
-}
-
-.emoji-item .emoji-name {
-  font-weight: bold;
 }

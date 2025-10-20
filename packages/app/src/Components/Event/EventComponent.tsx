@@ -1,7 +1,5 @@
-import "./EventComponent.css";
-
 import { EventKind, NostrEvent, parseIMeta, TaggedNostrEvent } from "@snort/system";
-import { memo, ReactNode } from "react";
+import { ReactNode } from "react";
 
 import PubkeyList from "@/Components/Embed/PubkeyList";
 import ZapstrEmbed from "@/Components/Embed/ZapstrEmbed";
@@ -48,7 +46,7 @@ export interface NoteProps {
   waitUntilInView?: boolean;
 }
 
-export default memo(function EventComponent(props: NoteProps) {
+export default function EventComponent(props: NoteProps) {
   const { data: ev, className } = props;
 
   let content;
@@ -110,4 +108,4 @@ export default memo(function EventComponent(props: NoteProps) {
   }
 
   return <ErrorBoundary>{content}</ErrorBoundary>;
-});
+}

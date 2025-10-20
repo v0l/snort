@@ -1,4 +1,5 @@
-import { base64, bytesToString } from "@scure/base";
+import { bytesToHex } from "@noble/hashes/utils.js";
+import { base64 } from "@scure/base";
 import { throwIfOffline, unixNow } from "@snort/shared";
 import { EventKind, EventPublisher } from "@snort/system";
 
@@ -21,11 +22,15 @@ export class Blossom {
 
   async upload(file: File) {
     const hash = await window.crypto.subtle.digest("SHA-256", await file.arrayBuffer());
-    const tags = [["x", bytesToString("hex", new Uint8Array(hash))]];
+    const tags = [["x", bytesToHex(new Uint8Array(hash))]];
 
     const rsp = await this.#req("upload", "PUT", "upload", file, tags);
     if (rsp.ok) {
-      const ret = (await rsp.json()) as BlobDescriptor;
+      const json = await rsp.json();
+      if ("error" in json && typeof json.error === "string") {
+        throw new Error(json.error);
+      }
+      const ret = json as BlobDescriptor;
       this.#fixTags(ret);
       return ret;
     } else {
@@ -36,7 +41,7 @@ export class Blossom {
 
   async media(file: File) {
     const hash = await window.crypto.subtle.digest("SHA-256", await file.arrayBuffer());
-    const tags = [["x", bytesToString("hex", new Uint8Array(hash))]];
+    const tags = [["x", bytesToHex(new Uint8Array(hash))]];
 
     const rsp = await this.#req("media", "PUT", "media", file, tags);
     if (rsp.ok) {

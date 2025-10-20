@@ -1,4 +1,4 @@
-import { EventKind, HexKey, RequestBuilder } from "@snort/system";
+import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
@@ -9,7 +9,7 @@ type BadgeAwards = {
   ds: string[];
 };
 
-export default function useProfileBadges(pubkey?: HexKey) {
+export default function useProfileBadges(pubkey?: string) {
   const sub = useMemo(() => {
     const b = new RequestBuilder("badges");
     if (pubkey) {

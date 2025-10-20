@@ -1,15 +1,15 @@
-import { HexKey } from "@snort/system";
-import React, { Fragment, useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { AvatarGroup } from "@/Components/User/AvatarGroup";
 import DisplayName from "@/Components/User/DisplayName";
 import { ProfileLink } from "@/Components/User/ProfileLink";
 import useWoT from "@/Hooks/useWoT";
+import { ProfileImageProps } from "./ProfileImage";
 
 const MAX_FOLLOWED_BY_FRIENDS = 3;
 
-export default function FollowedBy({ pubkey }: { pubkey: HexKey }) {
+export default function FollowedBy({ pubkey, ...props }: { pubkey: string } & Omit<ProfileImageProps, "pubkey">) {
   const wot = useWoT();
   const followDistance = wot.followDistance(pubkey);
   const { followedByFriendsArray, totalFollowedByFriends } = useMemo(() => {
@@ -33,9 +33,7 @@ export default function FollowedBy({ pubkey }: { pubkey: HexKey }) {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex items-center">
-        <AvatarGroup ids={followedByFriendsArray} />
-      </div>
+      <AvatarGroup ids={followedByFriendsArray} {...props} />
       {totalFollowedByFriends > 0 && (
         <div className="text-gray-light">
           <span className="mr-1">

@@ -176,7 +176,7 @@ export class Zapper {
   maxComment() {
     return (
       this.#loadedTargets
-        ?.map(a => (a.svc?.canZap ? 255 : a.svc?.maxCommentLength ?? 0))
+        ?.map(a => (a.svc?.canZap ? 255 : (a.svc?.maxCommentLength ?? 0)))
         .reduce((acc, v) => (acc > v ? v : acc), 255) ?? 0
     );
   }

@@ -16,14 +16,14 @@ export class BackupKeyTask extends BaseUITask {
 
   render() {
     return (
-      <div className="p card">
-        <div className="flex g12 bg-superdark p24 br">
+      <div className="px-3 py-2 card">
+        <div className="flex gap-3 bg-superdark p-6 rounded-lg">
           <div>
-            <div className="p12 bg-dark circle">
+            <div className="p-3 bg-dark circle">
               <Icon name="key" size={21} />
             </div>
           </div>
-          <div className="flex flex-col g8">
+          <div className="flex flex-col gap-2">
             <div className="font-semibold text-xl">
               <FormattedMessage defaultMessage="Be sure to back up your keys!" />
             </div>
@@ -36,7 +36,7 @@ export class BackupKeyTask extends BaseUITask {
                 }}
               />
             </small>
-            <div className="flex g8">
+            <div className="flex gap-2">
               <Link to="/settings/keys">
                 <button>
                   <FormattedMessage defaultMessage="Back up now" />

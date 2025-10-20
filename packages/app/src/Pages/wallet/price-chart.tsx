@@ -70,7 +70,7 @@ export default function PriceChart({ interval, range }: { interval: number; rang
             hide={true}
           />
           <Tooltip content={() => ""} />
-          <Line dataKey="ask" type="monotone" dot={false} connectNulls={false} stroke="var(--primary-bg)" />
+          <Line dataKey="ask" type="monotone" dot={false} connectNulls={false} stroke="var(--primary)" />
         </LineChart>
       </ResponsiveContainer>
     </>

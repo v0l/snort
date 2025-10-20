@@ -84,8 +84,8 @@ const SearchPage = () => {
   }
 
   return (
-    <div className="main-content">
-      <div className="p flex flex-col g8">
+    <div>
+      <div className="px-3 py-2 flex flex-col gap-2">
         <input
           type="text"
           className="w-max"

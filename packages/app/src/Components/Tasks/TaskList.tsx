@@ -43,9 +43,8 @@ class TaskStore extends ExternalStore<Array<UITask>> {
 }
 
 const AllTasks = new TaskStore();
-export const TaskList = () => {
-  const session = useLogin();
-  const user = useUserProfile(session.publicKey);
+
+export function TaskList() {
   const tasks = useSyncExternalStore(
     c => AllTasks.hook(c),
     () => AllTasks.snapshot(),
@@ -55,6 +54,12 @@ export const TaskList = () => {
     t.mute();
   }
 
+  return <TaskListDisplay tasks={tasks} />;
+}
+
+export function TaskListDisplay({ tasks }: { tasks: Array<UITask> }) {
+  const session = useLogin();
+  const user = useUserProfile(session.publicKey);
   return (
     <div className="task-list">
       {tasks
@@ -68,7 +73,7 @@ export const TaskList = () => {
               <div key={a.id} className="card">
                 <div className="header">
                   <Icon name="lightbulb" />
-                  <CloseButton onClick={() => muteTask(a)} />
+                  <CloseButton onClick={() => a.mute()} />
                 </div>
                 {a.render()}
               </div>
@@ -77,4 +82,4 @@ export const TaskList = () => {
         })}
     </div>
   );
-};
+}

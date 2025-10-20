@@ -1,5 +1,3 @@
-import "./AvatarEditor.css";
-
 import { useState } from "react";
 
 import Icon from "@/Components/Icons/Icon";
@@ -24,13 +22,8 @@ export default function AvatarEditor({ picture, onPictureChange, privKey }: Avat
     try {
       const f = await openFile();
       if (f && uploader) {
-        const rsp = await uploader.upload(f, f.name);
-        console.log(rsp);
-        if (typeof rsp?.error === "string") {
-          setError(`Upload failed: ${rsp.error}`);
-        } else {
-          onPictureChange?.(unwrap(rsp.url));
-        }
+        const rsp = await uploader.upload(f);
+        onPictureChange?.(unwrap(rsp.url));
       }
     } catch (e) {
       if (e instanceof Error) {
@@ -46,12 +39,14 @@ export default function AvatarEditor({ picture, onPictureChange, privKey }: Avat
     <>
       <div className="flex justify-center items-center">
         <div style={{ backgroundImage: `url(${picture})` }} className="avatar">
-          <div className={`edit${picture ? "" : " new"}`} onClick={() => uploadFile().catch(console.error)}>
+          <div
+            className={`edit flex items-center justify-center w-full h-full bg-background cursor-pointer opacity-0 rounded-full hover:opacity-50 ${picture ? "" : "new opacity-50"}`}
+            onClick={() => uploadFile().catch(console.error)}>
             {loading ? <Spinner /> : <Icon name={picture ? "edit" : "camera-plus"} />}
           </div>
         </div>
       </div>
-      {error && <b className="error">{error}</b>}
+      {error && <b className="text-error">{error}</b>}
     </>
   );
 }

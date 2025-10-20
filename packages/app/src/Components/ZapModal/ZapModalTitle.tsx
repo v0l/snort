@@ -17,13 +17,13 @@ export function ZapModalTitle({
   if (!targets) {
     return (
       <>
-        <h2>
+        <div className="text-lg font-medium">
           {zapper?.canZap() ? (
             <FormattedMessage defaultMessage="Send zap" />
           ) : (
             <FormattedMessage defaultMessage="Send sats" />
           )}
-        </h2>
+        </div>
       </>
     );
   }
@@ -33,31 +33,34 @@ export function ZapModalTitle({
       name: t.name,
     };
     return (
-      <>
-        {t.zap?.pubkey && <ProfileImage pubkey={t.zap.pubkey} showUsername={false} />}
-        <h2>
-          {zapper?.canZap() ? (
-            <FormattedMessage defaultMessage="Send zap to {name}" values={values} />
-          ) : (
-            <FormattedMessage defaultMessage="Send sats to {name}" values={values} />
-          )}
-        </h2>
-      </>
+      <ProfileImage
+        pubkey={t.zap?.pubkey ?? ""}
+        overrideUsername={
+          <div className="text-lg font-medium">
+            {zapper?.canZap() ? (
+              <FormattedMessage defaultMessage="Zap {name}" values={values} />
+            ) : (
+              <FormattedMessage defaultMessage="Send sats to {name}" values={values} />
+            )}
+          </div>
+        }
+        link=""
+      />
     );
   }
   if (targets.length > 1) {
     const total = targets.reduce((acc, v) => (acc += v.weight), 0);
 
     return (
-      <div className="flex flex-col g12">
-        <h2>
+      <div className="flex flex-col gap-3">
+        <div className="text-lg font-medium">
           {zapper?.canZap() ? (
             <FormattedMessage defaultMessage="Send zap splits to" />
           ) : (
             <FormattedMessage defaultMessage="Send sats splits to" />
           )}
-        </h2>
-        <div className="flex g4 f-wrap">
+        </div>
+        <div className="flex gap-1 f-wrap">
           {targets.map(v => (
             <ProfileImage
               key={v.value}

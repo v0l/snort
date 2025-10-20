@@ -1,4 +1,4 @@
-import { bech32ToHex } from "@/Utils";
+import { bech32ToHex } from "@snort/shared";
 
 export const Contributors = [
   bech32ToHex("npub10djxr5pvdu97rjkde7tgcsjxzpdzmdguwacfjwlchvj7t88dl7nsdl54nf"), // ivan

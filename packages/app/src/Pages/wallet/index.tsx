@@ -143,7 +143,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
             "text-[--error]": a.direction === "out",
           };
           return (
-            <div className="flex gap-4 p-2 hover:bg-[--gray-superdark] rounded-xl items-center" key={a.timestamp}>
+            <div className="flex gap-4 p-2 hover:bg-neutral-800 rounded-xl items-center" key={a.timestamp}>
               <div>
                 <div className="rounded-full aspect-square p-2 bg-[--gray-dark]">
                   <Icon
@@ -157,7 +157,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
               <div className="grow flex justify-between">
                 <div className="flex flex-col gap-1">
                   <div>{a.memo?.length === 0 ? CONFIG.appNameCapitalized : a.memo}</div>
-                  <div className="text-secondary text-sm">
+                  <div className="text-neutral-400 text-sm">
                     <NoteTime
                       from={a.timestamp * 1000}
                       fallback={formatMessage({ defaultMessage: "now", id: "kaaf1E" })}
@@ -175,7 +175,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
                       }}
                     />
                   </div>
-                  <div className="text-secondary text-sm">
+                  <div className="text-neutral-400 text-sm">
                     <FormattedMessage
                       defaultMessage="~{amount}"
                       id="3QwfJR"
@@ -208,11 +208,11 @@ export default function WalletPage(props: { showHistory: boolean }) {
           id="E5ZIPD"
           values={{
             big: c => <span className="text-5xl font-bold">{c}</span>,
-            small: c => <span className="text-secondary text-sm">{c}</span>,
+            small: c => <span className="text-neutral-400 text-sm">{c}</span>,
             amount: <FormattedNumber value={balance ?? 0} />,
           }}
         />
-        <AsyncIcon size={20} className="text-secondary cursor-pointer" iconName="closedeye" />
+        <AsyncIcon size={20} className="text-neutral-400 cursor-pointer" iconName="closedeye" />
       </div>
     );
   }
@@ -224,7 +224,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
       <>
         <div className="flex flex-col items-center px-6 py-4 bg-[--gray-ultradark] rounded-2xl gap-1">
           {walletBalance()}
-          <div className="text-secondary">
+          <div className="text-neutral-400">
             <FormattedMessage
               defaultMessage="~{amount}"
               id="3QwfJR"
@@ -256,7 +256,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
   }
 
   return (
-    <div className="main-content">
+    <div>
       {walletList()}
       {error && <b className="warning">{error}</b>}
       {unlockWallet()}

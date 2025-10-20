@@ -1,6 +1,6 @@
 import { mapEventToProfile, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
@@ -29,7 +29,7 @@ import messages from "./messages";
 type Nip05ServiceProps = {
   name: string;
   service: URL | string;
-  about: JSX.Element;
+  about: ReactElement;
   link: string;
   supportLink: string;
   helpText?: boolean;
@@ -260,7 +260,9 @@ export default function Nip5Service(props: Nip05ServiceProps) {
           />
           &nbsp;@&nbsp;
           <select value={domain} onChange={onDomainChange}>
-            {serviceConfig?.domains.map(a => <option key={a.name}>{a.name}</option>)}
+            {serviceConfig?.domains.map(a => (
+              <option key={a.name}>{a.name}</option>
+            ))}
           </select>
         </div>
       )}
@@ -272,7 +274,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
                 {...messages.Sats}
                 values={{ n: formatShort(unwrap(availabilityResponse.quote?.price)) }}
               />
-              <br />
+              <rounded-lg />
               <small>{availabilityResponse.quote?.data.type}</small>
             </div>
           )}

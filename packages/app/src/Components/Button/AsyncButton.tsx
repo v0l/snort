@@ -1,5 +1,3 @@
-import "./AsyncButton.css";
-
 import classNames from "classnames";
 import React, { ForwardedRef } from "react";
 
@@ -19,12 +17,21 @@ const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>((props
       type="button"
       disabled={loading || props.disabled}
       {...props}
-      className={classNames("spinner-button", props.className)}
+      className={classNames(
+        "light:border light:border-border light:text-neutral-400 light:shadow-sm light:hover:shadow-md",
+        props.className,
+      )}
       onClick={handle}>
-      <span style={{ visibility: loading ? "hidden" : "visible" }}>{props.children}</span>
+      <span
+        className="flex items-center justify-center gap-2 light:text-black"
+        style={{ visibility: loading ? "hidden" : "visible" }}>
+        {props.children}
+      </span>
       {loading && (
-        <span className="spinner-wrapper">
-          <Spinner />
+        <span className="absolute inset-0">
+          <div className="w-full h-full flex items-center justify-center">
+            <Spinner />
+          </div>
         </span>
       )}
     </button>

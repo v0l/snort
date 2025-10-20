@@ -11,6 +11,7 @@ import MediaPosts from "@/Pages/Root/Media";
 import { NotesTab } from "@/Pages/Root/NotesTab";
 import { TagsTab } from "@/Pages/Root/TagsTab";
 import { TopicsPage } from "@/Pages/TopicsPage";
+import { ReactElement } from "react";
 
 export type RootTabRoutePath =
   | ""
@@ -30,7 +31,7 @@ export type RootTabRoutePath =
 
 export type RootTabRoute = {
   path: RootTabRoutePath;
-  element: JSX.Element;
+  element: ReactElement;
 };
 
 export const RootTabRoutes: RootTabRoute[] = [

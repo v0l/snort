@@ -35,7 +35,7 @@ export default function FollowSetsPage() {
     }
   });
   return (
-    <div className="p flex flex-col gap-4">
+    <div className="px-3 py-2 flex flex-col gap-4">
       <input
         type="text"
         placeholder={formatMessage({ defaultMessage: "Search sets.." })}
@@ -49,11 +49,11 @@ export default function FollowSetsPage() {
         if (pTags.length === 0) return;
         const link = NostrLink.fromEvent(a);
         return (
-          <div key={a.id} className="p br bg-gray-ultradark flex flex-col gap-4">
+          <div key={a.id} className="px-3 py-2 rounded-lg bg-neutral-900 flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <div className="flex flex-col">
                 <div className="text-xl">{title}</div>
-                <div className="text-gray-medium font-medium flex items-center gap-2">
+                <div className="text-neutral-500 font-medium flex items-center gap-2">
                   <Link to={`/${link.encode()}`} state={a}>
                     <FormattedMessage defaultMessage="{n} people" values={{ n: pTags.length }} />
                   </Link>
@@ -75,14 +75,12 @@ export default function FollowSetsPage() {
                 </div>
               )}
             </div>
-            <div className="flex gap-2">
-              <AvatarGroup ids={pTags.slice(0, 10)} size={40} />
-            </div>
+            <AvatarGroup ids={pTags.slice(0, 10)} size={40} />
             <div>
               <FormattedMessage
                 defaultMessage="<dark>Created by</dark> {name}"
                 values={{
-                  dark: c => <span className="text-gray-medium">{c}</span>,
+                  dark: c => <span className="text-neutral-500">{c}</span>,
                   name: (
                     <ProfileLink pubkey={a.pubkey}>
                       <DisplayName pubkey={a.pubkey} />

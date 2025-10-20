@@ -14,7 +14,7 @@ export default function MutedList() {
   const { muteList } = useModeration();
 
   return (
-    <div className="p">
+    <div className="px-3 py-2">
       <div className="flex justify-between">
         <div className="bold">
           <FormattedMessage {...messages.MuteCount} values={{ n: muteList?.length }} />

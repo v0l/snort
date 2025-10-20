@@ -1,5 +1,3 @@
-import "./Invoice.css";
-
 import { decodeInvoice } from "@snort/shared";
 import classNames from "classnames";
 import { useState } from "react";
@@ -32,10 +30,10 @@ export default function Invoice(props: InvoiceProps) {
   function header() {
     return (
       <>
-        <h4>
+        <h4 className="m-0 p-0 font-normal text-base leading-[19px] mb-2.5">
           <FormattedMessage {...messages.Invoice} />
         </h4>
-        <Icon name="zapCircle" className="zap-circle" />
+        <Icon name="zapCircle" className="absolute top-[26px] right-5 text-font-color" />
         <ZapModal
           title={formatMessage(messages.PayInvoice)}
           invoice={invoice}
@@ -62,25 +60,30 @@ export default function Invoice(props: InvoiceProps) {
 
   return (
     <>
-      <div className={classNames("note-invoice flex", { expired: isExpired, paid: isPaid })}>
-        <div className="invoice-header">{header()}</div>
+      <div className="border border-neutral-600 rounded-2xl p-6 flex-col items-start relative bg-[image:var(--invoice-gradient)]">
+        <div>{header()}</div>
 
-        <p className="invoice-amount">
+        <p className="font-normal text-[37px] leading-[45px] mb-4">
           {amount > 0 && (
             <>
-              {(amount / 1_000).toLocaleString()} <span className="sats">sat{amount === 1_000 ? "" : "s"}</span>
+              {(amount / 1_000).toLocaleString()}{" "}
+              <span className="text-font-secondary-color uppercase text-[21px]">sat{amount === 1_000 ? "" : "s"}</span>
             </>
           )}
         </p>
 
-        <div className="invoice-body">
-          {description && <p>{description}</p>}
+        <div className="text-font-secondary-color w-full text-base leading-[19px]">
+          {description && <p className="mb-4">{description}</p>}
           {isPaid ? (
-            <div className="paid">
+            <div className="w-full h-11 font-semibold text-[19px] leading-[23px] flex items-center justify-center bg-success text-white rounded-2xl">
               <FormattedMessage defaultMessage="Paid" />
             </div>
           ) : (
-            <button disabled={isExpired} type="button" onClick={payInvoice}>
+            <button
+              disabled={isExpired}
+              type="button"
+              onClick={payInvoice}
+              className="w-full h-11 font-semibold text-[19px] leading-[23px]">
               {isExpired ? <FormattedMessage {...messages.Expired} /> : <FormattedMessage {...messages.Pay} />}
             </button>
           )}

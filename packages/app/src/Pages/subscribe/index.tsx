@@ -36,11 +36,11 @@ export function SubscribePage() {
 
   return (
     <>
-      <div className="flex subscribe-page main-content">
+      <div className="flex subscribe-page">
         {Plans.map(a => {
           const lower = Plans.filter(b => b.id < a.id);
           return (
-            <div key={a.id} className={classNames("p flex flex-col g8", { disabled: a.disabled })}>
+            <div key={a.id} className={classNames("p flex flex-col gap-2", { disabled: a.disabled })}>
               <div className="grow">
                 <h2>{mapPlanName(a.id)}</h2>
                 <p>

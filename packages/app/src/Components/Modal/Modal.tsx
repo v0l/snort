@@ -1,5 +1,3 @@
-import "./Modal.css";
-
 import React, { ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 
@@ -67,13 +65,20 @@ export default function Modal(props: ModalProps) {
 
   return createPortal(
     <div
-      className={props.className === "hidden" ? props.className : `modal ${props.className || ""}`}
+      className={
+        props.className === "hidden"
+          ? props.className
+          : `w-screen h-screen fixed top-0 left-0 bg-black/80 flex justify-center z-[42] overflow-y-auto ${props.className || ""}`
+      }
       onMouseDown={handleBackdropClick}
       onClick={e => {
         e.stopPropagation();
       }}>
       <div
-        className={props.bodyClassName || "modal-body"}
+        className={
+          props.bodyClassName ||
+          "bg-neutral-900 px-3 py-6 rounded-2xl flex flex-col my-auto border border-neutral-800 max-w-full sm:px-6 sm:w-[600px] max-sm:min-w-full light:bg-white"
+        }
         onMouseDown={e => e.stopPropagation()}
         onClick={e => {
           e.stopPropagation();

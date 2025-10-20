@@ -6,7 +6,7 @@ import { Markdown } from "@/Components/Event/Markdown";
 export function AboutPage() {
   const version = document.querySelector("meta[name='application-name']")?.getAttribute("content");
   return (
-    <div className="main-content p">
+    <div className="px-3 py-2">
       <h1>
         <FormattedMessage defaultMessage="About" />
       </h1>

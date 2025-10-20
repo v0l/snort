@@ -49,7 +49,7 @@ export function Note(props: NoteProps) {
   const { ref, inView } = useInView({ triggerOnce: true });
   const { ref: setSeenAtRef, inView: setSeenAtInView } = useInView({ rootMargin: "0px", threshold: 1 });
   const [showTranslation, setShowTranslation] = useState(true);
-  const [translated, setTranslated] = useState<NoteTranslation | null>(translationCache.get(ev.id));
+  const [translated, setTranslated] = useState<NoteTranslation | undefined>(translationCache.get(ev.id) ?? undefined);
   const cachedSetTranslated = useCallback(
     (translation: NoteTranslation) => {
       translationCache.set(ev.id, translation);
@@ -174,7 +174,7 @@ function Reaction({ ev }: { ev: TaggedNostrEvent }) {
   const link = NostrLink.fromTag(reactedToTag, pTag?.[1]);
   return (
     <div className="note card">
-      <div className="text-gray-medium font-bold">
+      <div className="text-neutral-500 font-bold">
         <Username pubkey={ev.pubkey} onLinkVisit={() => {}} />
         <span> </span>
         <FormattedMessage defaultMessage="liked" />

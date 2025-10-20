@@ -1,5 +1,3 @@
-import "./Zap.css";
-
 import { ParsedZap } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 

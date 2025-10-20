@@ -5,7 +5,7 @@ import { unixNowMs } from "@snort/shared";
 import { EventEmitter } from "eventemitter3";
 
 import { DefaultConnectTimeout } from "./const";
-import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";
+import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
 import { EventExt } from "./event-ext";
@@ -42,7 +42,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   ConnectTimeout: number = DefaultConnectTimeout;
   HasStateChange: boolean = true;
   ReconnectTimer?: ReturnType<typeof setTimeout>;
-  EventsCallback: Map<u256, (msg: Array<string | boolean>) => void>;
+  EventsCallback: Map<string, (msg: Array<string | boolean>) => void>;
 
   AwaitingAuth: Map<string, boolean>;
   Authed = false;

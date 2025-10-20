@@ -1,8 +1,9 @@
-import { NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { tryParseNostrLink } from "@snort/system";
 import { Link } from "react-router-dom";
 
 import Mention from "@/Components/Embed/Mention";
 import NoteQuote from "@/Components/Event/Note/NoteQuote";
+import { NostrPrefix } from "@snort/shared";
 
 export default function NostrLink({ link, depth }: { link: string; depth?: number }) {
   const nav = tryParseNostrLink(link);

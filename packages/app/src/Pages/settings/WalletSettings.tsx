@@ -18,7 +18,7 @@ const WalletRow = (props: {
   const navigate = useNavigate();
   return (
     <div
-      className="flex items-center gap-4 px-4 py-2 bg-[--gray-superdark] rounded-xl hover:bg-[--gray-ultradark]"
+      className="flex items-center gap-4 px-4 py-2 bg-neutral-700 rounded-xl hover:bg-neutral-800 light:bg-neutral-300 light:hover:bg-neutral-400"
       onClick={() => {
         if (props.onClick) {
           props.onClick();
@@ -30,12 +30,12 @@ const WalletRow = (props: {
           }
         }
       }}>
-      <div className="rounded-xl aspect-square h-[4rem] bg-[--gray-dark] p-3 flex items-center justify-center">
+      <div className="rounded-xl aspect-square bg-neutral-800 light:bg-neutral-200 p-3 flex items-center justify-center">
         {props.logo}
       </div>
       <div className="flex flex-col gap-1 grow justify-center">
         <div className="text-xl font-bold">{props.name}</div>
-        <div className="text-sm text-secondary">{props.desc}</div>
+        <div className="text-sm text-neutral-400 light:text-neutral-600">{props.desc}</div>
       </div>
       <Icon name="arrowFront" />
     </div>

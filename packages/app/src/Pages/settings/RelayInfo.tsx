@@ -68,13 +68,13 @@ const RelayInfo = () => {
         {info && (
           <div className="grid grid-cols-3 gap-4">
             <div className="flex flex-col gap-2">
-              <div className="uppercase text-secondary font-bold text-sm">
+              <div className="uppercase text-neutral-400 font-bold text-sm">
                 <FormattedMessage defaultMessage="Admin" />
               </div>
               <div>{info?.pubkey && <ProfileImage pubkey={parseId(info.pubkey)} size={30} />}</div>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="uppercase text-secondary font-bold text-sm">
+              <div className="uppercase text-neutral-400 font-bold text-sm">
                 <FormattedMessage defaultMessage="Contact" />
               </div>
               <div>
@@ -89,7 +89,7 @@ const RelayInfo = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="uppercase text-secondary font-bold text-sm">
+              <div className="uppercase text-neutral-400 font-bold text-sm">
                 <FormattedMessage defaultMessage="Software" />
               </div>
               <div>{info?.software && <RelaySoftware software={info.software} />}</div>
@@ -97,7 +97,7 @@ const RelayInfo = () => {
             {conn && (
               <>
                 <div className="flex flex-col gap-2">
-                  <div className="uppercase text-secondary font-bold text-sm">
+                  <div className="uppercase text-neutral-400 font-bold text-sm">
                     <FormattedMessage defaultMessage="Status" />
                   </div>
                   <div>
@@ -105,7 +105,7 @@ const RelayInfo = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <div className="uppercase text-secondary font-bold text-sm">
+                  <div className="uppercase text-neutral-400 font-bold text-sm">
                     <FormattedMessage defaultMessage="Permissions" />
                   </div>
                   <div>
@@ -113,7 +113,7 @@ const RelayInfo = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <div className="uppercase text-secondary font-bold text-sm">
+                  <div className="uppercase text-neutral-400 font-bold text-sm">
                     <FormattedMessage defaultMessage="Uptime" />
                   </div>
                   <div>
@@ -125,7 +125,7 @@ const RelayInfo = () => {
           </div>
         )}
 
-        <hr className="border-border-color" />
+        <hr />
 
         {stats && (
           <CollapsedSection
@@ -184,7 +184,7 @@ const RelayInfo = () => {
             </ul>
           </CollapsedSection>
         )}
-        <hr className="border-border-color" />
+        <hr />
         {info?.supported_nips && (
           <CollapsedSection
             title={

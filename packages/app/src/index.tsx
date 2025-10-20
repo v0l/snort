@@ -3,9 +3,9 @@ import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
 
 import { unixNow, unixNowMs } from "@snort/shared";
-import { EventBuilder } from "@snort/system";
+import { EventBuilder, NostrSystem } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { StrictMode } from "react";
+import { lazy, StrictMode, Suspense } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 
@@ -16,7 +16,6 @@ import { db } from "@/Db";
 import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch";
 import { AboutPage } from "@/Pages/About";
 import { DebugPage } from "@/Pages/CacheDebug";
-import { SnortDeckLayout } from "@/Pages/Deck/DeckLayout";
 import DonatePage from "@/Pages/Donate/DonatePage";
 import ErrorPage from "@/Pages/ErrorPage";
 import FreeNostrAddressPage from "@/Pages/FreeNostrAddressPage";
@@ -30,7 +29,6 @@ import NotificationsPage from "@/Pages/Notifications/Notifications";
 import { OnboardingRoutes } from "@/Pages/onboarding";
 import ProfilePage from "@/Pages/Profile/ProfilePage";
 import { RootRoutes } from "@/Pages/Root/RootRoutes";
-import { RootTabRoutes } from "@/Pages/Root/RootTabRoutes";
 import SearchPage from "@/Pages/SearchPage";
 import SettingsRoutes from "@/Pages/settings/Routes";
 import { SubscribeRoutes } from "@/Pages/subscribe";
@@ -46,6 +44,8 @@ import { setupWebLNWalletConfig } from "@/Wallet";
 
 import { Day } from "./Utils/Const";
 import { LoginStore } from "./Utils/Login";
+
+const ComponentDebugPage = lazy(async () => await import("@/Pages/ComponentDebug"));
 
 async function initSite() {
   EventBuilder.ClientTag = [
@@ -143,7 +143,7 @@ const mainRoutes = [
   {
     path: "/wallet",
     element: (
-      <div className="p">
+      <div className="px-3 py-2">
         <WalletPage showHistory={true} />
       </div>
     ),
@@ -190,12 +190,8 @@ const routes = [
     },
     children: mainRoutes,
   },
-] as Array<RouteObject>;
-
-if (CONFIG.features.deck) {
-  routes.push({
-    path: "/deck",
-    element: <SnortDeckLayout />,
+  {
+    path: "/component-debug",
     loader: async () => {
       if (!didInit) {
         didInit = true;
@@ -203,9 +199,13 @@ if (CONFIG.features.deck) {
       }
       return null;
     },
-    children: RootTabRoutes,
-  } as RouteObject);
-}
+    element: (
+      <Suspense>
+        <ComponentDebugPage />
+      </Suspense>
+    ),
+  },
+] as Array<RouteObject>;
 
 const router = createBrowserRouter(routes);
 

@@ -42,7 +42,7 @@ export function Profile() {
   }
 
   return (
-    <div className="flex flex-col g24 text-center">
+    <div className="flex flex-col gap-6 text-center">
       <h1>
         <FormattedMessage defaultMessage="Profile Image" />
       </h1>

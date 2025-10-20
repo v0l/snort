@@ -1,6 +1,6 @@
-import { TaggedNostrEvent, u256 } from "@snort/system";
+import { TaggedNostrEvent } from "@snort/system";
 
-export function getReplies(from: u256, chains?: Map<u256, Array<TaggedNostrEvent>>): Array<TaggedNostrEvent> {
+export function getReplies(from: string, chains?: Map<string, Array<TaggedNostrEvent>>): Array<TaggedNostrEvent> {
   if (!from || !chains) {
     return [];
   }

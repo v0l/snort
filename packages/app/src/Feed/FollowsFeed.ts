@@ -1,8 +1,8 @@
-import { EventKind, HexKey, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { EventKind, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
-export default function useFollowsFeed(pubkey?: HexKey) {
+export default function useFollowsFeed(pubkey?: string) {
   const sub = useMemo(() => {
     const b = new RequestBuilder(`follows:for`);
     if (pubkey) {
@@ -17,7 +17,7 @@ export default function useFollowsFeed(pubkey?: HexKey) {
   }, [contactFeed, pubkey]);
 }
 
-export function getFollowing(notes: readonly TaggedNostrEvent[], pubkey?: HexKey) {
+export function getFollowing(notes: readonly TaggedNostrEvent[], pubkey?: string) {
   const contactLists = notes.filter(a => a.kind === EventKind.ContactList && a.pubkey === pubkey);
   const pTags = contactLists?.map(a => a.tags.filter(b => b[0] === "p").map(c => c[1]));
   return [...new Set(pTags?.flat())];

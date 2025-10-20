@@ -23,8 +23,8 @@ function OnboardingLayout() {
   const { lang, setOverride } = useLocale();
 
   return (
-    <div className="p24">
-      <div className="float-right flex g8 items-center">
+    <div className="p-6">
+      <div className="float-right flex gap-2 items-center">
         <Icon name="translate" />
         <select value={lang} onChange={e => setOverride(e.target.value)} className="capitalize">
           {AllLanguageCodes.sort().map(a => (

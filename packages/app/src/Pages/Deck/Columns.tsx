@@ -1,4 +1,4 @@
-import { NostrLink } from "@snort/system";
+import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 import { Outlet } from "react-router-dom";
@@ -14,7 +14,7 @@ export function NotesCol() {
   return (
     <div>
       <div className="deck-col-header flex">
-        <div className="flex flex-1 g8">
+        <div className="flex flex-1 gap-2">
           <Icon name="rows-01" size={24} />
           <FormattedMessage defaultMessage="Notes" />
         </div>
@@ -32,7 +32,7 @@ export function NotesCol() {
 export function ArticlesCol() {
   return (
     <div>
-      <div className="deck-col-header flex g8">
+      <div className="deck-col-header flex gap-2">
         <Icon name="file-06" size={24} />
         <FormattedMessage defaultMessage="Articles" />
       </div>
@@ -45,7 +45,7 @@ export function ArticlesCol() {
 
 export function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
   const noteOnClick = useCallback(
-    e => {
+    (e: TaggedNostrEvent) => {
       setThread(NostrLink.fromEvent(e));
     },
     [setThread],
@@ -53,7 +53,7 @@ export function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
 
   return (
     <div>
-      <div className="flex items-center gap-2 p-2 border-b border-border-color">
+      <div className="flex items-center gap-2 p-2 border-b">
         <Icon name="camera-lens" size={24} />
         <FormattedMessage defaultMessage="Media" />
       </div>
@@ -75,7 +75,7 @@ export function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
 export function NotificationsCol({ setThread }: { setThread: (e: NostrLink) => void }) {
   return (
     <div>
-      <div className="deck-col-header flex g8">
+      <div className="deck-col-header flex gap-2">
         <Icon name="bell-solid" size={24} />
         <FormattedMessage defaultMessage="Notifications" />
       </div>

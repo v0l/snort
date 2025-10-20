@@ -28,7 +28,7 @@ const HashTagsPage = () => {
 
   return (
     <>
-      <div className="bb p">
+      <div className="bb px-3 py-2">
         <HashTagHeader tag={tag} />
       </div>
       <Timeline key={tag} subject={subject} postsOnly={false} method={"TIME_RANGE"} />
@@ -55,7 +55,7 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
   return (
     <div className={classNames("flex flex-col", className)}>
       <div className="flex items-center justify-between">
-        <div className="flex g8 items-center">
+        <div className="flex gap-2 items-center">
           <b className="text-xl">
             <Link to={`/t/${tag}`}>#{tag}</Link>
           </b>

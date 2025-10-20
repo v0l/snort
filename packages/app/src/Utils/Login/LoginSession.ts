@@ -1,4 +1,4 @@
-import { HexKey, KeyStorage, UserState } from "@snort/system";
+import { KeyStorage, UserState } from "@snort/system";
 
 import { DisplayAs } from "@/Components/Feed/DisplayAsSelector";
 import { UserPreferences } from "@/Utils/Login/index";
@@ -40,7 +40,7 @@ export interface LoginSession {
    * Current user private key
    * @deprecated Moving to pin encrypted storage
    */
-  privateKey?: HexKey;
+  privateKey?: string;
 
   /**
    * If this session cannot sign events
@@ -60,7 +60,7 @@ export interface LoginSession {
   /**
    * Current users public key
    */
-  publicKey?: HexKey;
+  publicKey?: string;
 
   /**
    * Login state for the current user

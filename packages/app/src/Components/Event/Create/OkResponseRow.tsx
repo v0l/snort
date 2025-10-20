@@ -27,16 +27,16 @@ export function OkResponseRow({ rsp, close }: { rsp: OkResponse; close: () => vo
   }
 
   return (
-    <div className="flex items-center g16">
-      <div className="flex flex-col grow g4">
+    <div className="flex items-center gap-4">
+      <div className="flex flex-col grow gap-1">
         <b>{getRelayName(r.relay)}</b>
         {r.message && <small>{r.message}</small>}
       </div>
       {!r.ok && (
-        <div className="flex g8">
+        <div className="flex gap-2">
           <AsyncButton
             onClick={() => retryPublish(r)}
-            className="p4 br-compact flex items-center secondary"
+            className="p-1 rounded-md flex items-center secondary"
             title={formatMessage({
               defaultMessage: "Retry publishing",
               id: "9kSari",
@@ -45,7 +45,7 @@ export function OkResponseRow({ rsp, close }: { rsp: OkResponse; close: () => vo
           </AsyncButton>
           <AsyncButton
             onClick={() => removeRelayFromResult(r)}
-            className="p4 br-compact flex items-center secondary"
+            className="p-1 rounded-md flex items-center secondary"
             title={formatMessage({
               defaultMessage: "Remove from my relays",
               id: "UJTWqI",

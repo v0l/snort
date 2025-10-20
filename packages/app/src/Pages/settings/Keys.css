@@ -13,7 +13,7 @@
 }
 
 .mnemonic-grid .word > div:nth-of-type(1) {
-  background-color: var(--gray);
+  background-color: var(--color-neutral-700);
   padding: 4px 8px;
   min-width: 2em;
   font-variant-numeric: ordinal;

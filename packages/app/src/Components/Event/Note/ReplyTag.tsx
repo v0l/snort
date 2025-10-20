@@ -1,4 +1,4 @@
-import { EventExt, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+import { EventExt, NostrLink, TaggedNostrEvent } from "@snort/system";
 import React, { ReactNode } from "react";
 import { useIntl } from "react-intl";
 import { Link } from "react-router-dom";
@@ -7,9 +7,9 @@ import { UserCache } from "@/Cache";
 import messages from "@/Components/messages";
 import DisplayName from "@/Components/User/DisplayName";
 import { ProfileLink } from "@/Components/User/ProfileLink";
-import { hexToBech32 } from "@/Utils";
 
 import { ClientTag } from "./ClientTag";
+import { hexToBech32, NostrPrefix } from "@snort/shared";
 
 export default function ReplyTag({ ev }: { ev: TaggedNostrEvent }) {
   const { formatMessage } = useIntl();

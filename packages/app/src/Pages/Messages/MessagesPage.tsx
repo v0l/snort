@@ -41,7 +41,7 @@ export default function MessagesPage() {
 
   function noteToSelf(chat: Chat) {
     return (
-      <div className="flex p" key={chat.id} onClick={e => openChat(e, chat.type, chat.id)}>
+      <div className="flex px-3 py-2" key={chat.id} onClick={e => openChat(e, chat.type, chat.id)}>
         <NoteToSelf className="grow" />
       </div>
     );

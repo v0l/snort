@@ -1,4 +1,3 @@
-import { HexKey } from "@snort/system";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
@@ -13,8 +12,8 @@ import ProfilePreview from "@/Components/User/ProfilePreview";
 import SnortApi, { RevenueSplit, RevenueToday } from "@/External/SnortApi";
 import { Contributors, DonateLNURL, Translators } from "@/Pages/Donate/const";
 import { ZapPoolDonateSection } from "@/Pages/Donate/ZapPoolDonateSection";
-import { bech32ToHex } from "@/Utils";
 import { ApiHost, DeveloperAccounts, SnortPubKey } from "@/Utils/Const";
+import { bech32ToHex } from "@snort/shared";
 
 const DonatePage = () => {
   const [splits, setSplits] = useState<RevenueSplit[]>([]);
@@ -38,7 +37,7 @@ const DonatePage = () => {
     loadData().catch(console.warn);
   }, []);
 
-  function actions(pk: HexKey) {
+  function actions(pk: string) {
     const split = splits.find(a => bech32ToHex(a.pubKey) === pk);
     if (split) {
       return <>{(100 * split.split).toLocaleString()}%</>;
@@ -47,7 +46,7 @@ const DonatePage = () => {
   }
 
   return (
-    <div className="main-content p">
+    <div className="px-3 py-2">
       <p>
         <FormattedMessage
           defaultMessage="Snort is an open source project built by passionate people in their free time, your donations are greatly appreciated"
@@ -111,8 +110,8 @@ const DonatePage = () => {
       <h3>
         <FormattedMessage defaultMessage="Donate" />
       </h3>
-      <div className="flex flex-col g12">
-        <div className="b br p">
+      <div className="flex flex-col gap-3">
+        <div className="border border-neutral-800 light:border-neutral-200 rounded-lg px-3 py-2">
           <div className="flex items-center justify-between">
             <FormattedMessage defaultMessage="Lightning Donation" />
             <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL}>
@@ -129,7 +128,7 @@ const DonatePage = () => {
             </small>
           )}
         </div>
-        <div className="b br p">
+        <div className="border border-neutral-800 light:border-neutral-200 rounded-lg px-3 py-2">
           <div className="flex items-center justify-between">
             <FormattedMessage defaultMessage="On-chain Donation" />
             <AsyncButton type="button" onClick={getOnChainAddress}>
@@ -140,7 +139,7 @@ const DonatePage = () => {
       </div>
       {onChain && (
         <Modal onClose={() => setOnChain("")} id="donate-on-chain">
-          <div className="flex flex-col items-center g12">
+          <div className="flex flex-col items-center gap-3">
             <h2>
               <FormattedMessage defaultMessage="On-chain Donation Address" />
             </h2>

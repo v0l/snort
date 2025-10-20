@@ -1,5 +1,3 @@
-import "./SearchBox.css";
-
 import { NostrLink, tryParseNostrLink } from "@snort/system";
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -9,7 +7,7 @@ import Icon from "@/Components/Icons/Icon";
 import Spinner from "@/Components/Icons/Spinner";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useProfileSearch from "@/Hooks/useProfileSearch";
-import { fetchNip05Pubkey } from "@/Utils/Nip05/Verifier";
+import { fetchNip05Pubkey } from "@snort/shared";
 
 const MAX_RESULTS = 3;
 
@@ -113,12 +111,12 @@ export default function SearchBox() {
   };
 
   return (
-    <div className="search relative">
+    <div className="flex-grow flex bg-neutral-900 rounded-full relative md:p-0 md:bg-transparent">
       <input
         ref={inputRef}
         type="text"
         placeholder={formatMessage({ defaultMessage: "Search", id: "xmcVZ0" })}
-        className="w-max"
+        className="w-stretch !border-none !rounded-none text-[15px] leading-[21px] py-2.5 px-4 md:hidden"
         value={search}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
@@ -126,9 +124,14 @@ export default function SearchBox() {
         onBlur={() => setTimeout(() => setIsFocused(false), 150)}
       />
       {searching ? (
-        <Spinner width={24} height={24} />
+        <Spinner width={24} height={24} className="my-2.5 mx-4" />
       ) : (
-        <Icon className="text-secondary" name="search-outline" size={24} onClick={() => navigate("/search")} />
+        <Icon
+          className="text-neutral-400 my-2.5 mx-4"
+          name="search-outline"
+          size={24}
+          onClick={() => navigate("/search")}
+        />
       )}
       {search && !searching && isFocused && (
         <div

@@ -1,4 +1,3 @@
-import { HexKey } from "@snort/system";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 
@@ -10,7 +9,7 @@ import { parseId } from "@/Utils";
 import messages from "../messages";
 
 export interface FollowButtonProps {
-  pubkey: HexKey;
+  pubkey: string;
   className?: string;
 }
 export default function FollowButton(props: FollowButtonProps) {

@@ -1,8 +1,8 @@
 import { RelaySettings } from "./connection";
 
 export interface NostrEvent {
-  id: u256;
-  pubkey: HexKey;
+  id: string;
+  pubkey: string;
   created_at: number;
   kind: number;
   tags: Array<Array<string>>;
@@ -22,32 +22,17 @@ export interface TaggedNostrEvent extends NostrEvent {
   context?: object;
 }
 
-/**
- * Basic raw key as hex
- */
-export type HexKey = string;
-
-/**
- * Optional HexKey
- */
-export type MaybeHexKey = HexKey | undefined;
-
-/**
- * A 256bit hex id
- */
-export type u256 = string;
-
 export type ReqCommand = [cmd: "REQ", id: string, ...filters: Array<ReqFilter>];
 
 /**
  * Raw REQ filter object
  */
 export interface ReqFilter {
-  ids?: u256[];
-  authors?: u256[];
+  ids?: string[];
+  authors?: string[];
   kinds?: number[];
-  "#e"?: u256[];
-  "#p"?: u256[];
+  "#e"?: string[];
+  "#p"?: string[];
   "#t"?: string[];
   "#d"?: string[];
   "#r"?: string[];

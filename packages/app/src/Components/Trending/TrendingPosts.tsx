@@ -54,12 +54,12 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
   );
 
   const login = useLogin();
-  const displayAsInitial = small ? "list" : login.feedDisplayAs ?? "list";
+  const displayAsInitial = small ? "list" : (login.feedDisplayAs ?? "list");
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const { isEventMuted } = useModeration();
   const [modalThread, setModalThread] = useState<NostrLink | undefined>(undefined);
 
-  if (error && !trendingNotesData) return <ErrorOrOffline error={error} className="p" />;
+  if (error && !trendingNotesData) return <ErrorOrOffline error={error} className="px-3 py-2" />;
   if (isLoading) return <PageSpinner />;
 
   const filteredAndLimitedPosts = trendingNotesData

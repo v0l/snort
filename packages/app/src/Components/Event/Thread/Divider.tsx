@@ -3,10 +3,9 @@ interface DividerProps {
 }
 
 export const Divider = ({ variant = "regular" }: DividerProps) => {
-  const className = variant === "small" ? "divider divider-small" : "divider";
   return (
     <div className="divider-container">
-      <div className={className}></div>
+      <div className={`h-px bg-border ${variant === "small" ? "ml-[77px] mr-4" : ""}`}></div>
     </div>
   );
 };

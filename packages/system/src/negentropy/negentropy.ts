@@ -1,4 +1,4 @@
-import { bytesToHex } from "@noble/hashes/utils";
+import { bytesToHex } from "@noble/hashes/utils.js";
 import { WrappedBuffer } from "./wrapped-buffer";
 import { NegentropyStorageVector, VectorStorageItem } from "./vector-storage";
 import {
@@ -258,7 +258,7 @@ export class Negentropy {
     const id = new Uint8Array(this.#storage.idSize);
     const encodedId = getBytes(encoded, Math.min(len, encoded.length));
     id.set(encodedId);
-    return { timestamp, id };
+    return { timestamp, id: id as Uint8Array<ArrayBufferLike> };
   }
 
   // Encoding

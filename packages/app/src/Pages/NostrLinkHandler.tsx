@@ -1,6 +1,6 @@
-import { fetchNip05Pubkey } from "@snort/shared";
-import { NostrPrefix, tryParseNostrLink } from "@snort/system";
-import React, { useEffect, useState } from "react";
+import { fetchNip05Pubkey, NostrPrefix } from "@snort/shared";
+import { tryParseNostrLink } from "@snort/system";
+import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useParams } from "react-router-dom";
 
@@ -13,8 +13,8 @@ export default function NostrLinkHandler() {
   const { state } = useLocation();
   const { link } = useParams();
 
-  const determineInitialComponent = link => {
-    const nav = tryParseNostrLink(link);
+  const determineInitialComponent = (link: string | undefined) => {
+    const nav = link ? tryParseNostrLink(link) : undefined;
     if (nav) {
       switch (nav.type) {
         case NostrPrefix.Event:
@@ -38,8 +38,8 @@ export default function NostrLinkHandler() {
   const [loading, setLoading] = useState(initialRenderComponent ? false : true);
   const [renderComponent, setRenderComponent] = useState(initialRenderComponent);
 
-  async function handleLink(link) {
-    if (!tryParseNostrLink(link)) {
+  async function handleLink(link: string | undefined) {
+    if (link && !tryParseNostrLink(link)) {
       try {
         const pubkey = await fetchNip05Pubkey(link, CONFIG.nip05Domain);
         if (pubkey) {

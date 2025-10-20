@@ -1,5 +1,5 @@
-import { dedupe, sanitizeRelayUrl } from "@snort/shared";
-import { NostrLink, NostrPrefix } from "@snort/system";
+import { dedupe, NostrPrefix, sanitizeRelayUrl } from "@snort/shared";
+import { NostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";

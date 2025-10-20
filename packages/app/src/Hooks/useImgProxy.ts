@@ -1,4 +1,4 @@
-import * as utils from "@noble/curves/abstract/utils";
+import { hexToBytes } from "@noble/hashes/utils.js";
 import { base64 } from "@scure/base";
 
 import usePreferences from "@/Hooks/usePreferences";
@@ -25,11 +25,7 @@ export function proxyImg(url: string, settings?: ImgProxySettings, resize?: numb
   }
 
   function signUrl(u: string) {
-    const result = hmacSha256(
-      utils.hexToBytes(unwrap(settings).key),
-      utils.hexToBytes(unwrap(settings).salt),
-      te.encode(u),
-    );
+    const result = hmacSha256(hexToBytes(unwrap(settings).key), hexToBytes(unwrap(settings).salt), te.encode(u));
     return urlSafe(base64.encode(result));
   }
   if (!settings) return url;

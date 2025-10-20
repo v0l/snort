@@ -1,9 +1,10 @@
-import { EventKind, NostrLink, NostrPrefix } from "@snort/system";
+import { EventKind, NostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 
 import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
 import Text from "@/Components/Text/Text";
 import ProfilePreview from "@/Components/User/ProfilePreview";
+import { NostrPrefix } from "@snort/shared";
 
 export function NotificationContext({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);

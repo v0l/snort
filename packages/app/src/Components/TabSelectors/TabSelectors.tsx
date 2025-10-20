@@ -24,8 +24,8 @@ export const TabSelector = ({ t, tab, setTab }: TabElementProps) => {
   return (
     <div
       className={classNames(
-        "flex gap-2 items-center px-4 py-2 my-1 border border-border-color rounded-full cursor-pointer font-semibold bg-gray-dark",
-        "hover:drop-shadow-sm hover:bg-gray",
+        "flex gap-2 items-center px-4 py-2 my-1 border rounded-full cursor-pointer font-semibold bg-neutral-800 light:bg-neutral-200",
+        "hover:drop-shadow-sm hover:bg-neutral-600 light:hover:bg-neutral-300",
         {
           "": tab.value === t.value,
           disabled: t.disabled,

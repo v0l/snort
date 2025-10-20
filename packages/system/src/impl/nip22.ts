@@ -1,5 +1,5 @@
 import { findTag } from "../utils";
-import { EventBuilder, NostrEvent, NostrLink, NostrPrefix } from "../index";
+import { EventBuilder, NostrEvent, NostrLink } from "../index";
 
 export class Nip22 {
   /**

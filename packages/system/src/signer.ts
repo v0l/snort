@@ -1,10 +1,10 @@
-import { bytesToHex } from "@noble/curves/abstract/utils";
 import { getPublicKey } from "@snort/shared";
 import { EventExt } from "./event-ext";
 import { Nip4WebCryptoEncryptor } from "./impl/nip4";
 import { Nip44Encryptor } from "./impl/nip44";
 import { NostrEvent, NotSignedNostrEvent } from "./nostr";
-import { randomBytes } from "@noble/hashes/utils";
+import { bytesToHex, randomBytes } from "@noble/hashes/utils.js";
+import { schnorr } from "@noble/curves/secp256k1.js";
 
 export type SignerSupports = "nip04" | "nip44" | string;
 
@@ -36,7 +36,7 @@ export class PrivateKeySigner implements EventSigner {
    * Generate a new private key
    */
   static random() {
-    const k = randomBytes(32);
+    const k = schnorr.keygen().secretKey;
     return new PrivateKeySigner(k);
   }
 

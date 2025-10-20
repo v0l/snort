@@ -1,20 +1,13 @@
-import { HexKey } from "@snort/system";
+import ProfileImage, { ProfileImageProps } from "@/Components/User/ProfileImage";
 
-import ProfileImage from "@/Components/User/ProfileImage";
-
-export function AvatarGroup({ ids, onClick, size }: { ids: HexKey[]; onClick?: () => void; size?: number }) {
-  return ids.map((a, index) => (
-    <div className={`inline-block ${index > 0 ? "-ml-4" : ""}`} key={a} style={{ zIndex: ids.length - index }}>
-      <ProfileImage
-        link=""
-        onClick={onClick}
-        showFollowDistance={false}
-        pubkey={a}
-        size={size ?? 24}
-        showUsername={false}
-        showBadges={false}
-        showProfileCard={false}
-      />
+export function AvatarGroup({ ids, ...props }: { ids: string[] } & Omit<ProfileImageProps, "pubkey">) {
+  return (
+    <div className="flex items-center">
+      {ids.map((a, index) => (
+        <div className={`inline-block ${index > 0 ? "-ml-2" : ""}`} key={a} style={{ zIndex: ids.length - index }}>
+          <ProfileImage pubkey={a} {...props} />
+        </div>
+      ))}
     </div>
-  ));
+  );
 }

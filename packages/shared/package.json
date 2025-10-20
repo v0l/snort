@@ -13,15 +13,15 @@
     "build": "rm -rf dist && tsc"
   },
   "dependencies": {
-    "@noble/curves": "^1.4.0",
-    "@noble/hashes": "^1.4.0",
-    "@scure/base": "^1.1.6",
-    "debug": "^4.3.4",
+    "@noble/curves": "^2.0.1",
+    "@noble/hashes": "^2.0.1",
+    "@scure/base": "^2.0.0",
+    "debug": "^4.4.3",
     "eventemitter3": "^5.0.1",
-    "light-bolt11-decoder": "^3.0.0"
+    "light-bolt11-decoder": "^3.2.0"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.8",
-    "typescript": "^5.2.2"
+    "@types/debug": "^4.1.12",
+    "typescript": "^5.9.3"
   }
 }

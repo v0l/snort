@@ -1,10 +1,10 @@
 import "./Text.css";
 
-import { HexKey, IMeta, ParsedFragment } from "@snort/system";
+import { IMeta, ParsedFragment } from "@snort/system";
 import classNames from "classnames";
-import { ReactNode, useState } from "react";
+import { lazy, ReactNode, Suspense, useState } from "react";
 
-import CashuNuts from "@/Components/Embed/CashuNuts";
+const CashuNuts = lazy(async () => await import("@/Components/Embed/CashuNuts"));
 import Hashtag from "@/Components/Embed/Hashtag";
 import HyperText from "@/Components/Embed/HyperText";
 import Invoice from "@/Components/Embed/Invoice";
@@ -20,7 +20,7 @@ import HighlightedText from "./HighlightedText";
 export interface TextProps {
   id: string;
   content: string;
-  creator: HexKey;
+  creator: string;
   tags: Array<Array<string>>;
   disableMedia?: boolean;
   disableMediaSpotlight?: boolean;
@@ -140,11 +140,11 @@ export default function Text({
             });
             const size = Math.floor(baseImageWidth / Math.min(4, Math.ceil(Math.sqrt(galleryImages.length))));
             const gallery = (
-              <div className="-mx-4 md:mx-0 my-2 gallery">
+              <div className="gallery -mx-4 md:mx-0 my-2 grid grid-cols-4 gap-0.5 list-none p-0 md:rounded-sm md:overflow-hidden">
                 {imagesWithGridConfig.map(img => (
                   <div
                     key={img.content}
-                    className="gallery-item"
+                    className="gallery-item block relative m-0"
                     style={{
                       height: `${img.height}px`,
                       gridColumn: `span ${img.gridColumn}`,
@@ -177,7 +177,11 @@ export default function Text({
         chunks.push(<Hashtag tag={element.content} />);
       }
       if (element.type === "cashu") {
-        chunks.push(<CashuNuts token={element.content} />);
+        chunks.push(
+          <Suspense>
+            <CashuNuts token={element.content} />
+          </Suspense>,
+        );
       }
       if (element.type === "link" || (element.type === "media" && element.mimeType?.startsWith("unknown"))) {
         if (disableMedia ?? false) {
@@ -192,11 +196,11 @@ export default function Text({
         chunks.push(<ProxyImg src={element.content} size={15} className="custom-emoji" />);
       }
       if (element.type === "code_block") {
-        chunks.push(<pre>{element.content}</pre>);
+        chunks.push(<pre className="m-0 overflow-scroll">{element.content}</pre>);
       }
       if (element.type === "text") {
         chunks.push(
-          <div className="text-frag">
+          <div className="text-frag text-ellipsis whitespace-pre-wrap inline break-anywhere">
             {highlightText ? (
               <HighlightedText content={element.content} textToHighlight={highlightText} />
             ) : (
@@ -210,7 +214,7 @@ export default function Text({
   };
 
   return (
-    <div dir="auto" className={classNames("text", className)} onClick={onClick}>
+    <div dir="auto" className={classNames("text text-base leading-6", className)} onClick={onClick}>
       {renderContent()}
       {showSpotlight && <SpotlightMediaModal media={images} onClose={() => setShowSpotlight(false)} idx={imageIdx} />}
     </div>

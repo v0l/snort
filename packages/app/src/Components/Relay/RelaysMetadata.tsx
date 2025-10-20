@@ -31,10 +31,10 @@ const RelaysMetadata = ({ relays }: RelaysMetadataProps) => {
     <>
       {relays?.map(({ url, settings }) => {
         return (
-          <div key={url} className="card flex g8">
+          <div key={url} className="card flex gap-2">
             <RelayFavicon url={url} />
             <code className="grow f-ellipsis">{url}</code>
-            <div className="flex g8">
+            <div className="flex gap-2">
               <Icon name="read" className={settings.read ? "text-highlight" : "disabled"} />
               <Icon name="write" className={settings.write ? "text-highlight" : "disabled"} />
             </div>

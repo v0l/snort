@@ -1,4 +1,4 @@
-import { TaggedNostrEvent, u256 } from "@snort/system";
+import { TaggedNostrEvent } from "@snort/system";
 import { Fragment } from "react";
 
 import Note from "@/Components/Event/EventComponent";
@@ -8,9 +8,9 @@ import { getReplies } from "@/Components/Event/Thread/util";
 
 export interface SubthreadProps {
   isLastSubthread?: boolean;
-  active: u256;
+  active: string;
   notes: readonly TaggedNostrEvent[];
-  chains: Map<u256, Array<TaggedNostrEvent>>;
+  chains: Map<string, Array<TaggedNostrEvent>>;
   onNavigate: (e: TaggedNostrEvent) => void;
 }
 
@@ -20,11 +20,12 @@ export const Subthread = ({ active, notes, chains, onNavigate }: SubthreadProps)
     const replies = getReplies(a.id, chains);
     return (
       <Fragment key={a.id}>
-        <div className={`subthread-container ${replies.length > 0 ? "subthread-multi" : ""}`}>
+        <div
+          className={`subthread-container relative ${replies.length > 0 ? "subthread-multi before:content-[''] before:absolute before:left-[40px] before:top-12 before:border-l before:border-border before:h-full before:-z-10" : ""}`}>
           <Divider />
           <Note
             highlight={active === a.id}
-            className={`thread-note ${isLastSubthread && replies.length === 0 ? "is-last-note" : ""}`}
+            className={`thread-note border-0 ${isLastSubthread && replies.length === 0 ? "is-last-note" : ""}`}
             data={a}
             key={a.id}
             onClick={onNavigate}

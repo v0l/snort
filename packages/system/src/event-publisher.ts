@@ -1,12 +1,9 @@
-import * as secp from "@noble/curves/secp256k1";
-import * as utils from "@noble/curves/abstract/utils";
 import { unwrap } from "@snort/shared";
 
 import {
   EventKind,
   EventSigner,
   FullRelaySettings,
-  HexKey,
   NostrEvent,
   NostrLink,
   NotSignedNostrEvent,
@@ -17,7 +14,6 @@ import {
   SignerSupports,
   TaggedNostrEvent,
   ToNostrEventTag,
-  u256,
   UserMetadata,
 } from ".";
 
@@ -174,7 +170,7 @@ export class EventPublisher {
    */
   async zap(
     amount: number,
-    author: HexKey,
+    author: string,
     relays: Array<string>,
     note?: NostrLink,
     msg?: string,
@@ -252,7 +248,7 @@ export class EventPublisher {
   /**
    * Delete an event (NIP-09)
    */
-  async delete(id: u256) {
+  async delete(id: string) {
     const eb = this.#eb(EventKind.Deletion);
     eb.tag(["e", id]);
     return await this.#sign(eb);
@@ -284,7 +280,7 @@ export class EventPublisher {
     return await this.nip4Decrypt(note.content, otherPubKey);
   }
 
-  async sendDm(content: string, to: HexKey) {
+  async sendDm(content: string, to: string) {
     const eb = this.#eb(EventKind.DirectMessage);
     eb.content(await this.nip4Encrypt(content, to));
     eb.tag(["p", to]);
@@ -309,8 +305,7 @@ export class EventPublisher {
    * NIP-59 Gift Wrap event with ephemeral key
    */
   async giftWrap(inner: NostrEvent, explicitP?: string, powTarget?: number, powMiner?: PowMiner) {
-    const secret = utils.bytesToHex(secp.secp256k1.utils.randomPrivateKey());
-    const signer = new PrivateKeySigner(secret);
+    const signer = PrivateKeySigner.random();
 
     const pTag = explicitP ?? findTag(inner, "p");
     if (!pTag) throw new Error("Inner event must have a p tag");
@@ -325,7 +320,7 @@ export class EventPublisher {
     eb.content(await signer.nip44Encrypt(JSON.stringify(inner), pTag));
     eb.jitter(60 * 60 * 24);
 
-    return await eb.buildAndSign(secret);
+    return await eb.buildAndSign(signer);
   }
 
   async unwrapGift(gift: NostrEvent) {

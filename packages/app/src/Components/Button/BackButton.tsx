@@ -1,30 +1,22 @@
-import "./BackButton.css";
-
-import { useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
-
-import messages from "../messages";
+import AsyncButton from "./AsyncButton";
 
 interface BackButtonProps {
   text?: string;
   onClick?(): void;
 }
 
-const BackButton = ({ text, onClick }: BackButtonProps) => {
-  const { formatMessage } = useIntl();
-  const onClickHandler = () => {
-    if (onClick) {
-      onClick();
-    }
-  };
-
+export default function BackButton({ text, onClick }: BackButtonProps) {
   return (
-    <button className="back-button" type="button" onClick={onClickHandler}>
+    <div
+      className="flex gap-2 items-center cursor-pointer hover:underline"
+      onClick={() => {
+        onClick?.();
+      }}>
       <Icon name="arrowBack" />
-      {text || formatMessage(messages.Back)}
-    </button>
+      <span>{text || <FormattedMessage defaultMessage="Back" />}</span>
+    </div>
   );
-};
-
-export default BackButton;
+}

@@ -30,7 +30,7 @@ export function UserDebug({ pubkey }: { pubkey: string }) {
           );
         })}
       </div>
-      <br />
+      <rounded-lg />
       <div className="flex flex-col">
         <div>Relays Updated: {new Date(1000 * (relays?.created ?? 0)).toISOString()}</div>
         {relays?.relays.map(a => (

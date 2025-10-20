@@ -1,5 +1,3 @@
-import "./RootTabs.css";
-
 import { unwrap } from "@snort/shared";
 import { EventKind } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
@@ -55,10 +53,12 @@ export function RootTabs({ base = "/" }: { base: string }) {
   }
 
   return (
-    <div className="root-type">
+    <div className="root-type flex items-center justify-center flex-grow">
       <Menu
         menuButton={
-          <button type="button">
+          <button
+            type="button"
+            className="bg-transparent text-font-color text-base px-4 py-2.5 flex items-center justify-center gap-3 border-none shadow-none hover:!shadow-none">
             {currentMenuItem()}
             <Icon name="chevronDown" />
           </button>

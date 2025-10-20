@@ -1,8 +1,7 @@
-import * as utils from "@noble/curves/abstract/utils";
-import { bytesToHex } from "@noble/hashes/utils";
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { HDKey } from "@scure/bip32";
 import * as bip39 from "@scure/bip39";
-import { wordlist } from "@scure/bip39/wordlists/english";
+import { wordlist } from "@scure/bip39/wordlists/english.js";
 
 /**
  * NIP06-defined derivation path for private keys
@@ -22,7 +21,7 @@ export function generateBip39Entropy(mnemonic?: string) {
  * Convert hex-encoded seed into mnemonic phrase
  */
 export function seedToMnemonic(hex: string) {
-  const bytes = utils.hexToBytes(hex);
+  const bytes = hexToBytes(hex);
   return bip39.entropyToMnemonic(bytes, wordlist);
 }
 
@@ -37,7 +36,7 @@ export function seedToPrivateKey(seed: Uint8Array) {
     throw new Error("INVALID KEY DERIVATION");
   }
 
-  return utils.bytesToHex(newKey.privateKey);
+  return bytesToHex(newKey.privateKey);
 }
 
 export async function entropyToPrivateKey(entropy: Uint8Array) {

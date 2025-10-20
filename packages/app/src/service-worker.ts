@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
-import { hexToBytes } from "@noble/hashes/utils";
+import { hexToBytes } from "@noble/hashes/utils.js";
 import { bech32 } from "@scure/base";
-import { encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/system/dist/links";
+import { encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/shared";
 import { NostrLink, tryParseNostrLink } from "@snort/system/dist/nostr-link";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { clientsClaim } from "workbox-core";

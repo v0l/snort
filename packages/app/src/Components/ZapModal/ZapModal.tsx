@@ -1,5 +1,3 @@
-import "./ZapModal.css";
-
 import { LNURLSuccessAction } from "@snort/shared";
 import { Zapper, ZapTarget, ZapTargetResult } from "@snort/wallet";
 import { ReactNode, useEffect, useState } from "react";
@@ -85,10 +83,10 @@ export default function ZapModal(props: SendSatsProps) {
 
   if (!(props.show ?? false)) return null;
   return (
-    <Modal id="send-sats" className="lnurl-modal" onClose={onClose}>
-      <div className="p flex flex-col gap-3">
-        <div className="flex gap-3">
-          <div className="flex items-center grow gap-3">
+    <Modal id="send-sats" onClose={onClose}>
+      <div className="flex flex-col gap-2">
+        <div className="flex gap-2">
+          <div className="flex items-center grow gap-2">
             {props.title || <ZapModalTitle amount={amount} targets={props.targets} zapper={zapper} />}
           </div>
           <CloseButton onClick={onClose} />

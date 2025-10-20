@@ -13,7 +13,7 @@ export function ApplicationHandler({ ev }: { ev: TaggedNostrEvent }) {
     .map(a => Number(a[1]))
     .sort((a, b) => a - b);
   return (
-    <div className="p flex gap-2 flex-col">
+    <div className="px-3 py-2 flex gap-2 flex-col">
       <div className="flex items-center gap-2 text-xl">
         <Avatar user={profile} pubkey={""} size={120} />
         <div className="flex flex-col gap-2">

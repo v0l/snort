@@ -1,8 +1,8 @@
-import { EventKind, HexKey, parseRelayTags, RequestBuilder } from "@snort/system";
+import { EventKind, parseRelayTags, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
-export default function useRelaysFeed(pubkey?: HexKey) {
+export default function useRelaysFeed(pubkey?: string) {
   const sub = useMemo(() => {
     const b = new RequestBuilder(`relays:${pubkey ?? ""}`);
     if (pubkey) {

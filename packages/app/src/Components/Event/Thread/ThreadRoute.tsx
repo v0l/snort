@@ -1,8 +1,9 @@
-import { NostrPrefix, parseNostrLink } from "@snort/system";
+import { parseNostrLink } from "@snort/system";
 import { useParams } from "react-router-dom";
 
 import { Thread } from "@/Components/Event/Thread/Thread";
 import { ThreadContextWrapper } from "@/Utils/Thread/ThreadContextWrapper";
+import { NostrPrefix } from "@snort/shared";
 
 export function ThreadRoute({ id }: { id?: string }) {
   const params = useParams();

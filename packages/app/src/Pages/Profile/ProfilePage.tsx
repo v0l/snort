@@ -1,7 +1,5 @@
-import "./ProfilePage.css";
-
-import { fetchNip05Pubkey, LNURL } from "@snort/shared";
-import { CachedMetadata, NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { fetchNip05Pubkey, LNURL, NostrPrefix } from "@snort/shared";
+import { CachedMetadata, tryParseNostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -110,7 +108,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       }
       case ProfileTabType.FOLLOWS: {
         if (isMe) {
-          return <FollowsList pubkeys={follows ?? []} showFollowAll={!isMe} className="p" />;
+          return <FollowsList pubkeys={follows ?? []} showFollowAll={!isMe} className="px-3 py-2" />;
         } else {
           return <FollowsTab id={id} />;
         }
@@ -137,18 +135,18 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
 
   return (
     <>
-      <div className="profile">
+      <div>
         {user?.banner && (
           <ProxyImg
             alt="banner"
-            className="banner pointer"
+            className="cursor-pointer max-h-[200px] object-cover -mb-6"
             src={user.banner}
             size={bannerWidth}
             onClick={() => setModalImage(user?.banner || "")}
             missingImageElement={<></>}
           />
         )}
-        <div className="profile-wrapper w-max">
+        <div className="px-4">
           <AvatarSection id={id} loginPubKey={loginPubKey} user={user} readonly={readonly} lnurl={lnurl} />
           <ProfileDetails
             user={user}
@@ -160,7 +158,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
           />
         </div>
       </div>
-      <div className="main-content">
+      <div>
         <TabSelectors
           tabs={[
             ProfileTabSelectors.Notes,
@@ -168,12 +166,12 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
             ProfileTabSelectors.Followers,
             ProfileTabSelectors.Follows,
           ].concat(isMe ? [...optionalTabs, ProfileTabSelectors.Muted] : optionalTabs)}
-          className="p"
+          className="px-3 py-2"
           tab={tab}
           setTab={setTab}
         />
       </div>
-      <div className="main-content">{tabContent()}</div>
+      <div>{tabContent()}</div>
       {modalImage && <SpotlightMediaModal onClose={() => setModalImage("")} media={[modalImage]} idx={0} />}
     </>
   );

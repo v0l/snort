@@ -7,7 +7,7 @@ export function ClientTag({ ev }: { ev: TaggedNostrEvent }) {
   if (!tag) return;
   const link = tag[2] && tag[2].includes(":") ? NostrLink.tryFromTag(["a", tag[2]]) : undefined;
   return (
-    <span className="text-xs text-gray-light">
+    <span className="text-xs text-neutral-400 light:text-neutral-500">
       {" "}
       <FormattedMessage
         defaultMessage="via {client}"

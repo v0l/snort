@@ -6,7 +6,7 @@
 .long-form-note hr {
   border: 0;
   height: 1px;
-  background-color: var(--gray);
+  background-color: var(--color-neutral-700);
   margin: 5px 0px;
 }
 
@@ -24,13 +24,13 @@
 .long-form-note h1 {
   font-size: 32px;
   font-weight: 700;
-  line-height: 40px; /* 125% */
+  line-height: 40px;
   margin: 0;
 }
 
 .long-form-note small {
   font-weight: 400;
-  line-height: 24px; /* 150% */
+  line-height: 24px;
 }
 
 .long-form-note img:not(.custom-emoji),

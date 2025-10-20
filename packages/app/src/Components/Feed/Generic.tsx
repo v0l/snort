@@ -22,7 +22,7 @@ export function GenericFeed({ link }: { link: NostrLink }) {
   const isTempSensor = reqs[0].kinds?.includes(8001) && reqs[0].kinds.length === 1;
   if (isTempSensor) {
     return (
-      <div className="p flex flex-col gap-2">
+      <div className="px-3 py-2 flex flex-col gap-2">
         <Suspense>
           <LazySimpleChart
             data={evs

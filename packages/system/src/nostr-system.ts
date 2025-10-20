@@ -20,7 +20,8 @@ import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
 import { QueryManager } from "./query-manager";
 import { RequestRouter } from "./request-router";
 import { SystemBase } from "./system-base";
-import { SerializedSocialGraph, SocialGraph } from "nostr-social-graph";
+import { SocialGraph } from "nostr-social-graph";
+import { base64 } from "@scure/base";
 
 /**
  * Manages nostr content retrieval system
@@ -132,20 +133,22 @@ export class NostrSystem extends SystemBase implements SystemInterface {
   async PreloadSocialGraph(follows?: Array<string>, root?: string) {
     // Insert data to socialGraph from cache
     if (this.config.buildFollowGraph) {
+      const graphRoot = root ?? "00".repeat(32);
       // load saved social graph
       if ("localStorage" in globalThis) {
         const saved = localStorage.getItem("social-graph");
         if (saved) {
           try {
-            const data = JSON.parse(saved) as SerializedSocialGraph;
-            this.config.socialGraphInstance = new SocialGraph(root ?? "", data);
+            const data = base64.decode(saved);
+            this.config.socialGraphInstance = await SocialGraph.fromBinary(graphRoot, data);
+            this.#log("Loaded social graph snapshot from LocalStorage %d bytes", data.length);
           } catch (e) {
             this.#log("Failed to load serialzied social-graph: %O", e);
             localStorage.removeItem("social-graph");
           }
         }
       }
-      this.config.socialGraphInstance.setRoot(root ?? "00".repeat(32));
+      await this.config.socialGraphInstance.setRoot(graphRoot);
       for (const list of this.userFollowsCache.snapshot()) {
         if (follows && !follows.includes(list.pubkey)) continue;
         this.config.socialGraphInstance.handleEvent({

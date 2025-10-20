@@ -1,5 +1,3 @@
-import "./Timeline.css";
-
 import { unixNow } from "@snort/shared";
 import { TaggedNostrEvent } from "@snort/system";
 import { useCallback, useMemo, useState } from "react";

@@ -1,5 +1,5 @@
-import { sha256 } from "@noble/hashes/sha256";
-import { randomBytes } from "@noble/hashes/utils";
+import { sha256 } from "@noble/hashes/sha2.js";
+import { randomBytes, utf8ToBytes } from "@noble/hashes/utils.js";
 import { base64, base64urlnopad, hex } from "@scure/base";
 import { unixNow } from "@snort/shared";
 
@@ -28,7 +28,7 @@ export function getAlbyOAuth() {
       const params = new URLSearchParams();
       params.set("client_id", clientId);
       params.set("response_type", "code");
-      params.set("code_challenge", base64urlnopad.encode(sha256(code_verifier)));
+      params.set("code_challenge", base64urlnopad.encode(sha256(utf8ToBytes(code_verifier))));
       params.set("code_challenge_method", "S256");
       params.set("redirect_uri", redirectUrl);
       params.set("scope", scopes.join(" "));

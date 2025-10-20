@@ -1,10 +1,9 @@
-import * as secp from "@noble/curves/secp256k1";
-import * as utils from "@noble/curves/abstract/utils";
 import { getPublicKey, sha256, unixNow } from "@snort/shared";
-
-import { EventKind, HexKey, NostrEvent, NotSignedNostrEvent } from ".";
+import { EventKind, NostrEvent, NotSignedNostrEvent } from ".";
 import { minePow } from "./pow-util";
 import { findTag } from "./utils";
+import { schnorr } from "@noble/curves/secp256k1.js";
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 
 export interface Tag {
   key: string;
@@ -18,7 +17,7 @@ export interface Thread {
   root?: Tag;
   replyTo?: Tag;
   mentions: Array<Tag>;
-  pubKeys: Array<HexKey>;
+  pubKeys: Array<string>;
 }
 
 export const enum EventType {
@@ -31,7 +30,7 @@ export abstract class EventExt {
   /**
    * Get the pub key of the creator of this event NIP-26
    */
-  static getRootPubKey(e: NostrEvent): HexKey {
+  static getRootPubKey(e: NostrEvent): string {
     const delegation = e.tags.find(a => a[0] === "delegation");
     if (delegation?.[1]) {
       // todo: verify sig
@@ -43,12 +42,12 @@ export abstract class EventExt {
   /**
    * Sign this message with a private key
    */
-  static sign(e: NostrEvent, key: HexKey) {
+  static sign(e: NostrEvent, key: string) {
     e.pubkey = getPublicKey(key);
     e.id = this.createId(e);
 
-    const sig = secp.schnorr.sign(e.id, key);
-    e.sig = utils.bytesToHex(sig);
+    const sig = schnorr.sign(hexToBytes(e.id), hexToBytes(key));
+    e.sig = bytesToHex(sig);
     return e;
   }
 
@@ -59,7 +58,7 @@ export abstract class EventExt {
   static verify(e: NostrEvent) {
     if ((e.sig?.length ?? 0) < 64) return false;
     const id = this.createId(e);
-    const result = secp.schnorr.verify(e.sig, id, e.pubkey);
+    const result = schnorr.verify(hexToBytes(e.sig), hexToBytes(id), hexToBytes(e.pubkey));
     return result;
   }
 
@@ -78,7 +77,7 @@ export abstract class EventExt {
   /**
    * Create a new event for a specific pubkey
    */
-  static forPubKey(pk: HexKey, kind: EventKind) {
+  static forPubKey(pk: string, kind: EventKind) {
     return {
       pubkey: pk,
       kind: kind,
