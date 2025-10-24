@@ -8,12 +8,7 @@
     "**/Thumbs.db": true,
     "**/node_modules": true
   },
-  "search.exclude": {
-    "**/.yarn": true,
-    "**/.pnp.*": true
-  },
+  "search.exclude": {},
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "eslint.nodePath": ".yarn/sdks",
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs"
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

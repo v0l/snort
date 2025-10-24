@@ -22,12 +22,13 @@ steps:
       - name: cache
         path: /cache
     environment:
-      YARN_CACHE_FOLDER: /cache/.yarn-docker
       NODE_CONFIG_ENV: default
     commands:
-      - apt update && apt install -y git
-      - yarn install
-      - yarn build
+      - apt update && apt install -y git curl unzip
+      - curl -fsSL https://bun.sh/install | bash
+      - export PATH="$HOME/.bun/bin:$PATH"
+      - bun install
+      - bun run build
   - name: build docker image
     image: docker
     privileged: true
@@ -62,14 +63,15 @@ steps:
       - name: cache
         path: /cache
     environment:
-      YARN_CACHE_FOLDER: /cache/.yarn-test
       NODE_CONFIG_ENV: default
     commands:
-      - yarn install
-      - yarn build
-      - yarn test
-      - yarn workspace @snort/app eslint
-      - yarn prettier --check .
+      - curl -fsSL https://bun.sh/install | bash
+      - export PATH="$HOME/.bun/bin:$PATH"
+      - bun install
+      - bun run build
+      - bun test
+      - bun run --filter @snort/app eslint
+      - bun run prettier --check .
 volumes:
   - name: cache
     claim:
@@ -94,7 +96,6 @@ steps:
       - name: cache
         path: /cache
     environment:
-      YARN_CACHE_FOLDER: /cache/.yarn-translations
       NODE_CONFIG_ENV: default
       TOKEN:
         from_secret: gitea
@@ -104,10 +105,12 @@ steps:
       - git config --global user.email drone@v0l.io
       - git config --global user.name "Drone CI"
       - git remote set-url origin https://drone:$TOKEN@git.v0l.io/Kieran/snort.git
-      - yarn install
-      - npx @crowdin/cli upload sources -b main -T $CTOKEN
-      - npx @crowdin/cli pull -b main -T $CTOKEN
-      - yarn prettier --write .
+      - curl -fsSL https://bun.sh/install | bash
+      - export PATH="$HOME/.bun/bin:$PATH"
+      - bun install
+      - bunx @crowdin/cli upload sources -b main -T $CTOKEN
+      - bunx @crowdin/cli pull -b main -T $CTOKEN
+      - bun run prettier --write .
       - git add .
       - >
         if output=$(git status --porcelain) && [ -n "$output" ]; then
@@ -140,12 +143,13 @@ steps:
       - name: cache
         path: /cache
     environment:
-      YARN_CACHE_FOLDER: /cache/.yarn-docker-
       NODE_CONFIG_ENV: default
     commands:
-      - apt update && apt install -y git
-      - yarn install
-      - yarn build
+      - apt update && apt install -y git curl unzip
+      - curl -fsSL https://bun.sh/install | bash
+      - export PATH="$HOME/.bun/bin:$PATH"
+      - bun install
+      - bun run build
   - name: build docker image
     image: docker
     privileged: true

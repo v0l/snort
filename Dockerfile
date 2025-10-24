@@ -1,11 +1,11 @@
-FROM node:current as build
+FROM oven/bun:latest AS build
 WORKDIR /src
 RUN apt update \
-    && apt install -y --no-install-recommends git \
-    && git clone --single-branch -b main https://git.v0l.io/Kieran/snort \
+    && apt install -y --no-install-recommends git ca-certificates \
+    && git clone --single-branch -b bun-migrate https://github.com/v0l/snort \
     && cd snort \
-    && bun --network-timeout 1000000 \
-    && bun build
+    && bun install \
+    && bun run build
 
 FROM nginxinc/nginx-unprivileged:mainline-alpine
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf

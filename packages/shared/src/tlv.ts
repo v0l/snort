@@ -46,7 +46,7 @@ export function encodeTLVEntries(prefix: string, ...entries: Array<TLVEntry>) {
     switch (v.type) {
       case TLVEntryType.Special: {
         const buf =
-          prefix === NostrPrefix.Address || prefix === NostrPrefix.Req
+          prefix === NostrPrefix.Address
             ? enc.encode(v.value as string)
             : hexToBytes(v.value as string);
         buffers.push(0, buf.length, ...buf);
@@ -95,7 +95,7 @@ export function decodeTLV(str: string) {
 function decodeTLVEntry(type: TLVEntryType, prefix: string, data: Uint8Array) {
   switch (type) {
     case TLVEntryType.Special: {
-      if (prefix === NostrPrefix.Address || prefix === NostrPrefix.Req) {
+      if (prefix === NostrPrefix.Address) {
         return new TextDecoder().decode(data);
       } else {
         return bytesToHex(data);

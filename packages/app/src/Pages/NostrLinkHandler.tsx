@@ -24,7 +24,7 @@ export default function NostrLinkHandler() {
         case NostrPrefix.PublicKey:
         case NostrPrefix.Profile:
           return <ProfilePage key={link} id={nav.encode()} state={state} />;
-        case NostrPrefix.Req:
+        case "req" as NostrPrefix:
           return <GenericFeed key={link} link={nav} />;
         default:
           return null;

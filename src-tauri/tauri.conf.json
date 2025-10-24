@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeBuildCommand": "yarn build",
-    "beforeDevCommand": "yarn workspace @snort/app start",
+    "beforeBuildCommand": "bun run build",
+    "beforeDevCommand": "bun run --filter @snort/app start",
     "frontendDist": "../packages/app/build",
     "devUrl": "http://localhost:5173"
   },
