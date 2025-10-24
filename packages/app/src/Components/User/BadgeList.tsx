@@ -32,6 +32,7 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
       image,
     } as BadgeInfo;
   });
+  if (badgeMetadata.length === 0) return;
   return (
     <>
       <div className="flex items-center gap-1 flex-wrap">
@@ -45,7 +46,11 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
             promptToLoadDirectly={false}
             onClick={() => setShowModal(v)}
             missingImageElement={
-              <div className="w-8 h-8 bg-neutral-400 font-medium rounded-full flex items-center justify-center">?</div>
+              <div
+                className="w-8 h-8 layer-1 flex items-center justify-center cursor-pointer"
+                onClick={() => setShowModal(v)}>
+                ?
+              </div>
             }
           />
         ))}

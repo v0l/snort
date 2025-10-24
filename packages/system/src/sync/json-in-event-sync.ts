@@ -1,5 +1,5 @@
 import { SafeSync, SafeSyncEvents } from "./safe-sync";
-import { EventBuilder, EventSigner, NostrEvent, NostrLink, SystemInterface } from "..";
+import { decryptSigner, EventBuilder, EventSigner, NostrEvent, NostrLink, SystemInterface } from "..";
 import debug from "debug";
 import EventEmitter from "eventemitter3";
 
@@ -25,13 +25,36 @@ export class JsonEventSync<T> extends EventEmitter<SafeSyncEvents> {
     return Object.freeze(ret);
   }
 
+  /**
+   * Check if there are pending changes (local value differs from synced value)
+   */
+  get hasPendingChanges(): boolean {
+    if (!this.#sync.value) return false;
+
+    try {
+      const syncedJson = JSON.parse(this.#sync.value.content);
+      return JSON.stringify(syncedJson) !== JSON.stringify(this.#json);
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Update the local JSON value without saving to Nostr
+   * Call persist() separately to save changes
+   */
+  setJson(val: T) {
+    this.#json = val;
+    this.emit("change");
+  }
+
   async sync(signer: EventSigner | undefined, system: SystemInterface) {
     const res = await this.#sync.sync(system);
     this.#log("Sync result %O", res);
     if (res) {
       if (this.encrypt) {
         if (!signer) return;
-        this.#json = JSON.parse(await signer.nip4Decrypt(res.content, await signer.getPubKey())) as T;
+        this.#json = JSON.parse(await decryptSigner(res.content, signer)) as T;
       } else {
         this.#json = JSON.parse(res.content) as T;
       }
@@ -40,12 +63,10 @@ export class JsonEventSync<T> extends EventEmitter<SafeSyncEvents> {
   }
 
   /**
-   * Update the json content in the event
-   * @param val
-   * @param signer
+   * Persist the current local JSON state to Nostr
    */
-  async updateJson(val: T, signer: EventSigner, system: SystemInterface) {
-    this.#log("Updating: %O", val);
+  async persist(signer: EventSigner, system: SystemInterface) {
+    this.#log("Persisting: %O", this.#json);
     let next = this.#sync.value ? ({ ...this.#sync.value } as NostrEvent) : undefined;
     let isNew = false;
     if (!next) {
@@ -56,16 +77,24 @@ export class JsonEventSync<T> extends EventEmitter<SafeSyncEvents> {
         next = eb.build();
         isNew = true;
       } else {
-        throw new Error("Cannot update with no previous value");
+        throw new Error("Cannot persist with no previous value");
       }
     }
 
-    next.content = JSON.stringify(val);
+    next.content = JSON.stringify(this.#json);
     if (this.encrypt) {
-      next.content = await signer.nip4Encrypt(next.content, await signer.getPubKey());
+      next.content = await signer.nip44Encrypt(next.content, await signer.getPubKey());
     }
 
     await this.#sync.update(next, signer, system, !isNew);
-    this.#json = val;
+  }
+
+  /**
+   * Update the json content and immediately save to Nostr
+   * @deprecated Use setJson() + persist() for better control
+   */
+  async updateJson(val: T, signer: EventSigner, system: SystemInterface) {
+    this.setJson(val);
+    await this.persist(signer, system);
   }
 }

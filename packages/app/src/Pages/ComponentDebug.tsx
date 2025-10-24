@@ -970,7 +970,7 @@ export default function ComponentDebugPage() {
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4 border-b pb-2">Markdown</h2>
         <div className="space-y-6">
-          <div className="bg-neutral-200 dark:bg-neutral-800 p-6 rounded-lg border dark:border-neutral-700 border-neutral-300">
+          <div className="light:bg-neutral-200 bg-neutral-800 p-6 rounded-lg border">
             <h3 className="text-lg font-semibold mb-4">Complete Markdown Example</h3>
             <Markdown
               content={`# Heading 1
@@ -1403,7 +1403,7 @@ This example covers all major markdown features including:
 
           {/* Fieldset and Legend */}
           <div>
-            <fieldset className="border border-neutral-600 light:border-neutral-400 rounded p-4">
+            <fieldset className="border rounded p-4">
               <legend className="px-2 font-semibold text-font-color">Fieldset with Legend</legend>
               <div className="space-y-3">
                 <div>

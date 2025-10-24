@@ -1,7 +1,8 @@
 import { eventMatchesFilter } from "../src/request-matcher";
+import { describe, expect, test } from "bun:test";
 
 describe("RequestMatcher", () => {
-  it("should match simple filter", () => {
+  test("should match simple filter", () => {
     const ev = {
       id: "test",
       kind: 1,

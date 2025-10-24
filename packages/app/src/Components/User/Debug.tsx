@@ -30,11 +30,11 @@ export function UserDebug({ pubkey }: { pubkey: string }) {
           );
         })}
       </div>
-      <rounded-lg />
+      <hr />
       <div className="flex flex-col">
         <div>Relays Updated: {new Date(1000 * (relays?.created ?? 0)).toISOString()}</div>
         {relays?.relays.map(a => (
-          <div className="flex hover:bg-[--gray-ultradark]" key={a.url}>
+          <div className="flex hover:bg-neutral-800" key={a.url}>
             <div className="grow">{getRelayName(a.url)}</div>
             <div>{a.settings.read && <>R</>}</div>
             <div>{a.settings.write && <>W</>}</div>

@@ -1,6 +1,6 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 
-import { Thread } from "@/Components/Event/Thread/Thread";
+import { ThreadElement } from "@/Components/Event/Thread/Thread";
 import Modal from "@/Components/Modal/Modal";
 import { SpotlightMedia } from "@/Components/Spotlight/SpotlightMedia";
 import getEventMedia from "@/Utils/getEventMedia";
@@ -44,7 +44,7 @@ export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
             />
           </div>
           <div className="hidden md:flex w-1/3 min-w-[400px] flex-shrink-0 overflow-y-auto bg-background">
-            <Thread onBack={onBack} disableSpotlight={true} />
+            <ThreadElement onBack={onBack} disableSpotlight={true} />
           </div>
         </div>
       </ThreadContextWrapper>

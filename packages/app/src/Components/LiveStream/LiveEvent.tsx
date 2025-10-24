@@ -69,7 +69,7 @@ function LiveStreamEvent({ ev }: { ev: TaggedNostrEvent }) {
     switch (status) {
       case "live": {
         return (
-          <button className="nowrap" onClick={() => setPlay(true)}>
+          <button className="whitespace-nowrap" onClick={() => setPlay(true)}>
             <FormattedMessage defaultMessage="Watch Stream" />
           </button>
         );
@@ -78,7 +78,7 @@ function LiveStreamEvent({ ev }: { ev: TaggedNostrEvent }) {
         if (findTag(ev, "recording")) {
           return (
             <Link to={link} target="_blank">
-              <button className="nowrap">
+              <button className="whitespace-nowrap">
                 <FormattedMessage defaultMessage="Watch Replay" />
               </button>
             </Link>
@@ -100,12 +100,12 @@ function LiveStreamEvent({ ev }: { ev: TaggedNostrEvent }) {
     );
   }
   return (
-    <div className="sm:flex gap-4 rounded-lg p-6 bg-primary items-center text-white">
+    <div className="sm:flex gap-4 rounded-lg px-6 py-4 bg-primary items-center text-white">
       <div>
-        <ProfileImage pubkey={host!} showUsername={false} size={56} />
+        <ProfileImage pubkey={host!} showUsername={false} size={50} />
       </div>
-      <div className="flex flex-col gap-2 grow">
-        <div className="font-semibold text-3xl">{title}</div>
+      <div className="flex flex-col gap-2 grow min-w-0">
+        <div className="font-semibold text-3xl text-ellipsis overflow-hidden whitespace-nowrap">{title}</div>
         <div>{statusLine()}</div>
       </div>
       <div>{cta()}</div>

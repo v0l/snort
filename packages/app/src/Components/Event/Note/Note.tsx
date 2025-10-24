@@ -1,4 +1,4 @@
-import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { EventExt, EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
@@ -15,7 +15,6 @@ import { TranslationInfo } from "@/Components/Event/Note/TranslationInfo";
 import { NoteTranslation } from "@/Components/Event/Note/types";
 import Username from "@/Components/User/Username";
 import useModeration from "@/Hooks/useModeration";
-import { chainKey } from "@/Utils/Thread/ChainKey";
 
 import { NoteProps, NotePropsOptions } from "../EventComponent";
 import HiddenNote from "../HiddenNote";
@@ -43,8 +42,7 @@ const canRenderAsTextNote = [
 const translationCache = new LRUCache<string, NoteTranslation>({ maxSize: 300 });
 
 export function Note(props: NoteProps) {
-  const { data: ev, highlight, options: opt, ignoreModeration = false, className, waitUntilInView } = props;
-  const baseClassName = classNames("note min-h-[110px] flex flex-col gap-4 card", className ?? "");
+  const { data: ev, highlight, options: opt, ignoreModeration = false, waitUntilInView } = props;
   const { isEventMuted } = useModeration();
   const { ref, inView } = useInView({ triggerOnce: true });
   const { ref: setSeenAtRef, inView: setSeenAtInView } = useInView({ rootMargin: "0px", threshold: 1 });
@@ -88,30 +86,51 @@ export function Note(props: NoteProps) {
             setTranslated={translated === null ? cachedSetTranslated : undefined}
           />
         )}
-        <div className="body" onClick={e => goToEvent(e, ev)}>
+        <div onClick={e => goToEvent(e, ev)} className={classNames("min-h-0", props.inset)} ref={setSeenAtRef}>
           <NoteText {...props} translated={translated} showTranslation={showTranslation} />
           {translated && <TranslationInfo translated={translated} setShowTranslation={setShowTranslation} />}
           {ev.kind === EventKind.Polls && <Poll ev={ev} zaps={[]} />}
           {optionsMerged.showFooter && (
             <div className="mt-4">
-              <NoteFooter ev={ev} replyCount={props.threadChains?.get(chainKey(ev))?.length} />
+              <NoteFooter ev={ev} replyCount={props.threadChains?.get(EventExt.keyOf(ev))?.length} />
             </div>
           )}
-          <div ref={setSeenAtRef} />
         </div>
       </>
     );
   }
 
+  function threadLines() {
+    if (!props.options?.threadLines) return;
+    const tl = props.options.threadLines;
+    const topLine = tl.topLine ?? false;
+    const bottomLine = tl.bottomLine ?? false;
+    if (!topLine && !bottomLine) return;
+
+    return (
+      <div
+        className={classNames(tl.inset, "absolute border-l z-1", {
+          "top-0": topLine,
+          "top-2": !topLine,
+          "bottom-0": bottomLine,
+          "h-4": !bottomLine,
+        })}
+      />
+    );
+  }
+
   const noteElement = (
-    <div
-      className={classNames(baseClassName, {
-        active: highlight,
-        "hover:bg-nearly-bg-background cursor-pointer": !opt?.isRoot,
-      })}
-      onClick={e => goToEvent(e, ev)}
-      ref={ref}>
-      {content()}
+    <div className="relative border-b">
+      <div
+        className={classNames("min-h-[110px] flex flex-col gap-4 px-3 py-2", {
+          "outline-highlight outline-2": highlight,
+          "hover:bg-neutral-950 light:hover:bg-neutral-50 cursor-pointer": !opt?.isRoot,
+        })}
+        onClick={e => goToEvent(e, ev)}
+        ref={ref}>
+        {content()}
+      </div>
+      {threadLines()}
     </div>
   );
 
@@ -187,7 +206,7 @@ function Reaction({ ev }: { ev: TaggedNostrEvent }) {
 function handleNonTextNote(ev: TaggedNostrEvent) {
   if (ev.kind === EventKind.Reaction) {
     return <Reaction ev={ev} />;
-  } else {
+  } else if (ev) {
     return <NoteAppHandler ev={ev} />;
   }
 }

@@ -27,19 +27,12 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
     data: trendingNotesData,
     isLoading,
     error,
-  } = useCachedFetch<{ notes: Array<{ event: NostrEvent }> }, Array<NostrEvent>>(trendingNotesUrl, storageKey, data => {
-    return removeUndefined(
-      data.notes.map(a => {
-        const ev = a.event;
-        if (!System.optimizer.schnorrVerify(ev)) {
-          console.error(`Event with invalid sig\n\n${ev}\n\nfrom ${trendingNotesUrl}`);
-          return undefined;
-        }
-        System.HandleEvent("*", ev as TaggedNostrEvent);
-        return ev;
-      }),
-    );
-  });
+  } = useCachedFetch<{ notes: Array<{ event: NostrEvent }> }, Array<NostrEvent>>(
+    trendingNotesUrl,
+    storageKey,
+    data => data.notes.map(e => e.event),
+    60 * 60,
+  );
 
   const options = useMemo(
     () => ({

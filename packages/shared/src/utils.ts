@@ -119,13 +119,27 @@ export function appendDedupe<T>(a?: Array<T>, b?: Array<T>) {
   return dedupe([...(a ?? []), ...(b ?? [])]);
 }
 
+export function dedupeBy<T>(v: Array<T>, mapper: (x: T) => string): Array<T> {
+  return [
+    ...v
+      .reduce((acc, v) => {
+        const k = mapper(v);
+        if (!acc.has(k)) {
+          acc.set(k, v);
+        }
+        return acc;
+      }, new Map<string, T>())
+      .values(),
+  ];
+}
+
 export const sha256 = (str: string | Uint8Array): string => {
   const buf = typeof str === "string" ? new TextEncoder().encode(str) : str;
   return bytesToHex(sha2(buf));
 };
 
 export function getPublicKey(privKey: string | Uint8Array) {
-  const buf = typeof privKey === "string" ? new TextEncoder().encode(privKey) : privKey;
+  const buf = typeof privKey === "string" ? hexToBytes(privKey) : privKey;
   return bytesToHex(secp.schnorr.getPublicKey(buf));
 }
 

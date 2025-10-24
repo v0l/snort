@@ -1,8 +1,6 @@
-import "./LongFormText.css";
-
 import { TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
-import { CSSProperties, useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import Text from "@/Components/Text/Text";
@@ -45,7 +43,7 @@ export function LongFormText(props: LongFormTextProps) {
     );
   }
 
-  function readTime() {
+  const readTime = useMemo(() => {
     const wpm = 225;
     const words = props.ev.content.trim().split(/\s+/).length;
     return {
@@ -53,7 +51,7 @@ export function LongFormText(props: LongFormTextProps) {
       wpm,
       mins: Math.ceil(words / wpm),
     };
-  }
+  }, [props.ev.content]);
 
   const readAsync = async (text: string) => {
     return await new Promise<void>(resolve => {
@@ -108,14 +106,14 @@ export function LongFormText(props: LongFormTextProps) {
     return (
       <>
         <NoteFooter ev={props.ev} />
-        <hr className="border-0 h-px bg-neutral-600 m-[5px_0px]" />
+        <hr className="h-px my-1" />
         <div className="flex gap-2">
           <div>
             <FormattedMessage
               defaultMessage="{n} mins to read"
               id="zm6qS1"
               values={{
-                n: <FormattedNumber value={readTime().mins} />,
+                n: <FormattedNumber value={readTime.mins} />,
               }}
             />
           </div>
@@ -131,11 +129,11 @@ export function LongFormText(props: LongFormTextProps) {
             </div>
           )}
         </div>
-        <hr className="border-0 h-px bg-neutral-600 m-[5px_0px]" />
+        <hr className="h-px my-1" />
         {shouldTruncate && showMore && <ToggleShowMore />}
-        <Markdown content={content} tags={props.ev.tags} ref={ref} />
+        <Markdown content={content} tags={props.ev.tags} ref={ref} className="font-[Georgia]" />
         {shouldTruncate && !showMore && <ToggleShowMore />}
-        <hr className="border-0 h-px bg-neutral-600 m-[5px_0px]" />
+        <hr className="h-px my-1" />
         <NoteFooter ev={props.ev} />
       </>
     );
@@ -143,7 +141,7 @@ export function LongFormText(props: LongFormTextProps) {
 
   return (
     <div
-      className={classNames("long-form-note flex flex-col gap-4 p-4 break-words", {
+      className={classNames("flex flex-col gap-4 p-4 break-words leading-6", {
         "cursor-pointer": props.isPreview,
       })}
       onClick={props.onClick}>
@@ -158,8 +156,8 @@ export function LongFormText(props: LongFormTextProps) {
           about: false,
         }}
       />
-      <h1 className="text-[32px] font-bold leading-10 m-0">{title}</h1>
-      <small className="font-normal leading-6">{summary}</small>
+      <h1 className="text-xl font-bold leading-10 m-0">{title}</h1>
+      <small className="">{summary}</small>
       {image && <div className="h-[360px] bg-center bg-cover" style={{ backgroundImage: `url(${proxy(image)})` }} />}
       {props.isPreview ? previewText() : fullText()}
     </div>

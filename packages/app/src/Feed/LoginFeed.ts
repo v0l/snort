@@ -37,7 +37,6 @@ export default function useLoginFeed() {
   }, [pubKey]);
 
   useEffect(() => {
-    console.debug("UserState: start init from LoginFeed", login.state.didInit);
     login.state.init(publisher?.signer, system).catch(console.error);
   }, [login, publisher, system]);
 

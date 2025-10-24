@@ -1,16 +1,17 @@
-import "./index.css";
-
-import { Outlet, RouteObject } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import Icon from "@/Components/Icons/Icon";
 import { AllLanguageCodes } from "@/Components/IntlProvider/IntlProviderUtils";
 import { useLocale } from "@/Components/IntlProvider/useLocale";
 
-import { Discover } from "./discover";
-import { Moderation } from "./moderation";
-import { Profile } from "./profile";
-import { SignIn, SignUp } from "./start";
-import { Topics } from "./topics";
+import Discover from "./discover";
+import Moderation from "./moderation";
+import Profile from "./profile";
+import SignIn from "./sign-in";
+import SignUp from "./sign-up";
+import Topics from "./topics";
+
+export { Discover, Moderation, Profile, SignIn, SignUp, Topics };
 
 export interface NewUserState {
   name?: string;
@@ -19,7 +20,7 @@ export interface NewUserState {
   muteLists?: Array<string>;
 }
 
-function OnboardingLayout() {
+export function OnboardingLayout() {
   const { lang, setOverride } = useLocale();
 
   return (
@@ -36,42 +37,9 @@ function OnboardingLayout() {
           ))}
         </select>
       </div>
-      <div className="onboarding-modal">
+      <div className="w-[460px] mx-auto my-auto mt-[15vh] rounded-2xl px-8 py-7 layer-1">
         <Outlet />
       </div>
     </div>
   );
 }
-
-export const OnboardingRoutes = [
-  {
-    path: "/login",
-    element: <OnboardingLayout />,
-    children: [
-      {
-        path: "",
-        element: <SignIn />,
-      },
-      {
-        path: "sign-up",
-        element: <SignUp />,
-      },
-      {
-        path: "sign-up/profile",
-        element: <Profile />,
-      },
-      {
-        path: "sign-up/topics",
-        element: <Topics />,
-      },
-      {
-        path: "sign-up/discover",
-        element: <Discover />,
-      },
-      {
-        path: "sign-up/moderation",
-        element: <Moderation />,
-      },
-    ],
-  },
-] as Array<RouteObject>;

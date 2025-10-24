@@ -1,21 +1,39 @@
 import { EventExt, TaggedNostrEvent } from "@snort/system";
-import { ReactNode, useCallback, useContext, useMemo } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { ReactNode, useCallback, useContext, useMemo, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import BackButton from "@/Components/Button/BackButton";
 import Note from "@/Components/Event/EventComponent";
-import NoteGhost from "@/Components/Event/Note/NoteGhost";
-import { Subthread } from "@/Components/Event/Thread/Subthread";
-import { chainKey } from "@/Utils/Thread/ChainKey";
-import { ThreadContext } from "@/Utils/Thread/ThreadContext";
+import { ThreadContext, ThreadContextState } from "@/Utils/Thread";
+import Modal from "@/Components/Modal/Modal";
+import JsonBlock from "@/Components/json";
+import Icon from "@/Components/Icons/Icon";
+import { getReplies } from "./util";
+import { Subthread } from "./Subthread";
+import { WarningNotice } from "@/Components/WarningNotice/WarningNotice";
 
-export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean }) {
+interface ThreadProps {
+  onBack?: () => void;
+  disableSpotlight?: boolean;
+}
+
+export function ThreadElement(props: ThreadProps) {
   const thread = useContext(ThreadContext);
 
+  if (!thread) {
+    return (
+      <WarningNotice>
+        <FormattedMessage defaultMessage="Not a thread!" />
+      </WarningNotice>
+    );
+  }
+
+  return <ThreadInner {...props} thread={thread} />;
+}
+
+function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContextState }) {
   const navigate = useNavigate();
-  const isSingleNote = thread.chains?.size === 1 && [thread.chains.values].every(v => v.length === 0);
-  const { formatMessage } = useIntl();
 
   const rootOptions = useMemo(
     () => ({ showReactionsLink: true, showMediaSpotlight: !props.disableSpotlight, isRoot: true }),
@@ -24,53 +42,33 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
 
   const navigateThread = useCallback(
     (e: TaggedNostrEvent) => {
-      thread.setCurrent(e.id);
+      thread?.setCurrent(EventExt.keyOf(e));
       // navigate(`/${NostrLink.fromEvent(e).encode()}`, { replace: true });
     },
     [thread],
   );
 
-  const parent = useMemo(() => {
-    if (thread.root) {
-      const currentThread = EventExt.extractThread(thread.root);
-      return (
-        currentThread?.replyTo?.value ??
-        currentThread?.root?.value ??
-        (currentThread?.root?.key === "a" && currentThread.root?.value)
-      );
+  function renderChain(from: string): ReactNode {
+    if (!from || thread.chains.size === 0) {
+      return;
     }
-  }, [thread.root]);
-
-  function renderRoot(note: TaggedNostrEvent) {
-    const className = `thread-root${isSingleNote ? " thread-root-single" : ""}`;
-    if (note) {
+    const replies = getReplies(from, thread.data, thread.chains);
+    if (replies.length > 0) {
       return (
-        <Note
-          className={className}
-          key={note.id}
-          data={note}
-          options={rootOptions}
-          onClick={navigateThread}
-          threadChains={thread.chains}
-          waitUntilInView={false}
+        <Subthread
+          active={thread.current}
+          notes={replies}
+          allNotes={thread.data}
+          onNavigate={navigateThread}
+          chains={thread.chains}
         />
       );
     }
   }
 
-  function renderChain(from: string): ReactNode {
-    if (!from || thread.chains.size === 0) {
-      return;
-    }
-    const replies = thread.chains.get(from);
-    if (replies && thread.current) {
-      return <Subthread active={thread.current} notes={replies} chains={thread.chains} onNavigate={navigateThread} />;
-    }
-  }
-
   function renderCurrent() {
     if (thread.current) {
-      const note = thread.data.find(n => n.id === thread.current);
+      const note = thread.data.find(n => EventExt.keyOf(n) === thread.current);
       if (note) {
         return (
           <Note
@@ -78,17 +76,28 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
             options={{ showReactionsLink: true, showMediaSpotlight: true }}
             threadChains={thread.chains}
             onClick={navigateThread}
+            className="text-lg"
           />
         );
       } else {
-        return <NoteGhost link={thread.current} />;
+        return (
+          <div className="px-3 py-2 break-words">
+            <FormattedMessage
+              defaultMessage="Loading note: {id}"
+              values={{
+                id: thread.current,
+              }}
+            />
+            <pre>{JSON.stringify(thread, undefined, 2)}</pre>
+          </div>
+        );
       }
     }
   }
 
   function goBack() {
-    if (parent) {
-      thread.setCurrent(parent);
+    if (thread.parent) {
+      thread.setCurrent(EventExt.keyOf(thread.parent));
     } else if (props.onBack) {
       props.onBack();
     } else {
@@ -96,43 +105,34 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
     }
   }
 
-  const parentText = formatMessage({
-    defaultMessage: "Parent",
-    description: "Link to parent note in thread",
-  });
-
-  const debug = window.location.search.includes("debug=true");
   return (
     <>
-      {debug && (
-        <div className="px-3 py-2 xs">
-          <h1>Chains</h1>
-          <pre>
-            {JSON.stringify(
-              Object.fromEntries([...thread.chains.entries()].map(([k, v]) => [k, v.map(c => c.id)])),
-              undefined,
-              "  ",
-            )}
-          </pre>
-          <h1>Current</h1>
-          <pre>{JSON.stringify(thread.current)}</pre>
-          <h1>Root</h1>
-          <pre>{JSON.stringify(thread.root, undefined, "  ")}</pre>
-          <h1>Data</h1>
-          <pre>{JSON.stringify(thread.data, undefined, "  ")}</pre>
-        </div>
-      )}
-      {parent && (
+      {thread.parent && (
         <div className="px-3 py-2">
-          <BackButton onClick={goBack} text={parentText} />
+          <BackButton
+            onClick={goBack}
+            text={<FormattedMessage defaultMessage="Parent" description="Link to parent note in thread" />}
+          />
         </div>
       )}
       <div>
-        {thread.root && renderRoot(thread.root)}
-        {thread.root && renderChain(chainKey(thread.root))}
+        {thread.root && (
+          <>
+            <Note
+              className={"text-lg"}
+              key={EventExt.keyOf(thread.root)}
+              data={thread.root}
+              options={rootOptions}
+              onClick={navigateThread}
+              threadChains={thread.chains}
+              waitUntilInView={false}
+            />
+            {renderChain(EventExt.keyOf(thread.root))}
+          </>
+        )}
         {!thread.root && renderCurrent()}
         {thread.mutedData.length > 0 && (
-          <div className="px-3 py-2 rounded-lg border border-neutral-800 light:border-neutral-200 mx-2 my-3 bg-neutral-900 text-gray-light font-medium cursor-pointer">
+          <div className="layer-1 mx-2 my-3 font-medium cursor-pointer">
             <FormattedMessage
               defaultMessage="{n} notes have been muted"
               values={{
@@ -141,7 +141,34 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
             />
           </div>
         )}
+        <ThreadDebug />
       </div>
     </>
+  );
+}
+
+function ThreadDebug() {
+  const thread = useContext(ThreadContext);
+  const [show, setShow] = useState(false);
+
+  if (!thread) return;
+  if (!show)
+    return (
+      <div
+        onClick={() => setShow(true)}
+        className="flex items-center justify-center gap-2 text-neutral-500 cursor-pointer select-none leading-12 border">
+        <Icon name="json" size={16} />
+        <FormattedMessage defaultMessage="Show Thread Data" />
+      </div>
+    );
+  return (
+    <Modal id="thread-dump" onClose={() => setShow(false)}>
+      <JsonBlock
+        obj={{
+          ...thread,
+          chains: Object.fromEntries(thread.chains.entries().map(([k, v]) => [k, v])),
+        }}
+      />
+    </Modal>
   );
 }

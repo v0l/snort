@@ -1,9 +1,14 @@
-import { TaggedNostrEvent } from "@snort/system";
+import { removeUndefined } from "@snort/shared";
+import { EventExt, TaggedNostrEvent } from "@snort/system";
 
-export function getReplies(from: string, chains?: Map<string, Array<TaggedNostrEvent>>): Array<TaggedNostrEvent> {
+export function getReplies(
+  from: string,
+  replies: ReadonlyArray<TaggedNostrEvent>,
+  chains?: Map<string, Array<string>>,
+): ReadonlyArray<TaggedNostrEvent> {
   if (!from || !chains) {
     return [];
   }
-  const replies = chains.get(from);
-  return replies ? replies : [];
+  const replyIds = chains.get(from) ?? [];
+  return removeUndefined(replyIds.map(r => replies.find(x => EventExt.keyOf(x) === r)));
 }

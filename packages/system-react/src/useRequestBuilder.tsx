@@ -1,15 +1,16 @@
-import { useCallback, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
-import { EmptySnapshot, RequestBuilder } from "@snort/system";
+import { useContext, useEffect, useMemo, useSyncExternalStore } from "react";
+import { EmptySnapshot, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "./context";
 
 /**
  * Send a query to the relays and wait for data
  */
-export function useRequestBuilder(rb: RequestBuilder) {
+export function useRequestBuilder(rb: RequestBuilder): Array<TaggedNostrEvent> {
   const system = useContext(SnortContext);
   return useSyncExternalStore(
     v => {
       const q = system.Query(rb);
+      // race condition here
       q.on("event", v);
       q.uncancel();
       return () => {

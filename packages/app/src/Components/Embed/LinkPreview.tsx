@@ -18,7 +18,7 @@ async function fetchUrlPreviewInfo(url: string) {
 }
 
 const cache = new LRUCache<string, LinkPreviewData>({
-  maxSize: 100,
+  maxSize: 1000,
 });
 
 const LinkPreview = ({ url }: { url: string }) => {
@@ -77,7 +77,7 @@ const LinkPreview = ({ url }: { url: string }) => {
   }
 
   return (
-    <div className="rounded-xl bg-neutral-900 overflow-hidden hover:cursor-pointer light:bg-neutral-200 light:border light:border-neutral-400 light:hover:shadow-md">
+    <div className="rounded-xl bg-layer-1 overflow-hidden hover:cursor-pointer light:border light:hover:shadow-md">
       {preview && (
         <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="!no-underline">
           <div className="lg:min-h-[342px]">{previewElement()}</div>

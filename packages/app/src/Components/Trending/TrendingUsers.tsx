@@ -1,4 +1,3 @@
-import { HexKey } from "@snort/system";
 import { ReactNode } from "react";
 
 import PageSpinner from "@/Components/PageSpinner";
@@ -25,7 +24,9 @@ export default function TrendingUsers({
     data: trendingUsersData,
     isLoading,
     error,
-  } = useCachedFetch(trendingProfilesUrl, storageKey, data => data.profiles.map(a => a.pubkey));
+  } = useCachedFetch<{ profiles: Array<{ pubkey: string }> }, Array<string>>(trendingProfilesUrl, storageKey, data =>
+    data.profiles.map(a => a.pubkey),
+  );
 
   if (error && !trendingUsersData) {
     return <ErrorOrOffline error={error} onRetry={() => {}} className="px-3 py-2" />;
@@ -37,7 +38,7 @@ export default function TrendingUsers({
 
   return (
     <FollowListBase
-      pubkeys={trendingUsersData.slice(0, count) as HexKey[]}
+      pubkeys={trendingUsersData?.slice(0, count) ?? []}
       title={title}
       showFollowAll={true}
       className="flex flex-col gap-2"

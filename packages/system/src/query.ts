@@ -207,23 +207,26 @@ export class Query extends EventEmitter<QueryEvents> {
    */
   #builderInstances: Set<string>;
 
+  /** Total number of duplicates produced by this query */
+  #duplicates: number;
+
   #log = debug("Query");
 
   constructor(req: RequestBuilder) {
     super();
     this.id = req.id;
     this.#feed = new NoteCollection();
-    this.#builderInstances = new Set([req.instance]);
+    this.#feed.on("event", evs => this.emit("event", evs));
+    this.#builderInstances = new Set([]);
     this.#leaveOpen = req.options?.leaveOpen ?? false;
     this.skipCache = req.options?.skipCache ?? false;
     this.useSyncModule = req.options?.useSyncModule ?? false;
     this.timeout = req.options?.timeout ?? 5_000;
     this.#groupingDelay = req.options?.groupingDelay ?? 100;
     this.#replaceable = req.options?.replaceable ?? false;
+    this.#duplicates = 0;
 
-    this.requests.push(...req.buildRaw());
-    this.feed.on("event", evs => this.emit("event", evs));
-    this.#start();
+    this.addRequest(req);
   }
 
   /**
@@ -233,10 +236,13 @@ export class Query extends EventEmitter<QueryEvents> {
     if (this.#builderInstances.has(req.instance)) {
       return;
     }
+    if (req.options?.extraEvents) {
+      this.#feed.add(req.options.extraEvents);
+    }
     if (req.numFilters > 0) {
       this.#log("Add query %O to %s", req, this.id);
       this.requests.push(...req.buildRaw());
-      this.#start();
+      this.start();
       this.#builderInstances.add(req.instance);
       return true;
     }
@@ -297,7 +303,6 @@ export class Query extends EventEmitter<QueryEvents> {
         }
       }
     });
-    trace.queued();
   }
 
   /**
@@ -315,7 +320,14 @@ export class Query extends EventEmitter<QueryEvents> {
     if (trace || sub === "*") {
       const filters = trace ? trace.filters : this.filters;
       if (filters.some(v => eventMatchesFilter(e, v))) {
-        this.feed.add(e);
+        const added = this.feed.add(e);
+        if (added === 0) {
+          this.#duplicates++;
+          const ratio = this.#duplicates / this.feed.snapshot.length;
+          if (ratio > 2) {
+            this.#log("High number of duplicates for: ", this.id, ratio, this.feed.snapshot.length);
+          }
+        }
       } else {
         this.#log("Event did not match filter, rejecting %O", e);
       }
@@ -360,7 +372,10 @@ export class Query extends EventEmitter<QueryEvents> {
     return thisProgress;
   }
 
-  #start() {
+  /**
+   * Start filter emit
+   */
+  start() {
     if (this.#groupTimeout) {
       clearTimeout(this.#groupTimeout);
       this.#groupTimeout = undefined;

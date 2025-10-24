@@ -9,7 +9,7 @@ export function FollowingMark({ pubkey }: { pubkey: string }) {
   if (!doesFollow) return;
 
   return (
-    <span className="flex gap-1 px-1 py-0.5 rounded text-[11px] text-neutral-400 bg-neutral-900">
+    <span className="flex gap-1 px-1 py-0.5 text-sm layer-1">
       <Icon name="check" className="text-success" size={12} />
       <FormattedMessage defaultMessage="following" />
     </span>

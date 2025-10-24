@@ -221,7 +221,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
             this.#log("Rejecting invalid event %O", ev);
             return;
           }
-          this.emit("event", msg[1] as string, ev);
+          this.emit("unverifiedEvent", msg[1] as string, ev);
           break;
         }
         case "EOSE": {

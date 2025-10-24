@@ -57,9 +57,7 @@ export default function ModerationSettingsPage() {
           </AsyncButton>
         </div>
         {getMutedWords().map(v => (
-          <div
-            key={v}
-            className="px-3 py-2 rounded-lg border border-neutral-800 light:border-neutral-200 flex items-center justify-between">
+          <div key={v} className="px-3 py-2 rounded-lg border flex items-center justify-between">
             <div>{v}</div>
             <AsyncButton onClick={() => removeMutedWord(v)}>
               <FormattedMessage defaultMessage="Delete" />

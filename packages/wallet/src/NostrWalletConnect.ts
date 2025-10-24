@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import { dedupe } from "@snort/shared";
-import { Connection, EventBuilder, EventKind, NostrEvent, PrivateKeySigner } from "@snort/system";
+import { Connection, EventBuilder, EventKind, NostrEvent, PrivateKeySigner, decryptSigner } from "@snort/system";
 import debug from "debug";
 
 import {
@@ -175,7 +175,7 @@ export class NostrConnectWallet extends EventEmitter<WalletEvents> implements LN
         const ev = await eb.buildAndSign(this.#config.secret);
         cb(ev);
       });
-      this.#conn.on("event", (s, e) => {
+      this.#conn.on("unverifiedEvent", (s, e) => {
         this.#onReply(s, e);
       });
       this.#conn.connect();
@@ -314,7 +314,7 @@ export class NostrConnectWallet extends EventEmitter<WalletEvents> implements LN
     const signer = new PrivateKeySigner(this.#config.secret);
     const eb = new EventBuilder();
     eb.kind(23194 as EventKind)
-      .content(await signer.nip4Encrypt(payload, this.#config.walletPubkey))
+      .content(await signer.nip44Encrypt(payload, this.#config.walletPubkey))
       .tag(["p", this.#config.walletPubkey]);
 
     const evCommand = await eb.buildAndSign(this.#config.secret);
@@ -331,7 +331,7 @@ export class NostrConnectWallet extends EventEmitter<WalletEvents> implements LN
     return await new Promise<T>((resolve, reject) => {
       this.#commandQueue.set(evCommand.id, {
         resolve: async (o: string) => {
-          const reply = JSON.parse(await signer.nip4Decrypt(o, this.#config.walletPubkey));
+          const reply = JSON.parse(await decryptSigner(o, signer, this.#config.walletPubkey));
           this.#log("< %o", reply);
           resolve(reply);
         },

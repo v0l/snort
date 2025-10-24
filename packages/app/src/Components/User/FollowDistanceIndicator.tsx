@@ -32,7 +32,7 @@ export default function FollowDistanceIndicator({ pubkey, className }: FollowDis
 
   return (
     <div
-      className={classNames("w-5 h-5 bg-neutral-900 rounded-full flex items-center justify-center", className)}
+      className={classNames("w-4 h-4 bg-layer-1 rounded-full flex items-center justify-center", className)}
       title={title}>
       <Icon name="check" className={followDistanceColor} size={10} />
     </div>

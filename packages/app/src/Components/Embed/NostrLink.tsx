@@ -23,7 +23,12 @@ export default function NostrLink({ link, depth }: { link: string; depth?: numbe
     }
   } else {
     return (
-      <a href={link} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
+      <a
+        href={link}
+        onClick={e => e.stopPropagation()}
+        target="_blank"
+        rel="noreferrer"
+        className="text-highlight no-underline hover:underline">
         {link}
       </a>
     );

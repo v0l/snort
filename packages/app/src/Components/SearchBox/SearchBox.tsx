@@ -111,12 +111,12 @@ export default function SearchBox() {
   };
 
   return (
-    <div className="flex-grow flex bg-neutral-900 rounded-full relative md:p-0 md:bg-transparent">
+    <div className="flex layer-1 relative">
       <input
         ref={inputRef}
         type="text"
-        placeholder={formatMessage({ defaultMessage: "Search", id: "xmcVZ0" })}
-        className="w-stretch !border-none !rounded-none text-[15px] leading-[21px] py-2.5 px-4 md:hidden"
+        placeholder={formatMessage({ defaultMessage: "Search" })}
+        className="w-full !border-none !rounded-none leading-10 py-2.5 px-4"
         value={search}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
@@ -126,16 +126,11 @@ export default function SearchBox() {
       {searching ? (
         <Spinner width={24} height={24} className="my-2.5 mx-4" />
       ) : (
-        <Icon
-          className="text-neutral-400 my-2.5 mx-4"
-          name="search-outline"
-          size={24}
-          onClick={() => navigate("/search")}
-        />
+        <Icon className="my-2.5 mx-4" name="search-outline" size={24} onClick={() => navigate("/search")} />
       )}
       {search && !searching && isFocused && (
         <div
-          className="absolute top-full mt-2 w-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-black shadow-lg rounded-lg z-10 overflow-hidden"
+          className="absolute top-full mt-2 w-full border bg-white dark:bg-black shadow-lg rounded-lg z-10 overflow-hidden"
           ref={resultListRef}>
           <div
             className={`p-2 cursor-pointer ${activeIndex === 0 ? "bg-secondary" : "bg-background hover:bg-secondary"}`}

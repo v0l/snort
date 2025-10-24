@@ -4,14 +4,16 @@ import Icon from "@/Components/Icons/Icon";
 import Spinner from "@/Components/Icons/Spinner";
 import { openFile, unwrap } from "@/Utils";
 import useFileUpload from "@/Utils/Upload";
+import classNames from "classnames";
 
 interface AvatarEditorProps {
   picture?: string;
+  classname?: string;
   onPictureChange?: (newPicture: string) => void;
   privKey?: string;
 }
 
-export default function AvatarEditor({ picture, onPictureChange, privKey }: AvatarEditorProps) {
+export default function AvatarEditor({ picture, onPictureChange, privKey, className }: AvatarEditorProps) {
   const uploader = useFileUpload(privKey);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,11 +40,15 @@ export default function AvatarEditor({ picture, onPictureChange, privKey }: Avat
   return (
     <>
       <div className="flex justify-center items-center">
-        <div style={{ backgroundImage: `url(${picture})` }} className="avatar">
+        <div
+          style={{ backgroundImage: `url(${picture})`, backgroundSize: "cover", backgroundPosition: "center" }}
+          className={classNames("layer-2 w-40 h-40 rounded-full", className)}>
           <div
-            className={`edit flex items-center justify-center w-full h-full bg-background cursor-pointer opacity-0 rounded-full hover:opacity-50 ${picture ? "" : "new opacity-50"}`}
+            className={`flex items-center justify-center w-full h-full cursor-pointer rounded-full ${picture ? "opacity-20 hover:opacity-90" : ""}`}
             onClick={() => uploadFile().catch(console.error)}>
-            {loading ? <Spinner /> : <Icon name={picture ? "edit" : "camera-plus"} />}
+            <div className="light:bg-neutral-200 p-4 rounded-full">
+              {loading ? <Spinner /> : <Icon name={picture ? "edit" : "camera-plus"} />}
+            </div>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import EventKind from "./event-kind";
 import { EventExt, NostrLink, ToNostrEventTag } from ".";
 import { ReqFilter, TaggedNostrEvent } from "./nostr";
 import { RequestRouter } from "./request-router";
+import { NostrEvent } from "nostr-social-graph";
 
 /**
  * A built REQ filter ready for sending to System
@@ -56,6 +57,11 @@ export interface RequestBuilderOptions {
    * Default: false
    */
   useSyncModule?: boolean;
+
+  /**
+   * Extra events to include in the store, added automatically
+   */
+  extraEvents?: Array<NostrEvent>;
 }
 
 /**
@@ -215,24 +221,26 @@ export class RequestFilterBuilder {
   /**
    * Get event from link
    */
-  link(link: NostrLink) {
-    if (link.type === NostrPrefix.Address) {
-      this.tag("d", [link.id])
-        .kinds([unwrap(link.kind)])
-        .authors([unwrap(link.author)]);
-    } else {
-      // dont use id if link is replaceable kind
-      if (link.id && (link.kind === undefined || !EventExt.isReplaceable(link.kind))) {
+  link(link: NostrLink | ToNostrEventTag) {
+    if (link instanceof NostrLink) {
+      if (link.type === NostrPrefix.Address) {
+        this.tag("d", [link.id])
+          .kinds([unwrap(link.kind)])
+          .authors([unwrap(link.author)]);
+      } else {
         this.ids([link.id]);
+        if (link.author) {
+          this.authors([link.author]);
+        }
+        if (link.kind !== undefined) {
+          this.kinds([link.kind]);
+        }
       }
-      if (link.author) {
-        this.authors([link.author]);
-      }
-      if (link.kind !== undefined) {
-        this.kinds([link.kind]);
-      }
+      link.relays?.forEach(v => this.relay(v));
+    } else {
+      const [k, v] = link.toEventTag()!;
+      this.#filter[`#${k}`] = appendDedupe(this.#filter[`#${k}`] as Array<string>, [v]);
     }
-    link.relays?.forEach(v => this.relay(v));
     return this;
   }
 

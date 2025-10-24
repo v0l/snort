@@ -28,7 +28,6 @@ export type QueryLike = {
 export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
-  event: (subId: string, ev: TaggedNostrEvent) => void;
   request: (subId: string, filter: BuiltRawReqFilter) => void;
 }
 

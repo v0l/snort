@@ -21,7 +21,7 @@ export interface EmojiItemProps {
 
 const EmojiItem = ({ entity: { name, char } }: { entity: EmojiItemProps }) => {
   return (
-    <div className="emoji-item text-[11px] text-font-color bg-neutral-900 flex flex-row items-center p-2.5 hover:bg-neutral-700">
+    <div className="text-sm flex flex-row items-center p-2.5 layer-1">
       <div className="emoji mr-1 min-w-[20px]">{char}</div>
       <div className="emoji-name font-bold">{name}</div>
     </div>
@@ -31,10 +31,8 @@ const EmojiItem = ({ entity: { name, char } }: { entity: EmojiItemProps }) => {
 const UserItem = (metadata: FuzzySearchResult) => {
   const { pubkey, display_name, nip05, ...rest } = metadata;
   return (
-    <div
-      key={pubkey}
-      className="user-item text-font-color bg-neutral-900 flex flex-row items-center text-base p-2.5 hover:bg-neutral-700">
-      <div className="user-picture flex items-center justify-center mr-2">
+    <div key={pubkey} className="flex flex-row items-center text-base p-2.5 ">
+      <div className="flex items-center justify-center mr-2 layer-1">
         <Avatar pubkey={pubkey} user={metadata} />
       </div>
       <div className="user-details flex flex-col items-start">

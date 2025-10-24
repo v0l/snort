@@ -1,53 +1,53 @@
 import { TaggedNostrEvent } from "../src/nostr";
-import { describe, expect } from "@jest/globals";
-import { FlatNoteStore, ReplaceableNoteStore } from "../src/note-collection";
+import { describe, expect, test } from "bun:test";
+import { NoteCollection, KeyedReplaceableNoteStore } from "../src/note-collection";
 
 describe("NoteStore", () => {
-  describe("flat", () => {
+  describe("note collection", () => {
     test("one event", () => {
-      const ev = { id: "one" } as TaggedNostrEvent;
-      const c = new FlatNoteStore();
+      const ev = { id: "one", kind: 1, created_at: 69 } as TaggedNostrEvent;
+      const c = new NoteCollection();
       c.add(ev);
-      expect(c.getSnapshotData()).toEqual([ev]);
+      expect(c.snapshot).toEqual([ev]);
     });
     test("still one event", () => {
-      const ev = { id: "one" } as TaggedNostrEvent;
-      const c = new FlatNoteStore();
+      const ev = { id: "one", kind: 1, created_at: 69 } as TaggedNostrEvent;
+      const c = new NoteCollection();
       c.add(ev);
       c.add(ev);
-      expect(c.getSnapshotData()).toEqual([ev]);
+      expect(c.snapshot).toEqual([ev]);
     });
     test("clears", () => {
-      const ev = { id: "one" } as TaggedNostrEvent;
-      const c = new FlatNoteStore();
+      const ev = { id: "one", kind: 1, created_at: 69 } as TaggedNostrEvent;
+      const c = new NoteCollection();
       c.add(ev);
-      expect(c.getSnapshotData()).toEqual([ev]);
+      expect(c.snapshot).toEqual([ev]);
       c.clear();
-      expect(c.getSnapshotData()).toEqual([]);
+      expect(c.snapshot).toEqual([]);
     });
   });
-  describe("replacable", () => {
+  describe("replaceable", () => {
     test("one event", () => {
       const ev = { id: "test", created_at: 69 } as TaggedNostrEvent;
-      const c = new ReplaceableNoteStore();
+      const c = new KeyedReplaceableNoteStore(() => "test");
       c.add(ev);
-      expect(c.getSnapshotData()).toEqual(ev);
+      expect(c.snapshot).toEqual([ev]);
     });
     test("dont replace with older", () => {
       const ev = { id: "test", created_at: 69 } as TaggedNostrEvent;
       const evOlder = { id: "test2", created_at: 68 } as TaggedNostrEvent;
-      const c = new ReplaceableNoteStore();
+      const c = new KeyedReplaceableNoteStore(() => "test");
       c.add(ev);
       c.add(evOlder);
-      expect(c.getSnapshotData()).toEqual(ev);
+      expect(c.snapshot).toEqual([ev]);
     });
     test("replace with newer", () => {
       const ev = { id: "test", created_at: 69 } as TaggedNostrEvent;
       const evNewer = { id: "test2", created_at: 70 } as TaggedNostrEvent;
-      const c = new ReplaceableNoteStore();
+      const c = new KeyedReplaceableNoteStore(() => "test");
       c.add(ev);
       c.add(evNewer);
-      expect(c.getSnapshotData()).toEqual(evNewer);
+      expect(c.snapshot).toEqual([evNewer]);
     });
   });
 });

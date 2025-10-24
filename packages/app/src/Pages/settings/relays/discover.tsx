@@ -106,8 +106,8 @@ export function DiscoverRelays() {
                   <td className="text-end">
                     <AsyncButton
                       className="!py-1 mb-1"
-                      onClick={async () => {
-                        await state.addRelay(a.relay, { read: true, write: true });
+                      onClick={() => {
+                        state.addRelay(a.relay, { read: true, write: true });
                       }}>
                       <FormattedMessage defaultMessage="Add" />
                     </AsyncButton>
@@ -153,8 +153,8 @@ export function DiscoverRelays() {
                 <td className="text-end">
                   <AsyncButton
                     className="!py-1 mb-1"
-                    onClick={async () => {
-                      await state.addRelay(a.addr, { read: true, write: true });
+                    onClick={() => {
+                      state.addRelay(a.addr, { read: true, write: true });
                     }}>
                     <FormattedMessage defaultMessage="Add" />
                   </AsyncButton>

@@ -11,7 +11,7 @@ import { generateNewLogin, generateNewLoginKeys } from "@/Utils/Login";
 
 import { NewUserState } from ".";
 
-export function Profile() {
+export default function Profile() {
   const system = useContext(SnortContext);
   const [keys, setNewKeys] = useState<{ entropy: Uint8Array; privateKey: string }>();
   const [picture, setPicture] = useState<string>();

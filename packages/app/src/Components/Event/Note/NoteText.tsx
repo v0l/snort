@@ -21,7 +21,7 @@ export const NoteText = memo(function InnerContent(
 
   const ToggleShowMore = () => (
     <a
-      className="highlight"
+      className="text-highlight"
       onClick={e => {
         e.preventDefault();
         e.stopPropagation();
@@ -37,6 +37,7 @@ export const NoteText = memo(function InnerContent(
       <Text
         id={id}
         highlightText={props.highlightText}
+        className={props.className}
         content={body}
         tags={ev.tags}
         creator={ev.pubkey}

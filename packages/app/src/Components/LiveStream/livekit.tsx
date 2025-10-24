@@ -7,7 +7,15 @@ import {
   useParticipants,
 } from "@livekit/components-react";
 import { unixNow } from "@snort/shared";
-import { EventKind, EventPublisher, NostrLink, RequestBuilder, SystemInterface, TaggedNostrEvent } from "@snort/system";
+import {
+  EventKind,
+  EventPublisher,
+  Nip10,
+  NostrLink,
+  RequestBuilder,
+  SystemInterface,
+  TaggedNostrEvent,
+} from "@snort/system";
 import { useRequestBuilder, useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
 import { LocalParticipant, LocalTrackPublication, RemoteParticipant, RoomEvent, Track } from "livekit-client";
@@ -63,10 +71,10 @@ export default function LiveKitRoom({ ev, canJoin }: { ev: TaggedNostrEvent; can
 
   async function publishPresence(publisher: EventPublisher, system: SystemInterface) {
     const e = await publisher.generic(eb => {
-      const aTag = NostrLink.fromEvent(ev).toEventTag();
+      const link = NostrLink.fromEvent(ev);
       return eb
         .kind(10_312 as EventKind)
-        .tag(aTag!)
+        .tag(Nip10.linkToTag(link))
         .tag(["expiration", (unixNow() + 60).toString()]);
     });
     await system.BroadcastEvent(e);

@@ -1,18 +1,17 @@
-import { parseNostrLink } from "@snort/system";
+import { NostrLink, parseNostrLink } from "@snort/system";
 import { useParams } from "react-router-dom";
 
-import { Thread } from "@/Components/Event/Thread/Thread";
+import { ThreadElement } from "@/Components/Event/Thread/Thread";
 import { ThreadContextWrapper } from "@/Utils/Thread/ThreadContextWrapper";
 import { NostrPrefix } from "@snort/shared";
 
-export function ThreadRoute({ id }: { id?: string }) {
+export function ThreadRoute({ id }: { id?: string | NostrLink }) {
   const params = useParams();
-  const resolvedId = id ?? params.id;
-  const link = parseNostrLink(resolvedId ?? "", NostrPrefix.Note);
+  const link = id instanceof NostrLink ? id : parseNostrLink(id ?? params.id ?? "", NostrPrefix.Note);
 
   return (
     <ThreadContextWrapper link={link}>
-      <Thread />
+      <ThreadElement />
     </ThreadContextWrapper>
   );
 }

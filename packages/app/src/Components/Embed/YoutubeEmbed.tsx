@@ -6,7 +6,7 @@ export default function YoutubeEmbed({ link }: { link: string }) {
 
   return (
     <iframe
-      className="-mx-4 md:mx-0 w-max my-2"
+      className="aspect-video w-full"
       src={`https://www.youtube.com/embed/${m[1]}${m[3] ? `?list=${m[3].slice(6)}` : ""}`}
       title="YouTube video player"
       frameBorder="0"

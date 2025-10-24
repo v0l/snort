@@ -22,6 +22,7 @@ import { findTag } from "./utils";
 import { Nip7Signer } from "./impl/nip7";
 import { Nip10 } from "./impl/nip10";
 import { Nip22 } from "./impl/nip22";
+import { Nip25 } from "./impl/nip25";
 
 type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
 
@@ -116,7 +117,7 @@ export class EventPublisher {
     if (priv.length > 0) {
       const ps = priv.map(p => ["p", p]);
       const plaintext = JSON.stringify(ps);
-      eb.content(await this.nip4Encrypt(plaintext, this.#pubKey));
+      eb.content(await this.#signer.nip44Encrypt(plaintext, this.#pubKey));
     }
     return await this.#sign(eb);
   }
@@ -196,11 +197,11 @@ export class EventPublisher {
    * Replies to kind 1 notes are kind 1, otherwise kind 1111
    */
   async reply(replyTo: TaggedNostrEvent, msg: string, fnExtra?: EventBuilderHook) {
-    const kind = replyTo.kind === EventKind.TextNote ? EventKind.TextNote : EventKind.Comment;
-    const eb = this.#eb(kind);
+    const replyKind = replyTo.kind === EventKind.TextNote ? EventKind.TextNote : EventKind.Comment;
+    const eb = this.#eb(replyKind);
     eb.content(msg);
 
-    if (kind === EventKind.TextNote) {
+    if (replyKind === EventKind.TextNote) {
       Nip10.replyTo(replyTo, eb);
     } else {
       Nip22.replyTo(replyTo, eb);
@@ -213,7 +214,7 @@ export class EventPublisher {
   async react(evRef: NostrEvent, content = "+") {
     const eb = this.#eb(EventKind.Reaction);
     eb.content(content);
-    eb.tag(unwrap(NostrLink.fromEvent(evRef).toEventTag()));
+    eb.tag(Nip25.reactToEvent(evRef));
     eb.tag(["p", evRef.pubkey]);
     eb.tag(["k", evRef.kind.toString()]);
     return await this.#sign(eb);
@@ -296,7 +297,7 @@ export class EventPublisher {
 
   async appData(data: object, id: string) {
     const eb = this.#eb(EventKind.AppData);
-    eb.content(await this.nip4Encrypt(JSON.stringify(data), this.#pubKey));
+    eb.content(await this.#signer.nip44Encrypt(JSON.stringify(data), this.#pubKey));
     eb.tag(["d", id]);
     return await this.#sign(eb);
   }

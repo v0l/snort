@@ -111,7 +111,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     this.#localPubkey = await this.#insideSigner.getPubKey();
     return await new Promise<void>((resolve, reject) => {
       this.#conn = new Connection(this.#relay, { read: true, write: true });
-      this.#conn.on("event", async (sub, e) => {
+      this.#conn.on("unverifiedEvent", async (_sub, e) => {
         await this.#onReply(e);
       });
       this.#conn.on("connected", async () => {

@@ -74,7 +74,7 @@ export default function MessagesPage() {
         key={cx.id}
         onClick={e => openChat(e, cx.type, cx.id)}>
         {conversationIdent(cx)}
-        <div className="nowrap">
+        <div className="whitespace-nowrap">
           <small>
             <NoteTime
               from={cx.lastMessage * 1000}

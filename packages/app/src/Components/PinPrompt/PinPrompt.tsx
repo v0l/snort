@@ -78,7 +78,7 @@ export function PinPrompt({
             autoFocus={true}
             maxLength={20}
             minLength={4}
-            className="border border-border px-4 py-3 text-[80px] h-[1em] rounded-xl"
+            className="border px-4 py-3 text-[80px] h-[1em] rounded-xl"
           />
           {error && <b className="text-error">{error}</b>}
           <div className="flex gap-2">

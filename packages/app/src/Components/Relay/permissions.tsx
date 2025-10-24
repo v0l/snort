@@ -10,8 +10,8 @@ export default function RelayPermissions({ conn }: { conn: ConnectionType }) {
     <div className="flex gap-2 cursor-pointer select-none">
       <div
         className={conn.settings.read ? "" : "text-gray"}
-        onClick={async () =>
-          await state.updateRelay(conn.address, {
+        onClick={() =>
+          state.updateRelay(conn.address, {
             read: !conn.settings.read,
             write: conn.settings.write,
           })
@@ -20,8 +20,8 @@ export default function RelayPermissions({ conn }: { conn: ConnectionType }) {
       </div>
       <div
         className={conn.settings.write ? "" : "text-gray"}
-        onClick={async () =>
-          await state.updateRelay(conn.address, {
+        onClick={() =>
+          state.updateRelay(conn.address, {
             read: conn.settings.read,
             write: !conn.settings.write,
           })

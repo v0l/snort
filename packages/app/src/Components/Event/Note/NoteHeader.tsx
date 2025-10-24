@@ -45,7 +45,7 @@ export default function NoteHeader(props: {
   const onTranslated = setTranslated ? (t: NoteTranslation) => setTranslated(t) : undefined;
 
   return (
-    <div className="header flex">
+    <div className="flex justify-between">
       <ProfileImage
         pubkey={ev.pubkey}
         subHeader={<ReplyTag ev={ev} />}
@@ -53,12 +53,12 @@ export default function NoteHeader(props: {
         showProfileCard={options.showProfileCard ?? true}
         showBadges={true}
       />
-      <div className="info">
+      <div className="flex items-center gap-2 text-neutral-400 text-sm">
         {props.context}
         {(options.showTime || options.showBookmarked) && (
           <>
             {options.showBookmarked && (
-              <div className={`saved ${options.canUnbookmark ? "pointer" : ""}`} onClick={() => unbookmark()}>
+              <div className={`saved ${options.canUnbookmark ? "cursor-pointer" : ""}`} onClick={() => unbookmark()}>
                 <Icon name="bookmark" /> <FormattedMessage {...messages.Bookmarked} />
               </div>
             )}
@@ -66,7 +66,7 @@ export default function NoteHeader(props: {
           </>
         )}
         {options.showPinned && (
-          <div className={`pinned ${options.canUnpin ? "pointer" : ""}`} onClick={() => unpin()}>
+          <div className={options.canUnpin ? "cursor-pointer" : ""} onClick={() => unpin()}>
             <Icon name="pin" /> <FormattedMessage {...messages.Pinned} />
           </div>
         )}

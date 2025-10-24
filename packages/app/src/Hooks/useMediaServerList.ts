@@ -7,7 +7,7 @@ import useLogin from "./useLogin";
 
 export const DefaultMediaServers = [
   new UnknownTag(["server", "https://nostr.download/"]),
-  new UnknownTag(["server", "https://blossom.build/"]),
+  new UnknownTag(["server", "https://blossom.band/"]),
   new UnknownTag(["server", "https://nostrcheck.me/"]),
   new UnknownTag(["server", "https://blossom.primal.net/"]),
 ];
@@ -31,12 +31,12 @@ export function useMediaServerList() {
 
         const u = sanitizeRelayUrl(s);
         if (!u) return;
-        await state?.addToList(EventKind.BlossomServerList, new UnknownTag(["server", u]), true);
+        state?.addToList(EventKind.BlossomServerList, new UnknownTag(["server", u]), true);
       },
       removeServer: async (s: string) => {
         const u = sanitizeRelayUrl(s);
         if (!u) return;
-        await state?.removeFromList(EventKind.BlossomServerList, new UnknownTag(["server", u]), true);
+        state?.removeFromList(EventKind.BlossomServerList, new UnknownTag(["server", u]), true);
       },
     }),
     [servers],

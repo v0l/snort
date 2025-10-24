@@ -62,7 +62,7 @@ export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
             defaultMessage="Redirect issues HTTP redirect to the supplied lightning address"
             id="FcNSft"
           />
-          <rounded-lg />
+          <hr />
           <FormattedMessage
             defaultMessage="Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node"
             id="712i26"

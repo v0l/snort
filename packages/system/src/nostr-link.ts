@@ -12,7 +12,7 @@ import {
   decodeTLV,
   TLVEntryType,
 } from "@snort/shared";
-import { EventExt, EventKind, NostrEvent, TaggedNostrEvent } from ".";
+import { EventExt, EventKind, Nip10, NostrEvent, TaggedNostrEvent } from ".";
 import { findTag } from "./utils";
 
 /**
@@ -23,6 +23,9 @@ export interface ToNostrEventTag {
   equals(other: ToNostrEventTag): boolean;
 }
 
+/**
+ * A hashtag ["t", ... ] tag
+ */
 export class NostrHashtagLink implements ToNostrEventTag {
   constructor(readonly tag: string) {}
 
@@ -36,6 +39,9 @@ export class NostrHashtagLink implements ToNostrEventTag {
   }
 }
 
+/**
+ * A generic tag which could not be specifically parsed
+ */
 export class UnknownTag implements ToNostrEventTag {
   constructor(readonly value: Array<string>) {}
 
@@ -49,20 +55,86 @@ export class UnknownTag implements ToNostrEventTag {
   }
 }
 
+/**
+ * Link scope for reply tags
+ */
+export enum LinkScope {
+  /**
+   * Link points to the root note of the thread
+   */
+  Root = "root",
+  /**
+   * Link points to the note being replied to
+   */
+  Reply = "reply",
+  /**
+   * Link mentions another object without directly replying
+   */
+  Mention = "mention",
+  /**
+   * Link mentions another object (`q` tag)
+   */
+  Quote = "quote",
+}
+
+/**
+ * A link to another object on Nostr
+ */
 export class NostrLink implements ToNostrEventTag {
+  /**
+   * A nostr kind number (only a hint)
+   */
+  kind?: EventKind;
+  /**
+   * Link scope for tagging
+   */
+  scope?: LinkScope;
+
   constructor(
     readonly type: NostrPrefix,
     readonly id: string,
-    readonly kind?: number,
+    kind?: number,
     readonly author?: string,
     readonly relays?: Array<string>,
-    readonly marker?: string,
+    scope?: LinkScope | string,
   ) {
     if (type !== NostrPrefix.Address && !isHex(id)) {
       throw new Error(`ID must be hex: ${JSON.stringify(id)}`);
     }
+    if (author && !isHex(author)) {
+      throw new Error(`Author must be hex: ${author}`);
+    }
+    this.kind = kind;
+
+    // convert legacy marker string to scope
+    if (scope) {
+      if (typeof scope === "string") {
+        switch (scope.toLowerCase()) {
+          case "root": {
+            this.scope = LinkScope.Root;
+            break;
+          }
+          case "reply": {
+            this.scope = LinkScope.Reply;
+            break;
+          }
+          case "mention": {
+            this.scope = LinkScope.Mention;
+            break;
+          }
+          default: {
+            throw new Error(`Invalid marker: ${scope}`);
+          }
+        }
+      } else {
+        this.scope = scope;
+      }
+    }
   }
 
+  /**
+   * Encode the link into a [NIP-19](https://github.com/nostr-protocol/nips/blob/master/19.md) entity
+   */
   encode(type?: NostrPrefix): string {
     try {
       // cant encode 'naddr' to 'note'/'nevent' because 'id' is not hex
@@ -78,6 +150,11 @@ export class NostrLink implements ToNostrEventTag {
     }
   }
 
+  /**
+   * Gets a string identifier for this link
+   *
+   * Works similarly to EventExt.keyOf
+   */
   get tagKey() {
     if (this.type === NostrPrefix.Address) {
       return `${this.kind}:${this.author}:${this.id}`;
@@ -86,62 +163,10 @@ export class NostrLink implements ToNostrEventTag {
   }
 
   /**
-   * Create an event tag for this link
+   * Create an event tag for this link (Uses Nip10)
    */
-  toEventTag(marker?: string) {
-    const suffix: Array<string> = [];
-    if (this.relays && this.relays.length > 0) {
-      suffix.push(this.relays[0]);
-    }
-    if (marker) {
-      if (suffix[0] === undefined) {
-        suffix.push(""); // empty relay hint
-      }
-      suffix.push(marker);
-    }
-
-    if (this.type === NostrPrefix.PublicKey || this.type === NostrPrefix.Profile) {
-      return ["p", this.id, ...suffix];
-    } else if (this.type === NostrPrefix.Note || this.type === NostrPrefix.Event) {
-      if (this.author) {
-        if (suffix[0] === undefined) {
-          suffix.push(""); // empty relay hint
-        }
-        if (suffix[1] === undefined) {
-          suffix.push(""); // empty marker
-        }
-        suffix.push(this.author);
-      }
-      return ["e", this.id, ...suffix];
-    } else if (this.type === NostrPrefix.Address) {
-      return ["a", `${this.kind}:${this.author}:${this.id}`, ...suffix];
-    }
-  }
-
-  /**
-   * Create an event tag from this link as per NIP-22 (no marker position)
-   */
-  toEventTagNip22(root?: boolean) {
-    // emulate root flag by root marker
-    root ??= this.marker === "root";
-
-    const suffix: Array<string> = [];
-    if (this.relays && this.relays.length > 0) {
-      suffix.push(this.relays[0]);
-    }
-    if (this.type === NostrPrefix.PublicKey || this.type === NostrPrefix.Profile) {
-      return [root ? "P" : "p", this.id, ...suffix];
-    } else if (this.type === NostrPrefix.Note || this.type === NostrPrefix.Event) {
-      if (this.author) {
-        if (suffix[0] === undefined) {
-          suffix.push(""); // empty relay hint
-        }
-        suffix.push(this.author);
-      }
-      return [root ? "E" : "e", this.id, ...suffix];
-    } else if (this.type === NostrPrefix.Address) {
-      return [root ? "A" : "a", `${this.kind}:${this.author}:${this.id}`, ...suffix];
-    }
+  toEventTag() {
+    return Nip10.linkToTag(this);
   }
 
   matchesEvent(ev: NostrEvent) {
@@ -168,32 +193,12 @@ export class NostrLink implements ToNostrEventTag {
    * Is the supplied event a reply to this link
    */
   isReplyToThis(ev: NostrEvent) {
-    const NonNip10Kinds = [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt];
-    if (NonNip10Kinds.includes(ev.kind)) {
-      const links = removeUndefined(ev.tags.filter(a => a[0] === "e" || a[0] === "a").map(a => NostrLink.fromTag(a)));
-      if (links.length === 0) return false;
-      return links.some(a => a.equals(this));
-    } else {
-      const thread = EventExt.extractThread(ev);
-      if (!thread) return false; // non-thread events are not replies
+    if (this.matchesEvent(ev)) return false; // cant match self
 
-      if (!thread.root) return false; // must have root marker or positional e/a tag in position 0
+    const thread = EventExt.extractThread(ev);
+    if (!thread) return false; // non-thread events are not replies
 
-      if (
-        thread.root.key === "e" &&
-        thread.root.value === this.id &&
-        (this.type === NostrPrefix.Event || this.type === NostrPrefix.Note)
-      ) {
-        return true;
-      }
-      if (thread.root.key === "a" && this.type === NostrPrefix.Address) {
-        const [kind, author, dTag] = unwrap(thread.root.value).split(":");
-        if (Number(kind) === this.kind && author === this.author && dTag === this.id) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return (thread.root?.equals(this) || thread.replyTo?.equals(this)) ?? false;
   }
 
   /**
@@ -229,27 +234,33 @@ export class NostrLink implements ToNostrEventTag {
     const relays = tag.length > 2 ? [tag[2]] : undefined;
     switch (tag[0]) {
       case "E": {
-        return new NostrLink(NostrPrefix.Event, tag[1], kind, author ?? tag[3], relays, "root");
+        return new NostrLink(NostrPrefix.Event, tag[1], kind, author ?? tag[3], relays, LinkScope.Root);
       }
       case "e": {
-        return new NostrLink(NostrPrefix.Event, tag[1], kind, author ?? tag[4], relays, tag[3]);
+        const markerIsPubkey = isHex(tag[3]);
+        return new NostrLink(
+          NostrPrefix.Event,
+          tag[1],
+          kind,
+          author ?? (markerIsPubkey ? tag[3] : tag[4]),
+          relays,
+          markerIsPubkey ? undefined : tag[3],
+        );
       }
+      case "P":
       case "p": {
-        return new NostrLink(NostrPrefix.Profile, tag[1], kind, author, relays);
+        // ["p", <id>, <relay>]
+        const scope = tag[0] === "P" ? LinkScope.Root : undefined;
+        return new NostrLink(NostrPrefix.Profile, tag[1], kind, author, relays, scope);
       }
-      case "A": {
-        const [kind, author, dTag] = tag[1].split(":");
-        if (!isHex(author)) {
-          throw new Error(`Invalid author in A tag: ${tag[1]}`);
-        }
-        return new NostrLink(NostrPrefix.Address, dTag, Number(kind), author, relays, "root");
-      }
+      case "A":
       case "a": {
         const [kind, author, dTag] = tag[1].split(":");
         if (!isHex(author)) {
           throw new Error(`Invalid author in a tag: ${tag[1]}`);
         }
-        return new NostrLink(NostrPrefix.Address, dTag, Number(kind), author, relays, tag[3]);
+        const scope = tag[3] ?? (tag[0] === "A" ? LinkScope.Root : undefined);
+        return new NostrLink(NostrPrefix.Address, dTag, Number(kind), author, relays, scope);
       }
     }
     throw new Error("Unknown tag!");
@@ -291,10 +302,18 @@ export class NostrLink implements ToNostrEventTag {
   }
 
   /**
+   * Return all tags which are replies
+   */
+  static replyTags(tags: ReadonlyArray<Array<string>>): Array<NostrLink> {
+    return tags.filter(t => ["e", "a"].includes(t[0])).map(t => NostrLink.fromTag(t)!);
+  }
+
+  /**
    * Create an event link from an existing nostr event
    */
   static fromEvent(ev: TaggedNostrEvent | NostrEvent) {
     let relays = "relays" in ev ? ev.relays : undefined;
+    // extract the relay tags from the event to use in linking to this event
     const eventRelays = removeUndefined(
       ev.tags
         .filter(a => a[0] === "relays" || a[0] === "relay" || (a[0] === "r" && ev.kind == EventKind.Relays))
@@ -306,6 +325,7 @@ export class NostrLink implements ToNostrEventTag {
       const dTag = unwrap(findTag(ev, "d"));
       return new NostrLink(NostrPrefix.Address, dTag, ev.kind, ev.pubkey, relays);
     }
+    // TODO: why no kind 10k ???
     return new NostrLink(NostrPrefix.Event, ev.id, ev.kind, ev.pubkey, relays);
   }
 
@@ -365,12 +385,7 @@ export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLin
     const id = bech32ToHex(entity);
     if (id.length !== 64) throw new Error("Invalid nostr link, must contain 32 byte id");
     return new NostrLink(NostrPrefix.Note, id);
-  } else if (
-    isPrefix(NostrPrefix.Profile) ||
-    isPrefix(NostrPrefix.Event) ||
-    isPrefix(NostrPrefix.Address) ||
-    isPrefix(NostrPrefix.Req)
-  ) {
+  } else if (isPrefix(NostrPrefix.Profile) || isPrefix(NostrPrefix.Event) || isPrefix(NostrPrefix.Address)) {
     const decoded = decodeTLV(entity);
 
     const id = decoded.find(a => a.type === TLVEntryType.Special)?.value as string;
@@ -386,8 +401,6 @@ export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLin
       return new NostrLink(NostrPrefix.Event, id, kind, author, relays);
     } else if (isPrefix(NostrPrefix.Address)) {
       return new NostrLink(NostrPrefix.Address, id, kind, author, relays);
-    } else if (isPrefix(NostrPrefix.Req)) {
-      return new NostrLink(NostrPrefix.Req, id);
     }
   } else if (prefixHint) {
     return new NostrLink(prefixHint, link);

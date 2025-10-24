@@ -44,6 +44,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     this.relayMetricsHandler = new RelayMetricHandler(this.relayMetricsCache);
     this.relayLoader = new RelayMetadataLoader(this, this.relayCache);
     this.traceTimeline = new TraceTimeline();
+    this.pool = new DefaultConnectionPool(this);
 
     // if automatic outbox model, setup request router as OutboxModel
     if (this.config.automaticOutboxModel) {
@@ -52,7 +53,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
 
     // Cache everything
     if (this.config.cachingRelay) {
-      this.on("event", async (_, ev) => {
+      this.pool.on("event", async (_relay, _sub, ev) => {
         await this.config.cachingRelay?.event(ev);
       });
     }
@@ -61,7 +62,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     if (this.config.buildFollowGraph) {
       let evBuf: Array<TaggedNostrEvent> = [];
       let t: ReturnType<typeof setTimeout> | undefined;
-      this.on("event", (_, ev) => {
+      this.pool.on("event", (_relay, _sub, ev) => {
         if (ev.kind === EventKind.ContactList) {
           // fire&forget update
           this.userFollowsCache.update({
@@ -83,11 +84,10 @@ export class NostrSystem extends SystemBase implements SystemInterface {
       });
     }
 
-    this.pool = new DefaultConnectionPool(this);
     this.#queryManager = new QueryManager(this);
 
     // hook connection pool
-    this.pool.on("connected", (id, wasReconnect) => {
+    this.pool.on("connected", (id, _wasReconnect) => {
       const c = this.pool.getConnection(id);
       if (c) {
         this.relayMetricsHandler.onConnect(c.address);
@@ -96,9 +96,8 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     this.pool.on("connectFailed", address => {
       this.relayMetricsHandler.onDisconnect(address, 0);
     });
-    this.pool.on("event", (_, sub, ev) => {
+    this.pool.on("event", (_, _sub, ev) => {
       ev.relays?.length && this.relayMetricsHandler.onEvent(ev.relays[0]);
-      this.emit("event", sub, ev);
     });
     this.pool.on("disconnect", (id, code) => {
       const c = this.pool.getConnection(id);
@@ -189,8 +188,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
   }
 
   HandleEvent(subId: string, ev: TaggedNostrEvent) {
-    this.emit("event", subId, ev);
-    this.#queryManager.handleEvent(ev);
+    this.#queryManager.handleEvent(subId, ev);
   }
 
   async BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]> {

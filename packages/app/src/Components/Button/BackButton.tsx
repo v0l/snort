@@ -1,10 +1,10 @@
 import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
-import AsyncButton from "./AsyncButton";
+import { ReactNode } from "react";
 
 interface BackButtonProps {
-  text?: string;
+  text?: ReactNode;
   onClick?(): void;
 }
 

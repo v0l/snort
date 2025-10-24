@@ -28,18 +28,20 @@ export default function useModeration() {
 
   async function unmute(id: string) {
     const link = NostrLink.publicKey(id);
-    await state.unmute(link, true);
+    state.unmute(link);
+    await state.saveList(EventKind.MuteList);
   }
 
   async function mute(id: string) {
     const link = NostrLink.publicKey(id);
-    await state.mute(link, true);
+    state.mute(link);
+    await state.saveList(EventKind.MuteList);
   }
 
   async function muteAll(ids: string[]) {
     const links = dedupe(ids).map(a => NostrLink.publicKey(a));
     for (const link of links) {
-      await state.mute(link, false);
+      state.mute(link);
     }
     await state.saveList(EventKind.MuteList);
   }
@@ -52,13 +54,14 @@ export default function useModeration() {
   async function addMutedWord(word: string | Array<string>) {
     const words = Array.isArray(word) ? word : [word];
     for (const w of words) {
-      await state.addToList(EventKind.MuteList, new MutedWordTag(w.toLowerCase()), false);
+      state.addToList(EventKind.MuteList, new MutedWordTag(w.toLowerCase()));
     }
     await state.saveList(EventKind.MuteList);
   }
 
   async function removeMutedWord(word: string) {
-    await state.removeFromList(EventKind.MuteList, new MutedWordTag(word.toLowerCase()), true);
+    state.removeFromList(EventKind.MuteList, new MutedWordTag(word.toLowerCase()));
+    await state.saveList(EventKind.MuteList);
   }
 
   function isEventMuted(ev: TaggedNostrEvent | NostrEvent) {

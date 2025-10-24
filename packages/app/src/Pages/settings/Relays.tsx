@@ -28,8 +28,9 @@ const RelaySettingsPage = () => {
       }),
     );
     for (const url of urls) {
-      await state.addRelay(url, { read: true, write: true }, false);
+      state.addRelay(url, { read: true, write: true });
     }
+    // Note: Not saving here - caller should handle persistence if needed
     setNewRelay("");
   }
 

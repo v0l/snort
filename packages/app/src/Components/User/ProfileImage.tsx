@@ -1,7 +1,7 @@
 import { UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
-import React, { ReactNode, useCallback, useRef, useState } from "react";
+import React, { ReactNode } from "react";
 
 import { LeaderBadge } from "@/Components/CommunityLeaders/LeaderBadge";
 import Avatar from "@/Components/User/Avatar";
@@ -9,7 +9,7 @@ import FollowDistanceIndicator from "@/Components/User/FollowDistanceIndicator";
 import { useCommunityLeader } from "@/Hooks/useCommunityLeaders";
 
 import DisplayName from "./DisplayName";
-import { ProfileCard } from "./ProfileCard";
+import { ProfileCardWrapper } from "./ProfileCardWrapper";
 import { ProfileLink } from "./ProfileLink";
 
 export interface ProfileImageProps {
@@ -50,20 +50,7 @@ export default function ProfileImage({
   displayNameClassName,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
-  const [isHovering, setIsHovering] = useState(false);
   const leader = useCommunityLeader(pubkey);
-
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const handleMouseEnter = useCallback(() => {
-    hoverTimeoutRef.current && clearTimeout(hoverTimeoutRef.current);
-    hoverTimeoutRef.current = setTimeout(() => setIsHovering(true), 100);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    hoverTimeoutRef.current && clearTimeout(hoverTimeoutRef.current);
-    hoverTimeoutRef.current = setTimeout(() => setIsHovering(false), 300);
-  }, []);
 
   function handleClick(e: React.MouseEvent) {
     if (link === "") {
@@ -81,7 +68,6 @@ export default function ProfileImage({
           size={size}
           imageOverlay={imageOverlay}
           showTitle={!showProfileCard}
-          onMouseEnter={handleMouseEnter}
           icons={
             showFollowDistance || icons ? (
               <>
@@ -89,8 +75,7 @@ export default function ProfileImage({
                 {showFollowDistance && <FollowDistanceIndicator pubkey={pubkey} />}
               </>
             ) : undefined
-          }
-        />
+          }></Avatar>
         {showUsername && (
           <div className={displayNameClassName}>
             <div className="flex gap-2 items-center font-medium">
@@ -104,46 +89,37 @@ export default function ProfileImage({
     );
   }
 
-  function profileCard() {
-    if (showProfileCard && user && isHovering) {
-      return (
-        <div className="absolute shadow-lg">
-          <ProfileCard pubkey={pubkey} user={user} show={true} delay={100} />
-        </div>
-      );
-    }
-    return null;
-  }
-
   const classNamesOverInner = classNames(
-    "min-w-0",
+    "min-w-0 z-2",
     {
-      "grid grid-cols-[min-content_auto] gap-2 items-center": showUsername,
+      "flex gap-2 items-center": showUsername,
     },
     className,
   );
-  if (link === "") {
-    return (
-      <>
-        <div className={classNamesOverInner} onClick={handleClick}>
-          {inner()}
-        </div>
-        {profileCard()}
-      </>
-    );
-  } else {
-    return (
-      <div onMouseLeave={handleMouseLeave}>
-        <ProfileLink
-          pubkey={pubkey}
-          user={user}
-          explicitLink={link}
-          className={classNamesOverInner}
-          onClick={handleClick}>
-          {inner()}
-        </ProfileLink>
-        {profileCard()}
+
+  const content =
+    link === "" ? (
+      <div className={classNamesOverInner} onClick={handleClick}>
+        {inner()}
       </div>
+    ) : (
+      <ProfileLink
+        pubkey={pubkey}
+        user={user}
+        explicitLink={link}
+        className={classNamesOverInner}
+        onClick={handleClick}>
+        {inner()}
+      </ProfileLink>
     );
+
+  if (!showProfileCard) {
+    return content;
   }
+
+  return (
+    <ProfileCardWrapper pubkey={pubkey} user={user}>
+      {content}
+    </ProfileCardWrapper>
+  );
 }

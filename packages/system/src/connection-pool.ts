@@ -13,7 +13,7 @@ export interface ConnectionTypeEvents {
   change: () => void;
   connected: (wasReconnect: boolean) => void;
   error: () => void;
-  event: (sub: string, e: TaggedNostrEvent) => void;
+  unverifiedEvent: (sub: string, e: TaggedNostrEvent) => void;
   eose: (sub: string) => void;
   closed: (sub: string, reason: string) => void;
   disconnect: (code: number) => void;
@@ -161,13 +161,16 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
       if (!existing) {
         const c = await this.#connectionBuilder(addr, options, ephemeral);
         this.#sockets.set(addr, c);
-        c.on("event", (s, e) => {
+
+        // This is where we do check sigs
+        c.on("unverifiedEvent", (s, e) => {
           if (this.#system.checkSigs && !this.#system.optimizer.schnorrVerify(e)) {
             this.#log("Reject invalid event %o", e);
             return;
           }
           this.emit("event", addr, s, e);
         });
+
         c.on("eose", s => this.emit("eose", addr, s));
         c.on("disconnect", code => this.emit("disconnect", addr, code));
         c.on("connected", r => this.emit("connected", addr, r));

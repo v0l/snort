@@ -4,7 +4,7 @@ export function AvatarGroup({ ids, ...props }: { ids: string[] } & Omit<ProfileI
   return (
     <div className="flex items-center">
       {ids.map((a, index) => (
-        <div className={`inline-block ${index > 0 ? "-ml-2" : ""}`} key={a} style={{ zIndex: ids.length - index }}>
+        <div className={`inline-block ${index > 0 ? "-ml-2" : ""}`} key={a}>
           <ProfileImage pubkey={a} {...props} />
         </div>
       ))}

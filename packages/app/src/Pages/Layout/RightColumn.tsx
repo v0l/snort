@@ -79,15 +79,11 @@ export default function RightColumn() {
 
   return (
     <div
-      className={classNames(
-        "flex-col hidden lg:w-1/3 sticky top-0 h-screen py-3 px-4 border-l border-neutral-900 light:border-neutral-300",
-        {
-          "lg:flex": show,
-        },
-      )}>
-      <div>
-        <SearchBox />
-      </div>
+      className={classNames("flex-col hidden lg:w-1/3 sticky top-0 h-screen py-3 px-4 border-l", {
+        "lg:flex": show,
+      })}>
+      <SearchBox />
+      <span className="mb-4"></span>
       <div className="flex flex-col gap-4 overflow-y-auto hide-scrollbar">{widgets.map(getWidget)}</div>
     </div>
   );

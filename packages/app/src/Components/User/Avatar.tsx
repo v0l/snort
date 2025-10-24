@@ -1,6 +1,6 @@
 import type { UserMetadata } from "@snort/system";
 import classNames from "classnames";
-import { HTMLProps, ReactNode, useMemo } from "react";
+import { forwardRef, HTMLProps, ReactNode, useMemo } from "react";
 
 import { ProxyImg } from "@/Components/ProxyImg";
 import { defaultAvatar, getDisplayName } from "@/Utils";
@@ -17,18 +17,13 @@ interface AvatarProps {
   className?: string;
 }
 
-const Avatar = ({
-  pubkey,
-  user,
-  size = 48,
-  onClick,
-  image,
-  imageOverlay,
-  icons,
-  className,
-  showTitle = true,
-  ...others
-}: AvatarProps & Omit<HTMLProps<HTMLDivElement>, "onClick" | "style" | "className">) => {
+const Avatar = forwardRef<
+  HTMLDivElement,
+  AvatarProps & Omit<HTMLProps<HTMLDivElement>, "onClick" | "style" | "className">
+>(function (
+  { pubkey, user, size = 48, onClick, image, imageOverlay, icons, className, showTitle = true, children, ...others },
+  ref,
+) {
   const defaultImg = defaultAvatar(pubkey);
   const url = useMemo(() => {
     if ((image?.length ?? 0) > 0) return image;
@@ -47,11 +42,12 @@ const Avatar = ({
   const isDefault = url === defaultImg;
   return (
     <div
+      ref={ref}
       onClick={onClick}
       style={style}
       className={classNames(
-        "relative rounded-full aspect-square flex items-center justify-center gap-2 bg-neutral-600",
-        { "outline outline-2 outline-nostr-purple m-[2px]": isDefault },
+        "relative rounded-full aspect-square flex items-center justify-center gap-2 bg-neutral-600 z-1",
+        { "outline-2 outline-highlight m-0.5": isDefault },
         className,
       )}
       data-domain={domain?.toLowerCase()}
@@ -83,8 +79,8 @@ const Avatar = ({
           {imageOverlay}
         </div>
       )}
+      {children}
     </div>
   );
-};
-
+});
 export default Avatar;

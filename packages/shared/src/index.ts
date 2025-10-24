@@ -22,6 +22,4 @@ export enum NostrPrefix {
   Event = "nevent",
   Relay = "nrelay",
   Address = "naddr",
-  Req = "nreq",
-  Chat17 = "nchat17",
 }

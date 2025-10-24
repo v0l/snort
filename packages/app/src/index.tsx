@@ -1,9 +1,8 @@
 import "./index.css";
-import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
 
 import { unixNow, unixNowMs } from "@snort/shared";
-import { EventBuilder, NostrSystem } from "@snort/system";
+import { EventBuilder } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { lazy, StrictMode, Suspense } from "react";
 import * as ReactDOM from "react-dom/client";
@@ -26,7 +25,7 @@ import MessagesPage from "@/Pages/Messages/MessagesPage";
 import NostrAddressPage from "@/Pages/NostrAddressPage";
 import NostrLinkHandler from "@/Pages/NostrLinkHandler";
 import NotificationsPage from "@/Pages/Notifications/Notifications";
-import { OnboardingRoutes } from "@/Pages/onboarding";
+import { OnboardingRoutes } from "@/Pages/onboarding/routes";
 import ProfilePage from "@/Pages/Profile/ProfilePage";
 import { RootRoutes } from "@/Pages/Root/RootRoutes";
 import SearchPage from "@/Pages/SearchPage";
@@ -69,7 +68,7 @@ async function initSite() {
       const start = unixNowMs();
       await System.PreloadSocialGraph(login.state.follows, login.publicKey);
       console.debug(
-        `Social graph loaded in ${(unixNowMs() - start).toFixed(2)}ms`,
+        `Social graph loaded in ${(unixNowMs() - start).toFixed(3)}ms`,
         System.config.socialGraphInstance.size(),
       );
     });
@@ -84,7 +83,7 @@ async function initSite() {
   });
 
   // cleanup
-  Relay.delete(["REQ", "cleanup", { kinds: [1, 7, 9735], until: unixNow() - Day * 30 }]);
+  Relay.delete(["REQ", "cleanup", { kinds: [1, 6, 7, 9735], until: unixNow() - Day * 30 }]);
 
   return null;
 }
@@ -156,7 +155,7 @@ const mainRoutes = [
     path: "/wallet/receive",
     element: <WalletReceivePage />,
   },
-  ...OnboardingRoutes,
+  OnboardingRoutes,
   ...SettingsRoutes,
 ] as Array<RouteObject>;
 

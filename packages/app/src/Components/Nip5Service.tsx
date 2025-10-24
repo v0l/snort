@@ -274,7 +274,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
                 {...messages.Sats}
                 values={{ n: formatShort(unwrap(availabilityResponse.quote?.price)) }}
               />
-              <rounded-lg />
+              <hr />
               <small>{availabilityResponse.quote?.data.type}</small>
             </div>
           )}

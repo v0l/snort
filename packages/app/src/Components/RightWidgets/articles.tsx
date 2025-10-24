@@ -40,7 +40,7 @@ export default function LatestArticlesWidget() {
           className="relative rounded-xl overflow-hidden w-full aspect-video"
           state={selected}>
           {image ? (
-            <ProxyImg src={image} className="absolute w-full h-full object-fit" />
+            <ProxyImg src={image} className="absolute w-full h-full object-cover object-center" />
           ) : (
             <div className="absolute w-full h-full object-fit bg-neutral-800"></div>
           )}

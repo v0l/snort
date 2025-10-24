@@ -63,16 +63,11 @@ export function ZapModalInput(props: {
     return (
       <div className="grid grid-cols-4 gap-2">
         {filteredAmounts.map(([k, v]) => {
-          const isSelected = amount !== Number(k);
           return (
             <span
-              className={classNames(
-                "rounded-full text-center text-white light:text-black font-medium py-1 cursor-pointer",
-                {
-                  "bg-neutral-800 light:bg-neutral-300": !isSelected,
-                  "bg-neutral-600 light:bg-neutral-400": isSelected,
-                },
-              )}
+              className={classNames("text-center font-medium py-1 cursor-pointer layer-2-hover rounded-full", {
+                "opacity-30": amount !== Number(k),
+              })}
               key={k}
               onClick={() => setAmount(Number(k))}>
               {v}&nbsp;

@@ -145,7 +145,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
           return (
             <div className="flex gap-4 p-2 hover:bg-neutral-800 rounded-xl items-center" key={a.timestamp}>
               <div>
-                <div className="rounded-full aspect-square p-2 bg-[--gray-dark]">
+                <div className="rounded-full aspect-square p-2 bg-layer-1">
                   <Icon
                     name="arrow-up-right"
                     className={classNames(dirClassname, {
@@ -222,7 +222,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
 
     return (
       <>
-        <div className="flex flex-col items-center px-6 py-4 bg-[--gray-ultradark] rounded-2xl gap-1">
+        <div className="flex flex-col items-center px-6 py-4 bg-layer-1 rounded-2xl gap-1">
           {walletBalance()}
           <div className="text-neutral-400">
             <FormattedMessage

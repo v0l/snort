@@ -30,6 +30,14 @@ export interface NotePropsOptions {
   showMediaSpotlight?: boolean;
   longFormPreview?: boolean;
   truncate?: boolean;
+  threadLines?: {
+    /** The inset value from the left side of the note */
+    inset: string;
+    /** Renders the line joining to the previous note */
+    topLine?: boolean;
+    /** Renders the line joining to the next note */
+    bottomLine?: boolean;
+  };
 }
 
 export interface NoteProps {
@@ -40,10 +48,14 @@ export interface NoteProps {
   onClick?: (e: TaggedNostrEvent) => void;
   depth?: number;
   highlightText?: string;
-  threadChains?: Map<string, Array<NostrEvent>>;
+  threadChains?: Map<string, Array<string>>;
   context?: ReactNode;
   options?: NotePropsOptions;
   waitUntilInView?: boolean;
+  /**
+   * Special classname to apply to the note text and footer
+   */
+  inset?: string;
 }
 
 export default function EventComponent(props: NoteProps) {

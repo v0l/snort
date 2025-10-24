@@ -68,6 +68,6 @@ export default function useFileUpload(privKey?: string) {
     const random = randomSample(servers, 1)[0];
     return new Blossom(random, pub);
   } else if (pub) {
-    return new Blossom("https://blossom.build", pub);
+    return new Blossom("https://blossom.band", pub);
   }
 }

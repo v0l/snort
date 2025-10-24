@@ -1,7 +1,6 @@
 import { Nip7Signer, Nip55Signer, NotEncrypted } from "@snort/system";
-import { SnortContext } from "@snort/system-react";
 import classNames from "classnames";
-import { FormEvent, useContext, useState } from "react";
+import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -9,15 +8,13 @@ import AsyncButton from "@/Components/Button/AsyncButton";
 import Icon from "@/Components/Icons/Icon";
 import useLoginHandler from "@/Hooks/useLoginHandler";
 import { trackEvent } from "@/Utils";
-import { generateNewLogin, generateNewLoginKeys, LoginSessionType, LoginStore } from "@/Utils/Login";
+import { LoginSessionType, LoginStore } from "@/Utils/Login";
 
-import { NewUserState } from ".";
-
-const NSEC_NPUB_REGEX = /(nsec1|npub1)[a-zA-Z0-9]{20,65}/gi;
+import { Bech32Regex } from "@snort/shared";
 
 const signer = new Nip55Signer();
 
-export function SignIn() {
+export default function SignIn() {
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
   const [key, setKey] = useState("");
@@ -71,7 +68,7 @@ export function SignIn() {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    if (val.match(NSEC_NPUB_REGEX)) {
+    if (val.match(Bech32Regex)) {
       doLogin(val);
     } else {
       setKey(val);
@@ -137,83 +134,6 @@ export function SignIn() {
         </Link>
         <AsyncButton className="secondary" onClick={() => navigate("/login/sign-up")}>
           <FormattedMessage defaultMessage="Sign Up" />
-        </AsyncButton>
-      </div>
-    </div>
-  );
-}
-
-export function SignUp() {
-  const { formatMessage } = useIntl();
-  const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const system = useContext(SnortContext);
-
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (CONFIG.signUp.quickStart) {
-      return generateNewLogin(await generateNewLoginKeys(), system, key => Promise.resolve(new NotEncrypted(key)), {
-        name,
-      }).then(() => {
-        trackEvent("Login", { newAccount: true });
-        navigate("/trending/notes");
-      });
-    }
-    navigate("/login/sign-up/profile", {
-      state: {
-        name: name,
-      } as NewUserState,
-    });
-  };
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    if (val.match(NSEC_NPUB_REGEX)) {
-      e.preventDefault();
-    } else {
-      setName(val);
-    }
-  };
-
-  return (
-    <div className="flex flex-col gap-6">
-      <img src={CONFIG.icon} width={48} height={48} className="rounded-lg mr-auto ml-auto" />
-      <div className="flex flex-col gap-4 items-center">
-        <h1>
-          <FormattedMessage defaultMessage="Sign Up" />
-        </h1>
-        <FormattedMessage defaultMessage="What should we call you?" />
-      </div>
-      <form onSubmit={onSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          autoFocus={true}
-          placeholder={formatMessage({
-            defaultMessage: "Name or nym",
-            id: "aHje0o",
-          })}
-          value={name}
-          onChange={onChange}
-          className="new-username"
-        />
-        <AsyncButton className="primary" disabled={name.length === 0} onClick={onSubmit}>
-          {CONFIG.signUp.quickStart ? (
-            <FormattedMessage
-              description="Button text after entering username in quick signup"
-              defaultMessage="Go"
-              id="0zASjL"
-            />
-          ) : (
-            <FormattedMessage defaultMessage="Next" />
-          )}
-        </AsyncButton>
-      </form>
-      <div className="flex flex-col gap-4 items-center">
-        <Link to={"/login"}>
-          <FormattedMessage defaultMessage="Already have an account?" />
-        </Link>
-        <AsyncButton className="secondary" onClick={() => navigate("/login")}>
-          <FormattedMessage defaultMessage="Sign In" />
         </AsyncButton>
       </div>
     </div>

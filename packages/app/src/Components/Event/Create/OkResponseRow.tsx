@@ -17,7 +17,8 @@ export function OkResponseRow({ rsp, close }: { rsp: OkResponse; close: () => vo
   const login = useLogin();
 
   async function removeRelayFromResult(r: OkResponse) {
-    await login.state.removeRelay(unwrap(sanitizeRelayUrl(r.relay)), true);
+    login.state.removeRelay(unwrap(sanitizeRelayUrl(r.relay)));
+    await login.state.saveRelays();
     close();
   }
 

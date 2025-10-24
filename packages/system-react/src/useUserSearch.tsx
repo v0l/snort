@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { tryParseNostrLink } from "@snort/system";
 import { fetchNip05Pubkey, NostrPrefix } from "@snort/shared";
 import { SnortContext } from "./context";
@@ -7,31 +7,34 @@ export function useUserSearch() {
   const system = useContext(SnortContext);
   const cache = system.profileLoader.cache;
 
-  async function search(input: string): Promise<Array<string>> {
-    // try exact match first
-    if (input.length === 64 && [...input].every(c => !isNaN(parseInt(c, 16)))) {
-      return [input];
-    }
-
-    if (input.startsWith(NostrPrefix.PublicKey) || input.startsWith(NostrPrefix.Profile)) {
-      const link = tryParseNostrLink(input);
-      if (link) {
-        return [link.id];
+  const search = useCallback(
+    async (input: string): Promise<Array<string>> => {
+      // try exact match first
+      if (input.length === 64 && [...input].every(c => !isNaN(parseInt(c, 16)))) {
+        return [input];
       }
-    }
 
-    if (input.includes("@")) {
-      const [name, domain] = input.split("@");
-      const pk = await fetchNip05Pubkey(name, domain);
-      if (pk) {
-        return [pk];
+      if (input.startsWith(NostrPrefix.PublicKey) || input.startsWith(NostrPrefix.Profile)) {
+        const link = tryParseNostrLink(input);
+        if (link) {
+          return [link.id];
+        }
       }
-    }
 
-    // search cache
-    const cacheResults = await cache.search(input);
-    return cacheResults.map(v => v.pubkey);
-  }
+      if (input.includes("@")) {
+        const [name, domain] = input.split("@");
+        const pk = await fetchNip05Pubkey(name, domain);
+        if (pk) {
+          return [pk];
+        }
+      }
+
+      // search cache
+      const cacheResults = await cache.search(input);
+      return cacheResults.map(v => v.pubkey);
+    },
+    [cache],
+  );
 
   return search;
 }

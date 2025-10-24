@@ -15,7 +15,7 @@ export function SettingsMenuComponent({ menu }: { menu: SettingsMenuItems }) {
               to={path || "#"}
               onClick={action}
               key={path || index}
-              className={classNames("px-2.5 py-1.5 flex justify-between items-center border border-neutral-700", {
+              className={classNames("px-2.5 py-1.5 flex justify-between items-center border", {
                 "rounded-t-xl": index === 0,
                 "rounded-b-xl": index === group.items.length - 1,
                 "border-t-0": index !== 0,

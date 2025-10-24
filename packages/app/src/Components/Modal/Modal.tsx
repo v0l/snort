@@ -77,7 +77,7 @@ export default function Modal(props: ModalProps) {
       <div
         className={
           props.bodyClassName ||
-          "bg-neutral-900 px-3 py-6 rounded-2xl flex flex-col my-auto border border-neutral-800 max-w-full sm:px-6 sm:w-[600px] max-sm:min-w-full light:bg-white"
+          "bg-layer-1 px-3 py-6 rounded-2xl flex flex-col my-auto border max-w-full sm:px-6 sm:w-[600px] max-sm:min-w-full"
         }
         onMouseDown={e => e.stopPropagation()}
         onClick={e => {

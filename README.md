@@ -50,35 +50,6 @@ Snort supports the following NIP's:
 - [x] NIP-96: HTTP File Storage Integration (Draft)
 - [x] NIP-98: HTTP Auth
 
-### Running
-
-This repository is a yarn workspace. To install dependencies, run `yarn` from the project root.
-
-To run the application, use
-
-```
-$ yarn start
-```
-
-To build the application and system packages, use
-
-```
-$ yarn build
-```
-
-Tauri desktop application:
-
-```
-# install dependencies
-yarn
-
-# develop
-yarn tauri dev
-
-# build
-yarn tauri build
-```
-
 ### Translations
 
 [![Crowdin](https://badges.crowdin.net/snort/localized.svg)](https://crowdin.com/project/snort)
@@ -88,7 +59,7 @@ Translations are managed on [Crowdin](https://crowdin.com/project/snort)
 To extract translations run:
 
 ```bash
-yarn pre:commit
+bun run pre:commit
 ```
 
 This will create the source file `packages/app/src/translations/en.json`

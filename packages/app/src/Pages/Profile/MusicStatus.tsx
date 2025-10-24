@@ -18,7 +18,7 @@ export const MusicStatus = ({ id }: { id: string }) => {
   );
 
   return link ? (
-    <a href={link} rel="noopener noreferrer" target="_blank" className="ext">
+    <a href={link} rel="noopener noreferrer" target="_blank" className="text-highlight no-underline hover:underline">
       {content}
     </a>
   ) : (

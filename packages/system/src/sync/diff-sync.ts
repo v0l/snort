@@ -1,5 +1,13 @@
 import { EventEmitter } from "eventemitter3";
-import { EventBuilder, EventSigner, NostrEvent, NostrLink, NotSignedNostrEvent, SystemInterface, Tag } from "..";
+import {
+  EventBuilder,
+  EventSigner,
+  NostrEvent,
+  NostrLink,
+  NotSignedNostrEvent,
+  decryptSigner,
+  SystemInterface,
+} from "..";
 import { SafeSync, SafeSyncEvents } from "./safe-sync";
 import debug from "debug";
 
@@ -116,7 +124,7 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
     const next = this.#nextEvent(content);
     // content is populated as tags, encrypt it
     if (next.content.length > 0 && !content) {
-      next.content = await signer.nip4Encrypt(next.content, await signer.getPubKey());
+      next.content = await signer.nip44Encrypt(next.content, await signer.getPubKey());
     }
     await this.#sync.update(next, signer, system, !isNew);
     await this.#afterSync(signer);
@@ -124,7 +132,7 @@ export class DiffSyncTags extends EventEmitter<SafeSyncEvents> {
 
   async #afterSync(signer: EventSigner | undefined) {
     if (this.#sync.value?.content && this.contentEncrypted && signer) {
-      const decrypted = await signer.nip4Decrypt(this.#sync.value.content, await signer.getPubKey());
+      const decrypted = await decryptSigner(this.#sync.value.content, signer);
       this.#decryptedContent = decrypted;
       this.emit("change");
     }

@@ -99,19 +99,23 @@ export function updateSession(id: string, fn: (state: LoginSession) => void) {
   }
 }
 
-export async function setAppData(state: LoginSession, data: SnortAppData) {
-  const pub = LoginStore.getPublisher(state.id);
-  if (!pub) return;
-
-  await state.state.setAppData(data);
+export function setAppData(state: LoginSession, data: SnortAppData) {
+  state.state.setAppData(data);
   LoginStore.updateSession(state);
 }
 
-export async function updateAppData(id: string, fn: (data: SnortAppData) => SnortAppData) {
+export function updateAppData(id: string, fn: (data: SnortAppData) => SnortAppData) {
   const session = LoginStore.get(id);
   if (session?.state.appdata) {
     const next = fn(session.state.appdata);
-    await setAppData(session, next);
+    setAppData(session, next);
+  }
+}
+
+export async function saveAppData(id: string) {
+  const session = LoginStore.get(id);
+  if (session?.state.appdata) {
+    await session.state.saveAppData();
   }
 }
 

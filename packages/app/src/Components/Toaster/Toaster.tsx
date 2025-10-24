@@ -53,7 +53,7 @@ export default function Toaster() {
   return createPortal(
     <div className="fixed bottom-0.5 left-0.5 flex flex-col-reverse z-[9999] gap-1">
       {toast.map(a => (
-        <div className="px-3 py-2 rounded-lg border border-neutral-600 flex bg-neutral-800 gap-2 fade-in" key={a.id}>
+        <div className="px-3 py-2 rounded-lg border gap-2 fade-in" key={a.id}>
           {a.icon && <Icon name={a.icon} />}
           {typeof a.element === "function" ? a.element(() => Toastore.remove(a.id)) : a.element}
         </div>

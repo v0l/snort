@@ -22,15 +22,13 @@ export default function NoteQuote({ link, depth }: { link: NostrLink; depth?: nu
   const ev = useEventFeed(tryLink);
   if (!ev)
     return (
-      <div className="note-quote flex flex-col gap-2">
+      <div className="layer-2 flex flex-col gap-2">
         <Spinner />
-        <div>
-          <FormattedMessage
-            defaultMessage="Looking for: {noteId}"
-            values={{
-              noteId: <Copy text={tryLink.encode()} />,
-            }}
-          />
+        <div className="flex items-center gap-2 leading-0">
+          <span>
+            <FormattedMessage defaultMessage="Looking for: " />
+          </span>
+          <Copy text={tryLink.encode()} />
         </div>
         <div className="flex gap-2">
           <input
@@ -63,5 +61,9 @@ export default function NoteQuote({ link, depth }: { link: NostrLink; depth?: nu
         </div>
       </div>
     );
-  return <Note data={ev} className="note-quote" depth={(depth ?? 0) + 1} options={options} />;
+  return (
+    <div className="rounded-lg border">
+      <Note data={ev} depth={(depth ?? 0) + 1} options={options} />
+    </div>
+  );
 }

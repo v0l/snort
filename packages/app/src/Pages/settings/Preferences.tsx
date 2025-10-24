@@ -13,20 +13,9 @@ import messages from "./messages";
 
 const PreferencesPage = () => {
   const { formatMessage } = useIntl();
-  const { preferences, update: updatePerf } = useAllPreferences();
-  const [pref, setPref] = useState<UserPreferences>(preferences);
+  const { preferences: pref, update: setPref, save } = useAllPreferences();
   const [error, setError] = useState("");
   const { lang } = useLocale();
-
-  async function update(obj: UserPreferences) {
-    try {
-      setError("");
-      await updatePerf(obj);
-    } catch (e) {
-      console.error(e);
-      setError(formatMessage({ defaultMessage: "Failed to update, please try again", id: "OoZgbB" }));
-    }
-  }
 
   function row(title: ReactNode, description: ReactNode | undefined, control: ReactNode) {
     return (
@@ -45,7 +34,7 @@ const PreferencesPage = () => {
       <h3>
         <FormattedMessage defaultMessage="Preferences" />
       </h3>
-      <AsyncButton onClick={() => update(pref)}>
+      <AsyncButton onClick={() => save()}>
         <FormattedMessage defaultMessage="Save" />
       </AsyncButton>
       {error && <b className="warning">{error}</b>}
@@ -392,7 +381,7 @@ const PreferencesPage = () => {
         />,
       )}
 
-      <AsyncButton onClick={() => update(pref)}>
+      <AsyncButton onClick={() => save()}>
         <FormattedMessage defaultMessage="Save" />
       </AsyncButton>
       {error && <b className="error">{error}</b>}

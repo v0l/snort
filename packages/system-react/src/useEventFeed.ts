@@ -13,11 +13,20 @@ export function useEventFeed(link: NostrLink) {
 }
 
 export function useEventsFeed(id: string, links: Array<NostrLink>) {
+  const linksKey = useMemo(
+    () =>
+      links
+        .map(l => l.encode())
+        .sort()
+        .join(","),
+    [links],
+  );
+
   const sub = useMemo(() => {
     const b = new RequestBuilder(`events:${id}`);
     links.forEach(v => b.withFilter().link(v));
     return b;
-  }, [id, links]);
+  }, [id, linksKey]);
 
   return useRequestBuilder(sub);
 }

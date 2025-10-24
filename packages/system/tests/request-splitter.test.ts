@@ -1,5 +1,5 @@
 import { ReqFilter } from "../src";
-import { describe, expect } from "@jest/globals";
+import { describe, expect, test } from "bun:test";
 import { diffFilters } from "../src/query-optimizer/request-splitter";
 import { expandFilter } from "../src/query-optimizer/request-expander";
 

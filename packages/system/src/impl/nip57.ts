@@ -1,5 +1,5 @@
 import debug from "debug";
-import { LRUCache } from "lru-cache";
+import { LRUCache } from "typescript-lru-cache";
 import { decodeInvoice, InvoiceDetails } from "@snort/shared";
 import { NostrEvent } from "../nostr";
 import { findTag } from "../utils";
@@ -7,7 +7,11 @@ import { NostrLink } from "../nostr-link";
 import { Nip10 } from "./nip10";
 
 const Log = debug("zaps");
-const ParsedZapCache = new LRUCache<string, ParsedZap>({ max: 1000 });
+
+/**
+ * Internal cache of parsed zap events
+ */
+const ParsedZapCache = new LRUCache<string, ParsedZap>({ maxSize: 1000 });
 
 function getInvoice(zap: NostrEvent): InvoiceDetails | undefined {
   const bolt11 = findTag(zap, "bolt11");

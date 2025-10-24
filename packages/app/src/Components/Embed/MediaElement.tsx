@@ -130,7 +130,7 @@ export function MediaElement(props: MediaElementProps) {
         onClick={e => e.stopPropagation()}
         target="_blank"
         rel="noreferrer"
-        className="ext">
+        className="text-highlight no-underline hover:underline">
         {props.url}
       </a>
     );

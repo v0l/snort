@@ -111,7 +111,7 @@ const DonatePage = () => {
         <FormattedMessage defaultMessage="Donate" />
       </h3>
       <div className="flex flex-col gap-3">
-        <div className="border border-neutral-800 light:border-neutral-200 rounded-lg px-3 py-2">
+        <div className="border rounded-lg px-3 py-2">
           <div className="flex items-center justify-between">
             <FormattedMessage defaultMessage="Lightning Donation" />
             <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL}>
@@ -128,7 +128,7 @@ const DonatePage = () => {
             </small>
           )}
         </div>
-        <div className="border border-neutral-800 light:border-neutral-200 rounded-lg px-3 py-2">
+        <div className="border rounded-lg px-3 py-2">
           <div className="flex items-center justify-between">
             <FormattedMessage defaultMessage="On-chain Donation" />
             <AsyncButton type="button" onClick={getOnChainAddress}>

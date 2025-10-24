@@ -24,6 +24,7 @@ export interface TextProps {
   tags: Array<Array<string>>;
   disableMedia?: boolean;
   disableMediaSpotlight?: boolean;
+  disableGallery?: boolean;
   disableLinkPreview?: boolean;
   depth?: number;
   truncate?: number;
@@ -38,6 +39,7 @@ export default function Text({
   tags,
   creator,
   disableMedia,
+  disableGallery,
   depth,
   disableMediaSpotlight,
   disableLinkPreview,
@@ -75,6 +77,7 @@ export default function Text({
     );
   };
 
+  const textElementClasses = "text-ellipsis whitespace-pre-wrap break-anywhere";
   const renderContent = () => {
     let lenCtr = 0;
 
@@ -83,18 +86,26 @@ export default function Text({
       const element = elements[i];
 
       if (truncate) {
-        if (lenCtr + element.content.length > truncate) {
-          lenCtr += element.content.length;
-          chunks.push(<div className="text-frag">{element.content.slice(0, truncate - lenCtr)}...</div>);
+        // If we've exceeded the limit after a link, stop rendering
+        if (lenCtr > truncate) {
           return chunks;
-        } else {
-          lenCtr += element.content.length;
         }
+
+        // Return truncated text if on truncation boundry
+        if (element.type === "text" && lenCtr + element.content.length > truncate) {
+          chunks.push(<span className={textElementClasses}>{element.content.slice(0, truncate - lenCtr)}...</span>);
+          return chunks;
+        }
+
+        lenCtr += element.content.length;
       }
 
       if (element.type === "media" && element.mimeType?.startsWith("image")) {
         if (disableMedia ?? false) {
           chunks.push(<DisableMedia content={element.content} />);
+        } else if (disableGallery ?? false) {
+          // just insert media directly when gallery is disabled
+          chunks.push(<RevealMediaInstance content={element.content} data={element.data} size={baseImageWidth} />);
         } else {
           const galleryImages: ParsedFragment[] = [element];
           // If the current element is of type media and mimeType starts with image,
@@ -198,15 +209,15 @@ export default function Text({
       if (element.type === "code_block") {
         chunks.push(<pre className="m-0 overflow-scroll">{element.content}</pre>);
       }
-      if (element.type === "text") {
+      if (element.type === "text" && element.content.trim().length > 0) {
         chunks.push(
-          <div className="text-frag text-ellipsis whitespace-pre-wrap inline break-anywhere">
+          <span>
             {highlightText ? (
               <HighlightedText content={element.content} textToHighlight={highlightText} />
             ) : (
               element.content
             )}
-          </div>,
+          </span>,
         );
       }
     }
@@ -214,7 +225,7 @@ export default function Text({
   };
 
   return (
-    <div dir="auto" className={classNames("text text-base leading-6", className)} onClick={onClick}>
+    <div dir="auto" className={classNames(textElementClasses, className)} onClick={onClick}>
       {renderContent()}
       {showSpotlight && <SpotlightMediaModal media={images} onClose={() => setShowSpotlight(false)} idx={imageIdx} />}
     </div>

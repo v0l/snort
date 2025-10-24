@@ -16,6 +16,7 @@ import { formatShort } from "@/Utils/Number";
 import { getNotificationContext } from "./getNotificationContext";
 import { NotificationContext } from "./notificationContext";
 import { AvatarGroup } from "@/Components/User/AvatarGroup";
+import { WarningNotice } from "@/Components/WarningNotice/WarningNotice";
 
 export function NotificationGroup({
   evs,
@@ -105,7 +106,7 @@ export function NotificationGroup({
 
   return (
     <div
-      className="flex gap-2 px-2 py-4 cursor-pointer w-full overflow-hidden border-b border-neutral-800 light:border-neutral-300"
+      className="flex gap-2 py-4 pr-4 cursor-pointer w-full overflow-hidden border-b"
       ref={ref}
       onClick={() => {
         if (!context) return;
@@ -117,11 +118,11 @@ export function NotificationGroup({
       }}>
       {inView && (
         <>
-          <div className="flex flex-col gap-2 text-center">
+          <div className="flex flex-col items-center gap-2 w-[64px] min-w-[64px]">
             <Icon name={iconName()} size={24} className={iconName()} />
             <div>{kind === EventKind.ZapReceipt && formatShort(totalZaps)}</div>
           </div>
-          <div className="flex flex-col gap-2 grow">
+          <div className="flex flex-col gap-2 overflow-hidden break-all w-full">
             <div className="flex flex-row justify-between items-center">
               <AvatarGroup
                 ids={wot.sortPubkeys(pubkeys.filter(a => a !== "anon")).slice(0, 12)}
@@ -134,7 +135,7 @@ export function NotificationGroup({
               </div>
             </div>
             {kind !== EventKind.TextNote && (
-              <div className="text-sm font-medium">
+              <div className="font-bold">
                 {actionName(
                   pubkeys.length - 1,
                   firstPubkey === "anon"
@@ -145,6 +146,14 @@ export function NotificationGroup({
             )}
             {window.location.search === "?debug=true" && <pre>{JSON.stringify(evs, undefined, 2)}</pre>}
             {context && <NotificationContext link={context} />}
+            {!context && (
+              <>
+                <WarningNotice>
+                  <FormattedMessage defaultMessage="Invalid notification context" />
+                </WarningNotice>
+                <pre>{JSON.stringify(evs[0], undefined, 2)}</pre>
+              </>
+            )}
           </div>
         </>
       )}

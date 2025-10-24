@@ -36,7 +36,9 @@ export default function useProfileBadges(pubkey?: string) {
     return Object.values(profile).reduce(
       (acc: BadgeAwards, addr) => {
         const [, pubkey, d] = (addr as string).split(":");
-        acc.pubkeys.push(pubkey);
+        if (pubkey) {
+          acc.pubkeys.push(pubkey);
+        }
         if (d?.length > 0) {
           acc.ds.push(d);
         }

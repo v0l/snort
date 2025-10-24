@@ -10,7 +10,7 @@ import { encodeTLV, hexToBech32, NostrPrefix } from "@snort/shared";
 
 export default function ExportKeys() {
   const { publicKey, privateKeyData, generatedEntropy } = useLogin();
-  const copyClass = "p-3 rounded-lg border border-dashed border-[var(--gray-medium)]";
+  const copyClass = "p-3 rounded-lg border border-dashed";
   return (
     <div className="flex flex-col gap-3">
       <div className="text-xl">

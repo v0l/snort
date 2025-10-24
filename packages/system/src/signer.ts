@@ -19,6 +19,14 @@ export interface EventSigner {
   get supports(): Array<SignerSupports>;
 }
 
+/**
+ * Helper function to decrypt either NIP-04 or NIP-44
+ */
+export async function decryptSigner(content: string, signer: EventSigner, otherKey?: string) {
+  const isNip4 = content.includes("?iv=");
+  return await (isNip4 ? signer.nip4Decrypt : signer.nip44Decrypt)(content, otherKey ?? (await signer.getPubKey()));
+}
+
 export class PrivateKeySigner implements EventSigner {
   #publicKey: string;
   #privateKey: string;

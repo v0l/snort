@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-const useCachedFetch = <T, R>(url: string, storageKey: string, dataProcessor?: (data: T) => R) => {
+const useCachedFetch = <T, R>(url: string, storageKey: string, dataProcessor?: (data: T) => R, expire = 600) => {
   const cachedData = useMemo<{ data: R; timestamp: number }>(() => {
     const cached = localStorage.getItem(storageKey);
     return cached ? JSON.parse(cached) : null;
@@ -35,7 +35,7 @@ const useCachedFetch = <T, R>(url: string, storageKey: string, dataProcessor?: (
       }
     };
 
-    if (!cachedData || (new Date().getTime() - cachedData.timestamp) / 1000 / 60 >= 15) {
+    if (!cachedData || (new Date().getTime() - cachedData.timestamp) / 1000 >= expire) {
       fetchData();
     }
   }, [url, storageKey]);

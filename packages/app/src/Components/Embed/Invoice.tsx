@@ -60,7 +60,7 @@ export default function Invoice(props: InvoiceProps) {
 
   return (
     <>
-      <div className="border border-neutral-600 rounded-2xl p-6 flex-col items-start relative bg-[image:var(--invoice-gradient)]">
+      <div className="border rounded-2xl p-6 flex-col items-start relative bg-[image:var(--invoice-gradient)]">
         <div>{header()}</div>
 
         <p className="font-normal text-[37px] leading-[45px] mb-4">
