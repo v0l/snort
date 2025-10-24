@@ -9,7 +9,7 @@
   "author": "Kieran",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && bunx --bun tsc"
   },
   "files": [
     "src",

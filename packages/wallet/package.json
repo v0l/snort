@@ -10,8 +10,7 @@
   "author": "v0l",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc",
-    "test": "jest --runInBand"
+    "build": "rm -rf dist && bunx --bun tsc"
   },
   "files": [
     "src",

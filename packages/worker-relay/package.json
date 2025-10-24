@@ -10,8 +10,8 @@
   "author": "Kieran",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc && bun run build:esm",
-    "build:esm": "esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs --loader:.wasm=copy --asset-names=\"[name]\""
+    "build": "rm -rf dist && bunx --bun tsc && bun run build:esm",
+    "build:esm": "bunx --bun esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs --loader:.wasm=copy --asset-names=\"[name]\""
   },
   "files": [
     "src",
