@@ -62,7 +62,7 @@ export default function DM(props: DMProps) {
         className={
           isMe
             ? "p-3 dm-gradient rounded-tl-lg rounded-tr-lg rounded-bl-lg rounded-rounded-lg-none"
-            : "p-3 bg-neutral-600-300 rounded-tl-lg rounded-tr-lg rounded-rounded-lg-lg rounded-bl-none other"
+            : "p-3 bg-neutral-300 rounded-tl-lg rounded-tr-lg rounded-br-none rounded-bl-none other"
         }>
         {sender()}
         {content ? (

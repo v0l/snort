@@ -216,7 +216,7 @@ export function DiscoverRelays() {
                     <AsyncButton
                       className="!py-1 mb-1"
                       onClick={async () => {
-                        await state.addRelay(a.addr, { read: true, write: true });
+                        state.addRelay(a.addr, { read: true, write: true });
                       }}>
                       <FormattedMessage defaultMessage="Add" />
                     </AsyncButton>
