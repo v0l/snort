@@ -16,7 +16,7 @@ export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
   const link = NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix);
   return (
     <>
-      <div className="flex mb-2.5 card">
+      <div className="flex mb-2.5 layer-1">
         <ProxyImg src={cover?.[1] ?? ""} size={100} className="mr-2.5" />
         <div className="flex flex-col">
           <div>

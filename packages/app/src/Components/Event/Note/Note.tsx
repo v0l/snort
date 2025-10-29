@@ -3,17 +3,14 @@ import { WorkerRelayInterface } from "@snort/worker-relay";
 import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { LRUCache } from "typescript-lru-cache";
 
 import { Relay } from "@/Cache";
 import NoteHeader from "@/Components/Event/Note/NoteHeader";
-import NoteQuote from "@/Components/Event/Note/NoteQuote";
 import { NoteText } from "@/Components/Event/Note/NoteText";
 import { TranslationInfo } from "@/Components/Event/Note/TranslationInfo";
 import { NoteTranslation } from "@/Components/Event/Note/types";
-import Username from "@/Components/User/Username";
 import useModeration from "@/Hooks/useModeration";
 
 import { NoteProps, NotePropsOptions } from "../EventComponent";
@@ -72,7 +69,7 @@ export function Note(props: NoteProps) {
   const goToEvent = useGoToEvent(props, optionsMerged);
 
   if (!canRenderAsTextNote.includes(ev.kind)) {
-    return handleNonTextNote(ev);
+    return <NoteAppHandler ev={ev} />;
   }
 
   function content() {
@@ -182,31 +179,4 @@ function useGoToEvent(props: NoteProps, options: NotePropsOptions) {
     },
     [navigate, props, options],
   );
-}
-
-function Reaction({ ev }: { ev: TaggedNostrEvent }) {
-  const reactedToTag = ev.tags.findLast(tag => tag[0] === "e");
-  const pTag = ev.tags.findLast(tag => tag[0] === "p");
-  if (!reactedToTag?.length) {
-    return null;
-  }
-  const link = NostrLink.fromTag(reactedToTag, pTag?.[1]);
-  return (
-    <div className="note card">
-      <div className="text-neutral-500 font-bold">
-        <Username pubkey={ev.pubkey} onLinkVisit={() => {}} />
-        <span> </span>
-        <FormattedMessage defaultMessage="liked" />
-      </div>
-      <NoteQuote link={link} />
-    </div>
-  );
-}
-
-function handleNonTextNote(ev: TaggedNostrEvent) {
-  if (ev.kind === EventKind.Reaction) {
-    return <Reaction ev={ev} />;
-  } else if (ev) {
-    return <NoteAppHandler ev={ev} />;
-  }
 }

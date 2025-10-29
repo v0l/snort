@@ -1,8 +1,6 @@
-import "./Text.css";
-
-import { IMeta, ParsedFragment } from "@snort/system";
+import { ParsedFragment, isNostrLink } from "@snort/system";
 import classNames from "classnames";
-import { lazy, ReactNode, Suspense, useState } from "react";
+import React, { lazy, ReactNode, Suspense, useContext, useState } from "react";
 
 const CashuNuts = lazy(async () => await import("@/Components/Embed/CashuNuts"));
 import Hashtag from "@/Components/Embed/Hashtag";
@@ -12,10 +10,12 @@ import { baseImageWidth, GRID_GAP, gridConfigMap, ROW_HEIGHT } from "@/Component
 import DisableMedia from "@/Components/Text/DisableMedia";
 import { useTextTransformer } from "@/Hooks/useTextTransformCache";
 
-import RevealMedia from "../Event/RevealMedia";
+import RevealMedia, { RevealMediaProps } from "../Event/RevealMedia";
 import { ProxyImg } from "../ProxyImg";
-import { SpotlightMediaModal } from "../Spotlight/SpotlightMedia";
 import HighlightedText from "./HighlightedText";
+import Mention from "../Embed/Mention";
+import { SpotlightContext } from "../Spotlight/SpotlightMedia";
+import NostrLink from "../Embed/NostrLink";
 
 export interface TextProps {
   id: string;
@@ -48,36 +48,16 @@ export default function Text({
   highlightText,
   onClick,
 }: TextProps) {
-  const [showSpotlight, setShowSpotlight] = useState(false);
-  const [imageIdx, setImageIdx] = useState(0);
-
+  const spotlight = useContext(SpotlightContext);
   const elements = useTextTransformer(id, content, tags);
+
   const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content);
-
-  const RevealMediaInstance = ({ content, data, size }: { content: string; data?: object; size?: number }) => {
-    const imeta = data as IMeta | undefined;
-
-    return (
-      <RevealMedia
-        key={content}
-        link={content}
-        creator={creator}
-        meta={imeta}
-        size={size}
-        onMediaClick={e => {
-          if (!disableMediaSpotlight) {
-            e.stopPropagation();
-            e.preventDefault();
-            setShowSpotlight(true);
-            const selected = images.findIndex(b => b === content);
-            setImageIdx(selected === -1 ? 0 : selected);
-          }
-        }}
-      />
-    );
+  const onMediaClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    e.stopPropagation();
+    spotlight?.showImages(images);
   };
 
-  const textElementClasses = "text-ellipsis whitespace-pre-wrap break-anywhere";
+  const textElementClasses = "whitespace-pre-wrap wrap-break-word";
   const renderContent = () => {
     let lenCtr = 0;
 
@@ -100,125 +80,103 @@ export default function Text({
         lenCtr += element.content.length;
       }
 
-      if (element.type === "media" && element.mimeType?.startsWith("image")) {
-        if (disableMedia ?? false) {
-          chunks.push(<DisableMedia content={element.content} />);
-        } else if (disableGallery ?? false) {
-          // just insert media directly when gallery is disabled
-          chunks.push(<RevealMediaInstance content={element.content} data={element.data} size={baseImageWidth} />);
-        } else {
-          const galleryImages: ParsedFragment[] = [element];
-          // If the current element is of type media and mimeType starts with image,
-          // we verify if the next elements are of the same type and mimeType and push to the galleryImages
-          // Whenever one of the next elements is not longer of the type we are looking for, we break the loop
-          for (let j = i; j < elements.length; j++) {
-            const nextElement = elements[j + 1];
-
-            if (nextElement && nextElement.type === "media" && nextElement.mimeType?.startsWith("image")) {
-              galleryImages.push(nextElement);
-              i++;
-            } else if (nextElement && nextElement.type === "text" && nextElement.content.trim().length === 0) {
-              i++; //skip over empty space text
+      switch (element.type) {
+        case "media": {
+          // image element
+          if (element.mimeType?.startsWith("image")) {
+            if (disableMedia ?? false) {
+              chunks.push(<DisableMedia content={element.content} />);
             } else {
-              break;
+              const elementsGallery = elements.slice(i);
+              const gal = findGallery(elementsGallery);
+              if (gal && !(disableGallery ?? false)) {
+                chunks.push(buildGallery(elementsGallery, onMediaClick, creator));
+              } else {
+                chunks.push(
+                  <RevealMedia
+                    link={element.content}
+                    meta={element.data}
+                    size={baseImageWidth}
+                    creator={creator}
+                    onMediaClick={onMediaClick}
+                  />,
+                );
+              }
+            }
+            continue;
+          }
+
+          // audo / video element
+          if (element.mimeType?.startsWith("audio") || element.mimeType?.startsWith("video")) {
+            if (disableMedia ?? false) {
+              chunks.push(<DisableMedia content={element.content} />);
+            } else {
+              chunks.push(
+                <RevealMedia
+                  link={element.content}
+                  meta={element.data}
+                  size={baseImageWidth}
+                  creator={creator}
+                  onMediaClick={onMediaClick}
+                />,
+              );
+            }
+            continue;
+          }
+
+          // unknown media (link)
+          chunks.push(<HyperText link={element.content} showLinkPreview={!(disableLinkPreview ?? false)} />);
+          break;
+        }
+        case "invoice": {
+          chunks.push(<Invoice invoice={element.content} />);
+          break;
+        }
+        case "hashtag": {
+          chunks.push(<Hashtag tag={element.content} />);
+          break;
+        }
+        case "cashu": {
+          chunks.push(
+            <Suspense>
+              <CashuNuts token={element.content} />
+            </Suspense>,
+          );
+          break;
+        }
+        case "mention":
+        case "link": {
+          if (disableMedia ?? false) {
+            chunks.push(<DisableMedia content={element.content} />);
+          } else {
+            if (isNostrLink(element.content)) {
+              chunks.push(<NostrLink link={element.content} depth={depth} />);
+            } else {
+              chunks.push(<HyperText link={element.content} showLinkPreview={!(disableLinkPreview ?? false)} />);
             }
           }
-          if (galleryImages.length === 1) {
-            chunks.push(
-              <RevealMediaInstance
-                content={galleryImages[0].content}
-                data={galleryImages[0].data}
-                size={baseImageWidth}
-              />,
-            );
-          } else {
-            // We build a grid layout to render the grouped images
-            const imagesWithGridConfig = galleryImages.map((gi, index) => {
-              const config = gridConfigMap.get(galleryImages.length);
-              let height = ROW_HEIGHT;
-
-              if (config && config[index][1] > 1) {
-                height = config[index][1] * ROW_HEIGHT + GRID_GAP;
-              }
-
-              return {
-                content: gi.content,
-                data: gi.data,
-                gridColumn: config ? config[index][0] : 1,
-                gridRow: config ? config[index][1] : 1,
-                height,
-              };
-            });
-            const size = Math.floor(baseImageWidth / Math.min(4, Math.ceil(Math.sqrt(galleryImages.length))));
-            const gallery = (
-              <div className="gallery -mx-4 md:mx-0 my-2 grid grid-cols-4 gap-0.5 list-none p-0 md:rounded-sm md:overflow-hidden">
-                {imagesWithGridConfig.map(img => (
-                  <div
-                    key={img.content}
-                    className="gallery-item block relative m-0"
-                    style={{
-                      height: `${img.height}px`,
-                      gridColumn: `span ${img.gridColumn}`,
-                      gridRow: `span ${img.gridRow}`,
-                    }}>
-                    <RevealMediaInstance content={img.content} data={img.data} size={size} />
-                  </div>
-                ))}
-              </div>
-            );
-            chunks.push(gallery);
-          }
+          break;
         }
-      }
-
-      if (
-        element.type === "media" &&
-        (element.mimeType?.startsWith("audio") || element.mimeType?.startsWith("video"))
-      ) {
-        if (disableMedia ?? false) {
-          chunks.push(<DisableMedia content={element.content} />);
-        } else {
-          chunks.push(<RevealMediaInstance content={element.content} data={element.data} size={baseImageWidth} />);
+        case "custom_emoji": {
+          chunks.push(<ProxyImg src={element.content} size={15} className="custom-emoji" />);
+          break;
         }
-      }
-      if (element.type === "invoice") {
-        chunks.push(<Invoice invoice={element.content} />);
-      }
-      if (element.type === "hashtag") {
-        chunks.push(<Hashtag tag={element.content} />);
-      }
-      if (element.type === "cashu") {
-        chunks.push(
-          <Suspense>
-            <CashuNuts token={element.content} />
-          </Suspense>,
-        );
-      }
-      if (element.type === "link" || (element.type === "media" && element.mimeType?.startsWith("unknown"))) {
-        if (disableMedia ?? false) {
-          chunks.push(<DisableMedia content={element.content} />);
-        } else {
+        case "code_block": {
+          chunks.push(<pre className="m-0 overflow-scroll">{element.content}</pre>);
+          break;
+        }
+        default: {
           chunks.push(
-            <HyperText link={element.content} depth={depth} showLinkPreview={!(disableLinkPreview ?? false)} />,
+            <>
+              {highlightText ? (
+                <HighlightedText content={element.content} textToHighlight={highlightText} />
+              ) : (
+                element.content
+              )}
+            </>,
           );
+          break;
         }
-      }
-      if (element.type === "custom_emoji") {
-        chunks.push(<ProxyImg src={element.content} size={15} className="custom-emoji" />);
-      }
-      if (element.type === "code_block") {
-        chunks.push(<pre className="m-0 overflow-scroll">{element.content}</pre>);
-      }
-      if (element.type === "text" && element.content.trim().length > 0) {
-        chunks.push(
-          <span>
-            {highlightText ? (
-              <HighlightedText content={element.content} textToHighlight={highlightText} />
-            ) : (
-              element.content
-            )}
-          </span>,
-        );
       }
     }
     return chunks;
@@ -227,7 +185,87 @@ export default function Text({
   return (
     <div dir="auto" className={classNames(textElementClasses, className)} onClick={onClick}>
       {renderContent()}
-      {showSpotlight && <SpotlightMediaModal media={images} onClose={() => setShowSpotlight(false)} idx={imageIdx} />}
     </div>
   );
+}
+
+/**
+ * Only enable gallery if there is multiple images in a row
+ */
+function findGallery(elements: Array<ParsedFragment>): [number, number] | undefined {
+  // If the current element is of type media and mimeType starts with image,
+  // we verify if the next elements are of the same type and mimeType and push to the galleryImages
+  // Whenever one of the next elements is not longer of the type we are looking for, we break the loop
+
+  const isImage = (a: ParsedFragment) => a.type === "media" && a.mimeType?.startsWith("image");
+  const firstImage = elements.findIndex(isImage);
+  if (firstImage === -1) {
+    return;
+  }
+
+  // from the first image in the array until the end
+  for (let j = firstImage; j < elements.length; j++) {
+    const nextElement = elements[j];
+
+    // skip over empty space
+    if (nextElement.type === "text" && nextElement.content.trim().length === 0) {
+      continue;
+    }
+
+    if (!isImage(nextElement)) {
+      return;
+    }
+  }
+
+  return [firstImage, elements.length - 1];
+}
+
+function buildGallery(
+  elements: Array<ParsedFragment>,
+  onMediaClick: RevealMediaProps["onMediaClick"],
+  creator: string,
+) {
+  if (elements.length === 1) {
+    return <RevealMedia link={elements[0].content} meta={elements[0].data} size={baseImageWidth} creator={creator} />;
+  } else {
+    // We build a grid layout to render the grouped images
+    const imagesWithGridConfig = elements
+      .filter(a => {
+        a.content.trim().length > 0; // remove the empty space
+      })
+      .map((gi, index) => {
+        const config = gridConfigMap.get(elements.length);
+        let height = ROW_HEIGHT;
+
+        if (config && config[index][1] > 1) {
+          height = config[index][1] * ROW_HEIGHT + GRID_GAP;
+        }
+
+        return {
+          content: gi.content,
+          data: gi.data,
+          gridColumn: config ? config[index][0] : 1,
+          gridRow: config ? config[index][1] : 1,
+          height,
+        };
+      });
+    const size = Math.floor(baseImageWidth / Math.min(4, Math.ceil(Math.sqrt(elements.length))));
+    const gallery = (
+      <div className="gallery -mx-4 md:mx-0 my-2 grid grid-cols-4 gap-0.5 list-none p-0 md:rounded-sm md:overflow-hidden">
+        {imagesWithGridConfig.map(img => (
+          <div
+            key={img.content}
+            className="gallery-item block relative m-0"
+            style={{
+              height: `${img.height}px`,
+              gridColumn: `span ${img.gridColumn}`,
+              gridRow: `span ${img.gridRow}`,
+            }}>
+            <RevealMedia link={img.content} meta={img.data} size={size} creator={creator} />
+          </div>
+        ))}
+      </div>
+    );
+    return gallery;
+  }
 }

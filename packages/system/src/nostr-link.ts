@@ -362,6 +362,12 @@ export function tryParseNostrLink(link: string, prefixHint?: NostrPrefix): Nostr
   }
 }
 
+export function isNostrLink(link: string) {
+  const entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
+  const ent = entity.match(Bech32Regex)?.[0];
+  return ent !== undefined;
+}
+
 export function trimNostrLink(link: string) {
   let entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
 

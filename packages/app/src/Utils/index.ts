@@ -366,8 +366,12 @@ export function hmacSha256(key: Uint8Array, ...messages: Uint8Array[]) {
 }
 
 export function getRelayName(url: string) {
-  const parsedUrl = new URL(url);
-  return parsedUrl.host + parsedUrl.search;
+  try {
+    const parsedUrl = new URL(url);
+    return parsedUrl.host + parsedUrl.search;
+  } catch {
+    return url;
+  }
 }
 
 export function getUrlHostname(url?: string) {

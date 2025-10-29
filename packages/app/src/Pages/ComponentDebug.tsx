@@ -72,7 +72,6 @@ import { Markdown } from "@/Components/Event/Markdown";
 
 // Feed Components
 import LoadMore from "@/Components/Feed/LoadMore";
-import { DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 
 // Embed - Music & Video
 import SpotifyEmbed from "@/Components/Embed/SpotifyEmbed";
@@ -835,11 +834,6 @@ export default function ComponentDebugPage() {
             <span className="mb-2">LoadMore:</span>
             <LoadMore onLoadMore={() => console.log("Load more clicked")} shouldLoadMore={true} />
           </div>
-
-          <div>
-            <span className="mb-2">DisplayAsSelector:</span>
-            <DisplayAsSelector activeSelection={displayMode} onSelect={setDisplayMode} />
-          </div>
         </div>
       </section>
 
@@ -1502,7 +1496,7 @@ This example covers all major markdown features including:
           </li>
           <li>
             <strong>Utility Components (14 components):</strong> Copy, QrCode, ProxyImg, Progress bar, Collapsed,
-            CollapsedSection, Modal, WarningNotice, TabSelectors, PageSpinner, LoadMore, DisplayAsSelector
+            CollapsedSection, Modal, WarningNotice, TabSelectors, PageSpinner, LoadMore
           </li>
           <li>
             <strong>Specialized Components (10+ components):</strong> TrendingHashtags, TrendingUsers, TrendingPosts,

@@ -19,7 +19,7 @@ export default function NoteAppHandler({ ev }: { ev: TaggedNostrEvent }) {
     .slice(0, 5);
 
   return (
-    <div className="card flex flex-col gap-3">
+    <div className="layer-1 flex flex-col gap-3">
       <small>
         <FormattedMessage
           defaultMessage="Sorry, we dont understand this event kind ({name}), please try one of the following apps instead!"

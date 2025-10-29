@@ -6,10 +6,10 @@ import { EventEmitter } from "eventemitter3";
 
 import { DefaultConnectTimeout } from "./const";
 import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr";
-import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
 import { EventExt } from "./event-ext";
 import { ConnectionType, ConnectionTypeEvents } from "./connection-pool";
+import { Nip11, RelayInfoDocument } from "./impl/nip11";
 
 /**
  * Relay settings
@@ -38,7 +38,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   PendingRaw: Array<object> = [];
 
   settings: RelaySettings;
-  info: RelayInfo | undefined;
+  info: RelayInfoDocument | undefined;
   ConnectTimeout: number = DefaultConnectTimeout;
   HasStateChange: boolean = true;
   ReconnectTimer?: ReturnType<typeof setTimeout>;
@@ -94,21 +94,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
 
     try {
       if (this.info === undefined) {
-        const u = new URL(this.address);
-        const rsp = await fetch(`${u.protocol === "wss:" ? "https:" : "http:"}//${u.host}`, {
-          headers: {
-            accept: "application/nostr+json",
-          },
-        });
-        if (rsp.ok) {
-          const data = await rsp.json();
-          for (const [k, v] of Object.entries(data)) {
-            if (v === "unset" || v === "" || v === "~") {
-              data[k] = undefined;
-            }
-          }
-          this.info = data;
-        }
+        this.info = await Nip11.loadRelayDocument(this.address);
       }
     } catch {
       // ignored

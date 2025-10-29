@@ -128,7 +128,6 @@ export function NotificationGroup({
                 ids={wot.sortPubkeys(pubkeys.filter(a => a !== "anon")).slice(0, 12)}
                 showUsername={kind === EventKind.TextNote}
                 size={40}
-                showFollowDistance={false}
               />
               <div className="text-neutral-500">
                 <NoteTime from={evs[0].created_at * 1000} />

@@ -1,6 +1,5 @@
 import { KeyStorage, UserState } from "@snort/system";
 
-import { DisplayAs } from "@/Components/Feed/DisplayAsSelector";
 import { UserPreferences } from "@/Utils/Login/index";
 import { SubscriptionEvent } from "@/Utils/Subscription";
 
@@ -91,9 +90,4 @@ export interface LoginSession {
    * Is login session in stalker mode
    */
   stalker: boolean;
-
-  /**
-   * Display feed as list or grid
-   */
-  feedDisplayAs?: DisplayAs;
 }

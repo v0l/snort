@@ -64,8 +64,6 @@ export function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
           const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
           return images.length > 0;
         }}
-        displayAs="grid"
-        showDisplayAsSelector={false}
         noteOnClick={noteOnClick}
       />
     </div>

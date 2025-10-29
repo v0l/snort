@@ -3,8 +3,8 @@ import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 
 import { Connection, RelaySettings } from "./connection";
-import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr";
-import { RelayInfo, SystemInterface } from ".";
+import { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "./nostr";
+import { RelayInfoDocument, SystemInterface } from ".";
 
 /**
  * Events which the ConnectionType must emit
@@ -30,7 +30,7 @@ export interface ConnectionSubscription {}
 export type ConnectionType = {
   readonly id: string;
   readonly address: string;
-  readonly info: RelayInfo | undefined;
+  readonly info: RelayInfoDocument | undefined;
   readonly isDown: boolean;
   readonly isOpen: boolean;
   readonly activeSubscriptions: number;
@@ -144,8 +144,10 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
    * Get a connection object from the pool
    */
   getConnection(id: string) {
-    const addr = unwrap(sanitizeRelayUrl(id));
-    return this.#sockets.get(addr);
+    const addr = sanitizeRelayUrl(id);
+    if (addr) {
+      return this.#sockets.get(addr);
+    }
   }
 
   /**

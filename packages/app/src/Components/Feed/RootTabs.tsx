@@ -53,7 +53,7 @@ export function RootTabs({ base = "/" }: { base: string }) {
   }
 
   const itemClassName =
-    "px-6 py-2 text-base font-semibold bg-layer-2 light:bg-white hover:bg-layer-3 light:hover:bg-neutral-200 cursor-pointer outline-none";
+    "px-6 py-2 text-base font-semibold bg-layer-2 light:bg-white hover:bg-layer-3 light:hover:bg-neutral-200 cursor-pointer outline-none flex gap-3 items-center";
 
   return (
     <div className="root-type flex items-center justify-center flex-grow">

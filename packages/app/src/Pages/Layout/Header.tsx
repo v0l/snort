@@ -15,6 +15,7 @@ import useLogin from "@/Hooks/useLogin";
 import { LogoHeader } from "@/Pages/Layout/LogoHeader";
 import NotificationsHeader from "@/Pages/Layout/NotificationsHeader";
 import { findTag } from "@/Utils";
+import { RelayName } from "@/Components/Relay/name";
 
 export function Header() {
   const navigate = useNavigate();
@@ -80,6 +81,8 @@ export function Header() {
     }
   } else if (location.pathname.startsWith("/t/")) {
     title = <span>#{location.pathname.split("/").slice(-1)}</span>;
+  } else if (location.pathname.startsWith("/relay")) {
+    title = <RelayName url={decodeURIComponent(location.pathname.split("/").pop()!)} />;
   }
 
   return (

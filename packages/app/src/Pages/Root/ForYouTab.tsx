@@ -4,7 +4,6 @@ import { memo, useEffect, useMemo, useState } from "react";
 import { useNavigationType } from "react-router-dom";
 
 import { Relay } from "@/Cache";
-import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
 import useFollowsControls from "@/Hooks/useFollowControls";
@@ -42,12 +41,9 @@ const getReactedByFollows = (follows: string[]) => {
 export const ForYouTab = memo(function ForYouTab() {
   const [notes, setNotes] = useState<NostrEvent[]>(forYouFeed.events);
   const login = useLogin(s => ({
-    feedDisplayAs: s.feedDisplayAs,
     publicKey: s.publicKey,
     tags: s.state.getList(EventKind.InterestSet),
   }));
-  const displayAsInitial = login.feedDisplayAs ?? "list";
-  const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const navigationType = useNavigationType();
   const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt");
   const { followList } = useFollowsControls();
@@ -155,16 +151,5 @@ export const ForYouTab = memo(function ForYouTab() {
     ];
   }, [notes]);
 
-  return (
-    <>
-      <DisplayAsSelector activeSelection={displayAs} onSelect={a => setDisplayAs(a)} />
-      <TimelineRenderer
-        frags={frags}
-        latest={[]}
-        displayAs={displayAs}
-        loadMore={() => latestFeed.loadMore()}
-        showLatest={() => {}}
-      />
-    </>
-  );
+  return <TimelineRenderer frags={frags} latest={[]} loadMore={() => latestFeed.loadMore()} showLatest={() => {}} />;
 });

@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 
 import { Note } from "@/Components/Event/Note/Note";
 import Timeline from "@/Components/Feed/Timeline";
-import RelaysMetadata from "@/Components/Relay/RelaysMetadata";
+import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
 import Bookmarks from "@/Components/User/Bookmarks";
 import FollowsList from "@/Components/User/FollowListBase";
 import ProfilePreview from "@/Components/User/ProfilePreview";
@@ -16,6 +16,7 @@ import { TimelineSubject } from "@/Feed/TimelineFeed";
 import useZapsFeed from "@/Feed/ZapsFeed";
 import { useBookmarkList, usePinList } from "@/Hooks/useLists";
 import { NostrPrefix } from "@snort/shared";
+import Icon from "@/Components/Icons/Icon";
 
 export function ZapsProfileTab({ id }: { id: string }) {
   const zaps = useZapsFeed(new NostrLink(NostrPrefix.PublicKey, id));
@@ -103,7 +104,22 @@ export function FollowsTab({ id }: { id: string }) {
 
 export function RelaysTab({ id }: { id: string }) {
   const relays = useRelaysFeed(id);
-  return <RelaysMetadata relays={relays} />;
+  return (
+    <div className="flex flex-col gap-1">
+      {relays?.map(({ url, settings }) => {
+        return (
+          <div key={url} className="flex gap-2 layer-1">
+            <RelayFavicon url={url} />
+            <code className="grow f-ellipsis">{url}</code>
+            <div className="flex gap-2">
+              {settings.read && <span>R</span>}
+              {settings.write && <span>W</span>}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 export function BookMarksTab({ id }: { id: string }) {

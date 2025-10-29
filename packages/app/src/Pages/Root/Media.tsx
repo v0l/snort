@@ -10,7 +10,6 @@ export default function MediaPosts() {
         id="media"
         postsOnly={true}
         kinds={[EventKind.Photo, EventKind.Video, EventKind.ShortVideo]}
-        showDisplayAsSelector={true}
         firstChunkSize={Day}
         windowSize={Day}
       />

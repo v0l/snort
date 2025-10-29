@@ -1,17 +1,14 @@
 import { TaggedNostrEvent } from "@snort/system";
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage } from "react-intl";
 
 import ErrorBoundary from "@/Components/ErrorBoundary";
 import { AutoLoadMore } from "@/Components/Event/LoadMore";
-import { DisplayAs } from "@/Components/Feed/DisplayAsSelector";
-import ImageGridItem from "@/Components/Feed/ImageGridItem";
 import { TimelineFragment } from "@/Components/Feed/TimelineFragment";
 import Icon from "@/Components/Icons/Icon";
-import { SpotlightThreadModal } from "@/Components/Spotlight/SpotlightThreadModal";
-import ProfileImage from "@/Components/User/ProfileImage";
-import getEventMedia from "@/Utils/getEventMedia";
+import { AvatarGroup } from "../User/AvatarGroup";
+import useWoT from "@/Hooks/useWoT";
 
 export interface TimelineRendererProps {
   frags: Array<TimelineFragment> | TimelineFragment;
@@ -23,61 +20,15 @@ export interface TimelineRendererProps {
   noteRenderer?: (ev: TaggedNostrEvent) => ReactNode;
   noteOnClick?: (ev: TaggedNostrEvent) => void;
   noteContext?: (ev: TaggedNostrEvent) => ReactNode;
-  displayAs?: DisplayAs;
   loadMore?: () => void;
   highlightText?: string;
-}
-
-// filter frags[0].events that have media
-function Grid({ frags }: { frags: Array<TimelineFragment> | TimelineFragment }) {
-  const [modalEventIndex, setModalEventIndex] = useState<number | undefined>(undefined);
-  const allEvents = useMemo(() => {
-    return (Array.isArray(frags) ? frags : [frags]).flatMap(frag => frag.events);
-  }, [frags]);
-  const mediaEvents = useMemo(() => {
-    return allEvents.filter(event => getEventMedia(event).length > 0);
-  }, [allEvents]);
-
-  const modalEvent = modalEventIndex !== undefined ? mediaEvents[modalEventIndex] : undefined;
-  const nextModalEvent = modalEventIndex !== undefined ? mediaEvents[modalEventIndex + 1] : undefined;
-  const prevModalEvent = modalEventIndex !== undefined ? mediaEvents[modalEventIndex - 1] : undefined;
-
-  return (
-    <>
-      <div className="grid grid-cols-3 gap-px md:gap-1">
-        {mediaEvents.map((event, index) => (
-          <ImageGridItem
-            key={event.id}
-            event={event}
-            onClick={() => setModalEventIndex(index)} // TODO use constant function
-            waitUntilInView={index > 15}
-          />
-        ))}
-      </div>
-      {modalEvent && (
-        <SpotlightThreadModal
-          key={modalEvent.id}
-          event={modalEvent}
-          onClose={() => setModalEventIndex(undefined)}
-          onBack={() => setModalEventIndex(undefined)}
-          onNext={() => setModalEventIndex(Math.min((modalEventIndex ?? 0) + 1, mediaEvents.length - 1))}
-          onPrev={() => setModalEventIndex(Math.max((modalEventIndex ?? 0) - 1, 0))}
-        />
-      )}
-      {nextModalEvent && ( // preload next
-        <SpotlightThreadModal className="hidden" key={`${nextModalEvent.id}-next`} event={nextModalEvent} />
-      )}
-      {prevModalEvent && ( // preload previous
-        <SpotlightThreadModal className="hidden" key={`${prevModalEvent.id}-prev`} event={prevModalEvent} />
-      )}
-    </>
-  );
 }
 
 export function TimelineRenderer(props: TimelineRendererProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const latestNotesFixedRef = useRef<HTMLDivElement | null>(null);
   const { ref, inView } = useInView();
+  const wot = useWoT();
 
   const updateLatestNotesPosition = () => {
     if (containerRef.current && latestNotesFixedRef.current) {
@@ -113,61 +64,40 @@ export function TimelineRenderer(props: TimelineRendererProps) {
     ));
   };
 
+  function latestInner() {
+    return (
+      <div className="cursor-pointer flex flex-row justify-center items-center py-1.5 px-6 gap-2 text-white bg-highlight rounded-full">
+        <div className="flex">
+          <AvatarGroup ids={wot.sortPubkeys(props.latest).slice(0, 3)} />
+        </div>
+        <FormattedMessage
+          defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
+          id="3t3kok"
+          values={{ n: props.latest.length }}
+        />
+        <Icon name="arrowUp" />
+      </div>
+    );
+  }
+
   return (
     <div ref={containerRef}>
       {props.latest.length > 0 && (
         <>
-          <div
-            className="card cursor-pointer flex flex-row justify-center items-center py-1.5 px-6 gap-2"
-            onClick={() => props.showLatest(false)}
-            ref={ref}>
-            <div className="flex">
-              {props.latest.slice(0, 3).map((p, idx) => {
-                return (
-                  <div key={p} className={idx < 2 ? "-mr-[26px]" : "-mr-2"}>
-                    <ProfileImage pubkey={p} showUsername={false} link={""} showFollowDistance={false} />
-                  </div>
-                );
-              })}
-            </div>
-            <FormattedMessage
-              defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
-              id="3t3kok"
-              values={{ n: props.latest.length }}
-            />
-            <Icon name="arrowUp" />
+          <div className="flex justify-center" onClick={() => props.showLatest(false)} ref={ref}>
+            {latestInner()}
           </div>
           {!inView && (
             <div
               ref={latestNotesFixedRef}
-              className="card cursor-pointer flex flex-row justify-center items-center py-1.5 px-6 gap-2 fixed top-[50px] w-auto z-[42] opacity-90 shadow-[0px_0px_15px_rgba(78,0,255,0.6)] text-white bg-highlight rounded-full border-none animate-fade-in"
+              className="fixed top-[50px] z-3 opacity-90 shadow-md animate-fade-in"
               onClick={() => props.showLatest(true)}>
-              <div className="flex">
-                {props.latest.slice(0, 3).map((p, idx) => {
-                  return (
-                    <div key={p} className={idx < 2 ? "-mr-[26px]" : "-mr-2"}>
-                      <ProfileImage
-                        pubkey={p}
-                        showProfileCard={false}
-                        showUsername={false}
-                        link={""}
-                        showFollowDistance={false}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-              <FormattedMessage
-                defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
-                id="3t3kok"
-                values={{ n: props.latest.length }}
-              />
-              <Icon name="arrowUp" />
+              {latestInner()}
             </div>
           )}
         </>
       )}
-      {props.displayAs === "grid" ? <Grid frags={props.frags} /> : renderNotes()}
+      {renderNotes()}
       {props.loadMore && <AutoLoadMore className="mx-3 my-4" onClick={props.loadMore} />}
     </div>
   );

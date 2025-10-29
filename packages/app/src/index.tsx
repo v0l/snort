@@ -43,6 +43,7 @@ import { setupWebLNWalletConfig } from "@/Wallet";
 
 import { Day } from "./Utils/Const";
 import { LoginStore } from "./Utils/Login";
+import { SpotlightContextWrapper } from "./Components/Spotlight/SpotlightMedia";
 
 const ComponentDebugPage = lazy(async () => await import("@/Pages/ComponentDebug"));
 
@@ -213,7 +214,9 @@ root.render(
   <StrictMode>
     <IntlProvider>
       <SnortContext.Provider value={System}>
-        <RouterProvider router={router} />
+        <SpotlightContextWrapper>
+          <RouterProvider router={router} />
+        </SpotlightContextWrapper>
       </SnortContext.Provider>
     </IntlProvider>
   </StrictMode>,

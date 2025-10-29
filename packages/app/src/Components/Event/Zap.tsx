@@ -14,7 +14,7 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean 
   const pubKey = useLogin().publicKey;
 
   return valid && sender ? (
-    <div className="card">
+    <div className="layer-1">
       <div className="flex justify-between">
         <ProfileImage pubkey={sender} showProfileCard={true} />
         {receiver !== pubKey && showZapped && <ProfileImage pubkey={unwrap(receiver)} />}

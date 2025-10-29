@@ -9,7 +9,7 @@ import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
 import { FileExtensionRegex } from "@/Utils/Const";
 
-interface RevealMediaProps {
+export interface RevealMediaProps {
   creator: string;
   link: string;
   onMediaClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
@@ -25,9 +25,9 @@ export default function RevealMedia(props: RevealMediaProps) {
   const hideNonFollows = autoLoadMedia === "follows-only" && !isFollowing(props.creator);
   const isMine = props.creator === publicKey;
   const hideMedia = autoLoadMedia === "none" || (!isMine && hideNonFollows);
-  const hostname = new URL(props.link).hostname;
 
   const url = new URL(props.link);
+  const hostname = url.hostname;
   const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
   const type = (() => {
     switch (extension) {

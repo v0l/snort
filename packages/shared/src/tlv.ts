@@ -45,10 +45,7 @@ export function encodeTLVEntries(prefix: string, ...entries: Array<TLVEntry>) {
   for (const v of entries) {
     switch (v.type) {
       case TLVEntryType.Special: {
-        const buf =
-          prefix === NostrPrefix.Address
-            ? enc.encode(v.value as string)
-            : hexToBytes(v.value as string);
+        const buf = prefix === NostrPrefix.Address ? enc.encode(v.value as string) : hexToBytes(v.value as string);
         buffers.push(0, buf.length, ...buf);
         break;
       }

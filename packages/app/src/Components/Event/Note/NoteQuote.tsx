@@ -6,15 +6,21 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import Copy from "@/Components/Copy/Copy";
-import Note from "@/Components/Event/EventComponent";
+import Note, { NotePropsOptions } from "@/Components/Event/EventComponent";
 import Spinner from "@/Components/Icons/Spinner";
+import classNames from "classnames";
 
-const options = {
-  showFooter: false,
-  truncate: true,
-};
-
-export default function NoteQuote({ link, depth }: { link: NostrLink; depth?: number }) {
+export default function NoteQuote({
+  link,
+  depth,
+  className,
+  options,
+}: {
+  link: NostrLink;
+  depth?: number;
+  className?: string;
+  options?: NotePropsOptions;
+}) {
   const [tryLink, setLink] = useState<NostrLink>(link);
   const [tryRelay, setTryRelay] = useState("");
   const { formatMessage } = useIntl();
@@ -22,7 +28,7 @@ export default function NoteQuote({ link, depth }: { link: NostrLink; depth?: nu
   const ev = useEventFeed(tryLink);
   if (!ev)
     return (
-      <div className="layer-2 flex flex-col gap-2">
+      <div className={classNames("layer-2 flex flex-col gap-2", className)}>
         <Spinner />
         <div className="flex items-center gap-2 leading-0">
           <span>
@@ -50,7 +56,7 @@ export default function NoteQuote({ link, depth }: { link: NostrLink; depth?: nu
                     tryLink.kind,
                     tryLink.author,
                     dedupe(relays),
-                    tryLink.marker,
+                    tryLink.scope,
                   ),
                 );
                 setTryRelay("");
@@ -62,8 +68,17 @@ export default function NoteQuote({ link, depth }: { link: NostrLink; depth?: nu
       </div>
     );
   return (
-    <div className="rounded-lg border">
-      <Note data={ev} depth={(depth ?? 0) + 1} options={options} />
+    <div className={className ?? "rounded-lg border"}>
+      <Note
+        data={ev}
+        depth={(depth ?? 0) + 1}
+        options={
+          options ?? {
+            showFooter: false,
+            truncate: true,
+          }
+        }
+      />
     </div>
   );
 }

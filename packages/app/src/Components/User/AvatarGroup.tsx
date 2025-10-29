@@ -1,6 +1,14 @@
 import ProfileImage, { ProfileImageProps } from "@/Components/User/ProfileImage";
 
 export function AvatarGroup({ ids, ...props }: { ids: string[] } & Omit<ProfileImageProps, "pubkey">) {
+  // set defaults
+  props.showUsername ??= false;
+  props.link ??= "";
+  props.size ??= 24;
+  props.showBadges ??= false;
+  props.showFollowDistance ??= false;
+  props.showProfileCard ??= false;
+
   return (
     <div className="flex items-center">
       {ids.map((a, index) => (

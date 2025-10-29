@@ -1,7 +1,7 @@
 import { encodeTLVEntries, hexToBech32, LNURL, NostrPrefix, TLVEntryType } from "@snort/shared";
 import { CachedMetadata, NostrLink } from "@snort/system";
 import { ZapTarget } from "@snort/wallet";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -11,7 +11,7 @@ import IconButton from "@/Components/Button/IconButton";
 import Copy from "@/Components/Copy/Copy";
 import Modal from "@/Components/Modal/Modal";
 import QrCode from "@/Components/QrCode";
-import { SpotlightMediaModal } from "@/Components/Spotlight/SpotlightMedia";
+import { SpotlightContext } from "@/Components/Spotlight/SpotlightMedia";
 import Avatar from "@/Components/User/Avatar";
 import FollowButton from "@/Components/User/FollowButton";
 import MuteButton from "@/Components/User/MuteButton";
@@ -34,7 +34,7 @@ const AvatarSection = ({
   readonly?: boolean;
 }) => {
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
-  const [modalImage, setModalImage] = useState<string>("");
+  const spotlight = useContext(SpotlightContext);
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [prefix, setPrefix] = useState<NostrPrefix>(CONFIG.profileLinkPrefix);
 
@@ -98,7 +98,7 @@ const AvatarSection = ({
               <IconButton
                 onClick={() =>
                   navigate(
-                    `/messages/${encodeTLVEntries(NostrPrefix.Chat17, {
+                    `/messages/${encodeTLVEntries("nchat17", {
                       type: TLVEntryType.Author,
                       length: 64,
                       value: id,
@@ -143,7 +143,11 @@ const AvatarSection = ({
       <Avatar
         pubkey={id ?? ""}
         user={user}
-        onClick={() => setModalImage(user?.picture || "")}
+        onClick={() => {
+          if (user?.picture) {
+            spotlight?.showImages([user?.picture]);
+          }
+        }}
         className="pointer"
         size={100}
       />
@@ -151,7 +155,6 @@ const AvatarSection = ({
         {renderButtons()}
         {!isMe && id && <FollowButton pubkey={id} />}
       </div>
-      {modalImage && <SpotlightMediaModal onClose={() => setModalImage("")} media={[modalImage]} idx={0} />}
       <ZapModal
         targets={
           lnurl?.lnurl && id

@@ -63,6 +63,7 @@ export default function EventComponent(props: NoteProps) {
 
   let content;
   switch (ev.kind) {
+    case EventKind.Reaction:
     case EventKind.Repost:
       content = <NoteReaction data={ev} key={ev.id} root={undefined} depth={(props.depth ?? 0) + 1} />;
       break;

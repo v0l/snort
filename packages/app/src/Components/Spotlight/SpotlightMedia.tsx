@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 
 import Icon from "@/Components/Icons/Icon";
 import Modal from "@/Components/Modal/Modal";
@@ -130,19 +130,40 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
   );
 }
 
-export function SpotlightMediaModal(props: SpotlightMediaProps) {
-  const onClose = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    props.onClose();
-  };
+interface SpotlightContextState {
+  hide: () => void;
+  showImages: (i: Array<string>) => void;
+  setIndex: (v: number) => void;
+}
+
+export const SpotlightContext = createContext<SpotlightContextState | undefined>(undefined);
+
+export function SpotlightContextWrapper({ children }: { children: ReactNode }) {
+  const [imageIdx, setImageIdx] = useState(0);
+  const [images, setImages] = useState<Array<string>>();
+
   return (
-    <Modal
-      id="spotlight"
-      onClick={props.onClose}
-      onClose={onClose}
-      className="spotlight"
-      bodyClassName="h-screen w-screen flex items-center justify-center">
-      <SpotlightMedia {...props} />
-    </Modal>
+    <SpotlightContext.Provider
+      value={{
+        hide: () => setImages(undefined),
+        showImages: i => {
+          setImages(i);
+          setImageIdx(0);
+        },
+        setIndex: setImageIdx,
+      }}>
+      {images && (
+        <Modal
+          id="spotlight"
+          onClose={e => {
+            e.stopPropagation();
+            setImages(undefined);
+          }}
+          bodyClassName="h-screen w-screen flex items-center justify-center">
+          <SpotlightMedia media={images} idx={imageIdx} onClose={() => setImages(undefined)} />
+        </Modal>
+      )}
+      {children}
+    </SpotlightContext.Provider>
   );
 }

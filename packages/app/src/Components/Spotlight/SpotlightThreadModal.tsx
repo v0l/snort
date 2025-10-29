@@ -30,7 +30,6 @@ export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
   }
 
   const link = props.event ? NostrLink.fromEvent(props.event) : props.thread;
-
   return (
     <Modal id="spotlight-media-modal" className={props.className} onClose={onClose} bodyClassName={"flex flex-1"}>
       <ThreadContextWrapper link={link!}>
@@ -43,7 +42,7 @@ export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
               onPrev={props.onPrev}
             />
           </div>
-          <div className="hidden md:flex w-1/3 min-w-[400px] flex-shrink-0 overflow-y-auto bg-background">
+          <div className="bg-layer-1 md:flex w-1/3 min-w-[400px] overflow-y-auto">
             <ThreadElement onBack={onBack} disableSpotlight={true} />
           </div>
         </div>

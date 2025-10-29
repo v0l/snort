@@ -18,7 +18,7 @@ export function ZapGoal({ ev }: { ev: NostrEvent }) {
   const progress = amount / target;
 
   return (
-    <div className="card">
+    <div className="layer-1">
       <div className="flex items-center justify-between">
         <h2 className="leading-[1em]">{ev.content}</h2>
         <div

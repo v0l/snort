@@ -1,4 +1,4 @@
-import { RelayInfo as RI } from "@snort/system";
+import { Nip11, RelayInfoDocument } from "@snort/system";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { Link, useParams } from "react-router-dom";
@@ -18,30 +18,14 @@ import { getRelayName, parseId } from "@/Utils";
 
 const RelayInfo = () => {
   const params = useParams();
-  const [info, setInfo] = useState<RI>();
+  const [info, setInfo] = useState<RelayInfoDocument>();
 
   const conn = useRelayState(params.id ?? "");
 
-  async function loadRelayInfo() {
-    const u = new URL(params.id ?? "");
-    const rsp = await fetch(`${u.protocol === "wss:" ? "https:" : "http:"}//${u.host}`, {
-      headers: {
-        accept: "application/nostr+json",
-      },
-    });
-    if (rsp.ok) {
-      const data = await rsp.json();
-      for (const [k, v] of Object.entries(data)) {
-        if (v === "unset" || v === "" || v === "~") {
-          data[k] = undefined;
-        }
-      }
-      setInfo(data);
-    }
-  }
-
   useEffect(() => {
-    loadRelayInfo().catch(console.error);
+    Nip11.loadRelayDocument(params.id ?? "")
+      .then(setInfo)
+      .catch(console.error);
   }, []);
 
   const stats = useSyncExternalStore(
@@ -125,6 +109,14 @@ const RelayInfo = () => {
           </div>
         )}
 
+        <hr />
+        <div className="flex gap-4">
+          <Link to={`/relay/${encodeURIComponent(params.id ?? "")}`}>
+            <button>
+              <FormattedMessage defaultMessage="View Feed" />
+            </button>
+          </Link>
+        </div>
         <hr />
 
         {stats && (

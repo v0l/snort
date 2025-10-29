@@ -1,17 +1,15 @@
-import { EventExt, EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
 
-import Note from "@/Components/Event/EventComponent";
 import Icon from "@/Components/Icons/Icon";
 import useModeration from "@/Hooks/useModeration";
-import { eventLink, getDisplayName } from "@/Utils";
+import { getDisplayName } from "@/Utils";
 
-import NoteFooter from "./Note/NoteFooter/NoteFooter";
-import { hexToBech32, NostrPrefix } from "@snort/shared";
+import { NostrPrefix } from "@snort/shared";
+import NoteQuote from "./Note/NoteQuote";
 
 export interface NoteReactionProps {
   data: TaggedNostrEvent;
@@ -23,7 +21,6 @@ export default function NoteReaction(props: NoteReactionProps) {
   const { isMuted } = useModeration();
   const { inView, ref } = useInView({ triggerOnce: true, rootMargin: "2000px" });
   const profile = useUserProfile(inView ? ev.pubkey : "");
-  const root = useMemo(() => extractRoot(), [ev, props.root, inView]);
 
   const opt = useMemo(
     () => ({
@@ -33,73 +30,63 @@ export default function NoteReaction(props: NoteReactionProps) {
     }),
     [ev],
   );
+  const links = NostrLink.fromTags(ev.tags);
+  const refEvent = links.find(a => [NostrPrefix.Event, NostrPrefix.Note, NostrPrefix.Address].includes(a.type));
+  const isOpMuted = refEvent?.author && isMuted(refEvent.author);
+  if (isOpMuted) {
+    return;
+  }
 
-  const refEvent = useMemo(() => {
-    if (ev) {
-      const eTags = ev.tags.filter(a => a[0] === "e");
-      if (eTags.length > 0) {
-        return eTags[0];
+  function action() {
+    switch (ev.kind) {
+      case EventKind.Repost: {
+        return (
+          <>
+            <Icon name="repeat" size={18} />
+            <FormattedMessage
+              defaultMessage="{name} reposted"
+              values={{
+                name: getDisplayName(profile, ev.pubkey),
+              }}
+            />
+          </>
+        );
+      }
+      case EventKind.Reaction: {
+        return (
+          <FormattedMessage
+            defaultMessage="{name} liked"
+            values={{
+              name: getDisplayName(profile, ev.pubkey),
+            }}
+          />
+        );
       }
     }
-    return null;
-  }, [ev]);
-
-  /**
-   * Some clients embed the reposted note in the content
-   */
-  function extractRoot() {
-    if (!inView) return null;
-    if (ev?.kind === EventKind.Repost && ev.content.length > 0 && ev.content !== "#[0]") {
-      try {
-        const r: NostrEvent = JSON.parse(ev.content);
-        EventExt.fixupEvent(r);
-        if (!EventExt.verify(r)) {
-          console.debug("Event in repost is invalid");
-          return undefined;
-        }
-        return r as TaggedNostrEvent;
-      } catch (e) {
-        console.error("Could not load reposted content", e);
-      }
-    }
-    return props.root;
   }
 
-  if (
-    ev.kind !== EventKind.Reaction &&
-    ev.kind !== EventKind.Repost &&
-    (ev.kind !== EventKind.TextNote ||
-      ev.tags.every((a, i) => a[1] !== refEvent?.[1] || a[3] !== "mention" || ev.content !== `#[${i}]`))
-  ) {
-    return null;
+  function inner() {
+    return (
+      <>
+        <div className="flex gap-1 text-base font-semibold px-3 py-2 border-b">{action()}</div>
+        {refEvent && (
+          <NoteQuote
+            link={refEvent}
+            className=""
+            depth={props.depth}
+            options={{
+              showFooter: true,
+              truncate: true,
+            }}
+          />
+        )}
+      </>
+    );
   }
 
-  if (!inView) {
-    return <div className="card flex flex-col gap-2" ref={ref}></div>;
-  }
-  const isOpMuted = root && isMuted(root.pubkey);
-  const shouldNotBeRendered = isOpMuted || root?.kind !== EventKind.TextNote;
-
-  return shouldNotBeRendered ? null : (
-    <div className="card flex flex-col gap-2">
-      <div className="flex gap-1 text-base font-semibold">
-        <Icon className="opacity-50" name="repeat" size={18} />
-        <FormattedMessage
-          defaultMessage="{name} reposted"
-          values={{
-            name: getDisplayName(profile, ev.pubkey),
-          }}
-        />
-      </div>
-      {root ? <Note data={root} options={opt} depth={props.depth} /> : null}
-      <NoteFooter ev={ev} />
-      {!root && refEvent ? (
-        <p>
-          <Link to={eventLink(refEvent[1] ?? "", refEvent[2])}>
-            #{hexToBech32(NostrPrefix.Event, refEvent[1]).substring(0, 12)}
-          </Link>
-        </p>
-      ) : null}
+  return (
+    <div className="flex flex-col gap-2" ref={ref}>
+      {inView && inner()}
     </div>
   );
 }

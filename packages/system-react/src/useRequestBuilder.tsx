@@ -36,10 +36,10 @@ export function useRequestBuilderAdvanced(rb: RequestBuilder) {
   const system = useContext(SnortContext);
   const q = useMemo(() => {
     const q = system.Query(rb);
-    q.uncancel();
     return q;
   }, [rb]);
   useEffect(() => {
+    q.uncancel();
     return () => {
       q?.cancel();
     };
