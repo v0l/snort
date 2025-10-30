@@ -30,6 +30,7 @@ export * from "./impl/nip4";
 export * from "./impl/nip7";
 export * from "./impl/nip10";
 export * from "./impl/nip11";
+export * from "./impl/nip18";
 export * from "./impl/nip22";
 export * from "./impl/nip25";
 export * from "./impl/nip44";

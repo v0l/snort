@@ -1,4 +1,4 @@
-import { magnetURIDecode, getRelayName } from ".";
+import { magnetURIDecode, getRelayName } from "../src/Utils";
 import { describe, test, expect } from "bun:test";
 
 describe("magnet", () => {

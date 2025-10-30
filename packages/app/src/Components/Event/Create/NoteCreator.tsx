@@ -4,7 +4,7 @@ import {
   EventBuilder,
   EventKind,
   LinkScope,
-  Nip10,
+  Nip18,
   Nip94Tags,
   nip94TagsToIMeta,
   NostrLink,
@@ -183,8 +183,10 @@ export function NoteCreator() {
             note.note += "\n";
           }
           const link = NostrLink.fromEvent(note.quote);
+          link.scope = LinkScope.Quote;
+
           note.note += `nostr:${link.encode(CONFIG.eventLinkPrefix)}`;
-          const quoteTag = Nip10.linkToTag(link, LinkScope.Quote);
+          const quoteTag = Nip18.linkToTag(link);
           extraTags ??= [];
           extraTags.push(quoteTag);
         }

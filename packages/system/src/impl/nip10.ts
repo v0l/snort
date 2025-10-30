@@ -107,7 +107,6 @@ export class Nip10 {
       suffix.push(markerString);
     }
 
-    const isQ = scope === LinkScope.Quote;
     if (link.type === NostrPrefix.PublicKey || link.type === NostrPrefix.Profile) {
       return ["p", link.id, ...suffix];
     } else if (link.type === NostrPrefix.Note || link.type === NostrPrefix.Event) {
@@ -120,9 +119,9 @@ export class Nip10 {
         }
         suffix.push(link.author);
       }
-      return [isQ ? "q" : "e", link.id, ...suffix];
+      return ["e", link.id, ...suffix];
     } else if (link.type === NostrPrefix.Address) {
-      return [isQ ? "q" : "a", `${link.kind}:${link.author}:${link.id}`, ...suffix];
+      return ["a", `${link.kind}:${link.author}:${link.id}`, ...suffix];
     }
     throw new Error("Invalid link");
   }
