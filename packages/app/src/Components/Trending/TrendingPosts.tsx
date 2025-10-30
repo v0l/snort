@@ -10,6 +10,7 @@ import TrendingNote from "@/Components/Trending/ShortNote";
 import NostrBandApi from "@/External/NostrBand";
 import useCachedFetch from "@/Hooks/useCachedFetch";
 import useModeration from "@/Hooks/useModeration";
+import { data } from "react-router-dom";
 
 export default function TrendingNotes({ count = Infinity, small = false }: { count?: number; small?: boolean }) {
   const api = new NostrBandApi();
@@ -42,7 +43,7 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
 
   const { isEventMuted } = useModeration();
   if (error && !trendingNotesData) return <ErrorOrOffline error={error} className="px-3 py-2" />;
-  if (isLoading) return <PageSpinner />;
+  if (isLoading && !data) return <PageSpinner />;
 
   const filteredAndLimitedPosts = trendingNotesData
     ? trendingNotesData.filter(a => !isEventMuted(a)).slice(0, count)

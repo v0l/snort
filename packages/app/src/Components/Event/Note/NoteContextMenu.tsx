@@ -218,7 +218,7 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
     <>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <span className="cursor-pointer">
+          <span className="cursor-pointer text-neutral-500">
             <Icon name="dots" size={15} />
           </span>
         </DropdownMenu.Trigger>

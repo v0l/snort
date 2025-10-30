@@ -133,20 +133,13 @@ export default function SearchBox() {
           className="absolute top-full mt-2 w-full border bg-white dark:bg-black shadow-lg rounded-lg z-10 overflow-hidden"
           ref={resultListRef}>
           <div
-            className={`p-2 cursor-pointer ${activeIndex === 0 ? "bg-secondary" : "bg-background hover:bg-secondary"}`}
+            className="cursor-pointer p-2 hover:bg-layer-2"
             onMouseEnter={() => setActiveIndex(0)}
             onClick={() => navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })}>
             <FormattedMessage defaultMessage="Search notes" />: <b>{search}</b>
           </div>
           {results?.slice(0, MAX_RESULTS).map((result, idx) => (
-            <div
-              key={idx}
-              className={`p-2 cursor-pointer ${
-                activeIndex === idx + 1 ? "bg-secondary" : "bg-background hover:bg-secondary"
-              }`}
-              onMouseEnter={() => setActiveIndex(idx + 1)}>
-              <ProfileImage pubkey={result.pubkey} showProfileCard={false} />
-            </div>
+            <ProfileImage pubkey={result.pubkey} showProfileCard={false} className="p-2 hover:bg-layer-2" />
           ))}
         </div>
       )}

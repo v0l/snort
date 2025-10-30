@@ -46,9 +46,14 @@ export const CashuRegex = /(cashuA[A-Za-z0-9_-]{0,10000}={0,3})/i;
 export const MentionNostrEntityRegex = /@n(pub|profile|event|ote|addr|)1[acdefghjklmnpqrstuvwxyz023456789]+/g;
 
 /**
- * Regex to match markdown code content
+ * Regex to match markdown code content (triple backticks)
  */
-export const MarkdownCodeRegex = /(```.+?```)/gms;
+export const MarkdownCodeRegex = /(```.*?```)/gms;
+
+/**
+ * Regex to match inline code content (single backticks)
+ */
+export const InlineCodeRegex = /(`[^`\n]+?`)/g;
 
 /**
  * Public metadata relays

@@ -1,3 +1,5 @@
+import { LRUCache } from "typescript-lru-cache";
+
 export interface RelayInfoDocument {
   name?: string;
   description?: string;
@@ -21,8 +23,19 @@ export interface RelayInfoDocument {
   negentropy?: number;
 }
 
+/**
+ * Internal cache of relay info documents
+ */
+const RelayInfoCache = new LRUCache<string, RelayInfoDocument>({ maxSize: 100 });
+
 export class Nip11 {
   static async loadRelayDocument(url: string) {
+    // Check cache first
+    const cached = RelayInfoCache.get(url);
+    if (cached) {
+      return cached;
+    }
+
     const u = new URL(url);
     const rsp = await fetch(`${u.protocol === "wss:" ? "https:" : "http:"}//${u.host}`, {
       headers: {
@@ -36,7 +49,10 @@ export class Nip11 {
           data[k] = undefined;
         }
       }
-      return data as RelayInfoDocument;
+      const doc = data as RelayInfoDocument;
+      // Store in cache
+      RelayInfoCache.set(url, doc);
+      return doc;
     }
   }
 }

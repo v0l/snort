@@ -42,7 +42,6 @@
         "classnames": "^2.5.1",
         "comlink": "^4.4.2",
         "debug": "^4.4.3",
-        "dexie": "^4.2.1",
         "emojilib": "^4.0.2",
         "eventemitter3": "^5.0.1",
         "fuse.js": "^7.1.0",

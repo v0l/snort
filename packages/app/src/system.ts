@@ -1,7 +1,7 @@
 import { removeUndefined, throwIfOffline } from "@snort/shared";
 import { mapEventToProfile, NostrEvent, NostrSystem } from "@snort/system";
 
-import { EventsCache, Relay, RelayMetrics, SystemDb, UserCache, UserFollows, UserRelays } from "@/Cache";
+import { EventsCache, Relay, RelayMetrics, UserCache, UserFollows, UserRelays } from "@/Cache";
 import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
@@ -17,7 +17,6 @@ export const System = new NostrSystem({
   cachingRelay: Relay,
   contactLists: UserFollows,
   optimizer: hasWasm ? WasmOptimizer : undefined,
-  db: SystemDb,
   buildFollowGraph: true,
   automaticOutboxModel: true,
 });

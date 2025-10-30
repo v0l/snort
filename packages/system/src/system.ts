@@ -68,7 +68,7 @@ export interface SystemConfig {
   optimizer: Optimizer;
 
   /**
-   * Dexie database storage, usually `@snort/system-web`
+   * Generic storage layer for internal caches
    */
   db?: SnortSystemDb;
 

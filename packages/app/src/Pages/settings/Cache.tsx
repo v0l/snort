@@ -29,7 +29,7 @@ function CacheDetails<T>({ cache, name }: { cache: FeedCache<T>; name: ReactNode
   );
 
   return (
-    <div className="flex justify-between rounded-lg px-3 py-2 bg-superdark">
+    <div className="flex justify-between layer-1">
       <div className="flex flex-col gap-1">
         {name}
         <small>
@@ -75,7 +75,7 @@ function RelayCacheStats() {
   }
 
   return (
-    <div className="flex justify-between rounded-lg px-3 py-2 bg-superdark">
+    <div className="flex justify-between layer-1">
       <div className="flex flex-col gap-1 w-64">
         <FormattedMessage
           defaultMessage="{type} Worker Relay"

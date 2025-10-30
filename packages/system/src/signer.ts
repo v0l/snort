@@ -24,7 +24,8 @@ export interface EventSigner {
  */
 export async function decryptSigner(content: string, signer: EventSigner, otherKey?: string) {
   const isNip4 = content.includes("?iv=");
-  return await (isNip4 ? signer.nip4Decrypt : signer.nip44Decrypt)(content, otherKey ?? (await signer.getPubKey()));
+  const key = otherKey ?? (await signer.getPubKey());
+  return await (isNip4 ? signer.nip4Decrypt(content, key) : signer.nip44Decrypt(content, key));
 }
 
 export class PrivateKeySigner implements EventSigner {

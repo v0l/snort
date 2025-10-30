@@ -31,7 +31,7 @@ export default function TrendingHashtags({
   } = useCachedFetch(trendingHashtagsUrl, storageKey, data => data.hashtags.slice(0, count));
 
   if (error && !hashtags) return <ErrorOrOffline error={error} onRetry={() => {}} className="px-3 py-2" />;
-  if (isLoading) return <PageSpinner />;
+  if (isLoading && !hashtags) return <PageSpinner />;
 
   return (
     <>
@@ -44,14 +44,7 @@ export default function TrendingHashtags({
             </div>
           );
         } else {
-          return (
-            <HashTagHeader
-              key={a.hashtag}
-              tag={a.hashtag}
-              events={a.posts}
-              className={classNames("bb", { p: !short })}
-            />
-          );
+          return <HashTagHeader key={a.hashtag} tag={a.hashtag} events={a.posts} />;
         }
       })}
     </>

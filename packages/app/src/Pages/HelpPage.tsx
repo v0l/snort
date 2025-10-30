@@ -17,7 +17,7 @@ export default function HelpPage() {
           values={{
             link: (
               <Link
-                to={`/messages/${encodeTLVEntries(NostrPrefix.Chat17, {
+                to={`/messages/${encodeTLVEntries("nchat17", {
                   type: TLVEntryType.Author,
                   length: 64,
                   value: bech32ToHex(KieranPubKey),

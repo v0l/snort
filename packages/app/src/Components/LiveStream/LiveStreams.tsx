@@ -102,7 +102,7 @@ export function AudioRoom({ ev, className }: { ev: NostrEvent; className?: strin
         </div>
         <div className="absolute left-0 top-0 w-full overflow-hidden">
           <div
-            className="whitespace-nowrap px-1 text-ellipsis overflow-hidden text-xs font-medium bg-background opacity-70 text-center"
+            className="whitespace-nowrap px-1 text-ellipsis overflow-hidden text-xs font-medium opacity-70 text-center"
             title={title}>
             {title}
           </div>

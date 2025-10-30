@@ -45,32 +45,41 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    */
   #system: SystemInterface;
 
+  /**
+   * Map tracking which connections have change listeners to prevent duplicates
+   */
+  #connectionListeners: Set<string> = new Set();
+
   constructor(system: SystemInterface) {
     super();
     this.#system = system;
 
-    // Set up global connection listeners for retry logic
+    // Set up global connection listeners for cleanup
     this.#setupConnectionListeners();
 
     setInterval(() => this.#cleanup(), 1_000);
   }
 
   #setupConnectionListeners() {
-    // Listen for connection state changes to retry pending traces
+    // Listen for new connections to setup retry logic
     this.#system.pool.on("connected", address => {
       const conn = this.#system.pool.getConnection(address);
-      if (conn) {
+      if (conn && !this.#connectionListeners.has(conn.id)) {
+        this.#connectionListeners.add(conn.id);
+
         const changeHandler = () => {
           this.#retryPendingTraces(conn);
         };
-        conn.on("change", changeHandler);
+
+        conn.once("change", changeHandler);
       }
     });
 
-    // Clean up pending traces when connection disconnects
+    // Clean up traces when connection disconnects
     this.#system.pool.on("disconnect", address => {
       const conn = this.#system.pool.getConnection(address);
       if (conn) {
+        this.#connectionListeners.delete(conn.id);
         this.#pendingTraces = this.#pendingTraces.filter(p => p.connection.id !== conn.id);
 
         // Mark all traces for this connection as dropped

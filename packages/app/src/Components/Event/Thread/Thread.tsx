@@ -81,14 +81,13 @@ function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContext
         );
       } else {
         return (
-          <div className="px-3 py-2 break-words">
+          <div className="px-3 py-2 break-all">
             <FormattedMessage
               defaultMessage="Loading note: {id}"
               values={{
-                id: thread.current,
+                id: <code className="font-mono bg-layer-1 px-1.5 py-0.5 rounded-md">{thread.current}</code>,
               }}
             />
-            <pre>{JSON.stringify(thread, undefined, 2)}</pre>
           </div>
         );
       }

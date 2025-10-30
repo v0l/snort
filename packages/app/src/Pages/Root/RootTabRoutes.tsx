@@ -71,7 +71,11 @@ export const RootTabRoutes: RootTabRoute[] = [
   },
   {
     path: "trending/hashtags",
-    element: <TrendingHashtags />,
+    element: (
+      <div className="px-2">
+        <TrendingHashtags />
+      </div>
+    ),
   },
   {
     path: "t/:tag",

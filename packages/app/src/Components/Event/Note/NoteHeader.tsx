@@ -29,7 +29,7 @@ export default function NoteHeader(props: {
   async function unpin() {
     if (options.canUnpin && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnpin))) {
-        await login.state.removeFromList(EventKind.PinList, NostrLink.fromEvent(ev));
+        login.state.removeFromList(EventKind.PinList, NostrLink.fromEvent(ev));
       }
     }
   }
@@ -37,7 +37,7 @@ export default function NoteHeader(props: {
   async function unbookmark() {
     if (options.canUnbookmark && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnbookmark))) {
-        await login.state.removeFromList(EventKind.BookmarksList, NostrLink.fromEvent(ev));
+        login.state.removeFromList(EventKind.BookmarksList, NostrLink.fromEvent(ev));
       }
     }
   }
@@ -53,7 +53,7 @@ export default function NoteHeader(props: {
         showProfileCard={options.showProfileCard ?? true}
         showBadges={true}
       />
-      <div className="flex items-center gap-2 text-neutral-400 text-sm">
+      <div className="flex items-center gap-2">
         {props.context}
         {(options.showTime || options.showBookmarked) && (
           <>
@@ -66,7 +66,9 @@ export default function NoteHeader(props: {
           </>
         )}
         {options.showPinned && (
-          <div className={options.canUnpin ? "cursor-pointer" : ""} onClick={() => unpin()}>
+          <div
+            className={`text-sm text-neutral-500 flex gap-2 ${options.canUnpin ? "cursor-pointer" : ""}`}
+            onClick={() => unpin()}>
             <Icon name="pin" /> <FormattedMessage {...messages.Pinned} />
           </div>
         )}

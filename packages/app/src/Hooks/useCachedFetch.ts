@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 
-const useCachedFetch = <T, R>(url: string, storageKey: string, dataProcessor?: (data: T) => R, expire = 600) => {
+const useCachedFetch = <T, R>(
+  url: string,
+  storageKey: string,
+  dataProcessor?: (data: T) => R,
+  expire = 600,
+  timeout = 10,
+) => {
   const cachedData = useMemo<{ data: R; timestamp: number }>(() => {
     const cached = localStorage.getItem(storageKey);
     return cached ? JSON.parse(cached) : null;
@@ -17,7 +23,10 @@ const useCachedFetch = <T, R>(url: string, storageKey: string, dataProcessor?: (
       setError(undefined);
 
       try {
-        const res = await fetch(url);
+        const abort = AbortSignal.timeout(timeout * 1000);
+        const res = await fetch(url, {
+          signal: abort,
+        });
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }

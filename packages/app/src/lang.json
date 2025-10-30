@@ -246,9 +246,6 @@
   "48zn4v": {
     "defaultMessage": "Bid"
   },
-  "4IPzdn": {
-    "defaultMessage": "Primary Developers"
-  },
   "4L2vUY": {
     "defaultMessage": "Your new NIP-05 handle is:"
   },
@@ -1717,14 +1714,14 @@
   "f2CAxA": {
     "defaultMessage": "Dump"
   },
+  "fB8U26": {
+    "defaultMessage": "{app} is an open source project built by passionate people in their free time, your donations are greatly appreciated"
+  },
   "fBI91o": {
     "defaultMessage": "Zap"
   },
   "fBlba3": {
     "defaultMessage": "Thanks for using {site}, please consider donating if you can."
-  },
-  "fLIvbC": {
-    "defaultMessage": "Snort is an open source project built by passionate people in their free time, your donations are greatly appreciated"
   },
   "fOksnD": {
     "defaultMessage": "Can't vote because LNURL service does not support zaps"

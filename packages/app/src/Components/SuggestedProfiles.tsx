@@ -52,7 +52,7 @@ export default function SuggestedProfiles() {
 
   return (
     <>
-      <div className="flex items-center justify-between bg-superdark px-3 py-2 rounded-lg">
+      <div className="flex items-center justify-between layer-1">
         <FormattedMessage defaultMessage="Provider" />
         <select onChange={e => setProvider(Number(e.target.value))}>
           <option value={Provider.NostrBand}>nostr.band</option>

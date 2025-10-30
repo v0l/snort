@@ -12,7 +12,7 @@ import ProfilePreview from "@/Components/User/ProfilePreview";
 import SnortApi, { RevenueSplit, RevenueToday } from "@/External/SnortApi";
 import { Contributors, DonateLNURL, Translators } from "@/Pages/Donate/const";
 import { ZapPoolDonateSection } from "@/Pages/Donate/ZapPoolDonateSection";
-import { ApiHost, DeveloperAccounts, SnortPubKey } from "@/Utils/Const";
+import { ApiHost, SnortPubKey } from "@/Utils/Const";
 import { bech32ToHex } from "@snort/shared";
 
 const DonatePage = () => {
@@ -46,34 +46,31 @@ const DonatePage = () => {
   }
 
   return (
-    <div className="px-3 py-2">
-      <p>
+    <div className="px-3 py-2 flex flex-col gap-2">
+      <div>
         <FormattedMessage
-          defaultMessage="Snort is an open source project built by passionate people in their free time, your donations are greatly appreciated"
-          id="fLIvbC"
+          defaultMessage="{app} is an open source project built by passionate people in their free time, your donations are greatly appreciated"
+          values={{
+            app: CONFIG.appNameCapitalized,
+          }}
         />
-      </p>
-      <p>
+      </div>
+      <div>
         <FormattedMessage
           defaultMessage="Check out the code {link}"
           id="LKw/ue"
           values={{
             link: (
-              <a
-                className="highlight underline"
-                href="https://git.v0l.io/Kieran/snort"
-                rel="noreferrer"
-                target="_blank">
+              <a className="highlight underline" href="https://github.com/v0l/snort" rel="noreferrer" target="_blank">
                 here
               </a>
             ),
           }}
         />
-      </p>
-      <p>
+      </div>
+      <div>
         <FormattedMessage
           defaultMessage="To see a full list of changes you can view the changelog {here}"
-          id="VfhYxG"
           values={{
             here: (
               <Link to="/about" className="highlight underline">
@@ -82,8 +79,8 @@ const DonatePage = () => {
             ),
           }}
         />
-      </p>
-      {CONFIG.chatChannels && (
+      </div>
+      {CONFIG.chatChannels && CONFIG.chatChannels.length > 0 && (
         <>
           <h4>
             <FormattedMessage defaultMessage="Public Chat Channels" />
@@ -110,31 +107,28 @@ const DonatePage = () => {
       <h3>
         <FormattedMessage defaultMessage="Donate" />
       </h3>
-      <div className="flex flex-col gap-3">
-        <div className="border rounded-lg px-3 py-2">
-          <div className="flex items-center justify-between">
-            <FormattedMessage defaultMessage="Lightning Donation" />
-            <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL}>
-              <FormattedMessage defaultMessage="Donate" />
-            </ZapButton>
-          </div>
-          {today && (
-            <small>
-              <FormattedMessage
-                defaultMessage="Total today (UTC): {amount} sats"
-                id="P7nJT9"
-                values={{ amount: today.donations.toLocaleString() }}
-              />
-            </small>
-          )}
+      <div className="layer-1">
+        <div className="flex items-center justify-between">
+          <FormattedMessage defaultMessage="Lightning Donation" />
+          <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL}>
+            <FormattedMessage defaultMessage="Donate" />
+          </ZapButton>
         </div>
-        <div className="border rounded-lg px-3 py-2">
-          <div className="flex items-center justify-between">
-            <FormattedMessage defaultMessage="On-chain Donation" />
-            <AsyncButton type="button" onClick={getOnChainAddress}>
-              <FormattedMessage defaultMessage="Get Address" />
-            </AsyncButton>
-          </div>
+        {today && (
+          <small>
+            <FormattedMessage
+              defaultMessage="Total today (UTC): {amount} sats"
+              values={{ amount: today.donations.toLocaleString() }}
+            />
+          </small>
+        )}
+      </div>
+      <div className="layer-1">
+        <div className="flex items-center justify-between">
+          <FormattedMessage defaultMessage="On-chain Donation" />
+          <AsyncButton type="button" onClick={getOnChainAddress}>
+            <FormattedMessage defaultMessage="Get Address" />
+          </AsyncButton>
         </div>
       </div>
       {onChain && (
@@ -149,21 +143,15 @@ const DonatePage = () => {
         </Modal>
       )}
       <ZapPoolDonateSection />
-      <h3>
-        <FormattedMessage defaultMessage="Primary Developers" />
-      </h3>
-      {DeveloperAccounts.map(a => (
-        <ProfilePreview pubkey={a} key={a} actions={actions(a)} />
-      ))}
-      <h4>
+      <h2>
         <FormattedMessage defaultMessage="Contributors" />
-      </h4>
+      </h2>
       {Contributors.map(a => (
         <ProfilePreview pubkey={a} key={a} actions={actions(a)} />
       ))}
-      <h4>
+      <h2>
         <FormattedMessage defaultMessage="Translators" />
-      </h4>
+      </h2>
       {Translators.map(a => (
         <ProfilePreview pubkey={a} key={a} actions={actions(a)} />
       ))}

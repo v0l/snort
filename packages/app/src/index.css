@@ -444,8 +444,8 @@ optgroup {
   background-color: var(--bg-color);
 }
 
-input:placeholder,
-textarea:placeholder {
+input::placeholder,
+textarea::placeholder {
   @apply text-neutral-500;
 }
 

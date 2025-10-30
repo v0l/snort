@@ -101,7 +101,6 @@ import TrendingUsers from "@/Components/Trending/TrendingUsers";
 import TrendingPosts from "@/Components/Trending/TrendingPosts";
 
 // Other Components
-import LineChart from "@/Components/LineChart";
 import KindName from "@/Components/kind-name";
 import SuggestedProfiles from "@/Components/SuggestedProfiles";
 import ZapAmountLabel from "@/Components/zap-amount";
@@ -980,21 +979,6 @@ export default function ComponentDebugPage() {
               <TaskListDisplay tasks={[new DonateTask()]} />
             </div>
           </div>
-
-          <div>
-            <span className="mb-2">LineChart:</span>
-            <LineChart
-              data={[
-                { time: 0, value: 12 },
-                { time: 1, value: 19 },
-                { time: 2, value: 15 },
-                { time: 3, value: 25 },
-                { time: 4, value: 22 },
-                { time: 5, value: 30 },
-                { time: 6, value: 28 },
-              ]}
-            />
-          </div>
         </div>
       </section>
 
@@ -1588,7 +1572,7 @@ This example covers all major markdown features including:
           </li>
           <li>
             <strong>Specialized Components (10+ components):</strong> TrendingHashtags, TrendingUsers, TrendingPosts,
-            SuggestedProfiles, LineChart, PaidRelayLabel, UptimeLabel, ReBroadcaster, LiveEvent
+            SuggestedProfiles, PaidRelayLabel, UptimeLabel, ReBroadcaster, LiveEvent
           </li>
         </ul>
         <p className="text-sm mt-3">

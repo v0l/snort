@@ -11,7 +11,6 @@ import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-d
 import { initRelayWorker, preload, Relay, UserCache } from "@/Cache";
 import { ThreadRoute } from "@/Components/Event/Thread/ThreadRoute";
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
-import { db } from "@/Db";
 import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch";
 import { AboutPage } from "@/Pages/About";
 import { DebugPage } from "@/Pages/CacheDebug";
@@ -43,7 +42,7 @@ import { setupWebLNWalletConfig } from "@/Wallet";
 
 import { Day } from "./Utils/Const";
 import { LoginStore } from "./Utils/Login";
-import { SpotlightContextWrapper } from "./Components/Spotlight/SpotlightMedia";
+import { SpotlightContextWrapper } from "./Components/Spotlight/context";
 
 const ComponentDebugPage = lazy(async () => await import("@/Pages/ComponentDebug"));
 
@@ -60,8 +59,6 @@ async function initSite() {
   }
 
   setupWebLNWalletConfig(Wallets);
-
-  db.ready = await db.isAvailable();
 
   const login = LoginStore.snapshot();
   preload(login.state.follows).then(async () => {

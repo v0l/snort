@@ -2,9 +2,8 @@ import { decodeTLV, dedupe, encodeTLVEntries, ExternalStore, NostrPrefix, TLVEnt
 import { EventKind, EventPublisher, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 
 import { GiftsCache } from "@/Cache";
-import { GiftWrapCache } from "@/Cache/GiftWrapCache";
+import { GiftWrapCache, UnwrappedGift } from "@/Cache/GiftWrapCache";
 import { Chat, ChatSystem, ChatType, lastReadInChat, setLastReadIn } from "@/chat";
-import { UnwrappedGift } from "@/Db";
 import { LoginSession } from "@/Utils/Login";
 import { GetPowWorker } from "@/Utils/wasm";
 
@@ -43,7 +42,7 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
         .filter(a => a !== pk);
 
       return encodeTLVEntries(
-        NostrPrefix.Chat17,
+        "nchat17",
         ...pTags.map(
           v =>
             ({

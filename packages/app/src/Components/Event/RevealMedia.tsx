@@ -11,7 +11,7 @@ import { FileExtensionRegex } from "@/Utils/Const";
 export type RevealMediaProps = Omit<MediaElementProps, "mime" | "url"> & {
   creator: string;
   link: string;
-}
+};
 
 export default function RevealMedia(props: RevealMediaProps) {
   const publicKey = useLogin(s => s.publicKey);
@@ -64,20 +64,10 @@ export default function RevealMedia(props: RevealMediaProps) {
             }}
           />
         }>
-        <MediaElement
-          mime={`${type}/${extension}`}
-          url={url.toString()}
-          {...props}
-        />
+        <MediaElement mime={`${type}/${extension}`} url={url.toString()} {...props} />
       </Reveal>
     );
   } else {
-    return (
-      <MediaElement
-        mime={`${type}/${extension}`}
-        url={url.toString()}
-        {...props}
-      />
-    );
+    return <MediaElement mime={`${type}/${extension}`} url={url.toString()} {...props} />;
   }
 }

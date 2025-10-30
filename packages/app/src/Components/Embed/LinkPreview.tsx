@@ -22,6 +22,7 @@ const cache = new LRUCache<string, LinkPreviewData>({
 });
 
 const LinkPreview = ({ url }: { url: string }) => {
+  const uu = new URL(url);
   const [preview, setPreview] = useState<LinkPreviewData | null>(cache.get(url));
 
   useEffect(() => {
@@ -71,7 +72,11 @@ const LinkPreview = ({ url }: { url: string }) => {
       }
     }
     if (preview?.image) {
-      return <ProxyImg src={preview?.image} className="w-full object-cover aspect-video" />;
+      let src = preview?.image;
+      if (!preview.image.startsWith("http")) {
+        src = `${uu.protocol}//${uu.hostname}/${preview.image}`;
+      }
+      return <ProxyImg src={src} className="w-full object-cover aspect-video" />;
     }
     return null;
   }
@@ -86,7 +91,7 @@ const LinkPreview = ({ url }: { url: string }) => {
             {preview?.description && (
               <small className="text-neutral-800 text-sm">{preview.description.slice(0, 160)}</small>
             )}
-            <small className="text-xs">{new URL(url).host}</small>
+            <small className="text-xs">{uu.host}</small>
           </div>
         </a>
       )}

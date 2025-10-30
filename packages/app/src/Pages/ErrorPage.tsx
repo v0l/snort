@@ -3,7 +3,6 @@ import { FormattedMessage } from "react-intl";
 import { useRouteError } from "react-router-dom";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
-import { db } from "@/Db";
 
 const log = debug("ErrorPage");
 
@@ -35,7 +34,6 @@ const ErrorPage = () => {
   };
 
   const handleClearData = async () => {
-    await db.delete(); // Delete IndexedDB
     globalThis.localStorage.clear(); // Clear localStorage
     await clearOPFSData(); // Attempt to clear OPFS data
     globalThis.location.href = "/"; // Redirect to home

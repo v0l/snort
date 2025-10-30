@@ -12,6 +12,8 @@ import ProfileImage from "@/Components/User/ProfileImage";
 import { TimelineSubject } from "@/Feed/TimelineFeed";
 import useLogin from "@/Hooks/useLogin";
 import { formatShort } from "@/Utils/Number";
+import { AvatarGroup } from "@/Components/User/AvatarGroup";
+import useWoT from "@/Hooks/useWoT";
 
 const HashTagsPage = () => {
   const params = useParams();
@@ -50,7 +52,8 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
     return rb;
   }, [tag]);
   const followsTag = useRequestBuilder(sub);
-  const pubkeys = dedupe(followsTag.map(a => a.pubkey));
+  const wot = useWoT();
+  const pubkeys = wot.sortPubkeys(dedupe(followsTag.map(a => a.pubkey)));
 
   return (
     <div className={classNames("flex flex-col", className)}>
@@ -63,7 +66,6 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
             <small>
               <FormattedMessage
                 defaultMessage="{n} notes"
-                id="un1nGw"
                 values={{
                   n: formatShort(events),
                 }}
@@ -83,10 +85,8 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
           </AsyncButton>
         )}
       </div>
-      <div className="flex items-center">
-        {pubkeys.slice(0, 5).map(a => (
-          <ProfileImage key={a} pubkey={a} showUsername={false} showFollowDistance={false} size={40} />
-        ))}
+      <div className="flex items-center gap-2">
+        <AvatarGroup ids={pubkeys.slice(0, 5)} size={40} />
         {pubkeys.length > 5 && (
           <span>
             +<FormattedNumber value={pubkeys.length - 5} />

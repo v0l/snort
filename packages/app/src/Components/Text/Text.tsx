@@ -14,7 +14,7 @@ import RevealMedia, { RevealMediaProps } from "../Event/RevealMedia";
 import { ProxyImg } from "../ProxyImg";
 import HighlightedText from "./HighlightedText";
 import Mention from "../Embed/Mention";
-import { SpotlightContext } from "../Spotlight/SpotlightMedia";
+import { SpotlightContext } from "../Spotlight/context";
 import NostrLink from "../Embed/NostrLink";
 
 export interface TextProps {
@@ -23,7 +23,6 @@ export interface TextProps {
   creator: string;
   tags: Array<Array<string>>;
   disableMedia?: boolean;
-  disableMediaSpotlight?: boolean;
   disableGallery?: boolean;
   disableLinkPreview?: boolean;
   depth?: number;
@@ -41,7 +40,6 @@ export default function Text({
   disableMedia,
   disableGallery,
   depth,
-  disableMediaSpotlight,
   disableLinkPreview,
   truncate,
   className,
@@ -90,7 +88,13 @@ export default function Text({
               const elementsGallery = elements.slice(i);
               const gal = findGallery(elementsGallery);
               if (gal && !(disableGallery ?? false)) {
-                chunks.push(buildGallery(elementsGallery.filter(a => a.content.trim().length > 0), onMediaClick, creator));
+                chunks.push(
+                  buildGallery(
+                    elementsGallery.filter(a => a.content.trim().length > 0),
+                    onMediaClick,
+                    creator,
+                  ),
+                );
                 // skip to end of galary
                 i += elementsGallery.length;
               } else {
@@ -164,7 +168,19 @@ export default function Text({
           break;
         }
         case "code_block": {
-          chunks.push(<pre className="m-0 overflow-scroll">{element.content}</pre>);
+          chunks.push(
+            <pre className="bg-layer-2 px-2 py-1 rounded-md" lang={element.language}>
+              {element.content}
+            </pre>,
+          );
+          break;
+        }
+        case "inline_code": {
+          chunks.push(
+            <code className="bg-layer-2 px-1.5 py-0.5 rounded-md" lang={element.language}>
+              {element.content}
+            </code>,
+          );
           break;
         }
         default: {
@@ -228,35 +244,42 @@ function buildGallery(
   creator: string,
 ) {
   if (elements.length === 1) {
-    return <RevealMedia link={elements[0].content} meta={elements[0].data} creator={creator} onMediaClick={onMediaClick} />;
+    return (
+      <RevealMedia link={elements[0].content} meta={elements[0].data} creator={creator} onMediaClick={onMediaClick} />
+    );
   } else {
     // We build a grid layout to render the grouped images
-    const imagesWithGridConfig = elements
-      .map((gi, index) => {
-        const config = gridConfigMap.get(elements.length);
-        let height = ROW_HEIGHT;
+    const imagesWithGridConfig = elements.map((gi, index) => {
+      const config = gridConfigMap.get(elements.length);
+      let height = ROW_HEIGHT;
 
-        if (config && config[index][1] > 1) {
-          height = config[index][1] * ROW_HEIGHT + GRID_GAP;
-        }
+      if (config && config[index][1] > 1) {
+        height = config[index][1] * ROW_HEIGHT + GRID_GAP;
+      }
 
-        return {
-          content: gi.content,
-          data: gi.data,
-          gridColumn: config ? config[index][0] : 1,
-          gridRow: config ? config[index][1] : 1,
-          height,
-        };
-      });
+      return {
+        content: gi.content,
+        data: gi.data,
+        gridColumn: config ? config[index][0] : 1,
+        gridRow: config ? config[index][1] : 1,
+        height,
+      };
+    });
     const gallery = (
       <div className="grid grid-cols-4 gap-0.5 place-items-start">
         {imagesWithGridConfig.map(img => (
-          <RevealMedia link={img.content} meta={img.data} creator={creator} onMediaClick={onMediaClick} style={{
-            gridColumn: `span ${img.gridColumn}`,
-            gridRow: `span ${img.gridRow}`,
-            height: img.height,
-            objectFit: "cover"
-          }} />
+          <RevealMedia
+            link={img.content}
+            meta={img.data}
+            creator={creator}
+            onMediaClick={onMediaClick}
+            style={{
+              gridColumn: `span ${img.gridColumn}`,
+              gridRow: `span ${img.gridRow}`,
+              height: img.height,
+              objectFit: "cover",
+            }}
+          />
         ))}
       </div>
     );

@@ -35,6 +35,7 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
     return (
       <div
         className="text-error"
+        title={src}
         onClick={e => {
           e.stopPropagation();
           setBypass(true);

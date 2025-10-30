@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 import { LNWallet, Sats, WalletInvoice } from "@snort/wallet";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
@@ -12,6 +12,7 @@ import Icon from "@/Components/Icons/Icon";
 import { useRates } from "@/Hooks/useRates";
 import { unwrap } from "@/Utils";
 import { useWallet, Wallets } from "@/Wallet";
+const PriceChart = lazy(async () => await import("./price-chart"));
 
 export default function WalletPage(props: { showHistory: boolean }) {
   const navigate = useNavigate();
@@ -257,6 +258,11 @@ export default function WalletPage(props: { showHistory: boolean }) {
 
   return (
     <div>
+      <div className="px-6 py-4 bg-layer-1 rounded-xl mb-4">
+        <Suspense>
+          <PriceChart />
+        </Suspense>
+      </div>
       {walletList()}
       {error && <b className="warning">{error}</b>}
       {unlockWallet()}

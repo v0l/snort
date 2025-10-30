@@ -5,7 +5,6 @@ import { FormattedMessage } from "react-intl";
 import { useLocation, useParams } from "react-router-dom";
 
 import { ThreadRoute } from "@/Components/Event/Thread/ThreadRoute";
-import { GenericFeed } from "@/Components/Feed/Generic";
 import Spinner from "@/Components/Icons/Spinner";
 import ProfilePage from "@/Pages/Profile/ProfilePage";
 
@@ -24,8 +23,6 @@ export default function NostrLinkHandler() {
         case NostrPrefix.PublicKey:
         case NostrPrefix.Profile:
           return <ProfilePage key={link} id={nav.encode()} state={state} />;
-        case "req" as NostrPrefix:
-          return <GenericFeed key={link} link={nav} />;
         default:
           return null;
       }

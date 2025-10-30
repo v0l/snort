@@ -41,7 +41,7 @@ const Footer = () => {
   if (!isMobile) return;
 
   return (
-    <footer className="md:hidden fixed bottom-0 z-10 w-full bg-base-200 pb-safe-area bg-background">
+    <footer className="md:hidden fixed bottom-0 z-10 w-full pb-safe-area bg-layer-1">
       <div className="grid grid-flow-col">
         {MENU_ITEMS.map((item, index) => (
           <FooterNavItem key={index} item={item} readonly={readonly} />

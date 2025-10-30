@@ -29,7 +29,7 @@ export default function MediaSettingsPage() {
         {list.map(a => {
           const [, addr] = unwrap(a.toEventTag());
           return (
-            <div key={addr} className="px-3 py-2 rounded-lg bg-ultradark flex justify-between items-center">
+            <div key={addr} className="layer-1 flex justify-between items-center">
               {addr}
               <IconButton
                 icon={{
@@ -49,7 +49,7 @@ export default function MediaSettingsPage() {
           </small>
         )}
       </div>
-      <div className="px-3 py-2 rounded-lg bg-ultradark flex flex-col gap-2">
+      <div className="layer-1 flex flex-col gap-2">
         <div className="text-lg">
           <FormattedMessage defaultMessage="Add Server" />
         </div>

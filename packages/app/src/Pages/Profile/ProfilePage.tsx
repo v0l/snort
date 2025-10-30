@@ -5,7 +5,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { ProxyImg } from "@/Components/ProxyImg";
-import { SpotlightContext } from "@/Components/Spotlight/SpotlightMedia";
+import { SpotlightContext } from "@/Components/Spotlight/context";
 import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
 import FollowsList from "@/Components/User/FollowListBase";
 import MutedList from "@/Components/User/MutedList";

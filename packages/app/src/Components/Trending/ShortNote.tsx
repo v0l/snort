@@ -5,25 +5,14 @@ import NoteTime from "@/Components/Event/Note/NoteTime";
 import Text from "@/Components/Text/Text";
 import ProfileImage from "@/Components/User/ProfileImage";
 
-import DisplayName from "../User/DisplayName";
-
 export default function TrendingNote({ event }: { event: TaggedNostrEvent }) {
   // replace newlines with spaces, replace double spaces with single spaces
   const content = event.content.slice(0, 80).replace(/\n/g, " ").replace(/  +/g, " ");
   return (
     <Link to={`/${NostrLink.fromEvent(event).encode(CONFIG.eventLinkPrefix)}`} className="flex flex-col gap-1">
       <div className="flex flex-row justify-between">
-        <ProfileImage
-          pubkey={event.pubkey}
-          size={28}
-          showProfileCard={true}
-          overrideUsername={
-            <>
-              <DisplayName pubkey={event.pubkey} className="font-semibold" />
-              <NoteTime from={event.created_at * 1000} className="font-normal text-sm" />
-            </>
-          }
-        />
+        <ProfileImage pubkey={event.pubkey} size={28} showProfileCard={true} />
+        <NoteTime from={event.created_at * 1000} />
       </div>
       <Text
         id={event.id + "short"}

@@ -1,5 +1,4 @@
 import { CacheRelay, Connection, ConnectionCacheRelay, RelayMetricCache, UserRelaysCache } from "@snort/system";
-import { SnortSystemDb } from "@snort/system-web";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 import WorkerVite from "@snort/worker-relay/src/worker?worker";
 
@@ -65,9 +64,8 @@ export async function initRelayWorker() {
   }
 }
 
-export const SystemDb = new SnortSystemDb();
-export const UserRelays = new UserRelaysCache(SystemDb.userRelays);
-export const RelayMetrics = new RelayMetricCache(SystemDb.relayMetrics);
+export const UserRelays = new UserRelaysCache();
+export const RelayMetrics = new RelayMetricCache();
 
 export const UserFollows = new UserFollowsWorker(Relay);
 export const UserCache = new ProfileCacheRelayWorker(Relay);

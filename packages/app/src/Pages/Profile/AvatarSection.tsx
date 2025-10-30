@@ -11,7 +11,7 @@ import IconButton from "@/Components/Button/IconButton";
 import Copy from "@/Components/Copy/Copy";
 import Modal from "@/Components/Modal/Modal";
 import QrCode from "@/Components/QrCode";
-import { SpotlightContext } from "@/Components/Spotlight/SpotlightMedia";
+import { SpotlightContext } from "@/Components/Spotlight/context";
 import Avatar from "@/Components/User/Avatar";
 import FollowButton from "@/Components/User/FollowButton";
 import MuteButton from "@/Components/User/MuteButton";
