@@ -228,7 +228,10 @@ export class RequestFilterBuilder {
           .kinds([unwrap(link.kind)])
           .authors([unwrap(link.author)]);
       } else {
-        this.ids([link.id]);
+        // dont query with ids when looking for replaceable events
+        if (!link.kind || !EventExt.isReplaceable(link.kind)) {
+          this.ids([link.id]);
+        }
         if (link.author) {
           this.authors([link.author]);
         }
