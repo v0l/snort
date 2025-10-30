@@ -1,7 +1,4 @@
-import * as utils from "@noble/curves/abstract/utils";
-import * as secp from "@noble/curves/secp256k1";
-import { bytesToHex } from "@noble/hashes/utils";
-import { unixNowMs } from "@snort/shared";
+import { bech32ToHex, unixNowMs } from "@snort/shared";
 import {
   EventPublisher,
   KeyStorage,
@@ -15,13 +12,14 @@ import {
 } from "@snort/system";
 
 import { GiftsCache } from "@/Cache";
-import { bech32ToHex, dedupeById, deleteRefCode, unwrap } from "@/Utils";
+import { dedupeById, deleteRefCode, unwrap } from "@/Utils";
 import { Blasters } from "@/Utils/Const";
 import { LoginSession, LoginSessionType, LoginStore, SnortAppData } from "@/Utils/Login/index";
 import { entropyToPrivateKey, generateBip39Entropy } from "@/Utils/nip6";
 import { SubscriptionEvent } from "@/Utils/Subscription";
 
 import { Nip7OsSigner } from "./Nip7OsSigner";
+import { bytesToHex } from "@noble/hashes/utils.js";
 
 export function logout(id: string) {
   LoginStore.removeSession(id);
@@ -93,15 +91,6 @@ export async function generateNewLogin(
   LoginStore.loginWithPrivateKey(await pin(privateKey), bytesToHex(entropy), newRelays);
 }
 
-export function generateRandomKey() {
-  const privateKey = utils.bytesToHex(secp.schnorr.utils.randomPrivateKey());
-  const publicKey = utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
-  return {
-    privateKey,
-    publicKey,
-  };
-}
-
 export function updateSession(id: string, fn: (state: LoginSession) => void) {
   const session = LoginStore.get(id);
   if (session) {
@@ -110,19 +99,23 @@ export function updateSession(id: string, fn: (state: LoginSession) => void) {
   }
 }
 
-export async function setAppData(state: LoginSession, data: SnortAppData) {
-  const pub = LoginStore.getPublisher(state.id);
-  if (!pub) return;
-
-  await state.state.setAppData(data);
+export function setAppData(state: LoginSession, data: SnortAppData) {
+  state.state.setAppData(data);
   LoginStore.updateSession(state);
 }
 
-export async function updateAppData(id: string, fn: (data: SnortAppData) => SnortAppData) {
+export function updateAppData(id: string, fn: (data: SnortAppData) => SnortAppData) {
   const session = LoginStore.get(id);
   if (session?.state.appdata) {
     const next = fn(session.state.appdata);
-    await setAppData(session, next);
+    setAppData(session, next);
+  }
+}
+
+export async function saveAppData(id: string) {
+  const session = LoginStore.get(id);
+  if (session?.state.appdata) {
+    await session.state.saveAppData();
   }
 }
 

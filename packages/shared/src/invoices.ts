@@ -1,4 +1,4 @@
-import { bytesToHex } from "@noble/hashes/utils";
+import { bytesToHex } from "@noble/hashes/utils.js";
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 
 export interface InvoiceDetails {

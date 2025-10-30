@@ -11,8 +11,8 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
   return show ? (
     children
   ) : (
-    <div className="bb p flex items-center justify-between">
-      <div className="text-sm text-secondary">
+    <div className="bb px-3 py-2 flex items-center justify-between">
+      <div className="text-sm text-neutral-400">
         <FormattedMessage defaultMessage="This note has been muted" />
       </div>
       <button className="btn btn-sm btn-neutral" onClick={() => setShow(true)}>

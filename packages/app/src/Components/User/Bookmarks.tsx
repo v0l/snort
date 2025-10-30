@@ -1,4 +1,4 @@
-import { HexKey, TaggedNostrEvent } from "@snort/system";
+import { TaggedNostrEvent } from "@snort/system";
 import { ChangeEvent, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -9,12 +9,12 @@ import useLogin from "@/Hooks/useLogin";
 import messages from "../messages";
 
 interface BookmarksProps {
-  pubkey: HexKey;
+  pubkey: string;
   bookmarks: readonly TaggedNostrEvent[];
 }
 
 const Bookmarks = ({ pubkey, bookmarks }: BookmarksProps) => {
-  const [onlyPubkey, setOnlyPubkey] = useState<HexKey | "all">("all");
+  const [onlyPubkey, setOnlyPubkey] = useState<string | "all">("all");
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   const ps = useMemo(() => {
     return [...new Set(bookmarks.map(ev => ev.pubkey))];
@@ -24,14 +24,14 @@ const Bookmarks = ({ pubkey, bookmarks }: BookmarksProps) => {
     [publicKey, pubkey],
   );
 
-  function renderOption(p: HexKey) {
+  function renderOption(p: string) {
     const profile = UserCache.getFromCache(p);
     return profile ? <option value={p}>{profile?.display_name || profile?.name}</option> : null;
   }
 
   return (
     <>
-      <div className="flex-end p">
+      <div className="flex-end px-3 py-2">
         <select
           disabled={ps.length <= 1}
           value={onlyPubkey}

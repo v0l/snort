@@ -28,7 +28,6 @@ export type QueryLike = {
 export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
-  event: (subId: string, ev: TaggedNostrEvent) => void;
   request: (subId: string, filter: BuiltRawReqFilter) => void;
 }
 
@@ -69,7 +68,7 @@ export interface SystemConfig {
   optimizer: Optimizer;
 
   /**
-   * Dexie database storage, usually `@snort/system-web`
+   * Generic storage layer for internal caches
    */
   db?: SnortSystemDb;
 

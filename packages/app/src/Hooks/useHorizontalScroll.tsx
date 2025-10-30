@@ -1,7 +1,7 @@
-import { LegacyRef, useEffect, useRef } from "react";
+import { Ref, useEffect, useRef } from "react";
 
 function useHorizontalScroll() {
-  const elRef = useRef<HTMLDivElement>();
+  const elRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = elRef.current;
     if (el) {
@@ -14,7 +14,7 @@ function useHorizontalScroll() {
       return () => el.removeEventListener("wheel", onWheel);
     }
   }, []);
-  return elRef as LegacyRef<HTMLDivElement> | undefined;
+  return elRef;
 }
 
 export default useHorizontalScroll;

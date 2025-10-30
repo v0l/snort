@@ -1,4 +1,4 @@
-import { LNURL } from "@snort/shared";
+import { hexToBech32, LNURL } from "@snort/shared";
 import { NostrEvent } from "@snort/system";
 import { WalletInvoiceState } from "@snort/wallet";
 import { FormattedMessage, FormattedNumber } from "react-intl";
@@ -9,7 +9,7 @@ import { Toastore } from "@/Components/Toaster/Toaster";
 import FollowListBase from "@/Components/User/FollowListBase";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import usePreferences from "@/Hooks/usePreferences";
-import { dedupe, findTag, getDisplayName, hexToBech32 } from "@/Utils";
+import { dedupe, findTag, getDisplayName } from "@/Utils";
 import { useWallet } from "@/Wallet";
 
 import { ProxyImg } from "../ProxyImg";
@@ -67,7 +67,7 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
   const picture = findTag(ev, "image");
   return (
     <>
-      {picture && <ProxyImg src={picture} className="br max-h-44 w-full object-cover mb-4" />}
+      {picture && <ProxyImg src={picture} className="rounded-lg max-h-44 w-full object-cover mb-4" />}
       <FollowListBase
         pubkeys={ids}
         className={className}

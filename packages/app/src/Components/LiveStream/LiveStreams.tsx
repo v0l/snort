@@ -11,6 +11,7 @@ import { findTag } from "@/Utils";
 
 import Avatar from "../User/Avatar";
 import { NestsParticipants } from "./nests-participants";
+import { formatShort } from "@/Utils/Number";
 
 export function LiveStreams() {
   const streams = useLiveStreams();
@@ -37,7 +38,7 @@ export function LiveStreams() {
 export function LiveStreamEvent({ ev, className }: { ev: NostrEvent; className?: string }) {
   const { proxy } = useImgProxy();
   const title = findTag(ev, "title");
-  const image = findTag(ev, "image");
+  const image = findTag(ev, "image") ?? findTag(ev, "thumb") ?? findTag(ev, "thumbnail");
   const status = findTag(ev, "status");
   const viewers = findTag(ev, "current_participants");
   const host = ev.tags.find(a => a[0] === "p" && a[3] === "host")?.[1] ?? ev.pubkey;
@@ -48,28 +49,28 @@ export function LiveStreamEvent({ ev, className }: { ev: NostrEvent; className?:
 
   return (
     <Link className={classNames("flex gap-2", className)} to={`https://zap.stream/${link}`} target="_blank">
-      <div className="relative aspect-video">
+      <div className="relative aspect-video overflow-hidden light:text-white">
         <div
-          className="absolute h-full w-full bg-center bg-cover bg-gray-ultradark rounded-lg"
+          className="absolute h-full w-full bg-center bg-cover bg-neutral-900 light:bg-neutral-300 rounded-lg "
           style={
             {
               backgroundImage: `url(${imageProxy})`,
             } as CSSProperties
           }></div>
-        <div className="absolute left-0 top-0 w-full overflow-hidden">
+        <div className="absolute left-0 top-0 w-full">
           <div
-            className="whitespace-nowrap px-1 text-ellipsis overflow-hidden text-xs font-medium bg-background opacity-70 text-center"
+            className="whitespace-nowrap px-1.5 text-ellipsis overflow-hidden text-xs font-medium bg-black/70 text-center rounded-t-lg"
             title={title}>
             {title}
           </div>
         </div>
         <div className="absolute bottom-1 left-1 bg-heart rounded-md px-2 uppercase font-bold">{status}</div>
         <div className="absolute right-1 bottom-1">
-          <Avatar pubkey={host} user={hostProfile} size={25} className="outline outline-2 outline-highlight" />
+          <Avatar pubkey={host} user={hostProfile} size={25} className="outline-2 outline-highlight" />
         </div>
         {viewers && (
-          <div className="absolute left-1 bottom-7 rounded-md px-2 py-1 text-xs bg-gray font-medium">
-            <FormattedMessage defaultMessage="{n} viewers" values={{ n: viewers }} />
+          <div className="absolute left-1 bottom-7 rounded-md px-2 py-1 text-xs bg-neutral-700 font-medium">
+            <FormattedMessage defaultMessage="{n} viewers" values={{ n: formatShort(Number(viewers)) }} />
           </div>
         )}
       </div>
@@ -89,7 +90,7 @@ export function AudioRoom({ ev, className }: { ev: NostrEvent; className?: strin
     <Link className={classNames("flex gap-2", className)} to={`/${link}`}>
       <div className="relative aspect-video">
         <div
-          className="absolute h-full w-full bg-center bg-cover bg-gray-ultradark rounded-lg flex items-end justify-center"
+          className="absolute h-full w-full bg-center bg-cover bg-neutral-900 rounded-lg flex items-end justify-center"
           style={
             {
               backgroundImage: `url(${imageProxy})`,
@@ -101,7 +102,7 @@ export function AudioRoom({ ev, className }: { ev: NostrEvent; className?: strin
         </div>
         <div className="absolute left-0 top-0 w-full overflow-hidden">
           <div
-            className="whitespace-nowrap px-1 text-ellipsis overflow-hidden text-xs font-medium bg-background opacity-70 text-center"
+            className="whitespace-nowrap px-1 text-ellipsis overflow-hidden text-xs font-medium opacity-70 text-center"
             title={title}>
             {title}
           </div>

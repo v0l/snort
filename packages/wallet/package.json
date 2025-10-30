@@ -10,24 +10,22 @@
   "author": "v0l",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc",
-    "test": "jest --runInBand"
+    "build": "rm -rf dist && bunx --bun tsc"
   },
   "files": [
     "src",
     "dist"
   ],
-  "packageManager": "yarn@4.1.1",
   "dependencies": {
-    "@scure/base": "^1.1.6",
+    "@scure/base": "^2.0.0",
     "@snort/shared": "^1.0.17",
     "@snort/system": "^1.6.9",
-    "debug": "^4.3.4",
+    "debug": "^4.4.3",
     "eventemitter3": "^5.0.1"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
     "@webbtc/webln-types": "^3.0.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.9.3"
   }
 }

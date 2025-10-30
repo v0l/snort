@@ -1,5 +1,5 @@
 import { unwrap } from "@snort/shared";
-import { EventKind } from "@snort/system";
+import { EventKind, NostrHashtagLink } from "@snort/system";
 import { useMemo } from "react";
 
 import Timeline from "@/Components/Feed/Timeline";
@@ -15,7 +15,7 @@ export function TopicsPage() {
     () =>
       ({
         type: "hashtag",
-        items: tags.filter(a => a.toEventTag()?.[0] === "t").map(a => unwrap(a.toEventTag())[1]),
+        items: tags.filter(a => a instanceof NostrHashtagLink).map(a => unwrap(a.toEventTag())[1]),
         discriminator: pubKey ?? "",
       }) as TimelineSubject,
     [tags, pubKey],

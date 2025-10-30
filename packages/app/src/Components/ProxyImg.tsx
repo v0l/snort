@@ -5,7 +5,7 @@ import Icon from "@/Components/Icons/Icon";
 import useImgProxy from "@/Hooks/useImgProxy";
 import { getUrlHostname } from "@/Utils";
 
-type ProxyImgProps = HTMLProps<HTMLImageElement> & {
+export type ProxyImgProps = HTMLProps<HTMLImageElement> & {
   size?: number;
   sha256?: string;
   className?: string;
@@ -13,7 +13,7 @@ type ProxyImgProps = HTMLProps<HTMLImageElement> & {
   missingImageElement?: ReactNode;
 };
 
-const defaultMissingImageElement = <Icon name="x" className="warning" />;
+const defaultMissingImageElement = <Icon name="x" className="text-warning" />;
 
 const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function ProxyImg(
   { src, size, className, promptToLoadDirectly, missingImageElement, sha256, ...props }: ProxyImgProps,
@@ -34,14 +34,14 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
   if (loadFailed && !bypass && (promptToLoadDirectly ?? true)) {
     return (
       <div
-        className="note-invoice error"
+        className="text-error"
+        title={src}
         onClick={e => {
           e.stopPropagation();
           setBypass(true);
         }}>
         <FormattedMessage
           defaultMessage="Failed to proxy image from {host}, click here to load directly"
-          id="65BmHb"
           values={{
             host: getUrlHostname(src),
           }}

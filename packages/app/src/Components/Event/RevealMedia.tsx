@@ -1,21 +1,17 @@
-import { IMeta } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import { MediaElement } from "@/Components/Embed/MediaElement";
+import { MediaElement, MediaElementProps } from "@/Components/Embed/MediaElement";
 import Reveal from "@/Components/Event/Reveal";
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
 import { FileExtensionRegex } from "@/Utils/Const";
 
-interface RevealMediaProps {
+export type RevealMediaProps = Omit<MediaElementProps, "mime" | "url"> & {
   creator: string;
   link: string;
-  onMediaClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
-  meta?: IMeta;
-  size?: number;
-}
+};
 
 export default function RevealMedia(props: RevealMediaProps) {
   const publicKey = useLogin(s => s.publicKey);
@@ -25,9 +21,9 @@ export default function RevealMedia(props: RevealMediaProps) {
   const hideNonFollows = autoLoadMedia === "follows-only" && !isFollowing(props.creator);
   const isMine = props.creator === publicKey;
   const hideMedia = autoLoadMedia === "none" || (!isMine && hideNonFollows);
-  const hostname = new URL(props.link).hostname;
 
   const url = new URL(props.link);
+  const hostname = url.hostname;
   const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
   const type = (() => {
     switch (extension) {
@@ -61,7 +57,6 @@ export default function RevealMedia(props: RevealMediaProps) {
         message={
           <FormattedMessage
             defaultMessage="You don't follow this person, click here to load media from <i>{link}</i>, or update <a><i>your preferences</i></a> to always load media from everybody."
-            id="HhcAVH"
             values={{
               i: i => <i>{i}</i>,
               a: a => <Link to="/settings/preferences">{a}</Link>,
@@ -69,24 +64,10 @@ export default function RevealMedia(props: RevealMediaProps) {
             }}
           />
         }>
-        <MediaElement
-          mime={`${type}/${extension}`}
-          url={url.toString()}
-          onMediaClick={props.onMediaClick}
-          meta={props.meta}
-          size={props.size}
-        />
+        <MediaElement mime={`${type}/${extension}`} url={url.toString()} {...props} />
       </Reveal>
     );
   } else {
-    return (
-      <MediaElement
-        mime={`${type}/${extension}`}
-        url={url.toString()}
-        onMediaClick={props.onMediaClick}
-        meta={props.meta}
-        size={props.size}
-      />
-    );
+    return <MediaElement mime={`${type}/${extension}`} url={url.toString()} {...props} />;
   }
 }

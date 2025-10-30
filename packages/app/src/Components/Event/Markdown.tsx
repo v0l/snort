@@ -1,5 +1,3 @@
-import "./Markdown.css";
-
 import { transformText } from "@snort/system";
 import { marked, Token } from "marked";
 import markedFootnote, { Footnote, FootnoteRef, Footnotes } from "marked-footnote";
@@ -12,6 +10,7 @@ import { ProxyImg } from "@/Components/ProxyImg";
 interface MarkdownProps {
   content: string;
   tags?: Array<Array<string>>;
+  className?: string;
 }
 
 function renderToken(t: Token | Footnotes | Footnote | FootnoteRef, tags: Array<Array<string>>): ReactNode {
@@ -41,10 +40,10 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef, tags: Array<
         throw new Error("Invalid heading");
       }
       case "codespan": {
-        return <code>{t.raw}</code>;
+        return <code className="bg-neutral-600 light:bg-neutral-300 px-2 py-0.5 rounded-sm text-sm">{t.text}</code>;
       }
       case "code": {
-        return <pre>{t.raw}</pre>;
+        return <pre className="bg-neutral-600 light:bg-neutral-300 px-2 py-0.5 rounded-sm text-sm">{t.text}</pre>;
       }
       case "br": {
         return <br />;
@@ -57,7 +56,7 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef, tags: Array<
       }
       case "link": {
         return (
-          <Link to={t.href as string} className="ext" target="_blank">
+          <Link to={t.href as string} className="text-highlight no-underline hover:underline" target="_blank">
             {t.tokens ? t.tokens.map(a => renderToken(a, tags)) : t.raw}
           </Link>
         );
@@ -125,7 +124,7 @@ const Markdown = forwardRef<HTMLDivElement, MarkdownProps>((props: MarkdownProps
   }, [props.content, props.tags]);
 
   return (
-    <div className="markdown" ref={ref}>
+    <div className={props.className} ref={ref}>
       {parsed.filter(a => a.type !== "footnote" && a.type !== "footnotes").map(a => renderToken(a, props.tags ?? []))}
     </div>
   );

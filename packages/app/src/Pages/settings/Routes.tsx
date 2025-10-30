@@ -1,21 +1,9 @@
 import { Outlet } from "react-router-dom";
 
-import AccountsPage from "@/Pages/settings/Accounts";
-import { CacheSettings } from "@/Pages/settings/Cache";
-import { ManageHandleRoutes } from "@/Pages/settings/handle";
-import ExportKeys from "@/Pages/settings/Keys";
-import MediaSettingsPage from "@/Pages/settings/media-settings";
-import Menu from "@/Pages/settings/Menu/Menu";
-import ModerationSettings from "@/Pages/settings/Moderation";
-import Notifications from "@/Pages/settings/Notifications";
-import Preferences from "@/Pages/settings/Preferences";
-import Profile from "@/Pages/settings/Profile";
-import { ReferralsPage } from "@/Pages/settings/Referrals";
-import RelayInfo from "@/Pages/settings/RelayInfo";
-import Relay from "@/Pages/settings/Relays";
+import { ManageHandleRoutes } from "@/Pages/settings/handle/routes";
 
-import { ToolsPage, ToolsPages } from "./tools";
-import { WalletSettingsRoutes } from "./wallet";
+import { ToolsPages } from "./tools/routes";
+import { WalletSettingsRoutes } from "./wallet/routes";
 
 export default [
   {
@@ -28,55 +16,94 @@ export default [
     children: [
       {
         path: "",
-        element: <Menu />,
+        async lazy() {
+          const { Menu } = await import(".");
+          return { Component: Menu };
+        },
       },
       {
         path: "profile",
-        element: <Profile />,
+        async lazy() {
+          const { Profile } = await import(".");
+          return { Component: Profile };
+        },
       },
       {
         path: "relays",
-        element: <Relay />,
+        async lazy() {
+          const { Relay } = await import(".");
+          return { Component: Relay };
+        },
       },
       {
         path: "relays/:id",
-        element: <RelayInfo />,
+        async lazy() {
+          const { RelayInfo } = await import(".");
+          return { Component: RelayInfo };
+        },
       },
       {
         path: "preferences",
-        element: <Preferences />,
+        async lazy() {
+          const { Preferences } = await import(".");
+          return { Component: Preferences };
+        },
       },
       {
         path: "notifications",
-        element: <Notifications />,
+        async lazy() {
+          const { Notifications } = await import(".");
+          return { Component: Notifications };
+        },
       },
       {
         path: "accounts",
-        element: <AccountsPage />,
+        async lazy() {
+          const { AccountsPage } = await import(".");
+          return { Component: AccountsPage };
+        },
       },
       {
         path: "keys",
-        element: <ExportKeys />,
+        async lazy() {
+          const { ExportKeys } = await import(".");
+          return { Component: ExportKeys };
+        },
       },
       {
         path: "moderation",
-        element: <ModerationSettings />,
+        async lazy() {
+          const { ModerationSettings } = await import(".");
+          return { Component: ModerationSettings };
+        },
       },
       {
         path: "cache",
-        element: <CacheSettings />,
+        async lazy() {
+          const { CacheSettings } = await import(".");
+          return { Component: CacheSettings };
+        },
       },
       {
         path: "media",
-        element: <MediaSettingsPage />,
+        async lazy() {
+          const { MediaSettingsPage } = await import(".");
+          return { Component: MediaSettingsPage };
+        },
       },
       {
         path: "invite",
-        element: <ReferralsPage />,
+        async lazy() {
+          const { ReferralsPage } = await import(".");
+          return { Component: ReferralsPage };
+        },
       },
       {
         path: "tools",
-        element: <ToolsPage />,
+        async lazy() {
+          const { ToolsPage } = await import(".");
+          return { Component: ToolsPage };
+        },
         children: ToolsPages,
       },
       ...ManageHandleRoutes,

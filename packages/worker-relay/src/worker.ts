@@ -165,6 +165,7 @@ const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: Mes
       case "setEventMetadata": {
         const [id, metadata] = msg.args as [string, EventMetadata];
         relay!.setEventMetadata(id, metadata);
+        reply(msg.id, true);
         break;
       }
       case "configureSearchIndex": {

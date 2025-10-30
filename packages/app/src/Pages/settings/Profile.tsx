@@ -1,5 +1,3 @@
-import "./Profile.css";
-
 import { fetchNip05Pubkey, LNURL } from "@snort/shared";
 import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
@@ -132,8 +130,8 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       setError(undefined);
       const file = await openFile();
       if (file && uploader) {
-        const rsp = await uploader.upload(file, file.name);
-        if (typeof rsp?.error === "string") {
+        const rsp = await uploader.upload(file);
+        if ("error" in rsp && typeof rsp?.error === "string") {
           throw new Error(`Upload failed ${rsp.error}`);
         }
         return rsp.url;
@@ -221,13 +219,13 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
   function editor() {
     return (
-      <div className="flex flex-col g24">
-        <div className="flex flex-col w-max g8">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           <h4>
             <FormattedMessage defaultMessage="Name" />
           </h4>
           <input
-            className="w-max"
+            className=""
             type="text"
             value={name}
             onChange={e => onLimitCheck(e.target.value, "username")}
@@ -236,36 +234,36 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           />
           <div>{usernameValid === false ? <span className="warning">{invalidUsernameMessage}</span> : <></>}</div>
         </div>
-        <div className="flex flex-col w-max g8">
+        <div className="flex flex-col gap-2">
           <h4>
             <FormattedMessage defaultMessage="About" />
           </h4>
           <textarea
-            className="w-max"
+            className=""
             onChange={e => onLimitCheck(e.target.value, "about")}
             value={about}
             disabled={readonly}
             maxLength={MaxAboutLength}></textarea>
           <div>{aboutValid === false ? <span className="warning">{invalidAboutMessage}</span> : <></>}</div>
         </div>
-        <div className="flex flex-col w-max g8">
+        <div className="flex flex-col gap-2">
           <h4>
             <FormattedMessage defaultMessage="Website" />
           </h4>
           <input
-            className="w-max"
+            className=""
             type="text"
             value={website}
             onChange={e => setWebsite(e.target.value)}
             disabled={readonly}
           />
         </div>
-        <div className="flex flex-col w-max g8">
+        <div className="flex flex-col gap-2">
           <h4>
             <FormattedMessage defaultMessage="Nostr Address" />
           </h4>
-          <div className="flex flex-col g8 w-max">
-            <input type="text" className="w-max" value={nip05} onChange={e => onNip05Change(e)} disabled={readonly} />
+          <div className="flex flex-col gap-2 ">
+            <input type="text" className="" value={nip05} onChange={e => onNip05Change(e)} disabled={readonly} />
             <div>{!nip05AddressValid && <span className="warning">{invalidNip05AddressMessage}</span>}</div>
             <small>
               <FormattedMessage
@@ -273,7 +271,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
                 id="5vMmmR"
               />
             </small>
-            <div className="flex g12">
+            <div className="flex gap-3">
               <button className="flex items-center" type="button" onClick={() => navigate("/nostr-address")}>
                 <FormattedMessage defaultMessage="Buy nostr address" />
               </button>
@@ -286,12 +284,12 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-max g8">
+        <div className="flex flex-col gap-2">
           <h4>
             <FormattedMessage defaultMessage="Lightning Address" />
           </h4>
           <input
-            className="w-max"
+            className=""
             type="text"
             value={lud16}
             onChange={e => onLud16Change(e.target.value.toLowerCase())}
@@ -310,7 +308,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     if (!id) return null;
     return (
       <>
-        <div className="flex justify-center items-center image-settings">
+        <div className="flex justify-center items-center">
           {(props.banner ?? true) && (
             <div
               style={{

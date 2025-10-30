@@ -1,5 +1,4 @@
 import { LNURLSuccessAction } from "@snort/shared";
-import React from "react";
 import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
@@ -7,7 +6,7 @@ import Icon from "@/Components/Icons/Icon";
 export function SuccessAction({ success }: { success: LNURLSuccessAction }) {
   return (
     <div className="flex items-center">
-      <p className="flex g12">
+      <p className="flex gap-3">
         <Icon name="check" className="success" />
         {success?.description ?? <FormattedMessage defaultMessage="Paid" />}
       </p>

@@ -1,6 +1,4 @@
-import "./ZapButton.css";
-
-import { HexKey, NostrLink } from "@snort/system";
+import { NostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { ZapTarget } from "@snort/wallet";
 import { useState } from "react";
@@ -14,7 +12,7 @@ const ZapButton = ({
   children,
   event,
 }: {
-  pubkey: HexKey;
+  pubkey: string;
   lnurl?: string;
   children?: React.ReactNode;
   event?: NostrLink;
@@ -26,7 +24,7 @@ const ZapButton = ({
 
   return (
     <>
-      <button type="button" className="flex g8" onClick={() => setZap(true)}>
+      <button type="button" className="flex gap-2" onClick={() => setZap(true)}>
         <Icon name="zap-solid" />
         {children}
       </button>

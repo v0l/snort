@@ -65,22 +65,30 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
   /**
    * Get object from cache or fetch if missing
    */
-  async fetch(key: string) {
+  async fetch(key: string, timeoutMs = 30_000) {
     const existing = this.cache.get(key);
     if (existing) {
       return existing;
     } else {
       return await new Promise<T>((resolve, reject) => {
         this.TrackKeys(key);
+        const timeout = setTimeout(() => {
+          this.cache.off("change", handler);
+          this.UntrackKeys(key);
+          reject(new Error("Fetch timeout"));
+        }, timeoutMs);
+
         const handler = (keys: Array<string>) => {
           if (keys.includes(key)) {
             const existing = this.cache.getFromCache(key);
             if (existing) {
+              clearTimeout(timeout);
               resolve(existing);
               this.UntrackKeys(key);
               this.cache.off("change", handler);
             } else {
               // should never happen
+              clearTimeout(timeout);
               reject(new Error("Not found"));
             }
           }
@@ -92,7 +100,12 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
 
   async #FetchMetadata() {
     const loading = [...this.#wantsKeys].filter(a => !this.#blacklist.has(a));
-    await this.cache.buffer(loading);
+
+    // Only buffer keys that aren't already in memory cache
+    const needsBuffer = loading.filter(a => !this.cache.getFromCache(a));
+    if (needsBuffer.length > 0) {
+      await this.cache.buffer(needsBuffer);
+    }
 
     const missing = loading.filter(a => (this.cache.getFromCache(a)?.loaded ?? 0) < this.getExpireCutoff());
     if (missing.length > 0) {
@@ -108,7 +121,9 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
       }
     }
 
-    setTimeout(() => this.#FetchMetadata(), 500);
+    // Use adaptive polling: 500ms if there's work, 2000ms if idle
+    const nextPoll = loading.length > 0 ? 500 : 2000;
+    setTimeout(() => this.#FetchMetadata(), nextPoll);
   }
 
   async #loadData(missing: Array<string>) {

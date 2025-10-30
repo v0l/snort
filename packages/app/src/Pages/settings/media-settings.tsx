@@ -29,7 +29,7 @@ export default function MediaSettingsPage() {
         {list.map(a => {
           const [, addr] = unwrap(a.toEventTag());
           return (
-            <div key={addr} className="p br bg-ultradark flex justify-between items-center">
+            <div key={addr} className="layer-1 flex justify-between items-center">
               {addr}
               <IconButton
                 icon={{
@@ -37,7 +37,7 @@ export default function MediaSettingsPage() {
                   size: 15,
                 }}
                 onClick={async () => {
-                  await state.removeFromList(EventKind.BlossomServerList, [new UnknownTag(["server", addr])], true);
+                  state.removeFromList(EventKind.BlossomServerList, [new UnknownTag(["server", addr])], true);
                 }}
               />
             </div>
@@ -49,7 +49,7 @@ export default function MediaSettingsPage() {
           </small>
         )}
       </div>
-      <div className="p br bg-ultradark flex flex-col gap-2">
+      <div className="layer-1 flex flex-col gap-2">
         <div className="text-lg">
           <FormattedMessage defaultMessage="Add Server" />
         </div>
@@ -64,7 +64,7 @@ export default function MediaSettingsPage() {
           <AsyncButton
             onClick={async () => {
               if (sanitizeRelayUrl(newServer)) {
-                await state.addToList(
+                state.addToList(
                   EventKind.BlossomServerList,
                   [new UnknownTag(["server", new URL(newServer).toString()])],
                   true,
@@ -87,7 +87,7 @@ export default function MediaSettingsPage() {
         </small>
         <table className="table">
           <thead>
-            <tr className="uppercase text-secondary">
+            <tr className="uppercase text-neutral-400">
               <th>
                 <FormattedMessage defaultMessage="Server" />
               </th>
@@ -115,7 +115,7 @@ export default function MediaSettingsPage() {
                     <AsyncButton
                       className="!py-1 mb-1"
                       onClick={async () => {
-                        await state.addToList(EventKind.BlossomServerList, [new UnknownTag(["server", k])], true);
+                        state.addToList(EventKind.BlossomServerList, [new UnknownTag(["server", k])], true);
                       }}>
                       <FormattedMessage defaultMessage="Add" />
                     </AsyncButton>

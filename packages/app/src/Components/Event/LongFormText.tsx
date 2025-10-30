@@ -1,8 +1,6 @@
-import "./LongFormText.css";
-
 import { TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
-import { CSSProperties, useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import Text from "@/Components/Text/Text";
@@ -45,7 +43,7 @@ export function LongFormText(props: LongFormTextProps) {
     );
   }
 
-  function readTime() {
+  const readTime = useMemo(() => {
     const wpm = 225;
     const words = props.ev.content.trim().split(/\s+/).length;
     return {
@@ -53,7 +51,7 @@ export function LongFormText(props: LongFormTextProps) {
       wpm,
       mins: Math.ceil(words / wpm),
     };
-  }
+  }, [props.ev.content]);
 
   const readAsync = async (text: string) => {
     return await new Promise<void>(resolve => {
@@ -108,34 +106,34 @@ export function LongFormText(props: LongFormTextProps) {
     return (
       <>
         <NoteFooter ev={props.ev} />
-        <hr />
-        <div className="flex g8">
+        <hr className="h-px my-1" />
+        <div className="flex gap-2">
           <div>
             <FormattedMessage
               defaultMessage="{n} mins to read"
               id="zm6qS1"
               values={{
-                n: <FormattedNumber value={readTime().mins} />,
+                n: <FormattedNumber value={readTime.mins} />,
               }}
             />
           </div>
           <div>‧</div>
           {!reading && (
-            <div className="pointer" onClick={() => readArticle()}>
+            <div className="cursor-pointer" onClick={() => readArticle()}>
               <FormattedMessage defaultMessage="Listen to this article" />
             </div>
           )}
           {reading && (
-            <div className="pointer" onClick={() => stopReading()}>
+            <div className="cursor-pointer" onClick={() => stopReading()}>
               <FormattedMessage defaultMessage="Stop listening" />
             </div>
           )}
         </div>
-        <hr />
+        <hr className="h-px my-1" />
         {shouldTruncate && showMore && <ToggleShowMore />}
-        <Markdown content={content} tags={props.ev.tags} ref={ref} />
+        <Markdown content={content} tags={props.ev.tags} ref={ref} className="font-[Georgia]" />
         {shouldTruncate && !showMore && <ToggleShowMore />}
-        <hr />
+        <hr className="h-px my-1" />
         <NoteFooter ev={props.ev} />
       </>
     );
@@ -143,7 +141,9 @@ export function LongFormText(props: LongFormTextProps) {
 
   return (
     <div
-      className={classNames("long-form-note flex flex-col g16 p break-words", { "cursor-pointer": props.isPreview })}
+      className={classNames("flex flex-col gap-4 p-4 break-words leading-6", {
+        "cursor-pointer": props.isPreview,
+      })}
       onClick={props.onClick}>
       <ProfilePreview
         pubkey={props.ev.pubkey}
@@ -156,9 +156,9 @@ export function LongFormText(props: LongFormTextProps) {
           about: false,
         }}
       />
-      <h1>{title}</h1>
-      <small>{summary}</small>
-      {image && <div className="header-image" style={{ "--img": `url(${proxy(image)})` } as CSSProperties} />}
+      <h1 className="text-xl font-bold leading-10 m-0">{title}</h1>
+      <small className="">{summary}</small>
+      {image && <div className="h-[360px] bg-center bg-cover" style={{ backgroundImage: `url(${proxy(image)})` }} />}
       {props.isPreview ? previewText() : fullText()}
     </div>
   );

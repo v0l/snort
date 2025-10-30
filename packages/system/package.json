@@ -10,40 +10,33 @@
   "author": "v0l",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc",
-    "test": "jest --runInBand"
+    "build": "rm -rf dist && bunx --bun tsc"
   },
   "files": [
     "src",
     "dist"
   ],
   "devDependencies": {
-    "@jest/globals": "^29.5.0",
-    "@peculiar/webcrypto": "^1.4.6",
-    "@types/debug": "^4.1.8",
-    "@types/jest": "^29.5.11",
-    "@types/node": "^20.5.9",
-    "@types/uuid": "^9.0.2",
-    "@types/ws": "^8.5.5",
-    "jest": "^29.5.0",
-    "jest-environment-jsdom": "^29.5.0",
-    "ts-jest": "^29.1.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "@peculiar/webcrypto": "^1.5.0",
+    "@types/debug": "^4.1.12",
+    "@types/node": "^24.8.1",
+    "@types/uuid": "^11.0.0",
+    "@types/ws": "^8.18.1",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@noble/ciphers": "^0.6.0",
-    "@noble/curves": "^1.4.0",
-    "@noble/hashes": "^1.4.0",
-    "@scure/base": "^1.1.6",
+    "@noble/ciphers": "^2.0.1",
+    "@noble/curves": "^2.0.1",
+    "@noble/hashes": "^2.0.1",
+    "@scure/base": "^2.0.0",
     "@snort/shared": "^1.0.17",
-    "@stablelib/xchacha20": "^1.0.1",
-    "debug": "^4.3.4",
+    "@stablelib/xchacha20": "^2.0.1",
+    "debug": "^4.4.3",
     "eventemitter3": "^5.0.1",
     "isomorphic-ws": "^5.0.0",
-    "lru-cache": "^10.2.0",
-    "nostr-social-graph": "^1.0.25",
-    "uuid": "^9.0.0",
-    "ws": "^8.14.0"
+    "nostr-social-graph": "^1.0.33",
+    "typescript-lru-cache": "^2.0.0",
+    "uuid": "^13.0.0",
+    "ws": "^8.18.3"
   }
 }

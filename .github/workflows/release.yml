@@ -29,11 +29,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-            
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
       - name: Install frontend dependencies
-        run: yarn install
+        run: bun install
 
       - name: Build Site
-        run: yarn build
+        run: bun run build
 
       - name: Copy files
         run: |-

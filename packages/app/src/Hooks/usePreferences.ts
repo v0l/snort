@@ -1,4 +1,4 @@
-import { DefaultPreferences, updateAppData, UserPreferences } from "@/Utils/Login";
+import { DefaultPreferences, saveAppData, updateAppData, UserPreferences } from "@/Utils/Login";
 
 import useLogin from "./useLogin";
 
@@ -28,10 +28,13 @@ export function useAllPreferences() {
   });
   return {
     preferences: pref,
-    update: async (data: UserPreferences) => {
-      await updateAppData(id, d => {
+    update: (data: UserPreferences) => {
+      updateAppData(id, d => {
         return { ...d, preferences: data };
       });
+    },
+    save: async () => {
+      await saveAppData(id);
     },
   };
 }

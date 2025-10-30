@@ -15,7 +15,7 @@ export function WalletReceivePage() {
   const [comment, setComment] = useState("");
 
   return (
-    <div className="p flex flex-col gap-4">
+    <div className="px-3 py-2 flex flex-col gap-4">
       <div className="text-2xl font-bold">
         <FormattedMessage defaultMessage="Receive" />
       </div>

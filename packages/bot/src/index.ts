@@ -2,15 +2,17 @@ import {
   EventPublisher,
   NostrLink,
   RequestBuilder,
-  type NostrEvent,
-  type SystemInterface,
-  NostrPrefix,
+  NostrEvent,
+  SystemInterface,
   EventKind,
   TaggedNostrEvent,
   NostrSystem,
   PrivateKeySigner,
   UserMetadata,
+  Nip10,
+  LinkScope,
 } from "@snort/system";
+import { NostrPrefix } from "@snort/shared";
 import EventEmitter from "eventemitter3";
 
 export interface BotEvents {
@@ -205,7 +207,7 @@ export class SnortBot extends EventEmitter<BotEvents> {
   async #sendReplyTo(link: NostrLink, msg: string) {
     const ev = await this.publisher.generic(eb => {
       eb.kind(1311 as EventKind)
-        .tag(link.toEventTag("root")!)
+        .tag(Nip10.linkToTag(link, LinkScope.Root))
         .content(msg);
       return eb;
     });

@@ -1,5 +1,3 @@
-import "./UserWebsiteLink.css";
-
 import { CachedMetadata, UserMetadata } from "@snort/system";
 
 import Icon from "@/Components/Icons/Icon";
@@ -20,9 +18,13 @@ export function UserWebsiteLink({ user }: { user?: CachedMetadata | UserMetadata
 
   if (user?.website) {
     return (
-      <div className="user-profile-link f-ellipsis flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <Icon name="link-02" size={16} />
-        <a href={website_url} target="_blank" rel="noreferrer">
+        <a
+          href={website_url}
+          target="_blank"
+          rel="noreferrer"
+          className="text-ellipsis overflow-hidden hover:underline cursor-pointer">
           {tryFormatWebsite(user.website)}
         </a>
       </div>

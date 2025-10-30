@@ -1,4 +1,4 @@
-import { HexKey, UserMetadata } from "@snort/system";
+import { UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
 import { forwardRef, ReactNode } from "react";
@@ -7,7 +7,7 @@ import FollowButton from "@/Components/User/FollowButton";
 import ProfileImage, { ProfileImageProps } from "@/Components/User/ProfileImage";
 
 export interface ProfilePreviewProps {
-  pubkey: HexKey;
+  pubkey: string;
   options?: {
     about?: boolean;
   };
@@ -46,7 +46,7 @@ const ProfilePreview = forwardRef<HTMLDivElement, ProfilePreviewProps>(function 
           displayNameClassName="min-w-0"
           subHeader={
             options.about && (
-              <div className="text-sm text-secondary whitespace-nowrap text-ellipsis overflow-hidden">
+              <div className="text-sm text-neutral-400 whitespace-nowrap text-ellipsis overflow-hidden">
                 {user?.about}
               </div>
             )

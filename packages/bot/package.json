@@ -10,14 +10,14 @@
   "author": "Kieran",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && bunx --bun tsc"
   },
   "dependencies": {
     "@snort/system": "^1.5.2",
     "eventemitter3": "^5.0.1"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.8",
-    "typescript": "^5.2.2"
+    "@types/debug": "^4.1.12",
+    "typescript": "^5.9.3"
   }
 }

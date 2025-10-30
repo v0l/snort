@@ -1,5 +1,5 @@
-import { Bech32Regex, unwrap } from "@snort/shared";
-import { EventKind, NostrLink, NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { Bech32Regex, bech32ToHex, NostrPrefix, unwrap } from "@snort/shared";
+import { EventKind, NostrLink, tryParseNostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 import classNames from "classnames";
 import React, { useCallback, useMemo } from "react";
@@ -14,7 +14,8 @@ import DisplayName from "@/Components/User/DisplayName";
 import useLogin from "@/Hooks/useLogin";
 import { LogoHeader } from "@/Pages/Layout/LogoHeader";
 import NotificationsHeader from "@/Pages/Layout/NotificationsHeader";
-import { bech32ToHex, findTag } from "@/Utils";
+import { findTag } from "@/Utils";
+import { RelayName } from "@/Components/Relay/name";
 
 export function Header() {
   const navigate = useNavigate();
@@ -80,13 +81,15 @@ export function Header() {
     }
   } else if (location.pathname.startsWith("/t/")) {
     title = <span>#{location.pathname.split("/").slice(-1)}</span>;
+  } else if (location.pathname.startsWith("/relay")) {
+    title = <RelayName url={decodeURIComponent(location.pathname.split("/").pop()!)} />;
   }
 
   return (
     <header
       className={classNames(
         { "md:hidden": pageName === "messages" },
-        "flex justify-between items-center self-stretch gap-6 sticky top-0 z-10 bg-background md:bg-header md:bg-opacity-50 md:backdrop-blur-lg",
+        "flex justify-between items-center self-stretch gap-6 sticky top-0 z-10 backdrop-blur-lg",
       )}>
       <div
         onClick={handleBackButtonClick}

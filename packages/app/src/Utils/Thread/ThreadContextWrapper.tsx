@@ -1,63 +1,120 @@
-import { unwrap } from "@snort/shared";
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { dedupeBy, unwrap } from "@snort/shared";
+import {
+  EventExt,
+  EventKind,
+  NostrLink,
+  NoteCollection,
+  NoteStore,
+  RequestBuilder,
+  TaggedNostrEvent,
+} from "@snort/system";
+import { useEventFeed, useRequestBuilder } from "@snort/system-react";
 import { ReactNode, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import useThreadFeed from "@/Feed/ThreadFeed";
 import useModeration from "@/Hooks/useModeration";
-import { chainKey, replyChainKey } from "@/Utils/Thread/ChainKey";
-import { ThreadContext, ThreadContextState } from "@/Utils/Thread/ThreadContext";
+import { replyChainKey, ThreadContext } from ".";
 
+/**
+ * Thread context wrapper, which loads threads for a given link
+ */
 export function ThreadContextWrapper({ link, children }: { link: NostrLink; children?: ReactNode }) {
   const location = useLocation();
-  const [currentId, setCurrentId] = useState(unwrap(link.toEventTag())[1]);
-  const feedData = useThreadFeed(link);
-  const { isMuted } = useModeration();
+  const [currentId, setCurrentId] = useState(link.tagKey);
+  const primary = useEventFeed(link);
+  const parsedThread = primary ? EventExt.extractThread(primary) : undefined;
 
-  function threadChains(notes: Array<TaggedNostrEvent>) {
-    const chains = new Map<string, Array<TaggedNostrEvent>>();
-    notes
-      .filter(a => !isMuted(a.pubkey))
-      .forEach(v => {
-        const replyTo = replyChainKey(v);
-        if (replyTo) {
-          if (!chains.has(replyTo)) {
-            chains.set(replyTo, [v]);
-          } else {
-            unwrap(chains.get(replyTo)).push(v);
-          }
-        }
-      });
-    return chains;
+  const subReplies = useMemo(() => {
+    // top level note of this thread
+    // if primary is loaded and its a root note, use its link as the rootLink
+    const rootLink = parsedThread?.root ?? parsedThread?.replyTo ?? (primary && !parsedThread ? link : undefined);
+    const k = rootLink ? rootLink.tagKey : undefined;
+    const sub = new RequestBuilder(`thread-replies:${k}`);
+    if (rootLink) {
+      sub.withFilter().link(rootLink);
+      const f = sub.withFilter().kinds([EventKind.TextNote]).replyToLink([rootLink]);
+      if (rootLink.kind && rootLink.kind !== EventKind.TextNote) {
+        f.kinds([EventKind.Comment]);
+      }
+    }
+    return sub;
+  }, [primary, link]);
+
+  const rootReplies = useRequestBuilder(subReplies);
+
+  const ns = new NoteCollection();
+  ns.add(rootReplies);
+  if (primary) {
+    ns.add(primary);
   }
+
+  const { muted, unmuted, chains } = useFilteredThread(ns.snapshot);
 
   // Root is the parent of the current note or
   // the current note if its a root note or
   // the root of the thread
-  const root = useMemo(() => {
-    const currentNote =
-      feedData.find(a => chainKey(a) === currentId) ??
-      (location.state && "sig" in location.state ? (location.state as TaggedNostrEvent) : undefined);
+  const rootNote = useMemo(() => {
+    const currentNoteRouter =
+      location.state && "sig" in location.state ? (location.state as TaggedNostrEvent) : undefined;
+    const currentNote = currentNoteRouter ?? unmuted.find(a => EventExt.keyOf(a) === currentId);
     if (currentNote) {
       const key = replyChainKey(currentNote);
       if (key) {
-        return feedData.find(a => chainKey(a) === key);
+        return unmuted.find(a => EventExt.keyOf(a) === key);
       } else {
         return currentNote;
       }
     }
-  }, [feedData, location.state, currentId]);
+  }, [unmuted, location.state, currentId]);
 
-  const ctxValue = useMemo<ThreadContextState>(() => {
-    return {
-      current: currentId,
-      root,
-      chains: threadChains(feedData.filter(a => !isMuted(a.pubkey))),
-      data: feedData,
-      mutedData: feedData.filter(a => isMuted(a.pubkey)),
-      setCurrent: v => setCurrentId(v),
-    };
-  }, [currentId, root, feedData]);
+  /// Parent is the replied to note of the root note
+  const parent = useMemo(() => {
+    if (rootNote) {
+      const parentId = replyChainKey(rootNote);
+      return unmuted.find(a => EventExt.keyOf(a) === parentId);
+    }
+  }, [rootNote, unmuted]);
+
+  const ctxValue = {
+    thread: parsedThread,
+    current: currentId,
+    root: rootNote,
+    chains,
+    data: unmuted,
+    mutedData: muted,
+    parent,
+    setCurrent: (v: string) => setCurrentId(v),
+  };
 
   return <ThreadContext.Provider value={ctxValue}>{children}</ThreadContext.Provider>;
+}
+
+function useFilteredThread(notes: Array<TaggedNostrEvent>) {
+  const { isMuted } = useModeration();
+
+  const unmuted: TaggedNostrEvent[] = [];
+  const muted: TaggedNostrEvent[] = [];
+
+  notes.forEach(n => {
+    if (isMuted(n.pubkey)) {
+      muted.push(n);
+    } else {
+      unmuted.push(n);
+    }
+  });
+
+  const chains = new Map<string, Array<string>>();
+  unmuted.forEach(v => {
+    const replyTo = replyChainKey(v);
+    if (replyTo) {
+      const vk = EventExt.keyOf(v);
+      if (!chains.has(replyTo)) {
+        chains.set(replyTo, [vk]);
+      } else {
+        chains.get(replyTo)!.push(vk);
+      }
+    }
+  });
+
+  return { unmuted, muted, chains };
 }

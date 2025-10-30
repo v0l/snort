@@ -15,7 +15,7 @@ export default function AccountsPage() {
         <FormattedMessage defaultMessage="Logins" />
       </h3>
       {logins.map(a => (
-        <div className="" key={a.id}>
+        <div key={a.id}>
           <ProfilePreview
             pubkey={a.pubkey}
             options={{

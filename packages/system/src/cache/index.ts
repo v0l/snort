@@ -1,5 +1,5 @@
-import { FullRelaySettings, HexKey, NostrEvent, UserMetadata } from "..";
-import { hexToBech32, unixNowMs, DexieTableLike } from "@snort/shared";
+import { FullRelaySettings, NostrEvent, UserMetadata } from "..";
+import { hexToBech32, unixNowMs, CacheStore } from "@snort/shared";
 
 export interface CachedMetadata extends UserMetadata {
   /**
@@ -15,7 +15,7 @@ export interface CachedMetadata extends UserMetadata {
   /**
    * The pubkey of the owner of this metadata
    */
-  pubkey: HexKey;
+  pubkey: string;
 
   /**
    * The bech32 encoded pubkey
@@ -25,7 +25,7 @@ export interface CachedMetadata extends UserMetadata {
   /**
    * Pubkey of zapper service
    */
-  zapService?: HexKey;
+  zapService?: string;
 
   /**
    * If the nip05 is valid for this user
@@ -81,11 +81,11 @@ export function mapEventToProfile(ev: NostrEvent) {
 }
 
 export interface SnortSystemDb {
-  users: DexieTableLike<CachedMetadata>;
-  relayMetrics: DexieTableLike<RelayMetrics>;
-  userRelays: DexieTableLike<UsersRelays>;
-  events: DexieTableLike<NostrEvent>;
-  contacts: DexieTableLike<UsersFollows>;
+  users: CacheStore<CachedMetadata>;
+  relayMetrics: CacheStore<RelayMetrics>;
+  userRelays: CacheStore<UsersRelays>;
+  events: CacheStore<NostrEvent>;
+  contacts: CacheStore<UsersFollows>;
 
   isAvailable(): Promise<boolean>;
 }

@@ -1,5 +1,3 @@
-import "./Notifications.css";
-
 import { unwrap } from "@snort/shared";
 import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
@@ -90,10 +88,10 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
 
   return (
     <>
-      <div className="main-content">
+      <div>
         <div className="flex justify-between items-center mx-1">
           <div></div>
-          <div className="flex items-center g8">
+          <div className="flex items-center gap-2">
             {filterIcon(NotificationSummaryFilter.Reactions, "heart-solid", "text-heart")}
             {filterIcon(NotificationSummaryFilter.Zaps, "zap-solid", "text-zap")}
             {filterIcon(NotificationSummaryFilter.Reposts, "repeat", "text-repost")}

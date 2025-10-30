@@ -35,67 +35,52 @@ const SearchPage = () => {
   const params = useParams();
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string>(params.keyword ?? "");
-  const [keyword, setKeyword] = useState<string>(params.keyword ?? "");
   // tabs
   const SearchTab = [
-    { text: formatMessage({ defaultMessage: "Notes", id: "7+Domh" }), value: NOTES },
-    { text: formatMessage({ defaultMessage: "People", id: "Tpy00S" }), value: PROFILES },
+    { text: formatMessage({ defaultMessage: "Notes" }), value: NOTES },
+    { text: formatMessage({ defaultMessage: "People" }), value: PROFILES },
   ];
   const [tab, setTab] = useState<Tab>(SearchTab[0]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (keyword === params.keyword) return;
-    if (keyword) {
-      // "navigate" changing only url
-      navigate(`/search/${encodeURIComponent(keyword)}`);
-    } else {
-      navigate(`/search`);
-    }
-  }, [keyword]);
-
-  useEffect(() => {
-    setKeyword(params.keyword ?? "");
-    setSearch(params.keyword ?? ""); // Also update the search input field
-  }, [params.keyword]);
-
-  useEffect(() => {
-    return debounce(500, () => setKeyword(search));
-  }, [search]);
-
   const subject = useMemo(() => {
     return {
       type: "post_keyword",
-      items: [keyword],
-      discriminator: keyword,
+      items: [search],
+      discriminator: search,
     } as TimelineSubject;
-  }, [keyword]);
+  }, [params.keyword]);
 
-  function tabContent() {
+  const content = useMemo(() => {
     if (tab.value === PROFILES) {
-      return <Profiles keyword={keyword} />;
+      return <Profiles keyword={params.keyword ?? ""} />;
     }
 
-    if (!keyword) {
+    if (!params.keyword) {
       return <TrendingNotes />;
     }
 
-    return <Timeline key={keyword} subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} />;
-  }
+    return <Timeline key={params.keyword} subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} />;
+  }, [params.keyword, tab]);
 
   return (
-    <div className="main-content">
-      <div className="p flex flex-col g8">
+    <div>
+      <div className="px-3 py-2 flex flex-col gap-2">
         <input
-          type="text"
-          className="w-max"
-          placeholder={formatMessage({ defaultMessage: "Search...", id: "0BUTMv" })}
+          type="search"
+          placeholder={formatMessage({ defaultMessage: "Search..." })}
           value={search}
           onChange={e => setSearch(e.target.value)}
+          onSubmit={() => navigate(`/search/${encodeURIComponent(search)}`)}
+          onKeyDown={k => {
+            if (k.key === "Enter") {
+              navigate(`/search/${encodeURIComponent(search)}`);
+            }
+          }}
         />
         <TabSelectors tabs={SearchTab} tab={tab} setTab={setTab} />
       </div>
-      {tabContent()}
+      {content}
     </div>
   );
 };

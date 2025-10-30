@@ -14,7 +14,7 @@ export class RenewSubTask extends BaseUITask {
     return !sub && session.subscriptions.length > 0;
   }
 
-  render(): JSX.Element {
+  render() {
     return (
       <>
         <p>

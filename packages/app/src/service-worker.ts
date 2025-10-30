@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
-import { hexToBytes } from "@noble/hashes/utils";
+import { hexToBytes } from "@noble/hashes/utils.js";
 import { bech32 } from "@scure/base";
-import { encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/system/dist/links";
+import { encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/shared";
 import { NostrLink, tryParseNostrLink } from "@snort/system/dist/nostr-link";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { clientsClaim } from "workbox-core";
@@ -182,7 +182,7 @@ self.addEventListener("notificationclick", event => {
           }
         } else if (ev.type === PushType.DirectMessage) {
           const reaction = ev.data as CompactReaction;
-          return `/messages/${encodeTLVEntries(NostrPrefix.Chat17, {
+          return `/messages/${encodeTLVEntries("nchat17", {
             type: TLVEntryType.Author,
             value: reaction.author.pubkey,
             length: 32,

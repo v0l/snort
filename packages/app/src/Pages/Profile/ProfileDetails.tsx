@@ -1,6 +1,6 @@
 import { LNURL } from "@snort/shared";
 import { CachedMetadata } from "@snort/system";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import Icon from "@/Components/Icons/Icon";
 import Text from "@/Components/Text/Text";
@@ -44,26 +44,26 @@ const ProfileDetails = ({
 
   const username = () => (
     <>
-      <div className="flex flex-col g4">
-        <h2 className="flex items-center g4">
+      <div className="flex flex-col gap-1">
+        <h2 className="flex items-center gap-2">
           <DisplayName user={user} pubkey={user?.pubkey ?? ""} />
           <FollowsYou followsMe={user?.pubkey !== loginPubKey && follows.includes(loginPubKey ?? "")} />
         </h2>
         {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
       </div>
       {showBadges && <BadgeList badges={badges} />}
-      {showStatus && <MusicStatus id={id} />}
-      <div className="link-section">{links()}</div>
+      {showStatus && id && <MusicStatus id={id} />}
+      {links()}
     </>
   );
 
   const links = () => (
-    <>
+    <div className="flex flex-col gap-1">
       <UserWebsiteLink user={user} />
       {lnurl && (
-        <div className="link lnurl f-ellipsis flex gap-2 items-center" onClick={() => setShowLnQr(true)}>
+        <div className="flex gap-2 items-center" onClick={() => setShowLnQr(true)}>
           <Icon name="zapCircle" size={16} />
-          {lnurl.name}
+          <div className="text-ellipsis overflow-hidden hover:underline cursor-pointer">{lnurl.name}</div>
         </div>
       )}
       <ZapModal
@@ -83,29 +83,36 @@ const ProfileDetails = ({
         show={showLnQr}
         onClose={() => setShowLnQr(false)}
       />
-    </>
+    </div>
   );
 
   const bio = () =>
     aboutText.length > 0 && (
-      <div dir="auto" className="about">
-        <Text
-          id={id}
-          content={aboutText}
-          tags={[]}
-          creator={id}
-          disableMedia={true}
-          disableLinkPreview={true}
-          disableMediaSpotlight={true}
-        />
-      </div>
+      <Text
+        id={id ?? user?.pubkey ?? "unknown-profile-about"}
+        content={aboutText}
+        tags={[]}
+        creator={id!}
+        disableMedia={true}
+        disableLinkPreview={true}
+        disableMediaSpotlight={true}
+      />
     );
 
   return (
-    <div className="details-wrapper w-max">
+    <div className="flex flex-col gap-4">
       {username()}
       {bio()}
-      {user?.pubkey && loginPubKey && <FollowedBy pubkey={user.pubkey} />}
+      {user?.pubkey && loginPubKey && (
+        <FollowedBy
+          pubkey={user.pubkey}
+          showUsername={false}
+          link=""
+          showFollowDistance={false}
+          showProfileCard={false}
+          size={24}
+        />
+      )}
     </div>
   );
 };

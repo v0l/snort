@@ -6,17 +6,16 @@ import TrendingUsers from "@/Components/Trending/TrendingUsers";
 
 import { NewUserState } from ".";
 
-export function Discover() {
+export default function Discover() {
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state as NewUserState;
 
   return (
-    <div className="flex flex-col g24">
+    <div className="flex flex-col gap-6">
       <h1 className="text-center">
         <FormattedMessage
           defaultMessage="{site} is more fun together!"
-          id="h7jvCs"
           values={{
             site: CONFIG.appNameCapitalized,
           }}
@@ -24,6 +23,7 @@ export function Discover() {
       </h1>
       <div className="new-trending">
         <TrendingUsers
+          count={10}
           title={
             <h3>
               <FormattedMessage defaultMessage="Trending Users" />

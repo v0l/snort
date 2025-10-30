@@ -53,7 +53,7 @@ const NoteTime: React.FC<NoteTimeProps> = ({ from, fallback, className }) => {
   const isoDate = useMemo(() => new Date(from).toISOString(), [from]);
 
   return (
-    <time dateTime={isoDate} title={absoluteTime} className={className}>
+    <time dateTime={isoDate} title={absoluteTime} className={className ?? "text-sm text-neutral-500 font-medium"}>
       {time || fallback}
     </time>
   );

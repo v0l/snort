@@ -41,7 +41,7 @@ export default function MessagesPage() {
 
   function noteToSelf(chat: Chat) {
     return (
-      <div className="flex p" key={chat.id} onClick={e => openChat(e, chat.type, chat.id)}>
+      <div className="flex px-3 py-2" key={chat.id} onClick={e => openChat(e, chat.type, chat.id)}>
         <NoteToSelf className="grow" />
       </div>
     );
@@ -74,7 +74,7 @@ export default function MessagesPage() {
         key={cx.id}
         onClick={e => openChat(e, cx.type, cx.id)}>
         {conversationIdent(cx)}
-        <div className="nowrap">
+        <div className="whitespace-nowrap">
           <small>
             <NoteTime
               from={cx.lastMessage * 1000}
@@ -99,8 +99,8 @@ export default function MessagesPage() {
   return (
     <div className="flex flex-1 md:h-screen md:overflow-hidden">
       {(pageWidth >= TwoCol || !id) && (
-        <div className="overflow-y-auto md:h-screen p-1 w-full md:w-1/3 flex-shrink-0">
-          <div className="flex items-center justify-between p-2">
+        <div className="overflow-y-auto md:h-screen p-2 w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
+          <div className="flex items-center justify-between">
             <button
               disabled={unreadTrustedCount <= 0}
               type="button"

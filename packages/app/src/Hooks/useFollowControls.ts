@@ -17,18 +17,19 @@ export default function useFollowsControls() {
       },
       addFollow: async (pk: Array<string>) => {
         for (const p of pk) {
-          await state.follow(NostrLink.publicKey(p), false);
+          state.follow(NostrLink.publicKey(p));
         }
         await state.saveContacts();
       },
       removeFollow: async (pk: Array<string>) => {
         for (const p of pk) {
-          await state.unfollow(NostrLink.publicKey(p), false);
+          state.unfollow(NostrLink.publicKey(p));
         }
         await state.saveContacts();
       },
       setFollows: async (pk: Array<string>) => {
-        await state.replaceFollows(pk.map(a => NostrLink.publicKey(a)));
+        state.replaceFollows(pk.map(a => NostrLink.publicKey(a)));
+        await state.saveContacts();
       },
       followList: follows ?? [],
     };

@@ -1,5 +1,3 @@
-import "./LinkPreview.css";
-
 import { useEffect, useState } from "react";
 import { LRUCache } from "typescript-lru-cache";
 
@@ -20,10 +18,11 @@ async function fetchUrlPreviewInfo(url: string) {
 }
 
 const cache = new LRUCache<string, LinkPreviewData>({
-  maxSize: 100,
+  maxSize: 1000,
 });
 
 const LinkPreview = ({ url }: { url: string }) => {
+  const uu = new URL(url);
   const [preview, setPreview] = useState<LinkPreviewData | null>(cache.get(url));
 
   useEffect(() => {
@@ -46,7 +45,7 @@ const LinkPreview = ({ url }: { url: string }) => {
 
   if (preview === null)
     return (
-      <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
+      <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="text-highlight">
         {url}
       </a>
     );
@@ -73,21 +72,26 @@ const LinkPreview = ({ url }: { url: string }) => {
       }
     }
     if (preview?.image) {
-      return <ProxyImg src={preview?.image} className="w-full object-cover aspect-video" />;
+      let src = preview?.image;
+      if (!preview.image.startsWith("http")) {
+        src = `${uu.protocol}//${uu.hostname}/${preview.image}`;
+      }
+      return <ProxyImg src={src} className="w-full object-cover aspect-video" />;
     }
     return null;
   }
 
   return (
-    <div className="link-preview-container">
+    <div className="rounded-xl bg-layer-1 overflow-hidden hover:cursor-pointer light:border light:hover:shadow-md">
       {preview && (
-        <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-          {previewElement()}
-          <div className="link-preview-title">
-            <h1>{preview?.title}</h1>
-            {preview?.description && <small>{preview.description.slice(0, 160)}</small>}
-            <br />
-            <small className="host">{new URL(url).host}</small>
+        <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="!no-underline">
+          <div className="lg:min-h-[342px]">{previewElement()}</div>
+          <div className="px-3 pb-2 leading-[21px]">
+            <div className="font-bold leading-normal my-2">{preview?.title}</div>
+            {preview?.description && (
+              <small className="text-neutral-800 text-sm">{preview.description.slice(0, 160)}</small>
+            )}
+            <small className="text-xs">{uu.host}</small>
           </div>
         </a>
       )}

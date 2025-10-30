@@ -9,7 +9,7 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import { FixedTopics } from "@/Pages/onboarding/fixedTopics";
 import { appendDedupe } from "@/Utils";
 
-export function Topics() {
+export default function Topics() {
   const { publisher, system } = useEventPublisher();
   const [topics, setTopics] = useState<Array<string>>([]);
   const navigate = useNavigate();
@@ -19,8 +19,8 @@ export function Topics() {
     return (
       <div
         className={classNames(
-          "flex gap-2 items-center px-4 py-2 my-1 border border-border-color rounded-full cursor-pointer font-semibold bg-gray-dark",
-          "hover:drop-shadow-sm hover:bg-gray",
+          "flex gap-2 items-center px-4 py-2 my-1 border cursor-pointer font-semibold layer-2 !rounded-full",
+          "hover:drop-shadow-sm",
           {
             "!bg-white !text-black": active,
           },
@@ -32,7 +32,7 @@ export function Topics() {
   }
 
   return (
-    <div className="flex flex-col g24 text-center">
+    <div className="flex flex-col gap-6 text-center">
       <h1>
         <FormattedMessage defaultMessage="Pick a few topics of interest" />
       </h1>

@@ -55,7 +55,7 @@ export function FollowsRelayHealth({
       </div>
       {missingRelays.length > 0 && (
         <CollapsedSection
-          className="rounded-xl border border-border-color px-3 py-4"
+          className="rounded-xl border px-3 py-4"
           title={
             <div className="text-lg">
               <FormattedMessage defaultMessage="Missing Relays" />

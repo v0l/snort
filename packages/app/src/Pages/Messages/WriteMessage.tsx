@@ -35,7 +35,6 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
         <Textarea
           autoFocus={true}
           placeholder=""
-          className=""
           value={msg}
           onChange={e => onChange(e)}
           onKeyDown={e => onEnter(e)}

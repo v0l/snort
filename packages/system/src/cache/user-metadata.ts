@@ -1,12 +1,12 @@
 import { CachedMetadata } from ".";
-import { fetchNip05Pubkey, FeedCache, LNURL, DexieTableLike } from "@snort/shared";
+import { fetchNip05Pubkey, FeedCache, LNURL, CacheStore } from "@snort/shared";
 
 export class UserProfileCache extends FeedCache<CachedMetadata> {
   #zapperQueue: Array<{ pubkey: string; lnurl: string }> = [];
   #nip5Queue: Array<{ pubkey: string; nip05: string }> = [];
 
-  constructor(table?: DexieTableLike<CachedMetadata>) {
-    super("UserCache", table);
+  constructor(store?: CacheStore<CachedMetadata>) {
+    super("UserCache", store);
     //this.#processZapperQueue();
     //this.#processNip5Queue();
   }
@@ -24,33 +24,18 @@ export class UserProfileCache extends FeedCache<CachedMetadata> {
   }
 
   async search(q: string): Promise<Array<CachedMetadata>> {
-    if (this.table) {
-      // on-disk cache will always have more data
-      return (
-        await this.table
-          .where("npub")
-          .startsWithIgnoreCase(q)
-          .or("name")
-          .startsWithIgnoreCase(q)
-          .or("display_name")
-          .startsWithIgnoreCase(q)
-          .or("nip05")
-          .startsWithIgnoreCase(q)
-          .toArray()
-      ).slice(0, 5);
-    } else {
-      return [...this.cache.values()]
-        .filter(user => {
-          const profile = user as CachedMetadata;
-          return (
-            profile.name?.includes(q) ||
-            profile.npub?.includes(q) ||
-            profile.display_name?.includes(q) ||
-            profile.nip05?.includes(q)
-          );
-        })
-        .slice(0, 5);
-    }
+    const lowerQ = q.toLowerCase();
+    return [...this.cache.values()]
+      .filter(user => {
+        const profile = user as CachedMetadata;
+        return (
+          profile.name?.toLowerCase().includes(lowerQ) ||
+          profile.npub?.toLowerCase().includes(lowerQ) ||
+          profile.display_name?.toLowerCase().includes(lowerQ) ||
+          profile.nip05?.toLowerCase().includes(lowerQ)
+        );
+      })
+      .slice(0, 5);
   }
 
   /**

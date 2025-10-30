@@ -1,19 +1,20 @@
 /* eslint-disable max-lines */
-import { fetchNip05Pubkey, unixNow } from "@snort/shared";
+import { fetchNip05Pubkey, NostrPrefix, unixNow } from "@snort/shared";
 import {
   EventBuilder,
   EventKind,
+  LinkScope,
+  Nip10,
   Nip94Tags,
   nip94TagsToIMeta,
   NostrLink,
-  NostrPrefix,
   readNip94Tags,
   TaggedNostrEvent,
   tryParseNostrLink,
 } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { ZapTarget } from "@snort/wallet";
-import { Menu, MenuItem } from "@szhsin/react-menu";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import classNames from "classnames";
 import { ClipboardEventHandler, DragEvent, useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -23,7 +24,7 @@ import { AsyncIcon } from "@/Components/Button/AsyncIcon";
 import CloseButton from "@/Components/Button/CloseButton";
 import IconButton from "@/Components/Button/IconButton";
 import { sendEventToRelays } from "@/Components/Event/Create/util";
-import Note from "@/Components/Event/EventComponent";
+import Note, { NoteProps, NotePropsOptions } from "@/Components/Event/EventComponent";
 import Flyout from "@/Components/flyout";
 import Icon from "@/Components/Icons/Icon";
 import { ToggleSwitch } from "@/Components/Icons/Toggle";
@@ -48,7 +49,7 @@ const previewNoteOptions = {
   showFooter: false,
   canClick: false,
   showTime: false,
-};
+} as NotePropsOptions;
 
 const replyToNoteOptions = {
   showFooter: false,
@@ -57,15 +58,8 @@ const replyToNoteOptions = {
   showTime: false,
   canClick: false,
   longFormPreview: true,
-};
-
-const quoteNoteOptions = {
-  showFooter: false,
-  showContextMenu: false,
-  showTime: false,
-  canClick: false,
-  longFormPreview: true,
-};
+  showMedia: false,
+} as NotePropsOptions;
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();
@@ -102,7 +96,6 @@ export function NoteCreator() {
                   formatMessage(
                     {
                       defaultMessage: "Failed to parse zap split: {input}",
-                      id: "sZQzjQ",
                     },
                     {
                       input: s.value,
@@ -120,7 +113,6 @@ export function NoteCreator() {
                   formatMessage(
                     {
                       defaultMessage: "Failed to parse zap split: {input}",
-                      id: "sZQzjQ",
                     },
                     {
                       input: s.value,
@@ -133,7 +125,6 @@ export function NoteCreator() {
                 formatMessage(
                   {
                     defaultMessage: "Invalid zap split: {input}",
-                    id: "8Y6bZQ",
                   },
                   {
                     input: s.value,
@@ -193,14 +184,9 @@ export function NoteCreator() {
           }
           const link = NostrLink.fromEvent(note.quote);
           note.note += `nostr:${link.encode(CONFIG.eventLinkPrefix)}`;
-          const quoteTag = link.toEventTag();
-          if (quoteTag) {
-            extraTags ??= [];
-            if (quoteTag[0] === "e") {
-              quoteTag[0] = "q"; // how to 'q' tag replacable events?
-            }
-            extraTags.push(quoteTag);
-          }
+          const quoteTag = Nip10.linkToTag(link, LinkScope.Quote);
+          extraTags ??= [];
+          extraTags.push(quoteTag);
         }
         const hk = (eb: EventBuilder) => {
           extraTags?.forEach(t => eb.tag(t));
@@ -353,7 +339,7 @@ export function NoteCreator() {
             <FormattedMessage defaultMessage="Poll Options" />
           </h4>
           {note.pollOptions?.map((a, i) => (
-            <div className="form-group w-max" key={`po-${i}`}>
+            <div className="w-max" key={`po-${i}`}>
               <div>
                 <FormattedMessage defaultMessage="Option: {n}" values={{ n: i + 1 }} />
               </div>
@@ -394,7 +380,7 @@ export function NoteCreator() {
           .filter(el => el[1].write)
           .map(a => a[0])
           .map((r, i, a) => (
-            <div className="p flex items-center justify-between bg-gray br" key={r}>
+            <div className="px-3 py-2 flex items-center justify-between bg-neutral-600 rounded-lg" key={r}>
               <div>{r}</div>
               <div>
                 <input
@@ -449,15 +435,15 @@ export function NoteCreator() {
           </p>
           {renderRelayCustomisation()}
         </div>
-        <div className="flex flex-col g8">
+        <div className="flex flex-col gap-2">
           <h4>
             <FormattedMessage defaultMessage="Zap Splits" />
           </h4>
           <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." />
-          <div className="flex flex-col g8">
+          <div className="flex flex-col gap-2">
             {[...(note.zapSplits ?? [])].map((v: ZapTarget, i, arr) => (
-              <div className="flex items-center g8" key={`${v.name}-${v.value}`}>
-                <div className="flex flex-col flex-4 g4">
+              <div className="flex items-center gap-2" key={`${v.name}-${v.value}`}>
+                <div className="flex flex-col flex-4 gap-1">
                   <h4>
                     <FormattedMessage defaultMessage="Recipient" />
                   </h4>
@@ -472,7 +458,7 @@ export function NoteCreator() {
                     placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address", id: "WvGmZT" })}
                   />
                 </div>
-                <div className="flex flex-col flex-1 g4">
+                <div className="flex flex-col flex-1 gap-1">
                   <h4>
                     <FormattedMessage defaultMessage="Weight" />
                   </h4>
@@ -490,7 +476,7 @@ export function NoteCreator() {
                     }
                   />
                 </div>
-                <div className="flex flex-col g4">
+                <div className="flex flex-col gap-1">
                   <div>&nbsp;</div>
                   <Icon
                     name="close"
@@ -507,17 +493,17 @@ export function NoteCreator() {
               <FormattedMessage defaultMessage="Add" />
             </button>
           </div>
-          <span className="warning">
+          <span className="text-warning">
             <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" />
           </span>
         </div>
-        <div className="flex flex-col g8">
+        <div className="flex flex-col gap-2">
           <h4>
             <FormattedMessage defaultMessage="Sensitive Content" />
           </h4>
           <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." />
           <input
-            className="w-max"
+            className="w-full"
             type="text"
             value={note.sensitive}
             onChange={e => note.update(v => (v.sensitive = e.target.value))}
@@ -525,10 +511,9 @@ export function NoteCreator() {
             minLength={1}
             placeholder={formatMessage({
               defaultMessage: "Reason",
-              id: "AkCxS/",
             })}
           />
-          <span className="warning">
+          <span className="text-warning">
             <FormattedMessage defaultMessage="Not all clients support this yet" />
           </span>
         </div>
@@ -541,25 +526,37 @@ export function NoteCreator() {
       <div className="flex justify-between">
         <div className="flex items-center gap-4 text-gray-light cursor-pointer">
           <Avatar pubkey={publicKey ?? ""} user={profile} size={28} showTitle={true} />
-          <Menu
-            menuButton={
-              <AsyncIcon iconName="attachment" iconSize={24} className="hover:text-gray-superlight transition" />
-            }
-            menuClassName="ctx-menu no-icons">
-            <div className="close-menu-container">
-              {/* This menu item serves as a "close menu" button;
-          it allows the user to click anywhere nearby the menu to close it. */}
-              <MenuItem>
-                <div className="close-menu" />
-              </MenuItem>
-            </div>
-            <MenuItem onClick={() => note.update(s => (s.filePicker = "compact"))}>
-              <FormattedMessage defaultMessage="From Server" />
-            </MenuItem>
-            <MenuItem onClick={() => attachFile()}>
-              <FormattedMessage defaultMessage="From File" />
-            </MenuItem>
-          </Menu>
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild>
+              <span>
+                <AsyncIcon
+                  iconName="attachment"
+                  iconSize={24}
+                  className="hover:text-gray-superlight transition cursor-pointer"
+                />
+              </span>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Portal>
+              <DropdownMenu.Content className="bg-layer-2 rounded-2xl overflow-hidden z-[9999] min-w-48" sideOffset={5}>
+                <DropdownMenu.Item
+                  className="px-6 py-2 text-base font-semibold bg-layer-2 light:bg-white hover:bg-layer-3 light:hover:bg-neutral-200 cursor-pointer outline-none"
+                  onClick={e => {
+                    e.stopPropagation();
+                    note.update(s => (s.filePicker = "compact"));
+                  }}>
+                  <FormattedMessage defaultMessage="From Server" />
+                </DropdownMenu.Item>
+                <DropdownMenu.Item
+                  className="px-6 py-2 text-base font-semibold bg-layer-2 light:bg-white hover:bg-layer-3 light:hover:bg-neutral-200 cursor-pointer outline-none"
+                  onClick={e => {
+                    e.stopPropagation();
+                    attachFile();
+                  }}>
+                  <FormattedMessage defaultMessage="From File" />
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+          </DropdownMenu.Root>
 
           {note.pollOptions === undefined && !note.replyTo && (
             <AsyncIcon
@@ -586,7 +583,7 @@ export function NoteCreator() {
             className={classNames({ active: Boolean(note.preview) })}
           />
         </div>
-        <AsyncButton onClick={onSubmit} className="primary">
+        <AsyncButton onClick={onSubmit} className="bg-primary">
           {note.replyTo ? <FormattedMessage defaultMessage="Reply" /> : <FormattedMessage defaultMessage="Send" />}
         </AsyncButton>
       </div>
@@ -632,16 +629,16 @@ export function NoteCreator() {
 
   function noteCreatorForm() {
     return (
-      <>
+      <div className="flex flex-col gap-4">
         {note.replyTo && (
           <>
             <h4>
               <FormattedMessage defaultMessage="Reply To" />
             </h4>
             <div className="max-h-64 overflow-y-auto">
-              <Note className="hover:bg-transparent" data={note.replyTo} options={replyToNoteOptions} />
+              <Note data={note.replyTo} options={replyToNoteOptions} />
             </div>
-            <hr className="border-border-color border-1 -mx-6" />
+            <hr />
           </>
         )}
         {note.quote && (
@@ -650,9 +647,9 @@ export function NoteCreator() {
               <FormattedMessage defaultMessage="Quote Repost" />
             </h4>
             <div className="max-h-64 overflow-y-auto">
-              <Note className="hover:bg-transparent" data={note.quote} options={quoteNoteOptions} />
+              <Note data={note.quote} options={replyToNoteOptions} />
             </div>
-            <hr className="border-border-color border-1 -mx-6" />
+            <hr />
           </>
         )}
         {note.preview && getPreviewNote()}
@@ -662,7 +659,7 @@ export function NoteCreator() {
               <FormattedMessage defaultMessage="Compose a note" />
               <AsyncIcon
                 iconName="x"
-                className="bg-gray rounded-full items-center justify-center flex p-1 cursor-pointer"
+                className="bg-neutral-600 rounded-full items-center justify-center flex p-1 cursor-pointer"
                 onClick={cancel}
               />
             </div>
@@ -693,7 +690,7 @@ export function NoteCreator() {
                 <img className="object-cover w-[80px] h-[80px] !mt-0 rounded-lg" src={v[0].url} />
                 <Icon
                   name="x"
-                  className="absolute -top-[0.25rem] -right-[0.25rem] bg-gray rounded-full cursor-pointer"
+                  className="absolute -top-1 -right-1 bg-neutral-600 rounded-full cursor-pointer"
                   onClick={() =>
                     note.update(n => {
                       if (n.attachments?.[k]) {
@@ -708,7 +705,7 @@ export function NoteCreator() {
           </div>
         )}
         {noteCreatorFooter()}
-        {note.error && <span className="error">{note.error}</span>}
+        {note.error && <span className="text-error">{note.error}</span>}
         {note.advanced && noteCreatorAdvanced()}
         <Flyout
           show={note.filePicker !== "hidden"}
@@ -749,7 +746,7 @@ export function NoteCreator() {
             )}
           </div>
         </Flyout>
-      </>
+      </div>
     );
   }
 
@@ -761,7 +758,7 @@ export function NoteCreator() {
 
   if (!note.show) return null;
   return (
-    <Modal id="note-creator" bodyClassName="modal-body gap-4" onClose={reset}>
+    <Modal id="note-creator" onClose={reset}>
       {noteCreatorForm()}
     </Modal>
   );

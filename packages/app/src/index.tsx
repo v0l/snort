@@ -1,22 +1,19 @@
 import "./index.css";
-import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
 
 import { unixNow, unixNowMs } from "@snort/shared";
 import { EventBuilder } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { StrictMode } from "react";
+import { lazy, StrictMode, Suspense } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 
 import { initRelayWorker, preload, Relay, UserCache } from "@/Cache";
 import { ThreadRoute } from "@/Components/Event/Thread/ThreadRoute";
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
-import { db } from "@/Db";
 import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch";
 import { AboutPage } from "@/Pages/About";
 import { DebugPage } from "@/Pages/CacheDebug";
-import { SnortDeckLayout } from "@/Pages/Deck/DeckLayout";
 import DonatePage from "@/Pages/Donate/DonatePage";
 import ErrorPage from "@/Pages/ErrorPage";
 import FreeNostrAddressPage from "@/Pages/FreeNostrAddressPage";
@@ -27,10 +24,9 @@ import MessagesPage from "@/Pages/Messages/MessagesPage";
 import NostrAddressPage from "@/Pages/NostrAddressPage";
 import NostrLinkHandler from "@/Pages/NostrLinkHandler";
 import NotificationsPage from "@/Pages/Notifications/Notifications";
-import { OnboardingRoutes } from "@/Pages/onboarding";
+import { OnboardingRoutes } from "@/Pages/onboarding/routes";
 import ProfilePage from "@/Pages/Profile/ProfilePage";
 import { RootRoutes } from "@/Pages/Root/RootRoutes";
-import { RootTabRoutes } from "@/Pages/Root/RootTabRoutes";
 import SearchPage from "@/Pages/SearchPage";
 import SettingsRoutes from "@/Pages/settings/Routes";
 import { SubscribeRoutes } from "@/Pages/subscribe";
@@ -46,6 +42,9 @@ import { setupWebLNWalletConfig } from "@/Wallet";
 
 import { Day } from "./Utils/Const";
 import { LoginStore } from "./Utils/Login";
+import { SpotlightContextWrapper } from "./Components/Spotlight/context";
+
+const ComponentDebugPage = lazy(async () => await import("@/Pages/ComponentDebug"));
 
 async function initSite() {
   EventBuilder.ClientTag = [
@@ -61,15 +60,13 @@ async function initSite() {
 
   setupWebLNWalletConfig(Wallets);
 
-  db.ready = await db.isAvailable();
-
   const login = LoginStore.snapshot();
   preload(login.state.follows).then(async () => {
     queueMicrotask(async () => {
       const start = unixNowMs();
       await System.PreloadSocialGraph(login.state.follows, login.publicKey);
       console.debug(
-        `Social graph loaded in ${(unixNowMs() - start).toFixed(2)}ms`,
+        `Social graph loaded in ${(unixNowMs() - start).toFixed(3)}ms`,
         System.config.socialGraphInstance.size(),
       );
     });
@@ -84,7 +81,7 @@ async function initSite() {
   });
 
   // cleanup
-  Relay.delete(["REQ", "cleanup", { kinds: [1, 7, 9735], until: unixNow() - Day * 30 }]);
+  Relay.delete(["REQ", "cleanup", { kinds: [1, 6, 7, 9735], until: unixNow() - Day * 30 }]);
 
   return null;
 }
@@ -143,7 +140,7 @@ const mainRoutes = [
   {
     path: "/wallet",
     element: (
-      <div className="p">
+      <div className="px-3 py-2">
         <WalletPage showHistory={true} />
       </div>
     ),
@@ -156,7 +153,7 @@ const mainRoutes = [
     path: "/wallet/receive",
     element: <WalletReceivePage />,
   },
-  ...OnboardingRoutes,
+  OnboardingRoutes,
   ...SettingsRoutes,
 ] as Array<RouteObject>;
 
@@ -190,12 +187,8 @@ const routes = [
     },
     children: mainRoutes,
   },
-] as Array<RouteObject>;
-
-if (CONFIG.features.deck) {
-  routes.push({
-    path: "/deck",
-    element: <SnortDeckLayout />,
+  {
+    path: "/component-debug",
     loader: async () => {
       if (!didInit) {
         didInit = true;
@@ -203,9 +196,13 @@ if (CONFIG.features.deck) {
       }
       return null;
     },
-    children: RootTabRoutes,
-  } as RouteObject);
-}
+    element: (
+      <Suspense>
+        <ComponentDebugPage />
+      </Suspense>
+    ),
+  },
+] as Array<RouteObject>;
 
 const router = createBrowserRouter(routes);
 
@@ -214,7 +211,9 @@ root.render(
   <StrictMode>
     <IntlProvider>
       <SnortContext.Provider value={System}>
-        <RouterProvider router={router} />
+        <SpotlightContextWrapper>
+          <RouterProvider router={router} />
+        </SpotlightContextWrapper>
       </SnortContext.Provider>
     </IntlProvider>
   </StrictMode>,

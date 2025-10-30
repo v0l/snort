@@ -8,23 +8,23 @@ import useModeration from "@/Hooks/useModeration";
 import { FixedModeration } from "@/Pages/onboarding/fixedModeration";
 import { appendDedupe } from "@/Utils";
 
-export function Moderation() {
+export default function Moderation() {
   const [topics, setTopics] = useState<Array<string>>(Object.keys(FixedModeration));
   const [extraTerms, setExtraTerms] = useState("");
   const navigate = useNavigate();
   const { addMutedWord } = useModeration();
 
   return (
-    <div className="flex flex-col g24">
-      <div className="flex flex-col g8 text-center">
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2 text-center">
         <h1>
           <FormattedMessage defaultMessage="Clean up your feed" />
         </h1>
         <FormattedMessage defaultMessage="Your space the way you want it 😌" />
       </div>
-      <div className="flex flex-col g8">
-        <div className="flex g8 items-center">
-          <small className="grow uppercase font-semibold">
+      <div className="flex flex-col gap-2">
+        <div className="flex gap-2 items-center">
+          <small className="grow uppercase">
             <FormattedMessage defaultMessage="Lists to mute:" />
           </small>
           <span className="font-medium">
@@ -41,7 +41,7 @@ export function Moderation() {
           />
         </div>
         {Object.entries(FixedModeration).map(([k, v]) => (
-          <div className="flex g8 items-center bb" key={k}>
+          <div className="flex gap-2 items-center bb" key={k}>
             <div className="font-semibold grow">{v.title}</div>
             {v.canEdit && (
               <div>
@@ -56,11 +56,11 @@ export function Moderation() {
           </div>
         ))}
       </div>
-      <div className="flex flex-col g8">
+      <div className="flex flex-col gap-2">
         <span className="font-semibold">
           <FormattedMessage defaultMessage="Additional Terms:" />
         </span>
-        <small className="font-medium">
+        <small>
           <FormattedMessage defaultMessage="Use commas to separate words e.g. word1, word2, word3" />
         </small>
         <textarea onChange={e => setExtraTerms(e.target.value)} value={extraTerms}></textarea>

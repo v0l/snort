@@ -121,7 +121,7 @@ function ServerFile({ file, checked, onClick }: { file: BlobDescriptor; checked:
           <div>{file.uploaded && new Date(file.uploaded * 1000).toLocaleString()}</div>
         </div>
         <div
-          className={classNames("w-4 h-4 border border-2 rounded-full right-1 top-1 absolute", {
+          className={classNames("w-4 h-4 border-2 rounded-full right-1 top-1 absolute", {
             "bg-zap": checked,
           })}
         />

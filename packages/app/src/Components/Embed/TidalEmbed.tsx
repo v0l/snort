@@ -48,7 +48,12 @@ const TidalEmbed = ({ link }: { link: string }) => {
 
   if (!source) {
     return (
-      <a href={link} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="ext">
+      <a
+        href={link}
+        target="_blank"
+        rel="noreferrer"
+        onClick={e => e.stopPropagation()}
+        className="text-highlight no-underline hover:underline">
         {link}
       </a>
     );

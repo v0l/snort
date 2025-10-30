@@ -1,7 +1,20 @@
 import { useMemo } from "react";
-import { RequestBuilder, EventKind, NoteCollection, NostrLink } from "@snort/system";
+import { RequestBuilder, EventKind, NostrLink } from "@snort/system";
 import { useRequestBuilder } from "./useRequestBuilder";
 
+/**
+ * Subscribe to reactions (likes, reposts, zaps) for one or more events
+ * @param subId - Subscription identifier
+ * @param ids - NostrLink or array of NostrLinks to fetch reactions for
+ * @param others - Optional callback to add custom filters. IMPORTANT: Must be wrapped in useCallback to prevent re-subscriptions
+ * @param leaveOpen - Keep subscription open after EOSE
+ * @returns Array of reaction events
+ * @example
+ * const others = useCallback((rb: RequestBuilder) => {
+ *   rb.withFilter().authors([author1, author2]);
+ * }, [author1, author2]);
+ * const reactions = useReactions("sub-id", eventLink, others);
+ */
 export function useReactions(
   subId: string,
   ids: NostrLink | Array<NostrLink>,
@@ -24,9 +37,7 @@ export function useReactions(
       );
 
       for (const v of Object.values(grouped)) {
-        rb.withFilter()
-          .kinds([EventKind.TextNote, EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt])
-          .replyToLink(v);
+        rb.withFilter().kinds([EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt]).replyToLink(v);
       }
     }
     others?.(rb);

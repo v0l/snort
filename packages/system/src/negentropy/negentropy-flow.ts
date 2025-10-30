@@ -1,4 +1,4 @@
-import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { ConnectionType } from "../connection-pool";
 import { ReqFilter, TaggedNostrEvent } from "../nostr";
 import { Negentropy } from "./negentropy";

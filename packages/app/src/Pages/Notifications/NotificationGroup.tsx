@@ -15,6 +15,8 @@ import { formatShort } from "@/Utils/Number";
 
 import { getNotificationContext } from "./getNotificationContext";
 import { NotificationContext } from "./notificationContext";
+import { AvatarGroup } from "@/Components/User/AvatarGroup";
+import { WarningNotice } from "@/Components/WarningNotice/WarningNotice";
 
 export function NotificationGroup({
   evs,
@@ -36,7 +38,7 @@ export function NotificationGroup({
     evs.map(a => {
       if (a.kind === EventKind.ZapReceipt) {
         const zap = unwrap(zaps.find(b => b.id === a.id));
-        return zap.anonZap ? "anon" : zap.sender ?? a.pubkey;
+        return zap.anonZap ? "anon" : (zap.sender ?? a.pubkey);
       }
       return a.pubkey;
     }),
@@ -69,7 +71,6 @@ export function NotificationGroup({
         return (
           <FormattedMessage
             defaultMessage="{n,plural,=0{{name} liked} other{{name} & {n} others liked}}"
-            id="kuPHYE"
             values={{
               n,
               name,
@@ -81,7 +82,6 @@ export function NotificationGroup({
         return (
           <FormattedMessage
             defaultMessage="{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"
-            id="kJYo0u"
             values={{
               n,
               name,
@@ -93,7 +93,6 @@ export function NotificationGroup({
         return (
           <FormattedMessage
             defaultMessage="{n,plural,=0{{name} zapped} other{{name} & {n} others zapped}}"
-            id="Lw+I+J"
             values={{
               n,
               name,
@@ -107,7 +106,7 @@ export function NotificationGroup({
 
   return (
     <div
-      className="card notification-group cursor-pointer hover:bg-nearly-bg-color"
+      className="flex gap-2 py-4 pr-4 cursor-pointer w-full overflow-hidden border-b"
       ref={ref}
       onClick={() => {
         if (!context) return;
@@ -119,44 +118,41 @@ export function NotificationGroup({
       }}>
       {inView && (
         <>
-          <div className="flex flex-col g12">
-            <div>
-              <Icon name={iconName()} size={24} className={iconName()} />
-            </div>
+          <div className="flex flex-col items-center gap-2 w-[64px] min-w-[64px]">
+            <Icon name={iconName()} size={24} className={iconName()} />
             <div>{kind === EventKind.ZapReceipt && formatShort(totalZaps)}</div>
           </div>
-          <div className="flex flex-col w-max g12">
-            <div className="flex flex-row w-max overflow-hidden justify-between items-center">
-              <div className="flex flex-row">
-                {wot
-                  .sortPubkeys(pubkeys.filter(a => a !== "anon"))
-                  .slice(0, 12)
-                  .map(v => (
-                    <ProfileImage
-                      key={v}
-                      showUsername={kind === EventKind.TextNote}
-                      pubkey={v}
-                      size={40}
-                      overrideUsername={v === "" ? formatMessage({ defaultMessage: "Anon", id: "bfvyfs" }) : undefined}
-                    />
-                  ))}
-              </div>
-              <div className="text-gray-medium">
+          <div className="flex flex-col gap-2 overflow-hidden break-all w-full">
+            <div className="flex flex-row justify-between items-center">
+              <AvatarGroup
+                ids={wot.sortPubkeys(pubkeys.filter(a => a !== "anon")).slice(0, 12)}
+                showUsername={kind === EventKind.TextNote}
+                size={40}
+              />
+              <div className="text-neutral-500">
                 <NoteTime from={evs[0].created_at * 1000} />
               </div>
             </div>
             {kind !== EventKind.TextNote && (
-              <div className="names">
+              <div className="font-bold">
                 {actionName(
                   pubkeys.length - 1,
                   firstPubkey === "anon"
-                    ? formatMessage({ defaultMessage: "Anon", id: "bfvyfs" })
+                    ? formatMessage({ defaultMessage: "Anon" })
                     : getDisplayName(firstPubkeyProfile, firstPubkey),
                 )}
               </div>
             )}
             {window.location.search === "?debug=true" && <pre>{JSON.stringify(evs, undefined, 2)}</pre>}
             {context && <NotificationContext link={context} />}
+            {!context && (
+              <>
+                <WarningNotice>
+                  <FormattedMessage defaultMessage="Invalid notification context" />
+                </WarningNotice>
+                <pre>{JSON.stringify(evs[0], undefined, 2)}</pre>
+              </>
+            )}
           </div>
         </>
       )}

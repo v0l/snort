@@ -1,16 +1,7 @@
 import debug from "debug";
 import { EventEmitter } from "eventemitter3";
-import {
-  BuiltRawReqFilter,
-  FlatReqFilter,
-  Nips,
-  ReqFilter,
-  RequestBuilder,
-  SystemInterface,
-  TaggedNostrEvent,
-  ReqCommand,
-} from ".";
-import { Query, QueryTrace, QueryTraceEvent, QueryTraceState } from "./query";
+import { BuiltRawReqFilter, Nips, ReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from ".";
+import { Query, QueryTrace, QueryTraceEvent } from "./query";
 import { trimFilters } from "./request-trim";
 import { eventMatchesFilter, isRequestSatisfied } from "./request-matcher";
 import { ConnectionType } from "./connection-pool";
@@ -54,32 +45,41 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    */
   #system: SystemInterface;
 
+  /**
+   * Map tracking which connections have change listeners to prevent duplicates
+   */
+  #connectionListeners: Set<string> = new Set();
+
   constructor(system: SystemInterface) {
     super();
     this.#system = system;
 
-    // Set up global connection listeners for retry logic
+    // Set up global connection listeners for cleanup
     this.#setupConnectionListeners();
 
     setInterval(() => this.#cleanup(), 1_000);
   }
 
   #setupConnectionListeners() {
-    // Listen for connection state changes to retry pending traces
+    // Listen for new connections to setup retry logic
     this.#system.pool.on("connected", address => {
       const conn = this.#system.pool.getConnection(address);
-      if (conn) {
+      if (conn && !this.#connectionListeners.has(conn.id)) {
+        this.#connectionListeners.add(conn.id);
+
         const changeHandler = () => {
           this.#retryPendingTraces(conn);
         };
-        conn.on("change", changeHandler);
+
+        conn.once("change", changeHandler);
       }
     });
 
-    // Clean up pending traces when connection disconnects
+    // Clean up traces when connection disconnects
     this.#system.pool.on("disconnect", address => {
       const conn = this.#system.pool.getConnection(address);
       if (conn) {
+        this.#connectionListeners.delete(conn.id);
         this.#pendingTraces = this.#pendingTraces.filter(p => p.connection.id !== conn.id);
 
         // Mark all traces for this connection as dropped
@@ -111,7 +111,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     } else {
       const q = new Query(req);
       q.on("trace", event => this.emit("trace", event, req.id));
-      q.on("request", (id, fx) => {
+      q.on("request", (_id, fx) => {
         this.#send(q, fx);
       });
 
@@ -119,12 +119,16 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       if (req.numFilters > 0) {
         this.emit("change");
       }
+      q.start();
       return q;
     }
   }
 
-  handleEvent(ev: TaggedNostrEvent) {
-    this.#queries.forEach(q => q.addEvent("*", ev));
+  /**
+   * Manually insert events into query result set
+   */
+  handleEvent(sub: string, ev: TaggedNostrEvent) {
+    this.#queries.forEach(q => q.addEvent(sub, ev));
   }
 
   /**
@@ -175,7 +179,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       syncFrom = data;
       if (data.length > 0) {
         this.#log("Adding from cache %s %O", q.id, data);
-        q.feed.add(syncFrom);
+        q.feed.add(data);
       }
     }
 
@@ -191,7 +195,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
 
     // nothing left to send
     if (filters.length === 0) {
-      this.#log("Dropping %s %o", q.id);
+      this.#log("Dropping %s, all filters are satisfied", q.id);
       return;
     }
 
@@ -256,7 +260,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     const trace = new QueryTrace(connection.address, filters.filters, connection.id, query.leaveOpen);
 
     // Set up event listeners for this trace
-    const eventHandler = (sub: string, ev: TaggedNostrEvent) => {
+    const eventHandler = (_relay: string, sub: string, ev: TaggedNostrEvent) => {
       if (trace.id === sub) {
         query.addEvent(sub, ev);
       }
@@ -278,9 +282,14 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       }
     };
 
-    connection.on("event", eventHandler);
+    this.#system.pool.on("event", eventHandler);
     connection.on("eose", eoseHandler);
     connection.on("closed", closedHandler);
+    query.on("end", () => {
+      this.#system.pool.off("event", eventHandler);
+      connection.off("eose", eoseHandler);
+      connection.off("closed", closedHandler);
+    });
 
     return trace;
   }
@@ -305,7 +314,6 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       delete copy["relays"];
       return copy;
     });
-    trace.filters = normalizedFilters;
 
     if (filters.syncFrom !== undefined && !this.#system.config.disableSyncModule) {
       // Handle SYNC command - use sync logic
@@ -416,7 +424,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       return await new Promise((resolve, reject) => {
         const results = new NoteCollection();
         const f = rb.buildRaw();
-        connection.on("event", (c, e) => {
+        connection.on("unverifiedEvent", (c, e) => {
           if (rb.id === c) {
             cb?.([e]);
             results.add(e);
@@ -433,7 +441,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     const latest = eventSet.reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
     rs.setStartPoint(latest + 1);
     rs.on("event", ev => {
-      ev.forEach(e => connection.emit("event", trace.id, e));
+      ev.forEach(e => connection.emit("unverifiedEvent", trace.id, e));
     });
     for (const f of filters) {
       rs.sync(f);

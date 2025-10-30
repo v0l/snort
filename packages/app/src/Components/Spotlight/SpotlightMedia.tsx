@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import Icon from "@/Components/Icons/Icon";
-import Modal from "@/Components/Modal/Modal";
 import { ProxyImg } from "@/Components/ProxyImg";
 import useImgProxy from "@/Hooks/useImgProxy";
 
@@ -14,7 +13,7 @@ interface SpotlightMediaProps {
   onPrev?: () => void;
 }
 
-const videoSuffixes = ["mp4", "webm", "ogg", "mov", "avi", "mkv"];
+const videoSuffixes = ["mp4", "webm", "ogg", "mov", "avi", "mkv", "m3u8"];
 
 export function SpotlightMedia(props: SpotlightMediaProps) {
   const { proxy } = useImgProxy();
@@ -93,12 +92,13 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
   const hasPrev = hasMultiple || props.onPrev;
   const hasNext = hasMultiple || props.onNext;
 
+  const arrowClass = "absolute p-2 top-1/2 cursor-pointer bg-layer-1 md:opacity-20 hover:opacity-90 rounded-full";
   return (
     <div className="select-none relative h-screen flex items-center flex-1 justify-center" onClick={onClickBg}>
       {mediaEl}
       <div className="absolute flex flex-row items-center gap-4 left-0 top-0 p-4">
         <span
-          className="p-2 bg-background rounded-full cursor-pointer opacity-80 hover:opacity-70"
+          className="p-2 bg-layer-1 rounded-full cursor-pointer opacity-80 hover:opacity-70"
           onClick={props.onClose}>
           <Icon name="x-close" size={24} />
         </span>
@@ -108,7 +108,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
       </div>
       {hasPrev && (
         <span
-          className="absolute left-0 p-2 top-1/2 rotate-180 cursor-pointer opacity-80 hover:opacity-60"
+          className={`left-2 rotate-180 ${arrowClass}`}
           onClick={e => {
             e.stopPropagation();
             dec();
@@ -118,7 +118,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
       )}
       {hasNext && (
         <span
-          className="absolute right-0 p-2 top-1/2 cursor-pointer opacity-80 hover:opacity-60"
+          className={`right-2 ${arrowClass}`}
           onClick={e => {
             e.stopPropagation();
             inc();
@@ -127,22 +127,5 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
         </span>
       )}
     </div>
-  );
-}
-
-export function SpotlightMediaModal(props: SpotlightMediaProps) {
-  const onClose = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    props.onClose();
-  };
-  return (
-    <Modal
-      id="spotlight"
-      onClick={props.onClose}
-      onClose={onClose}
-      className="spotlight"
-      bodyClassName="h-screen w-screen flex items-center justify-center">
-      <SpotlightMedia {...props} />
-    </Modal>
   );
 }

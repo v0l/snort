@@ -1,5 +1,6 @@
 import { MessageEncryptor, MessageEncryptorVersion } from "..";
-import { secp256k1 } from "@noble/curves/secp256k1";
+import { secp256k1 } from "@noble/curves/secp256k1.js";
+import { hexToBytes } from "@noble/hashes/utils.js";
 import { base64 } from "@scure/base";
 
 export class Nip4WebCryptoEncryptor implements MessageEncryptor {
@@ -10,7 +11,7 @@ export class Nip4WebCryptoEncryptor implements MessageEncryptor {
   ) {}
 
   getSharedSecret(privateKey: string, publicKey: string) {
-    const sharedPoint = secp256k1.getSharedSecret(privateKey, "02" + publicKey);
+    const sharedPoint = secp256k1.getSharedSecret(hexToBytes(privateKey), hexToBytes("02" + publicKey));
     const sharedX = sharedPoint.slice(1, 33);
     return sharedX;
   }
@@ -40,15 +41,18 @@ export class Nip4WebCryptoEncryptor implements MessageEncryptor {
     const result = await window.crypto.subtle.decrypt(
       {
         name: "AES-CBC",
-        iv: base64.decode(nonce),
+        iv: base64.decode(nonce).buffer as ArrayBuffer,
       },
       this.#sharedSecret,
-      base64.decode(ciphertext),
+      base64.decode(ciphertext).buffer as ArrayBuffer,
     );
     return new TextDecoder().decode(result);
   }
 
   async #importKey(sharedSecet: Uint8Array) {
-    return await window.crypto.subtle.importKey("raw", sharedSecet, { name: "AES-CBC" }, false, ["encrypt", "decrypt"]);
+    return await window.crypto.subtle.importKey("raw", sharedSecet.buffer as ArrayBuffer, { name: "AES-CBC" }, false, [
+      "encrypt",
+      "decrypt",
+    ]);
   }
 }

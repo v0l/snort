@@ -1,10 +1,11 @@
 import { v4 as uuid } from "uuid";
-import { appendDedupe, dedupe, removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
+import { appendDedupe, dedupe, NostrPrefix, removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
 
 import EventKind from "./event-kind";
-import { EventExt, NostrLink, NostrPrefix, ToNostrEventTag } from ".";
-import { ReqFilter, u256, HexKey, TaggedNostrEvent } from "./nostr";
+import { EventExt, NostrLink, ToNostrEventTag } from ".";
+import { ReqFilter, TaggedNostrEvent } from "./nostr";
 import { RequestRouter } from "./request-router";
+import { NostrEvent } from "nostr-social-graph";
 
 /**
  * A built REQ filter ready for sending to System
@@ -56,6 +57,11 @@ export interface RequestBuilderOptions {
    * Default: false
    */
   useSyncModule?: boolean;
+
+  /**
+   * Extra events to include in the store, added automatically
+   */
+  extraEvents?: Array<NostrEvent>;
 }
 
 /**
@@ -151,12 +157,12 @@ export class RequestFilterBuilder {
     return this;
   }
 
-  ids(ids: Array<u256>) {
+  ids(ids: Array<string>) {
     this.#filter.ids = appendDedupe(this.#filter.ids, ids);
     return this;
   }
 
-  authors(authors?: Array<HexKey>) {
+  authors(authors?: Array<string>) {
     if (!authors) return this;
     this.#filter.authors = appendDedupe(this.#filter.authors, authors);
     this.#filter.authors = this.#filter.authors.filter(a => a.length === 64);
@@ -215,24 +221,29 @@ export class RequestFilterBuilder {
   /**
    * Get event from link
    */
-  link(link: NostrLink) {
-    if (link.type === NostrPrefix.Address) {
-      this.tag("d", [link.id])
-        .kinds([unwrap(link.kind)])
-        .authors([unwrap(link.author)]);
+  link(link: NostrLink | ToNostrEventTag) {
+    if (link instanceof NostrLink) {
+      if (link.type === NostrPrefix.Address) {
+        this.tag("d", [link.id])
+          .kinds([unwrap(link.kind)])
+          .authors([unwrap(link.author)]);
+      } else {
+        // dont query with ids when looking for replaceable events
+        if (!link.kind || !EventExt.isReplaceable(link.kind)) {
+          this.ids([link.id]);
+        }
+        if (link.author) {
+          this.authors([link.author]);
+        }
+        if (link.kind !== undefined) {
+          this.kinds([link.kind]);
+        }
+      }
+      link.relays?.forEach(v => this.relay(v));
     } else {
-      // dont use id if link is replaceable kind
-      if (link.id && (link.kind === undefined || !EventExt.isReplaceable(link.kind))) {
-        this.ids([link.id]);
-      }
-      if (link.author) {
-        this.authors([link.author]);
-      }
-      if (link.kind !== undefined) {
-        this.kinds([link.kind]);
-      }
+      const [k, v] = link.toEventTag()!;
+      this.#filter[`#${k}`] = appendDedupe(this.#filter[`#${k}`] as Array<string>, [v]);
     }
-    link.relays?.forEach(v => this.relay(v));
     return this;
   }
 

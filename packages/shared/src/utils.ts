@@ -1,30 +1,14 @@
-import * as utils from "@noble/curves/abstract/utils";
-import * as secp from "@noble/curves/secp256k1";
-import { sha256 as sha2 } from "@noble/hashes/sha256";
+import { hexToBytes, bytesToHex } from "@noble/hashes/utils.js";
+import * as secp from "@noble/curves/secp256k1.js";
+import { sha256 as sha2 } from "@noble/hashes/sha2.js";
 import { bech32 } from "@scure/base";
+import { encodeTLV } from "./tlv";
 
 export function unwrap<T>(v: T | undefined | null): T {
   if (v === undefined || v === null) {
     throw new Error("missing value");
   }
   return v;
-}
-
-/**
- * Convert hex to bech32
- */
-export function hexToBech32(hrp: string, hex?: string) {
-  if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0) {
-    return "";
-  }
-
-  try {
-    const buf = utils.hexToBytes(hex);
-    return bech32.encode(hrp, bech32.toWords(buf));
-  } catch (e) {
-    console.warn("Invalid hex", hex, e);
-    return "";
-  }
 }
 
 export function sanitizeRelayUrl(url: string) {
@@ -135,18 +119,55 @@ export function appendDedupe<T>(a?: Array<T>, b?: Array<T>) {
   return dedupe([...(a ?? []), ...(b ?? [])]);
 }
 
+export function dedupeBy<T>(v: Array<T>, mapper: (x: T) => string): Array<T> {
+  return [
+    ...v
+      .reduce((acc, v) => {
+        const k = mapper(v);
+        if (!acc.has(k)) {
+          acc.set(k, v);
+        }
+        return acc;
+      }, new Map<string, T>())
+      .values(),
+  ];
+}
+
 export const sha256 = (str: string | Uint8Array): string => {
-  return utils.bytesToHex(sha2(str));
+  const buf = typeof str === "string" ? new TextEncoder().encode(str) : str;
+  return bytesToHex(sha2(buf));
 };
 
-export function getPublicKey(privKey: string) {
-  return utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
+export function getPublicKey(privKey: string | Uint8Array) {
+  const buf = typeof privKey === "string" ? hexToBytes(privKey) : privKey;
+  return bytesToHex(secp.schnorr.getPublicKey(buf));
 }
 
 export function bech32ToHex(str: string) {
-  const nKey = bech32.decode(str, 1_000);
+  const nKey = bech32.decode(str as `${string}1${string}`, 1_000);
   const buff = bech32.fromWords(nKey.words);
-  return utils.bytesToHex(Uint8Array.from(buff));
+  return bytesToHex(Uint8Array.from(buff));
+}
+
+/**
+ * Convert hex to bech32
+ */
+export function hexToBech32(hrp: string, hex?: string) {
+  if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0 || !isHex(hex)) {
+    return "";
+  }
+
+  try {
+    if (hrp === "note" || hrp === "nsec" || hrp === "npub") {
+      const buf = hexToBytes(hex);
+      return bech32.encode(hrp, bech32.toWords(buf));
+    } else {
+      return encodeTLV(hrp, hex);
+    }
+  } catch (e) {
+    console.warn("Invalid hex", hex, e);
+    return "";
+  }
 }
 
 /**
@@ -155,7 +176,7 @@ export function bech32ToHex(str: string) {
  * @returns
  */
 export function bech32ToText(str: string) {
-  const decoded = bech32.decode(str, 1000);
+  const decoded = bech32.decode(str as `${string}1${string}`, 1000);
   const buf = bech32.fromWords(decoded.words);
   return new TextDecoder().decode(Uint8Array.from(buf));
 }
@@ -241,10 +262,10 @@ export function isOffline() {
 export function isHex(s?: string) {
   if (!s) return false;
   // 48-57 = 0-9
-  // 65-90 = A-Z
-  // 97-122 = a-z
+  // 65-70 = A-F
+  // 97-102 = a-f
   return (
     s.length % 2 == 0 &&
-    [...s].map(v => v.charCodeAt(0)).every(v => (v >= 48 && v <= 57) || (v >= 65 && v <= 90) || v >= 97 || v <= 122)
+    [...s].map(v => v.charCodeAt(0)).every(v => (v >= 48 && v <= 57) || (v >= 65 && v <= 70) || (v >= 97 && v <= 102))
   );
 }

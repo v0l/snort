@@ -3,8 +3,6 @@ import { useRequestBuilder } from "@snort/system-react";
 import { ReactNode, useMemo } from "react";
 
 import { WindowChunk } from "@/Hooks/useTimelineChunks";
-
-import { DisplayAs } from "./DisplayAsSelector";
 import { TimelineRenderer } from "./TimelineRenderer";
 
 export interface TimelineChunkProps {
@@ -14,7 +12,6 @@ export interface TimelineChunkProps {
   noteFilter?: (ev: NostrEvent) => boolean;
   noteRenderer?: (ev: NostrEvent) => ReactNode;
   noteOnClick?: (ev: NostrEvent) => void;
-  displayAs?: DisplayAs;
 }
 
 /**
@@ -40,7 +37,6 @@ export default function TimelineChunk(props: TimelineChunkProps) {
       }}
       noteOnClick={props.noteOnClick}
       noteRenderer={props.noteRenderer}
-      displayAs={props.displayAs}
       latest={[]}
       showLatest={() => {}}
     />

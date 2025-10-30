@@ -1,5 +1,3 @@
-import "./DM.css";
-
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -63,8 +61,8 @@ export default function DM(props: DMProps) {
       <div
         className={
           isMe
-            ? "p-3 dm-gradient rounded-tl-lg rounded-tr-lg rounded-bl-lg rounded-br-none"
-            : "p-3 bg-gray-300 rounded-tl-lg rounded-tr-lg rounded-br-lg rounded-bl-none other"
+            ? "p-3 bg-[image:var(--dm-gradient)] rounded-tl-lg rounded-tr-lg rounded-bl-lg rounded-rounded-lg-none"
+            : "p-3 bg-layer-1 rounded-tl-lg rounded-tr-lg rounded-br-none rounded-bl-none"
         }>
         {sender()}
         {content ? (

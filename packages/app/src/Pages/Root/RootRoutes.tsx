@@ -12,7 +12,7 @@ export default function RootPage() {
   return (
     <>
       {(location.pathname === "/" || location.pathname === "/following") && <LiveStreams />}
-      <div className="main-content">
+      <div>
         <Outlet />
       </div>
       {code && <InviteModal />}

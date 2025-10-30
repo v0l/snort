@@ -11,6 +11,9 @@ import MediaPosts from "@/Pages/Root/Media";
 import { NotesTab } from "@/Pages/Root/NotesTab";
 import { TagsTab } from "@/Pages/Root/TagsTab";
 import { TopicsPage } from "@/Pages/TopicsPage";
+import { ReactElement } from "react";
+import RelayFeedPage from "@/Pages/Root/RelayFeedPage";
+import { RouteObject } from "react-router-dom";
 
 export type RootTabRoutePath =
   | ""
@@ -26,16 +29,16 @@ export type RootTabRoutePath =
   | "t/:tag"
   | "topics"
   | "media"
-  | "follow-sets";
+  | "follow-sets"
+  | "relay";
 
 export type RootTabRoute = {
-  path: RootTabRoutePath;
-  element: JSX.Element;
-};
+  element: ReactElement;
+} & RouteObject;
 
 export const RootTabRoutes: RootTabRoute[] = [
   {
-    path: "",
+    index: true,
     element: <DefaultTab />,
   },
   {
@@ -68,7 +71,11 @@ export const RootTabRoutes: RootTabRoute[] = [
   },
   {
     path: "trending/hashtags",
-    element: <TrendingHashtags />,
+    element: (
+      <div className="px-2">
+        <TrendingHashtags />
+      </div>
+    ),
   },
   {
     path: "t/:tag",
@@ -85,5 +92,9 @@ export const RootTabRoutes: RootTabRoute[] = [
   {
     path: "follow-sets",
     element: <FollowSetsPage />,
+  },
+  {
+    path: "relay/:relay?",
+    element: <RelayFeedPage />,
   },
 ];

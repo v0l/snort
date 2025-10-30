@@ -1,13 +1,20 @@
-import { EventKind, EventPublisher, TaggedNostrEvent } from "@snort/system";
+import { EventKind, EventPublisher, NostrEvent, TaggedNostrEvent } from "@snort/system";
 
-import { db, UnwrappedGift } from "@/Db";
 import { findTag, unwrap } from "@/Utils";
 
 import { RefreshFeedCache, TWithCreated } from "./RefreshFeedCache";
 
+export interface UnwrappedGift {
+  id: string;
+  to: string;
+  created_at: number;
+  inner: NostrEvent;
+  tags?: Array<Array<string>>; // some tags extracted
+}
+
 export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
   constructor() {
-    super("GiftWrapCache", db.gifts);
+    super("GiftWrapCache");
   }
 
   key(of: UnwrappedGift): string {

@@ -20,7 +20,8 @@ import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
 import { QueryManager } from "./query-manager";
 import { RequestRouter } from "./request-router";
 import { SystemBase } from "./system-base";
-import { SerializedSocialGraph, SocialGraph } from "nostr-social-graph";
+import { SocialGraph } from "nostr-social-graph";
+import { base64 } from "@scure/base";
 
 /**
  * Manages nostr content retrieval system
@@ -43,6 +44,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     this.relayMetricsHandler = new RelayMetricHandler(this.relayMetricsCache);
     this.relayLoader = new RelayMetadataLoader(this, this.relayCache);
     this.traceTimeline = new TraceTimeline();
+    this.pool = new DefaultConnectionPool(this);
 
     // if automatic outbox model, setup request router as OutboxModel
     if (this.config.automaticOutboxModel) {
@@ -51,7 +53,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
 
     // Cache everything
     if (this.config.cachingRelay) {
-      this.on("event", async (_, ev) => {
+      this.pool.on("event", async (_relay, _sub, ev) => {
         await this.config.cachingRelay?.event(ev);
       });
     }
@@ -60,7 +62,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     if (this.config.buildFollowGraph) {
       let evBuf: Array<TaggedNostrEvent> = [];
       let t: ReturnType<typeof setTimeout> | undefined;
-      this.on("event", (_, ev) => {
+      this.pool.on("event", (_relay, _sub, ev) => {
         if (ev.kind === EventKind.ContactList) {
           // fire&forget update
           this.userFollowsCache.update({
@@ -82,11 +84,10 @@ export class NostrSystem extends SystemBase implements SystemInterface {
       });
     }
 
-    this.pool = new DefaultConnectionPool(this);
     this.#queryManager = new QueryManager(this);
 
     // hook connection pool
-    this.pool.on("connected", (id, wasReconnect) => {
+    this.pool.on("connected", (id, _wasReconnect) => {
       const c = this.pool.getConnection(id);
       if (c) {
         this.relayMetricsHandler.onConnect(c.address);
@@ -95,9 +96,8 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     this.pool.on("connectFailed", address => {
       this.relayMetricsHandler.onDisconnect(address, 0);
     });
-    this.pool.on("event", (_, sub, ev) => {
+    this.pool.on("event", (_, _sub, ev) => {
       ev.relays?.length && this.relayMetricsHandler.onEvent(ev.relays[0]);
-      this.emit("event", sub, ev);
     });
     this.pool.on("disconnect", (id, code) => {
       const c = this.pool.getConnection(id);
@@ -132,20 +132,22 @@ export class NostrSystem extends SystemBase implements SystemInterface {
   async PreloadSocialGraph(follows?: Array<string>, root?: string) {
     // Insert data to socialGraph from cache
     if (this.config.buildFollowGraph) {
+      const graphRoot = root ?? "00".repeat(32);
       // load saved social graph
       if ("localStorage" in globalThis) {
         const saved = localStorage.getItem("social-graph");
         if (saved) {
           try {
-            const data = JSON.parse(saved) as SerializedSocialGraph;
-            this.config.socialGraphInstance = new SocialGraph(root ?? "", data);
+            const data = base64.decode(saved);
+            this.config.socialGraphInstance = await SocialGraph.fromBinary(graphRoot, data);
+            this.#log("Loaded social graph snapshot from LocalStorage %d bytes", data.length);
           } catch (e) {
             this.#log("Failed to load serialzied social-graph: %O", e);
             localStorage.removeItem("social-graph");
           }
         }
       }
-      this.config.socialGraphInstance.setRoot(root ?? "00".repeat(32));
+      await this.config.socialGraphInstance.setRoot(graphRoot);
       for (const list of this.userFollowsCache.snapshot()) {
         if (follows && !follows.includes(list.pubkey)) continue;
         this.config.socialGraphInstance.handleEvent({
@@ -186,8 +188,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
   }
 
   HandleEvent(subId: string, ev: TaggedNostrEvent) {
-    this.emit("event", subId, ev);
-    this.#queryManager.handleEvent(ev);
+    this.#queryManager.handleEvent(subId, ev);
   }
 
   async BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]> {

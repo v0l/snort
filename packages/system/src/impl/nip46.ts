@@ -1,5 +1,5 @@
 import { unwrap, bech32ToHex } from "@snort/shared";
-import { secp256k1 } from "@noble/curves/secp256k1";
+import { secp256k1 } from "@noble/curves/secp256k1.js";
 import { v4 as uuid } from "uuid";
 import debug from "debug";
 
@@ -77,7 +77,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     }
 
     this.#relay = unwrap(u.searchParams.get("relay"));
-    this.#insideSigner = insideSigner ?? new PrivateKeySigner(secp256k1.utils.randomPrivateKey());
+    this.#insideSigner = insideSigner ?? new PrivateKeySigner(secp256k1.keygen().secretKey);
 
     if (this.isBunker) {
       this.#remotePubkey = this.#localPubkey;
@@ -111,7 +111,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     this.#localPubkey = await this.#insideSigner.getPubKey();
     return await new Promise<void>((resolve, reject) => {
       this.#conn = new Connection(this.#relay, { read: true, write: true });
-      this.#conn.on("event", async (sub, e) => {
+      this.#conn.on("unverifiedEvent", async (_sub, e) => {
         await this.#onReply(e);
       });
       this.#conn.on("connected", async () => {

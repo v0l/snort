@@ -1,4 +1,4 @@
-import { unixNowMs } from "@snort/shared";
+import { bech32ToHex, unixNowMs } from "@snort/shared";
 import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useEffect, useMemo } from "react";
@@ -7,7 +7,7 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
 import { System } from "@/system";
-import { bech32ToHex, unwrap } from "@/Utils";
+import { unwrap } from "@/Utils";
 import { SnortPubKey } from "@/Utils/Const";
 import { addSubscription } from "@/Utils/Login";
 import { SubscriptionEvent } from "@/Utils/Subscription";
@@ -37,7 +37,6 @@ export default function useLoginFeed() {
   }, [pubKey]);
 
   useEffect(() => {
-    console.debug("UserState: start init from LoginFeed", login.state.didInit);
     login.state.init(publisher?.signer, system).catch(console.error);
   }, [login, publisher, system]);
 

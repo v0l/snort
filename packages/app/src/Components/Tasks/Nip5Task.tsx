@@ -11,7 +11,7 @@ export class Nip5Task extends BaseUITask {
     return !this.state.muted && !user.nip05;
   }
 
-  render(): JSX.Element {
+  render() {
     return (
       <p>
         <FormattedMessage

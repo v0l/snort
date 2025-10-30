@@ -3,7 +3,7 @@ import { CacheRelay, EventKind, NostrEvent, UsersFollows } from "@snort/system";
 import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 
-export class UserFollowsWorker extends EventEmitter<CacheEvents> implements CachedTable<UsersFollows> {
+export class UserFollowsWorker extends EventEmitter<CacheEvents<UsersFollows>> implements CachedTable<UsersFollows> {
   #relay: CacheRelay;
   #keys = new Set<string>();
   #cache = new Map<string, UsersFollows>();

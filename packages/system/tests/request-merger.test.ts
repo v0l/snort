@@ -8,9 +8,10 @@ import {
 } from "../src/query-optimizer/request-merger";
 import { FlatReqFilter } from "../src/query-optimizer";
 import { expandFilter } from "../src/query-optimizer/request-expander";
+import { describe, expect, test } from "bun:test";
 
 describe("RequestMerger", () => {
-  it("should simple merge authors", () => {
+  test("should simple merge authors", () => {
     const a = {
       authors: ["a"],
     } as ReqFilter;
@@ -26,7 +27,7 @@ describe("RequestMerger", () => {
     ]);
   });
 
-  it("should append non-mergable filters", () => {
+  test("should append non-mergable filters", () => {
     const a = {
       authors: ["a"],
     } as ReqFilter;
@@ -50,7 +51,7 @@ describe("RequestMerger", () => {
     ]);
   });
 
-  it("filterIncludes", () => {
+  test("filterIncludes", () => {
     const bigger = {
       authors: ["a", "b", "c"],
       since: 99,
@@ -62,7 +63,7 @@ describe("RequestMerger", () => {
     expect(filterIncludes(bigger, smaller)).toBe(true);
   });
 
-  it("simpleMerge", () => {
+  test("simpleMerge", () => {
     const a = {
       authors: ["a", "b", "c"],
       since: 99,
@@ -79,7 +80,7 @@ describe("RequestMerger", () => {
 });
 
 describe("flatMerge", () => {
-  it("should flat merge simple", () => {
+  test("should flat merge simple", () => {
     const input = [
       { ids: "0", authors: "a", resultSetId: "" },
       { ids: "0", authors: "b", resultSetId: "" },
@@ -104,7 +105,7 @@ describe("flatMerge", () => {
     expect(flatMerge(input)).toMatchObject(output);
   });
 
-  it("should expand and flat merge complex same", () => {
+  test("should expand and flat merge complex same", () => {
     const input = [
       { kinds: [1, 6969, 6], authors: ["kieran", "snort", "c", "d", "e"], since: 1, until: 100 },
       { kinds: [4], authors: ["kieran"] },
@@ -118,7 +119,7 @@ describe("flatMerge", () => {
 });
 
 describe("canMerge", () => {
-  it("should have 0 distance", () => {
+  test("should have 0 distance", () => {
     const a = {
       ids: "a",
       resultSetId: "",
@@ -129,7 +130,7 @@ describe("canMerge", () => {
     } as FlatReqFilter;
     expect(canMergeFilters(a, b)).toEqual(true);
   });
-  it("should have 1 distance", () => {
+  test("should have 1 distance", () => {
     const a = {
       ids: "a",
       resultSetId: "",
@@ -140,7 +141,7 @@ describe("canMerge", () => {
     } as FlatReqFilter;
     expect(canMergeFilters(a, b)).toEqual(true);
   });
-  it("should have 10 distance", () => {
+  test("should have 10 distance", () => {
     const a = {
       ids: "a",
       resultSetId: "",
@@ -152,7 +153,7 @@ describe("canMerge", () => {
     } as FlatReqFilter;
     expect(canMergeFilters(a, b)).toEqual(false);
   });
-  it("should have 11 distance", () => {
+  test("should have 11 distance", () => {
     const a = {
       ids: "a",
       resultSetId: "",
@@ -164,7 +165,7 @@ describe("canMerge", () => {
     } as FlatReqFilter;
     expect(canMergeFilters(a, b)).toEqual(false);
   });
-  it("should have 1 distance, arrays", () => {
+  test("should have 1 distance, arrays", () => {
     const a = {
       since: 1,
       until: 100,
@@ -179,7 +180,7 @@ describe("canMerge", () => {
     };
     expect(canMergeFilters(a, b)).toEqual(true);
   });
-  it("should have 1 distance, array change extra", () => {
+  test("should have 1 distance, array change extra", () => {
     const a = {
       since: 1,
       until: 100,

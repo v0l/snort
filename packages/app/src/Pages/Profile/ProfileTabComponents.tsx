@@ -1,10 +1,10 @@
-import { EventKind, HexKey, NostrLink, NostrPrefix, ParsedZap } from "@snort/system";
+import { EventKind, NostrLink, ParsedZap } from "@snort/system";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { Note } from "@/Components/Event/Note/Note";
 import Timeline from "@/Components/Feed/Timeline";
-import RelaysMetadata from "@/Components/Relay/RelaysMetadata";
+import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
 import Bookmarks from "@/Components/User/Bookmarks";
 import FollowsList from "@/Components/User/FollowListBase";
 import ProfilePreview from "@/Components/User/ProfilePreview";
@@ -15,8 +15,10 @@ import useRelaysFeed from "@/Feed/RelaysFeed";
 import { TimelineSubject } from "@/Feed/TimelineFeed";
 import useZapsFeed from "@/Feed/ZapsFeed";
 import { useBookmarkList, usePinList } from "@/Hooks/useLists";
+import { NostrPrefix } from "@snort/shared";
+import Icon from "@/Components/Icons/Icon";
 
-export function ZapsProfileTab({ id }: { id: HexKey }) {
+export function ZapsProfileTab({ id }: { id: string }) {
   const zaps = useZapsFeed(new NostrLink(NostrPrefix.PublicKey, id));
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   const fromGrouped = zaps.reduce(
@@ -31,7 +33,7 @@ export function ZapsProfileTab({ id }: { id: HexKey }) {
 
   return (
     <>
-      <div className="p text-2xl font-medium flex justify-between">
+      <div className="px-3 py-2 text-2xl font-medium flex justify-between">
         <div>
           <FormattedMessage defaultMessage="Profile Zaps" />
         </div>
@@ -49,7 +51,7 @@ export function ZapsProfileTab({ id }: { id: HexKey }) {
         })
         .map(a => (
           <div
-            className="px-4 py-1 hover:bg-gray-dark cursor:pointer rounded-xl flex items-center justify-between"
+            className="px-4 py-1 hover:bg-neutral-800 cursor:pointer rounded-xl flex items-center justify-between"
             key={a.pubkey}>
             <ProfilePreview
               pubkey={a.pubkey}
@@ -70,12 +72,12 @@ export function ZapsProfileTab({ id }: { id: HexKey }) {
   );
 }
 
-export function FollowersTab({ id }: { id: HexKey }) {
+export function FollowersTab({ id }: { id: string }) {
   const followers = useFollowersFeed(id);
   return (
     <FollowsList
       pubkeys={followers.map(a => a.pubkey)}
-      className="p flex flex-col gap-1"
+      className="px-3 py-2 flex flex-col gap-1"
       profilePreviewProps={{
         options: {
           about: true,
@@ -85,12 +87,12 @@ export function FollowersTab({ id }: { id: HexKey }) {
   );
 }
 
-export function FollowsTab({ id }: { id: HexKey }) {
+export function FollowsTab({ id }: { id: string }) {
   const follows = useFollowsFeed(id);
   return (
     <FollowsList
       pubkeys={follows}
-      className="p flex flex-col gap-1"
+      className="px-3 py-2 flex flex-col gap-1"
       profilePreviewProps={{
         options: {
           about: true,
@@ -100,17 +102,32 @@ export function FollowsTab({ id }: { id: HexKey }) {
   );
 }
 
-export function RelaysTab({ id }: { id: HexKey }) {
+export function RelaysTab({ id }: { id: string }) {
   const relays = useRelaysFeed(id);
-  return <RelaysMetadata relays={relays} />;
+  return (
+    <div className="flex flex-col gap-1">
+      {relays?.map(({ url, settings }) => {
+        return (
+          <div key={url} className="flex gap-2 layer-1">
+            <RelayFavicon url={url} />
+            <code className="grow f-ellipsis">{url}</code>
+            <div className="flex gap-2">
+              {settings.read && <span>R</span>}
+              {settings.write && <span>W</span>}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
-export function BookMarksTab({ id }: { id: HexKey }) {
+export function BookMarksTab({ id }: { id: string }) {
   const bookmarks = useBookmarkList(id);
   return <Bookmarks pubkey={id} bookmarks={bookmarks} />;
 }
 
-export function ReactionsTab({ id }: { id: HexKey }) {
+export function ReactionsTab({ id }: { id: string }) {
   const subject = useMemo(
     () =>
       ({
@@ -126,7 +143,7 @@ export function ReactionsTab({ id }: { id: HexKey }) {
   );
 }
 
-export function ProfileNotesTab({ id, relays, isMe }: { id: HexKey; relays?: Array<string>; isMe: boolean }) {
+export function ProfileNotesTab({ id, relays, isMe }: { id: string; relays?: Array<string>; isMe: boolean }) {
   const pinned = usePinList(id);
   const options = useMemo(() => ({ showTime: false, showPinned: true, canUnpin: isMe }), [isMe]);
   const subject = useMemo(

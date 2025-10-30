@@ -1,16 +1,5 @@
-/* eslint-disable max-lines */
-import * as utils from "@noble/curves/abstract/utils";
-import * as secp from "@noble/curves/secp256k1";
-import { ExternalStore, unwrap } from "@snort/shared";
-import {
-  EventKind,
-  EventPublisher,
-  HexKey,
-  KeyStorage,
-  RelaySettings,
-  UserState,
-  UserStateObject,
-} from "@snort/system";
+import { ExternalStore, getPublicKey, unwrap } from "@snort/shared";
+import { EventKind, EventPublisher, KeyStorage, RelaySettings, UserState, UserStateObject } from "@snort/system";
 import { v4 as uuid } from "uuid";
 
 import { createPublisher, LoginSession, LoginSessionType, SnortAppData } from "@/Utils/Login/index";
@@ -61,7 +50,7 @@ const LoggedOut = {
 } as LoginSession;
 
 export class MultiAccountStore extends ExternalStore<LoginSession> {
-  #activeAccount?: HexKey;
+  #activeAccount?: string;
   #saveDebounce?: ReturnType<typeof setTimeout>;
   #accounts: Map<string, LoginSession> = new Map();
   #publishers = new Map<string, EventPublisher>();
@@ -158,7 +147,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   }
 
   loginWithPubkey(
-    key: HexKey,
+    key: string,
     type: LoginSessionType,
     relays?: Record<string, RelaySettings>,
     remoteSignerRelays?: Array<string>,
@@ -215,7 +204,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   }
 
   loginWithPrivateKey(key: KeyStorage, entropy?: string, relays?: Record<string, RelaySettings>) {
-    const pubKey = utils.bytesToHex(secp.schnorr.getPublicKey(key.value));
+    const pubKey = getPublicKey(key.value);
     if (this.#accounts.has(pubKey)) {
       throw new Error("Already logged in with this pubkey");
     }

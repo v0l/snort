@@ -3,8 +3,8 @@ import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 
 import { Connection, RelaySettings } from "./connection";
-import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr";
-import { RelayInfo, SystemInterface } from ".";
+import { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "./nostr";
+import { RelayInfoDocument, SystemInterface } from ".";
 
 /**
  * Events which the ConnectionType must emit
@@ -13,7 +13,7 @@ export interface ConnectionTypeEvents {
   change: () => void;
   connected: (wasReconnect: boolean) => void;
   error: () => void;
-  event: (sub: string, e: TaggedNostrEvent) => void;
+  unverifiedEvent: (sub: string, e: TaggedNostrEvent) => void;
   eose: (sub: string) => void;
   closed: (sub: string, reason: string) => void;
   disconnect: (code: number) => void;
@@ -30,7 +30,7 @@ export interface ConnectionSubscription {}
 export type ConnectionType = {
   readonly id: string;
   readonly address: string;
-  readonly info: RelayInfo | undefined;
+  readonly info: RelayInfoDocument | undefined;
   readonly isDown: boolean;
   readonly isOpen: boolean;
   readonly activeSubscriptions: number;
@@ -144,8 +144,10 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
    * Get a connection object from the pool
    */
   getConnection(id: string) {
-    const addr = unwrap(sanitizeRelayUrl(id));
-    return this.#sockets.get(addr);
+    const addr = sanitizeRelayUrl(id);
+    if (addr) {
+      return this.#sockets.get(addr);
+    }
   }
 
   /**
@@ -161,13 +163,16 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
       if (!existing) {
         const c = await this.#connectionBuilder(addr, options, ephemeral);
         this.#sockets.set(addr, c);
-        c.on("event", (s, e) => {
+
+        // This is where we do check sigs
+        c.on("unverifiedEvent", (s, e) => {
           if (this.#system.checkSigs && !this.#system.optimizer.schnorrVerify(e)) {
             this.#log("Reject invalid event %o", e);
             return;
           }
           this.emit("event", addr, s, e);
         });
+
         c.on("eose", s => this.emit("eose", addr, s));
         c.on("disconnect", code => this.emit("disconnect", addr, code));
         c.on("connected", r => this.emit("connected", addr, r));

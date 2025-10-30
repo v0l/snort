@@ -1,6 +1,6 @@
 import debug from "debug";
 import { removeUndefined, unixNowMs } from "./utils";
-import { DexieTableLike } from "./dexie-like";
+import { CacheStore } from "./cache-store";
 import { EventEmitter } from "eventemitter3";
 
 type HookFn = () => void;
@@ -45,7 +45,7 @@ export type CachedTable<T> = {
 } & EventEmitter<CacheEvents<T>>;
 
 /**
- * Dexie backed generic hookable store
+ * Generic cache with optional persistent storage backend
  */
 export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCached>> implements CachedTable<TCached> {
   readonly name: string;
@@ -53,14 +53,14 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
   protected log: ReturnType<typeof debug>;
   #hits = 0;
   #miss = 0;
-  protected table?: DexieTableLike<TCached>;
+  protected store?: CacheStore<TCached>;
   protected onTable: Set<string> = new Set();
   protected cache: Map<string, TCached> = new Map();
 
-  constructor(name: string, table?: DexieTableLike<TCached>) {
+  constructor(name: string, store?: CacheStore<TCached>) {
     super();
     this.name = name;
-    this.table = table;
+    this.store = store;
     this.log = debug(name);
     setInterval(() => {
       this.log(
@@ -79,8 +79,8 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
   async preload() {
     // assume already preloaded if keys exist on table in memory
     if (this.onTable.size === 0) {
-      const keys = (await this.table?.toCollection().primaryKeys()) ?? [];
-      this.onTable = new Set<string>(keys.map(a => a as string));
+      const keys = (await this.store?.keys()) ?? [];
+      this.onTable = new Set<string>(keys);
     }
   }
 
@@ -111,8 +111,8 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
   }
 
   async get(key?: string) {
-    if (key && !this.cache.has(key) && this.table) {
-      const cached = await this.table.get(key);
+    if (key && !this.cache.has(key) && this.store) {
+      const cached = await this.store.get(key);
       if (cached) {
         this.cache.set(this.key(cached), cached);
         this.emit("change", [key]);
@@ -124,8 +124,8 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
 
   async bulkGet(keys: Array<string>) {
     const missing = keys.filter(a => !this.cache.has(a));
-    if (missing.length > 0 && this.table) {
-      const cached = await this.table.bulkGet(missing);
+    if (missing.length > 0 && this.store) {
+      const cached = await this.store.bulkGet(missing);
       cached.forEach(a => {
         if (a) {
           this.cache.set(this.key(a), a);
@@ -138,9 +138,9 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
   async set(obj: TCached) {
     const k = this.key(obj);
     this.cache.set(k, obj);
-    if (this.table) {
+    if (this.store) {
       try {
-        await this.table.put(obj);
+        await this.store.put(obj);
         this.onTable.add(k);
       } catch (e) {
         console.error(e);
@@ -150,9 +150,9 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
   }
 
   async bulkSet(obj: Array<TCached> | Readonly<Array<TCached>>) {
-    if (this.table) {
+    if (this.store) {
       try {
-        await this.table.bulkPut(obj);
+        await this.store.bulkPut(obj);
         obj.forEach(a => this.onTable.add(this.key(a)));
       } catch (e) {
         console.error(e);
@@ -193,30 +193,39 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
 
   async buffer(keys: Array<string>): Promise<Array<string>> {
     const needsBuffer = keys.filter(a => !this.cache.has(a));
-    if (this.table && needsBuffer.length > 0) {
+    if (this.store && needsBuffer.length > 0) {
       const mapped = needsBuffer.map(a => ({
         has: this.onTable.has(a),
         key: a,
       }));
+      const keysToLoad = mapped.filter(a => a.has).map(a => a.key);
+
+      // Skip store query if no keys need loading
+      if (keysToLoad.length === 0) {
+        return mapped.filter(a => !a.has).map(a => a.key);
+      }
+
       const start = unixNowMs();
-      const fromCache = removeUndefined(await this.table.bulkGet(mapped.filter(a => a.has).map(a => a.key)));
-      fromCache.forEach(a => {
-        this.cache.set(this.key(a), a);
-      });
-      this.emit(
-        "change",
-        fromCache.map(a => this.key(a)),
-      );
-      this.log(`Loaded %d/%d in %d ms`, fromCache.length, keys.length, (unixNowMs() - start).toLocaleString());
+      const fromCache = removeUndefined(await this.store.bulkGet(keysToLoad));
+      if (fromCache.length > 0) {
+        fromCache.forEach(a => {
+          this.cache.set(this.key(a), a);
+        });
+        this.emit(
+          "change",
+          fromCache.map(a => this.key(a)),
+        );
+        this.log(`Loaded %d/%d in %d ms`, fromCache.length, keys.length, (unixNowMs() - start).toLocaleString());
+      }
       return mapped.filter(a => !a.has).map(a => a.key);
     }
 
-    // no IndexdDB always return all keys
+    // no persistent store, always return all keys
     return needsBuffer;
   }
 
   async clear() {
-    await this.table?.clear();
+    await this.store?.clear();
     this.cache.clear();
     this.onTable.clear();
   }

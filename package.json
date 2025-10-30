@@ -4,12 +4,11 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace @snort/shared build && yarn workspace @snort/worker-relay build && yarn workspace @snort/system build && yarn workspace @snort/system-web build && yarn workspace @snort/system-react build && yarn workspace @snort/wallet build && yarn workspace @snort/app build",
-    "start": "yarn build && yarn workspace @snort/app start",
-    "test": "yarn build && yarn workspace @snort/app test && yarn workspace @snort/system test",
-    "pre:commit": "yarn workspace @snort/app intl-extract && yarn workspace @snort/app intl-compile && yarn prettier --write .",
+    "start": "bun run build && bun --cwd=packages/app run start",
+    "build": "bun --cwd=packages/shared run build && bun --cwd=packages/system run build && bun --cwd=packages/wallet run build && bun --cwd=packages/worker-relay run build && bun --cwd=packages/app run build",
     "push-prod": "git switch snort-prod && git merge --ff-only main && git push && git checkout main",
-    "docs": "typedoc --entryPointStrategy packages ./packages/* --exclude ./packages/app --exclude ./packages/webrtc-server --name snort.social"
+    "docs": "typedoc --entryPointStrategy packages ./packages/* --exclude ./packages/app --exclude ./packages/webrtc-server --name snort.social",
+    "pre:commit": "bun --cwd=packages/app run intl-extract && bun --cwd=packages/app run intl-compile && bunx prettier --write ."
   },
   "prettier": {
     "printWidth": 120,
@@ -18,15 +17,17 @@
     "trailingComma": "all",
     "endOfLine": "lf"
   },
-  "packageManager": "yarn@4.1.1",
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20230307.0",
-    "eslint": "^8.48.0",
-    "prettier": "^3.0.3",
-    "typescript": "^5.2.2"
+    "@cloudflare/workers-types": "^4.20251011.0",
+    "eslint": "^9.37.0",
+    "jiti": "^2.6.1",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.0.0-rc.14",
-    "typedoc": "^0.25.7"
+    "@noble/curves": "^2.0.1",
+    "@tauri-apps/cli": "^2.8.4",
+    "bun": "^1.3.1",
+    "typedoc": "^0.28.14"
   }
 }

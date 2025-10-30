@@ -1,4 +1,4 @@
-import { RelayInfo as RI } from "@snort/system";
+import { Nip11, RelayInfoDocument } from "@snort/system";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { Link, useParams } from "react-router-dom";
@@ -18,30 +18,14 @@ import { getRelayName, parseId } from "@/Utils";
 
 const RelayInfo = () => {
   const params = useParams();
-  const [info, setInfo] = useState<RI>();
+  const [info, setInfo] = useState<RelayInfoDocument>();
 
   const conn = useRelayState(params.id ?? "");
 
-  async function loadRelayInfo() {
-    const u = new URL(params.id ?? "");
-    const rsp = await fetch(`${u.protocol === "wss:" ? "https:" : "http:"}//${u.host}`, {
-      headers: {
-        accept: "application/nostr+json",
-      },
-    });
-    if (rsp.ok) {
-      const data = await rsp.json();
-      for (const [k, v] of Object.entries(data)) {
-        if (v === "unset" || v === "" || v === "~") {
-          data[k] = undefined;
-        }
-      }
-      setInfo(data);
-    }
-  }
-
   useEffect(() => {
-    loadRelayInfo().catch(console.error);
+    Nip11.loadRelayDocument(params.id ?? "")
+      .then(setInfo)
+      .catch(console.error);
   }, []);
 
   const stats = useSyncExternalStore(
@@ -68,13 +52,13 @@ const RelayInfo = () => {
         {info && (
           <div className="grid grid-cols-3 gap-4">
             <div className="flex flex-col gap-2">
-              <div className="uppercase text-secondary font-bold text-sm">
+              <div className="uppercase text-neutral-400 font-bold text-sm">
                 <FormattedMessage defaultMessage="Admin" />
               </div>
               <div>{info?.pubkey && <ProfileImage pubkey={parseId(info.pubkey)} size={30} />}</div>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="uppercase text-secondary font-bold text-sm">
+              <div className="uppercase text-neutral-400 font-bold text-sm">
                 <FormattedMessage defaultMessage="Contact" />
               </div>
               <div>
@@ -89,7 +73,7 @@ const RelayInfo = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="uppercase text-secondary font-bold text-sm">
+              <div className="uppercase text-neutral-400 font-bold text-sm">
                 <FormattedMessage defaultMessage="Software" />
               </div>
               <div>{info?.software && <RelaySoftware software={info.software} />}</div>
@@ -97,7 +81,7 @@ const RelayInfo = () => {
             {conn && (
               <>
                 <div className="flex flex-col gap-2">
-                  <div className="uppercase text-secondary font-bold text-sm">
+                  <div className="uppercase text-neutral-400 font-bold text-sm">
                     <FormattedMessage defaultMessage="Status" />
                   </div>
                   <div>
@@ -105,7 +89,7 @@ const RelayInfo = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <div className="uppercase text-secondary font-bold text-sm">
+                  <div className="uppercase text-neutral-400 font-bold text-sm">
                     <FormattedMessage defaultMessage="Permissions" />
                   </div>
                   <div>
@@ -113,7 +97,7 @@ const RelayInfo = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <div className="uppercase text-secondary font-bold text-sm">
+                  <div className="uppercase text-neutral-400 font-bold text-sm">
                     <FormattedMessage defaultMessage="Uptime" />
                   </div>
                   <div>
@@ -125,7 +109,15 @@ const RelayInfo = () => {
           </div>
         )}
 
-        <hr className="border-border-color" />
+        <hr />
+        <div className="flex gap-4">
+          <Link to={`/relay/${encodeURIComponent(params.id ?? "")}`}>
+            <button>
+              <FormattedMessage defaultMessage="View Feed" />
+            </button>
+          </Link>
+        </div>
+        <hr />
 
         {stats && (
           <CollapsedSection
@@ -184,7 +176,7 @@ const RelayInfo = () => {
             </ul>
           </CollapsedSection>
         )}
-        <hr className="border-border-color" />
+        <hr />
         {info?.supported_nips && (
           <CollapsedSection
             title={

@@ -38,8 +38,9 @@ export default function Relay(props: RelayProps) {
         <Icon
           name="trash"
           className="text-gray-light cursor-pointer"
-          onClick={() => {
-            state.removeRelay(props.addr, true);
+          onClick={async () => {
+            state.removeRelay(props.addr);
+            await state.saveRelays();
           }}
         />
       </td>

@@ -1,7 +1,7 @@
-import { scryptAsync } from "@noble/hashes/scrypt";
-import { sha256 } from "@noble/hashes/sha256";
-import { hmac } from "@noble/hashes/hmac";
-import { bytesToHex, hexToBytes, randomBytes } from "@noble/hashes/utils";
+import { scryptAsync } from "@noble/hashes/scrypt.js";
+import { sha256 } from "@noble/hashes/sha2.js";
+import { hmac } from "@noble/hashes/hmac.js";
+import { bytesToHex, hexToBytes, randomBytes } from "@noble/hashes/utils.js";
 import { base64 } from "@scure/base";
 import { streamXOR as xchacha20 } from "@stablelib/xchacha20";
 

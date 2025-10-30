@@ -81,7 +81,7 @@ const getMessages = (locale: string) => {
 
   return matchLang(locale) ?? matchLang(truncatedLocale) ?? Promise.resolve(enMessages);
 };
-export const IntlProvider = ({ children }: { children: ReactNode }) => {
+export function IntlProvider({ children }: { children: ReactNode }) {
   const { locale } = useLocale();
   const [messages, setMessages] = useState<Record<string, string>>(enMessages);
 
@@ -100,4 +100,4 @@ export const IntlProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </ReactIntlProvider>
   );
-};
+}

@@ -118,7 +118,7 @@ export default function Poll(props: PollProps) {
 
   return (
     <>
-      <div className="flex justify-between p">
+      <div className="flex justify-between px-3 py-2">
         <small>
           <FormattedMessage
             defaultMessage="You are voting with {amount} sats"

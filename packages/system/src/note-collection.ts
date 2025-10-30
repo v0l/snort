@@ -1,4 +1,4 @@
-import { SortedMap, appendDedupe, dedupe } from "@snort/shared";
+import { SortedMap, appendDedupe } from "@snort/shared";
 import { EventExt, EventType, TaggedNostrEvent } from ".";
 import { findTag } from "./utils";
 import { EventEmitter } from "eventemitter3";
@@ -31,6 +31,11 @@ export abstract class HookedNoteStore extends NoteStore {
   #nextEmit?: ReturnType<typeof setTimeout>;
   #bufEmit: Array<TaggedNostrEvent> = [];
 
+  /**
+   * Interval to emit changes in milli-seconds
+   */
+  protected emitInterval = 300;
+
   get snapshot() {
     return this.#storeSnapshot;
   }
@@ -44,10 +49,11 @@ export abstract class HookedNoteStore extends NoteStore {
     this.#bufEmit.push(...changes);
     if (!this.#nextEmit) {
       this.#nextEmit = setTimeout(() => {
-        this.#nextEmit = undefined;
-        this.emit("event", this.#bufEmit);
+        const cloned = [...this.#bufEmit];
         this.#bufEmit = [];
-      }, 300);
+        this.#nextEmit = undefined;
+        this.emit("event", cloned);
+      }, this.emitInterval);
     }
   }
 }
@@ -81,6 +87,7 @@ export class KeyedReplaceableNoteStore extends HookedNoteStore {
     if (changes.length > 0) {
       this.onChange(changes);
     }
+    return changes.length;
   }
 
   clear() {

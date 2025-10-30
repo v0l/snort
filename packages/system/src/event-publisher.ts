@@ -1,12 +1,9 @@
-import * as secp from "@noble/curves/secp256k1";
-import * as utils from "@noble/curves/abstract/utils";
 import { unwrap } from "@snort/shared";
 
 import {
   EventKind,
   EventSigner,
   FullRelaySettings,
-  HexKey,
   NostrEvent,
   NostrLink,
   NotSignedNostrEvent,
@@ -17,7 +14,6 @@ import {
   SignerSupports,
   TaggedNostrEvent,
   ToNostrEventTag,
-  u256,
   UserMetadata,
 } from ".";
 
@@ -26,6 +22,7 @@ import { findTag } from "./utils";
 import { Nip7Signer } from "./impl/nip7";
 import { Nip10 } from "./impl/nip10";
 import { Nip22 } from "./impl/nip22";
+import { Nip25 } from "./impl/nip25";
 
 type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
 
@@ -120,7 +117,7 @@ export class EventPublisher {
     if (priv.length > 0) {
       const ps = priv.map(p => ["p", p]);
       const plaintext = JSON.stringify(ps);
-      eb.content(await this.nip4Encrypt(plaintext, this.#pubKey));
+      eb.content(await this.#signer.nip44Encrypt(plaintext, this.#pubKey));
     }
     return await this.#sign(eb);
   }
@@ -174,7 +171,7 @@ export class EventPublisher {
    */
   async zap(
     amount: number,
-    author: HexKey,
+    author: string,
     relays: Array<string>,
     note?: NostrLink,
     msg?: string,
@@ -200,11 +197,11 @@ export class EventPublisher {
    * Replies to kind 1 notes are kind 1, otherwise kind 1111
    */
   async reply(replyTo: TaggedNostrEvent, msg: string, fnExtra?: EventBuilderHook) {
-    const kind = replyTo.kind === EventKind.TextNote ? EventKind.TextNote : EventKind.Comment;
-    const eb = this.#eb(kind);
+    const replyKind = replyTo.kind === EventKind.TextNote ? EventKind.TextNote : EventKind.Comment;
+    const eb = this.#eb(replyKind);
     eb.content(msg);
 
-    if (kind === EventKind.TextNote) {
+    if (replyKind === EventKind.TextNote) {
       Nip10.replyTo(replyTo, eb);
     } else {
       Nip22.replyTo(replyTo, eb);
@@ -217,7 +214,7 @@ export class EventPublisher {
   async react(evRef: NostrEvent, content = "+") {
     const eb = this.#eb(EventKind.Reaction);
     eb.content(content);
-    eb.tag(unwrap(NostrLink.fromEvent(evRef).toEventTag()));
+    eb.tag(Nip25.reactToEvent(evRef));
     eb.tag(["p", evRef.pubkey]);
     eb.tag(["k", evRef.kind.toString()]);
     return await this.#sign(eb);
@@ -252,7 +249,7 @@ export class EventPublisher {
   /**
    * Delete an event (NIP-09)
    */
-  async delete(id: u256) {
+  async delete(id: string) {
     const eb = this.#eb(EventKind.Deletion);
     eb.tag(["e", id]);
     return await this.#sign(eb);
@@ -284,7 +281,7 @@ export class EventPublisher {
     return await this.nip4Decrypt(note.content, otherPubKey);
   }
 
-  async sendDm(content: string, to: HexKey) {
+  async sendDm(content: string, to: string) {
     const eb = this.#eb(EventKind.DirectMessage);
     eb.content(await this.nip4Encrypt(content, to));
     eb.tag(["p", to]);
@@ -300,7 +297,7 @@ export class EventPublisher {
 
   async appData(data: object, id: string) {
     const eb = this.#eb(EventKind.AppData);
-    eb.content(await this.nip4Encrypt(JSON.stringify(data), this.#pubKey));
+    eb.content(await this.#signer.nip44Encrypt(JSON.stringify(data), this.#pubKey));
     eb.tag(["d", id]);
     return await this.#sign(eb);
   }
@@ -309,8 +306,7 @@ export class EventPublisher {
    * NIP-59 Gift Wrap event with ephemeral key
    */
   async giftWrap(inner: NostrEvent, explicitP?: string, powTarget?: number, powMiner?: PowMiner) {
-    const secret = utils.bytesToHex(secp.secp256k1.utils.randomPrivateKey());
-    const signer = new PrivateKeySigner(secret);
+    const signer = PrivateKeySigner.random();
 
     const pTag = explicitP ?? findTag(inner, "p");
     if (!pTag) throw new Error("Inner event must have a p tag");
@@ -325,7 +321,7 @@ export class EventPublisher {
     eb.content(await signer.nip44Encrypt(JSON.stringify(inner), pTag));
     eb.jitter(60 * 60 * 24);
 
-    return await eb.buildAndSign(secret);
+    return await eb.buildAndSign(signer);
   }
 
   async unwrapGift(gift: NostrEvent) {

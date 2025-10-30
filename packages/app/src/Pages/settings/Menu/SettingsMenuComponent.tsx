@@ -9,13 +9,13 @@ export function SettingsMenuComponent({ menu }: { menu: SettingsMenuItems }) {
     <div className="flex flex-col">
       {menu.map((group, groupIndex) => (
         <div key={groupIndex} className="mb-4">
-          <div className="p-2 font-bold uppercase text-secondary text-xs tracking-wide">{group.title}</div>
+          <div className="p-2 font-bold uppercase text-neutral-400 text-xs tracking-wide">{group.title}</div>
           {group.items.map(({ icon, iconBg, message, path, action }, index) => (
             <Link
               to={path || "#"}
               onClick={action}
               key={path || index}
-              className={classNames("px-2.5 py-1.5 flex justify-between items-center border border-border-color", {
+              className={classNames("px-2.5 py-1.5 flex justify-between items-center border", {
                 "rounded-t-xl": index === 0,
                 "rounded-b-xl": index === group.items.length - 1,
                 "border-t-0": index !== 0,
@@ -26,7 +26,7 @@ export function SettingsMenuComponent({ menu }: { menu: SettingsMenuItems }) {
                 </div>
                 <span className="text-base font-semibold flex-grow">{message}</span>
               </div>
-              <Icon name="arrowFront" size={12} className="text-secondary" />
+              <Icon name="arrowFront" size={12} className="text-neutral-400" />
             </Link>
           ))}
         </div>

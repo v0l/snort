@@ -1,8 +1,11 @@
-import { transformText } from "@snort/system";
+import { ParsedFragment, transformText } from "@snort/system";
+import { LRUCache } from "typescript-lru-cache";
 
-import { TextCache } from "@/Cache/TextCache";
+const TextCache = new LRUCache<string, Array<ParsedFragment>>({
+  maxSize: 1000,
+});
 
-export function transformTextCached(id: string, content: string, tags: Array<Array<string>>) {
+export function transformTextCached(id: string, content: string, tags: Array<Array<string>>): Array<ParsedFragment> {
   if (content.length > 0) {
     const cached = TextCache.get(id);
     if (cached) return cached;

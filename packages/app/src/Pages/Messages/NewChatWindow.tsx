@@ -56,7 +56,7 @@ export default function NewChatWindow() {
       </button>
       {show && (
         <Modal id="new-chat" onClose={() => setShow(false)} className="new-chat-modal">
-          <div className="flex flex-col g16">
+          <div className="flex flex-col gap-4">
             <div className="flex justify-between">
               <h2>
                 <FormattedMessage defaultMessage="New Chat" />
@@ -65,7 +65,7 @@ export default function NewChatWindow() {
                 <FormattedMessage defaultMessage="Start chat" />
               </button>
             </div>
-            <div className="flex flex-col g8">
+            <div className="flex flex-col gap-2">
               <h3>
                 <FormattedMessage defaultMessage="Search users" />
               </h3>
@@ -91,7 +91,7 @@ export default function NewChatWindow() {
               <p>
                 <FormattedMessage defaultMessage="People you follow" />
               </p>
-              <div className="user-list flex flex-col g2">
+              <div className="user-list flex flex-col gap-0.5">
                 {results.map(a => {
                   return (
                     <ProfilePreview

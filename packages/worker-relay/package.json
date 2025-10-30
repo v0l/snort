@@ -10,23 +10,23 @@
   "author": "Kieran",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc && yarn build:esm",
-    "build:esm": "esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs --loader:.wasm=copy --asset-names=\"[name]\""
+    "build": "rm -rf dist && bunx --bun tsc && bun run build:esm",
+    "build:esm": "bunx --bun esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs --loader:.wasm=copy --asset-names=\"[name]\""
   },
   "files": [
     "src",
     "dist"
   ],
   "dependencies": {
-    "@sqlite.org/sqlite-wasm": "^3.50.1-build1",
+    "@sqlite.org/sqlite-wasm": "^3.50.4-build1",
     "eventemitter3": "^5.0.1",
-    "uuid": "^9.0.1"
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
-    "@types/sharedworker": "^0.0.112",
-    "@types/uuid": "^9.0.7",
-    "esbuild": "^0.25.6",
-    "typescript": "^5.2.2"
+    "@types/sharedworker": "^0.0.188",
+    "@types/uuid": "^11.0.0",
+    "esbuild": "^0.25.11",
+    "typescript": "^5.9.3"
   }
 }

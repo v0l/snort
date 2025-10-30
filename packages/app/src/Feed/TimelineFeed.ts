@@ -102,18 +102,13 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
   const subRealtime = useMemo(() => {
     const rb = createBuilder();
-    if (!autoShowLatest && options.method !== "LIMIT_UNTIL") {
-      rb.withOptions({
-        leaveOpen: true,
-      });
-      rb.id = `${rb.id}:latest`;
-      for (const filter of rb.filterBuilders) {
-        filter.limit(1).since(now);
-      }
-    } else {
-      rb.clear();
+    rb.id = `${rb.id}:latest`;
+    rb.withOptions({
+      leaveOpen: true,
+    });
+    for (const filter of rb.filterBuilders) {
+      filter.limit(1).since(now);
     }
-
     return rb;
   }, [autoShowLatest, createBuilder]);
 

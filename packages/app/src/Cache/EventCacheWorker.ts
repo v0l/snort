@@ -2,7 +2,7 @@ import { CachedTable, CacheEvents } from "@snort/shared";
 import { CacheRelay, NostrEvent } from "@snort/system";
 import { EventEmitter } from "eventemitter3";
 
-export class EventCacheWorker extends EventEmitter<CacheEvents> implements CachedTable<NostrEvent> {
+export class EventCacheWorker extends EventEmitter<CacheEvents<NostrEvent>> implements CachedTable<NostrEvent> {
   #relay: CacheRelay;
   #keys = new Set<string>();
   #cache = new Map<string, NostrEvent>();

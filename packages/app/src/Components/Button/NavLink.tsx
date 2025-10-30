@@ -6,15 +6,16 @@ export default function NavLink(props: NavLinkProps) {
 
   const isActive = location.pathname === to.toString();
 
-  const handleClick = event => {
-    if (onClick) {
-      onClick(event);
-    }
-
-    if (isActive) {
-      window.scrollTo({ top: 0, behavior: "instant" });
-    }
-  };
-
-  return <RouterNavLink to={to} onClick={handleClick} {...rest} />;
+  return (
+    <RouterNavLink
+      to={to}
+      onClick={e => {
+        onClick?.(e);
+        if (isActive) {
+          window.scrollTo({ top: 0, behavior: "instant" });
+        }
+      }}
+      {...rest}
+    />
+  );
 }

@@ -1,4 +1,3 @@
-import { NostrPrefix } from "@snort/system";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -8,9 +7,9 @@ import FollowListBase from "@/Components/User/FollowListBase";
 import NostrBandApi from "@/External/NostrBand";
 import useCachedFetch from "@/Hooks/useCachedFetch";
 import useLogin from "@/Hooks/useLogin";
-import { hexToBech32 } from "@/Utils";
 
 import { ErrorOrOffline } from "./ErrorOrOffline";
+import { hexToBech32, NostrPrefix } from "@snort/shared";
 
 enum Provider {
   NostrBand = 1,
@@ -53,7 +52,7 @@ export default function SuggestedProfiles() {
 
   return (
     <>
-      <div className="flex items-center justify-between bg-superdark p br">
+      <div className="flex items-center justify-between layer-1">
         <FormattedMessage defaultMessage="Provider" />
         <select onChange={e => setProvider(Number(e.target.value))}>
           <option value={Provider.NostrBand}>nostr.band</option>

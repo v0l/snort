@@ -5,11 +5,12 @@ import { FormattedMessage, FormattedNumber } from "react-intl";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import usePreferences from "@/Hooks/usePreferences";
 import { ZapPoolTarget } from "@/Pages/ZapPool/ZapPoolTarget";
-import { bech32ToHex, getRelayName, trackEvent, unwrap } from "@/Utils";
+import { getRelayName, trackEvent, unwrap } from "@/Utils";
 import { SnortPubKey } from "@/Utils/Const";
 import { UploaderServices } from "@/Utils/Upload";
 import { ZapPoolController, ZapPoolRecipientType } from "@/Utils/ZapPoolController";
 import { useWallet } from "@/Wallet";
+import { bech32ToHex } from "@snort/shared";
 
 const DataProviders = [
   {
@@ -43,7 +44,7 @@ export function ZapPoolPageInner() {
 
   const sumPending = zapPool.reduce((acc, v) => acc + v.sum, 0);
   return (
-    <div className="zap-pool main-content p">
+    <div className="zap-pool px-3 py-2">
       <h1>
         <FormattedMessage defaultMessage="Zap Pool" />
       </h1>

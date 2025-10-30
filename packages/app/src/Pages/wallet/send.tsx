@@ -4,7 +4,8 @@ import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import Icon from "@/Components/Icons/Icon";
-import { useWallet, WalletInvoice } from "@/Wallet";
+import { useWallet } from "@/Wallet";
+import { WalletInvoice } from "@snort/wallet";
 
 export function WalletSendPage() {
   const wallets = useWallet();
@@ -21,7 +22,7 @@ export function WalletSendPage() {
   }, [invoice]);
 
   return (
-    <div className="p flex flex-col gap-4">
+    <div className="px-3 py-2 flex flex-col gap-4">
       <div className="text-2xl font-bold">
         <FormattedMessage defaultMessage="Send" />
       </div>

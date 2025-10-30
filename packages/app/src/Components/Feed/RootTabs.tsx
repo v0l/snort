@@ -1,8 +1,6 @@
-import "./RootTabs.css";
-
 import { unwrap } from "@snort/shared";
 import { EventKind } from "@snort/system";
-import { Menu, MenuItem } from "@szhsin/react-menu";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -54,35 +52,42 @@ export function RootTabs({ base = "/" }: { base: string }) {
     return menuItems.find(a => a.tab === rootType)?.element ?? menuItems[0].element;
   }
 
+  const itemClassName =
+    "px-6 py-2 text-base font-semibold bg-layer-2 light:bg-white hover:bg-layer-3 light:hover:bg-neutral-200 cursor-pointer outline-none flex gap-3 items-center";
+
   return (
-    <div className="root-type">
-      <Menu
-        menuButton={
-          <button type="button">
+    <div className="root-type flex items-center justify-center flex-grow">
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild>
+          <button
+            type="button"
+            className="bg-transparent text-font-color text-base px-4 py-2.5 flex items-center justify-center gap-3 border-none shadow-none hover:!shadow-none">
             {currentMenuItem()}
             <Icon name="chevronDown" />
           </button>
-        }
-        align="center"
-        menuClassName={() => "ctx-menu"}>
-        <div className="close-menu-container">
-          <MenuItem>
-            <div className="close-menu" />
-          </MenuItem>
-        </div>
-        {menuItems
-          .filter(a => a.show)
-          .map(a => (
-            <MenuItem
-              key={a.tab}
-              onClick={() => {
-                navigate(a.path);
-                window.scrollTo({ top: 0, behavior: "instant" });
-              }}>
-              {a.element}
-            </MenuItem>
-          ))}
-      </Menu>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Portal>
+          <DropdownMenu.Content
+            className="bg-layer-2 rounded-2xl overflow-hidden z-[9999] min-w-48"
+            sideOffset={5}
+            align="center">
+            {menuItems
+              .filter(a => a.show)
+              .map(a => (
+                <DropdownMenu.Item
+                  key={a.tab}
+                  className={itemClassName}
+                  onClick={e => {
+                    e.stopPropagation();
+                    navigate(a.path);
+                    window.scrollTo({ top: 0, behavior: "instant" });
+                  }}>
+                  {a.element}
+                </DropdownMenu.Item>
+              ))}
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
     </div>
   );
 }

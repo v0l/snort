@@ -1,5 +1,5 @@
 import { TaggedNostrEvent } from "@snort/system";
-import { Menu, MenuItem } from "@szhsin/react-menu";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import classNames from "classnames";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
@@ -36,41 +36,54 @@ export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: T
     }
   };
 
+  const itemClassName =
+    "grid grid-cols-[2rem_auto] gap-2 px-6 py-2 text-base font-semibold bg-layer-2 light:bg-white hover:bg-layer-3 light:hover:bg-neutral-200 cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed";
+
   return (
-    <Menu
-      menuButton={
-        <AsyncFooterIcon
-          className={classNames(
-            "flex-none min-w-[50px] md:min-w-[80px]",
-            hasReposted() ? "reacted text-nostr-blue" : "hover:text-nostr-blue",
-          )}
-          iconName="repeat"
-          title={formatMessage({ defaultMessage: "Repost", id: "JeoS4y" })}
-          value={reposts.length}
-        />
-      }
-      menuClassName="ctx-menu"
-      align="start">
-      <div className="close-menu-container">
-        <MenuItem>
-          <div className="close-menu" />
-        </MenuItem>
-      </div>
-      <MenuItem onClick={repost} disabled={hasReposted()}>
-        <Icon name="repeat" />
-        <FormattedMessage defaultMessage="Repost" />
-      </MenuItem>
-      <MenuItem
-        onClick={() =>
-          note.update(n => {
-            n.reset();
-            n.quote = ev;
-            n.show = true;
-          })
-        }>
-        <Icon name="edit" />
-        <FormattedMessage defaultMessage="Quote Repost" />
-      </MenuItem>
-    </Menu>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild>
+        <span>
+          <AsyncFooterIcon
+            className={classNames(
+              "flex-none min-w-[50px] md:min-w-[80px]",
+              hasReposted() ? "reacted text-nostr-blue" : "hover:text-nostr-blue",
+            )}
+            iconName="repeat"
+            title={formatMessage({ defaultMessage: "Repost", id: "JeoS4y" })}
+            value={reposts.length}
+          />
+        </span>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content
+          className="bg-layer-2 rounded-2xl overflow-hidden z-[9999] min-w-48"
+          sideOffset={5}
+          align="start">
+          <DropdownMenu.Item
+            className={itemClassName}
+            onClick={e => {
+              e.stopPropagation();
+              repost();
+            }}
+            disabled={hasReposted()}>
+            <Icon name="repeat" />
+            <FormattedMessage defaultMessage="Repost" />
+          </DropdownMenu.Item>
+          <DropdownMenu.Item
+            className={itemClassName}
+            onClick={e => {
+              e.stopPropagation();
+              note.update(n => {
+                n.reset();
+                n.quote = ev;
+                n.show = true;
+              });
+            }}>
+            <Icon name="edit" />
+            <FormattedMessage defaultMessage="Quote Repost" />
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
   );
 };

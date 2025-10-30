@@ -1,5 +1,5 @@
 import { Zapper } from "@snort/wallet";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
@@ -10,6 +10,7 @@ import { ZapTypeSelector } from "@/Components/ZapModal/ZapTypeSelector";
 import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
 import { formatShort } from "@/Utils/Number";
+import classNames from "classnames";
 
 export interface SendSatsInputSelection {
   amount: number;
@@ -60,16 +61,20 @@ export function ZapModalInput(props: {
     const filteredAmounts = Object.entries(amounts).filter(([k]) => Number(k) >= min && Number(k) <= max);
 
     return (
-      <div className="amounts">
-        {filteredAmounts.map(([k, v]) => (
-          <span
-            className={`sat-amount ${amount === Number(k) ? "active" : ""}`}
-            key={k}
-            onClick={() => setAmount(Number(k))}>
-            {v}&nbsp;
-            {k === "1000" ? "1K" : formatShort(Number(k))}
-          </span>
-        ))}
+      <div className="grid grid-cols-4 gap-2">
+        {filteredAmounts.map(([k, v]) => {
+          return (
+            <span
+              className={classNames("text-center font-medium py-1 cursor-pointer layer-2-hover rounded-full", {
+                "opacity-30": amount !== Number(k),
+              })}
+              key={k}
+              onClick={() => setAmount(Number(k))}>
+              {v}&nbsp;
+              {k === "1000" ? "1K" : formatShort(Number(k))}
+            </span>
+          );
+        })}
       </div>
     );
   }
@@ -79,7 +84,7 @@ export function ZapModalInput(props: {
     const max = props.zapper.maxAmount() / 1000;
 
     return (
-      <div className="flex g8">
+      <div className="flex gap-2">
         <input
           type="number"
           min={min}
@@ -101,21 +106,23 @@ export function ZapModalInput(props: {
   }
 
   return (
-    <div className="flex flex-col g24">
-      <div className="flex flex-col g8">
-        <h3>
-          <FormattedMessage defaultMessage="Zap amount in sats" />
-        </h3>
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <div className="font-medium">
+          <FormattedMessage defaultMessage="Zap amount:" />
+        </div>
         {renderAmounts()}
         {custom()}
         {props.zapper.maxComment() > 0 && (
-          <input
-            type="text"
-            placeholder={formatMessage(messages.Comment)}
-            className="grow"
-            maxLength={props.zapper.maxComment()}
-            onChange={e => setComment(e.target.value)}
-          />
+          <>
+            <input
+              type="text"
+              placeholder={formatMessage(messages.Comment)}
+              className="grow"
+              maxLength={props.zapper.maxComment()}
+              onChange={e => setComment(e.target.value)}
+            />
+          </>
         )}
       </div>
       <ZapTypeSelector zapType={zapType} setZapType={setZapType} />

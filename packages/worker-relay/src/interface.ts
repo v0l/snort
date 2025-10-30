@@ -116,12 +116,16 @@ export class WorkerRelayInterface {
       cmd,
       args,
     } as WorkerMessage<T>;
-    const start = unixNowMs();
+    //const start = unixNowMs();
     return await new Promise<R>((resolve, reject) => {
       this.#worker.postMessage(msg);
       const t = setTimeout(() => {
         this.#commandQueue.delete(id);
-        reject(new Error("Timeout"));
+        reject(
+          new Error(`Timeout executing ${cmd} ${JSON.stringify(args)}`, {
+            cause: msg,
+          }),
+        );
       }, this.timeout);
       this.#commandQueue.set(id, (v, port) => {
         clearTimeout(t);

@@ -1,9 +1,0 @@
-.toaster {
-  position: fixed;
-  bottom: 2px;
-  left: 2px;
-  display: flex;
-  flex-direction: column-reverse;
-  z-index: 9999;
-  gap: 4px;
-}

@@ -1,9 +1,8 @@
-import { encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import { bech32ToHex } from "@/Utils";
 import { KieranPubKey } from "@/Utils/Const";
+import { bech32ToHex, encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/shared";
 
 export default function HelpPage() {
   return (
@@ -18,7 +17,7 @@ export default function HelpPage() {
           values={{
             link: (
               <Link
-                to={`/messages/${encodeTLVEntries(NostrPrefix.Chat17, {
+                to={`/messages/${encodeTLVEntries("nchat17", {
                   type: TLVEntryType.Author,
                   length: 64,
                   value: bech32ToHex(KieranPubKey),

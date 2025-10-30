@@ -1,5 +1,3 @@
-import React from "react";
-
 const HighlightedText = ({ content, textToHighlight }: { content: string; textToHighlight: string }) => {
   const textToHighlightArray = textToHighlight.trim().toLowerCase().split(" ");
   const re = new RegExp(`(${textToHighlightArray.join("|")})`, "gi");
@@ -8,7 +6,7 @@ const HighlightedText = ({ content, textToHighlight }: { content: string; textTo
   const fragments = splittedContent.map((part, index) => {
     if (textToHighlightArray.includes(part.toLowerCase())) {
       return (
-        <strong key={index} className="highlighted-text">
+        <strong key={index} className="text-highlight">
           {part}
         </strong>
       );

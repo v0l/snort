@@ -2,10 +2,11 @@ import { EventPublisher, Nip94Tags, NostrEvent } from "@snort/system";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { useMediaServerList } from "@/Hooks/useMediaServerList";
-import { bech32ToHex, randomSample } from "@/Utils";
+import { randomSample } from "@/Utils";
 import { KieranPubKey } from "@/Utils/Const";
 
 import { Blossom } from "./blossom";
+import { bech32ToHex } from "@snort/shared";
 
 export interface UploadResult {
   url?: string;
@@ -67,6 +68,6 @@ export default function useFileUpload(privKey?: string) {
     const random = randomSample(servers, 1)[0];
     return new Blossom(random, pub);
   } else if (pub) {
-    return new Blossom("https://blossom.build", pub);
+    return new Blossom("https://blossom.band", pub);
   }
 }

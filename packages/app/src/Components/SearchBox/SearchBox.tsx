@@ -1,5 +1,3 @@
-import "./SearchBox.css";
-
 import { NostrLink, tryParseNostrLink } from "@snort/system";
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -9,7 +7,7 @@ import Icon from "@/Components/Icons/Icon";
 import Spinner from "@/Components/Icons/Spinner";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useProfileSearch from "@/Hooks/useProfileSearch";
-import { fetchNip05Pubkey } from "@/Utils/Nip05/Verifier";
+import { fetchNip05Pubkey } from "@snort/shared";
 
 const MAX_RESULTS = 3;
 
@@ -113,12 +111,12 @@ export default function SearchBox() {
   };
 
   return (
-    <div className="search relative">
+    <div className="flex layer-1 relative">
       <input
         ref={inputRef}
         type="text"
-        placeholder={formatMessage({ defaultMessage: "Search", id: "xmcVZ0" })}
-        className="w-max"
+        placeholder={formatMessage({ defaultMessage: "Search" })}
+        className="w-full !border-none !rounded-none leading-10 py-2.5 px-4"
         value={search}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
@@ -126,29 +124,22 @@ export default function SearchBox() {
         onBlur={() => setTimeout(() => setIsFocused(false), 150)}
       />
       {searching ? (
-        <Spinner width={24} height={24} />
+        <Spinner width={24} height={24} className="my-2.5 mx-4" />
       ) : (
-        <Icon className="text-secondary" name="search-outline" size={24} onClick={() => navigate("/search")} />
+        <Icon className="my-2.5 mx-4" name="search-outline" size={24} onClick={() => navigate("/search")} />
       )}
       {search && !searching && isFocused && (
         <div
-          className="absolute top-full mt-2 w-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-black shadow-lg rounded-lg z-10 overflow-hidden"
+          className="absolute top-full mt-2 w-full border bg-white dark:bg-black shadow-lg rounded-lg z-10 overflow-hidden"
           ref={resultListRef}>
           <div
-            className={`p-2 cursor-pointer ${activeIndex === 0 ? "bg-secondary" : "bg-background hover:bg-secondary"}`}
+            className="cursor-pointer p-2 hover:bg-layer-2"
             onMouseEnter={() => setActiveIndex(0)}
             onClick={() => navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })}>
             <FormattedMessage defaultMessage="Search notes" />: <b>{search}</b>
           </div>
           {results?.slice(0, MAX_RESULTS).map((result, idx) => (
-            <div
-              key={idx}
-              className={`p-2 cursor-pointer ${
-                activeIndex === idx + 1 ? "bg-secondary" : "bg-background hover:bg-secondary"
-              }`}
-              onMouseEnter={() => setActiveIndex(idx + 1)}>
-              <ProfileImage pubkey={result.pubkey} showProfileCard={false} />
-            </div>
+            <ProfileImage pubkey={result.pubkey} showProfileCard={false} className="p-2 hover:bg-layer-2" />
           ))}
         </div>
       )}

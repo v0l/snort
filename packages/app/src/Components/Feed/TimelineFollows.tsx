@@ -1,13 +1,9 @@
-import "./Timeline.css";
-
 import { unixNow } from "@snort/shared";
 import { EventKind, NostrEvent, RequestBuilder } from "@snort/system";
-import { ReactNode, useCallback, useState } from "react";
+import { ReactNode, useCallback } from "react";
 
-import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useHistoryState from "@/Hooks/useHistoryState";
-import useLogin from "@/Hooks/useLogin";
 import useTimelineChunks from "@/Hooks/useTimelineChunks";
 import { Hour } from "@/Utils/Const";
 
@@ -20,9 +16,7 @@ export interface TimelineFollowsProps {
   noteFilter?: (ev: NostrEvent) => boolean;
   noteRenderer?: (ev: NostrEvent) => ReactNode;
   noteOnClick?: (ev: NostrEvent) => void;
-  displayAs?: DisplayAs;
   kinds?: Array<EventKind>;
-  showDisplayAsSelector?: boolean;
   firstChunkSize?: number;
   windowSize?: number;
 }
@@ -31,13 +25,6 @@ export interface TimelineFollowsProps {
  * A list of notes by your follows
  */
 const TimelineFollows = (props: TimelineFollowsProps) => {
-  const login = useLogin(s => ({
-    publicKey: s.publicKey,
-    feedDisplayAs: s.feedDisplayAs,
-    tags: s.state.getList(EventKind.InterestSet),
-  }));
-  const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
-  const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const [openedAt] = useHistoryState(unixNow(), "openedAt");
   const { isFollowing, followList } = useFollowsControls();
   const { chunks, showMore } = useTimelineChunks({
@@ -65,9 +52,6 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
 
   return (
     <>
-      {(props.showDisplayAsSelector ?? true) && (
-        <DisplayAsSelector activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
-      )}
       {chunks.map(c => (
         <TimelineChunk
           key={c.until}
@@ -77,7 +61,6 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
           noteFilter={filterEvents}
           noteOnClick={props.noteOnClick}
           noteRenderer={props.noteRenderer}
-          displayAs={displayAs}
         />
       ))}
       <AutoLoadMore onClick={() => showMore()} />

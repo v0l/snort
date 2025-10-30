@@ -1,6 +1,11 @@
-import { bech32ToHex } from "@/Utils";
+import { KieranPubKey } from "@/Utils/Const";
+import { bech32ToHex } from "@snort/shared";
 
 export const Contributors = [
+  bech32ToHex(KieranPubKey),
+  "4523be58d395b1b196a9b8c82b038b6895cb02b683d0c253a955068dba1facd0", // Martti
+  "7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194", // verbiricha
+  "1bc70a0148b3f316da33fe3c89f23e3e71ac4ff998027ec712b905cd24f6a411", // Karnage
   bech32ToHex("npub10djxr5pvdu97rjkde7tgcsjxzpdzmdguwacfjwlchvj7t88dl7nsdl54nf"), // ivan
   bech32ToHex("npub148jmlutaa49y5wl5mcll003ftj59v79vf7wuv3apcwpf75hx22vs7kk9ay"), // liran cohen
   bech32ToHex("npub1xdtducdnjerex88gkg2qk2atsdlqsyxqaag4h05jmcpyspqt30wscmntxy"), // artur

@@ -1,9 +1,12 @@
 import { CachedTable, CacheEvents, removeUndefined, unixNowMs, unwrap } from "@snort/shared";
-import { CachedMetadata, CacheRelay, mapEventToProfile, NostrEvent } from "@snort/system";
+import { CachedMetadata, CacheRelay, mapEventToProfile, NostrEvent, UserMetadata } from "@snort/system";
 import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 
-export class ProfileCacheRelayWorker extends EventEmitter<CacheEvents> implements CachedTable<CachedMetadata> {
+export class ProfileCacheRelayWorker
+  extends EventEmitter<CacheEvents<CachedMetadata>>
+  implements CachedTable<CachedMetadata>
+{
   #relay: CacheRelay;
   #keys = new Set<string>();
   #cache = new Map<string, CachedMetadata>();
@@ -102,7 +105,7 @@ export class ProfileCacheRelayWorker extends EventEmitter<CacheEvents> implement
     this.emit("change", mapped);
   }
 
-  async update(): Promise<"new" | "refresh" | "updated" | "no_change"> {
+  async update(_: UserMetadata): Promise<"new" | "refresh" | "updated" | "no_change"> {
     // do nothing
     return "refresh";
   }

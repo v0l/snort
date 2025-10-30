@@ -79,16 +79,13 @@ export class SafeSync extends EventEmitter<SafeSyncEvents> {
       next.id = "";
       next.sig = "";
     }
-
-    console.debug(this.#base, next);
-
     const signed = await this.#signEvent(next, signer);
 
     // always attempt to get a newer version before broadcasting
     await this.#sync(system);
     this.#checkForUpdate(signed, mustExist ?? true);
 
-    system.BroadcastEvent(signed);
+    await system.BroadcastEvent(signed);
     this.#base = signed;
     this.emit("change");
   }

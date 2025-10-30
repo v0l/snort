@@ -25,10 +25,6 @@ interface CollapsedIconProps {
   collapsed: boolean;
 }
 
-export const CollapsedIcon = ({ icon, collapsed }: CollapsedIconProps) => {
-  return collapsed ? <div className="collapsed">{icon}</div> : <div className="uncollapsed">{icon}</div>;
-};
-
 interface CollapsedSectionProps {
   title: ReactNode;
   children: ReactNode;
@@ -38,16 +34,13 @@ interface CollapsedSectionProps {
 
 export const CollapsedSection = ({ title, children, className, startClosed }: CollapsedSectionProps) => {
   const [collapsed, setCollapsed] = useState(startClosed ?? true);
-  const icon = (
-    <div className={classNames("collapse-icon", { flip: !collapsed })}>
-      <Icon name="arrowFront" />
-    </div>
-  );
   return (
     <>
-      <div className={classNames("collapsable-section", className)} onClick={() => setCollapsed(!collapsed)}>
+      <div
+        className={classNames("flex gap-4 items-center justify-between cur", className)}
+        onClick={() => setCollapsed(!collapsed)}>
         {title}
-        <CollapsedIcon icon={icon} collapsed={collapsed} />
+        <Icon name="arrowFront" className={`transition-transform ${collapsed ? "rotate-90" : ""}`} />
       </div>
       {!collapsed && children}
     </>

@@ -63,7 +63,7 @@ const ConnectNostrWallet = () => {
           <FormattedMessage defaultMessage="Connect" />
         </AsyncButton>
       </div>
-      {error && <b className="error p10">{error}</b>}
+      {error && <b className="error p-2.5">{error}</b>}
       <p>
         <FormattedMessage
           defaultMessage="Using Alby? Go to {link} to get your NWC config!"

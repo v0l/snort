@@ -55,8 +55,8 @@ declare const CONFIG: {
   features: {
     analytics: boolean;
     subscriptions: boolean;
-    deck: boolean;
     zapPool: boolean;
+    deck: boolean;
     communityLeaders: boolean;
     nostrAddress: boolean;
     pushNotifications: boolean;
@@ -64,7 +64,7 @@ declare const CONFIG: {
   defaultPreferences: {
     hideMutedNotes: boolean;
     defaultRootTab: "following" | "for-you";
-    imgProxyConfig: object | undefined;
+    imgProxyConfig: { url: string; key: string; salt: string } | undefined;
   };
   signUp: {
     quickStart: boolean;

@@ -1,11 +1,9 @@
 import { FeedCache } from "@snort/shared";
 import { NostrEvent } from "@snort/system";
 
-import { db } from "@/Db";
-
 export class ChatCache extends FeedCache<NostrEvent> {
   constructor() {
-    super("ChatCache", db.chats);
+    super("ChatCache");
   }
 
   key(of: NostrEvent): string {

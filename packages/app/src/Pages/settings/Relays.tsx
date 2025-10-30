@@ -28,8 +28,9 @@ const RelaySettingsPage = () => {
       }),
     );
     for (const url of urls) {
-      await state.addRelay(url, { read: true, write: true }, false);
+      state.addRelay(url, { read: true, write: true });
     }
+    // Note: Not saving here - caller should handle persistence if needed
     setNewRelay("");
   }
 
@@ -71,7 +72,7 @@ const RelaySettingsPage = () => {
         </small>
         <table className="table">
           <thead>
-            <tr className="uppercase text-secondary">
+            <tr className="uppercase text-neutral-400">
               <th>
                 <FormattedMessage defaultMessage="Relay" description="Relay name (URL)" />
               </th>

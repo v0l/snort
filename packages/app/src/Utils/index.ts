@@ -1,23 +1,8 @@
-/* eslint-disable max-lines */
-import * as utils from "@noble/curves/abstract/utils";
-import * as secp from "@noble/curves/secp256k1";
-import { hmac } from "@noble/hashes/hmac";
-import { sha256 as hash } from "@noble/hashes/sha256";
-import { bytesToHex } from "@noble/hashes/utils";
-import { base32hex, bech32 } from "@scure/base";
-import { isHex, isOffline } from "@snort/shared";
-import {
-  CachedMetadata,
-  encodeTLV,
-  EventKind,
-  HexKey,
-  NostrEvent,
-  NostrLink,
-  NostrPrefix,
-  TaggedNostrEvent,
-  u256,
-  UserMetadata,
-} from "@snort/system";
+import { bytesToHex, concatBytes } from "@noble/hashes/utils.js";
+import { hmac } from "@noble/hashes/hmac.js";
+import { base32hex } from "@scure/base";
+import { bech32ToHex, encodeTLV, hexToBech32, isOffline, NostrPrefix } from "@snort/shared";
+import { CachedMetadata, EventKind, NostrEvent, NostrLink, TaggedNostrEvent, UserMetadata } from "@snort/system";
 
 import Nostrich from "@/assets/img/nostrich.webp";
 import AnimalName from "@/Components/User/AnimalName";
@@ -25,14 +10,7 @@ import { Birthday, Day } from "@/Utils/Const";
 
 import TZ from "../tz.json";
 import { LoginStore } from "./Login";
-
-export const sha256 = (str: string | Uint8Array): u256 => {
-  return utils.bytesToHex(hash(str));
-};
-
-export function getPublicKey(privKey: HexKey) {
-  return utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
-}
+import { sha256 } from "@noble/hashes/sha2.js";
 
 export async function openFile(): Promise<File | undefined> {
   return new Promise(resolve => {
@@ -82,55 +60,18 @@ export function parseId(id: string) {
   return id;
 }
 
-export function bech32ToHex(str: string) {
-  const nKey = bech32.decode(str, 10_000);
-  const buff = bech32.fromWords(nKey.words);
-  return bytesToHex(buff);
-}
-
-/**
- * Decode bech32 to string UTF-8
- * @param str bech32 encoded string
- * @returns
- */
-export function bech32ToText(str: string) {
-  const nKey = bech32.decode(str, 10_000);
-  const buff = bech32.fromWords(nKey.words);
-  return new TextDecoder().decode(buff);
-}
-
 /**
  * Convert hex note id to bech32 link url
  * @param hex
  * @returns
  */
-export function eventLink(hex: u256, relays?: Array<string> | string) {
+export function eventLink(hex: string, relays?: Array<string> | string) {
   const encoded = relays
     ? encodeTLV(NostrPrefix.Event, hex, Array.isArray(relays) ? relays : [relays])
     : hexToBech32(NostrPrefix.Note, hex);
   return `/${encoded}`;
 }
 
-/**
- * Convert hex to bech32
- */
-export function hexToBech32(hrp: string, hex?: string) {
-  if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0 || !isHex(hex)) {
-    return "";
-  }
-
-  try {
-    if (hrp === NostrPrefix.Note || hrp === NostrPrefix.PrivateKey || hrp === NostrPrefix.PublicKey) {
-      const buf = utils.hexToBytes(hex);
-      return bech32.encode(hrp, bech32.toWords(buf));
-    } else {
-      return encodeTLV(hrp as NostrPrefix, hex);
-    }
-  } catch (e) {
-    console.warn("Invalid hex", hex, e);
-    return "";
-  }
-}
 export function getLinkReactions(
   notes: ReadonlyArray<TaggedNostrEvent> | undefined,
   link: NostrLink,
@@ -165,7 +106,7 @@ export function debounce(timeout: number, fn: () => void) {
 
 export function dedupeByPubkey(events: TaggedNostrEvent[]) {
   const deduped = events.reduce(
-    ({ list, seen }: { list: TaggedNostrEvent[]; seen: Set<HexKey> }, ev) => {
+    ({ list, seen }: { list: TaggedNostrEvent[]; seen: Set<string> }, ev) => {
       if (seen.has(ev.pubkey)) {
         return { list, seen };
       }
@@ -202,8 +143,8 @@ export function dedupeById<T extends { id: string }>(events: Array<T>) {
  * @param events List of all notes to filter from
  * @returns
  */
-export function getLatestByPubkey(events: TaggedNostrEvent[]): Map<HexKey, TaggedNostrEvent> {
-  const deduped = events.reduce((results: Map<HexKey, TaggedNostrEvent>, ev) => {
+export function getLatestByPubkey(events: TaggedNostrEvent[]): Map<string, TaggedNostrEvent> {
+  const deduped = events.reduce((results: Map<string, TaggedNostrEvent>, ev) => {
     if (!results.has(ev.pubkey)) {
       const latest = getNewest(events.filter(a => a.pubkey === ev.pubkey));
       if (latest) {
@@ -211,12 +152,12 @@ export function getLatestByPubkey(events: TaggedNostrEvent[]): Map<HexKey, Tagge
       }
     }
     return results;
-  }, new Map<HexKey, TaggedNostrEvent>());
+  }, new Map<string, TaggedNostrEvent>());
   return deduped;
 }
 
-export function getLatestProfileByPubkey(profiles: CachedMetadata[]): Map<HexKey, CachedMetadata> {
-  const deduped = profiles.reduce((results: Map<HexKey, CachedMetadata>, ev) => {
+export function getLatestProfileByPubkey(profiles: CachedMetadata[]): Map<string, CachedMetadata> {
+  const deduped = profiles.reduce((results: Map<string, CachedMetadata>, ev) => {
     if (!results.has(ev.pubkey)) {
       const latest = getNewestProfile(profiles.filter(a => a.pubkey === ev.pubkey));
       if (latest) {
@@ -224,7 +165,7 @@ export function getLatestProfileByPubkey(profiles: CachedMetadata[]): Map<HexKey
       }
     }
     return results;
-  }, new Map<HexKey, CachedMetadata>());
+  }, new Map<string, CachedMetadata>());
   return deduped;
 }
 
@@ -275,12 +216,12 @@ export function getNewestEventTagsByKey(evs: TaggedNostrEvent[], tag: string) {
   }
 }
 
-export function tagFilterOfTextRepost(note: TaggedNostrEvent, id?: u256): (tag: string[], i: number) => boolean {
+export function tagFilterOfTextRepost(note: TaggedNostrEvent, id?: string): (tag: string[], i: number) => boolean {
   return (tag, i) =>
     tag[0] === "e" && tag[3] === "mention" && note.content === `#[${i}]` && (id ? tag[1] === id : true);
 }
 
-export function groupByPubkey(acc: Record<HexKey, CachedMetadata>, user: CachedMetadata) {
+export function groupByPubkey(acc: Record<string, CachedMetadata>, user: CachedMetadata) {
   return { ...acc, [user.pubkey]: user };
 }
 
@@ -421,12 +362,16 @@ export function findTag(e: NostrEvent, tag: string) {
 }
 
 export function hmacSha256(key: Uint8Array, ...messages: Uint8Array[]) {
-  return hmac(hash, key, utils.concatBytes(...messages));
+  return hmac(sha256, key, concatBytes(...messages));
 }
 
 export function getRelayName(url: string) {
-  const parsedUrl = new URL(url);
-  return parsedUrl.host + parsedUrl.search;
+  try {
+    const parsedUrl = new URL(url);
+    return parsedUrl.host + parsedUrl.search;
+  } catch {
+    return url;
+  }
 }
 
 export function getUrlHostname(url?: string) {
@@ -499,11 +444,11 @@ export const isBirthday = () => {
   return CONFIG.appName === "Snort" && IsTheSeason(event, 1);
 };
 
-export function getDisplayName(user: UserMetadata | undefined, pubkey: HexKey): string {
+export function getDisplayName(user: UserMetadata | undefined, pubkey: string): string {
   return getDisplayNameOrPlaceHolder(user, pubkey)[0];
 }
 
-export function getDisplayNameOrPlaceHolder(user: UserMetadata | undefined, pubkey: HexKey): [string, boolean] {
+export function getDisplayNameOrPlaceHolder(user: UserMetadata | undefined, pubkey: string): [string, boolean] {
   if (typeof user?.display_name === "string" && user.display_name.length > 0) {
     return [user.display_name.trim(), false];
   } else if (typeof user?.name === "string" && user.name.length > 0) {

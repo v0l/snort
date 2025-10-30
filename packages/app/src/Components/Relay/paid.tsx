@@ -1,8 +1,8 @@
-import { RelayInfo } from "@snort/system";
+import { RelayInfoDocument } from "@snort/system";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 
-export default function RelayPaymentLabel({ info }: { info: RelayInfo }) {
+export default function RelayPaymentLabel({ info }: { info: RelayInfoDocument }) {
   const isPaid = info?.limitation?.payment_required ?? false;
   return (
     <div

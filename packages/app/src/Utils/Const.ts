@@ -33,13 +33,6 @@ export const SnortPubKey = "npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x680
  */
 export const SearchRelays = ["wss://relay.nostr.band/", "wss://search.nos.today/", "wss://relay.noswhere.com/"];
 
-export const DeveloperAccounts = [
-  "63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed", // kieran
-  "4523be58d395b1b196a9b8c82b038b6895cb02b683d0c253a955068dba1facd0", // Martti
-  "7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194", // verbiricha
-  "1bc70a0148b3f316da33fe3c89f23e3e71ac4ff998027ec712b905cd24f6a411", // Karnage
-];
-
 /**
  * Snort imgproxy details
  */

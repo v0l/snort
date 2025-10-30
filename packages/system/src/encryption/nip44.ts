@@ -1,10 +1,10 @@
-import { chacha20 } from "@noble/ciphers/chacha";
-import { equalBytes } from "@noble/ciphers/utils";
-import { secp256k1 } from "@noble/curves/secp256k1";
-import { extract as hkdf_extract, expand as hkdf_expand } from "@noble/hashes/hkdf";
-import { hmac } from "@noble/hashes/hmac";
-import { sha256 } from "@noble/hashes/sha256";
-import { concatBytes, randomBytes, utf8ToBytes } from "@noble/hashes/utils";
+import { chacha20 } from "@noble/ciphers/chacha.js";
+import { equalBytes } from "@noble/ciphers/utils.js";
+import { secp256k1 } from "@noble/curves/secp256k1.js";
+import { extract as hkdf_extract, expand as hkdf_expand } from "@noble/hashes/hkdf.js";
+import { hmac } from "@noble/hashes/hmac.js";
+import { sha256 } from "@noble/hashes/sha2.js";
+import { concatBytes, hexToBytes, randomBytes, utf8ToBytes } from "@noble/hashes/utils.js";
 import { base64 } from "@scure/base";
 
 declare const TextDecoder: any;
@@ -20,8 +20,8 @@ const u = {
   },
 
   getConversationKey(privkeyA: string, pubkeyB: string): Uint8Array {
-    const sharedX = secp256k1.getSharedSecret(privkeyA, "02" + pubkeyB).subarray(1, 33);
-    return hkdf_extract(sha256, sharedX, "nip44-v2");
+    const sharedX = secp256k1.getSharedSecret(hexToBytes(privkeyA), hexToBytes("02" + pubkeyB)).subarray(1, 33);
+    return hkdf_extract(sha256, sharedX, utf8ToBytes("nip44-v2"));
   },
 
   getMessageKeys(conversationKey: Uint8Array, nonce: Uint8Array) {
@@ -132,7 +132,7 @@ export const nip44 = {
   utils: u,
   v1: {
     getConversationKey: (privKey: string, pubKey: string) => {
-      const key = secp256k1.getSharedSecret(privKey, "02" + pubKey);
+      const key = secp256k1.getSharedSecret(hexToBytes(privKey), hexToBytes("02" + pubKey));
       return sha256(key.slice(1, 33));
     },
     decrypt: decrypt_v1,

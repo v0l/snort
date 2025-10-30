@@ -1,16 +1,13 @@
-import "./Nip05.css";
-
-import { HexKey } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
-function useIsVerified(pubkey?: HexKey, bypassCheck?: boolean) {
+function useIsVerified(pubkey?: string, bypassCheck?: boolean) {
   const profile = useUserProfile(pubkey);
   return { isVerified: bypassCheck || profile?.isNostrAddressValid };
 }
 
 interface Nip05Params {
   nip05?: string;
-  pubkey: HexKey;
+  pubkey: string;
   verifyNip?: boolean;
 }
 
@@ -19,12 +16,16 @@ const Nip05 = ({ nip05, pubkey, verifyNip = true }: Nip05Params) => {
   const isDefaultUser = name === "_";
   const { isVerified } = useIsVerified(pubkey, !verifyNip);
 
+  const isSpecialDomain = domain?.toLowerCase() === "iris.to" || domain?.toLowerCase() === "snort.social";
+
   return (
-    <div className={`flex nip05${!isVerified ? " failed" : ""}`}>
+    <div className={`flex text-neutral-400 font-normal${!isVerified ? " opacity-50" : ""}`}>
       {!isDefaultUser && isVerified && <span className="nick">{`${name}@`}</span>}
       {isVerified && (
         <>
-          <span className="domain" data-domain={domain?.toLowerCase()}>
+          <span
+            className={`${isSpecialDomain ? "bg-clip-text text-transparent bg-[image:var(--snort-gradient)]" : "text-neutral-400"}`}
+            data-domain={domain?.toLowerCase()}>
             {domain}
           </span>
         </>

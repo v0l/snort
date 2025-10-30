@@ -40,6 +40,12 @@ export default defineConfig({
     }),
   ],
   assetsInclude: ["**/*.md", "**/*.wasm"],
+  server: {
+    proxy: {},
+    watch: {
+      usePolling: true,
+    },
+  },
   build: {
     outDir: "build",
     commonjsOptions: { transformMixedEsModules: true },

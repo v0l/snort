@@ -9,7 +9,7 @@
   "author": "Kieran",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && bunx --bun tsc"
   },
   "files": [
     "src",
@@ -18,12 +18,12 @@
   "dependencies": {
     "@snort/shared": "^1.0.17",
     "@snort/system": "^1.6.9",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.0",
-    "typescript": "^5.2.2"
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "typescript": "^5.9.3"
   }
 }

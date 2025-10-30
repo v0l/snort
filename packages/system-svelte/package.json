@@ -9,7 +9,7 @@
   "author": "Kieran",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && bunx --bun tsc"
   },
   "files": [
     "src",
@@ -18,9 +18,9 @@
   "dependencies": {
     "@snort/shared": "^1.0.6",
     "@snort/system": "^1.0.21",
-    "svelte": "^4.2.0"
+    "svelte": "^5.40.2"
   },
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "typescript": "^5.9.3"
   }
 }

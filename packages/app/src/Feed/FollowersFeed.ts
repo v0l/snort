@@ -1,10 +1,10 @@
-import { EventKind, HexKey, RequestBuilder } from "@snort/system";
+import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
 import useWoT from "@/Hooks/useWoT";
 
-export default function useFollowersFeed(pubkey?: HexKey) {
+export default function useFollowersFeed(pubkey?: string) {
   const wot = useWoT();
   const sub = useMemo(() => {
     const b = new RequestBuilder(`followers`);

@@ -36,12 +36,12 @@ export class ConnectionCacheRelay implements CacheRelay {
         if (s === id) {
           resolve(results.snapshot);
           this.connection.closeRequest(id);
-          this.connection.off("event", evh);
+          this.connection.off("unverifiedEvent", evh);
           this.connection.off("eose", eoh);
           this.connection.off("closed", eoh);
         }
       };
-      this.connection.on("event", evh);
+      this.connection.on("unverifiedEvent", evh);
       this.connection.on("eose", eoh);
       this.connection.on("closed", eoh);
       this.connection.request(["REQ", id, ...(req.slice(2) as Array<ReqFilter>)]);

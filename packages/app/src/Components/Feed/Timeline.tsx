@@ -1,14 +1,10 @@
-import "./Timeline.css";
-
 import { unixNow } from "@snort/shared";
 import { TaggedNostrEvent } from "@snort/system";
 import { useCallback, useMemo, useState } from "react";
 
-import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";
 import useHistoryState from "@/Hooks/useHistoryState";
-import useLogin from "@/Hooks/useLogin";
 import useWoT from "@/Hooks/useWoT";
 import { dedupeByPubkey } from "@/Utils";
 
@@ -21,15 +17,12 @@ export interface TimelineProps {
   window?: number;
   now?: number;
   noSort?: boolean;
-  displayAs?: DisplayAs;
-  showDisplayAsSelector?: boolean;
 }
 
 /**
  * A list of notes by "subject"
  */
 const Timeline = (props: TimelineProps) => {
-  const login = useLogin();
   const [openedAt] = useHistoryState(unixNow(), "openedAt");
   const feedOptions = useMemo(
     () => ({
@@ -40,8 +33,6 @@ const Timeline = (props: TimelineProps) => {
     [props],
   );
   const feed: TimelineFeed = useTimelineFeed(props.subject, feedOptions);
-  const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
-  const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const wot = useWoT();
 
   const filterPosts = useCallback(
@@ -79,26 +70,18 @@ const Timeline = (props: TimelineProps) => {
   }
 
   return (
-    <>
-      <DisplayAsSelector
-        show={props.showDisplayAsSelector}
-        activeSelection={displayAs}
-        onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)}
-      />
-      <TimelineRenderer
-        frags={[
-          {
-            events: mainFeed,
-            refTime: 0,
-          },
-        ]}
-        latest={latestAuthors}
-        showLatest={t => onShowLatest(t)}
-        displayAs={displayAs}
-        loadMore={() => feed.loadMore()}
-        highlightText={props.subject.type === "post_keyword" ? props.subject.items[0] : undefined}
-      />
-    </>
+    <TimelineRenderer
+      frags={[
+        {
+          events: mainFeed,
+          refTime: 0,
+        },
+      ]}
+      latest={latestAuthors}
+      showLatest={t => onShowLatest(t)}
+      loadMore={() => feed.loadMore()}
+      highlightText={props.subject.type === "post_keyword" ? props.subject.items[0] : undefined}
+    />
   );
 };
 export default Timeline;

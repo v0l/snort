@@ -1,6 +1,6 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 
-import { Thread } from "@/Components/Event/Thread/Thread";
+import { ThreadElement } from "@/Components/Event/Thread/Thread";
 import Modal from "@/Components/Modal/Modal";
 import { SpotlightMedia } from "@/Components/Spotlight/SpotlightMedia";
 import getEventMedia from "@/Utils/getEventMedia";
@@ -30,21 +30,20 @@ export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
   }
 
   const link = props.event ? NostrLink.fromEvent(props.event) : props.thread;
-
   return (
-    <Modal className={props.className} onClose={onClose} bodyClassName={"flex flex-1"}>
+    <Modal id="spotlight-media-modal" className={props.className} onClose={onClose} bodyClassName={"flex flex-1"}>
       <ThreadContextWrapper link={link!}>
         <div className="flex flex-row h-screen w-screen">
           <div className="flex w-full md:w-2/3 items-center justify-center overflow-hidden" onClick={onClickBg}>
             <SpotlightFromEvent
-              event={props.event || thread.root}
+              event={props.event || props.thread}
               onClose={onClose}
               onNext={props.onNext}
               onPrev={props.onPrev}
             />
           </div>
-          <div className="hidden md:flex w-1/3 min-w-[400px] flex-shrink-0 overflow-y-auto bg-background">
-            <Thread onBack={onBack} disableSpotlight={true} />
+          <div className="bg-layer-1 md:flex w-1/3 min-w-[400px] overflow-y-auto">
+            <ThreadElement onBack={onBack} disableSpotlight={true} />
           </div>
         </div>
       </ThreadContextWrapper>

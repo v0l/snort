@@ -1,5 +1,3 @@
-import React from "react";
-
 import { ProxyImg } from "@/Components/ProxyImg";
 import { useStatusFeed } from "@/Feed/StatusFeed";
 import { findTag, unwrap } from "@/Utils";
@@ -13,14 +11,14 @@ export const MusicStatus = ({ id }: { id: string }) => {
   const cover = findTag(status.music, "cover");
 
   const content = (
-    <div className="flex g8">
+    <div className="flex gap-2">
       {cover && <ProxyImg src={cover} size={40} />}
       🎵 {unwrap(status.music).content}
     </div>
   );
 
   return link ? (
-    <a href={link} rel="noopener noreferrer" target="_blank" className="ext">
+    <a href={link} rel="noopener noreferrer" target="_blank" className="text-highlight no-underline hover:underline">
       {content}
     </a>
   ) : (

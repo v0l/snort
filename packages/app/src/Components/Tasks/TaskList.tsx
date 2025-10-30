@@ -1,5 +1,3 @@
-import "./TaskList.css";
-
 import { ExternalStore } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 import { Fragment, useSyncExternalStore } from "react";
@@ -15,6 +13,7 @@ import { FollowMorePeopleTask } from "./FollowMorePeople";
 import { Nip5Task } from "./Nip5Task";
 import { NoticeZapPoolDefault } from "./NoticeZapPool";
 import { RenewSubTask } from "./RenewSubscription";
+import { BaseWidget } from "../RightWidgets/base";
 
 class TaskStore extends ExternalStore<Array<UITask>> {
   #tasks: Array<UITask>;
@@ -43,38 +42,38 @@ class TaskStore extends ExternalStore<Array<UITask>> {
 }
 
 const AllTasks = new TaskStore();
-export const TaskList = () => {
-  const session = useLogin();
-  const user = useUserProfile(session.publicKey);
+
+export function TaskList() {
   const tasks = useSyncExternalStore(
     c => AllTasks.hook(c),
     () => AllTasks.snapshot(),
   );
 
-  function muteTask(t: UITask) {
-    t.mute();
-  }
+  return <TaskListDisplay tasks={tasks} />;
+}
 
+export function TaskListDisplay({ tasks }: { tasks: Array<UITask> }) {
+  const session = useLogin();
+  const user = useUserProfile(session.publicKey);
+  const currentTasks = tasks.filter(a => (user ? a.check(user, session) : false)).slice(0, 1);
+  if (currentTasks.length === 0) return;
   return (
-    <div className="task-list">
-      {tasks
-        .filter(a => (user ? a.check(user, session) : false))
-        .slice(0, 1)
-        .map(a => {
-          if (a.noBaseStyle) {
-            return <Fragment key={a.id}>{a.render()}</Fragment>;
-          } else {
-            return (
-              <div key={a.id} className="card">
-                <div className="header">
-                  <Icon name="lightbulb" />
-                  <CloseButton onClick={() => muteTask(a)} />
-                </div>
-                {a.render()}
-              </div>
-            );
-          }
-        })}
+    <div className="flex">
+      {currentTasks.map(a => {
+        if (a.noBaseStyle) {
+          return <Fragment key={a.id}>{a.render()}</Fragment>;
+        } else {
+          return (
+            <BaseWidget
+              key={a.id}
+              contextMenu={<CloseButton onClick={() => a.mute()} />}
+              icon="lightbulb"
+              title={<></>}>
+              {a.render()}
+            </BaseWidget>
+          );
+        }
+      })}
     </div>
   );
-};
+}

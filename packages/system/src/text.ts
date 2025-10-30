@@ -4,6 +4,7 @@ import {
   CashuRegex,
   FileExtensionRegex,
   HashtagRegex,
+  InlineCodeRegex,
   InvoiceRegex,
   MarkdownCodeRegex,
   MentionNostrEntityRegex,
@@ -25,7 +26,8 @@ export interface ParsedFragment {
     | "hashtag"
     | "custom_emoji"
     | "highlighted_text"
-    | "code_block";
+    | "code_block"
+    | "inline_code";
   content: string;
   mimeType?: string;
   language?: string;
@@ -233,20 +235,48 @@ function extractMarkdownCode(fragments: Fragment[]): (string | ParsedFragment)[]
   return fragments
     .map(f => {
       if (typeof f === "string") {
-        return f.split(MarkdownCodeRegex).map(i => {
-          if (i.startsWith("```") && i.endsWith("```")) {
-            const firstLineBreakIndex = i.indexOf("\n");
-            const lastLineBreakIndex = i.lastIndexOf("\n");
+        return f
+          .split(MarkdownCodeRegex)
+          .map(i => {
+            if (i.startsWith("```") && i.endsWith("```")) {
+              const cleaned = i.slice(3, i.length - 3);
+              const isMultiLine = cleaned.includes("\n");
+              const language = isMultiLine ? cleaned.slice(0, cleaned.indexOf("\n")).trim() : undefined;
+              const content = isMultiLine ? cleaned.slice(cleaned.indexOf("\n") + 1) : cleaned;
+              return {
+                type: "code_block",
+                content: content,
+                language: language,
+              } as ParsedFragment;
+            } else {
+              return i;
+            }
+          })
+          .filter(i => typeof i !== "string" || i.length > 0);
+      }
 
-            return {
-              type: "code_block",
-              content: i.substring(firstLineBreakIndex, lastLineBreakIndex),
-              language: i.substring(3, firstLineBreakIndex),
-            } as ParsedFragment;
-          } else {
-            return i;
-          }
-        });
+      return f;
+    })
+    .flat();
+}
+
+function extractInlineCode(fragments: Fragment[]): (string | ParsedFragment)[] {
+  return fragments
+    .map(f => {
+      if (typeof f === "string") {
+        return f
+          .split(InlineCodeRegex)
+          .map(i => {
+            if (i.startsWith("`") && i.endsWith("`")) {
+              return {
+                type: "inline_code",
+                content: i.slice(1, i.length - 1),
+              } as ParsedFragment;
+            } else {
+              return i;
+            }
+          })
+          .filter(i => typeof i !== "string" || i.length > 0);
       }
 
       return f;
@@ -295,6 +325,7 @@ export function transformText(body: string, tags: Array<Array<string>>) {
   fragments = extractCashuTokens(fragments);
   fragments = extractCustomEmoji(fragments, tags);
   fragments = extractMarkdownCode(fragments);
+  fragments = extractInlineCode(fragments);
   const frags = removeUndefined(
     fragments.map(a => {
       if (typeof a === "string") {

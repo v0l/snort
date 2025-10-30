@@ -20,7 +20,7 @@ export default function Discover() {
         return <TrendingNotes />;
       case 0:
         return (
-          <div className="p">
+          <div className="px-3 py-2">
             <TrendingUsers />
           </div>
         );

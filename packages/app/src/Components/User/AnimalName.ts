@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
 
-import { sha256 } from "@noble/hashes/sha256";
+import { sha256 } from "@noble/hashes/sha2.js";
+import { utf8ToBytes } from "@noble/hashes/utils.js";
 
 const animals = [
   "canidae",
@@ -1830,7 +1831,7 @@ export default function (seed: string) {
   if (!seed) {
     throw new Error("No seed provided");
   }
-  const hash = sha256(seed); // Uint8Array
+  const hash = sha256(utf8ToBytes(seed)); // Uint8Array
   const adjective = adjectives[hash[0] % adjectives.length];
   const animal = animals[hash[1] % animals.length];
   return `${capitalize(adjective)} ${capitalize(animal)}`;

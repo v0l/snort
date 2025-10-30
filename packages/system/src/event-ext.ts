@@ -1,24 +1,20 @@
-import * as secp from "@noble/curves/secp256k1";
-import * as utils from "@noble/curves/abstract/utils";
-import { getPublicKey, sha256, unixNow } from "@snort/shared";
-
-import { EventKind, HexKey, NostrEvent, NotSignedNostrEvent } from ".";
+import { getPublicKey, sha256, unixNow, unwrap } from "@snort/shared";
+import { EventKind, Nip10, Nip22, NostrEvent, NostrLink, NotSignedNostrEvent } from ".";
 import { minePow } from "./pow-util";
 import { findTag } from "./utils";
+import { schnorr } from "@noble/curves/secp256k1.js";
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
+import { LRUCache } from "typescript-lru-cache";
 
-export interface Tag {
-  key: string;
-  value?: string;
-  relay?: string;
-  marker?: string; // NIP-10
-  author?: string; // NIP-10 "pubkey-stub"
-}
-
+/**
+ * Generic thread structure extracted from a note
+ */
 export interface Thread {
-  root?: Tag;
-  replyTo?: Tag;
-  mentions: Array<Tag>;
-  pubKeys: Array<HexKey>;
+  kind: "nip10" | "nip22";
+  root?: NostrLink;
+  replyTo?: NostrLink;
+  mentions: Array<NostrLink>;
+  pubKeys: Array<NostrLink>;
 }
 
 export const enum EventType {
@@ -27,11 +23,21 @@ export const enum EventType {
   Addressable,
 }
 
+/*
+ * Internal cache of parsed threads
+ */
+const ThreadCache = new LRUCache<string, Thread | undefined>({
+  maxSize: 1000,
+});
+
+/**
+ * Helper class for parsing event data
+ */
 export abstract class EventExt {
   /**
    * Get the pub key of the creator of this event NIP-26
    */
-  static getRootPubKey(e: NostrEvent): HexKey {
+  static getRootPubKey(e: NostrEvent): string {
     const delegation = e.tags.find(a => a[0] === "delegation");
     if (delegation?.[1]) {
       // todo: verify sig
@@ -43,12 +49,12 @@ export abstract class EventExt {
   /**
    * Sign this message with a private key
    */
-  static sign(e: NostrEvent, key: HexKey) {
+  static sign(e: NostrEvent, key: string) {
     e.pubkey = getPublicKey(key);
     e.id = this.createId(e);
 
-    const sig = secp.schnorr.sign(e.id, key);
-    e.sig = utils.bytesToHex(sig);
+    const sig = schnorr.sign(hexToBytes(e.id), hexToBytes(key));
+    e.sig = bytesToHex(sig);
     return e;
   }
 
@@ -59,7 +65,7 @@ export abstract class EventExt {
   static verify(e: NostrEvent) {
     if ((e.sig?.length ?? 0) < 64) return false;
     const id = this.createId(e);
-    const result = secp.schnorr.verify(e.sig, id, e.pubkey);
+    const result = schnorr.verify(hexToBytes(e.sig), hexToBytes(id), hexToBytes(e.pubkey));
     return result;
   }
 
@@ -78,7 +84,7 @@ export abstract class EventExt {
   /**
    * Create a new event for a specific pubkey
    */
-  static forPubKey(pk: HexKey, kind: EventKind) {
+  static forPubKey(pk: string, kind: EventKind) {
     return {
       pubkey: pk,
       kind: kind,
@@ -90,62 +96,21 @@ export abstract class EventExt {
     } as NostrEvent;
   }
 
-  static parseTag(tag: Array<string>) {
-    if (tag.length < 1) {
-      throw new Error("Invalid tag, must have more than 2 items");
-    }
+  static extractThread(ev: NostrEvent): Thread | undefined {
+    const cacheKey = EventExt.keyOf(ev);
+    const cached = ThreadCache.get(cacheKey);
+    if (cached) return cached;
 
-    const ret = {
-      key: tag[0],
-      value: tag[1],
-    } as Tag;
-    switch (ret.key) {
-      case "a": {
-        ret.relay = tag[2];
-        ret.marker = tag[3];
-        break;
-      }
-      case "e": {
-        ret.relay = tag[2];
-        ret.marker = tag[3];
-        ret.author = tag[4];
-        break;
-      }
-    }
-    return ret;
-  }
-
-  static extractThread(ev: NostrEvent) {
-    const ret = {
-      mentions: [],
-      pubKeys: [],
-    } as Thread;
-    const replyTags = ev.tags.filter(a => a[0] === "e" || a[0] === "a").map(a => EventExt.parseTag(a));
-    if (replyTags.length > 0) {
-      const marked = replyTags.some(a => a.marker);
-      if (!marked) {
-        ret.root = replyTags[0];
-        ret.root.marker = "root";
-        if (replyTags.length > 1) {
-          ret.replyTo = replyTags[replyTags.length - 1];
-          ret.replyTo.marker = "reply";
-        }
-        if (replyTags.length > 2) {
-          ret.mentions = replyTags.slice(1, -1);
-          ret.mentions.forEach(a => (a.marker = "mention"));
-        }
-      } else {
-        const root = replyTags.find(a => a.marker === "root");
-        const reply = replyTags.find(a => a.marker === "reply");
-        ret.root = root;
-        ret.replyTo = reply;
-        ret.mentions = replyTags.filter(a => a.marker === "mention");
-      }
+    // parse thread as NIP-22 if there is E+K
+    if (ev.tags.some(a => a[0] === "E") && ev.tags.some(a => a[0] === "K")) {
+      const v = Nip22.parseThread(ev);
+      ThreadCache.set(cacheKey, v);
+      return v;
     } else {
-      return undefined;
+      const v = Nip10.parseThread(ev);
+      ThreadCache.set(cacheKey, v);
+      return v;
     }
-    ret.pubKeys = Array.from(new Set(ev.tags.filter(a => a[0] === "p").map(a => a[1])));
-    return ret;
   }
 
   /**
@@ -179,11 +144,36 @@ export abstract class EventExt {
     return t === EventType.Replaceable || t === EventType.Addressable;
   }
 
+  static isAddressable(kind: number) {
+    const t = EventExt.getType(kind);
+    return t === EventType.Addressable;
+  }
+
   static isValid(ev: NostrEvent) {
     const type = EventExt.getType(ev.kind);
     if (type === EventType.Addressable) {
       if (!findTag(ev, "d")) return false;
     }
     return ev.sig !== undefined;
+  }
+
+  /**
+   * Create a string key for an event
+   *
+   * Addressable: {kind}:{pubkey}:{identifier}
+   *
+   * Replaceable: {kind}:{pubkey}
+   *
+   * {id}
+   */
+  static keyOf(e: NostrEvent) {
+    switch (EventExt.getType(e.kind)) {
+      case EventType.Addressable:
+        return `${e.kind}:${e.pubkey}:${unwrap(findTag(e, "d"))}`;
+      case EventType.Replaceable:
+        return `${e.kind}:${e.pubkey}`;
+      default:
+        return e.id;
+    }
   }
 }

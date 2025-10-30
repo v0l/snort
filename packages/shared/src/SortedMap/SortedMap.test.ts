@@ -1,12 +1,9 @@
-import { describe, expect, it } from "vitest";
-
-import RBSortedMap from "../../../../tests/RBSortedMap.ts";
-
-import SortedMap from "./SortedMap.ts";
+import { describe, expect, test } from "bun:test";
+import { SortedMap } from "./SortedMap.js";
 
 function runTestsForMap(MapConstructor: any, mapName: string) {
   describe(mapName, () => {
-    it("should maintain order based on keys when no custom comparator is provided", () => {
+    test("should maintain order based on keys when no custom comparator is provided", () => {
       const map = new MapConstructor();
       map.set(5, "five");
       map.set(3, "three");
@@ -19,7 +16,7 @@ function runTestsForMap(MapConstructor: any, mapName: string) {
       expect(last).toEqual([8, "eight"]);
     });
 
-    it("should maintain order based on custom comparator", () => {
+    test("should maintain order based on custom comparator", () => {
       const comparator = (a: [string, number], b: [string, number]) => a[1] - b[1];
       const map = new MapConstructor(undefined, comparator);
 
@@ -34,7 +31,7 @@ function runTestsForMap(MapConstructor: any, mapName: string) {
       expect(last).toEqual(["c", 8]);
     });
 
-    it("should get correct value by key", () => {
+    test("should get correct value by key", () => {
       const map = new MapConstructor();
       map.set(5, "five");
 
@@ -43,7 +40,7 @@ function runTestsForMap(MapConstructor: any, mapName: string) {
       expect(value).toBe("five");
     });
 
-    it("should delete entry by key", () => {
+    test("should delete entry by key", () => {
       const map = new MapConstructor();
       map.set(5, "five");
       expect(map.has(5)).toBe(true);
@@ -52,7 +49,7 @@ function runTestsForMap(MapConstructor: any, mapName: string) {
       expect(map.has(5)).toBe(false);
     });
 
-    it("should iterate in order", () => {
+    test("should iterate in order", () => {
       const map = new MapConstructor();
       map.set(5, "five");
       map.set(3, "three");
@@ -70,7 +67,7 @@ function runTestsForMap(MapConstructor: any, mapName: string) {
       ]);
     });
 
-    it("should give correct size", () => {
+    test("should give correct size", () => {
       const map = new MapConstructor();
       map.set(5, "five");
       map.set(3, "three");
@@ -80,6 +77,5 @@ function runTestsForMap(MapConstructor: any, mapName: string) {
   });
 }
 
-// Run the tests for both map implementations.
+// Run the tests for SortedMap.
 runTestsForMap(SortedMap, "SortedMap");
-runTestsForMap(RBSortedMap, "RBSortedMap");

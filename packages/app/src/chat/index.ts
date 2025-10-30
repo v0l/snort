@@ -1,15 +1,11 @@
-import { ExternalStore, unixNow, unwrap } from "@snort/shared";
+import { encodeTLVEntries, ExternalStore, NostrPrefix, TLVEntry, TLVEntryType, unixNow, unwrap } from "@snort/shared";
 import {
-  encodeTLVEntries,
   EventKind,
   EventPublisher,
   NostrEvent,
-  NostrPrefix,
   RequestBuilder,
   SystemInterface,
   TaggedNostrEvent,
-  TLVEntry,
-  TLVEntryType,
   UserMetadata,
 } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
@@ -118,7 +114,7 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
   switch (type) {
     case ChatType.PrivateDirectMessage: {
       if (params.length > 1) throw new Error("Must only contain one pubkey");
-      return `/messages/${encodeTLVEntries(NostrPrefix.Chat17, {
+      return `/messages/${encodeTLVEntries("nchat17", {
         type: TLVEntryType.Author,
         length: params[0].length,
         value: params[0],
@@ -126,7 +122,7 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
     }
     case ChatType.PrivateGroupChat: {
       return `/messages/${encodeTLVEntries(
-        NostrPrefix.Chat17,
+        "nchat17",
         ...params.map(
           a =>
             ({
@@ -142,7 +138,7 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
 }
 
 export function createEmptyChatObject(id: string) {
-  if (id.startsWith(NostrPrefix.Chat17)) {
+  if (id.startsWith("nchat17")) {
     return Nip17ChatSystem.createChatObj(id, []);
   }
   throw new Error("Cant create new empty chat, unknown id");

@@ -1,4 +1,3 @@
-import { NostrPrefix } from "./links";
 import { NostrLink, ToNostrEventTag } from "./nostr-link";
 import { DiffSyncTags, JsonEventSync } from "./sync";
 import EventKind from "./event-kind";
@@ -12,7 +11,7 @@ import {
   parseRelaysFromKind,
   settingsToRelayTag,
 } from ".";
-import { dedupe, removeUndefined, sanitizeRelayUrl } from "@snort/shared";
+import { dedupe, removeUndefined, sanitizeRelayUrl, NostrPrefix } from "@snort/shared";
 import debug from "debug";
 import EventEmitter from "eventemitter3";
 
@@ -56,13 +55,12 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   #appdata?: JsonEventSync<TAppData>; // kind 30_0078
   #standardLists?: Map<EventKind, DiffSyncTags>; // NIP-51 lists
 
-  // init vars
   #signer?: EventSigner;
   #system?: SystemInterface;
 
-  // state object will be used in the getters as a fallback value
+  // state object will be used in the getters as a fallback value when not yet synced
   #stateObj?: UserStateObject<TAppData>;
-  #didInit = false;
+  #initPromise?: Promise<void>;
   #version = 0;
 
   constructor(
@@ -103,7 +101,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   }
 
   get didInit() {
-    return this.#didInit;
+    return this.#initPromise !== undefined;
   }
 
   destroy() {
@@ -111,25 +109,35 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     this.removeAllListeners();
   }
 
+  /**
+   * Initialize and sync user state from Nostr relays.
+   * This method is idempotent - calling it multiple times will only initialize once.
+   */
   async init(signer: EventSigner | undefined, system: SystemInterface) {
-    if (this.#didInit) {
-      return;
+    if (this.#initPromise) {
+      return this.#initPromise;
     }
-    this.#didInit = true;
-    this.#log("Init start");
+
     this.#signer = signer;
     this.#system = system;
+
+    this.#initPromise = this.#performInit(signer, system);
+    return this.#initPromise;
+  }
+
+  async #performInit(signer: EventSigner | undefined, system: SystemInterface) {
+    this.#log("Init start");
     const tasks = [
-      this.#profile?.sync(signer, system),
-      this.#contacts?.sync(signer, system),
-      this.#relays?.sync(signer, system),
+      this.#profile?.sync(signer, system).catch(e => this.#log("Failed to sync profile: %O", e)),
+      this.#contacts?.sync(signer, system).catch(e => this.#log("Failed to sync contacts: %O", e)),
+      this.#relays?.sync(signer, system).catch(e => this.#log("Failed to sync relays: %O", e)),
     ];
     if (this.#appdata) {
-      tasks.push(this.#appdata.sync(signer, system));
+      tasks.push(this.#appdata.sync(signer, system).catch(e => this.#log("Failed to sync appdata: %O", e)));
     }
     if (this.#standardLists) {
       for (const list of this.#standardLists.values()) {
-        tasks.push(list.sync(signer, system));
+        tasks.push(list.sync(signer, system).catch(e => this.#log("Failed to sync list %O: ", list.link, e)));
       }
     }
     await Promise.all(tasks);
@@ -147,7 +155,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     if (this.#relays?.value === undefined && this.#contacts?.value?.content !== undefined && signer) {
       this.#log("Saving relays to NIP-65 relay list using %O", this.relays);
       for (const r of this.relays ?? []) {
-        await this.addRelay(r.url, r.settings, false);
+        await this.#addRelay(r.url, r.settings);
       }
 
       await this.#relays?.persist(signer, system);
@@ -160,6 +168,58 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
 
   get version() {
     return this.#version;
+  }
+
+  /**
+   * Get the number of pending changes that haven't been saved to Nostr yet
+   */
+  get pendingChanges() {
+    let count = 0;
+
+    // Check contacts for pending changes
+    if (this.#contacts) {
+      // DiffSyncTags stores changes in private #changes array, but we can check if tags differ from value
+      // If there's a value (synced event) and tags differ from value.tags, there are pending changes
+      const syncedTags = this.#contacts.value?.tags ?? [];
+      const currentTags = this.#contacts.tags;
+      if (JSON.stringify(syncedTags) !== JSON.stringify(currentTags)) {
+        count++;
+      }
+    }
+
+    // Check relays for pending changes
+    if (this.#relays) {
+      const syncedTags = this.#relays.value?.tags ?? [];
+      const currentTags = this.#relays.tags;
+      if (JSON.stringify(syncedTags) !== JSON.stringify(currentTags)) {
+        count++;
+      }
+    }
+
+    // Check app data for pending changes
+    if (this.#appdata && this.#appdata.hasPendingChanges) {
+      count++;
+    }
+
+    // Check all standard lists for pending changes
+    if (this.#standardLists) {
+      for (const list of this.#standardLists.values()) {
+        const syncedTags = list.value?.tags ?? [];
+        const currentTags = list.tags;
+        const syncedEncrypted = list.value?.content ?? "";
+        const currentEncrypted = list.encryptedTags;
+
+        // Check both regular tags and encrypted content
+        if (
+          JSON.stringify(syncedTags) !== JSON.stringify(currentTags) ||
+          (syncedEncrypted && JSON.stringify(JSON.parse(syncedEncrypted)) !== JSON.stringify(currentEncrypted))
+        ) {
+          count++;
+        }
+      }
+    }
+
+    return count;
   }
 
   /**
@@ -212,8 +272,11 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     return [];
   }
 
-  async follow(link: NostrLink, autoCommit = false) {
-    this.#checkInit();
+  /**
+   * Follow a user
+   */
+  follow(link: NostrLink) {
+    this.#ensureInit();
     if (link.type !== NostrPrefix.Profile && link.type !== NostrPrefix.PublicKey) {
       throw new Error("Cannot follow this type of link");
     }
@@ -221,16 +284,16 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     const tag = link.toEventTag();
     if (tag && this.#contacts) {
       this.#contacts.add(tag);
-      if (autoCommit) {
-        await this.saveContacts();
-      }
     } else if (!tag) {
       throw new Error("Invalid link");
     }
   }
 
-  async unfollow(link: NostrLink, autoCommit = false) {
-    this.#checkInit();
+  /**
+   * Unfollow a user
+   */
+  unfollow(link: NostrLink) {
+    this.#ensureInit();
     if (link.type !== NostrPrefix.Profile && link.type !== NostrPrefix.PublicKey) {
       throw new Error("Cannot follow this type of link");
     }
@@ -238,16 +301,16 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     const tag = link.toEventTag();
     if (tag && this.#contacts) {
       this.#contacts.remove(tag);
-      if (autoCommit) {
-        await this.saveContacts();
-      }
     } else if (!tag) {
       throw new Error("Invalid link");
     }
   }
 
-  async replaceFollows(links: Array<NostrLink>, autoCommit = false) {
-    this.#checkInit();
+  /**
+   * Replace the entire follow list
+   */
+  replaceFollows(links: Array<NostrLink>) {
+    this.#ensureInit();
     if (links.some(link => link.type !== NostrPrefix.Profile && link.type !== NostrPrefix.PublicKey)) {
       throw new Error("Cannot follow this type of link");
     }
@@ -255,56 +318,91 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     if (this.#contacts) {
       const tags = removeUndefined(links.map(link => link.toEventTag()));
       this.#contacts.replace(tags);
-      if (autoCommit) {
-        await this.saveContacts();
-      }
     }
   }
 
   /**
-   * Manually save contact list changes
-   *
-   * used with `autocommit = false`
+   * Save all pending contact list changes to Nostr
    */
   async saveContacts() {
-    this.#checkInit();
+    this.#ensureInit();
     const content = JSON.stringify(this.#relaysObject());
     await this.#contacts?.persist(this.#signer!, this.#system!, content);
   }
 
-  async addRelay(addr: string, settings: RelaySettings, autoCommit = false) {
-    this.#checkInit();
+  /**
+   * Save all pending changes (contacts + relays + app data + all lists) to Nostr
+   * This is a convenience method for saving everything at once
+   */
+  async saveAll() {
+    this.#ensureInit();
+    const tasks: Promise<void>[] = [];
 
+    // Save contacts if there are changes
+    if (this.#contacts) {
+      const content = JSON.stringify(this.#relaysObject());
+      tasks.push(this.#contacts.persist(this.#signer!, this.#system!, content));
+    }
+
+    // Save relays if there are changes
+    if (this.#relays) {
+      tasks.push(this.#relays.persist(this.#signer!, this.#system!));
+    }
+
+    // Save app data if there are changes
+    if (this.#appdata && this.#appdata.hasPendingChanges) {
+      tasks.push(this.#appdata.persist(this.#signer!, this.#system!));
+    }
+
+    // Save all standard lists
+    if (this.#standardLists) {
+      for (const list of this.#standardLists.values()) {
+        tasks.push(list.persist(this.#signer!, this.#system!));
+      }
+    }
+
+    await Promise.all(tasks);
+  }
+
+  /**
+   * Add a relay to the relay list
+   */
+  addRelay(addr: string, settings: RelaySettings) {
+    this.#ensureInit();
+    this.#addRelay(addr, settings);
+  }
+
+  #addRelay(addr: string, settings: RelaySettings) {
     const tag = settingsToRelayTag({
       url: addr,
       settings,
     });
     if (tag && this.#relays) {
       this.#relays.add(tag);
-      if (autoCommit) {
-        await this.saveRelays();
-      }
     } else if (!tag) {
       throw new Error("Invalid relay options");
     }
   }
 
-  async removeRelay(addr: string, autoCommit = false) {
-    this.#checkInit();
+  /**
+   * Remove a relay from the relay list
+   */
+  removeRelay(addr: string) {
+    this.#ensureInit();
 
     const url = sanitizeRelayUrl(addr);
     if (url && this.#relays) {
       this.#relays.remove(["r", url]);
-      if (autoCommit) {
-        await this.saveRelays();
-      }
     } else if (!url) {
       throw new Error("Invalid relay options");
     }
   }
 
-  async updateRelay(addr: string, settings: RelaySettings, autoCommit = false) {
-    this.#checkInit();
+  /**
+   * Update relay settings
+   */
+  updateRelay(addr: string, settings: RelaySettings) {
+    this.#ensureInit();
 
     const tag = settingsToRelayTag({
       url: addr,
@@ -313,99 +411,94 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     const url = sanitizeRelayUrl(addr);
     if (url && tag && this.#relays) {
       this.#relays.update(tag);
-      if (autoCommit) {
-        await this.saveRelays();
-      }
     } else if (!url && !tag) {
       throw new Error("Invalid relay options");
     }
   }
 
   /**
-   * Manually save relays
-   *
-   * used with `autocommit = false`
+   * Save all pending relay changes to Nostr
    */
   async saveRelays() {
-    this.#checkInit();
+    this.#ensureInit();
     await this.#relays?.persist(this.#signer!, this.#system!);
   }
 
-  async setAppData(data: TAppData) {
-    this.#checkInit();
+  /**
+   * Update app-specific data locally without saving to Nostr
+   * Call saveAppData() to persist changes
+   */
+  setAppData(data: TAppData) {
     if (!this.#appdata) {
       throw new Error("Not using appdata, please use options when constructing this class");
     }
-
-    await this.#appdata.updateJson(data, this.#signer!, this.#system!);
+    this.#appdata.setJson(data);
   }
 
   /**
-   * Add an item to the list
-   * @param kind List kind
-   * @param link Tag to save
-   * @param autoCommit Save after adding
-   * @param encrypted Tag is private and should be encrypted in the content
+   * Save pending app data changes to Nostr
    */
-  async addToList(
-    kind: EventKind,
-    links: ToNostrEventTag | Array<ToNostrEventTag>,
-    autoCommit = false,
-    encrypted = false,
-  ) {
+  async saveAppData() {
+    this.#ensureInit();
+    if (!this.#appdata) {
+      throw new Error("Not using appdata, please use options when constructing this class");
+    }
+    await this.#appdata.persist(this.#signer!, this.#system!);
+  }
+
+  /**
+   * Add an item to a list
+   * @param kind List kind (must be 10000-19999 range for standard lists)
+   * @param links Tag(s) to add
+   * @param encrypted Whether the tag should be encrypted in the content
+   */
+  addToList(kind: EventKind, links: ToNostrEventTag | Array<ToNostrEventTag>, encrypted = false) {
     this.checkIsStandardList(kind);
-    this.#checkInit();
+    this.#ensureInit();
     const list = this.#standardLists?.get(kind);
     const tags = removeUndefined(Array.isArray(links) ? links.map(a => a.toEventTag()) : [links.toEventTag()]);
     if (list && tags.length > 0) {
       list.add(tags, encrypted);
-      if (autoCommit) {
-        await this.saveList(kind);
-      }
     }
   }
 
   /**
-   * Remove an item to the list
-   * @param kind List kind
-   * @param link Tag to save
-   * @param autoCommit Save after adding
-   * @param encrypted Tag is private and should be encrypted in the content
+   * Remove an item from a list
+   * @param kind List kind (must be 10000-19999 range for standard lists)
+   * @param links Tag(s) to remove
+   * @param encrypted Whether the tag is encrypted in the content
    */
-  async removeFromList(
-    kind: EventKind,
-    links: ToNostrEventTag | Array<ToNostrEventTag>,
-    autoCommit = false,
-    encrypted = false,
-  ) {
+  removeFromList(kind: EventKind, links: ToNostrEventTag | Array<ToNostrEventTag>, encrypted = false) {
     this.checkIsStandardList(kind);
-    this.#checkInit();
+    this.#ensureInit();
     const list = this.#standardLists?.get(kind);
     const tags = removeUndefined(Array.isArray(links) ? links.map(a => a.toEventTag()) : [links.toEventTag()]);
     if (list && tags.length > 0) {
       list.remove(tags, encrypted);
-      if (autoCommit) {
-        await this.saveList(kind);
-      }
     }
   }
 
   /**
-   * Manuall save list changes
-   *
-   * used with `autocommit = false`
+   * Save pending changes to a specific list
    */
   async saveList(kind: EventKind, content?: string) {
+    this.#ensureInit();
     const list = this.#standardLists?.get(kind);
     await list?.persist(this.#signer!, this.#system!, content);
   }
 
-  async mute(link: NostrLink, autoCommit = false) {
-    await this.addToList(EventKind.MuteList, link, autoCommit, true);
+  /**
+   * Mute a user, event, or other item (added to encrypted mute list)
+   */
+  mute(link: NostrLink) {
+    this.addToList(EventKind.MuteList, link, true);
   }
 
-  async unmute(link: NostrLink, autoCommit = false) {
-    await this.removeFromList(EventKind.MuteList, link, autoCommit, true);
+  /**
+   * Unmute a user, event, or other item (removed from encrypted mute list)
+   */
+  unmute(link: NostrLink) {
+    this.removeFromList(EventKind.MuteList, link, true);
   }
 
   isOnList(kind: EventKind, link: ToNostrEventTag) {
@@ -442,9 +535,12 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     }
   }
 
-  #checkInit() {
+  /**
+   * Ensures init has been called before performing mutations
+   */
+  #ensureInit() {
     if (this.#signer === undefined || this.#system === undefined) {
-      throw new Error("Please call init() first");
+      throw new Error("Please call init() first before making changes");
     }
   }
 

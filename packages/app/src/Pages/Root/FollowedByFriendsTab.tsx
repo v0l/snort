@@ -8,7 +8,6 @@ export const FollowedByFriendsTab = () => {
     type: "global",
     items: [],
     discriminator: `followed-by-friends-${publicKey}`,
-    streams: true,
   };
 
   return <Timeline followDistance={2} subject={subject} postsOnly={true} method={"TIME_RANGE"} />;

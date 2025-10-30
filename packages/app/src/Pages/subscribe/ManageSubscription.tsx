@@ -34,12 +34,12 @@ export default function ManageSubscriptionPage() {
   }, []);
 
   if (!(error instanceof SubscriptionError) && error instanceof Error)
-    return <ErrorOrOffline error={error} onRetry={loadSubs} className="main-content p" />;
+    return <ErrorOrOffline error={error} onRetry={loadSubs} className="px-3 py-2" />;
   if (subs === undefined) {
     return <PageSpinner />;
   }
   return (
-    <div className="main-content p flex flex-col g16">
+    <div className="px-3 py-2 flex flex-col gap-4">
       <h2>
         <FormattedMessage defaultMessage="Subscriptions" />
       </h2>

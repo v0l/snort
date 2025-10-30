@@ -1,5 +1,3 @@
-import "./Layout.css";
-
 import { TraceTimelineOverlay } from "@snort/system-react";
 import { useCallback, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
@@ -76,7 +74,7 @@ export default function Index() {
       <ScrollToTop />
       <div className="flex justify-center">
         <div className="w-full max-w-screen-xl">
-          <div className="flex flex-row">
+          <div className="flex">
             <NavSidebar />
             <div className="flex flex-1 flex-col pb-safe-area-plus-footer w-full md:w-1/3">
               {!shouldHideHeader && <Header />}

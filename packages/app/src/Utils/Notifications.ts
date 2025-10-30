@@ -64,7 +64,6 @@ export async function sendNotification(state: LoginSession, req: NotificationReq
       const worker = await navigator.serviceWorker.ready;
       worker.showNotification(req.title, {
         tag: "notification",
-        vibrate: [500],
         ...req,
       });
     } catch (error) {
