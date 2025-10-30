@@ -90,7 +90,9 @@ export default function Text({
               const elementsGallery = elements.slice(i);
               const gal = findGallery(elementsGallery);
               if (gal && !(disableGallery ?? false)) {
-                chunks.push(buildGallery(elementsGallery, onMediaClick, creator));
+                chunks.push(buildGallery(elementsGallery.filter(a => a.content.trim().length > 0), onMediaClick, creator));
+                // skip to end of galary
+                i += elementsGallery.length;
               } else {
                 chunks.push(
                   <RevealMedia
@@ -226,13 +228,10 @@ function buildGallery(
   creator: string,
 ) {
   if (elements.length === 1) {
-    return <RevealMedia link={elements[0].content} meta={elements[0].data} size={baseImageWidth} creator={creator} />;
+    return <RevealMedia link={elements[0].content} meta={elements[0].data} creator={creator} onMediaClick={onMediaClick} />;
   } else {
     // We build a grid layout to render the grouped images
     const imagesWithGridConfig = elements
-      .filter(a => {
-        a.content.trim().length > 0; // remove the empty space
-      })
       .map((gi, index) => {
         const config = gridConfigMap.get(elements.length);
         let height = ROW_HEIGHT;
@@ -249,20 +248,15 @@ function buildGallery(
           height,
         };
       });
-    const size = Math.floor(baseImageWidth / Math.min(4, Math.ceil(Math.sqrt(elements.length))));
     const gallery = (
-      <div className="gallery -mx-4 md:mx-0 my-2 grid grid-cols-4 gap-0.5 list-none p-0 md:rounded-sm md:overflow-hidden">
+      <div className="grid grid-cols-4 gap-0.5 place-items-start">
         {imagesWithGridConfig.map(img => (
-          <div
-            key={img.content}
-            className="gallery-item block relative m-0"
-            style={{
-              height: `${img.height}px`,
-              gridColumn: `span ${img.gridColumn}`,
-              gridRow: `span ${img.gridRow}`,
-            }}>
-            <RevealMedia link={img.content} meta={img.data} size={size} creator={creator} />
-          </div>
+          <RevealMedia link={img.content} meta={img.data} creator={creator} onMediaClick={onMediaClick} style={{
+            gridColumn: `span ${img.gridColumn}`,
+            gridRow: `span ${img.gridRow}`,
+            height: img.height,
+            objectFit: "cover"
+          }} />
         ))}
       </div>
     );

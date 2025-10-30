@@ -20,9 +20,6 @@
   "+W+Kof": {
     "defaultMessage": "Cashu Wallet History"
   },
-  "+aZY2h": {
-    "defaultMessage": "Zap Type"
-  },
   "+mO9i4": {
     "defaultMessage": "Code Snippet"
   },
@@ -345,9 +342,6 @@
   "6OSOXl": {
     "defaultMessage": "Reason: <i>{reason}</i>"
   },
-  "6WWD34": {
-    "defaultMessage": "Looking for: {noteId}"
-  },
   "6Z3bDG": {
     "defaultMessage": "Cashu Wallet Event"
   },
@@ -562,9 +556,6 @@
   "BfuAQ5": {
     "defaultMessage": "Marketplace UI/UX"
   },
-  "BjNwZW": {
-    "defaultMessage": "Nostr address (nip05)"
-  },
   "Blxcdx": {
     "defaultMessage": "Relay",
     "description": "Relay name (URL)"
@@ -706,9 +697,6 @@
   },
   "EcZF24": {
     "defaultMessage": "Custom Relays"
-  },
-  "EcfIwB": {
-    "defaultMessage": "Username is available"
   },
   "EcglP9": {
     "defaultMessage": "Key"
@@ -928,9 +916,6 @@
   "J6N9xl": {
     "defaultMessage": "Sign in with Android signer"
   },
-  "JCIgkj": {
-    "defaultMessage": "Username"
-  },
   "JGrt9q": {
     "defaultMessage": "Send sats to {name}"
   },
@@ -1067,9 +1052,6 @@
   "MYUBaG": {
     "defaultMessage": "Client Authentication"
   },
-  "MiMipu": {
-    "defaultMessage": "Set as primary Nostr address (nip05)"
-  },
   "MkQ4FX": {
     "defaultMessage": "Proxy Tags"
   },
@@ -1087,9 +1069,6 @@
   },
   "MzRYWH": {
     "defaultMessage": "Buying {item}"
-  },
-  "Mzizei": {
-    "defaultMessage": "Iris.to account"
   },
   "N2IrpM": {
     "defaultMessage": "Confirm"
@@ -1145,9 +1124,6 @@
   "ORa81+": {
     "defaultMessage": "Merge Requests"
   },
-  "OoZgbB": {
-    "defaultMessage": "Failed to update, please try again"
-  },
   "OuProE": {
     "defaultMessage": "Long-form Content"
   },
@@ -1174,6 +1150,9 @@
   },
   "PCSt5T": {
     "defaultMessage": "Preferences"
+  },
+  "PJLVAh": {
+    "defaultMessage": "Invalid cashu token"
   },
   "PXQ0z0": {
     "defaultMessage": "Receiving to <b>{wallet}</b>"
@@ -1252,9 +1231,6 @@
   },
   "SLZGPn": {
     "defaultMessage": "Enter a pin to encrypt your private key, you must enter this pin every time you open {site}."
-  },
-  "SMO+on": {
-    "defaultMessage": "Send zap to {name}"
   },
   "SOqbe9": {
     "defaultMessage": "Update Lightning Address"
@@ -1341,9 +1317,6 @@
   "Tpy00S": {
     "defaultMessage": "People"
   },
-  "TvKqBp": {
-    "defaultMessage": "liked"
-  },
   "TwyMau": {
     "defaultMessage": "Account"
   },
@@ -1386,14 +1359,14 @@
   "Ups2/p": {
     "defaultMessage": "Your application is pending"
   },
-  "UrKTqQ": {
-    "defaultMessage": "You have an active iris.to account"
-  },
   "UsCzPc": {
     "defaultMessage": "Share a personalized invitation with friends!"
   },
   "UxgyeY": {
     "defaultMessage": "Your referral code is {code}"
+  },
+  "UxkETt": {
+    "defaultMessage": "Show Thread Data"
   },
   "V20Og0": {
     "defaultMessage": "Labeling"
@@ -1406,9 +1379,6 @@
   },
   "VR5eHw": {
     "defaultMessage": "Public key (npub/nprofile)"
-  },
-  "VcwrfF": {
-    "defaultMessage": "Yes please"
   },
   "VfhYxG": {
     "defaultMessage": "To see a full list of changes you can view the changelog {here}"
@@ -1503,6 +1473,9 @@
   "YXA3AH": {
     "defaultMessage": "Enable reactions"
   },
+  "YYUgme": {
+    "defaultMessage": "Badge Info"
+  },
   "Yf3DwC": {
     "defaultMessage": "Connect a wallet to send instant payments"
   },
@@ -1530,9 +1503,6 @@
   "ZT17bG": {
     "defaultMessage": "Cashu Wallet Tokens"
   },
-  "Zff6lu": {
-    "defaultMessage": "Username iris.to/<b>{name}</b> is reserved for you!"
-  },
   "ZlIh4/": {
     "defaultMessage": "Encrypted Direct Messages"
   },
@@ -1559,6 +1529,9 @@
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
+  },
+  "aYJIC7": {
+    "defaultMessage": "Zap Type:"
   },
   "abbGKq": {
     "defaultMessage": "{n} km"
@@ -1601,9 +1574,6 @@
   },
   "c+1p0i": {
     "defaultMessage": "Kind mute sets"
-  },
-  "c+JYNI": {
-    "defaultMessage": "No thanks"
   },
   "c2T+1B": {
     "defaultMessage": "Redirects"
@@ -1654,6 +1624,9 @@
   "cnwHgH": {
     "defaultMessage": "OpenTimestamps"
   },
+  "ctXnlV": {
+    "defaultMessage": "Zap amount:"
+  },
   "cuP16y": {
     "defaultMessage": "Multi account support"
   },
@@ -1686,9 +1659,6 @@
   },
   "ddd3JX": {
     "defaultMessage": "Popular Hashtags"
-  },
-  "deEeEI": {
-    "defaultMessage": "Register"
   },
   "djLctd": {
     "defaultMessage": "Amount in sats"
@@ -1837,6 +1807,9 @@
   "h1gtUi": {
     "defaultMessage": "Poll"
   },
+  "h3FJTU": {
+    "defaultMessage": "Not a thread!"
+  },
   "h7jvCs": {
     "defaultMessage": "{site} is more fun together!"
   },
@@ -1924,6 +1897,9 @@
   "itPgxd": {
     "defaultMessage": "Profile"
   },
+  "ixpzZx": {
+    "defaultMessage": "{name} liked"
+  },
   "izWS4J": {
     "defaultMessage": "Unfollow"
   },
@@ -1962,9 +1938,6 @@
   },
   "k9SQm1": {
     "defaultMessage": "Relays which you have connected to before and appear to be reliable."
-  },
-  "kEZUR8": {
-    "defaultMessage": "Register an Iris username"
   },
   "kJYo0u": {
     "defaultMessage": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"
@@ -2113,6 +2086,9 @@
   "o7e+nJ": {
     "defaultMessage": "{n} followers"
   },
+  "oHPB8Q": {
+    "defaultMessage": "Zap {name}"
+  },
   "oJ+JJN": {
     "defaultMessage": "Nothing found :/"
   },
@@ -2254,9 +2230,6 @@
   "rn52n9": {
     "defaultMessage": "Public Chat Channels"
   },
-  "rx1i0i": {
-    "defaultMessage": "Short link"
-  },
   "sFUkSN": {
     "defaultMessage": "Bookmark sets"
   },
@@ -2265,6 +2238,12 @@
   },
   "sUNhQE": {
     "defaultMessage": "user"
+  },
+  "sV1+m+": {
+    "defaultMessage": "Loading context..."
+  },
+  "sXNv9b": {
+    "defaultMessage": "Invalid notification context"
   },
   "sZQzjQ": {
     "defaultMessage": "Failed to parse zap split: {input}"
@@ -2377,6 +2356,9 @@
   "vN5UH8": {
     "defaultMessage": "Profile Image"
   },
+  "vOKedj": {
+    "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
+  },
   "vU/Q5i": {
     "defaultMessage": "This tool will search for the last event published by all of your follows and remove those who have not posted in 6 months"
   },
@@ -2391,6 +2373,9 @@
   },
   "voxBKC": {
     "defaultMessage": "Followed by friends"
+  },
+  "vuMG+5": {
+    "defaultMessage": "Looking for:"
   },
   "vxwnbh": {
     "defaultMessage": "Amount of work to apply to all published events"
@@ -2505,9 +2490,6 @@
   },
   "zQvVDJ": {
     "defaultMessage": "All"
-  },
-  "zcaOTs": {
-    "defaultMessage": "Zap amount in sats"
   },
   "zi9MdS": {
     "defaultMessage": "Chess (PGN)"

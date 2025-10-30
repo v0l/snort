@@ -3,15 +3,16 @@ import classNames from "classnames";
 import React, { CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-import { ProxyImg } from "@/Components/ProxyImg";
+import { ProxyImg, ProxyImgProps } from "@/Components/ProxyImg";
 import useImgProxy from "@/Hooks/useImgProxy";
 
-interface MediaElementProps {
+export interface MediaElementProps {
   mime: string;
   url: string;
   meta?: IMeta;
   onMediaClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
   size?: number;
+  style?: CSSProperties
 }
 
 interface AudioElementProps {
@@ -23,10 +24,8 @@ interface VideoElementProps {
   meta?: IMeta;
 }
 
-interface ImageElementProps {
-  url: string;
+export type ImageElementProps = ProxyImgProps & {
   meta?: IMeta;
-  size?: number;
   onMediaClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
 }
 
@@ -34,46 +33,37 @@ const AudioElement = ({ url }: AudioElementProps) => {
   return <audio key={url} src={url} controls />;
 };
 
-const ImageElement = ({ url, meta, onMediaClick, size }: ImageElementProps) => {
+const ImageElement = ({ src, meta, onMediaClick, size, ...props }: ImageElementProps) => {
   const imageRef = useRef<HTMLImageElement | null>(null);
-  const style = useMemo(() => {
-    const style = {} as CSSProperties;
+  const iMetaScaledHeight = useMemo(() => {
     if (meta?.height && meta.width && imageRef.current) {
       const scale = imageRef.current.offsetWidth / meta.width;
-      style.height = `${Math.min(document.body.clientHeight * 0.8, meta.height * scale)}px`;
+      return `${Math.min(document.body.clientHeight * 0.8, meta.height * scale)}px`;
     }
-    return style;
-  }, [imageRef?.current, meta]);
+  }, [imageRef, meta]);
+  console.debug(iMetaScaledHeight);
 
   const [alternatives, setAlternatives] = useState<Array<string>>(meta?.fallback ?? []);
-  const [currentUrl, setCurrentUrl] = useState<string>(url);
-  return (
-    <div
-      className={classNames("flex items-center -mx-4 md:mx-0 my-2", {
-        "md:h-[510px]": !meta && !CONFIG.media.preferLargeMedia,
-        "cursor-pointer": onMediaClick,
-      })}>
-      <ProxyImg
-        key={currentUrl}
-        src={currentUrl}
-        size={size}
-        sha256={meta?.sha256}
-        onClick={onMediaClick}
-        className={classNames("max-h-[80vh] w-full h-full object-contain object-center", {
-          "md:max-h-[510px]": !meta && !CONFIG.media.preferLargeMedia,
-        })}
-        style={style}
-        ref={imageRef}
-        onError={() => {
-          const next = alternatives.at(0);
-          if (next) {
-            console.warn("IMG FALLBACK", "Failed to load url, trying next: ", next);
-            setAlternatives(z => z.filter(y => y !== next));
-            setCurrentUrl(next);
-          }
-        }}
-      />
-    </div>
+  const [currentUrl, setCurrentUrl] = useState(src);
+  return (<ProxyImg
+    {...props}
+    key={currentUrl}
+    src={currentUrl}
+    sha256={meta?.sha256}
+    onClick={onMediaClick}
+    className={classNames("max-h-[80vh] w-full h-full object-contain object-center", {
+      "md:max-h-[510px]": !meta && !CONFIG.media.preferLargeMedia,
+    })}
+    ref={imageRef}
+    onError={() => {
+      const next = alternatives.at(0);
+      if (next) {
+        console.warn("IMG FALLBACK", "Failed to load url, trying next: ", next);
+        setAlternatives(z => z.filter(y => y !== next));
+        setCurrentUrl(next);
+      }
+    }}
+  />
   );
 };
 
@@ -117,7 +107,7 @@ const VideoElement = ({ url }: VideoElementProps) => {
 
 export function MediaElement(props: MediaElementProps) {
   if (props.mime.startsWith("image/")) {
-    return <ImageElement url={props.url} meta={props.meta} onMediaClick={props.onMediaClick} size={props.size} />;
+    return <ImageElement src={props.url} meta={props.meta} onMediaClick={props.onMediaClick} size={props.size} style={props.style} />;
   } else if (props.mime.startsWith("audio/")) {
     return <AudioElement url={props.url} />;
   } else if (props.mime.startsWith("video/")) {

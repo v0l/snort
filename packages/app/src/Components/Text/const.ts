@@ -47,5 +47,5 @@ export const gridConfigMap = new Map<number, number[][]>([
     ],
   ],
 ]);
-export const ROW_HEIGHT = 140;
+export const ROW_HEIGHT = 200;
 export const GRID_GAP = 2;

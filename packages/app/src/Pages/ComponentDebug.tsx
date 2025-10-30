@@ -188,18 +188,81 @@ const SAMPLE_TEXT_NOTE = {
 } as NostrEvent;
 SAMPLE_TEXT_NOTE.id = EventExt.createId(SAMPLE_TEXT_NOTE);
 
-// Sample note with gallery (multiple images)
-const SAMPLE_GALLERY_NOTE = {
+// Sample note with gallery (1 image)
+const SAMPLE_GALLERY_1_NOTE = {
+  id: "",
+  pubkey: SAMPLE_HEX_PUBKEY,
+  created_at: unixNow(),
+  kind: 1,
+  tags: [],
+  content: "Single image gallery\n\nhttps://picsum.photos/800/600.jpg",
+  sig: "",
+} as NostrEvent;
+SAMPLE_GALLERY_1_NOTE.id = EventExt.createId(SAMPLE_GALLERY_1_NOTE);
+
+// Sample note with gallery (2 images)
+const SAMPLE_GALLERY_2_NOTE = {
+  id: "",
+  pubkey: SAMPLE_HEX_PUBKEY,
+  created_at: unixNow(),
+  kind: 1,
+  tags: [],
+  content: "Two images side by side\n\nhttps://picsum.photos/400/400.jpg\nhttps://picsum.photos/400/400.jpg",
+  sig: "",
+} as NostrEvent;
+SAMPLE_GALLERY_2_NOTE.id = EventExt.createId(SAMPLE_GALLERY_2_NOTE);
+
+// Sample note with gallery (3 images)
+const SAMPLE_GALLERY_3_NOTE = {
   id: "",
   pubkey: SAMPLE_HEX_PUBKEY,
   created_at: unixNow(),
   kind: 1,
   tags: [],
   content:
-    "Check out these images!\n\nhttps://picsum.photos/400/300.jpg\nhttps://picsum.photos/400/400.jpg\nhttps://picsum.photos/300/400.jpg\nhttps://picsum.photos/500/300.jpg",
+    "Three images - one big, two small\n\nhttps://picsum.photos/500/500.jpg\nhttps://picsum.photos/300/300.jpg\nhttps://picsum.photos/300/300.jpg",
   sig: "",
 } as NostrEvent;
-SAMPLE_GALLERY_NOTE.id = EventExt.createId(SAMPLE_GALLERY_NOTE);
+SAMPLE_GALLERY_3_NOTE.id = EventExt.createId(SAMPLE_GALLERY_3_NOTE);
+
+// Sample note with gallery (4 images)
+const SAMPLE_GALLERY_4_NOTE = {
+  id: "",
+  pubkey: SAMPLE_HEX_PUBKEY,
+  created_at: unixNow(),
+  kind: 1,
+  tags: [],
+  content:
+    "Four images in a grid\n\nhttps://picsum.photos/400/300.jpg\nhttps://picsum.photos/400/300.jpg\nhttps://picsum.photos/400/300.jpg\nhttps://picsum.photos/400/300.jpg",
+  sig: "",
+} as NostrEvent;
+SAMPLE_GALLERY_4_NOTE.id = EventExt.createId(SAMPLE_GALLERY_4_NOTE);
+
+// Sample note with gallery (5 images)
+const SAMPLE_GALLERY_5_NOTE = {
+  id: "",
+  pubkey: SAMPLE_HEX_PUBKEY,
+  created_at: unixNow(),
+  kind: 1,
+  tags: [],
+  content:
+    "Five images mixed layout\n\nhttps://picsum.photos/450/300.jpg\nhttps://picsum.photos/450/300.jpg\nhttps://picsum.photos/450/300.jpg\nhttps://picsum.photos/250/300.jpg\nhttps://picsum.photos/250/300.jpg",
+  sig: "",
+} as NostrEvent;
+SAMPLE_GALLERY_5_NOTE.id = EventExt.createId(SAMPLE_GALLERY_5_NOTE);
+
+// Sample note with gallery (6 images)
+const SAMPLE_GALLERY_6_NOTE = {
+  id: "",
+  pubkey: SAMPLE_HEX_PUBKEY,
+  created_at: unixNow(),
+  kind: 1,
+  tags: [],
+  content:
+    "Six images complex layout\n\nhttps://picsum.photos/500/500.jpg\nhttps://picsum.photos/250/250.jpg\nhttps://picsum.photos/250/250.jpg\nhttps://picsum.photos/500/500.jpg\nhttps://picsum.photos/250/250.jpg\nhttps://picsum.photos/250/250.jpg",
+  sig: "",
+} as NostrEvent;
+SAMPLE_GALLERY_6_NOTE.id = EventExt.createId(SAMPLE_GALLERY_6_NOTE);
 
 // Sample repost (kind 6)
 const SAMPLE_REPOST = {
@@ -729,8 +792,33 @@ export default function ComponentDebugPage() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-2">Note with Image Gallery (Kind 1)</h3>
-            <Note data={SAMPLE_GALLERY_NOTE} />
+            <h3 className="text-lg font-semibold mb-2">Note with Image Gallery - 1 Image</h3>
+            <Note data={SAMPLE_GALLERY_1_NOTE} />
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Note with Image Gallery - 2 Images (Side by Side)</h3>
+            <Note data={SAMPLE_GALLERY_2_NOTE} />
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Note with Image Gallery - 3 Images (1 Big + 2 Small)</h3>
+            <Note data={SAMPLE_GALLERY_3_NOTE} />
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Note with Image Gallery - 4 Images (Grid)</h3>
+            <Note data={SAMPLE_GALLERY_4_NOTE} />
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Note with Image Gallery - 5 Images (Mixed Layout)</h3>
+            <Note data={SAMPLE_GALLERY_5_NOTE} />
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Note with Image Gallery - 6 Images (Complex Layout)</h3>
+            <Note data={SAMPLE_GALLERY_6_NOTE} />
           </div>
 
           <div>

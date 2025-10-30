@@ -4,7 +4,7 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "bun run --workspaces build && cd packages/app && bun run start",
+    "start": "bun run build && bun --cwd=packages/app run start",
     "build": "bun --cwd=packages/shared run build && bun --cwd=packages/system run build && bun --cwd=packages/system-web run build && bun --cwd=packages/wallet run build && bun --cwd=packages/worker-relay run build && bun --cwd=packages/app run build",
     "push-prod": "git switch snort-prod && git merge --ff-only main && git push && git checkout main",
     "docs": "typedoc --entryPointStrategy packages ./packages/* --exclude ./packages/app --exclude ./packages/webrtc-server --name snort.social"
