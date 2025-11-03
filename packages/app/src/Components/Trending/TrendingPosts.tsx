@@ -27,6 +27,7 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
     storageKey,
     data => data.notes.map(e => e.event),
     60 * 60,
+    60
   );
 
   const options = useMemo(
@@ -43,7 +44,7 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
 
   const { isEventMuted } = useModeration();
   if (error && !trendingNotesData) return <ErrorOrOffline error={error} className="px-3 py-2" />;
-  if (isLoading && !data) return <PageSpinner />;
+  if (isLoading || !data) return <PageSpinner />;
 
   const filteredAndLimitedPosts = trendingNotesData
     ? trendingNotesData.filter(a => !isEventMuted(a)).slice(0, count)
