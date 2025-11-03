@@ -80,5 +80,5 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
 
 export function ProfileBadges({ pubkey }: { pubkey: string }) {
   const badges = useProfileBadges(pubkey);
-  return <BadgeList badges={badges} />
+  return <BadgeList badges={badges} />;
 }

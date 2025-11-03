@@ -100,6 +100,6 @@ export const RootTabRoutes: RootTabRoute[] = [
   },
   {
     path: "suggested",
-    element: <SuggestedProfiles />
-  }
+    element: <SuggestedProfiles />,
+  },
 ];

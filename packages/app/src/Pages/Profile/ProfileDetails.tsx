@@ -49,7 +49,7 @@ const ProfileDetails = ({
         </h2>
         {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
       </div>
-      {(showBadges && id) && <ProfileBadges pubkey={id} />}
+      {showBadges && id && <ProfileBadges pubkey={id} />}
       {showStatus && id && <MusicStatus id={id} />}
       {links()}
     </>
@@ -68,14 +68,14 @@ const ProfileDetails = ({
         targets={
           lnurl?.lnurl && id
             ? [
-              {
-                type: "lnurl",
-                value: lnurl?.lnurl,
-                weight: 1,
-                name: user?.display_name || user?.name,
-                zap: { pubkey: id, anon: false },
-              },
-            ]
+                {
+                  type: "lnurl",
+                  value: lnurl?.lnurl,
+                  weight: 1,
+                  name: user?.display_name || user?.name,
+                  zap: { pubkey: id, anon: false },
+                },
+              ]
             : undefined
         }
         show={showLnQr}
