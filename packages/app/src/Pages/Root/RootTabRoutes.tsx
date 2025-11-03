@@ -14,6 +14,7 @@ import { TopicsPage } from "@/Pages/TopicsPage";
 import { ReactElement } from "react";
 import RelayFeedPage from "@/Pages/Root/RelayFeedPage";
 import { RouteObject } from "react-router-dom";
+import SuggestedProfiles from "@/Components/SuggestedProfiles";
 
 export type RootTabRoutePath =
   | ""
@@ -97,4 +98,8 @@ export const RootTabRoutes: RootTabRoute[] = [
     path: "relay/:relay?",
     element: <RelayFeedPage />,
   },
+  {
+    path: "suggested",
+    element: <SuggestedProfiles />
+  }
 ];

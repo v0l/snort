@@ -1,66 +1,28 @@
-import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import PageSpinner from "@/Components/PageSpinner";
-import TrendingUsers from "@/Components/Trending/TrendingUsers";
 import FollowListBase from "@/Components/User/FollowListBase";
-import NostrBandApi from "@/External/NostrBand";
-import useCachedFetch from "@/Hooks/useCachedFetch";
-import useLogin from "@/Hooks/useLogin";
+import useDVMLinks from "@/Hooks/useDvmLinks";
+import { NostrPrefix } from "@snort/shared";
+import { NostrLink } from "@snort/system";
 
-import { ErrorOrOffline } from "./ErrorOrOffline";
-import { hexToBech32, NostrPrefix } from "@snort/shared";
-
-enum Provider {
-  NostrBand = 1,
-}
+const vertexParams = {
+  sort: "globalPagerank",
+  limit: "30"
+};
+const relays = ["wss://relay.vertexlab.io"];
 
 export default function SuggestedProfiles() {
-  const publicKey = useLogin(s => s.publicKey);
-  const [provider, setProvider] = useState(Provider.NostrBand);
-
-  const getUrlAndKey = () => {
-    if (!publicKey) return { url: null, key: null };
-    switch (provider) {
-      case Provider.NostrBand: {
-        const api = new NostrBandApi();
-        const url = api.suggestedFollowsUrl(hexToBech32(NostrPrefix.PublicKey, publicKey));
-        return { url, key: `nostr-band-${url}` };
-      }
-      default:
-        return { url: null, key: null };
-    }
-  };
-
-  const { url, key } = getUrlAndKey();
-  const {
-    data: userList,
-    error,
-    isLoading,
-  } = useCachedFetch(url, key, data => {
-    switch (provider) {
-      case Provider.NostrBand:
-        return data.profiles.map(a => a.pubkey);
-      default:
-        return [];
-    }
+  const { links } = useDVMLinks(5313, undefined, undefined, vertexParams, relays, (c) => {
+    const rsp = JSON.parse(c) as Array<{ pubkey: string, rank: number }>;
+    return Object.values(rsp).map(a => NostrLink.publicKey(a.pubkey));
   });
-
-  if (error) return <ErrorOrOffline error={error} onRetry={() => {}} />;
-  if (isLoading) return <PageSpinner />;
-  if (userList.length === 0) return <TrendingUsers title={""} />;
-
+  if (!links) return <PageSpinner />
   return (
     <>
-      <div className="flex items-center justify-between layer-1">
-        <FormattedMessage defaultMessage="Provider" />
-        <select onChange={e => setProvider(Number(e.target.value))}>
-          <option value={Provider.NostrBand}>nostr.band</option>
-          {/*<option value={Provider.SemisolDev}>semisol.dev</option>*/}
-        </select>
-      </div>
       <FollowListBase
-        pubkeys={userList}
+        className="px-2"
+        pubkeys={links?.filter(a => a.type === NostrPrefix.Profile || a.type === NostrPrefix.PublicKey).map(a => a.id) ?? []}
         profilePreviewProps={{
           options: {
             about: true,

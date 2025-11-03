@@ -16,7 +16,7 @@ import useWindowSize from "@/Hooks/useWindowSize";
 import IconButton from "@/Components/Button/IconButton";
 import { useState } from "react";
 import { setPreference } from "@/Utils/Login";
-import DvmSelector from "@/Components/Trending/DvmSelector";
+import DvmSelector from "@/Components/DvmSelector";
 import usePreferences from "@/Hooks/usePreferences";
 
 export default function RightColumn() {
