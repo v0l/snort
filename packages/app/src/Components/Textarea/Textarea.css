@@ -3,25 +3,25 @@
 }
 
 .rta__list {
-  border: none;
+  border-radius: 1rem;
+  border-color: var(--color-layer-2);
+  overflow: hidden;
+  background: var(--color-layer-1);
 }
 
 .rta__item:not(:last-child) {
   border: none;
 }
 
-.rta__entity--selected .user-item,
-.rta__entity--selected .emoji-item {
+.rta__item {
+  background: none;
+}
+
+.rta__entity {
+  background: none;
+}
+
+.rta__entity--selected {
   text-decoration: none;
-  background: var(--gray-secondary);
-}
-
-.user-picture .avatar {
-  border-width: 1px;
-  width: 40px;
-  height: 40px;
-}
-
-.user-item .nip05 {
-  font-size: var(--font-size-tiny);
+  background: var(--color-layer-2);
 }

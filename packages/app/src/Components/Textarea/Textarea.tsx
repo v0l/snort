@@ -7,12 +7,12 @@ import { useIntl } from "react-intl";
 import TextareaAutosize from "react-textarea-autosize";
 
 import Avatar from "@/Components/User/Avatar";
-import Nip05 from "@/Components/User/Nip05";
 import { FuzzySearchResult } from "@/Db/FuzzySearch";
 import useProfileSearch from "@/Hooks/useProfileSearch";
 import searchEmoji from "@/Utils/emoji-search";
 
 import messages from "../messages";
+import DisplayName from "../User/DisplayName";
 
 export interface EmojiItemProps {
   name: string;
@@ -21,24 +21,18 @@ export interface EmojiItemProps {
 
 const EmojiItem = ({ entity: { name, char } }: { entity: EmojiItemProps }) => {
   return (
-    <div className="text-sm flex flex-row items-center p-2.5 layer-1">
-      <div className="emoji mr-1 min-w-[20px]">{char}</div>
-      <div className="emoji-name font-bold">{name}</div>
+    <div className="flex flex-row items-center gap-2 !py-3 !px-4">
+      <div className="min-w-4">{char}</div>
+      <div className="font-bold">{name}</div>
     </div>
   );
 };
 
 const UserItem = (metadata: FuzzySearchResult) => {
-  const { pubkey, display_name, nip05, ...rest } = metadata;
   return (
-    <div key={pubkey} className="flex flex-row items-center text-base p-2.5 ">
-      <div className="flex items-center justify-center mr-2 layer-1">
-        <Avatar pubkey={pubkey} user={metadata} />
-      </div>
-      <div className="user-details flex flex-col items-start">
-        <strong>{display_name || rest.name}</strong>
-        <Nip05 nip05={nip05} pubkey={pubkey} />
-      </div>
+    <div key={metadata.pubkey} className="flex flex-row items-center gap-2 !py-3 !px-4">
+      <Avatar pubkey={metadata.pubkey} user={metadata} size={28} />
+      <DisplayName pubkey={metadata.pubkey} user={metadata} />
     </div>
   );
 };
