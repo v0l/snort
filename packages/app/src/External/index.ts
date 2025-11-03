@@ -1,7 +1,6 @@
 import { throwIfOffline, unwrap } from "@snort/shared";
 
 export * from "./NostrBand";
-export * from "./SemisolDev";
 
 export abstract class JsonApi {
   abstract url: string;
