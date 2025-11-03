@@ -32,14 +32,14 @@ export default function RightColumn() {
 
   const widgets = pubkey
     ? [
-      RightColumnWidget.TaskList,
-      RightColumnWidget.InviteFriends,
-      //RightColumnWidget.LiveStreams,
-      RightColumnWidget.TrendingNotes,
-      RightColumnWidget.LatestArticls,
-      RightColumnWidget.TrendingPeople,
-      RightColumnWidget.TrendingHashtags,
-    ]
+        RightColumnWidget.TaskList,
+        RightColumnWidget.InviteFriends,
+        //RightColumnWidget.LiveStreams,
+        RightColumnWidget.TrendingNotes,
+        RightColumnWidget.LatestArticls,
+        RightColumnWidget.TrendingPeople,
+        RightColumnWidget.TrendingHashtags,
+      ]
     : [RightColumnWidget.TrendingPeople, RightColumnWidget.TrendingHashtags];
 
   const getWidget = (t: RightColumnWidget) => {
@@ -48,10 +48,11 @@ export default function RightColumn() {
         return <TaskList />;
       case RightColumnWidget.TrendingNotes:
         return (
-          <BaseWidget title={<FormattedMessage defaultMessage="Trending Notes" />} contextMenu={<IconButton
-            onClick={() => setShowDvmSelector(true)}
-            icon={{ name: "settings-02", size: 18 }}
-          />}>
+          <BaseWidget
+            title={<FormattedMessage defaultMessage="Trending Notes" />}
+            contextMenu={
+              <IconButton onClick={() => setShowDvmSelector(true)} icon={{ name: "settings-02", size: 18 }} />
+            }>
             <TrendingNotes small={true} count={6} />
           </BaseWidget>
         );
@@ -99,7 +100,7 @@ export default function RightColumn() {
         <DvmSelector
           kind={5300}
           onClose={() => setShowDvmSelector(false)}
-          onSelect={(p) => {
+          onSelect={p => {
             setPreference({ trendingDvmPubkey: p });
           }}
           currentProvider={currentProvider}

@@ -1,12 +1,20 @@
-import { EventKind, mapEventToProfile, NostrEvent, NostrLink, RequestBuilder, TaggedNostrEvent, UserMetadata } from "@snort/system";
+import {
+  EventKind,
+  mapEventToProfile,
+  NostrEvent,
+  NostrLink,
+  RequestBuilder,
+  TaggedNostrEvent,
+  UserMetadata,
+} from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 import useWoT from "./useWoT";
 
 export interface AppHandler {
-  event: TaggedNostrEvent,
-  metadata?: UserMetadata,
-  reccomendations: Array<NostrEvent>
+  event: TaggedNostrEvent;
+  metadata?: UserMetadata;
+  reccomendations: Array<NostrEvent>;
 }
 
 export default function useAppHandler(kind: EventKind): Array<AppHandler> {
@@ -40,9 +48,9 @@ export default function useAppHandler(kind: EventKind): Array<AppHandler> {
     return {
       event: a,
       metadata: meta,
-      reccomendations: wot.sortEvents(dataRecommends.filter(a => link.isReplyToThis(a)))
+      reccomendations: wot.sortEvents(dataRecommends.filter(a => link.isReplyToThis(a))),
     } as AppHandler;
   });
 
-  return apps.sort((a, b) => a.reccomendations.length > b.reccomendations.length ? -1 : 1)
+  return apps.sort((a, b) => (a.reccomendations.length > b.reccomendations.length ? -1 : 1));
 }

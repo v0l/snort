@@ -176,7 +176,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       this.ReconnectTimer = undefined;
       try {
         this.connect();
-      } catch { }
+      } catch {}
     }, this.ConnectTimeout);
   }
 

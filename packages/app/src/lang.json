@@ -207,6 +207,9 @@
   "3QwfJR": {
     "defaultMessage": "~{amount}"
   },
+  "3VI9mt": {
+    "defaultMessage": "Save Changes"
+  },
   "3adEeb": {
     "defaultMessage": "{n} viewers"
   },
@@ -303,6 +306,9 @@
   "5qEWCr": {
     "defaultMessage": "File Metadata"
   },
+  "5tgBVG": {
+    "defaultMessage": "You have unsaved changes to your profile, contacts, relays, or settings."
+  },
   "5u6iEc": {
     "defaultMessage": "Transfer to Pubkey"
   },
@@ -392,6 +398,9 @@
   },
   "7YkSA2": {
     "defaultMessage": "Community Leader"
+  },
+  "7aCUzE": {
+    "defaultMessage": "Choose a DVM (Data Vending Machine) to provide content."
   },
   "7gMmSL": {
     "defaultMessage": "Reaction"
@@ -680,6 +689,9 @@
   "EQKRE4": {
     "defaultMessage": "Show badges on profile pages"
   },
+  "EW5L+2": {
+    "defaultMessage": "Select Provider"
+  },
   "EWeVrH": {
     "defaultMessage": "Reaction to a website"
   },
@@ -846,6 +858,9 @@
   },
   "HpAmQZ": {
     "defaultMessage": "Relay reviews"
+  },
+  "HqOhtW": {
+    "defaultMessage": "No DVM providers found"
   },
   "HqRNN8": {
     "defaultMessage": "Support"

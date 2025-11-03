@@ -28,9 +28,7 @@ function PendingChangesContent() {
   return (
     <>
       <p>
-        <FormattedMessage
-          defaultMessage="You have unsaved changes to your profile, contacts, relays, or settings."
-        />
+        <FormattedMessage defaultMessage="You have unsaved changes to your profile, contacts, relays, or settings." />
       </p>
       <AsyncButton onClick={handleSave}>
         <FormattedMessage defaultMessage="Save Changes" />

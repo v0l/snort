@@ -119,8 +119,8 @@ export function setPreference(obj: Partial<UserPreferences>) {
   const p = {
     preferences: {
       ...session.state.appdata.preferences,
-      ...obj
-    }
+      ...obj,
+    },
   };
   session.state.setAppData(p);
 }

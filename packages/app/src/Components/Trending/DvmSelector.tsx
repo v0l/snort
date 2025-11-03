@@ -8,7 +8,7 @@ import DisplayName from "@/Components/User/DisplayName";
 import Icon from "@/Components/Icons/Icon";
 
 interface DvmSelectorProps {
-  kind: number,
+  kind: number;
   onClose: () => void;
   onSelect: (pubkey: string) => void;
   currentProvider?: string;
@@ -41,35 +41,36 @@ export default function DvmSelector({ kind, onClose, onSelect, currentProvider }
               <FormattedMessage defaultMessage="No DVM providers found" />
             </div>
           ) : (
-            apps.sort((a, _) => currentProvider === a.event.pubkey ? -1 : 0).map(app => {
-              const isSelected = currentProvider === app.event.pubkey;
+            apps
+              .sort((a, _) => (currentProvider === a.event.pubkey ? -1 : 0))
+              .map(app => {
+                const isSelected = currentProvider === app.event.pubkey;
 
-              return (
-                <div
-                  key={app.event.id}
-                  onClick={() => handleSelect(app.event.pubkey)}
-                  className={`flex items-start gap-3 layer-1-hover mr-1`}>
-                  <Avatar pubkey={app.event.pubkey} user={app.metadata} size={48} />
-                  <div className="flex flex-col flex-1">
-                    <div className="flex items-center gap-2">
-                      <DisplayName pubkey={app.event.pubkey} user={app.metadata} />
-                      {isSelected && (
-                        <Icon name="check" size={16} className="text-highlight" />
-                      )}
+                return (
+                  <div
+                    key={app.event.id}
+                    onClick={() => handleSelect(app.event.pubkey)}
+                    className={`flex items-start gap-3 layer-1-hover mr-1`}>
+                    <Avatar pubkey={app.event.pubkey} user={app.metadata} size={48} />
+                    <div className="flex flex-col flex-1">
+                      <div className="flex items-center gap-2">
+                        <DisplayName pubkey={app.event.pubkey} user={app.metadata} />
+                        {isSelected && <Icon name="check" size={16} className="text-highlight" />}
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-neutral-400 mt-1">
+                        {app.reccomendations.length > 0 && (
+                          <>
+                            <Icon name="thumbs-up" size={14} />
+                            {app.reccomendations.length}{" "}
+                            {app.reccomendations.length === 1 ? "recommendation" : "recommendations"}
+                          </>
+                        )}
+                      </div>
+                      {app.metadata?.about && <div className="text-sm text-neutral-400 mt-1">{app.metadata.about}</div>}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-neutral-400 mt-1">
-                      {app.reccomendations.length > 0 && (
-                        <>
-                          <Icon name="thumbs-up" size={14} />
-                          {app.reccomendations.length} {app.reccomendations.length === 1 ? 'recommendation' : 'recommendations'}
-                        </>
-                      )}
-                    </div>
-                    {app.metadata?.about && <div className="text-sm text-neutral-400 mt-1">{app.metadata.about}</div>}
                   </div>
-                </div>
-              );
-            })
+                );
+              })
           )}
         </div>
       </div>
