@@ -1,4 +1,4 @@
-import { NostrLink, DVMJobRequest, DVMJobInput } from "@snort/system";
+import { NostrLink, DVMJobRequest, DVMJobInput, TaggedNostrEvent } from "@snort/system";
 import { useState, useMemo, useEffect } from "react";
 import useEventPublisher from "./useEventPublisher";
 
@@ -15,7 +15,7 @@ export default function useDVMLinks(
 ) {
   const cacheKey = `${provider ? `${provider}:` : ""}${kind}${relays ? `:${relays.join(",")}` : ""}`;
   const { publisher, system } = useEventPublisher();
-  const [links, setLinks] = useState<Array<NostrLink>>();
+  const [result, setResult] = useState<TaggedNostrEvent>();
   const [error, setError] = useState<Error>();
 
   const req = useMemo(() => {
@@ -42,27 +42,25 @@ export default function useDVMLinks(
       return;
     }
     const k = `dvm-links:${cacheKey}`;
-
-    function setResult(content: string) {
-      try {
-        const links = parser?.(content) ?? NostrLink.fromTags(JSON.parse(content) as Array<Array<string>>);
-        setLinks(links);
-      } catch (e) {
-        // ignore
-        setLinks([]);
-      }
-    }
-
     const cached = window.sessionStorage.getItem(k);
     if (cached) {
-      setResult(cached);
-      return;
+      try {
+        const jCached = JSON.parse(cached) as TaggedNostrEvent | undefined;
+        if (jCached && "content" in jCached) {
+          setResult(jCached);
+          return;
+        } else {
+          window.sessionStorage.removeItem(k);
+        }
+      } catch {
+        window.sessionStorage.removeItem(k);
+      }
     }
-    setLinks(undefined);
+    setResult(undefined);
 
     req.on("result", e => {
-      setResult(e.content);
-      window.sessionStorage.setItem(k, e.content);
+      setResult(e);
+      window.sessionStorage.setItem(k, JSON.stringify(e));
     });
     req.on("error", e => {
       setError(new Error(e));
@@ -73,5 +71,14 @@ export default function useDVMLinks(
     };
   }, [req, publisher, system]);
 
-  return { req, links, error };
+  const links = useMemo(() => {
+    if (!result) return;
+    if (parser) {
+      return parser(result.content);
+    } else {
+      return NostrLink.fromTags(JSON.parse(result.content) as Array<Array<string>>);
+    }
+  }, [result, parser]);
+
+  return { result, req, links, error };
 }
