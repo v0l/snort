@@ -8,6 +8,7 @@ import { NostrLink } from "../nostr-link"
 import { findTag } from "../utils"
 import debug from "debug"
 import EventEmitter from "eventemitter3"
+import { v4 as uuid } from "uuid";
 
 export enum DVMJobState {
     /**
@@ -103,6 +104,11 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
     private log = debug("NIP-90");
 
     /**
+     * Internal instance ID
+     */
+    #id = uuid();
+
+    /**
      * Internal job state
      */
     #state = DVMJobState.New;
@@ -168,10 +174,10 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
     }
 
     /**
-     * Get the job request ID
+     * Get the instance ID
      */
     get id() {
-        return this.#jobEvent?.id;
+        return this.#id;
     }
 
     get state() {
@@ -355,6 +361,9 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
                 }
                 return;
             } else if (e.kind === this.responseKind) {
+                if (this.serviceProvider && this.serviceProvider !== e.pubkey) {
+                    return; // another DVM replied to our request, ignore
+                }
                 const jobLink = NostrLink.fromEvent(this.#jobEvent!);
                 if (jobLink.isReplyToThis(e)) {
                     this.state = DVMJobState.Success;

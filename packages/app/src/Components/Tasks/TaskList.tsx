@@ -12,6 +12,7 @@ import { DonateTask } from "./DonateTask";
 import { FollowMorePeopleTask } from "./FollowMorePeople";
 import { Nip5Task } from "./Nip5Task";
 import { NoticeZapPoolDefault } from "./NoticeZapPool";
+import { PendingChangesTask } from "./PendingChangesTask";
 import { RenewSubTask } from "./RenewSubscription";
 import { BaseWidget } from "../RightWidgets/base";
 
@@ -20,7 +21,12 @@ class TaskStore extends ExternalStore<Array<UITask>> {
 
   constructor() {
     super();
-    const AllTasks: Array<UITask> = [new BackupKeyTask(), new FollowMorePeopleTask(), new Nip5Task()];
+    const AllTasks: Array<UITask> = [
+      new BackupKeyTask(),
+      new PendingChangesTask(),
+      new FollowMorePeopleTask(),
+      new Nip5Task(),
+    ];
     if (CONFIG.features.zapPool) {
       AllTasks.push(new NoticeZapPoolDefault());
     }
@@ -48,11 +54,6 @@ export function TaskList() {
     c => AllTasks.hook(c),
     () => AllTasks.snapshot(),
   );
-
-  return <TaskListDisplay tasks={tasks} />;
-}
-
-export function TaskListDisplay({ tasks }: { tasks: Array<UITask> }) {
   const session = useLogin();
   const user = useUserProfile(session.publicKey);
   const currentTasks = tasks.filter(a => (user ? a.check(user, session) : false)).slice(0, 1);

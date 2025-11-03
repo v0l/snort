@@ -13,11 +13,18 @@ import TrendingNotes from "@/Components/Trending/TrendingPosts";
 import TrendingUsers from "@/Components/Trending/TrendingUsers";
 import useLogin from "@/Hooks/useLogin";
 import useWindowSize from "@/Hooks/useWindowSize";
+import IconButton from "@/Components/Button/IconButton";
+import { useState } from "react";
+import { setPreference } from "@/Utils/Login";
+import DvmSelector from "@/Components/Trending/DvmSelector";
+import usePreferences from "@/Hooks/usePreferences";
 
 export default function RightColumn() {
   const { pubkey } = useLogin(s => ({ pubkey: s.publicKey }));
   const hideRightColumnPaths = ["/login", "/new", "/messages"];
   const show = !hideRightColumnPaths.some(path => globalThis.location.pathname.startsWith(path));
+  const [showDvmSelector, setShowDvmSelector] = useState(false);
+  const currentProvider = usePreferences(s => s.trendingDvmPubkey);
 
   const pageSize = useWindowSize();
   const isDesktop = pageSize.width >= 1024; //max-xl
@@ -25,14 +32,14 @@ export default function RightColumn() {
 
   const widgets = pubkey
     ? [
-        RightColumnWidget.TaskList,
-        RightColumnWidget.InviteFriends,
-        //RightColumnWidget.LiveStreams,
-        RightColumnWidget.TrendingNotes,
-        RightColumnWidget.LatestArticls,
-        RightColumnWidget.TrendingPeople,
-        RightColumnWidget.TrendingHashtags,
-      ]
+      RightColumnWidget.TaskList,
+      RightColumnWidget.InviteFriends,
+      //RightColumnWidget.LiveStreams,
+      RightColumnWidget.TrendingNotes,
+      RightColumnWidget.LatestArticls,
+      RightColumnWidget.TrendingPeople,
+      RightColumnWidget.TrendingHashtags,
+    ]
     : [RightColumnWidget.TrendingPeople, RightColumnWidget.TrendingHashtags];
 
   const getWidget = (t: RightColumnWidget) => {
@@ -41,7 +48,10 @@ export default function RightColumn() {
         return <TaskList />;
       case RightColumnWidget.TrendingNotes:
         return (
-          <BaseWidget title={<FormattedMessage defaultMessage="Trending Notes" />}>
+          <BaseWidget title={<FormattedMessage defaultMessage="Trending Notes" />} contextMenu={<IconButton
+            onClick={() => setShowDvmSelector(true)}
+            icon={{ name: "settings-02", size: 18 }}
+          />}>
             <TrendingNotes small={true} count={6} />
           </BaseWidget>
         );
@@ -85,6 +95,16 @@ export default function RightColumn() {
       <SearchBox />
       <span className="mb-4"></span>
       <div className="flex flex-col gap-4 overflow-y-auto hide-scrollbar">{widgets.map(getWidget)}</div>
+      {showDvmSelector && (
+        <DvmSelector
+          kind={5300}
+          onClose={() => setShowDvmSelector(false)}
+          onSelect={(p) => {
+            setPreference({ trendingDvmPubkey: p });
+          }}
+          currentProvider={currentProvider}
+        />
+      )}
     </div>
   );
 }

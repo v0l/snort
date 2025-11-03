@@ -13,21 +13,35 @@ export default function useContentDiscovery(serviceProvider: string, relays?: Ar
             .setServiceProvider(serviceProvider);
         relays?.forEach(r => job.addRelay(r));
         return job;
-    }, []);
+    }, [serviceProvider, relays]);
 
     useEffect(() => {
         if (!system || !publisher) {
             return;
         }
+        const k = `content-discovery:${serviceProvider}`;
 
-        req.on("result", e => {
+        function setResult(content: string) {
             try {
-                const tags = JSON.parse(e.content) as Array<Array<string>>;
+                const tags = JSON.parse(content) as Array<Array<string>>;
                 const links = NostrLink.fromTags(tags);
                 setPosts(links);
-            } catch (x) {
-                console.error("Failed to parse content discovery response", x);
+            } catch (e) {
+                // ignore
+                setPosts([]);
             }
+        }
+
+        const cached = window.sessionStorage.getItem(k);
+        if (cached) {
+            setResult(cached);
+            return;
+        }
+        setPosts(undefined);
+
+        req.on("result", e => {
+            setResult(e.content);
+            window.sessionStorage.setItem(k, e.content);
         });
         req.on("error", e => {
             setError(new Error(e));

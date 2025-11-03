@@ -14,7 +14,7 @@ import {
 import { GiftsCache } from "@/Cache";
 import { dedupeById, deleteRefCode, unwrap } from "@/Utils";
 import { Blasters } from "@/Utils/Const";
-import { LoginSession, LoginSessionType, LoginStore, SnortAppData } from "@/Utils/Login/index";
+import { LoginSession, LoginSessionType, LoginStore, SnortAppData, UserPreferences } from "@/Utils/Login/index";
 import { entropyToPrivateKey, generateBip39Entropy } from "@/Utils/nip6";
 import { SubscriptionEvent } from "@/Utils/Subscription";
 
@@ -110,6 +110,19 @@ export function updateAppData(id: string, fn: (data: SnortAppData) => SnortAppDa
     const next = fn(session.state.appdata);
     setAppData(session, next);
   }
+}
+
+export function setPreference(obj: Partial<UserPreferences>) {
+  const { id } = LoginStore.snapshot();
+  const session = LoginStore.get(id);
+  if (!session?.state.appdata) return;
+  const p = {
+    preferences: {
+      ...session.state.appdata.preferences,
+      ...obj
+    }
+  };
+  session.state.setAppData(p);
 }
 
 export async function saveAppData(id: string) {

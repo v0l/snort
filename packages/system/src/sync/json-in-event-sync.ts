@@ -20,9 +20,8 @@ export class JsonEventSync<T> extends EventEmitter<SafeSyncEvents> {
     this.#sync.on("change", () => this.emit("change"));
   }
 
-  get json(): Readonly<T> {
-    const ret = { ...this.#json };
-    return Object.freeze(ret);
+  get json(): T {
+    return { ...this.#json };
   }
 
   /**

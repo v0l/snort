@@ -1,4 +1,4 @@
-import { mapEventToProfile, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
@@ -9,13 +9,12 @@ import DisplayName from "@/Components/User/DisplayName";
 import useAppHandler from "@/Hooks/useAppHandler";
 
 export default function NoteAppHandler({ ev }: { ev: TaggedNostrEvent }) {
-  const handlers = useAppHandler(ev.kind);
+  const apps = useAppHandler(ev.kind);
   const link = NostrLink.fromEvent(ev);
 
-  const profiles = handlers.apps
-    .filter(a => a.tags.find(b => b[0] === "web" && b[2] === "nevent"))
-    .map(a => ({ profile: mapEventToProfile(a), event: a }))
-    .filter(a => a.profile)
+  const profiles = apps
+    .filter(a => a.event.tags.find(b => b[0] === "web" && b[2] === "nevent"))
+    .filter(a => a.metadata)
     .slice(0, 5);
 
   return (
@@ -50,9 +49,9 @@ export default function NoteAppHandler({ ev }: { ev: TaggedNostrEvent }) {
             }
           }}>
           <div className="flex items-center gap-2">
-            <Avatar size={40} pubkey={a.event.pubkey} user={a.profile} />
+            <Avatar size={40} pubkey={a.event.pubkey} user={a.metadata} />
             <div>
-              <DisplayName pubkey={a.event.pubkey} user={a.profile} />
+              <DisplayName pubkey={a.event.pubkey} user={a.metadata} />
             </div>
           </div>
           <Icon name="link" />

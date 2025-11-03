@@ -155,7 +155,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     if (this.#relays?.value === undefined && this.#contacts?.value?.content !== undefined && signer) {
       this.#log("Saving relays to NIP-65 relay list using %O", this.relays);
       for (const r of this.relays ?? []) {
-        await this.#addRelay(r.url, r.settings);
+        this.#addRelay(r.url, r.settings);
       }
 
       await this.#relays?.persist(signer, system);
