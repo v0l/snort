@@ -355,7 +355,9 @@ export class Query extends EventEmitter<QueryEvents> {
 
   closeQuery() {
     for (const qt of this.#tracing.values()) {
-      qt.close();
+      if (!qt.finished) {
+        qt.close();
+      }
     }
     this.cleanup();
   }

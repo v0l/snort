@@ -1,34 +1,17 @@
-import { NostrEvent, TaggedNostrEvent } from "@snort/system";
+import { DVMJobState } from "@snort/system";
 import classNames from "classnames";
 import { useMemo } from "react";
 
 import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 import Note from "@/Components/Event/EventComponent";
-import { useLocale } from "@/Components/IntlProvider/useLocale";
 import PageSpinner from "@/Components/PageSpinner";
 import TrendingNote from "@/Components/Trending/ShortNote";
-import NostrBandApi from "@/External/NostrBand";
-import useCachedFetch from "@/Hooks/useCachedFetch";
 import useModeration from "@/Hooks/useModeration";
-import { data } from "react-router-dom";
+import useContentDiscovery from "@/Hooks/useContentDiscovery";
 
 export default function TrendingNotes({ count = Infinity, small = false }: { count?: number; small?: boolean }) {
-  const api = new NostrBandApi();
-  const { lang } = useLocale();
-  const trendingNotesUrl = api.trendingNotesUrl(lang);
-  const storageKey = `nostr-band-${trendingNotesUrl}`;
-
-  const {
-    data: trendingNotesData,
-    isLoading,
-    error,
-  } = useCachedFetch<{ notes: Array<{ event: NostrEvent }> }, Array<NostrEvent>>(
-    trendingNotesUrl,
-    storageKey,
-    data => data.notes.map(e => e.event),
-    60 * 60,
-    60
-  );
+  const { req, data, error } = useContentDiscovery("0d9ec486275b70f0c4faec277fc4c63b9f14cb1ca1ec029f7d76210e957e5257", ["wss://relay.primal.net/"]);
+  const { isEventMuted } = useModeration();
 
   const options = useMemo(
     () => ({
@@ -42,20 +25,19 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
     [small],
   );
 
-  const { isEventMuted } = useModeration();
-  if (error && !trendingNotesData) return <ErrorOrOffline error={error} className="px-3 py-2" />;
-  if (isLoading || !data) return <PageSpinner />;
+  if (error && !data) return <ErrorOrOffline error={error} className="px-3 py-2" />;
+  if (req.state !== DVMJobState.Success) return <PageSpinner />;
 
-  const filteredAndLimitedPosts = trendingNotesData
-    ? trendingNotesData.filter(a => !isEventMuted(a)).slice(0, count)
+  const filteredAndLimitedPosts = data
+    ? data.filter(a => !isEventMuted(a)).slice(0, count)
     : [];
 
   const renderList = () => {
     return filteredAndLimitedPosts.map((e, index) =>
       small ? (
-        <TrendingNote key={e.id} event={e as TaggedNostrEvent} />
+        <TrendingNote key={e.id} event={e} />
       ) : (
-        <Note key={e.id} data={e as TaggedNostrEvent} depth={0} options={options} waitUntilInView={index > 5} />
+        <Note key={e.id} data={e} depth={0} options={options} waitUntilInView={index > 5} />
       ),
     );
   };

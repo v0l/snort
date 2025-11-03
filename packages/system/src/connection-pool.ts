@@ -155,7 +155,26 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
    */
   async connect(address: string, options: RelaySettings, ephemeral: boolean) {
     const addr = unwrap(sanitizeRelayUrl(address));
-    if (this.#connectStarted.has(addr)) return;
+
+    // If connection is already being established, wait for it
+    if (this.#connectStarted.has(addr)) {
+      // Poll for the connection to be established
+      const maxWait = 10000; // 10 seconds
+      const pollInterval = 100; // 100ms
+      const startTime = Date.now();
+
+      while (this.#connectStarted.has(addr) && Date.now() - startTime < maxWait) {
+        await new Promise(resolve => setTimeout(resolve, pollInterval));
+        const existing = this.#sockets.get(addr);
+        if (existing) {
+          return existing;
+        }
+      }
+
+      // If we get here, either connection failed or timed out
+      // Fall through to check sockets or start new connection
+    }
+
     this.#connectStarted.add(addr);
 
     try {
@@ -250,18 +269,12 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
     if (existing) {
       return await existing.publish(ev);
     } else {
-      return await new Promise<OkResponse>(async (resolve, reject) => {
-        const c = await this.#connectionBuilder(address, { write: true, read: true }, true);
-
-        const t = setTimeout(reject, 10_000);
-        c.once("connected", async () => {
-          clearTimeout(t);
-          const rsp = await c.publish(ev);
-          c.close();
-          resolve(rsp);
-        });
-        c.connect();
-      });
+      // Use internal connect method to avoid duplicate connections
+      const c = await this.connect(address, { write: true, read: true }, true);
+      if (!c) {
+        throw new Error("Failed to connect to relay");
+      }
+      return await c.publish(ev);
     }
   }
 
