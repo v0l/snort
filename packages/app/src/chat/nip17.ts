@@ -1,4 +1,4 @@
-import { decodeTLV, dedupe, encodeTLVEntries, ExternalStore, NostrPrefix, TLVEntry, TLVEntryType } from "@snort/shared";
+import { decodeTLV, dedupe, encodeTLVEntries, ExternalStore, NostrPrefix, removeUndefined, TLVEntry, TLVEntryType } from "@snort/shared";
 import { EventKind, EventPublisher, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 
 import { GiftsCache } from "@/Cache";
@@ -41,6 +41,7 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
         .sort()
         .filter(a => a !== pk);
 
+      if (pTags.length === 0) return; //maybe invalid gift wrap dm
       return encodeTLVEntries(
         "nchat17",
         ...pTags.map(
@@ -53,7 +54,7 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
         ),
       );
     };
-    return dedupe(messages.map(a => chatId(a))).map(a => {
+    return dedupe(removeUndefined(messages.map(a => chatId(a)))).map(a => {
       const chatMessages = messages.filter(b => chatId(b) === a);
       return Nip17ChatSystem.createChatObj(a, chatMessages);
     });

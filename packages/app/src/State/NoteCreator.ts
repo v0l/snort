@@ -73,6 +73,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
     d.extraTags = undefined;
     d.hashTags = [];
     d.filePicker = "hidden";
+    d.attachments = undefined;
   }
 
   takeSnapshot(): NoteCreatorDataSnapshot {
