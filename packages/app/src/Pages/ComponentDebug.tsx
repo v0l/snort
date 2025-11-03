@@ -107,7 +107,6 @@ import ZapAmountLabel from "@/Components/zap-amount";
 
 import { magnetURIDecode } from "@/Utils";
 import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
-import { TaskListDisplay } from "@/Components/Tasks/TaskList";
 import { DonateTask } from "@/Components/Tasks/DonateTask";
 import { setTheme } from "@/Hooks/useTheme";
 
@@ -330,7 +329,6 @@ export default function ComponentDebugPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedTab, setSelectedTab] = useState<Tab>({ value: 0, text: "Tab 1" });
   const [collapsed, setCollapsed] = useState(true);
-  const [displayMode, setDisplayMode] = useState<"list" | "grid">("list");
   const [toggleState, setToggleState] = useState(false);
   const [isLightMode, setIsLightMode] = useState(false);
 
@@ -970,13 +968,6 @@ export default function ComponentDebugPage() {
             <span className="mb-2 text-xl">LiveStream Components:</span>
             <div className="text-sm">
               <LiveEvent ev={SAMPLE_LIVE_STREAM_EVENT} />
-            </div>
-          </div>
-
-          <div>
-            <span className="mb-2 text-xl">Task Components:</span>
-            <div className="text-sm text-gray-400">
-              <TaskListDisplay tasks={[new DonateTask()]} />
             </div>
           </div>
         </div>
