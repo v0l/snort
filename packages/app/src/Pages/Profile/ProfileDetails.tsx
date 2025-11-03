@@ -4,14 +4,13 @@ import { useState } from "react";
 
 import Icon from "@/Components/Icons/Icon";
 import Text from "@/Components/Text/Text";
-import BadgeList from "@/Components/User/BadgeList";
+import { ProfileBadges } from "@/Components/User/BadgeList";
 import DisplayName from "@/Components/User/DisplayName";
 import FollowedBy from "@/Components/User/FollowedBy";
 import FollowsYou from "@/Components/User/FollowsYou";
 import Nip05 from "@/Components/User/Nip05";
 import { UserWebsiteLink } from "@/Components/User/UserWebsiteLink";
 import ZapModal from "@/Components/ZapModal/ZapModal";
-import useProfileBadges from "@/Feed/BadgesFeed";
 import useFollowsFeed from "@/Feed/FollowsFeed";
 import usePreferences from "@/Hooks/usePreferences";
 import { MusicStatus } from "@/Pages/Profile/MusicStatus";
@@ -36,7 +35,6 @@ const ProfileDetails = ({
     showBadges: s.showBadges ?? false,
   }));
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
-  const badges = useProfileBadges(showBadges ? id : undefined);
 
   if (!user) {
     return null;
@@ -51,7 +49,7 @@ const ProfileDetails = ({
         </h2>
         {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
       </div>
-      {showBadges && <BadgeList badges={badges} />}
+      {(showBadges && id) && <ProfileBadges pubkey={id} />}
       {showStatus && id && <MusicStatus id={id} />}
       {links()}
     </>
@@ -70,14 +68,14 @@ const ProfileDetails = ({
         targets={
           lnurl?.lnurl && id
             ? [
-                {
-                  type: "lnurl",
-                  value: lnurl?.lnurl,
-                  weight: 1,
-                  name: user?.display_name || user?.name,
-                  zap: { pubkey: id, anon: false },
-                },
-              ]
+              {
+                type: "lnurl",
+                value: lnurl?.lnurl,
+                weight: 1,
+                name: user?.display_name || user?.name,
+                zap: { pubkey: id, anon: false },
+              },
+            ]
             : undefined
         }
         show={showLnQr}
@@ -95,7 +93,6 @@ const ProfileDetails = ({
         creator={id!}
         disableMedia={true}
         disableLinkPreview={true}
-        disableMediaSpotlight={true}
       />
     );
 

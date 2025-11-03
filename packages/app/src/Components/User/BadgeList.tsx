@@ -2,11 +2,11 @@ import { TaggedNostrEvent } from "@snort/system";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import CloseButton from "@/Components/Button/CloseButton";
 import Modal from "@/Components/Modal/Modal";
 import { ProxyImg } from "@/Components/ProxyImg";
 import Username from "@/Components/User/Username";
 import { findTag } from "@/Utils";
+import useProfileBadges from "@/Feed/BadgesFeed";
 
 interface BadgeInfo {
   id: string;
@@ -16,6 +16,7 @@ interface BadgeInfo {
   thumb?: string;
   image?: string;
 }
+
 export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
   const [badgeModal, setShowModal] = useState<BadgeInfo>();
   const badgeMetadata = badges.map(b => {
@@ -75,4 +76,9 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
       )}
     </>
   );
+}
+
+export function ProfileBadges({ pubkey }: { pubkey: string }) {
+  const badges = useProfileBadges(pubkey);
+  return <BadgeList badges={badges} />
 }
