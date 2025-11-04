@@ -31,19 +31,17 @@ const Avatar = forwardRef<
     return defaultImg;
   }, [user, image, pubkey]);
 
-  const s = size ?? 120;
-  const style = {} as React.CSSProperties;
-  if (size) {
-    style.width = `${size}px`;
-    style.height = `${size}px`;
-  }
+  size ??= 120;
 
   const domain = user?.nip05 && user.nip05.split("@")[1];
   return (
     <div
       ref={ref}
       onClick={onClick}
-      style={style}
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+      }}
       className={classNames(
         "relative rounded-full aspect-square flex items-center justify-center gap-2 bg-neutral-600 z-1",
         className,
@@ -54,7 +52,8 @@ const Avatar = forwardRef<
       <ProxyImg
         className="absolute rounded-full w-full h-full object-cover"
         src={url}
-        size={s}
+        bypassProxy={url === defaultImg}
+        size={size}
         alt={getDisplayName(user, "")}
         promptToLoadDirectly={false}
       />

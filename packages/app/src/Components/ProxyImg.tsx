@@ -11,12 +11,13 @@ export type ProxyImgProps = HTMLProps<HTMLImageElement> & {
   className?: string;
   promptToLoadDirectly?: boolean;
   missingImageElement?: ReactNode;
+  bypassProxy?: boolean;
 };
 
 const defaultMissingImageElement = <Icon name="x" className="text-warning" />;
 
 const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function ProxyImg(
-  { src, size, className, promptToLoadDirectly, missingImageElement, sha256, ...props }: ProxyImgProps,
+  { src, size, className, promptToLoadDirectly, missingImageElement, sha256, bypassProxy, ...props }: ProxyImgProps,
   ref,
 ) {
   const { proxy } = useImgProxy();
@@ -71,7 +72,7 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
     <img
       {...props}
       ref={ref}
-      src={imgSrc}
+      src={(bypassProxy ?? false) ? src : imgSrc}
       width={size}
       height={size}
       className={className}
