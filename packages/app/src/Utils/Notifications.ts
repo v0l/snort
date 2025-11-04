@@ -90,7 +90,7 @@ export async function subscribeToNotifications(publisher: EventPublisher) {
     if ("serviceWorker" in navigator) {
       const reg = await navigator.serviceWorker.ready;
       if (reg && publisher) {
-        const api = new SnortApi(undefined, publisher);
+        const api = new SnortApi(undefined, publisher?.signer);
         const sub = await reg.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: (await api.getPushNotificationInfo()).publicKey,

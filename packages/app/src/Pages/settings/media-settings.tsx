@@ -100,7 +100,6 @@ export default function MediaSettingsPage() {
           <tbody>
             {Object.entries(knownServers)
               .sort((a, b) => (b[1] < a[1] ? -1 : 1))
-              .filter(([k]) => !list.some(b => b.equals(new UnknownTag(["server", k]))))
               .slice(0, 20)
               .map(([k, v]) => (
                 <tr key={k}>
@@ -114,6 +113,7 @@ export default function MediaSettingsPage() {
                   <td className="text-end">
                     <AsyncButton
                       className="!py-1 mb-1"
+                      disabled={list.some(b => b.equals(new UnknownTag(["server", k])))}
                       onClick={async () => {
                         state.addToList(EventKind.BlossomServerList, [new UnknownTag(["server", k])], true);
                       }}>

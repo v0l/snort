@@ -1,14 +1,14 @@
-import classNames from "classnames";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 import { useLocale } from "@/Components/IntlProvider/useLocale";
 import PageSpinner from "@/Components/PageSpinner";
 import NostrBandApi from "@/External/NostrBand";
-import useCachedFetch from "@/Hooks/useCachedFetch";
 import { HashTagHeader } from "@/Pages/HashTagsPage";
 
 import { ErrorOrOffline } from "../ErrorOrOffline";
+import { useCached } from "@snort/system-react";
+import { Hour } from "@/Utils/Const";
 
 export default function TrendingHashtags({
   title,
@@ -20,26 +20,29 @@ export default function TrendingHashtags({
   short?: boolean;
 }) {
   const { lang } = useLocale();
-  const api = new NostrBandApi();
-  const trendingHashtagsUrl = api.trendingHashtagsUrl(lang);
-  const storageKey = `nostr-band-${trendingHashtagsUrl}`;
-
   const {
     data: hashtags,
     error,
-    isLoading,
-  } = useCachedFetch(trendingHashtagsUrl, storageKey, data => data.hashtags.slice(0, count));
+    loading,
+  } = useCached(
+    "nostr-band-trending-hashtags",
+    async () => {
+      const api = new NostrBandApi();
+      return await api.trendingHashtags(lang);
+    },
+    Hour * 2,
+  );
 
   if (error && !hashtags) return <ErrorOrOffline error={error} onRetry={() => {}} className="px-3 py-2" />;
-  if (isLoading && !hashtags) return <PageSpinner />;
+  if (loading && !hashtags) return <PageSpinner />;
 
   return (
     <>
       {title}
-      {hashtags.map(a => {
+      {hashtags?.hashtags.slice(0, count).map(a => {
         if (short) {
           return (
-            <div className="my-1 font-bold" key={a.hashtag}>
+            <div className="py-1 font-bold" key={a.hashtag}>
               <Link to={`/t/${a.hashtag}`}>#{a.hashtag}</Link>
             </div>
           );

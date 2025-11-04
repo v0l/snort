@@ -12,14 +12,14 @@ import ProfilePreview from "@/Components/User/ProfilePreview";
 import SnortApi, { RevenueSplit, RevenueToday } from "@/External/SnortApi";
 import { Contributors, DonateLNURL, Translators } from "@/Pages/Donate/const";
 import { ZapPoolDonateSection } from "@/Pages/Donate/ZapPoolDonateSection";
-import { ApiHost, SnortPubKey } from "@/Utils/Const";
+import { SnortPubKey } from "@/Utils/Const";
 import { bech32ToHex } from "@snort/shared";
 
 const DonatePage = () => {
   const [splits, setSplits] = useState<RevenueSplit[]>([]);
   const [today, setSumToday] = useState<RevenueToday>();
   const [onChain, setOnChain] = useState("");
-  const api = new SnortApi(ApiHost);
+  const api = new SnortApi();
 
   async function getOnChainAddress() {
     const { address } = await api.onChainDonation();

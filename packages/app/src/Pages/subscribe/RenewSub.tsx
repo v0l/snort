@@ -33,7 +33,7 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
       : undefined);
 
   async function renew(id: string, months: number) {
-    const api = new SnortApi(undefined, publisher);
+    const api = new SnortApi(undefined, publisher?.signer);
     try {
       const rsp = await api.renewSubscription(id, months);
       setInvoice(rsp.pr);

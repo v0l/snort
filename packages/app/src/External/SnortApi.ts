@@ -1,9 +1,8 @@
-import { throwIfOffline } from "@snort/shared";
-import { EventKind, EventPublisher } from "@snort/system";
+import { EventPublisher, EventSigner } from "@snort/system";
 
-import { unwrap } from "@/Utils";
 import { ApiHost } from "@/Utils/Const";
 import { SubscriptionType } from "@/Utils/Subscription";
+import { JsonApi } from "./base";
 
 export interface RevenueToday {
   donations: number;
@@ -79,123 +78,90 @@ export interface RefCodeResponse {
   leaderState?: "pending" | "approved";
 }
 
-export default class SnortApi {
-  #url: string;
-  #publisher?: EventPublisher;
+/**
+ * API client wrapper for https://api.snort.social/swagger
+ */
+export default class SnortApi extends JsonApi {
+  readonly url: string;
+  readonly signer?: EventSigner;
 
-  constructor(url?: string, publisher?: EventPublisher) {
-    this.#url = new URL(url ?? ApiHost).toString();
-    this.#publisher = publisher;
+  constructor(url?: string, signer?: EventSigner | EventPublisher) {
+    super();
+    this.url = new URL(url ?? ApiHost).toString();
+    this.signer = signer instanceof EventPublisher ? signer.signer : signer;
   }
 
   revenueSplits() {
-    return this.#getJson<Array<RevenueSplit>>("api/v1/revenue/splits");
+    return this.getJson<Array<RevenueSplit>>("api/v1/revenue/splits");
   }
 
   revenueToday() {
-    return this.#getJson<RevenueToday>("api/v1/revenue/today");
-  }
-
-  twitterImport(username: string) {
-    return this.#getJson<Array<string>>(`api/v1/twitter/follows-for-nostr?username=${encodeURIComponent(username)}`);
+    return this.getJson<RevenueToday>("api/v1/revenue/today");
   }
 
   createSubscription(type: number, refCode?: string) {
-    return this.#getJsonAuthd<InvoiceResponse>(`api/v1/subscription?type=${type}&refCode=${refCode}`, "PUT");
+    if (!this.signer) {
+      throw new Error("No signer set");
+    }
+    return this.getJsonAuthd<InvoiceResponse>(
+      `api/v1/subscription?type=${type}&refCode=${refCode}`,
+      this.signer,
+      "PUT",
+    );
   }
 
   renewSubscription(id: string, months = 1) {
-    return this.#getJsonAuthd<InvoiceResponse>(`api/v1/subscription/${id}/renew?months=${months}`, "GET");
+    if (!this.signer) {
+      throw new Error("No signer set");
+    }
+    return this.getJsonAuthd<InvoiceResponse>(`api/v1/subscription/${id}/renew?months=${months}`, this.signer, "GET");
   }
 
   listSubscriptions() {
-    return this.#getJsonAuthd<Array<Subscription>>("api/v1/subscription");
+    if (!this.signer) {
+      throw new Error("No signer set");
+    }
+    return this.getJsonAuthd<Array<Subscription>>("api/v1/subscription", this.signer);
   }
 
   onChainDonation() {
-    return this.#getJson<{ address: string }>("p/on-chain");
+    return this.getJson<{ address: string }>("p/on-chain");
   }
 
   getPushNotificationInfo() {
-    return this.#getJson<{ publicKey: string }>("api/v1/notifications/info");
+    return this.getJson<{ publicKey: string }>("api/v1/notifications/info");
   }
 
   registerPushNotifications(sub: PushNotifications) {
-    return this.#getJsonAuthd<void>("api/v1/notifications/register", "POST", sub);
+    if (!this.signer) {
+      throw new Error("No signer set");
+    }
+    return this.getJsonAuthd<void>("api/v1/notifications/register", this.signer, "POST", sub);
   }
 
   translate(tx: TranslationRequest) {
-    return this.#getJson<TranslationResponse | object>("api/v1/translate", "POST", tx);
+    return this.getJson<TranslationResponse | object>("api/v1/translate", "POST", tx);
   }
 
   closeRelays(lat: number, lon: number, count = 5) {
-    return this.#getJson<Array<RelayDistance>>(`api/v1/relays?count=${count}`, "POST", { lat, lon });
+    return this.getJson<Array<RelayDistance>>(`api/v1/relays?count=${count}`, "POST", { lat, lon });
   }
 
   getRefCode() {
-    return this.#getJsonAuthd<RefCodeResponse>("api/v1/referral", "GET");
+    if (!this.signer) {
+      throw new Error("No signer set");
+    }
+    return this.getJsonAuthd<RefCodeResponse>("api/v1/referral", this.signer, "GET");
   }
 
   getRefCodeInfo(code: string) {
-    return this.#getJson<RefCodeResponse>(`api/v1/referral/${code}`, "GET");
+    return this.getJson<RefCodeResponse>(`api/v1/referral/${code}`, "GET");
   }
 
   applyForLeader() {
-    return this.#getJsonAuthd<RefCodeResponse>("api/v1/referral/leader-apply", "POST");
-  }
-
-  async #getJsonAuthd<T>(
-    path: string,
-    method?: "GET" | string,
-    body?: object,
-    headers?: { [key: string]: string },
-  ): Promise<T> {
-    if (!this.#publisher) {
-      throw new Error("Publisher not set");
+    if (!this.signer) {
+      throw new Error("No signer set");
     }
-    const auth = await this.#publisher.generic(eb => {
-      return eb
-        .kind(EventKind.HttpAuthentication)
-        .tag(["url", `${this.#url}${path}`])
-        .tag(["method", method ?? "GET"]);
-    });
-
-    return this.#getJson<T>(path, method, body, {
-      ...headers,
-      authorization: `Nostr ${window.btoa(JSON.stringify(auth))}`,
-    });
-  }
-
-  async #getJson<T>(
-    path: string,
-    method?: "GET" | string,
-    body?: object,
-    headers?: { [key: string]: string },
-  ): Promise<T> {
-    throwIfOffline();
-    const rsp = await fetch(`${this.#url}${path}`, {
-      method: method,
-      body: body ? JSON.stringify(body) : undefined,
-      headers: {
-        accept: "application/json",
-        ...(body ? { "content-type": "application/json" } : {}),
-        ...headers,
-      },
-    });
-
-    if (rsp.ok) {
-      const text = (await rsp.text()) as string | null;
-      if ((text?.length ?? 0) > 0) {
-        const obj = JSON.parse(unwrap(text));
-        if ("error" in obj) {
-          throw new SubscriptionError(obj.error, obj.code);
-        }
-        return obj as T;
-      } else {
-        return {} as T;
-      }
-    } else {
-      throw new Error("Invalid response");
-    }
+    return this.getJsonAuthd<RefCodeResponse>("api/v1/referral/leader-apply", this.signer, "POST");
   }
 }

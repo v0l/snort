@@ -37,7 +37,7 @@ export const CollapsedSection = ({ title, children, className, startClosed }: Co
   return (
     <>
       <div
-        className={classNames("flex gap-4 items-center justify-between cur", className)}
+        className={classNames("flex gap-4 items-center justify-between cursor-pointer", className)}
         onClick={() => setCollapsed(!collapsed)}>
         {title}
         <Icon name="arrowFront" className={`transition-transform ${collapsed ? "rotate-90" : ""}`} />

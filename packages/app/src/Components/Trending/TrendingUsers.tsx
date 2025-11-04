@@ -3,9 +3,10 @@ import { ReactNode } from "react";
 import PageSpinner from "@/Components/PageSpinner";
 import FollowListBase, { FollowListBaseProps } from "@/Components/User/FollowListBase";
 import NostrBandApi from "@/External/NostrBand";
-import useCachedFetch from "@/Hooks/useCachedFetch";
 
 import { ErrorOrOffline } from "../ErrorOrOffline";
+import { useCached } from "@snort/system-react";
+import { Hour } from "@/Utils/Const";
 
 export default function TrendingUsers({
   title,
@@ -16,29 +17,26 @@ export default function TrendingUsers({
   count?: number;
   followListProps?: Omit<FollowListBaseProps, "pubkeys">;
 }) {
-  const api = new NostrBandApi();
-  const trendingProfilesUrl = api.trendingProfilesUrl();
-  const storageKey = `nostr-band-${trendingProfilesUrl}`;
-
-  const {
-    data: trendingUsersData,
-    isLoading,
-    error,
-  } = useCachedFetch<{ profiles: Array<{ pubkey: string }> }, Array<string>>(trendingProfilesUrl, storageKey, data =>
-    data.profiles.map(a => a.pubkey),
+  const { data, loading, error } = useCached(
+    "nostr-band-trending-profiles",
+    async () => {
+      const api = new NostrBandApi();
+      return await api.trendingProfiles();
+    },
+    Hour * 2,
   );
 
-  if (error && !trendingUsersData) {
+  if (error && !data) {
     return <ErrorOrOffline error={error} onRetry={() => {}} className="px-3 py-2" />;
   }
 
-  if (isLoading) {
+  if (loading) {
     return <PageSpinner />;
   }
 
   return (
     <FollowListBase
-      pubkeys={trendingUsersData?.slice(0, count) ?? []}
+      pubkeys={data?.profiles.map(a => a.pubkey)?.slice(0, count) ?? []}
       title={title}
       showFollowAll={true}
       className="flex flex-col gap-2"

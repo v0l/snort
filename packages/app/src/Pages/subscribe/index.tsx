@@ -17,7 +17,7 @@ import { Plans } from "@/Utils/Subscription";
 
 export function SubscribePage() {
   const { publisher } = useEventPublisher();
-  const api = new SnortApi(undefined, publisher);
+  const api = new SnortApi(undefined, publisher?.signer);
   const [invoice, setInvoice] = useState("");
   const [error, setError] = useState<SubscriptionError>();
 

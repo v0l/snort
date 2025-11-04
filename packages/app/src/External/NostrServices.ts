@@ -1,4 +1,4 @@
-import { JsonApi } from ".";
+import { JsonApi } from "./base";
 
 export interface LinkPreviewData {
   title?: string;
@@ -7,10 +7,14 @@ export interface LinkPreviewData {
   og_tags?: Array<[name: string, value: string]>;
 }
 
+/**
+ * API client for https://nostr-rs-api.v0l.io
+ */
 export class NostrServices extends JsonApi {
-  constructor(readonly url: string) {
+  readonly url: string;
+  constructor(url?: string) {
     super();
-    url = url.endsWith("/") ? url.slice(0, -1) : url;
+    this.url = url ?? "https://nostr-rs-api.v0l.io";
   }
 
   linkPreview(url: string) {

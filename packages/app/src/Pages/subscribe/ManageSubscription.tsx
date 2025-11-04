@@ -12,7 +12,7 @@ import SubscriptionCard from "./SubscriptionCard";
 
 export default function ManageSubscriptionPage() {
   const { publisher } = useEventPublisher();
-  const api = new SnortApi(undefined, publisher);
+  const api = new SnortApi(undefined, publisher?.signer);
   const navigate = useNavigate();
 
   const [subs, setSubs] = useState<Array<Subscription>>();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { Link } from "react-router-dom";
 
@@ -7,24 +7,24 @@ import { LeaderBadge } from "@/Components/CommunityLeaders/LeaderBadge";
 import Copy from "@/Components/Copy/Copy";
 import SnortApi, { RefCodeResponse } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
+import { useCached } from "@snort/system-react";
 
 export function ReferralsPage() {
-  const [refCode, setRefCode] = useState<RefCodeResponse>();
   const { publisher } = useEventPublisher();
-  const api = new SnortApi(undefined, publisher);
-
-  async function loadRefCode() {
-    const c = await api.getRefCode();
-    setRefCode(c);
-  }
-
-  useEffect(() => {
-    loadRefCode();
+  const loader = useCallback(() => {
+    const api = new SnortApi(undefined, publisher?.signer);
+    return api.getRefCode();
   }, [publisher]);
+  const { data: refCode, reloadNow } = useCached<RefCodeResponse>(
+    publisher ? `ref:${publisher.pubKey}` : undefined,
+    loader,
+    60 * 60 * 24,
+  );
 
   async function applyNow() {
+    const api = new SnortApi(undefined, publisher?.signer);
     await api.applyForLeader();
-    await loadRefCode();
+    await reloadNow();
   }
 
   function becomeLeader() {

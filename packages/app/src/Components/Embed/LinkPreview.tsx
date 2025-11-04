@@ -3,13 +3,13 @@ import { LRUCache } from "typescript-lru-cache";
 
 import { MediaElement } from "@/Components/Embed/MediaElement";
 import Spinner from "@/Components/Icons/Spinner";
-import { LinkPreviewData, NostrServices } from "@/External/NostrServices";
+import { LinkPreviewData, NostrServices } from "@/External";
 
 import { ProxyImg } from "../ProxyImg";
 import GenericPlayer from "./GenericPlayer";
 
 async function fetchUrlPreviewInfo(url: string) {
-  const api = new NostrServices("https://nostr-rs-api.v0l.io");
+  const api = new NostrServices();
   try {
     return await api.linkPreview(url.endsWith(")") ? url.slice(0, -1) : url);
   } catch (e) {

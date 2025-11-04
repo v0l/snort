@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 
 import SnortApi, { RefCodeResponse } from "@/External/SnortApi";
@@ -8,21 +8,20 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import AsyncButton from "../Button/AsyncButton";
 import Icon from "../Icons/Icon";
 import { BaseWidget } from "./base";
+import { useCached } from "@snort/system-react";
 
 export default function InviteFriendsWidget() {
-  const [refCode, setRefCode] = useState<RefCodeResponse>();
   const { publisher } = useEventPublisher();
-  const api = new SnortApi(undefined, publisher);
-  const copy = useCopy();
-
-  async function loadRefCode() {
-    const c = await api.getRefCode();
-    setRefCode(c);
-  }
-
-  useEffect(() => {
-    loadRefCode();
+  const loader = useCallback(() => {
+    const api = new SnortApi(undefined, publisher?.signer);
+    return api.getRefCode();
   }, [publisher]);
+  const { data: refCode } = useCached<RefCodeResponse>(
+    publisher ? `ref:${publisher.pubKey}` : undefined,
+    loader,
+    60 * 60 * 24,
+  );
+  const copy = useCopy();
 
   return (
     <BaseWidget

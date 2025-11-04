@@ -23,10 +23,14 @@ export default function SuggestedProfiles() {
   if (!links) return <PageSpinner />;
   return (
     <div className="px-2">
-      {result && <div className="flex flex-col gap-2">
-        <h3><FormattedMessage defaultMessage="Suggestions by" /></h3>
-        <ProfileImage pubkey={result.pubkey} />
-      </div>}
+      {result && (
+        <div className="flex flex-col gap-2">
+          <h3>
+            <FormattedMessage defaultMessage="Suggestions by" />
+          </h3>
+          <ProfileImage pubkey={result.pubkey} />
+        </div>
+      )}
       <FollowListBase
         pubkeys={
           links?.filter(a => a.type === NostrPrefix.Profile || a.type === NostrPrefix.PublicKey).map(a => a.id) ?? []
