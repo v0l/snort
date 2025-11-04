@@ -7,7 +7,10 @@ import { LeadersStore } from "@/Cache/CommunityLeadersStore";
 import { useLinkList } from "./useLists";
 
 export function useCommunityLeaders() {
-  const link = CONFIG.communityLeaders ? parseNostrLink(unwrap(CONFIG.communityLeaders).list) : undefined;
+  const link =
+    CONFIG.features.communityLeaders && CONFIG.communityLeaders
+      ? parseNostrLink(unwrap(CONFIG.communityLeaders).list)
+      : undefined;
 
   const list = useLinkList("leaders", rb => {
     if (link) {

@@ -11,6 +11,7 @@ import { useCommunityLeader } from "@/Hooks/useCommunityLeaders";
 import DisplayName from "./DisplayName";
 import { ProfileCardWrapper } from "./ProfileCardWrapper";
 import { ProfileLink } from "./ProfileLink";
+import Nip05 from "./Nip05";
 
 export interface ProfileImageProps {
   pubkey: string;
@@ -30,6 +31,7 @@ export interface ProfileImageProps {
   showProfileCard?: boolean;
   showBadges?: boolean;
   displayNameClassName?: string;
+  showNip05?: boolean;
 }
 
 export default function ProfileImage({
@@ -48,6 +50,7 @@ export default function ProfileImage({
   showProfileCard = false,
   showBadges = false,
   displayNameClassName,
+  showNip05 = true,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const leader = useCommunityLeader(pubkey);
@@ -81,6 +84,9 @@ export default function ProfileImage({
             <div className="flex gap-2 items-center font-medium">
               {overrideUsername ? overrideUsername : <DisplayName pubkey={pubkey} user={user} />}
               {leader && showBadges && CONFIG.features.communityLeaders && <LeaderBadge />}
+              {user?.nip05 && CONFIG.showNip05 && showNip05 && (
+                <Nip05 nip05={user?.nip05} pubkey={pubkey} showBadges={true} className="text-xs" />
+              )}
             </div>
             {subHeader}
           </div>

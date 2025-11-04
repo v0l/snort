@@ -43,7 +43,6 @@ const ProfilePreview = forwardRef<HTMLDivElement, ProfilePreviewProps>(function 
           pubkey={pubkey}
           profile={props.profile}
           className="overflow-hidden"
-          displayNameClassName="min-w-0"
           subHeader={
             options.about && (
               <div className="text-sm text-neutral-400 whitespace-nowrap text-ellipsis overflow-hidden">

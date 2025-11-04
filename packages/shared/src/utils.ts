@@ -187,38 +187,57 @@ export interface NostrJson {
   nip46?: Record<string, Array<string>>;
 }
 
-export async function fetchNip05Pubkey(name: string, domain: string, timeout = 5_000): Promise<string | undefined> {
-  if (!name || !domain) {
-    return undefined;
+export async function fetchNip05PubkeyWithThrow(name: string, domain: string, timeout?: number) {
+  const data = await fetchNostrAddressWithThrow(name, domain, timeout);
+  const match = Object.keys(data.names).find(n => {
+    return n.toLowerCase() === name.toLowerCase();
+  });
+  if (match) {
+    return data.names[match];
+  } else {
+    throw new Error("User not found, invalid");
   }
+}
+
+export async function fetchNip05Pubkey(name: string, domain: string, timeout?: number) {
   try {
-    const res = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`, {
-      signal: AbortSignal.timeout(timeout),
-    });
-    const data: NostrJson = await res.json();
-    const match = Object.keys(data.names).find(n => {
-      return n.toLowerCase() === name.toLowerCase();
-    });
-    return match ? data.names[match] : undefined;
+    return await fetchNip05PubkeyWithThrow(name, domain, timeout);
   } catch {
     // ignored
   }
   return undefined;
 }
 
-export async function fetchNostrAddress(name: string, domain: string, timeout = 2_000): Promise<NostrJson | undefined> {
+export async function fetchNostrAddress(name: string, domain: string, timeout?: number) {
   if (!name || !domain) {
     return undefined;
   }
   try {
-    const res = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`, {
-      signal: AbortSignal.timeout(timeout),
-    });
-    return (await res.json()) as NostrJson;
+    return await fetchNostrAddressWithThrow(name, domain, timeout);
   } catch {
     // ignored
   }
   return undefined;
+}
+
+export async function fetchNostrAddressWithThrow(name: string, domain: string, timeout = 5_000) {
+  if (!name || !domain) {
+    throw new Error("Name and Domain must be set");
+  }
+  const u = new URL(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`);
+  const res = await fetch(u, {
+    signal: AbortSignal.timeout(timeout),
+  });
+  const text = await res.text();
+  if (res.ok) {
+    const data = JSON.parse(text) as NostrJson;
+    if (!("names" in data)) {
+      throw new Error(`Invalid response, code=${res.status}, body=${text}`);
+    }
+    return data;
+  } else {
+    throw new Error(`Invalid response, code=${res.status}, body=${text}`);
+  }
 }
 
 export function removeUndefined<T>(v: Array<T | undefined>) {

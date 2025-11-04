@@ -1,22 +1,17 @@
-import { forwardRef, MouseEventHandler } from "react";
+import { forwardRef, HTMLProps } from "react";
 
 import IconsSvg from "@/Components/Icons/icons.svg";
 
-export interface IconProps {
+export type IconProps = {
   name: string;
   size?: number;
-  height?: number;
-  className?: string;
-  onClick?: MouseEventHandler<SVGSVGElement>;
-}
+} & Omit<HTMLProps<SVGSVGElement>, "src" | "href" | "width" | "height">;
 
-const Icon = forwardRef<SVGSVGElement, IconProps>((props, ref) => {
-  const size = props.size || 20;
-  const href = `${IconsSvg}#` + props.name;
-
+const Icon = forwardRef<SVGSVGElement, IconProps>(({ name, size, ...props }, ref) => {
+  size ??= 20;
   return (
-    <svg ref={ref} width={size} height={props.height ?? size} className={props.className} onClick={props.onClick}>
-      <use href={href} />
+    <svg ref={ref} {...props} width={size} height={size}>
+      <use href={`${IconsSvg}#${name}`} />
     </svg>
   );
 });

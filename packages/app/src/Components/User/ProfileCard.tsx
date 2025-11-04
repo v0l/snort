@@ -17,7 +17,7 @@ export function ProfileCard({ pubkey, user }: { pubkey: string; user?: UserMetad
     <div className="w-[360px] layer-2 overflow-hidden">
       <div className="flex flex-col gap-2 text-white px-3 py-2 light:text-black">
         <div className="flex justify-between">
-          <ProfileImage pubkey={pubkey} profile={user} showProfileCard={false} link="" />
+          <ProfileImage pubkey={pubkey} profile={user} showProfileCard={false} link="" showNip05={false} />
           <div className="flex gap-2">
             {/*<button type="button" onClick={() => {
                         LoginStore.loginWithPubkey(pubkey, LoginSessionType.PublicKey, undefined, undefined, undefined, true);

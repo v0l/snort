@@ -14,7 +14,7 @@ export default function TrendingNote({ event }: { event: TaggedNostrEvent }) {
       state={event}
       className="flex flex-col gap-1">
       <div className="flex flex-row justify-between">
-        <ProfileImage pubkey={event.pubkey} size={28} showProfileCard={true} />
+        <ProfileImage pubkey={event.pubkey} size={28} showProfileCard={true} link="" />
         <NoteTime from={event.created_at * 1000} />
       </div>
       <Text

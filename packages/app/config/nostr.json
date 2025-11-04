@@ -36,6 +36,7 @@
   "hideFromNavbar": [],
   "deckSubKind": 1,
   "showPowIcon": true,
+  "showNip05": true,
   "eventLinkPrefix": "nevent",
   "profileLinkPrefix": "nprofile",
   "defaultRelays": {

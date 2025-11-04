@@ -93,6 +93,8 @@ declare const CONFIG: {
   profileLinkPrefix: NostrPrefix;
   defaultRelays: Record<string, RelaySettings>;
   showPowIcon: boolean;
+  // show nip5 beside usernames
+  showNip05: boolean;
 
   // Alby wallet oAuth config
   alby?: {
