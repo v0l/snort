@@ -26,7 +26,7 @@ export default function FollowListBase({
   className,
   actions,
   profilePreviewProps,
-  pageSize = 20,
+  pageSize = 50,
 }: FollowListBaseProps) {
   const control = useFollowsControls();
   const readonly = useLogin(s => s.readonly);

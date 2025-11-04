@@ -39,7 +39,6 @@ const Avatar = forwardRef<
   }
 
   const domain = user?.nip05 && user.nip05.split("@")[1];
-  const isDefault = url === defaultImg;
   return (
     <div
       ref={ref}
@@ -47,7 +46,6 @@ const Avatar = forwardRef<
       style={style}
       className={classNames(
         "relative rounded-full aspect-square flex items-center justify-center gap-2 bg-neutral-600 z-1",
-        { "outline-2 outline-highlight m-0.5": isDefault },
         className,
       )}
       data-domain={domain?.toLowerCase()}
