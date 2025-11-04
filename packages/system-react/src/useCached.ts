@@ -44,23 +44,34 @@ async function storeObj<T>(key: string | undefined, loader: () => Promise<T>): P
 export function useCached<T>(key: string | undefined, loader: () => Promise<T>, expires?: number) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error>();
-  const [data, setData] = useState<CachedObj<T> | undefined>(() => loadData<T>(key));
+  const [data, setData] = useState<CachedObj<T> | undefined>(loadData<T>(key));
+
+  async function loadNow() {
+    storeObj<T>(key, loader)
+      .then(setData)
+      .catch(e => {
+        if (e instanceof Error) {
+          setError(e);
+        } else {
+          setError(new Error(e.toString()));
+        }
+      });
+  }
 
   useEffect(() => {
     if (!key) return;
+    if (loading) return;
+    if (error) return;
+
+    // if key was undefined before try to load data now
+    const cached = loadData<T>(key);
+    if (cached?.cached !== data?.cached) {
+      setData(cached);
+    }
     const now = unixNow();
-    if (loading === false && error === undefined && (data === undefined || data.cached < now - (expires ?? 120))) {
+    if (cached === undefined || cached.cached < now - (expires ?? 120)) {
       setLoading(true);
-      storeObj<T>(key, loader)
-        .then(setData)
-        .catch(e => {
-          if (e instanceof Error) {
-            setError(e);
-          } else {
-            setError(new Error(e.toString()));
-          }
-        })
-        .finally(() => setLoading(false));
+      loadNow().finally(() => setLoading(false));
     }
   }, [key, loading, error, data, loader, expires]);
 
@@ -68,6 +79,6 @@ export function useCached<T>(key: string | undefined, loader: () => Promise<T>, 
     data: data?.object,
     loading,
     error,
-    reloadNow: () => storeObj<T>(key, loader).then(setData),
+    reloadNow: () => loadNow(),
   };
 }

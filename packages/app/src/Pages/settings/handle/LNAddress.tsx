@@ -45,37 +45,26 @@ export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
   }
 
   return (
-    <div>
+    <>
       <h4>
         <FormattedMessage defaultMessage="Update Lightning Address" />
       </h4>
-      <p>
-        <FormattedMessage
-          defaultMessage="Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address"
-          id="b5vAk0"
-        />
-      </p>
+      <FormattedMessage defaultMessage="Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address" />
 
-      <p>
-        <small>
-          <FormattedMessage
-            defaultMessage="Redirect issues HTTP redirect to the supplied lightning address"
-            id="FcNSft"
-          />
-          <hr />
-          <FormattedMessage
-            defaultMessage="Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node"
-            id="712i26"
-          />
-        </small>
-      </p>
+      <ul className="list-disc">
+        <li>
+          <FormattedMessage defaultMessage="Redirect issues HTTP redirect to the supplied lightning address" />
+        </li>
+        <li>
+          <FormattedMessage defaultMessage="Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node" />
+        </li>
+      </ul>
       <div className="flex gap-2">
         <input
           type="text"
-          className="w-max"
+          className="grow"
           placeholder={formatMessage({
             defaultMessage: "LNURL or Lightning Address",
-            id: "yCLnBC",
           })}
           value={newAddress}
           onChange={e => setNewAddress(e.target.value)}
@@ -89,6 +78,6 @@ export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
         </AsyncButton>
       </div>
       {error && <b className="error">{error}</b>}
-    </div>
+    </>
   );
 }

@@ -13,7 +13,7 @@ export default function FreeNostrAddressPage() {
       <p>
         <FormattedMessage {...messages.Nip05Pros} />
       </p>
-      <ul>
+      <ul className="list-disc">
         <li>
           <FormattedMessage {...messages.AvoidImpersonators} />
         </li>

@@ -300,9 +300,6 @@
   "5dfmvv": {
     "defaultMessage": "Zap Goal"
   },
-  "5oTnfy": {
-    "defaultMessage": "Buy Handle"
-  },
   "5qEWCr": {
     "defaultMessage": "File Metadata"
   },
@@ -508,9 +505,6 @@
   "AedFVZ": {
     "defaultMessage": "Create or update a product"
   },
-  "Ai8VHU": {
-    "defaultMessage": "Unlimited note retention on Snort relay"
-  },
   "AkCxS/": {
     "defaultMessage": "Reason"
   },
@@ -538,6 +532,9 @@
   "Ayx8rG": {
     "defaultMessage": "Curated Publication Index"
   },
+  "B2Cjgu": {
+    "defaultMessage": "Buy Nostr Address"
+  },
   "B4C47Y": {
     "defaultMessage": "name too short"
   },
@@ -549,9 +546,6 @@
   },
   "B7wvUM": {
     "defaultMessage": "You can add a single or multiple relays, one per line."
-  },
-  "BGCM48": {
-    "defaultMessage": "Write access to Snort relay, with 1 year of event retention"
   },
   "BGGacK": {
     "defaultMessage": "AI Embeddings / Vector lists"
@@ -794,9 +788,6 @@
   "GSye7T": {
     "defaultMessage": "Lightning Address"
   },
-  "GUlSVG": {
-    "defaultMessage": "Claim your included Snort nostr address"
-  },
   "Gcn9NQ": {
     "defaultMessage": "Magnet Link"
   },
@@ -1012,6 +1003,9 @@
   "LKw/ue": {
     "defaultMessage": "Check out the code {link}"
   },
+  "LPw/EW": {
+    "defaultMessage": "Nostr address' use the <a>NIP-05</a> specification which is a DNS based verification spec which helps to validate you as a real user."
+  },
   "LR1XjT": {
     "defaultMessage": "Pin too short"
   },
@@ -1226,6 +1220,9 @@
   "RfhLwC": {
     "defaultMessage": "By: {author}"
   },
+  "RgEsTx": {
+    "defaultMessage": "Write access to {app} relay, with 1 year of event retention"
+  },
   "RhDAoS": {
     "defaultMessage": "Are you sure you want to delete {id}"
   },
@@ -1234,6 +1231,9 @@
   },
   "RoOyAh": {
     "defaultMessage": "Relays"
+  },
+  "RrUIfX": {
+    "defaultMessage": "Downloadable backups from {app} relay"
   },
   "Rs4kCE": {
     "defaultMessage": "Bookmark"
@@ -1798,6 +1798,9 @@
   "geppt8": {
     "defaultMessage": "{count} ({count2} in memory)"
   },
+  "gib7iq": {
+    "defaultMessage": "No handles found"
+  },
   "gjBiyj": {
     "defaultMessage": "Loading..."
   },
@@ -1999,9 +2002,6 @@
   "lEnclp": {
     "defaultMessage": "My events: {n}"
   },
-  "lPWASz": {
-    "defaultMessage": "Snort nostr address"
-  },
   "lbr3Lq": {
     "defaultMessage": "Copy link"
   },
@@ -2031,9 +2031,6 @@
   },
   "mCEKiZ": {
     "defaultMessage": "{n} notes have been muted"
-  },
-  "mErPop": {
-    "defaultMessage": "It looks like you dont have any, check {link} to buy one!"
   },
   "mFtdYh": {
     "defaultMessage": "{type} Worker Relay"
@@ -2101,6 +2098,9 @@
   "o7e+nJ": {
     "defaultMessage": "{n} followers"
   },
+  "oEyQP6": {
+    "defaultMessage": "Unlimited note retention on {app} relay"
+  },
   "oHPB8Q": {
     "defaultMessage": "Zap {name}"
   },
@@ -2124,9 +2124,6 @@
   },
   "pEEBFk": {
     "defaultMessage": "Reliable Relays"
-  },
-  "pI+77w": {
-    "defaultMessage": "Downloadable backups from Snort relay"
   },
   "pRess9": {
     "defaultMessage": "ZapPool"
@@ -2154,9 +2151,6 @@
   },
   "qBYNMb": {
     "defaultMessage": "Group Thread Reply"
-  },
-  "qD9EUF": {
-    "defaultMessage": "Email <> DM bridge for your Snort nostr address"
   },
   "qDwvZ4": {
     "defaultMessage": "Unknown error"
@@ -2274,6 +2268,9 @@
   },
   "sfL/O+": {
     "defaultMessage": "Muted notes will not be shown"
+  },
+  "t+iuoN": {
+    "defaultMessage": "Claim your included {app} nostr address"
   },
   "t79a6U": {
     "defaultMessage": "Connection Success:"
@@ -2484,6 +2481,12 @@
   },
   "yeX8yA": {
     "defaultMessage": "Native App"
+  },
+  "ymVhDw": {
+    "defaultMessage": "Email <> DM bridge for your {app} nostr address"
+  },
+  "ywyVQg": {
+    "defaultMessage": "{app} nostr address"
   },
   "z3UjXR": {
     "defaultMessage": "Debug"

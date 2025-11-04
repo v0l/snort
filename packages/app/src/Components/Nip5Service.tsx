@@ -250,15 +250,15 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       )}
       {error && <b className="error">{error.error}</b>}
       {!registerStatus && (
-        <div className="flex items-center mb10">
+        <div className="flex items-center gap-2">
           <input
             type="text"
-            className="nip-handle"
+            className="grow"
             placeholder={formatMessage(messages.Handle)}
             value={handle}
             onChange={onHandleChange}
           />
-          &nbsp;@&nbsp;
+          @
           <select value={domain} onChange={onDomainChange}>
             {serviceConfig?.domains.map(a => (
               <option key={a.name}>{a.name}</option>
@@ -267,15 +267,14 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         </div>
       )}
       {availabilityResponse?.available && !registerStatus && (
-        <div className="flex">
+        <>
           {!props.forSubscription && (
-            <div className="mr10">
+            <div className="flex items-center gap-2">
               <FormattedMessage
                 {...messages.Sats}
                 values={{ n: formatShort(unwrap(availabilityResponse.quote?.price)) }}
               />
-              <hr />
-              <small>{availabilityResponse.quote?.data.type}</small>
+              {availabilityResponse.quote?.data.type && <small>({availabilityResponse.quote?.data.type})</small>}
             </div>
           )}
           <AsyncButton
@@ -290,15 +289,13 @@ export default function Nip5Service(props: Nip05ServiceProps) {
               <FormattedMessage {...messages.BuyNow} />
             )}
           </AsyncButton>
-        </div>
+        </>
       )}
       {availabilityResponse?.available === false && !registerStatus && (
-        <div className="flex">
-          <b className="error">
-            <FormattedMessage {...messages.NotAvailable} />{" "}
-            {mapError(availabilityResponse.why, availabilityResponse.reasonTag || null)}
-          </b>
-        </div>
+        <b className="error">
+          <FormattedMessage {...messages.NotAvailable} />{" "}
+          {mapError(availabilityResponse.why, availabilityResponse.reasonTag || null)}
+        </b>
       )}
       <ZapModal
         invoice={registerResponse?.invoice}
@@ -307,7 +304,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         title={formatMessage(messages.Buying, { item: `${handle}@${domain}` })}
       />
       {registerStatus?.paid && (
-        <div className="flex flex-col">
+        <>
           <h4>
             <FormattedMessage {...messages.OrderPaid} />
           </h4>
@@ -336,7 +333,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
           <AsyncButton onClick={() => updateProfile(handle, domain)}>
             <FormattedMessage {...messages.AddToProfile} />
           </AsyncButton>
-        </div>
+        </>
       )}
     </>
   );

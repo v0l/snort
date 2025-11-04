@@ -29,28 +29,25 @@ export default function TransferHandle({ handle }: { handle: ManageHandle }) {
   }
 
   return (
-    <div>
+    <>
       <h4>
         <FormattedMessage defaultMessage="Transfer to Pubkey" />
       </h4>
-      <div className="flex">
-        <div className="grow">
-          <input
-            type="text"
-            className="w-max mr10"
-            placeholder={formatMessage({
-              defaultMessage: "Public key (npub/nprofile)",
-              id: "VR5eHw",
-            })}
-            value={newKey}
-            onChange={e => setNewKey(e.target.value)}
-          />
-        </div>
+      <div className="flex items-center gap-2">
+        <input
+          type="text"
+          className="grow"
+          placeholder={formatMessage({
+            defaultMessage: "Public key (npub/nprofile)",
+          })}
+          value={newKey}
+          onChange={e => setNewKey(e.target.value)}
+        />
         <AsyncButton onClick={() => startTransfer()}>
           <FormattedMessage defaultMessage="Transfer" />
         </AsyncButton>
       </div>
       {error && <b className="error">{error}</b>}
-    </div>
+    </>
   );
 }

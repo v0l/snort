@@ -187,7 +187,7 @@ export interface NostrJson {
   nip46?: Record<string, Array<string>>;
 }
 
-export async function fetchNip05Pubkey(name: string, domain: string, timeout = 2_000): Promise<string | undefined> {
+export async function fetchNip05Pubkey(name: string, domain: string, timeout = 5_000): Promise<string | undefined> {
   if (!name || !domain) {
     return undefined;
   }

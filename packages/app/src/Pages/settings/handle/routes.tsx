@@ -1,14 +1,14 @@
 import { FormattedMessage } from "react-intl";
-import { Outlet, RouteObject, useNavigate } from "react-router-dom";
+import { Link, Outlet, RouteObject } from "react-router-dom";
 
 function ManageHandlePage() {
-  const navigate = useNavigate();
-
   return (
     <>
-      <h3 onClick={() => navigate("/settings/handle")} className="pointer">
-        <FormattedMessage defaultMessage="Nostr Address" />
-      </h3>
+      <Link to={ManageHandleRoutes[0].path!}>
+        <h3>
+          <FormattedMessage defaultMessage="Nostr Address" />
+        </h3>
+      </Link>
       <Outlet />
     </>
   );
@@ -20,7 +20,7 @@ export const ManageHandleRoutes = [
     element: <ManageHandlePage />,
     children: [
       {
-        path: "",
+        index: true,
         async lazy() {
           const { ListHandles } = await import("..");
           return { Component: ListHandles };

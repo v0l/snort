@@ -17,21 +17,41 @@ export function mapFeatureName(k: LockedFeatures) {
     case LockedFeatures.MultiAccount:
       return <FormattedMessage defaultMessage="Multi account support" />;
     case LockedFeatures.NostrAddress:
-      return <FormattedMessage defaultMessage="Snort nostr address" />;
+      return <FormattedMessage defaultMessage="{app} nostr address" values={{ app: CONFIG.appNameCapitalized }} />;
     case LockedFeatures.Badge:
       return <FormattedMessage defaultMessage="Supporter Badge" />;
     case LockedFeatures.DeepL:
       return <FormattedMessage defaultMessage="DeepL translations" />;
     case LockedFeatures.RelayRetention:
-      return <FormattedMessage defaultMessage="Unlimited note retention on Snort relay" />;
+      return (
+        <FormattedMessage
+          defaultMessage="Unlimited note retention on {app} relay"
+          values={{ app: CONFIG.appNameCapitalized }}
+        />
+      );
     case LockedFeatures.RelayBackup:
-      return <FormattedMessage defaultMessage="Downloadable backups from Snort relay" />;
+      return (
+        <FormattedMessage
+          defaultMessage="Downloadable backups from {app} relay"
+          values={{ app: CONFIG.appNameCapitalized }}
+        />
+      );
     case LockedFeatures.RelayAccess:
-      return <FormattedMessage defaultMessage="Write access to Snort relay, with 1 year of event retention" />;
+      return (
+        <FormattedMessage
+          defaultMessage="Write access to {app} relay, with 1 year of event retention"
+          values={{ app: CONFIG.appNameCapitalized }}
+        />
+      );
     case LockedFeatures.LNProxy:
       return <FormattedMessage defaultMessage="LN Address Proxy" />;
     case LockedFeatures.EmailBridge:
-      return <FormattedMessage defaultMessage="Email <> DM bridge for your Snort nostr address" />;
+      return (
+        <FormattedMessage
+          defaultMessage="Email <> DM bridge for your {app} nostr address"
+          values={{ app: CONFIG.appNameCapitalized }}
+        />
+      );
   }
 }
 

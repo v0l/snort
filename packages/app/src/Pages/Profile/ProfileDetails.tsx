@@ -47,7 +47,7 @@ const ProfileDetails = ({
           <DisplayName user={user} pubkey={user?.pubkey ?? ""} />
           <FollowsYou followsMe={user?.pubkey !== loginPubKey && follows.includes(loginPubKey ?? "")} />
         </h2>
-        {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+        {user?.nip05 && <Nip05 pubkey={user.pubkey} showBadges={true} />}
       </div>
       {showBadges && id && <ProfileBadges pubkey={id} />}
       {showStatus && id && <MusicStatus id={id} />}

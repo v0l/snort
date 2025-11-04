@@ -1,12 +1,12 @@
 import { FormattedMessage } from "react-intl";
-
-import messages from "@/Pages/messages";
 import { ApiHost } from "@/Utils/Const";
 
 export const SnortNostrAddressService = {
-  name: "Snort",
+  name: CONFIG.appNameCapitalized,
   service: `${ApiHost}/api/v1/n5sp`,
-  link: "https://snort.social/",
-  supportLink: "https://snort.social/help",
-  about: <FormattedMessage {...messages.SnortSocialNip} />,
+  link: `https://${CONFIG.hostname}`,
+  supportLink: `https://${CONFIG.hostname}/help`,
+  about: (
+    <FormattedMessage defaultMessage="Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!" />
+  ),
 };

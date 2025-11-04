@@ -41,7 +41,7 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
     const url = `${window.location.protocol}//${window.location.host}/${link}`;
     if ("share" in window.navigator) {
       await window.navigator.share({
-        title: "Snort",
+        title: CONFIG.appNameCapitalized,
         url: url,
       });
     } else {

@@ -63,9 +63,9 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef, tags: Array<
       }
       case "list": {
         if (t.ordered) {
-          return <ol>{(t.items as Token[]).map(a => renderToken(a, tags))}</ol>;
+          return <ol className="list-decimal">{(t.items as Token[]).map(a => renderToken(a, tags))}</ol>;
         } else {
-          return <ul>{(t.items as Token[]).map(a => renderToken(a, tags))}</ul>;
+          return <ul className="list-disc">{(t.items as Token[]).map(a => renderToken(a, tags))}</ul>;
         }
       }
       case "list_item": {

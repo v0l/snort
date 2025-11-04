@@ -4,6 +4,7 @@ import { ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
 
 import LNForwardAddress from "./LNAddress";
 import TransferHandle from "./TransferHandle";
+import Nip05 from "@/Components/User/Nip05";
 
 export default function ManageHandleIndex() {
   const location = useLocation();
@@ -12,15 +13,12 @@ export default function ManageHandleIndex() {
     return <Navigate to="/settings/handle" />;
   }
   return (
-    <>
-      <h3 className="nip05">
-        {handle.handle}@
-        <span className="domain" data-domain={handle.domain?.toLowerCase()}>
-          {handle.domain}
-        </span>
-      </h3>
+    <div className="flex flex-col gap-4">
+      <h4>
+        <Nip05 nip05={`${handle.handle}@${handle.domain}`} />
+      </h4>
       <LNForwardAddress handle={handle} />
       <TransferHandle handle={handle} />
-    </>
+    </div>
   );
 }

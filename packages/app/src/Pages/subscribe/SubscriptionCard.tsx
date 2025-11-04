@@ -25,7 +25,10 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
         {!sub.handle && (
           <>
             <h3>
-              <FormattedMessage defaultMessage="Claim your included Snort nostr address" />
+              <FormattedMessage
+                defaultMessage="Claim your included {app} nostr address"
+                values={{ app: CONFIG.appNameCapitalized }}
+              />
             </h3>
             <Nip5Service
               {...SnortNostrAddressService}
@@ -35,7 +38,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
             />
           </>
         )}
-        {sub.handle && <Nip05 nip05={sub.handle} pubkey={""} verifyNip={false} />}
+        {sub.handle && <Nip05 nip05={sub.handle} pubkey={""} forceVerified={true} />}
       </>
     );
   }
