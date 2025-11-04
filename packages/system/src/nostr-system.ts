@@ -189,6 +189,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
 
   HandleEvent(subId: string, ev: TaggedNostrEvent) {
     this.#queryManager.handleEvent(subId, ev);
+    this.config.cachingRelay?.event(ev);
   }
 
   async BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]> {
@@ -197,6 +198,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
   }
 
   async WriteOnceToRelay(address: string, ev: NostrEvent): Promise<OkResponse> {
+    this.HandleEvent("*", { ...ev, relays: [address] });
     return await this.pool.broadcastTo(address, ev);
   }
 

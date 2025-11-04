@@ -18,7 +18,7 @@ export class UserFollowsWorker extends EventEmitter<CacheEvents<UsersFollows>> i
     const start = unixNowMs();
     const profiles = await this.#relay.query([
       "REQ",
-      "profiles-preload",
+      "follows-preload",
       {
         kinds: [3],
       },

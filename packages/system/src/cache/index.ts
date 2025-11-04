@@ -16,21 +16,6 @@ export interface CachedMetadata extends UserMetadata {
    * The pubkey of the owner of this metadata
    */
   pubkey: string;
-
-  /**
-   * The bech32 encoded pubkey
-   */
-  npub: string;
-
-  /**
-   * Pubkey of zapper service
-   */
-  zapService?: string;
-
-  /**
-   * If the nip05 is valid for this user
-   */
-  isNostrAddressValid: boolean;
 }
 
 export interface RelayMetrics {
@@ -63,7 +48,6 @@ export function mapEventToProfile(ev: NostrEvent) {
     let ret = {
       ...data,
       pubkey: ev.pubkey,
-      npub: hexToBech32("npub", ev.pubkey),
       created: ev.created_at,
       loaded: unixNowMs(),
     } as CachedMetadata;

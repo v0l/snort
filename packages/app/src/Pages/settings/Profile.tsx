@@ -115,16 +115,12 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
     if (publisher) {
       const ev = await publisher.metadata(userCopy);
-      system.BroadcastEvent(ev);
+      await system.BroadcastEvent(ev);
 
       const newProfile = mapEventToProfile(ev);
       if (newProfile) {
         await UserCache.update(newProfile);
       }
-
-      updateSession(id, ss => {
-        ss.state.profile;
-      });
     }
   }
 

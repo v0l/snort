@@ -31,8 +31,10 @@ System.on("auth", async (c, r, cb) => {
 
 System.pool.on("event", (_relay, _sub, ev) => {
   EventsCache.discover(ev);
-  UserCache.discover(ev);
-  addEventToFuzzySearch(ev);
+  if (ev.kind === 0) {
+    UserCache.discover(ev);
+    addEventToFuzzySearch(ev);
+  }
 });
 
 /**
