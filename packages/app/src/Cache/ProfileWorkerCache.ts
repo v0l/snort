@@ -96,15 +96,14 @@ export class ProfileCacheRelayWorker
   }
 
   async set(obj: CachedMetadata) {
-    const cached = this.getFromCache(this.key(obj));
+    const k = this.key(obj);
+    const cached = this.getFromCache(k);
     if (cached?.loaded && cached?.loaded >= obj.loaded) {
       return; //skip if newer is in cache
     }
 
-    const k = this.key(obj);
     this.#keys.add(k);
     this.#cache.set(k, obj);
-    console.debug("SET PROFILE", obj);
   }
 
   async bulkSet(obj: CachedMetadata[] | readonly CachedMetadata[]) {

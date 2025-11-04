@@ -135,6 +135,9 @@
   "1ozeyg": {
     "defaultMessage": "Nature"
   },
+  "1sawgR": {
+    "defaultMessage": "Page {current} of {total} ({count} items)"
+  },
   "1udzha": {
     "defaultMessage": "Conversations"
   },
@@ -930,6 +933,9 @@
   },
   "JIVWWA": {
     "defaultMessage": "Sport"
+  },
+  "JJNc3c": {
+    "defaultMessage": "Previous"
   },
   "JPFYIM": {
     "defaultMessage": "No lightning address"

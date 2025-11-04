@@ -16,7 +16,6 @@ import { TimelineSubject } from "@/Feed/TimelineFeed";
 import useZapsFeed from "@/Feed/ZapsFeed";
 import { useBookmarkList, usePinList } from "@/Hooks/useLists";
 import { NostrPrefix } from "@snort/shared";
-import Icon from "@/Components/Icons/Icon";
 
 export function ZapsProfileTab({ id }: { id: string }) {
   const zaps = useZapsFeed(new NostrLink(NostrPrefix.PublicKey, id));

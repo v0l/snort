@@ -1,5 +1,5 @@
 import debug from "debug";
-import { CachedTable, removeUndefined } from "@snort/shared";
+import { CachedTable, isHex, removeUndefined } from "@snort/shared";
 import { SystemInterface, TaggedNostrEvent, RequestBuilder } from ".";
 
 export abstract class BackgroundLoader<T extends { loaded: number; created: number }> {
@@ -49,6 +49,9 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
    */
   TrackKeys(pk: string | Array<string>) {
     for (const p of Array.isArray(pk) ? pk : [pk]) {
+      if (!isHex(p) || p.length !== 64) {
+        continue;
+      }
       this.#wantsKeys.add(p);
     }
   }
@@ -100,30 +103,29 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
 
   async #FetchMetadata() {
     const loading = [...this.#wantsKeys].filter(a => !this.#blacklist.has(a));
+    try {
+      // Only buffer keys that aren't already in memory cache
+      const needsBuffer = loading.filter(a => !this.cache.getFromCache(a));
+      if (needsBuffer.length > 0) {
+        await this.cache.buffer(needsBuffer);
+      }
 
-    // Only buffer keys that aren't already in memory cache
-    const needsBuffer = loading.filter(a => !this.cache.getFromCache(a));
-    if (needsBuffer.length > 0) {
-      await this.cache.buffer(needsBuffer);
-    }
-
-    const missing = loading.filter(a => (this.cache.getFromCache(a)?.loaded ?? 0) < this.getExpireCutoff());
-    if (missing.length > 0) {
-      this.#log("Fetching keys: %O", missing);
-      try {
+      const missing = loading.filter(a => (this.cache.getFromCache(a)?.loaded ?? 0) < this.getExpireCutoff());
+      if (missing.length > 0) {
+        this.#log("Fetching keys: %O", missing);
         const found = await this.#loadData(missing);
         const noResult = removeUndefined(missing.filter(a => !found.some(b => a === this.cache.key(b))));
         if (noResult.length > 0) {
           noResult.forEach(a => this.#blacklist.add(a));
         }
-      } catch (e) {
-        this.#log("Error: %O", e);
       }
+    } catch (e) {
+      this.#log("Error: %O", e);
+    } finally {
+      // Use adaptive polling: 500ms if there's work, 2000ms if idle
+      const nextPoll = loading.length > 0 ? 500 : 2000;
+      setTimeout(() => this.#FetchMetadata(), nextPoll);
     }
-
-    // Use adaptive polling: 500ms if there's work, 2000ms if idle
-    const nextPoll = loading.length > 0 ? 500 : 2000;
-    setTimeout(() => this.#FetchMetadata(), nextPoll);
   }
 
   async #loadData(missing: Array<string>) {
@@ -133,11 +135,15 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
       await Promise.all(results.map(a => this.cache.update(a)));
       return results;
     } else {
-      const v = await this.#system.Fetch(this.buildSub(missing));
-      this.#log("Got data", v);
-      const results = removeUndefined(v.map(this.onEvent));
-      await Promise.all(results.map(a => this.cache.update(a)));
-      return results;
+      const ret: Array<T> = [];
+
+      const fres = await this.#system.Fetch(this.buildSub(missing), async x => {
+        const results = removeUndefined(x.map(this.onEvent));
+        ret.push(...results);
+        await Promise.all(results.map(a => this.cache.update(a)));
+      });
+      this.#log("Got data %O (%i/%i)", ret, fres.length, ret.length);
+      return ret;
     }
   }
 }
