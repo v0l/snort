@@ -39,8 +39,12 @@ export default function Nip05({ nip05, pubkey, forceVerified, showBadges, classN
     domain?.toLowerCase() === "snort.social" || domain?.toLowerCase() === CONFIG.nip05Domain.toLowerCase();
 
   return (
-    <div
-      className={classNames("flex items-center text-neutral-400 font-normal", { "opacity-50": !isVerified }, className)}
+    <span
+      className={classNames(
+        "inline-flex items-center text-neutral-400 font-normal",
+        { "opacity-50": !isVerified },
+        className,
+      )}
       ref={ref}
       title={error?.message}>
       {!isDefaultUser && <span className="nick">{`${name}@`}</span>}
@@ -52,6 +56,6 @@ export default function Nip05({ nip05, pubkey, forceVerified, showBadges, classN
           className={classNames("ml-0.5", isVerified ? "text-success" : "text-error")}
         />
       )}
-    </div>
+    </span>
   );
 }

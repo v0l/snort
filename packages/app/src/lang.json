@@ -1422,6 +1422,9 @@
   "WeLEuL": {
     "defaultMessage": "From Server"
   },
+  "WfYjW2": {
+    "defaultMessage": "Upload Banner"
+  },
   "Wj5TbN": {
     "defaultMessage": "Issues"
   },
@@ -2116,9 +2119,6 @@
   "ozZ2Cj": {
     "defaultMessage": "Badge Award"
   },
-  "p4N05H": {
-    "defaultMessage": "Upload"
-  },
   "p9Ps2l": {
     "defaultMessage": "{x}/{y} have relays ({percent})"
   },
@@ -2379,9 +2379,6 @@
   },
   "vhlWFg": {
     "defaultMessage": "Poll Options"
-  },
-  "vlbWtt": {
-    "defaultMessage": "Get a free one"
   },
   "voxBKC": {
     "defaultMessage": "Followed by friends"

@@ -75,11 +75,14 @@ export class ProfileCacheRelayWorker
   async bulkGet(keys: string[]) {
     if (keys.length === 0) return [];
 
+    const cached = removeUndefined(keys.map(a => this.#cache.get(a)));
+    const cachedKeys = new Set(cached.map(a => a.pubkey));
+
     const results = await this.#relay.query([
       "REQ",
       "ProfileCacheRelayWorker.bulkGet",
       {
-        authors: keys,
+        authors: keys.filter(a => !cachedKeys.has(a)),
         kinds: [0],
       },
     ]);
@@ -91,22 +94,30 @@ export class ProfileCacheRelayWorker
       "change",
       mapped.map(a => this.key(a)),
     );
-    return mapped;
+    return [...cached, ...mapped];
   }
 
   async set(obj: CachedMetadata) {
-    this.#keys.add(this.key(obj));
+    const cached = this.getFromCache(this.key(obj));
+    if (cached?.loaded && cached?.loaded >= obj.loaded) {
+      return; //skip if newer is in cache
+    }
+
+    const k = this.key(obj);
+    this.#keys.add(k);
+    this.#cache.set(k, obj);
   }
 
   async bulkSet(obj: CachedMetadata[] | readonly CachedMetadata[]) {
     const mapped = obj.map(a => this.key(a));
     mapped.forEach(a => this.#keys.add(a));
-    // todo: store in cache
+
     this.emit("change", mapped);
   }
 
-  async update(_: UserMetadata): Promise<"new" | "refresh" | "updated" | "no_change"> {
+  async update(obj: CachedMetadata): Promise<"new" | "refresh" | "updated" | "no_change"> {
     // do nothing
+    await this.set(obj);
     return "refresh";
   }
 

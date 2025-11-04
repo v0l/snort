@@ -8,7 +8,7 @@ import classNames from "classnames";
 
 interface AvatarEditorProps {
   picture?: string;
-  classname?: string;
+  className?: string;
   onPictureChange?: (newPicture: string) => void;
   privKey?: string;
 }

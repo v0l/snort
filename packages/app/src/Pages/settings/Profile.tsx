@@ -3,19 +3,19 @@ import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { UserCache } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
-import Icon from "@/Components/Icons/Icon";
 import messages from "@/Components/messages";
-import Avatar from "@/Components/User/Avatar";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { debounce, openFile } from "@/Utils";
 import { MaxAboutLength, MaxUsernameLength } from "@/Utils/Const";
 import useFileUpload from "@/Utils/Upload";
+import AvatarEditor from "@/Components/User/AvatarEditor";
+import { updateSession } from "@/Utils/Login";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -23,10 +23,9 @@ export interface ProfileSettingsProps {
 }
 
 export default function ProfileSettings(props: ProfileSettingsProps) {
-  const navigate = useNavigate();
   const { formatMessage } = useIntl();
-  const { publicKey: id, readonly } = useLogin(s => ({ publicKey: s.publicKey, readonly: s.readonly }));
-  const user = useUserProfile(id ?? "");
+  const { id, publicKey, readonly } = useLogin(s => ({ id: s.id, publicKey: s.publicKey, readonly: s.readonly }));
+  const user = useUserProfile(publicKey ?? "");
   const { publisher, system } = useEventPublisher();
   const uploader = useFileUpload();
   const [error, setError] = useState<Error>();
@@ -122,6 +121,10 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       if (newProfile) {
         await UserCache.update(newProfile);
       }
+
+      updateSession(id, ss => {
+        ss.state.profile;
+      });
     }
   }
 
@@ -196,7 +199,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     try {
       const result = await fetchNip05Pubkey(nip05Name!, nip05Domain!);
       if (result) {
-        if (result === id) {
+        if (result === publicKey) {
           setNip05AddressValid(true);
         } else {
           setInvalidNip05AddressMessage(
@@ -266,21 +269,19 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <input type="text" className="" value={nip05} onChange={e => onNip05Change(e)} disabled={readonly} />
             <div>{!nip05AddressValid && <span className="warning">{invalidNip05AddressMessage}</span>}</div>
             <small>
-              <FormattedMessage
-                defaultMessage="Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration."
-                id="5vMmmR"
-              />
+              <FormattedMessage defaultMessage="Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration." />
             </small>
             <div className="flex gap-3">
-              <button className="flex items-center" type="button" onClick={() => navigate("/nostr-address")}>
-                <FormattedMessage defaultMessage="Buy nostr address" />
-              </button>
-              <button
-                className="flex items-center secondary"
-                type="button"
-                onClick={() => navigate("/free-nostr-address")}>
-                <FormattedMessage defaultMessage="Get a free one" />
-              </button>
+              <Link to="/nostr-address">
+                <button>
+                  <FormattedMessage defaultMessage="Buy nostr address" />
+                </button>
+              </Link>
+              {/* <Link to="/free-nostr-address">
+                <button className="secondary">
+                  <FormattedMessage defaultMessage="Get a free one" />
+                </button>
+              </Link> */}
             </div>
           </div>
         </div>
@@ -305,33 +306,22 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   }
 
   function settings() {
-    if (!id) return null;
+    if (!publicKey) return null;
     return (
       <>
-        <div className="flex justify-center items-center">
+        <div className="flex flex-col gap-2">
           {(props.banner ?? true) && (
             <div
               style={{
                 background: (banner?.length ?? 0) > 0 ? `no-repeat center/cover url("${banner}")` : undefined,
               }}
-              className="banner">
-              <AsyncButton type="button" onClick={() => setNewBanner()} disabled={readonly}>
-                <FormattedMessage defaultMessage="Upload" />
+              className="bg-layer-1 -mx-3 min-h-[140px] flex items-center justify-center">
+              <AsyncButton onClick={() => setNewBanner()} disabled={readonly}>
+                <FormattedMessage defaultMessage="Upload Banner" />
               </AsyncButton>
             </div>
           )}
-          {(props.avatar ?? true) && (
-            <div className="avatar-stack">
-              <Avatar pubkey={id} user={user} image={picture} />
-              <AsyncButton
-                type="button"
-                className="circle flex items-center justify-center z-10"
-                onClick={() => setNewAvatar()}
-                disabled={readonly}>
-                <Icon name="upload-01" />
-              </AsyncButton>
-            </div>
-          )}
+          {(props.avatar ?? true) && <AvatarEditor onPictureChange={p => setPicture(p)} picture={picture} />}
         </div>
         {error && <ErrorOrOffline error={error} />}
         {editor()}

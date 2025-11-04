@@ -81,11 +81,14 @@ export default function ProfileImage({
           }></Avatar>
         {showUsername && (
           <div className={displayNameClassName}>
-            <div className="flex gap-2 items-center font-medium">
+            <div className="font-medium">
               {overrideUsername ? overrideUsername : <DisplayName pubkey={pubkey} user={user} />}
               {leader && showBadges && CONFIG.features.communityLeaders && <LeaderBadge />}
               {user?.nip05 && CONFIG.showNip05 && showNip05 && (
-                <Nip05 nip05={user?.nip05} pubkey={pubkey} showBadges={true} className="text-xs" />
+                <>
+                  &nbsp;
+                  <Nip05 nip05={user?.nip05} pubkey={pubkey} showBadges={true} className="text-xs" />
+                </>
               )}
             </div>
             {subHeader}

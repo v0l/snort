@@ -375,11 +375,6 @@ button.icon:hover {
   padding: 5px;
 }
 
-.circle {
-  border-radius: 100%;
-  aspect-ratio: 1;
-}
-
 textarea {
   font: inherit;
 }

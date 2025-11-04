@@ -44,7 +44,7 @@ const ImageElement = ({ src, meta, onMediaClick, size, ...props }: ImageElementP
       src={currentUrl}
       sha256={meta?.sha256}
       onClick={onMediaClick}
-      className={classNames("max-h-[80vh] w-full h-full object-contain object-center", {
+      className={classNames("relative max-h-[80vh] w-full h-full object-contain object-center", {
         "md:max-h-[510px]": !meta && !CONFIG.media.preferLargeMedia,
       })}
       ref={imageRef}
@@ -80,8 +80,9 @@ const VideoElement = ({ url }: VideoElementProps) => {
   return (
     <div
       ref={videoContainerRef}
-      className={classNames("flex justify-center items-center -mx-4 md:mx-0 my-2", {
+      className={classNames("flex justify-center items-center", {
         "md:h-[510px]": !CONFIG.media.preferLargeMedia,
+        "-mx-3": CONFIG.media.preferLargeMedia,
       })}>
       <video
         crossOrigin="anonymous"

@@ -32,6 +32,7 @@ export default function ProfileMenu({ className }: { className?: string }) {
           size: 40,
           link: "",
           showBadges: false,
+          showNip05: false,
           showProfileCard: false,
           showFollowDistance: false,
           displayNameClassName: "max-xl:hidden",
