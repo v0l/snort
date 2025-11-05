@@ -1,12 +1,12 @@
 import { TaggedNostrEvent } from "@snort/system";
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useContext, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { UserCache } from "@/Cache";
 import Note from "@/Components/Event/EventComponent";
 import useLogin from "@/Hooks/useLogin";
 
 import messages from "../messages";
+import { SnortContext } from "@snort/system-react";
 
 interface BookmarksProps {
   pubkey: string;
@@ -16,16 +16,18 @@ interface BookmarksProps {
 const Bookmarks = ({ pubkey, bookmarks }: BookmarksProps) => {
   const [onlyPubkey, setOnlyPubkey] = useState<string | "all">("all");
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
+
+  const system = useContext(SnortContext);
   const ps = useMemo(() => {
     return [...new Set(bookmarks.map(ev => ev.pubkey))];
   }, [bookmarks]);
   const options = useMemo(
-    () => ({ showTime: false, showBookmarked: true, canUnbookmark: publicKey === pubkey }),
+    () => ({ showTime: false, showBookmarked: true, canUnbookmark: publicKey === pubkey, longFormPreview: true }),
     [publicKey, pubkey],
   );
 
   function renderOption(p: string) {
-    const profile = UserCache.getFromCache(p);
+    const profile = system.config.profiles.getFromCache(p);
     return profile ? <option value={p}>{profile?.display_name || profile?.name}</option> : null;
   }
 

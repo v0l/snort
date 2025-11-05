@@ -1,28 +1,29 @@
 import { unixNowMs } from "@snort/shared";
-import { CacheRelay, EventKind, NostrEvent, UsersFollows } from "@snort/system";
+import { CacheRelay, EventKind, NostrEvent, UsersRelays, parseRelaysFromKind } from "@snort/system";
 import { WorkerBaseCache } from "./worker-cached";
 
-export class UserFollowsWorker extends WorkerBaseCache<UsersFollows> {
+export class RelaysWorkerCache extends WorkerBaseCache<UsersRelays> {
   constructor(relay: CacheRelay) {
-    super(EventKind.ContactList, relay);
+    super(EventKind.Relays, relay);
   }
 
   name(): string {
-    return "Follows";
+    return "Relays";
   }
 
   maxSize(): number {
     return 5_000;
   }
 
-  mapper(ev: NostrEvent): UsersFollows | undefined {
-    if (ev.kind !== EventKind.ContactList) return;
+  mapper(ev: NostrEvent): UsersRelays | undefined {
+    const relays = parseRelaysFromKind(ev);
+    if (!relays) return;
 
     return {
       pubkey: ev.pubkey,
       loaded: unixNowMs(),
       created: ev.created_at,
-      follows: ev.tags,
+      relays: relays,
     };
   }
 
@@ -32,7 +33,7 @@ export class UserFollowsWorker extends WorkerBaseCache<UsersFollows> {
     // load relay lists for follows
     if (follows) {
       await this.preloadTable(`${this.name()}-preload-follows`, {
-        kinds: [EventKind.ContactList],
+        kinds: [EventKind.Relays],
         authors: follows,
       });
     }

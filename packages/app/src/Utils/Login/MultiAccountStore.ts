@@ -96,7 +96,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         },
         stateObj,
       );
-      stateClass.checkIsStandardList(EventKind.BlossomServerList); // track blossom list
+      MultiAccountStore.enableStandardLists(stateClass);
       stateClass.on("change", () => this.#save());
       if (v.state instanceof UserState) {
         v.state.destroy();
@@ -110,6 +110,12 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         this.#publishers.set(v.id, signer);
       }
     }
+  }
+
+  private static enableStandardLists<T>(state: UserState<T>) {
+    state.checkIsStandardList(EventKind.BlossomServerList); // track blossom list
+    state.checkIsStandardList(EventKind.PinList);
+    state.checkIsStandardList(EventKind.BookmarksList);
   }
 
   getSessions() {
@@ -183,7 +189,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       stalker: stalker ?? false,
     } as LoginSession;
 
-    newSession.state!.checkIsStandardList(EventKind.BlossomServerList); // track blossom list
+    MultiAccountStore.enableStandardLists(newSession.state);
     newSession.state!.on("change", () => this.#save());
     const pub = createPublisher(newSession);
     if (pub) {
@@ -232,7 +238,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         appdataId: "snort",
       }),
     } as LoginSession;
-    newSession.state!.checkIsStandardList(EventKind.BlossomServerList); // track blossom list
+    MultiAccountStore.enableStandardLists(newSession.state);
     newSession.state!.on("change", () => this.#save());
 
     if ("nostr_os" in window && window?.nostr_os) {

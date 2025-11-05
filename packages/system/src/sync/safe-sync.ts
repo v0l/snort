@@ -12,10 +12,6 @@ import {
 import { unixNow } from "@snort/shared";
 import debug from "debug";
 
-export interface SafeSyncEvents {
-  change: () => void;
-}
-
 /**
  * Safely sync replacable events to nostr
  *
@@ -25,17 +21,18 @@ export interface SafeSyncEvents {
  * 10002 (Relays)
  * 30078 (AppData)
  */
-export class SafeSync extends EventEmitter<SafeSyncEvents> {
+export class SafeSync {
   #log = debug("SafeSync");
   #base: NostrEvent | undefined;
   #didSync = false;
 
-  constructor(readonly link: NostrLink) {
-    super();
-  }
+  constructor(readonly link: NostrLink) {}
 
+  /**
+   * Return a copy of the internal value
+   */
   get value() {
-    return this.#base ? Object.freeze({ ...this.#base }) : undefined;
+    return this.#base ? { ...this.#base } : undefined;
   }
 
   get didSync() {
@@ -60,7 +57,6 @@ export class SafeSync extends EventEmitter<SafeSyncEvents> {
   setBase(ev: NostrEvent) {
     this.#checkForUpdate(ev, false);
     this.#base = ev;
-    this.emit("change");
   }
 
   /**
@@ -75,19 +71,18 @@ export class SafeSync extends EventEmitter<SafeSyncEvents> {
     system: SystemInterface,
     mustExist?: boolean,
   ) {
+    if (!this.#didSync) {
+      throw new Error("Cannot update, please call sync() first");
+    }
     if ("sig" in next) {
       next.id = "";
       next.sig = "";
     }
     const signed = await this.#signEvent(next, signer);
-
-    // always attempt to get a newer version before broadcasting
-    await this.#sync(system);
     this.#checkForUpdate(signed, mustExist ?? true);
 
     await system.BroadcastEvent(signed);
     this.#base = signed;
-    this.emit("change");
   }
 
   async #signEvent(next: NotSignedNostrEvent, signer: EventSigner) {
@@ -106,12 +101,12 @@ export class SafeSync extends EventEmitter<SafeSyncEvents> {
     const results = await system.Fetch(rb);
     const res = results.find(a => this.link.matchesEvent(a));
     this.#log("Got result %O", res);
-    if (res && res.created_at > (this.#base?.created_at ?? 0)) {
+    const isUpdate = res !== undefined && res.created_at > (this.#base?.created_at ?? 0);
+    if (isUpdate) {
       this.#base = res;
-      this.emit("change");
     }
     this.#didSync = true;
-    return this.#base;
+    return isUpdate;
   }
 
   #checkForUpdate(ev: NostrEvent, mustExist: boolean) {

@@ -110,9 +110,15 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       return existing;
     } else {
       const q = new Query(req);
-      q.on("trace", event => this.emit("trace", event, req.id));
+      q.on("trace", e => {
+        this.emit("trace", e, req.id);
+      });
       q.on("request", (_id, fx) => {
         this.#send(q, fx);
+      });
+      q.on("end", () => {
+        q.off("trace");
+        q.off("request");
       });
 
       this.#queries.set(req.id, q);

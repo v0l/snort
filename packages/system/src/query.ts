@@ -378,13 +378,11 @@ export class Query extends EventEmitter<QueryEvents> {
    * Start filter emit
    */
   start() {
-    if (this.#groupTimeout) {
-      clearTimeout(this.#groupTimeout);
-      this.#groupTimeout = undefined;
-    }
     if (this.#groupingDelay) {
+      if (this.#groupTimeout !== undefined) return;
       this.#groupTimeout = setTimeout(() => {
         this.#emitFilters();
+        this.#groupTimeout = undefined;
       }, this.#groupingDelay);
     } else {
       this.#emitFilters();

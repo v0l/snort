@@ -1,13 +1,13 @@
 import { CachedTable } from "@snort/shared";
-import { UsersRelays, CachedMetadata, RelayMetrics, UsersFollows, SnortSystemDb } from "./cache";
+import { UsersRelays, CachedMetadata, UsersFollows } from "./cache";
 import { CacheRelay } from "./cache-relay";
 import { RelaySettings } from "./connection";
 import { ConnectionPool } from "./connection-pool";
 import { TaggedNostrEvent, OkResponse, ReqFilter, NostrEvent } from "./nostr";
-import { AuthorsRelaysCache, RelayMetadataLoader } from "./outbox";
+import { RelayMetadataLoader } from "./outbox";
 import { ProfileLoaderService } from "./profile-cache";
 import { Optimizer } from "./query-optimizer";
-import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
+import { RequestBuilder } from "./request-builder";
 import { RequestRouter } from "./request-router";
 import { QueryEvents } from "./query";
 import { TraceTimeline } from "./trace-timeline";
@@ -28,9 +28,11 @@ export type QueryLike = {
 export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
-  request: (subId: string, filter: BuiltRawReqFilter) => void;
 }
 
+/**
+ * Configuration used for all sub-systems in SystemInterface impl
+ */
 export interface SystemConfig {
   /**
    * Users configured relays (via kind 3 or kind 10_002)
@@ -41,16 +43,6 @@ export interface SystemConfig {
    * Cache of user profiles, (kind 0)
    */
   profiles: CachedTable<CachedMetadata>;
-
-  /**
-   * Cache of relay connection stats
-   */
-  relayMetrics: CachedTable<RelayMetrics>;
-
-  /**
-   * Direct reference events cache
-   */
-  events: CachedTable<NostrEvent>;
 
   /**
    * Cache of user ContactLists (kind 3)
@@ -66,11 +58,6 @@ export interface SystemConfig {
    * Optimized functions, usually `@snort/system-wasm`
    */
   optimizer: Optimizer;
-
-  /**
-   * Generic storage layer for internal caches
-   */
-  db?: SnortSystemDb;
 
   /**
    * Check event sigs on receive from relays
@@ -178,19 +165,9 @@ export interface SystemInterface {
   get profileLoader(): ProfileLoaderService;
 
   /**
-   * Relay cache for "Gossip" model
-   */
-  get relayCache(): AuthorsRelaysCache;
-
-  /**
    * Query optimizer
    */
   get optimizer(): Optimizer;
-
-  /**
-   * Generic cache store for events
-   */
-  get eventsCache(): CachedTable<NostrEvent>;
 
   /**
    * ContactList cache
@@ -222,6 +199,9 @@ export interface SystemInterface {
    */
   get traceTimeline(): TraceTimeline | undefined;
 
+  /**
+   * Get internal system config
+   */
   get config(): SystemConfig;
 }
 

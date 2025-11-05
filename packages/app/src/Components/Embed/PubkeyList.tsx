@@ -3,7 +3,6 @@ import { NostrEvent } from "@snort/system";
 import { WalletInvoiceState } from "@snort/wallet";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
-import { UserCache } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { Toastore } from "@/Components/Toaster/Toaster";
 import FollowListBase from "@/Components/User/FollowListBase";
@@ -23,7 +22,7 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
   async function zapAll() {
     for (const pk of ids) {
       try {
-        const profile = await UserCache.get(pk);
+        const profile = await system.config.profiles.get(pk);
         const amtSend = defaultZapAmount;
         const lnurl = profile?.lud16 || profile?.lud06;
         if (lnurl) {

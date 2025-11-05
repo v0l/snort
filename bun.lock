@@ -34,7 +34,6 @@
         "@snort/system": "workspace:*",
         "@snort/system-react": "workspace:*",
         "@snort/system-wasm": "workspace:*",
-        "@snort/system-web": "workspace:*",
         "@snort/wallet": "workspace:*",
         "@snort/worker-relay": "workspace:*",
         "@uidotdev/usehooks": "^2.4.1",
@@ -153,7 +152,7 @@
         "debug": "^4.4.3",
         "eventemitter3": "^5.0.1",
         "isomorphic-ws": "^5.0.0",
-        "nostr-social-graph": "^1.0.33",
+        "nostr-social-graph": "git+https://github.com/v0l/nostr-social-graph.git#248c5dfdf2eaa11b82019315c566ee0b1ec5e5be",
         "typescript-lru-cache": "^2.0.0",
         "uuid": "^13.0.0",
         "ws": "^8.18.3",
@@ -197,18 +196,6 @@
     "packages/system-wasm": {
       "name": "@snort/system-wasm",
       "version": "1.0.6",
-    },
-    "packages/system-web": {
-      "name": "@snort/system-web",
-      "version": "1.2.11",
-      "dependencies": {
-        "@snort/shared": "^1.0.14",
-        "@snort/system": "^1.2.11",
-        "dexie": "^4.2.1",
-      },
-      "devDependencies": {
-        "typescript": "^5.9.3",
-      },
     },
     "packages/wallet": {
       "name": "@snort/wallet",
@@ -938,8 +925,6 @@
 
     "@snort/system-wasm": ["@snort/system-wasm@workspace:packages/system-wasm"],
 
-    "@snort/system-web": ["@snort/system-web@workspace:packages/system-web"],
-
     "@snort/wallet": ["@snort/wallet@workspace:packages/wallet"],
 
     "@snort/worker-relay": ["@snort/worker-relay@workspace:packages/worker-relay"],
@@ -1457,8 +1442,6 @@
     "detect-newline": ["detect-newline@3.1.0", "", {}, "sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA=="],
 
     "detect-node-es": ["detect-node-es@1.1.0", "", {}, "sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ=="],
-
-    "dexie": ["dexie@4.2.1", "", {}, "sha512-Ckej0NS6jxQ4Po3OrSQBFddayRhTCic2DoCAG5zacOfOVB9P2Q5Xc5uL/nVa7ZVs+HdMnvUPzLFCB/JwpB6Csg=="],
 
     "diff": ["diff@4.0.2", "", {}, "sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A=="],
 
@@ -2000,7 +1983,7 @@
 
     "normalize-range": ["normalize-range@0.1.2", "", {}, "sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA=="],
 
-    "nostr-social-graph": ["nostr-social-graph@1.0.33", "", { "dependencies": { "@types/cors": "^2.8.17", "cors": "^2.8.5" } }, "sha512-wZyQYy3QaBrYWyO2tWzMt2f+sGvM811SVJ/IE7+8/KyuYZzlgOa9XYBqu6eKX+r8fcNVzHqbGe7In1ME2to6Dw=="],
+    "nostr-social-graph": ["nostr-social-graph@github:v0l/nostr-social-graph#248c5df", { "dependencies": { "@types/cors": "^2.8.17", "cors": "^2.8.5" } }, "v0l-nostr-social-graph-248c5df"],
 
     "npm-run-path": ["npm-run-path@4.0.1", "", { "dependencies": { "path-key": "^3.0.0" } }, "sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw=="],
 

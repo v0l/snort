@@ -202,7 +202,7 @@ export class Zapper {
         await svc.load();
         return svc;
       } else if (t.type === "pubkey") {
-        const profile = await this.system.profileLoader.fetch(t.value);
+        const profile = await this.system.config.profiles.get(t.value);
         if (profile) {
           const svc = new LNURL(profile.lud16 ?? profile.lud06 ?? "");
           await svc.load();

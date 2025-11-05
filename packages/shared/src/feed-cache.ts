@@ -42,6 +42,7 @@ export type CachedTable<T> = {
   key(of: T): string;
   snapshot(): Array<T>;
   search(q: string): Promise<Array<T>>;
+  clear(): Promise<void>;
 } & EventEmitter<CacheEvents<T>>;
 
 /**

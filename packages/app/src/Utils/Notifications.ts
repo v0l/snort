@@ -2,7 +2,7 @@ import { base64 } from "@scure/base";
 import { removeUndefined, unwrap } from "@snort/shared";
 import { CachedMetadata, EventKind, EventPublisher, TaggedNostrEvent } from "@snort/system";
 
-import { UserCache } from "@/Cache";
+import { ProfilesCache } from "@/Cache";
 import SnortApi from "@/External/SnortApi";
 import { MentionRegex } from "@/Utils/Const";
 import { defaultAvatar, getDisplayName, tagFilterOfTextRepost } from "@/Utils/index";
@@ -22,9 +22,9 @@ export async function makeNotification(ev: TaggedNostrEvent): Promise<Notificati
         return null;
       }
       const pubkeys = new Set([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1])]);
-      await UserCache.buffer([...pubkeys]);
-      const allUsers = removeUndefined([...pubkeys].map(a => UserCache.getFromCache(a)));
-      const fromUser = UserCache.getFromCache(ev.pubkey);
+      await ProfilesCache.buffer([...pubkeys]);
+      const allUsers = removeUndefined([...pubkeys].map(a => ProfilesCache.getFromCache(a)));
+      const fromUser = ProfilesCache.getFromCache(ev.pubkey);
       const name = getDisplayName(fromUser, ev.pubkey);
       const avatarUrl = fromUser?.picture || defaultAvatar(ev.pubkey);
       return {

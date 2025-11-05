@@ -32,16 +32,6 @@ export class UserProfileCache extends FeedCache<CachedMetadata> {
       .slice(0, 5);
   }
 
-  /**
-   * Try to update the profile metadata cache with a new version
-   * @param m Profile metadata
-   * @returns
-   */
-  override async update(m: CachedMetadata) {
-    const updateType = await super.update(m);
-    return updateType;
-  }
-
   takeSnapshot(): CachedMetadata[] {
     return [...this.cache.values()];
   }

@@ -1,17 +1,11 @@
-import { EventExt, NostrLink, TaggedNostrEvent } from "@snort/system";
-import React, { ReactNode } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { EventExt, TaggedNostrEvent } from "@snort/system";
+import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import { UserCache } from "@/Cache";
-import messages from "@/Components/messages";
-import DisplayName from "@/Components/User/DisplayName";
 import { ClientTag } from "@/Components/Event/Note/ClientTag";
 import Mention from "@/Components/Embed/Mention";
-import { eventLink } from "@/Utils";
 
 export default function ReplyTag({ ev }: { ev: TaggedNostrEvent }) {
-  const { formatMessage } = useIntl();
   const thread = EventExt.extractThread(ev);
   if (thread === undefined) {
     return <ClientTag ev={ev} />;

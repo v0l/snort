@@ -7,7 +7,7 @@ import { randomSample } from "@/Utils";
 export function useProfileLink(pubkey?: string, user?: UserMetadata | CachedMetadata) {
   const system = useContext(SnortContext);
   if (!pubkey) return "#";
-  const relays = system.relayCache
+  const relays = system.config.relays
     .getFromCache(pubkey)
     ?.relays?.filter(a => a.settings.write)
     ?.map(a => a.url);

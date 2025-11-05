@@ -25,6 +25,7 @@ export * from "./user-state";
 export * from "./cache-relay";
 export * from "./connection-cache-relay";
 export * from "./encryption";
+export * from "./relays";
 
 export * from "./impl/nip4";
 export * from "./impl/nip7";
@@ -44,5 +45,4 @@ export * from "./impl/nip92";
 export * from "./cache/index";
 export * from "./cache/user-relays";
 export * from "./cache/user-metadata";
-export * from "./cache/relay-metric";
 export * from "./trace-timeline";

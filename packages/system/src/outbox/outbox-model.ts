@@ -1,8 +1,8 @@
-import { EventKind, NostrEvent, ReqFilter, RequestBuilder, SystemInterface } from "..";
+import { EventKind, NostrEvent, parseRelaysFromKind, ReqFilter, RequestBuilder, SystemInterface } from "..";
 import { appendDedupe, dedupe, removeUndefined, unixNowMs, unwrap } from "@snort/shared";
 import { FlatReqFilter } from "../query-optimizer";
 import { RelayListCacheExpire } from "../const";
-import { AuthorsRelaysCache, EventFetcher, PickedRelays, DefaultPickNRelays, parseRelaysFromKind } from ".";
+import { AuthorsRelaysCache, EventFetcher, PickedRelays, DefaultPickNRelays } from ".";
 import debug from "debug";
 import { BaseRequestRouter } from "../request-router";
 
@@ -21,7 +21,7 @@ export class OutboxModel extends BaseRequestRouter {
   }
 
   static fromSystem(system: SystemInterface) {
-    return new OutboxModel(system.relayCache, system);
+    return new OutboxModel(system.config.relays, system);
   }
 
   /**

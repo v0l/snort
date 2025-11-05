@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 
-import { UserCache } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 import messages from "@/Components/messages";
@@ -15,7 +14,6 @@ import { debounce, openFile } from "@/Utils";
 import { MaxAboutLength, MaxUsernameLength } from "@/Utils/Const";
 import useFileUpload from "@/Utils/Upload";
 import AvatarEditor from "@/Components/User/AvatarEditor";
-import { updateSession } from "@/Utils/Login";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -119,7 +117,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
       const newProfile = mapEventToProfile(ev);
       if (newProfile) {
-        await UserCache.update(newProfile);
+        await system.config.profiles.set(newProfile);
       }
     }
   }

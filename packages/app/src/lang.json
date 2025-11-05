@@ -8,9 +8,6 @@
   "+QM0PJ": {
     "defaultMessage": "Sync all events for your profile into local cache"
   },
-  "+QMdsy": {
-    "defaultMessage": "Relay Stats"
-  },
   "+UjDmN": {
     "defaultMessage": "Logged in with write access"
   },
@@ -195,6 +192,9 @@
   "2z7Kky": {
     "defaultMessage": "Latest Articles"
   },
+  "2zJXeA": {
+    "defaultMessage": "Profiles"
+  },
   "39AHJm": {
     "defaultMessage": "Sign Up"
   },
@@ -236,9 +236,6 @@
   },
   "40VR6s": {
     "defaultMessage": "Nostr Connect"
-  },
-  "41BSaT": {
-    "defaultMessage": "Total Events:"
   },
   "450Fty": {
     "defaultMessage": "None"
@@ -326,9 +323,6 @@
   },
   "62nsdy": {
     "defaultMessage": "Retry"
-  },
-  "634VVz": {
-    "defaultMessage": "Connection Failed:"
   },
   "6559gb": {
     "defaultMessage": "New follow list length {length}"
@@ -611,6 +605,9 @@
   "CYkOCI": {
     "defaultMessage": "and {count} others you follow"
   },
+  "CcqOwX": {
+    "defaultMessage": "Follow Lists"
+  },
   "Cdxwi0": {
     "defaultMessage": "Repository announcements"
   },
@@ -892,9 +889,6 @@
   "IWz1ta": {
     "defaultMessage": "Auto Translate"
   },
-  "IcHcWj": {
-    "defaultMessage": "Last Seen:"
-  },
   "Ig9/a1": {
     "defaultMessage": "Sent {n} sats to {name}"
   },
@@ -960,9 +954,6 @@
   },
   "JymXbw": {
     "defaultMessage": "Private Key"
-  },
-  "K1wl1/": {
-    "defaultMessage": "Average Latency:"
   },
   "K3r6DQ": {
     "defaultMessage": "Delete"
@@ -1171,6 +1162,9 @@
   },
   "PXQ0z0": {
     "defaultMessage": "Receiving to <b>{wallet}</b>"
+  },
+  "PYo9HP": {
+    "defaultMessage": "Events Breakdown"
   },
   "PamNxw": {
     "defaultMessage": "Unknown file header: {name}"
@@ -1963,9 +1957,6 @@
   "k7sKNy": {
     "defaultMessage": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
   },
-  "k9SQm1": {
-    "defaultMessage": "Relays which you have connected to before and appear to be reliable."
-  },
   "kJYo0u": {
     "defaultMessage": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"
   },
@@ -2122,14 +2113,14 @@
   "ojzbwv": {
     "defaultMessage": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}"
   },
+  "opNVQC": {
+    "defaultMessage": "Unpin"
+  },
   "ozZ2Cj": {
     "defaultMessage": "Badge Award"
   },
   "p9Ps2l": {
     "defaultMessage": "{x}/{y} have relays ({percent})"
-  },
-  "pEEBFk": {
-    "defaultMessage": "Reliable Relays"
   },
   "pRess9": {
     "defaultMessage": "ZapPool"
@@ -2278,9 +2269,6 @@
   "t+iuoN": {
     "defaultMessage": "Claim your included {app} nostr address"
   },
-  "t79a6U": {
-    "defaultMessage": "Connection Success:"
-  },
   "tDDiRL": {
     "defaultMessage": "Interests list"
   },
@@ -2310,9 +2298,6 @@
   },
   "tj6kdX": {
     "defaultMessage": "{sign} {amount} sats"
-  },
-  "tjpYlr": {
-    "defaultMessage": "Relay Metrics"
   },
   "ttxS0b": {
     "defaultMessage": "Supporter Badge"

@@ -1,9 +1,8 @@
 import { Nip11, RelayInfoDocument } from "@snort/system";
-import { useEffect, useState, useSyncExternalStore } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
+import { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { Link, useParams } from "react-router-dom";
 
-import { RelayMetrics } from "@/Cache";
 import { CollapsedSection } from "@/Components/Collapsed";
 import NipDescription from "@/Components/nip";
 import RelayPaymentLabel from "@/Components/Relay/paid";
@@ -27,11 +26,6 @@ const RelayInfo = () => {
       .then(setInfo)
       .catch(console.error);
   }, []);
-
-  const stats = useSyncExternalStore(
-    c => RelayMetrics.hook(c, "*"),
-    () => RelayMetrics.snapshot(),
-  ).find(a => a.addr === params.id);
 
   return (
     <>
@@ -119,7 +113,7 @@ const RelayInfo = () => {
         </div>
         <hr />
 
-        {stats && (
+        {/* {stats && (
           <CollapsedSection
             title={
               <div className="text-xl font-semibold">
@@ -175,7 +169,7 @@ const RelayInfo = () => {
               </li>
             </ul>
           </CollapsedSection>
-        )}
+        )} */}
         <hr />
         {info?.supported_nips && (
           <CollapsedSection

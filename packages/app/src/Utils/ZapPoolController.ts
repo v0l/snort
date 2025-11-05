@@ -2,7 +2,7 @@ import { bech32ToHex, ExternalStore, LNURL, unixNow } from "@snort/shared";
 import { LNWallet, WalletInvoiceState } from "@snort/wallet";
 import debug from "debug";
 
-import { UserCache } from "@/Cache";
+import { ProfilesCache } from "@/Cache";
 import { Toastore } from "@/Components/Toaster/Toaster";
 import { SnortPubKey } from "@/Utils/Const";
 import { getDisplayName, trackEvent } from "@/Utils/index";
@@ -43,7 +43,7 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
     for (const x of this.#store.values()) {
       if (x.sum === 0) continue;
       try {
-        const profile = await UserCache.get(x.pubkey);
+        const profile = await ProfilesCache.get(x.pubkey);
         if (!profile) {
           throw new Error(`Failed to get profile for ${x.pubkey}`);
         }
@@ -73,7 +73,7 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
       } catch (e) {
         console.error(e);
         if (e instanceof Error) {
-          const profile = UserCache.getFromCache(x.pubkey);
+          const profile = ProfilesCache.getFromCache(x.pubkey);
           Toastore.push({
             element: `Failed to send sats to ${getDisplayName(profile, x.pubkey)} (${
               e.message

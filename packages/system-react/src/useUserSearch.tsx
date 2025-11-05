@@ -5,7 +5,7 @@ import { SnortContext } from "./context";
 
 export function useUserSearch() {
   const system = useContext(SnortContext);
-  const cache = system.profileLoader.cache;
+  const cache = system.config.profiles;
 
   const search = useCallback(
     async (input: string): Promise<Array<string>> => {

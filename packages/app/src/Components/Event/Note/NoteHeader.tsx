@@ -58,18 +58,18 @@ export default function NoteHeader(props: {
         {(options.showTime || options.showBookmarked) && (
           <>
             {options.showBookmarked && (
-              <div className={`saved ${options.canUnbookmark ? "cursor-pointer" : ""}`} onClick={() => unbookmark()}>
-                <Icon name="bookmark" /> <FormattedMessage {...messages.Bookmarked} />
+              <div className="text-sm text-neutral-500 flex gap-1" onClick={() => unbookmark()}>
+                <Icon name="bookmark" />
+                <FormattedMessage {...messages.Bookmarked} />
               </div>
             )}
             {!options.showBookmarked && <NoteTime from={ev.created_at * 1000} />}
           </>
         )}
         {options.showPinned && (
-          <div
-            className={`text-sm text-neutral-500 flex gap-2 ${options.canUnpin ? "cursor-pointer" : ""}`}
-            onClick={() => unpin()}>
-            <Icon name="pin" /> <FormattedMessage {...messages.Pinned} />
+          <div className="text-sm text-neutral-500 flex gap-1" onClick={() => unpin()}>
+            <Icon name="pin" />
+            <FormattedMessage {...messages.Pinned} />
           </div>
         )}
         {options.showContextMenu && (

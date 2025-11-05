@@ -1,18 +1,15 @@
-/* eslint-disable max-lines */
-import { dedupe, removeUndefined, sanitizeRelayUrl } from "@snort/shared";
+import { dedupe } from "@snort/shared";
 import { OutboxModel } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { useContext, useMemo, useSyncExternalStore } from "react";
+import { useContext, useMemo } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { Link } from "react-router-dom";
 
-import { RelayMetrics } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { CollapsedSection } from "@/Components/Collapsed";
 import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
 import RelayUptime from "@/Components/Relay/uptime";
 import Uptime from "@/Components/Relay/uptime";
-import UptimeLabel from "@/Components/Relay/uptime-label";
 import { useCloseRelays } from "@/Hooks/useCloseRelays";
 import useLogin from "@/Hooks/useLogin";
 import { getRelayName } from "@/Utils";
@@ -33,30 +30,30 @@ export function DiscoverRelays() {
       .filter(a => !(relays?.some(b => b.url === a.key) ?? false));
   }, [follows, relays]);
 
-  const metrics = useSyncExternalStore(
-    c => RelayMetrics.hook(c, "*"),
-    () => RelayMetrics.snapshot(),
-  );
-  /// Using collected relay metrics
-  const reliableRelays = useMemo(
-    () =>
-      removeUndefined(
-        RelayMetrics.snapshot().map(a => {
-          const addr = sanitizeRelayUrl(a.addr);
-          if (!addr) return;
-          return {
-            ...a,
-            addr,
-            avgLatency: a.latency.reduce((acc, v) => acc + v, 0) / a.latency.length,
-          };
-        }),
-      )
-        .filter(a => a.connects > 0 && a.addr.startsWith("wss://") && !relays?.some(b => b.url === a.addr))
-        .sort((a, b) =>
-          (isNaN(b.avgLatency) ? 99999 : b.avgLatency) > (isNaN(a.avgLatency) ? 99999 : a.avgLatency) ? -1 : 1,
-        ),
-    [relays, metrics],
-  );
+  // const metrics = useSyncExternalStore(
+  //   c => RelayMetrics.hook(c, "*"),
+  //   () => RelayMetrics.snapshot(),
+  // );
+  // /// Using collected relay metrics
+  // const reliableRelays = useMemo(
+  //   () =>
+  //     removeUndefined(
+  //       RelayMetrics.snapshot().map(a => {
+  //         const addr = sanitizeRelayUrl(a.addr);
+  //         if (!addr) return;
+  //         return {
+  //           ...a,
+  //           addr,
+  //           avgLatency: a.latency.reduce((acc, v) => acc + v, 0) / a.latency.length,
+  //         };
+  //       }),
+  //     )
+  //       .filter(a => a.connects > 0 && a.addr.startsWith("wss://") && !relays?.some(b => b.url === a.addr))
+  //       .sort((a, b) =>
+  //         (isNaN(b.avgLatency) ? 99999 : b.avgLatency) > (isNaN(a.avgLatency) ? 99999 : a.avgLatency) ? -1 : 1,
+  //       ),
+  //   [relays, metrics],
+  // );
 
   const closeRelays = useCloseRelays();
   return (
@@ -117,7 +114,7 @@ export function DiscoverRelays() {
           </tbody>
         </table>
       </CollapsedSection>
-      <CollapsedSection
+      {/* <CollapsedSection
         title={
           <div className="text-xl">
             <FormattedMessage defaultMessage="Reliable Relays" />
@@ -163,7 +160,7 @@ export function DiscoverRelays() {
             ))}
           </tbody>
         </table>
-      </CollapsedSection>
+      </CollapsedSection> */}
 
       <CollapsedSection
         title={

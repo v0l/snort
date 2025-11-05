@@ -1,11 +1,11 @@
-import { CacheRelay, Connection, ConnectionCacheRelay, RelayMetricCache, UserRelaysCache } from "@snort/system";
+import { CacheRelay, Connection, ConnectionCacheRelay, UserRelaysCache } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 import WorkerVite from "@snort/worker-relay/src/worker?worker";
 
-import { EventCacheWorker } from "./EventCacheWorker";
 import { GiftWrapCache } from "./GiftWrapCache";
 import { ProfileCacheRelayWorker } from "./ProfileWorkerCache";
 import { UserFollowsWorker } from "./UserFollowsWorker";
+import { RelaysWorkerCache } from "./RelaysWorkerCache";
 
 const cacheRelay = localStorage.getItem("cache-relay");
 
@@ -64,23 +64,17 @@ export async function initRelayWorker() {
   }
 }
 
-export const UserRelays = new UserRelaysCache();
-export const RelayMetrics = new RelayMetricCache();
-
+export const UserRelays = new RelaysWorkerCache(Relay);
 export const UserFollows = new UserFollowsWorker(Relay);
-export const UserCache = new ProfileCacheRelayWorker(Relay);
-export const EventsCache = new EventCacheWorker(Relay);
-
+export const ProfilesCache = new ProfileCacheRelayWorker(Relay);
 export const GiftsCache = new GiftWrapCache();
 
 export async function preload(follows?: Array<string>) {
   const preloads = [
-    UserCache.preload(),
-    RelayMetrics.preload(),
+    ProfilesCache.preload(follows),
     GiftsCache.preload(),
     UserRelays.preload(follows),
-    EventsCache.preload(),
-    UserFollows.preload(),
+    UserFollows.preload(follows),
   ];
   await Promise.all(preloads);
 }

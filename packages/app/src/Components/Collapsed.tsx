@@ -35,15 +35,19 @@ interface CollapsedSectionProps {
 export const CollapsedSection = ({ title, children, className, startClosed }: CollapsedSectionProps) => {
   const [collapsed, setCollapsed] = useState(startClosed ?? true);
   return (
-    <>
+    <div>
       <div
-        className={classNames("flex gap-4 items-center justify-between cursor-pointer", className)}
+        className={classNames(
+          "flex gap-4 items-center justify-between cursor-pointer layer-1 select-none",
+          { "rounded-b-none": !collapsed },
+          className,
+        )}
         onClick={() => setCollapsed(!collapsed)}>
         {title}
         <Icon name="arrowFront" className={`transition-transform ${collapsed ? "rotate-90" : ""}`} />
       </div>
-      {!collapsed && children}
-    </>
+      {!collapsed && <div className="layer-2 rounded-t-none">{children}</div>}
+    </div>
   );
 };
 

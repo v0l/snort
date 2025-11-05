@@ -1,7 +1,6 @@
-import { removeUndefined, throwIfOffline } from "@snort/shared";
-import { mapEventToProfile, NostrEvent, NostrSystem } from "@snort/system";
+import { NostrSystem } from "@snort/system";
 
-import { EventsCache, Relay, RelayMetrics, UserCache, UserFollows, UserRelays } from "@/Cache";
+import { Relay, ProfilesCache, UserFollows, UserRelays } from "@/Cache";
 import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
@@ -11,9 +10,7 @@ import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
  */
 export const System = new NostrSystem({
   relays: UserRelays,
-  events: EventsCache,
-  profiles: UserCache,
-  relayMetrics: RelayMetrics,
+  profiles: ProfilesCache,
   cachingRelay: Relay,
   contactLists: UserFollows,
   optimizer: hasWasm ? WasmOptimizer : undefined,
@@ -30,33 +27,8 @@ System.on("auth", async (c, r, cb) => {
 });
 
 System.pool.on("event", (_relay, _sub, ev) => {
-  EventsCache.discover(ev);
   if (ev.kind === 0) {
-    UserCache.discover(ev);
+    ProfilesCache.discover(ev);
     addEventToFuzzySearch(ev);
   }
 });
-
-/**
- * Add profile loader fn
- */
-if (CONFIG.httpCache) {
-  System.profileLoader.loaderFn = async (keys: Array<string>) => {
-    return removeUndefined(await Promise.all(keys.map(a => fetchProfile(a))));
-  };
-}
-
-export async function fetchProfile(key: string) {
-  try {
-    throwIfOffline();
-    const rsp = await fetch(`${CONFIG.httpCache}/profile/${key}`);
-    if (rsp.ok) {
-      const data = (await rsp.json()) as NostrEvent;
-      if (data) {
-        return mapEventToProfile(data);
-      }
-    }
-  } catch (e) {
-    console.error(e);
-  }
-}

@@ -91,11 +91,18 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
   }
 
   async function pin(ev: NostrEvent) {
-    await login.state.addToList(EventKind.PinList, NostrLink.fromEvent(ev), true);
+    login.state.addToList(EventKind.PinList, NostrLink.fromEvent(ev));
+    await login.state.saveList(EventKind.PinList);
+  }
+
+  async function unpin(ev: NostrEvent) {
+    login.state.removeFromList(EventKind.PinList, NostrLink.fromEvent(ev));
+    await login.state.saveList(EventKind.PinList);
   }
 
   async function bookmark(ev: NostrEvent) {
-    await login.state.addToList(EventKind.BookmarksList, NostrLink.fromEvent(ev), true);
+    login.state.addToList(EventKind.BookmarksList, NostrLink.fromEvent(ev));
+    await login.state.saveList(EventKind.BookmarksList);
   }
 
   async function copyEvent() {
@@ -141,6 +148,17 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
             <FormattedMessage {...messages.Pin} />
           </DropdownMenu.Item>
         )}
+        {login.state.isOnList(EventKind.PinList, link) && !login.readonly && (
+          <DropdownMenu.Item
+            className={itemClassName}
+            onClick={e => {
+              e.stopPropagation();
+              unpin(ev);
+            }}>
+            <Icon name="pin" />
+            <FormattedMessage defaultMessage="Unpin" />
+          </DropdownMenu.Item>
+        )}
         {!login.state.isOnList(EventKind.BookmarksList, link) && !login.readonly && (
           <DropdownMenu.Item
             className={itemClassName}
@@ -161,7 +179,7 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
           <Icon name="copy" />
           <FormattedMessage {...messages.CopyID} />
         </DropdownMenu.Item>
-        {!login.readonly && (
+        {!login.readonly && !isMine && (
           <DropdownMenu.Item
             className={itemClassName}
             onClick={e => {

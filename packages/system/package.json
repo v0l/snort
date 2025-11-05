@@ -10,7 +10,8 @@
   "author": "v0l",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && bunx --bun tsc"
+    "build": "rm -rf dist && bunx --bun tsc",
+    "postinstall": "cd node_modules/nostr-social-graph && yarn install && yarn build"
   },
   "files": [
     "src",
@@ -34,7 +35,7 @@
     "debug": "^4.4.3",
     "eventemitter3": "^5.0.1",
     "isomorphic-ws": "^5.0.0",
-    "nostr-social-graph": "^1.0.33",
+    "nostr-social-graph": "git+https://github.com/v0l/nostr-social-graph.git#248c5dfdf2eaa11b82019315c566ee0b1ec5e5be",
     "typescript-lru-cache": "^2.0.0",
     "uuid": "^13.0.0",
     "ws": "^8.18.3"

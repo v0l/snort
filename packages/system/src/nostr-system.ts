@@ -3,8 +3,7 @@ import debug from "debug";
 import { unixNowMs } from "@snort/shared";
 import { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr";
 import { RelaySettings } from "./connection";
-import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
-import { RelayMetricHandler } from "./relay-metric-handler";
+import { RequestBuilder } from "./request-builder";
 import { TraceTimeline } from "./trace-timeline";
 import {
   ProfileLoaderService,
@@ -31,7 +30,6 @@ export class NostrSystem extends SystemBase implements SystemInterface {
   #queryManager: QueryManager;
 
   readonly profileLoader: ProfileLoaderService;
-  readonly relayMetricsHandler: RelayMetricHandler;
   readonly pool: ConnectionPool;
   readonly relayLoader: RelayMetadataLoader;
   readonly requestRouter: RequestRouter | undefined;
@@ -40,9 +38,8 @@ export class NostrSystem extends SystemBase implements SystemInterface {
   constructor(props: Partial<SystemConfig>) {
     super(props);
 
-    this.profileLoader = new ProfileLoaderService(this, this.profileCache);
-    this.relayMetricsHandler = new RelayMetricHandler(this.relayMetricsCache);
-    this.relayLoader = new RelayMetadataLoader(this, this.relayCache);
+    this.profileLoader = new ProfileLoaderService(this, this.config.profiles);
+    this.relayLoader = new RelayMetadataLoader(this, this.config.relays);
     this.traceTimeline = new TraceTimeline();
     this.pool = new DefaultConnectionPool(this);
 
@@ -88,22 +85,16 @@ export class NostrSystem extends SystemBase implements SystemInterface {
 
     // hook connection pool
     this.pool.on("connected", (id, _wasReconnect) => {
-      const c = this.pool.getConnection(id);
-      if (c) {
-        this.relayMetricsHandler.onConnect(c.address);
-      }
+      // TODO: metrics
     });
     this.pool.on("connectFailed", address => {
-      this.relayMetricsHandler.onDisconnect(address, 0);
+      // TODO: metrics
     });
     this.pool.on("event", (_, _sub, ev) => {
-      ev.relays?.length && this.relayMetricsHandler.onEvent(ev.relays[0]);
+      // TODO: metrics
     });
     this.pool.on("disconnect", (id, code) => {
-      const c = this.pool.getConnection(id);
-      if (c) {
-        this.relayMetricsHandler.onDisconnect(c.address, code);
-      }
+      // TODO: metrics
     });
     this.pool.on("auth", (_, c, r, cb) => this.emit("auth", c, r, cb));
     this.pool.on("notice", (addr, msg) => {
@@ -111,18 +102,14 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     });
     this.#queryManager.on("change", () => this.emit("change", this.takeSnapshot()));
     this.#queryManager.on("trace", (event, queryName) => {
-      this.relayMetricsHandler.onTraceEvent(event);
       this.traceTimeline.addTrace(event, queryName);
     });
-    this.#queryManager.on("request", (subId: string, f: BuiltRawReqFilter) => this.emit("request", subId, f));
   }
 
   async Init(follows?: Array<string>) {
     const t = [
-      this.relayCache.preload(follows),
+      this.config.relays.preload(follows),
       this.profileCache.preload(follows),
-      this.relayMetricsCache.preload(follows),
-      this.eventsCache.preload(follows),
       this.userFollowsCache.preload(follows),
     ];
     await Promise.all(t);
@@ -148,18 +135,18 @@ export class NostrSystem extends SystemBase implements SystemInterface {
         }
       }
       await this.config.socialGraphInstance.setRoot(graphRoot);
-      for (const list of this.userFollowsCache.snapshot()) {
-        if (follows && !follows.includes(list.pubkey)) continue;
-        this.config.socialGraphInstance.handleEvent({
+      const snapshot = this.userFollowsCache.snapshot().filter(a => !follows || follows.includes(a.pubkey));
+      this.config.socialGraphInstance.handleEvent(
+        snapshot.map(a => ({
           id: "",
           sig: "",
           content: "",
           kind: 3,
-          pubkey: list.pubkey,
-          created_at: list.created,
-          tags: list.follows,
-        });
-      }
+          pubkey: a.pubkey,
+          created_at: a.created,
+          tags: a.follows,
+        })),
+      );
     }
   }
 

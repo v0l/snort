@@ -4,7 +4,7 @@ import { ChangeEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import { UserCache } from "@/Cache";
+import { ProfilesCache } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import Copy from "@/Components/Copy/Copy";
 import ZapModal from "@/Components/ZapModal/ZapModal";
@@ -215,13 +215,13 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         nip05,
       } as UserMetadata;
       const ev = await publisher.metadata(newProfile);
-      system.BroadcastEvent(ev);
+      await system.BroadcastEvent(ev);
       if (props.onSuccess) {
         props.onSuccess(nip05);
       }
       const newMeta = mapEventToProfile(ev);
       if (newMeta) {
-        UserCache.set(newMeta);
+        ProfilesCache.set(newMeta);
       }
       if (helpText) {
         navigate("/settings/profile");

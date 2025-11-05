@@ -9,10 +9,7 @@ export interface NoteTranslation {
 
 export interface NoteContextMenuProps {
   ev: TaggedNostrEvent;
-
   setShowReactions(b: boolean): void;
-
   react(content: string): Promise<void>;
-
   onTranslated?: (t: NoteTranslation) => void;
 }

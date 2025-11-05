@@ -1,45 +1,32 @@
 import { FullRelaySettings, NostrEvent, UserMetadata } from "..";
-import { hexToBech32, unixNowMs, CacheStore } from "@snort/shared";
+import { unixNowMs } from "@snort/shared";
 
-export interface CachedMetadata extends UserMetadata {
+export interface CachedBase {
   /**
    * When the object was saved in cache
    */
   loaded: number;
 
   /**
-   * When the source metadata event was created
+   * When the source data event was created
    */
   created: number;
 
   /**
-   * The pubkey of the owner of this metadata
+   * The pubkey of the owner of this data
    */
   pubkey: string;
 }
 
-export interface RelayMetrics {
-  addr: string;
-  events: number;
-  connects: number;
-  lastSeen: number;
-  disconnects: number;
-  latency: number[];
-}
+export type CachedMetadata = CachedBase & UserMetadata;
 
-export interface UsersRelays {
-  pubkey: string;
-  created: number;
-  loaded: number;
+export type UsersRelays = {
   relays: FullRelaySettings[];
-}
+} & CachedBase;
 
-export interface UsersFollows {
-  pubkey: string;
-  created: number;
-  loaded: number;
+export type UsersFollows = {
   follows: Array<Array<string>>;
-}
+} & CachedBase;
 
 export function mapEventToProfile(ev: NostrEvent) {
   if (ev.kind !== 0 && ev.kind !== 31990) return;
@@ -62,14 +49,4 @@ export function mapEventToProfile(ev: NostrEvent) {
   } catch (e) {
     console.error("Failed to parse JSON", ev, e);
   }
-}
-
-export interface SnortSystemDb {
-  users: CacheStore<CachedMetadata>;
-  relayMetrics: CacheStore<RelayMetrics>;
-  userRelays: CacheStore<UsersRelays>;
-  events: CacheStore<NostrEvent>;
-  contacts: CacheStore<UsersFollows>;
-
-  isAvailable(): Promise<boolean>;
 }

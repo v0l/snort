@@ -23,7 +23,7 @@ export function FollowsRelayHealth({
   const uniqueFollows = dedupe(follows);
 
   const hasRelays = useMemo(() => {
-    return uniqueFollows.filter(a => (system.relayCache.getFromCache(a)?.relays.length ?? 0) > 0);
+    return uniqueFollows.filter(a => (system.config.relays.getFromCache(a)?.relays.length ?? 0) > 0);
   }, [uniqueFollows]);
 
   const missingRelays = useMemo(() => {
@@ -55,13 +55,12 @@ export function FollowsRelayHealth({
       </div>
       {missingRelays.length > 0 && (
         <CollapsedSection
-          className="rounded-xl border px-3 py-4"
           title={
             <div className="text-lg">
               <FormattedMessage defaultMessage="Missing Relays" />
             </div>
           }>
-          <div>
+          <div className="flex flex-col gap-2">
             {missingRelays.map(a => (
               <ProfilePreview
                 key={a}

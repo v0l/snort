@@ -130,20 +130,16 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
 
   async #loadData(missing: Array<string>) {
     this.#log("Loading data", missing);
-    if (this.loaderFn) {
-      const results = await this.loaderFn(missing);
-      await Promise.all(results.map(a => this.cache.update(a)));
-      return results;
-    } else {
-      const ret: Array<T> = [];
+    const ret: Array<T> = [];
+    const req = this.buildSub(missing);
+    req.withOptions({ leaveOpen: false, skipCache: true, useSyncModule: true });
 
-      const fres = await this.#system.Fetch(this.buildSub(missing), async x => {
-        const results = removeUndefined(x.map(this.onEvent));
-        ret.push(...results);
-        await Promise.all(results.map(a => this.cache.update(a)));
-      });
-      this.#log("Got data %O (%i/%i)", ret, fres.length, ret.length);
-      return ret;
-    }
+    const fres = await this.#system.Fetch(req, async x => {
+      const results = removeUndefined(x.map(this.onEvent));
+      ret.push(...results);
+      await Promise.all(results.map(a => this.cache.update(a)));
+    });
+    this.#log("Got data %O (%i/%i)", ret, fres.length, ret.length);
+    return ret;
   }
 }

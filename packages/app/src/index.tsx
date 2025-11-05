@@ -8,7 +8,7 @@ import { lazy, StrictMode, Suspense } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 
-import { initRelayWorker, preload, Relay, UserCache } from "@/Cache";
+import { initRelayWorker, preload, Relay, ProfilesCache } from "@/Cache";
 import { ThreadRoute } from "@/Components/Event/Thread/ThreadRoute";
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
 import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch";
@@ -71,7 +71,7 @@ async function initSite() {
       );
     });
 
-    for (const ev of UserCache.snapshot()) {
+    for (const ev of ProfilesCache.snapshot()) {
       try {
         addCachedMetadataToFuzzySearch(ev);
       } catch (e) {
