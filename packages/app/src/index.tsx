@@ -81,7 +81,7 @@ async function initSite() {
   });
 
   // cleanup
-  Relay.delete(["REQ", "cleanup", { kinds: [1, 6, 7, 9735], until: unixNow() - Day * 30 }]);
+  Relay?.delete(["REQ", "cleanup", { kinds: [1, 6, 7, 9735], until: unixNow() - Day * 30 }]);
 
   return null;
 }

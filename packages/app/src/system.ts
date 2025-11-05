@@ -28,7 +28,9 @@ System.on("auth", async (c, r, cb) => {
 
 System.pool.on("event", (_relay, _sub, ev) => {
   if (ev.kind === 0) {
-    ProfilesCache.discover(ev);
+    if ("discover" in ProfilesCache) {
+      ProfilesCache.discover(ev);
+    }
     addEventToFuzzySearch(ev);
   }
 });

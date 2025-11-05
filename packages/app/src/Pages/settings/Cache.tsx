@@ -18,7 +18,7 @@ export function CacheSettings() {
       <h3>
         <FormattedMessage defaultMessage="Cache" />
       </h3>
-      <RelayCacheStats />
+      {Relay && <RelayCacheStats />}
       <CacheDetails cache={system.config.profiles} name={<FormattedMessage defaultMessage="Profiles" />} />
       <CacheDetails cache={system.config.relays} name={<FormattedMessage defaultMessage="Relays" />} />
       <CacheDetails cache={system.config.contactLists} name={<FormattedMessage defaultMessage="Follow Lists" />} />

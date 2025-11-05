@@ -1,4 +1,11 @@
-import { CacheRelay, Connection, ConnectionCacheRelay, UserRelaysCache } from "@snort/system";
+import {
+  CacheRelay,
+  Connection,
+  ConnectionCacheRelay,
+  UserFollowsCache,
+  UserProfileCache,
+  UserRelaysCache,
+} from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 import WorkerVite from "@snort/worker-relay/src/worker?worker";
 
@@ -6,14 +13,17 @@ import { GiftWrapCache } from "./GiftWrapCache";
 import { ProfileCacheRelayWorker } from "./ProfileWorkerCache";
 import { UserFollowsWorker } from "./UserFollowsWorker";
 import { RelaysWorkerCache } from "./RelaysWorkerCache";
+import { hasWasm } from "@/Utils/wasm";
 
 const cacheRelay = localStorage.getItem("cache-relay");
 
-const workerRelay = new WorkerRelayInterface(
-  import.meta.env.DEV ? new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url) : new WorkerVite(),
-);
+const workerRelay = hasWasm
+  ? new WorkerRelayInterface(
+      import.meta.env.DEV ? new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url) : new WorkerVite(),
+    )
+  : undefined;
 
-export const Relay: CacheRelay = cacheRelay
+export const Relay: CacheRelay | undefined = cacheRelay
   ? new ConnectionCacheRelay(new Connection(cacheRelay, { read: true, write: true }))
   : workerRelay;
 
@@ -51,22 +61,24 @@ export async function initRelayWorker() {
   }
 
   try {
-    await workerRelay.debug("*");
-    await workerRelay.init({
-      databasePath: "relay.db",
-      insertBatchSize: 100,
-    });
-    await workerRelay.configureSearchIndex({
-      1: [], // add index for kind 1, dont index tags
-    });
+    if (workerRelay) {
+      await workerRelay.debug("*");
+      await workerRelay.init({
+        databasePath: "relay.db",
+        insertBatchSize: 100,
+      });
+      await workerRelay.configureSearchIndex({
+        1: [], // add index for kind 1, dont index tags
+      });
+    }
   } catch (e) {
     console.error(e);
   }
 }
 
-export const UserRelays = new RelaysWorkerCache(Relay);
-export const UserFollows = new UserFollowsWorker(Relay);
-export const ProfilesCache = new ProfileCacheRelayWorker(Relay);
+export const UserRelays = Relay ? new RelaysWorkerCache(Relay) : new UserRelaysCache();
+export const UserFollows = Relay ? new UserFollowsWorker(Relay) : new UserFollowsCache();
+export const ProfilesCache = Relay ? new ProfileCacheRelayWorker(Relay) : new UserProfileCache();
 export const GiftsCache = new GiftWrapCache();
 
 export async function preload(follows?: Array<string>) {

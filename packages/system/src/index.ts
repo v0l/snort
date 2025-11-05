@@ -45,4 +45,5 @@ export * from "./impl/nip92";
 export * from "./cache/index";
 export * from "./cache/user-relays";
 export * from "./cache/user-metadata";
+export * from "./cache/user-follows-lists";
 export * from "./trace-timeline";

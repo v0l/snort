@@ -40,6 +40,6 @@ export class WasmPowWorker implements PowMiner {
 }
 
 export { wasmInit, WasmPath };
-export const hasWasm = "WebAssembly" in globalThis;
+export const hasWasm = "WebAssembly" in globalThis && localStorage.getItem("wasm") !== "off";
 const DefaultPowWorker = hasWasm ? undefined : new PowWorker(PowWorkerURL);
 export const GetPowWorker = () => (hasWasm ? new WasmPowWorker() : unwrap(DefaultPowWorker));
