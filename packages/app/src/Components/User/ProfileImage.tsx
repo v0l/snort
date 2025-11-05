@@ -63,22 +63,32 @@ export default function ProfileImage({
   }
 
   function inner() {
+    const avatar = (
+      <Avatar
+        pubkey={pubkey}
+        user={user}
+        size={size}
+        imageOverlay={imageOverlay}
+        showTitle={!showProfileCard}
+        icons={
+          showFollowDistance || icons ? (
+            <>
+              {icons}
+              {showFollowDistance && <FollowDistanceIndicator pubkey={pubkey} />}
+            </>
+          ) : undefined
+        }></Avatar>
+    );
+
     return (
       <>
-        <Avatar
-          pubkey={pubkey}
-          user={user}
-          size={size}
-          imageOverlay={imageOverlay}
-          showTitle={!showProfileCard}
-          icons={
-            showFollowDistance || icons ? (
-              <>
-                {icons}
-                {showFollowDistance && <FollowDistanceIndicator pubkey={pubkey} />}
-              </>
-            ) : undefined
-          }></Avatar>
+        {showProfileCard ? (
+          <ProfileCardWrapper pubkey={pubkey} user={user}>
+            {avatar}
+          </ProfileCardWrapper>
+        ) : (
+          avatar
+        )}
         {showUsername && (
           <div className={displayNameClassName}>
             <div className="font-medium">
@@ -122,13 +132,5 @@ export default function ProfileImage({
       </ProfileLink>
     );
 
-  if (!showProfileCard) {
-    return content;
-  }
-
-  return (
-    <ProfileCardWrapper pubkey={pubkey} user={user}>
-      {content}
-    </ProfileCardWrapper>
-  );
+  return content;
 }

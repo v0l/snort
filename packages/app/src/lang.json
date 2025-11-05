@@ -162,6 +162,9 @@
   "2IFGap": {
     "defaultMessage": "Donate"
   },
+  "2Npgrt": {
+    "defaultMessage": "Has imeta tags for images, but no r tags"
+  },
   "2O2sfp": {
     "defaultMessage": "Finish"
   },
@@ -402,6 +405,9 @@
   "7hp70g": {
     "defaultMessage": "NIP-05"
   },
+  "7mC9+e": {
+    "defaultMessage": "Has images but no imeta tags"
+  },
   "7nAz/z": {
     "defaultMessage": "Mute notes from people who are outside your web of trust"
   },
@@ -584,6 +590,9 @@
   "CHTbO3": {
     "defaultMessage": "Failed to load invoice"
   },
+  "CI0LCO": {
+    "defaultMessage": "Has images but no r tags"
+  },
   "CJ0biq": {
     "defaultMessage": "Poll Response"
   },
@@ -604,6 +613,9 @@
   },
   "CYkOCI": {
     "defaultMessage": "and {count} others you follow"
+  },
+  "CaZ1xw": {
+    "defaultMessage": "Alt tag starts with \"A short note: \""
   },
   "CcqOwX": {
     "defaultMessage": "Follow Lists"
@@ -919,6 +931,9 @@
   "J6N9xl": {
     "defaultMessage": "Sign in with Android signer"
   },
+  "JCOqRK": {
+    "defaultMessage": "P-tag with non-standard marker (nickname)"
+  },
   "JGrt9q": {
     "defaultMessage": "Send sats to {name}"
   },
@@ -1096,6 +1111,9 @@
   },
   "Nr9Yyx": {
     "defaultMessage": "Reposts"
+  },
+  "Nw1A4y": {
+    "defaultMessage": "Content ends with double newline"
   },
   "NxzeNU": {
     "defaultMessage": "Dead"
@@ -1344,6 +1362,9 @@
   "U30H69": {
     "defaultMessage": "Community Definition"
   },
+  "U3P+36": {
+    "defaultMessage": "Has both r tags and imeta tags for images"
+  },
   "UJTWqI": {
     "defaultMessage": "Remove from my relays"
   },
@@ -1433,6 +1454,9 @@
   },
   "WvGmZT": {
     "defaultMessage": "npub / nprofile / nostr address"
+  },
+  "X1TTm3": {
+    "defaultMessage": "Single newline only before image URLs"
   },
   "X6tipZ": {
     "defaultMessage": "Sign in with key"
@@ -1729,6 +1753,9 @@
   "eoV49s": {
     "defaultMessage": "Poor"
   },
+  "f0Mcqr": {
+    "defaultMessage": "Double newlines before image URLs"
+  },
   "f1OxTe": {
     "defaultMessage": "Community leaders are individuals who grow the nostr ecosystem by being active in their local communities and helping onboard new users. Anyone can become a community leader, but few hold the current honorary title."
   },
@@ -1791,6 +1818,9 @@
   },
   "gPxSgn": {
     "defaultMessage": "Follow Sets"
+  },
+  "gSqFQf": {
+    "defaultMessage": "Double newlines before quoted notes"
   },
   "gXgY3+": {
     "defaultMessage": "Not all clients support this yet"
@@ -2122,6 +2152,9 @@
   "p9Ps2l": {
     "defaultMessage": "{x}/{y} have relays ({percent})"
   },
+  "pEQAGA": {
+    "defaultMessage": "Root e-tag is last in tags array (with multiple e-tags)"
+  },
   "pRess9": {
     "defaultMessage": "ZapPool"
   },
@@ -2274,6 +2307,9 @@
   },
   "tFpT/O": {
     "defaultMessage": "Release artifact sets"
+  },
+  "tO0JqG": {
+    "defaultMessage": "Source Code"
   },
   "tO1oq9": {
     "defaultMessage": "Video Events"
