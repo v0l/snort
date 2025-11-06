@@ -1,33 +1,28 @@
-import React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { NoteTranslation } from "@/Components/Event/Note/types";
-import messages from "@/Components/messages";
+import { useNoteContext } from "@/Components/Event/Note/NoteContext";
 
-interface TranslationInfoProps {
-  translated: NoteTranslation;
-  setShowTranslation: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
-export function TranslationInfo({ translated, setShowTranslation }: TranslationInfoProps) {
+export function TranslationInfo() {
+  const { translated, toggleTranslation } = useNoteContext();
   if (translated && translated.confidence > 0.5) {
     return (
       <>
-        <span
-          className="text-xs font-semibold text-gray-light select-none"
+        <small
+          className="select-none cursor-pointer"
           onClick={e => {
             e.stopPropagation();
-            setShowTranslation(show => !show);
+            toggleTranslation();
           }}>
-          <FormattedMessage {...messages.TranslatedFrom} values={{ lang: translated.fromLanguage }} />
-        </span>
+          <FormattedMessage defaultMessage="Translated from {lang}" values={{ lang: translated.fromLanguage }} />
+        </small>
       </>
     );
   } else if (translated && !translated.skipped) {
     return (
-      <p className="text-xs font-semibold text-gray-light">
-        <FormattedMessage {...messages.TranslationFailed} />
-      </p>
+      <small>
+        <FormattedMessage defaultMessage="Translation failed" />
+      </small>
     );
   }
   return null;

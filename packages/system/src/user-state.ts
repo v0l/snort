@@ -74,10 +74,10 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
 
     this.#profile = pubkey
       ? new JsonEventSync<UserMetadata | undefined>(
-          undefined,
-          new NostrLink(NostrPrefix.Event, pubkey, EventKind.SetMetadata, pubkey),
-          false,
-        )
+        undefined,
+        new NostrLink(NostrPrefix.Event, pubkey, EventKind.SetMetadata, pubkey),
+        false,
+      )
       : undefined;
     this.#contacts = pubkey
       ? new DiffSyncTags(new NostrLink(NostrPrefix.Event, pubkey, EventKind.ContactList, pubkey), false)
@@ -206,13 +206,20 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
       for (const list of this.#standardLists.values()) {
         const syncedTags = list.value?.tags ?? [];
         const currentTags = list.tags;
-        const syncedEncrypted = list.value?.content ?? "";
+        let syncedEncrypted = list.value?.content ?? "";
         const currentEncrypted = list.encryptedTags;
+
+        try {
+          syncedEncrypted = JSON.stringify(JSON.parse(syncedEncrypted));
+        } catch {
+          //ignore
+          syncedEncrypted = JSON.stringify(currentEncrypted);
+        }
 
         // Check both regular tags and encrypted content
         if (
           JSON.stringify(syncedTags) !== JSON.stringify(currentTags) ||
-          (syncedEncrypted && JSON.stringify(JSON.parse(syncedEncrypted)) !== JSON.stringify(currentEncrypted))
+          syncedEncrypted !== JSON.stringify(currentEncrypted)
         ) {
           count++;
         }

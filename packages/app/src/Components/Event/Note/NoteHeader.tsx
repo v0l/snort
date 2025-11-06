@@ -1,13 +1,11 @@
 import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
-import React, { useState } from "react";
+import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { NotePropsOptions } from "@/Components/Event/EventComponent";
 import { NoteContextMenu } from "@/Components/Event/Note/NoteContextMenu";
 import NoteTime from "@/Components/Event/Note/NoteTime";
-import ReactionsModal from "@/Components/Event/Note/ReactionsModal";
 import ReplyTag from "@/Components/Event/Note/ReplyTag";
-import { NoteTranslation } from "@/Components/Event/Note/types";
 import Icon from "@/Components/Icons/Icon";
 import messages from "@/Components/messages";
 import ProfileImage from "@/Components/User/ProfileImage";
@@ -17,11 +15,9 @@ import useLogin from "@/Hooks/useLogin";
 export default function NoteHeader(props: {
   ev: TaggedNostrEvent;
   options: NotePropsOptions;
-  setTranslated?: (t: NoteTranslation) => void;
   context?: React.ReactNode;
 }) {
-  const [showReactions, setShowReactions] = useState(false);
-  const { ev, options, setTranslated } = props;
+  const { ev, options } = props;
   const { formatMessage } = useIntl();
   const { publisher } = useEventPublisher();
   const login = useLogin();
@@ -41,8 +37,6 @@ export default function NoteHeader(props: {
       }
     }
   }
-
-  const onTranslated = setTranslated ? (t: NoteTranslation) => setTranslated(t) : undefined;
 
   return (
     <div className="flex justify-between">
@@ -72,16 +66,8 @@ export default function NoteHeader(props: {
             <FormattedMessage {...messages.Pinned} />
           </div>
         )}
-        {options.showContextMenu && (
-          <NoteContextMenu
-            ev={ev}
-            react={async () => {}}
-            onTranslated={onTranslated}
-            setShowReactions={setShowReactions}
-          />
-        )}
+        {options.showContextMenu && <NoteContextMenu />}
       </div>
-      {showReactions && <ReactionsModal onClose={() => setShowReactions(false)} event={ev} />}
     </div>
   );
 }

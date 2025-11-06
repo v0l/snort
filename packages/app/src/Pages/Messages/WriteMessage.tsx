@@ -43,7 +43,11 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
           }}
         />
       </div>
-      <AsyncIcon className="circle flex items-center button" iconName="arrow-right" onClick={() => sendMessage()} />
+      <AsyncIcon
+        className="rounded-full flex items-center button"
+        iconName="arrow-right"
+        onClick={() => sendMessage()}
+      />
     </>
   );
 }

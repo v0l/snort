@@ -1,40 +1,32 @@
-import { EventKind, NostrLink, RequestBuilder, RequestFilterBuilder, TaggedNostrEvent } from "@snort/system";
-import { SnortContext, useEventReactions, useReactions } from "@snort/system-react";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { EventKind, RequestFilterBuilder } from "@snort/system";
+import { SnortContext } from "@snort/system-react";
+import { useContext, useEffect, useState } from "react";
 
 import { FooterZapButton } from "@/Components/Event/Note/NoteFooter/FooterZapButton";
 import { LikeButton } from "@/Components/Event/Note/NoteFooter/LikeButton";
 import { PowIcon } from "@/Components/Event/Note/NoteFooter/PowIcon";
 import { ReplyButton } from "@/Components/Event/Note/NoteFooter/ReplyButton";
 import { RepostButton } from "@/Components/Event/Note/NoteFooter/RepostButton";
+import { useNoteContext } from "@/Components/Event/Note/NoteContext";
 import ReactionsModal from "@/Components/Event/Note/ReactionsModal";
 import useLogin from "@/Hooks/useLogin";
-import useModeration from "@/Hooks/useModeration";
 import usePreferences from "@/Hooks/usePreferences";
 import classNames from "classnames";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 
 export interface NoteFooterProps {
   replyCount?: number;
-  ev: TaggedNostrEvent;
   className?: string;
 }
 
 export default function NoteFooter(props: NoteFooterProps) {
-  const { ev } = props;
-  const link = useMemo(() => NostrLink.fromEvent(ev), [ev.id]);
-  const [showReactions, setShowReactions] = useState(false);
+  const { ev, link, reactions, showReactionsModal, setShowReactionsModal } = useNoteContext();
   const [replyCount, setReplyCount] = useState(props.replyCount);
-  const { isMuted } = useModeration();
 
   const system = useContext(SnortContext);
 
-  const related = useReactions("reactions", link);
-  const { reactions, zaps, reposts } = useEventReactions(
-    link,
-    related.filter(a => !isMuted(a.pubkey)),
-  );
-  const { positive } = reactions;
+  const { reactions: reactionGroups, zaps, reposts } = reactions;
+  const { positive } = reactionGroups;
 
   const readonly = useLogin(s => s.readonly);
   const enableReactions = usePreferences(s => s.enableReactions);
@@ -56,8 +48,8 @@ export default function NoteFooter(props: NoteFooterProps) {
       <RepostButton ev={ev} reposts={reposts} />
       {enableReactions && <LikeButton ev={ev} positiveReactions={positive} />}
       {CONFIG.showPowIcon && <PowIcon ev={ev} />}
-      <FooterZapButton ev={ev} zaps={zaps} onClickZappers={() => setShowReactions(true)} />
-      {showReactions && <ReactionsModal initialTab={1} onClose={() => setShowReactions(false)} event={ev} />}
+      <FooterZapButton ev={ev} zaps={zaps} onClickZappers={() => setShowReactionsModal(true)} />
+      {showReactionsModal && <ReactionsModal initialTab={0} onClose={() => setShowReactionsModal(false)} />}
     </div>
   );
 }

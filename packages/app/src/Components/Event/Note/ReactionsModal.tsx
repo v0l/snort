@@ -1,10 +1,10 @@
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
-import { useEventReactions, useReactions } from "@snort/system-react";
+import { TaggedNostrEvent } from "@snort/system";
 import { Fragment, useMemo, useState } from "react";
 import { FormattedMessage, MessageDescriptor, useIntl } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
 import Modal from "@/Components/Modal/Modal";
+import { useNoteContext } from "@/Components/Event/Note/NoteContext";
 import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
 import ProfileImage from "@/Components/User/ProfileImage";
 import ZapAmount from "@/Components/zap-amount";
@@ -14,18 +14,15 @@ import messages from "../../messages";
 
 interface ReactionsModalProps {
   onClose(): void;
-  event: TaggedNostrEvent;
   initialTab?: number;
 }
 
-const ReactionsModal = ({ onClose, event, initialTab = 0 }: ReactionsModalProps) => {
+const ReactionsModal = ({ onClose, initialTab = 0 }: ReactionsModalProps) => {
   const { formatMessage } = useIntl();
+  const { reactions } = useNoteContext();
 
-  const link = NostrLink.fromEvent(event);
-
-  const related = useReactions("reactions", link, undefined, false);
-  const { reactions, zaps, reposts } = useEventReactions(link, related);
-  const { positive, negative } = reactions;
+  const { reactions: reactionGroups, zaps, reposts } = reactions;
+  const { positive, negative } = reactionGroups;
 
   const { sortEvents } = useWoT();
 
@@ -70,7 +67,7 @@ const ReactionsModal = ({ onClose, event, initialTab = 0 }: ReactionsModalProps)
       </div>
       <TabSelectors tabs={tabs} tab={tab} setTab={setTab} />
       <div className="h-[30vh] overflow-y-auto">
-        <div className="grid grid-cols-[100px_auto] gap-y-2 items-center py-2" key={tab.value}>
+        <div className="grid grid-cols-[70px_auto] gap-y-2 items-center py-2" key={tab.value}>
           {tab.value === 0 && likes.map(ev => renderReactionItem(ev, "heart-solid", "text-heart"))}
           {tab.value === 1 &&
             zaps.map(

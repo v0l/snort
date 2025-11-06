@@ -89,13 +89,13 @@ export default function SignIn() {
         {signerExtLogin && (
           <>
             <AsyncButton onClick={doNip07Login}>
-              <div className="circle bg-warning p-3 text-white">
+              <div className="rounded-full bg-warning p-3 text-white">
                 <Icon name="key" />
               </div>
               <FormattedMessage defaultMessage="Sign in with Nostr Extension" />
             </AsyncButton>
             <AsyncButton onClick={doNip55Login}>
-              <div className="circle bg-warning p-3 text-white">
+              <div className="rounded-full bg-warning p-3 text-white">
                 <Icon name="key" />
               </div>
               <FormattedMessage defaultMessage="Sign in with Android signer" />

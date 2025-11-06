@@ -8,11 +8,11 @@ import { EventKind, NostrLink, parseZap, TaggedNostrEvent } from "@snort/system"
  * @param related
  * @returns
  */
-export function useEventReactions(link: NostrLink, related: ReadonlyArray<TaggedNostrEvent>) {
-  return useMemo(() => {
-    const reactionKinds = related.reduce(
+export function useEventReactions(link: NostrLink, related: ReadonlyArray<TaggedNostrEvent>, assumeRelated = false) {
+  const reactionKinds = useMemo(() => {
+    return related.reduce(
       (acc, v) => {
-        if (link.isReplyToThis(v)) {
+        if (assumeRelated || link.isReplyToThis(v)) {
           acc[v.kind.toString()] ??= [];
           acc[v.kind.toString()].push(v);
         }
@@ -20,7 +20,9 @@ export function useEventReactions(link: NostrLink, related: ReadonlyArray<Tagged
       },
       {} as Record<string, Array<TaggedNostrEvent>>,
     );
+  }, [related]);
 
+  return useMemo(() => {
     const deletions = reactionKinds[String(EventKind.Deletion)] ?? [];
     const reactions = reactionKinds[String(EventKind.Reaction)] ?? [];
     const reposts = reactionKinds[String(EventKind.Repost)] ?? [];
@@ -57,5 +59,5 @@ export function useEventReactions(link: NostrLink, related: ReadonlyArray<Tagged
         ),
       ),
     };
-  }, [link, related]);
+  }, [reactionKinds]);
 }

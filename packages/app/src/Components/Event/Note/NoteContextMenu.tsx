@@ -1,27 +1,24 @@
 import { EventKind, NostrEvent, NostrLink } from "@snort/system";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { NoteContextMenuProps, NoteTranslation } from "@/Components/Event/Note/types";
 import Icon from "@/Components/Icons/Icon";
 import messages from "@/Components/messages";
-import SnortApi from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
-import usePreferences from "@/Hooks/usePreferences";
-import { getCurrentSubscription, SubscriptionType } from "@/Utils/Subscription";
 
 import { ReBroadcaster } from "../../ReBroadcaster";
+import { useNoteContext } from "./NoteContext";
 
-export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
+export function NoteContextMenu() {
   const { formatMessage } = useIntl();
   const login = useLogin();
-  const autoTranslate = usePreferences(s => s.autoTranslate);
   const { mute } = useModeration();
   const { publisher, system } = useEventPublisher();
   const [showBroadcast, setShowBroadcast] = useState(false);
+  const { ev, translate, setShowReactionsModal } = useNoteContext();
   const lang = window.navigator.language;
   const langNames = new Intl.DisplayNames([...window.navigator.languages], {
     type: "language",
@@ -48,42 +45,6 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
       await navigator.clipboard.writeText(url);
     }
   }
-
-  async function translate() {
-    if (!props.onTranslated) return;
-    const api = new SnortApi();
-    const targetLang = lang.split("-")[0].toUpperCase();
-    const result = await api.translate({
-      text: [ev.content],
-      target_lang: targetLang,
-    });
-
-    if (
-      "translations" in result &&
-      result.translations.length > 0 &&
-      targetLang != result.translations[0].detected_source_language
-    ) {
-      props.onTranslated({
-        text: result.translations[0].text,
-        fromLanguage: langNames.of(result.translations[0].detected_source_language),
-        confidence: 1,
-      } as NoteTranslation);
-    } else {
-      props.onTranslated({
-        text: "",
-        fromLanguage: "",
-        confidence: 0,
-        skipped: true,
-      });
-    }
-  }
-
-  useEffect(() => {
-    const sub = getCurrentSubscription(login.subscriptions);
-    if (sub?.type === SubscriptionType.Premium && (autoTranslate ?? true)) {
-      translate();
-    }
-  }, []);
 
   async function copyId() {
     const link = NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix);
@@ -123,7 +84,7 @@ export function NoteContextMenu({ ev, ...props }: NoteContextMenuProps) {
           className={itemClassName}
           onClick={e => {
             e.stopPropagation();
-            props.setShowReactions(true);
+            setShowReactionsModal(true);
           }}>
           <Icon name="heart" />
           <FormattedMessage {...messages.Reactions} />

@@ -1,5 +1,8 @@
 import { dedupeBy, NostrPrefix } from "@snort/shared";
 import { NostrEvent, NostrLink, Thread, EventBuilder, LinkScope, TaggedNostrEvent } from "..";
+import { LRUCache } from "typescript-lru-cache";
+
+const ThreadCache = new LRUCache<string, Thread | undefined>({ maxSize: 1000 });
 
 /**
  * Utility class which exports functions used in NIP-10
@@ -37,8 +40,14 @@ export class Nip10 {
   }
 
   static parseThread(ev: NostrEvent) {
+    const cached = ThreadCache.get(ev.id);
+    if (cached) {
+      return cached;
+    }
     const links = NostrLink.fromTags(ev.tags);
-    return Nip10.fromLinks(links);
+    const ret = Nip10.fromLinks(links);
+    ThreadCache.set(ev.id, ret);
+    return ret;
   }
 
   /**
