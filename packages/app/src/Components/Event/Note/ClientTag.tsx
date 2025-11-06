@@ -62,47 +62,46 @@ function FingerprintClientTag({ info }: { info: ClientInfo }) {
       </span>
       {showModal && (
         <Modal id="fingerprint-breakdown" onClose={() => setShowModal(false)}>
-          <div className="p-4 max-h-[80vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Client Fingerprint Breakdown</h2>
-            <div className="mb-4">
-              <div className="font-semibold">Detected: {info.name}</div>
-              <div className="text-sm text-neutral-500">
-                Score: {info.fingerprintDetails.score} (minimum: {info.fingerprintDetails.minScore})
-              </div>
+          <h2 className="text-xl font-bold mb-4 flex gap-2 items-center">
+            <Icon name="fingerprint" size={32} />
+            <FormattedMessage defaultMessage="Client Fingerprint" />
+          </h2>
+          <div className="mb-4">
+            <div className="font-semibold">Detected: {info.name}</div>
+            <div className="text-sm text-neutral-500">
+              Score: {info.fingerprintDetails.score} (minimum: {info.fingerprintDetails.minScore})
             </div>
-            <div className="space-y-4">
-              {info.fingerprintDetails.allResults
-                .filter(client => client.score > 0)
-                .sort((a, b) => b.score - a.score)
-                .map(client => (
-                  <div
-                    key={client.clientName}
-                    className={`p-3 rounded border ${
-                      client.clientName === info.name
-                        ? "border-primary bg-primary/5"
-                        : "border-neutral-200 dark:border-neutral-700"
+          </div>
+          <div className="space-y-4">
+            {info.fingerprintDetails.allResults
+              .filter(client => client.score > 0)
+              .sort((a, b) => b.score - a.score)
+              .map(client => (
+                <div
+                  key={client.clientName}
+                  className={`p-3 rounded border ${client.clientName === info.name
+                    ? "border-primary bg-primary/5"
+                    : "border-neutral-200 dark:border-neutral-700"
                     }`}>
-                    <div className="flex justify-between items-center mb-2 font-semibold text-lg">
-                      <div>{client.clientName}</div>
-                      <div>{client.score}</div>
-                    </div>
-                    <div className="">
-                      {client.checks
-                        .filter(check => check.passed)
-                        .map(check => (
-                          <div
-                            key={check.id}
-                            className={`text-sm leading-6 flex items-start gap-2 ${
-                              check.passed ? "text-green-600 dark:text-green-400" : "text-neutral-400"
-                            }`}>
-                            <span className="w-6">{check.passed ? `+${check.weight}` : ""}</span>
-                            <span>{check.description}</span>
-                          </div>
-                        ))}
-                    </div>
+                  <div className="flex justify-between items-center mb-2 font-semibold text-lg">
+                    <div>{client.clientName}</div>
+                    <div>{client.score}</div>
                   </div>
-                ))}
-            </div>
+                  <div className="">
+                    {client.checks
+                      .filter(check => check.passed)
+                      .map(check => (
+                        <div
+                          key={check.id}
+                          className={`text-sm leading-6 flex items-start gap-2 ${check.passed ? "text-green-600 dark:text-green-400" : "text-neutral-400"
+                            }`}>
+                          <span className="w-6">{check.passed ? `+${check.weight}` : ""}</span>
+                          <span>{check.description}</span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ))}
           </div>
         </Modal>
       )}

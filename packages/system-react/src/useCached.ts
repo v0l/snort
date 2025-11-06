@@ -35,7 +35,6 @@ async function storeObj<T>(key: string | undefined, loader: () => Promise<T>): P
   }
   const newData = await cachedCall;
   CallMap.delete(key);
-  console.debug(CallMap);
   const obj = {
     cached: unixNow(),
     object: newData,

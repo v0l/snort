@@ -153,7 +153,6 @@ export function NoteCreator() {
         for (const [, v] of Object.entries(note.attachments ?? {})) {
           const at = v[0];
           note.note += note.note.length > 0 ? `\n${at.url}` : at.url;
-          console.debug(at);
           const n94 =
             (at.nip94?.length ?? 0) > 0
               ? readNip94Tags(at.nip94!)
