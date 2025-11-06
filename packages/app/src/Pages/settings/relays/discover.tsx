@@ -67,7 +67,7 @@ export function DiscoverRelays() {
         <small>
           <FormattedMessage defaultMessage="Popular relays used by people you follow." />
         </small>
-        <table className="table">
+        <table className="table-auto w-full">
           <thead>
             <tr className="text-gray-light uppercase">
               <th>
@@ -123,7 +123,7 @@ export function DiscoverRelays() {
         <small>
           <FormattedMessage defaultMessage="Relays which you have connected to before and appear to be reliable." />
         </small>
-        <table className="table">
+        <table className="table-auto w-full">
           <thead>
             <tr className="text-gray-light uppercase">
               <th>
@@ -171,7 +171,7 @@ export function DiscoverRelays() {
         <small>
           <FormattedMessage defaultMessage="Relays close to your geographic location." />
         </small>
-        <table className="table">
+        <table className="table-auto w-full">
           <thead>
             <tr className="text-gray-light uppercase">
               <th>

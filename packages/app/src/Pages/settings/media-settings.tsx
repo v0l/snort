@@ -85,7 +85,7 @@ export default function MediaSettingsPage() {
         <small>
           <FormattedMessage defaultMessage="Popular media servers." />
         </small>
-        <table className="table">
+        <table className="table-auto w-full">
           <thead>
             <tr className="uppercase text-neutral-400">
               <th>

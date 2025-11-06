@@ -70,7 +70,7 @@ const RelaySettingsPage = () => {
         <small>
           <FormattedMessage defaultMessage="The relay name shown is not the same as the full URL entered." />
         </small>
-        <table className="table">
+        <table className="table-auto w-full">
           <thead>
             <tr className="uppercase text-neutral-400">
               <th>
