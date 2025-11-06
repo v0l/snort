@@ -79,10 +79,11 @@ function FingerprintClientTag({ info }: { info: ClientInfo }) {
               .map(client => (
                 <div
                   key={client.clientName}
-                  className={`p-3 rounded border ${client.clientName === info.name
-                    ? "border-primary bg-primary/5"
-                    : "border-neutral-200 dark:border-neutral-700"
-                    }`}>
+                  className={`p-3 rounded border ${
+                    client.clientName === info.name
+                      ? "border-primary bg-primary/5"
+                      : "border-neutral-200 dark:border-neutral-700"
+                  }`}>
                   <div className="flex justify-between items-center mb-2 font-semibold text-lg">
                     <div>{client.clientName}</div>
                     <div>{client.score}</div>
@@ -93,8 +94,9 @@ function FingerprintClientTag({ info }: { info: ClientInfo }) {
                       .map(check => (
                         <div
                           key={check.id}
-                          className={`text-sm leading-6 flex items-start gap-2 ${check.passed ? "text-green-600 dark:text-green-400" : "text-neutral-400"
-                            }`}>
+                          className={`text-sm leading-6 flex items-start gap-2 ${
+                            check.passed ? "text-green-600 dark:text-green-400" : "text-neutral-400"
+                          }`}>
                           <span className="w-6">{check.passed ? `+${check.weight}` : ""}</span>
                           <span>{check.description}</span>
                         </div>

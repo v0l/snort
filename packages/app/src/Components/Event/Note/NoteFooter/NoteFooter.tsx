@@ -8,7 +8,6 @@ import { PowIcon } from "@/Components/Event/Note/NoteFooter/PowIcon";
 import { ReplyButton } from "@/Components/Event/Note/NoteFooter/ReplyButton";
 import { RepostButton } from "@/Components/Event/Note/NoteFooter/RepostButton";
 import { useNoteContext } from "@/Components/Event/Note/NoteContext";
-import ReactionsModal from "@/Components/Event/Note/ReactionsModal";
 import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
 import classNames from "classnames";
@@ -20,7 +19,7 @@ export interface NoteFooterProps {
 }
 
 export default function NoteFooter(props: NoteFooterProps) {
-  const { ev, link, reactions, showReactionsModal, setShowReactionsModal } = useNoteContext();
+  const { ev, link, reactions, setShowReactionsModal } = useNoteContext();
   const [replyCount, setReplyCount] = useState(props.replyCount);
 
   const system = useContext(SnortContext);
@@ -49,7 +48,6 @@ export default function NoteFooter(props: NoteFooterProps) {
       {enableReactions && <LikeButton ev={ev} positiveReactions={positive} />}
       {CONFIG.showPowIcon && <PowIcon ev={ev} />}
       <FooterZapButton ev={ev} zaps={zaps} onClickZappers={() => setShowReactionsModal(true)} />
-      {showReactionsModal && <ReactionsModal initialTab={0} onClose={() => setShowReactionsModal(false)} />}
     </div>
   );
 }

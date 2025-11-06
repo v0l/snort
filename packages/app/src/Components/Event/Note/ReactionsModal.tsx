@@ -66,8 +66,8 @@ const ReactionsModal = ({ onClose, initialTab = 0 }: ReactionsModalProps) => {
         <FormattedMessage defaultMessage="Reactions ({n})" values={{ n: total }} />
       </div>
       <TabSelectors tabs={tabs} tab={tab} setTab={setTab} />
-      <div className="h-[30vh] overflow-y-auto">
-        <div className="grid grid-cols-[70px_auto] gap-y-2 items-center py-2" key={tab.value}>
+      <div className="h-[50dvh] overflow-y-auto">
+        <div className="grid grid-cols-[90px_auto] gap-y-2 items-center py-2" key={tab.value}>
           {tab.value === 0 && likes.map(ev => renderReactionItem(ev, "heart-solid", "text-heart"))}
           {tab.value === 1 &&
             zaps.map(
@@ -77,7 +77,7 @@ const ReactionsModal = ({ onClose, initialTab = 0 }: ReactionsModalProps) => {
                     <ZapAmount n={z.amount} />
                     <ProfileImage
                       showProfileCard={true}
-                      pubkey={z.anonZap ? "" : z.sender}
+                      pubkey={z.sender}
                       subHeader={<div title={z.content}>{z.content}</div>}
                       link={z.anonZap ? "" : undefined}
                       overrideUsername={z.anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}

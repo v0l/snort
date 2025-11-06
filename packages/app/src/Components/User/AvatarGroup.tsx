@@ -5,7 +5,6 @@ export function AvatarGroup({ ids, ...props }: { ids: string[] } & Omit<ProfileI
   props.showUsername ??= false;
   props.link ??= "";
   props.size ??= 24;
-  props.showBadges ??= false;
   props.showFollowDistance ??= false;
   props.showProfileCard ??= false;
 

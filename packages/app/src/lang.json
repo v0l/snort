@@ -1428,6 +1428,9 @@
   "VR5eHw": {
     "defaultMessage": "Public key (npub/nprofile)"
   },
+  "VZzKYK": {
+    "defaultMessage": "Client Fingerprint"
+  },
   "VfhYxG": {
     "defaultMessage": "To see a full list of changes you can view the changelog {here}"
   },

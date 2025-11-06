@@ -3,10 +3,8 @@ import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
 import React, { ReactNode } from "react";
 
-import { LeaderBadge } from "@/Components/CommunityLeaders/LeaderBadge";
 import Avatar from "@/Components/User/Avatar";
 import FollowDistanceIndicator from "@/Components/User/FollowDistanceIndicator";
-import { useCommunityLeader } from "@/Hooks/useCommunityLeaders";
 
 import DisplayName from "./DisplayName";
 import { ProfileCardWrapper } from "./ProfileCardWrapper";
@@ -29,7 +27,6 @@ export interface ProfileImageProps {
   showFollowDistance?: boolean;
   icons?: ReactNode;
   showProfileCard?: boolean;
-  showBadges?: boolean;
   displayNameClassName?: string;
   showNip05?: boolean;
 }
@@ -48,12 +45,10 @@ export default function ProfileImage({
   showFollowDistance = true,
   icons,
   showProfileCard = false,
-  showBadges = false,
   displayNameClassName,
   showNip05 = true,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
-  const leader = useCommunityLeader(pubkey);
 
   function handleClick(e: React.MouseEvent) {
     if (link === "") {
@@ -93,7 +88,6 @@ export default function ProfileImage({
           <div className={displayNameClassName}>
             <div className="font-medium">
               {overrideUsername ? overrideUsername : <DisplayName pubkey={pubkey} user={user} />}
-              {leader && showBadges && CONFIG.features.communityLeaders && <LeaderBadge />}
               {user?.nip05 && CONFIG.showNip05 && showNip05 && (
                 <>
                   &nbsp;

@@ -74,10 +74,10 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
 
     this.#profile = pubkey
       ? new JsonEventSync<UserMetadata | undefined>(
-        undefined,
-        new NostrLink(NostrPrefix.Event, pubkey, EventKind.SetMetadata, pubkey),
-        false,
-      )
+          undefined,
+          new NostrLink(NostrPrefix.Event, pubkey, EventKind.SetMetadata, pubkey),
+          false,
+        )
       : undefined;
     this.#contacts = pubkey
       ? new DiffSyncTags(new NostrLink(NostrPrefix.Event, pubkey, EventKind.ContactList, pubkey), false)

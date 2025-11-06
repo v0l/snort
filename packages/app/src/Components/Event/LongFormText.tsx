@@ -11,6 +11,8 @@ import { findTag } from "@/Utils";
 import { Markdown } from "./Markdown";
 import NoteFooter from "./Note/NoteFooter/NoteFooter";
 import NoteTime from "./Note/NoteTime";
+import { NoteProvider } from "./Note/NoteContext";
+import { NoteContextMenu } from "./Note/NoteContextMenu";
 
 interface LongFormTextProps {
   ev: TaggedNostrEvent;
@@ -105,13 +107,12 @@ export function LongFormText(props: LongFormTextProps) {
   function fullText() {
     return (
       <>
-        <NoteFooter ev={props.ev} />
+        <NoteFooter />
         <hr className="h-px my-1" />
         <div className="flex gap-2">
           <div>
             <FormattedMessage
               defaultMessage="{n} mins to read"
-              id="zm6qS1"
               values={{
                 n: <FormattedNumber value={readTime.mins} />,
               }}
@@ -134,32 +135,35 @@ export function LongFormText(props: LongFormTextProps) {
         <Markdown content={content} tags={props.ev.tags} ref={ref} className="font-[Georgia]" />
         {shouldTruncate && !showMore && <ToggleShowMore />}
         <hr className="h-px my-1" />
-        <NoteFooter ev={props.ev} />
+        <NoteFooter />
       </>
     );
   }
 
   return (
-    <div
-      className={classNames("flex flex-col gap-4 p-4 break-words leading-6", {
-        "cursor-pointer": props.isPreview,
-      })}
-      onClick={props.onClick}>
-      <ProfilePreview
-        pubkey={props.ev.pubkey}
-        actions={
-          <>
-            <NoteTime from={props.ev.created_at * 1000} />
-          </>
-        }
-        options={{
-          about: false,
-        }}
-      />
-      <h1 className="text-xl font-bold leading-10 m-0">{title}</h1>
-      <small className="">{summary}</small>
-      {image && <div className="h-[360px] bg-center bg-cover" style={{ backgroundImage: `url(${proxy(image)})` }} />}
-      {props.isPreview ? previewText() : fullText()}
-    </div>
+    <NoteProvider ev={props.ev}>
+      <div
+        className={classNames("flex flex-col gap-4 p-4 break-words leading-6", {
+          "cursor-pointer": props.isPreview,
+        })}
+        onClick={props.onClick}>
+        <ProfilePreview
+          pubkey={props.ev.pubkey}
+          actions={
+            <div className="flex items-center gap-1">
+              <NoteTime from={props.ev.created_at * 1000} />
+              <NoteContextMenu />
+            </div>
+          }
+          options={{
+            about: false,
+          }}
+        />
+        <h1 className="text-xl font-bold leading-10 m-0">{title}</h1>
+        <small className="">{summary}</small>
+        {image && <div className="h-[360px] bg-center bg-cover" style={{ backgroundImage: `url(${proxy(image)})` }} />}
+        {props.isPreview ? previewText() : fullText()}
+      </div>
+    </NoteProvider>
   );
 }

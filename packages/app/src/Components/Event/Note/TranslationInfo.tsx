@@ -2,7 +2,6 @@ import { FormattedMessage } from "react-intl";
 
 import { useNoteContext } from "@/Components/Event/Note/NoteContext";
 
-
 export function TranslationInfo() {
   const { translated, toggleTranslation } = useNoteContext();
   if (translated && translated.confidence > 0.5) {

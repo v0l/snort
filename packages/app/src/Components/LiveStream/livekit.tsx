@@ -255,13 +255,7 @@ function RoomChat({ ev }: { ev: TaggedNostrEvent }) {
 function ChatMessage({ ev }: { ev: TaggedNostrEvent }) {
   return (
     <div className="grid grid-cols-[auto_1fr] items-center gap-2">
-      <ProfileImage
-        pubkey={ev.pubkey}
-        size={20}
-        showBadges={false}
-        showFollowDistance={false}
-        className="text-highlight"
-      />
+      <ProfileImage pubkey={ev.pubkey} size={20} showFollowDistance={false} className="text-highlight" />
       <Text id={ev.id} content={ev.content} creator={ev.pubkey} tags={ev.tags} disableMedia={true} />
     </div>
   );

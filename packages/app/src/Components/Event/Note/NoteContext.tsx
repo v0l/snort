@@ -8,6 +8,7 @@ import useModeration from "@/Hooks/useModeration";
 import { NoteTranslation } from "./types";
 import SnortApi from "@/External/SnortApi";
 import usePreferences from "@/Hooks/usePreferences";
+import ReactionsModal from "./ReactionsModal";
 
 const translationCache = new LRUCache<string, NoteTranslation>({ maxSize: 1_000 });
 
@@ -120,7 +121,12 @@ export function NoteProvider({ ev, children }: NoteProviderProps) {
     ],
   );
 
-  return <NoteContext.Provider value={value}>{children}</NoteContext.Provider>;
+  return (
+    <NoteContext.Provider value={value}>
+      {children}
+      {showReactionsModal && <ReactionsModal onClose={() => setShowReactionsModal(false)} />}
+    </NoteContext.Provider>
+  );
 }
 
 export function useNoteContext() {

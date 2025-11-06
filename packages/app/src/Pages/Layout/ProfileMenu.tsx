@@ -31,7 +31,6 @@ export default function ProfileMenu({ className }: { className?: string }) {
         profileImageProps={{
           size: 40,
           link: "",
-          showBadges: false,
           showNip05: false,
           showProfileCard: false,
           showFollowDistance: false,
@@ -80,7 +79,6 @@ export default function ProfileMenu({ className }: { className?: string }) {
                     pubkey={a.pubkey}
                     link=""
                     size={24}
-                    showBadges={false}
                     showProfileCard={false}
                     showFollowDistance={false}
                     onClick={e => {

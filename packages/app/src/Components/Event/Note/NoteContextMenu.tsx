@@ -197,7 +197,7 @@ export function NoteContextMenu() {
     <>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <span className="cursor-pointer text-neutral-500">
+          <span className="cursor-pointer text-neutral-500 px-1 py-0.5">
             <Icon name="dots" size={15} />
           </span>
         </DropdownMenu.Trigger>

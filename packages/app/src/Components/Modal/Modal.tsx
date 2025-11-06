@@ -75,7 +75,9 @@ export default function Modal(props: ModalProps) {
         e.stopPropagation();
       }}>
       <div
-        className={props.bodyClassName || "layer-1 px-6 py-4 flex flex-col my-auto lg:min-w-[520px] max-w-full"}
+        className={
+          props.bodyClassName || "layer-1 px-6 py-4 flex flex-col my-auto lg:w-[720px] max-w-full max-h-[80dvh]"
+        }
         onMouseDown={e => e.stopPropagation()}
         onClick={e => {
           e.stopPropagation();

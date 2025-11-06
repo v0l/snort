@@ -45,7 +45,6 @@ export default function NoteHeader(props: {
         subHeader={<ReplyTag ev={ev} />}
         link={options.canClick === undefined ? undefined : ""}
         showProfileCard={options.showProfileCard ?? true}
-        showBadges={true}
       />
       <div className="flex items-center gap-2">
         {props.context}
