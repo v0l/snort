@@ -26,6 +26,7 @@ export * from "./cache-relay";
 export * from "./connection-cache-relay";
 export * from "./encryption";
 export * from "./relays";
+export * from "./utils";
 
 export * from "./impl/nip4";
 export * from "./impl/nip7";

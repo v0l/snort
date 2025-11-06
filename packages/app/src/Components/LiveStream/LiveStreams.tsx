@@ -64,12 +64,12 @@ export function LiveStreamEvent({ ev, className }: { ev: NostrEvent; className?:
             {title}
           </div>
         </div>
-        <div className="absolute bottom-1 left-1 bg-heart rounded-md px-2 uppercase font-bold">{status}</div>
+        <div className="absolute bottom-1 left-1 bg-heart rounded-lg px-2 uppercase font-bold">{status}</div>
         <div className="absolute right-1 bottom-1">
           <Avatar pubkey={host} user={hostProfile} size={25} className="outline-2 outline-highlight" />
         </div>
         {viewers && (
-          <div className="absolute left-1 bottom-7 rounded-md px-2 py-1 text-xs bg-neutral-700 font-medium">
+          <div className="absolute left-1 bottom-7 rounded-lg px-2 py-1 text-xs bg-neutral-700 font-medium">
             <FormattedMessage defaultMessage="{n} viewers" values={{ n: formatShort(Number(viewers)) }} />
           </div>
         )}

@@ -57,7 +57,7 @@ const LinkPreview = ({ url }: { url: string }) => {
       const link = preview?.og_tags?.find(a => urlTags.includes(a[0].toLowerCase()))?.[1];
       const videoType = preview?.og_tags?.find(a => a[0].toLowerCase() === "og:video:type")?.[1] ?? "video/mp4";
       if (link && videoType.startsWith("video/")) {
-        return <MediaElement url={link} mime={videoType} />;
+        return <MediaElement src={link} mime={videoType} />;
       }
       if (link && videoType.startsWith("text/html") && preview?.image) {
         return <GenericPlayer url={link} poster={preview?.image} />;
@@ -68,7 +68,7 @@ const LinkPreview = ({ url }: { url: string }) => {
       const link = preview?.og_tags?.find(a => urlTags.includes(a[0].toLowerCase()))?.[1];
       const videoType = preview?.og_tags?.find(a => a[0].toLowerCase() === "og:image:type")?.[1] ?? "image/png";
       if (link) {
-        return <MediaElement url={link} mime={videoType} />;
+        return <MediaElement src={link} mime={videoType} />;
       }
     }
     if (preview?.image) {
@@ -82,7 +82,7 @@ const LinkPreview = ({ url }: { url: string }) => {
   }
 
   return (
-    <div className="rounded-xl bg-layer-1 overflow-hidden hover:cursor-pointer light:border light:hover:shadow-md">
+    <div className="rounded-lg bg-layer-1 overflow-hidden hover:cursor-pointer light:border light:hover:shadow-md">
       {preview && (
         <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="!no-underline">
           <div className="lg:min-h-[342px]">{previewElement()}</div>

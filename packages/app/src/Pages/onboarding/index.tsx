@@ -37,7 +37,7 @@ export function OnboardingLayout() {
           ))}
         </select>
       </div>
-      <div className="w-[460px] mx-auto my-auto mt-[15vh] rounded-2xl px-8 py-7 layer-1">
+      <div className="w-[460px] mx-auto my-auto mt-[15vh] rounded-lg px-8 py-7 layer-1">
         <Outlet />
       </div>
     </div>

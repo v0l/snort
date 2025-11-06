@@ -37,14 +37,14 @@ export default function LatestArticlesWidget() {
       <div className="flex flex-col gap-4">
         <Link
           to={`/${link.encode()}`}
-          className="relative rounded-xl overflow-hidden w-full aspect-video"
+          className="relative rounded-lg overflow-hidden w-full aspect-video"
           state={selected}>
           {image ? (
             <ProxyImg src={image} className="absolute w-full h-full object-cover object-center" />
           ) : (
             <div className="absolute w-full h-full object-fit bg-neutral-800"></div>
           )}
-          <div className="absolute bottom-2 left-4 right-4 px-2 py-1 rounded-xl text-lg font-bold text-white bg-black/50">
+          <div className="absolute bottom-2 left-4 right-4 px-2 py-1 rounded-lg text-lg font-bold text-white bg-black/50">
             {title}
           </div>
         </Link>

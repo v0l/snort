@@ -1,4 +1,4 @@
-import { IMeta } from "@snort/system";
+import { Nip94Tags } from "@snort/system";
 import classNames from "classnames";
 import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -8,41 +8,49 @@ import useImgProxy from "@/Hooks/useImgProxy";
 
 export interface MediaElementProps {
   mime: string;
-  url: string;
-  meta?: IMeta;
+  src: string;
+  meta?: Nip94Tags;
   onMediaClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
+  onFallback?: (url: string) => void;
   size?: number;
   style?: CSSProperties;
 }
 
 interface AudioElementProps {
-  url: string;
+  src: string;
 }
 
 interface VideoElementProps {
-  url: string;
-  meta?: IMeta;
+  src: string;
+  meta?: Nip94Tags;
 }
 
 export type ImageElementProps = ProxyImgProps & {
-  meta?: IMeta;
+  meta?: Nip94Tags;
   onMediaClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
+  onFallback?: (url: string) => void;
 };
 
-const AudioElement = ({ url }: AudioElementProps) => {
-  return <audio key={url} src={url} controls />;
+const AudioElement = ({ src }: AudioElementProps) => {
+  return <audio key={src} src={src} controls />;
 };
 
-const ImageElement = ({ src, meta, onMediaClick, size, ...props }: ImageElementProps) => {
+const ImageElement = ({ src, meta, onMediaClick, size, onFallback, ...props }: ImageElementProps) => {
   const imageRef = useRef<HTMLImageElement | null>(null);
   const [alternatives, setAlternatives] = useState<Array<string>>(meta?.fallback ?? []);
   const [currentUrl, setCurrentUrl] = useState(src);
+  if ("creator" in props) {
+    delete props["creator"];
+  }
+  if ("mime" in props) {
+    delete props["mime"];
+  }
   return (
     <ProxyImg
       {...props}
       key={currentUrl}
       src={currentUrl}
-      sha256={meta?.sha256}
+      sha256={meta?.hash}
       onClick={onMediaClick}
       className={classNames("relative max-h-[80vh] w-full h-full object-contain object-center", {
         "md:max-h-[510px]": !meta && !CONFIG.media.preferLargeMedia,
@@ -54,13 +62,14 @@ const ImageElement = ({ src, meta, onMediaClick, size, ...props }: ImageElementP
           console.warn("IMG FALLBACK", "Failed to load url, trying next: ", next);
           setAlternatives(z => z.filter(y => y !== next));
           setCurrentUrl(next);
+          onFallback?.(next);
         }
       }}
     />
   );
 };
 
-const VideoElement = ({ url }: VideoElementProps) => {
+const VideoElement = ({ src }: VideoElementProps) => {
   const { proxy } = useImgProxy();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const { ref: videoContainerRef, inView } = useInView({ threshold: 0.33 });
@@ -89,9 +98,9 @@ const VideoElement = ({ url }: VideoElementProps) => {
         ref={videoRef}
         loop={true}
         muted={!isMobile}
-        src={url}
+        src={src}
         controls
-        poster={proxy(url)}
+        poster={proxy(src)}
         className={classNames("max-h-[80vh]", { "md:max-h-[510px]": !CONFIG.media.preferLargeMedia })}
         onClick={e => e.stopPropagation()}
       />
@@ -101,29 +110,21 @@ const VideoElement = ({ url }: VideoElementProps) => {
 
 export function MediaElement(props: MediaElementProps) {
   if (props.mime.startsWith("image/")) {
-    return (
-      <ImageElement
-        src={props.url}
-        meta={props.meta}
-        onMediaClick={props.onMediaClick}
-        size={props.size}
-        style={props.style}
-      />
-    );
+    return <ImageElement {...props} />;
   } else if (props.mime.startsWith("audio/")) {
-    return <AudioElement url={props.url} />;
+    return <AudioElement {...props} />;
   } else if (props.mime.startsWith("video/")) {
-    return <VideoElement url={props.url} />;
+    return <VideoElement {...props} />;
   } else {
     return (
       <a
-        key={props.url}
-        href={props.url}
+        key={props.src}
+        href={props.src}
         onClick={e => e.stopPropagation()}
         target="_blank"
         rel="noreferrer"
         className="text-highlight no-underline hover:underline">
-        {props.url}
+        {props.src}
       </a>
     );
   }

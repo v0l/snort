@@ -50,7 +50,7 @@ export function ZapsProfileTab({ id }: { id: string }) {
         })
         .map(a => (
           <div
-            className="px-4 py-1 hover:bg-neutral-800 cursor:pointer rounded-xl flex items-center justify-between"
+            className="px-4 py-1 hover:bg-neutral-800 cursor:pointer rounded-lg flex items-center justify-between"
             key={a.pubkey}>
             <ProfilePreview
               pubkey={a.pubkey}

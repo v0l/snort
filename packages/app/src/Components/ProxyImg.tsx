@@ -52,7 +52,6 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
   }
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    console.warn("ImgLoadOnError", src, e);
     if (props.onError) {
       props.onError(e);
     } else {
@@ -77,7 +76,7 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
       height={size}
       className={className}
       onError={handleImageError}
-      crossOrigin={props.crossOrigin ?? "anonymous"}
+      crossOrigin={props.crossOrigin}
     />
   );
 });

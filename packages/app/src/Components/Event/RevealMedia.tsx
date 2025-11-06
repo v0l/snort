@@ -6,11 +6,11 @@ import Reveal from "@/Components/Event/Reveal";
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
+import { extensionToMime } from "@snort/system";
 import { FileExtensionRegex } from "@/Utils/Const";
 
-export type RevealMediaProps = Omit<MediaElementProps, "mime" | "url"> & {
+export type RevealMediaProps = Omit<MediaElementProps, "mime"> & {
   creator: string;
-  link: string;
 };
 
 export default function RevealMedia(props: RevealMediaProps) {
@@ -22,34 +22,10 @@ export default function RevealMedia(props: RevealMediaProps) {
   const isMine = props.creator === publicKey;
   const hideMedia = autoLoadMedia === "none" || (!isMine && hideNonFollows);
 
-  const url = new URL(props.link);
+  const url = new URL(props.src);
   const hostname = url.hostname;
-  const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
-  const type = (() => {
-    switch (extension) {
-      case "gif":
-      case "jpg":
-      case "jpeg":
-      case "jfif":
-      case "png":
-      case "bmp":
-      case "webp":
-        return "image";
-      case "wav":
-      case "mp3":
-      case "ogg":
-        return "audio";
-      case "mp4":
-      case "mov":
-      case "mkv":
-      case "avi":
-      case "m4v":
-      case "webm":
-        return "video";
-      default:
-        return "unknown";
-    }
-  })();
+  let ext = url.pathname.match(FileExtensionRegex);
+  const mime = extensionToMime(ext?.[1] ?? "") ?? props.meta?.mimeType ?? "unknown";
 
   if (hideMedia) {
     return (
@@ -64,10 +40,10 @@ export default function RevealMedia(props: RevealMediaProps) {
             }}
           />
         }>
-        <MediaElement mime={`${type}/${extension}`} url={url.toString()} {...props} />
+        <MediaElement mime={mime} {...props} />
       </Reveal>
     );
   } else {
-    return <MediaElement mime={`${type}/${extension}`} url={url.toString()} {...props} />;
+    return <MediaElement mime={mime} {...props} />;
   }
 }

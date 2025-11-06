@@ -56,7 +56,7 @@ export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: T
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className="bg-layer-2 rounded-2xl overflow-hidden z-[9999] min-w-48"
+          className="bg-layer-2 rounded-lg overflow-hidden z-[9999] min-w-48"
           sideOffset={5}
           align="start">
           <DropdownMenu.Item

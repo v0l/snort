@@ -1,5 +1,5 @@
 import { EventBuilder, EventExt, NostrEvent, NostrLink } from "@snort/system";
-import { NostrPrefix, bech32ToHex, unixNow } from "@snort/shared";
+import { NostrPrefix, bech32ToHex, sha256, unixNow } from "@snort/shared";
 import { useState } from "react";
 
 import { KieranPubKey } from "@/Utils/Const";
@@ -325,6 +325,18 @@ const SAMPLE_LIVE_STREAM_EVENT = {
   sig: "6674b3d183da4c6208908f0e1118dee5682f5f635fd3b21141563a5986635d2f687d532686f4cf55bb2256cde561f3bb8c660a9d805c95d13443c8bf7bb2b75f",
 };
 
+const ExampleMagnetLink =
+  "magnet:?xt=urn:btih:9065a82c1bb9e8e69ad14044ee4a4aba35cb17ea&dn=nostr.band%20snapshot&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Fexplodie.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker-udp.gbitt.info%3A80%2Fannounce&tr=https%3A%2F%2Ftracker.tamersunion.org%3A443%2Fannounce&tr=udp%3A%2F%2Ftracker2.dler.org%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker1.bt.moack.co.kr%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.theoks.net%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.ccp.ovh%3A6969%2Fannounce";
+
+const TextExample = `Hello Nostr! This is a test message with #nostr and https://example.com 
+https://github.com/v0l/snort
+blossom:ba9037d243fc6fbf23ae6b6af36cd5235fddc59fbea5cc7c0f590966fba102db.jpg?xs=nostr.download&xs=example.com&as=63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed&as=266815e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5&sz=324265
+${ExampleMagnetLink}
+nostr:${NostrLink.fromEvent(SAMPLE_LIVE_STREAM_EVENT).encode()}
+${SAMPLE_CASHU_TOKEN}
+${SAMPLE_INVOICE}
+`;
+
 export default function ComponentDebugPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedTab, setSelectedTab] = useState<Tab>({ value: 0, text: "Tab 1" });
@@ -562,14 +574,8 @@ export default function ComponentDebugPage() {
         <div className="space-y-4">
           <div>
             <span className="mb-2">Text with content:</span>
-            <div className="bg-neutral-800 light:bg-neutral-200 p-4 rounded">
-              <Text
-                id="sample-text-1"
-                content="Hello Nostr! This is a test message with #nostr and https://example.com 
-                https://github.com/v0l/snort"
-                tags={[]}
-                creator={SAMPLE_HEX_PUBKEY}
-              />
+            <div className="layer-1">
+              <Text id={sha256(TextExample)} depth={0} content={TextExample} tags={[]} creator={SAMPLE_HEX_PUBKEY} />
             </div>
           </div>
 
@@ -615,13 +621,7 @@ export default function ComponentDebugPage() {
 
             <div className="flex-1">
               <span className="text-sm mb-4">MagnetLink:</span>
-              <MagnetLink
-                magnet={
-                  magnetURIDecode(
-                    "magnet:?xt=urn:btih:9065a82c1bb9e8e69ad14044ee4a4aba35cb17ea&dn=nostr.band%20snapshot&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Fexplodie.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker-udp.gbitt.info%3A80%2Fannounce&tr=https%3A%2F%2Ftracker.tamersunion.org%3A443%2Fannounce&tr=udp%3A%2F%2Ftracker2.dler.org%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker1.bt.moack.co.kr%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.theoks.net%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.ccp.ovh%3A6969%2Fannounce",
-                  )!
-                }
-              />
+              <MagnetLink magnet={magnetURIDecode(ExampleMagnetLink)!} />
             </div>
 
             <div className="flex-1">
@@ -1516,67 +1516,6 @@ This example covers all major markdown features including:
           </div>
         </div>
       </section>
-
-      <div className="mt-12 p-4 light:bg-neutral-200 bg-neutral-800 rounded">
-        <p className="text-sm mb-2">
-          <strong>Component Debug Page</strong> - This page demonstrates <strong>100+ UI components</strong> used
-          throughout the application, using KieranPubKey for real Nostr data examples.
-        </p>
-        <p className="text-sm mb-2">
-          <strong>Sections included:</strong>
-        </p>
-        <ul className="text-sm list-disc ml-6 space-y-1">
-          <li>
-            <strong>Buttons (7 components):</strong> AsyncButton (with loading/disabled states), BackButton,
-            CloseButton, IconButton, NavLink, LogoutButton
-          </li>
-          <li>
-            <strong>Icons (15+ components):</strong> Core icons (heart, repost, reply, zap, bookmark, dots), Spinner,
-            Wallet icons (Alby, Cashu, Nostrich, BlueWallet, ECash, NWC), Toggle switch
-          </li>
-          <li>
-            <strong>User Components (18 components):</strong> Avatar (multiple sizes), ProfileImage, AvatarGroup,
-            Username, DisplayName, ProfileLink, Nip05, FollowButton, MuteButton, FollowsYou, FollowDistanceIndicator,
-            BadgeList, UserWebsiteLink, FollowedBy, NoteToSelf
-          </li>
-          <li>
-            <strong>Text Components (2 components):</strong> Text parser (handles links, hashtags, embeds),
-            HighlightedText
-          </li>
-          <li>
-            <strong>Embed Components (19+ components):</strong>
-            <ul className="ml-4 mt-1">
-              <li>Basic: Hashtag, Mention, Invoice, MagnetLink, CashuNuts</li>
-              <li>
-                Music/Video: YouTube, Spotify, AppleMusic, Twitch, Tidal, SoundCloud, Wavlake, MixCloud, NostrNests
-              </li>
-            </ul>
-          </li>
-          <li>
-            <strong>Event Components (12+ components):</strong> NoteTime, ZapButton, ClientTag, KindName, NoteHeader,
-            NoteReaction, ZapAmountLabel, ZapsSummary, Poll (interactive voting), ZapGoal (fundraising), LongFormText
-            (articles)
-          </li>
-          <li>
-            <strong>Utility Components (14 components):</strong> Copy, QrCode, ProxyImg, Progress bar, Collapsed,
-            CollapsedSection, Modal, WarningNotice, TabSelectors, PageSpinner, LoadMore
-          </li>
-          <li>
-            <strong>Specialized Components (10+ components):</strong> TrendingHashtags, TrendingUsers, TrendingPosts,
-            SuggestedProfiles, PaidRelayLabel, UptimeLabel, ReBroadcaster, LiveEvent
-          </li>
-        </ul>
-        <p className="text-sm mt-3">
-          <strong>Total: 100+ components</strong> across 9 major categories, with interactive demos, multiple states
-          (loading, disabled, active), complex event types (polls, articles, goals), and real Nostr profile data where
-          applicable.
-        </p>
-        <p className="text-sm mt-2">
-          <strong>Note:</strong> Some components may not display fully without proper Nostr network data or
-          authentication context. This page provides a comprehensive visual overview of component structure, styling,
-          and interactive states for development and QA purposes.
-        </p>
-      </div>
     </div>
   );
 }

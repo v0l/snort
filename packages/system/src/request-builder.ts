@@ -164,8 +164,10 @@ export class RequestFilterBuilder {
 
   authors(authors?: Array<string>) {
     if (!authors) return this;
-    this.#filter.authors = appendDedupe(this.#filter.authors, authors);
-    this.#filter.authors = this.#filter.authors.filter(a => a.length === 64);
+    this.#filter.authors = appendDedupe(
+      this.#filter.authors,
+      authors.filter(a => a.length === 64),
+    );
     return this;
   }
 

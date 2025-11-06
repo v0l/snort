@@ -65,7 +65,7 @@
 }
 
 @utility layer-1 {
-  @apply bg-layer-1 rounded-xl border px-3 py-2;
+  @apply bg-layer-1 rounded-lg border px-3 py-2;
 }
 
 @utility layer-1-hover {
@@ -73,7 +73,7 @@
 }
 
 @utility layer-2 {
-  @apply bg-layer-2 rounded-xl border px-3 py-2;
+  @apply bg-layer-2 rounded-lg border px-3 py-2;
 }
 
 @utility layer-2-hover {
@@ -469,7 +469,7 @@ input:disabled {
   max-width: -moz-available;
 }
 
-@utility scroll-lock {
+.scroll-lock {
   overflow: hidden;
   height: 100vh;
 }

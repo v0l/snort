@@ -123,7 +123,7 @@ export default function LiveKitRoom({ ev, canJoin }: { ev: TaggedNostrEvent; can
 function RoomHeader({ ev }: { ev: TaggedNostrEvent }) {
   const { image, title } = extractStreamInfo(ev);
   return (
-    <div className="relative rounded-xl h-[140px] w-full overflow-hidden">
+    <div className="relative rounded-lg h-[140px] w-full overflow-hidden">
       {image ? (
         <ProxyImg src={image} className="w-full h-full object-cover object-center" />
       ) : (

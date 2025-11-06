@@ -37,7 +37,7 @@ export function OkResponseRow({ rsp, close }: { rsp: OkResponse; close: () => vo
         <div className="flex gap-2">
           <AsyncButton
             onClick={() => retryPublish(r)}
-            className="p-1 rounded-md flex items-center secondary"
+            className="p-1 rounded-lg flex items-center secondary"
             title={formatMessage({
               defaultMessage: "Retry publishing",
               id: "9kSari",
@@ -46,7 +46,7 @@ export function OkResponseRow({ rsp, close }: { rsp: OkResponse; close: () => vo
           </AsyncButton>
           <AsyncButton
             onClick={() => removeRelayFromResult(r)}
-            className="p-1 rounded-md flex items-center secondary"
+            className="p-1 rounded-lg flex items-center secondary"
             title={formatMessage({
               defaultMessage: "Remove from my relays",
               id: "UJTWqI",

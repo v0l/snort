@@ -57,7 +57,7 @@ export default function ProfileMenu({ className }: { className?: string }) {
           <div>{profile()}</div>
         </DropdownMenu.Trigger>
         <DropdownMenu.Portal>
-          <DropdownMenu.Content className="bg-layer-2 rounded-2xl overflow-hidden z-[9999] min-w-48" sideOffset={5}>
+          <DropdownMenu.Content className="bg-layer-2 rounded-lg overflow-hidden z-[9999] min-w-48" sideOffset={5}>
             <DropdownMenu.Item
               className={itemClassName}
               onClick={e => {

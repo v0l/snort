@@ -1,6 +1,6 @@
-import { ParsedFragment, isNostrLink } from "@snort/system";
+import { ParsedFragment, tryParseNostrLink } from "@snort/system";
 import classNames from "classnames";
-import React, { lazy, ReactNode, Suspense, useContext, useState } from "react";
+import React, { lazy, ReactNode, Suspense, useContext } from "react";
 
 const CashuNuts = lazy(async () => await import("@/Components/Embed/CashuNuts"));
 import Hashtag from "@/Components/Embed/Hashtag";
@@ -16,6 +16,9 @@ import HighlightedText from "./HighlightedText";
 import Mention from "../Embed/Mention";
 import { SpotlightContext } from "../Spotlight/context";
 import NostrLink from "../Embed/NostrLink";
+import { magnetURIDecode } from "@/Utils";
+import MagnetLink from "../Embed/MagnetLink";
+import BlossomBlob from "../Embed/BlossomBlob";
 
 export interface TextProps {
   id: string;
@@ -100,7 +103,7 @@ export default function Text({
               } else {
                 chunks.push(
                   <RevealMedia
-                    link={element.content}
+                    src={element.content}
                     meta={element.data}
                     size={baseImageWidth}
                     creator={creator}
@@ -119,7 +122,7 @@ export default function Text({
             } else {
               chunks.push(
                 <RevealMedia
-                  link={element.content}
+                  src={element.content}
                   meta={element.data}
                   size={baseImageWidth}
                   creator={creator}
@@ -150,17 +153,29 @@ export default function Text({
           );
           break;
         }
-        case "mention":
         case "link": {
           if (disableMedia ?? false) {
             chunks.push(<DisableMedia content={element.content} />);
           } else {
-            if (isNostrLink(element.content)) {
-              chunks.push(<NostrLink link={element.content} depth={depth} />);
-            } else {
-              chunks.push(<HyperText link={element.content} showLinkPreview={!(disableLinkPreview ?? false)} />);
-            }
+            chunks.push(<HyperText link={element.content} showLinkPreview={!(disableLinkPreview ?? false)} />);
           }
+          break;
+        }
+        case "mention": {
+          chunks.push(<NostrLink link={element.content} depth={depth} />);
+          break;
+        }
+        case "magnet": {
+          const parsed = magnetURIDecode(element.content);
+          if (parsed) {
+            chunks.push(<MagnetLink magnet={parsed} />);
+          } else {
+            chunks.push(element.content);
+          }
+          break;
+        }
+        case "blossom": {
+          chunks.push(<BlossomBlob link={element.content} creator={creator} />);
           break;
         }
         case "custom_emoji": {
@@ -169,7 +184,7 @@ export default function Text({
         }
         case "code_block": {
           chunks.push(
-            <pre className="bg-layer-2 px-2 py-1 rounded-md" lang={element.language}>
+            <pre className="bg-layer-2 px-2 py-1 rounded-lg" lang={element.language}>
               {element.content}
             </pre>,
           );
@@ -177,7 +192,7 @@ export default function Text({
         }
         case "inline_code": {
           chunks.push(
-            <code className="bg-layer-2 px-1.5 py-0.5 rounded-md" lang={element.language}>
+            <code className="bg-layer-2 px-1.5 py-0.5 rounded-lg" lang={element.language}>
               {element.content}
             </code>,
           );
@@ -245,7 +260,7 @@ function buildGallery(
 ) {
   if (elements.length === 1) {
     return (
-      <RevealMedia link={elements[0].content} meta={elements[0].data} creator={creator} onMediaClick={onMediaClick} />
+      <RevealMedia src={elements[0].content} meta={elements[0].data} creator={creator} onMediaClick={onMediaClick} />
     );
   } else {
     // We build a grid layout to render the grouped images
@@ -269,7 +284,7 @@ function buildGallery(
       <div className="grid grid-cols-4 gap-0.5 place-items-start">
         {imagesWithGridConfig.map(img => (
           <RevealMedia
-            link={img.content}
+            src={img.content}
             meta={img.data}
             creator={creator}
             onMediaClick={onMediaClick}

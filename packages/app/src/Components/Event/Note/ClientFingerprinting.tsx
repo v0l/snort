@@ -45,7 +45,7 @@ export abstract class FingerprintCheck {
 }
 
 export class AltTagCheck extends FingerprintCheck {
-  readonly weight = 3;
+  readonly weight = 4;
   readonly id = "alt-tag-a-short-note";
 
   evaluate(ev: NostrEvent): boolean {

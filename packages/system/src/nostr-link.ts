@@ -338,22 +338,6 @@ export class NostrLink implements ToNostrEventTag {
   }
 }
 
-export function validateNostrLink(link: string): boolean {
-  try {
-    const parsedLink = parseNostrLink(link);
-    if (!parsedLink) {
-      return false;
-    }
-    if (parsedLink.type === NostrPrefix.PublicKey || parsedLink.type === NostrPrefix.Note) {
-      return parsedLink.id.length === 64;
-    }
-
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 export function tryParseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLink | undefined {
   try {
     return parseNostrLink(link, prefixHint);

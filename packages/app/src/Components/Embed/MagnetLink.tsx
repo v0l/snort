@@ -9,7 +9,7 @@ interface MagnetLinkProps {
 
 const MagnetLink = ({ magnet }: MagnetLinkProps) => {
   return (
-    <div className="border rounded-2xl p-6 flex-col items-start relative bg-[image:var(--invoice-gradient)]">
+    <div className="border rounded-lg p-6 flex-col items-start relative bg-[image:var(--invoice-gradient)]">
       <h4>
         <FormattedMessage defaultMessage="Magnet Link" />
       </h4>

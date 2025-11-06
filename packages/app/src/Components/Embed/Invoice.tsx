@@ -60,7 +60,7 @@ export default function Invoice(props: InvoiceProps) {
 
   return (
     <>
-      <div className="border rounded-2xl p-6 flex-col items-start relative bg-[image:var(--invoice-gradient)]">
+      <div className="border rounded-lg p-6 flex-col items-start relative bg-[image:var(--invoice-gradient)]">
         <div>{header()}</div>
 
         <p className="font-normal text-[37px] leading-[45px] mb-4">
@@ -75,7 +75,7 @@ export default function Invoice(props: InvoiceProps) {
         <div className="text-font-secondary-color w-full text-base leading-[19px]">
           {description && <p className="mb-4">{description}</p>}
           {isPaid ? (
-            <div className="w-full h-11 font-semibold text-[19px] leading-[23px] flex items-center justify-center bg-success text-white rounded-2xl">
+            <div className="w-full h-11 font-semibold text-[19px] leading-[23px] flex items-center justify-center bg-success text-white rounded-lg">
               <FormattedMessage defaultMessage="Paid" />
             </div>
           ) : (

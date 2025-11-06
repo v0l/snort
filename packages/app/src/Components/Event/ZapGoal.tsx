@@ -22,7 +22,7 @@ export function ZapGoal({ ev }: { ev: NostrEvent }) {
       <div className="flex items-center justify-between">
         <h2 className="leading-[1em]">{ev.content}</h2>
         <div
-          className="text-[var(--bg-color)] bg-highlight px-2 py-1 rounded-2xl cursor-pointer flex"
+          className="text-[var(--bg-color)] bg-highlight px-2 py-1 rounded-lg cursor-pointer flex"
           onClick={() => setZap(true)}>
           <Icon name="zap" size={15} />
         </div>

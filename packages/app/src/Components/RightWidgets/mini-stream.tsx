@@ -24,7 +24,7 @@ export default function MiniStreamWidget() {
   return (
     <BaseWidget>
       <div className="flex flex-col gap-4">
-        <div className="rounded-xl relative aspect-video w-full overflow-hidden">
+        <div className="rounded-lg relative aspect-video w-full overflow-hidden">
           <ProxyImg src={image} className="absolute w-full h-full" />
           <div className="absolute flex items-center justify-center w-full h-full">
             <IconButton

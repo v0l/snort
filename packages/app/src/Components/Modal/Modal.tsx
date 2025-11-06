@@ -7,7 +7,7 @@ export interface ModalProps {
   bodyClassName?: string;
   onClose?: (e: React.MouseEvent | KeyboardEvent) => void;
   onClick?: (e: React.MouseEvent) => void;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 let scrollbarWidth: number | null = null;
@@ -75,10 +75,7 @@ export default function Modal(props: ModalProps) {
         e.stopPropagation();
       }}>
       <div
-        className={
-          props.bodyClassName ||
-          "bg-layer-1 px-3 py-6 rounded-2xl flex flex-col my-auto border max-w-full sm:px-6 sm:w-[600px] max-sm:min-w-full"
-        }
+        className={props.bodyClassName || "layer-1 px-6 py-4 flex flex-col my-auto lg:max-w-[720px] max-w-full"}
         onMouseDown={e => e.stopPropagation()}
         onClick={e => {
           e.stopPropagation();

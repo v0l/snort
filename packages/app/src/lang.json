@@ -111,6 +111,9 @@
   "1/BFEj": {
     "defaultMessage": "git stuff"
   },
+  "1A6QoL": {
+    "defaultMessage": "Author-Derived Servers ({count})"
+  },
   "1GvBMj": {
     "defaultMessage": "internal reference"
   },
@@ -1054,6 +1057,9 @@
   "MBAYRO": {
     "defaultMessage": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message"
   },
+  "MF9ke5": {
+    "defaultMessage": "{size} bytes ({kb} KB)"
+  },
   "MI2jkA": {
     "defaultMessage": "Not available:"
   },
@@ -1198,6 +1204,9 @@
   },
   "QJfhKt": {
     "defaultMessage": "The private key is like a password, but it cannot be reset. Guard it carefully and never show it to anyone. Once someone has your private key, they will have access to your account forever."
+  },
+  "QW5bRH": {
+    "defaultMessage": "Blossom Blob Debug Info"
   },
   "QWhotP": {
     "defaultMessage": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)"
@@ -1349,6 +1358,9 @@
   },
   "Tpy00S": {
     "defaultMessage": "People"
+  },
+  "TvwmZr": {
+    "defaultMessage": "Hash"
   },
   "TwyMau": {
     "defaultMessage": "Account"
@@ -1577,6 +1589,12 @@
   },
   "abbGKq": {
     "defaultMessage": "{n} km"
+  },
+  "af6Oxx": {
+    "defaultMessage": "Authors ({count})"
+  },
+  "agOXPD": {
+    "defaultMessage": "Size"
   },
   "ak3MTf": {
     "defaultMessage": "Invite Friends"
@@ -1908,6 +1926,9 @@
   },
   "i5gBFz": {
     "defaultMessage": "Your sent and received payments will show up here."
+  },
+  "i8CwA4": {
+    "defaultMessage": "Extension"
   },
   "iCqGww": {
     "defaultMessage": "Reactions ({n})"
@@ -2425,6 +2446,9 @@
   "wEQDC6": {
     "defaultMessage": "Edit"
   },
+  "wIr5EQ": {
+    "defaultMessage": "Explicit Servers ({count})"
+  },
   "wOyDTB": {
     "defaultMessage": "File storage server list"
   },
@@ -2508,6 +2532,9 @@
   },
   "ymVhDw": {
     "defaultMessage": "Email <> DM bridge for your {app} nostr address"
+  },
+  "ynNi3b": {
+    "defaultMessage": "Active URLs ({active}/{max})"
   },
   "ywyVQg": {
     "defaultMessage": "{app} nostr address"

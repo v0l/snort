@@ -539,7 +539,7 @@ export function NoteCreator() {
               </span>
             </DropdownMenu.Trigger>
             <DropdownMenu.Portal>
-              <DropdownMenu.Content className="bg-layer-2 rounded-2xl overflow-hidden z-[9999] min-w-48" sideOffset={5}>
+              <DropdownMenu.Content className="bg-layer-2 rounded-lg overflow-hidden z-[9999] min-w-48" sideOffset={5}>
                 <DropdownMenu.Item
                   className="px-6 py-2 text-base font-semibold bg-layer-2 light:bg-white hover:bg-layer-3 light:hover:bg-neutral-200 cursor-pointer outline-none"
                   onClick={e => {

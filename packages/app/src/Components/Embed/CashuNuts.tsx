@@ -47,7 +47,7 @@ export default function CashuNuts({ token }: { token: string }) {
   const amount = cashu.proofs.reduce((acc, v) => acc + v.amount, 0);
   return (
     <div
-      className="flex justify-between p-6 rounded-2xl items-center"
+      className="flex justify-between p-6 rounded-lg items-center"
       style={{
         backgroundImage: "linear-gradient(90deg, #40b039, #adff2a)",
       }}>

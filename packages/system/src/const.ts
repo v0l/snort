@@ -33,12 +33,12 @@ export const FileExtensionRegex = /\.([\w]{1,7})$/i;
 /**
  * Simple lightning invoice regex
  */
-export const InvoiceRegex = /(lnbc\w+)/i;
+export const InvoiceRegex = /(lnbc\w+)/gi;
 
 /*
  * Regex to match any base64 string
  */
-export const CashuRegex = /(cashuA[A-Za-z0-9_-]{0,10000}={0,3})/i;
+export const CashuRegex = /(cashuA[A-Za-z0-9_-]{0,10000}={0,3})/gi;
 
 /**
  * Regex to match any npub/nevent/naddr/nprofile/note

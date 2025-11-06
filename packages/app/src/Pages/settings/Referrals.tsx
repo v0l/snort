@@ -116,7 +116,7 @@ export function ReferralsPage() {
           id="Ml7+RS"
         />
       </p>
-      <div className="border rounded-2xl px-3 py-2">
+      <div className="border rounded-lg px-3 py-2">
         <Copy text={`https://${window.location.host}?ref=${refCode?.code}`} maxSize={Number.MAX_VALUE} />
       </div>
       {refCode?.leaderState === undefined && becomeLeader()}

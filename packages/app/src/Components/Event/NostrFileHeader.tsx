@@ -29,9 +29,9 @@ export function NostrFileElement({ ev }: { ev: NostrEvent }) {
       <Reveal message={<FormattedMessage defaultMessage="Click to load content from {link}" values={{ link: u }} />}>
         <MediaElement
           mime={m}
-          url={u}
+          src={u}
           meta={{
-            sha256: x,
+            hash: x,
             magnet: magnet,
             blurHash: blurHash,
           }}

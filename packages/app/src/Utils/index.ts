@@ -184,9 +184,27 @@ export function unwrap<T>(v: T | undefined | null): T {
   return v;
 }
 
-export function randomSample<T>(coll: T[], size: number) {
-  const random = [...coll];
-  return random.sort(() => (Math.random() >= 0.5 ? 1 : -1)).slice(0, size);
+/**
+ * Get a random sample of elements from an array using Fisher-Yates partial shuffle.
+ * This is an unbiased O(min(size, length)) algorithm, much better than sort-based approaches.
+ * @param coll - The array to sample from
+ * @param size - The number of elements to sample (clamped to array length)
+ * @returns Array of randomly sampled elements
+ */
+export function randomSample<T>(coll: T[], size: number): T[] {
+  if (coll.length === 0 || size <= 0) {
+    return [];
+  }
+
+  const sampleSize = Math.min(size, coll.length);
+  const result = [...coll];
+
+  // Partial Fisher-Yates shuffle: only shuffle the first 'sampleSize' elements
+  for (let i = 0; i < sampleSize; i++) {
+    const j = i + Math.floor(Math.random() * (result.length - i));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result.slice(0, sampleSize);
 }
 
 export function getNewest(rawNotes: readonly TaggedNostrEvent[]) {

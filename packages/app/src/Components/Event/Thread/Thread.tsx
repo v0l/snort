@@ -85,7 +85,7 @@ function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContext
             <FormattedMessage
               defaultMessage="Loading note: {id}"
               values={{
-                id: <code className="font-mono bg-layer-1 px-1.5 py-0.5 rounded-md">{thread.current}</code>,
+                id: <code className="font-mono bg-layer-1 px-1.5 py-0.5 rounded-lg">{thread.current}</code>,
               }}
             />
           </div>

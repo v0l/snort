@@ -10,278 +10,321 @@ import {
   MentionNostrEntityRegex,
   TagRefRegex,
 } from "./const";
-import { NostrLink, validateNostrLink } from "./nostr-link";
-import { splitByUrl } from "./utils";
-import { IMeta } from "./nostr";
+import { NostrLink, tryParseNostrLink } from "./nostr-link";
+import { extensionToMime, UrlRegex } from "./utils";
 import { Nip94Tags, readNip94TagsFromIMeta } from ".";
 
+export enum FragmentType {
+  /**
+   * Plain test fragment
+   */
+  Text = "text",
+  /**
+   * Link to external site
+   */
+  Link = "link",
+  /**
+   * @ mention of a nostr entity
+   */
+  Mention = "mention",
+  /**
+   * Lightning invoice
+   */
+  Invoice = "invoice",
+  /**
+   * Image or Video link (http/https)
+   */
+  Media = "media",
+  /**
+   * Cashu token
+   */
+  Cashu = "cashu",
+  /**
+   * Hashtag topic link
+   */
+  Hashtag = "hashtag",
+  /**
+   * Custom emoji link
+   */
+  CustomEmoji = "custom_emoji",
+  /**
+   * Highlighted text (handled externally)
+   */
+  HighlightedText = "highlighted_text",
+  /**
+   * Code block (```)
+   */
+  CodeBlock = "code_block",
+  /**
+   * Inline code (`)
+   */
+  InlineCode = "inline_code",
+  /**
+   * Blossom url
+   */
+  BlossomBlob = "blossom",
+  /**
+   * Magnet torrent link
+   */
+  MagnetLink = "magnet",
+}
+
 export interface ParsedFragment {
-  type:
-    | "text"
-    | "link"
-    | "mention"
-    | "invoice"
-    | "media"
-    | "cashu"
-    | "hashtag"
-    | "custom_emoji"
-    | "highlighted_text"
-    | "code_block"
-    | "inline_code";
+  type: FragmentType;
+  /**
+   * The raw fragment content string
+   */
   content: string;
+  /**
+   * Media mime type for "media" fragments
+   */
   mimeType?: string;
+  /**
+   * Code language or spoken language
+   */
   language?: string;
+  /**
+   * Opaque object based on the fragment type
+   */
   data?: object;
 }
 
 export type Fragment = string | ParsedFragment;
 
-function extractLinks(fragments: Fragment[]) {
-  return fragments
+/**
+ * Process fragments by applying a function to string fragments only.
+ *
+ * @param fragments - Array of fragments to process
+ * @param fn - Function to apply to each string fragment
+ * @param filterEmpty - Whether to filter out empty string fragments
+ * @returns Processed and flattened array of fragments
+ */
+function mapFragments(
+  fragments: Fragment[],
+  fn: (str: string) => Fragment | Fragment[],
+  filterEmpty = true,
+): Fragment[] {
+  const result = fragments
     .map(f => {
       if (typeof f === "string") {
-        return splitByUrl(f).map(a => {
-          const validateLink = () => {
-            const normalizedStr = a.toLowerCase();
-
-            if (normalizedStr.startsWith("web+nostr:") || normalizedStr.startsWith("nostr:")) {
-              return validateNostrLink(normalizedStr);
-            }
-
-            return (
-              normalizedStr.startsWith("http:") ||
-              normalizedStr.startsWith("https:") ||
-              normalizedStr.startsWith("magnet:")
-            );
-          };
-
-          if (validateLink()) {
-            const url = new URL(a);
-            const extension = url.pathname.match(FileExtensionRegex);
-
-            if (extension && extension.length > 1) {
-              const mediaType = (() => {
-                switch (extension[1].toLowerCase()) {
-                  case "gif":
-                  case "jpg":
-                  case "jpeg":
-                  case "jfif":
-                  case "png":
-                  case "bmp":
-                  case "webp":
-                    return "image";
-                  case "wav":
-                  case "mp3":
-                  case "ogg":
-                    return "audio";
-                  case "mp4":
-                  case "mov":
-                  case "mkv":
-                  case "avi":
-                  case "m4v":
-                  case "webm":
-                  case "m3u8":
-                    return "video";
-                  default:
-                    return "unknown";
-                }
-              })();
-              const data = parseInlineMetaHack(url);
-              return {
-                type: "media",
-                content: data ? `${url.protocol}//${url.host}${url.pathname}${url.search}` : a,
-                mimeType: `${mediaType}/${extension[1]}`,
-                data,
-              } as ParsedFragment;
-            } else {
-              return {
-                type: "link",
-                content: a,
-              } as ParsedFragment;
-            }
-          }
-          return a;
-        });
+        return fn(f);
       }
       return f;
     })
     .flat();
+
+  if (filterEmpty) {
+    return result.filter(f => typeof f !== "string" || f.length > 0);
+  }
+
+  return result;
+}
+
+/**
+ * Efficiently split a string by a regex pattern and create parsed fragments for matches,
+ * without needing to test the regex multiple times.
+ *
+ * @param str - The string to parse
+ * @param regex - The regex pattern to match (must have the 'g' flag)
+ * @param type - The FragmentType to assign to matched parts
+ * @param transform - Optional function to transform the matched content. Return undefined to treat match as text.
+ * @returns Array of strings (non-matches) and ParsedFragments (matches)
+ */
+function splitAndParseRegex(
+  str: string,
+  regex: RegExp,
+  type: FragmentType,
+  transform?: (match: string) => Partial<ParsedFragment> | undefined,
+): Array<Fragment> {
+  const result = [];
+  let lastIndex = 0;
+
+  // Reset regex before using matchAll
+  regex.lastIndex = 0;
+
+  for (const match of str.matchAll(regex)) {
+    // Add text before match (if non-empty)
+    if (match.index! > lastIndex) {
+      result.push(str.substring(lastIndex, match.index));
+    }
+
+    if (transform) {
+      const transformed = transform(match[0]);
+
+      // If transform returns undefined, treat the match as text
+      if (transformed === undefined) {
+        result.push(match[0]);
+      } else {
+        // Create parsed fragment with transformed data
+        const fragment: ParsedFragment = {
+          type,
+          content: match[0],
+          ...transformed,
+        };
+        result.push(fragment);
+      }
+    } else {
+      // No transform, create basic parsed fragment
+      const fragment: ParsedFragment = {
+        type,
+        content: match[0],
+      };
+      result.push(fragment);
+    }
+
+    lastIndex = match.index! + match[0].length;
+  }
+
+  // Add remaining text after last match (if non-empty)
+  if (lastIndex < str.length) {
+    result.push(str.substring(lastIndex));
+  }
+
+  return result;
+}
+
+function extractLinks(fragments: Fragment[]) {
+  return mapFragments(fragments, f =>
+    splitAndParseRegex(f, UrlRegex, FragmentType.Link, a => {
+      // check for regular http media link
+      const normalizedStr = a.toLowerCase();
+      if (normalizedStr.startsWith("http:") || normalizedStr.startsWith("https:")) {
+        const url = new URL(a);
+        const extension = url.pathname.match(FileExtensionRegex);
+
+        if (extension && extension.length > 1) {
+          // media links have special type
+          const mediaType = extensionToMime(extension[1]);
+          return {
+            type: "media",
+            content: a,
+            mimeType: mediaType ?? `unknown/${extension[1]}`,
+          } as ParsedFragment;
+        }
+      }
+      if (
+        normalizedStr.startsWith("nostr:") ||
+        (normalizedStr.startsWith("web+nostr:") && tryParseNostrLink(normalizedStr))
+      ) {
+        // nostr links
+        return {
+          type: "mention",
+          content: a,
+        } as ParsedFragment;
+      }
+      if (normalizedStr.startsWith("magnet:")) {
+        // magnet links
+        return {
+          type: "magnet",
+          content: a,
+        } as ParsedFragment;
+      }
+      if (normalizedStr.startsWith("blossom:")) {
+        // magnet links
+        return {
+          type: "blossom",
+          content: a,
+        } as ParsedFragment;
+      }
+
+      // generic link
+      return {
+        type: "link",
+        content: a,
+      } as ParsedFragment;
+    }),
+  );
 }
 
 function extractMentions(fragments: Fragment[]) {
-  return fragments
-    .map(f => {
-      if (typeof f === "string") {
-        return f.split(MentionNostrEntityRegex).map(i => {
-          if (MentionNostrEntityRegex.test(i)) {
-            return {
-              type: "mention",
-              content: i,
-            } as ParsedFragment;
-          } else {
-            return i;
-          }
-        });
-      }
-      return f;
-    })
-    .flat();
+  return mapFragments(fragments, f => splitAndParseRegex(f, MentionNostrEntityRegex, FragmentType.Mention));
 }
 
 function extractCashuTokens(fragments: Fragment[]) {
-  return fragments
-    .map(f => {
-      if (typeof f === "string" && f.includes("cashuA")) {
-        return f.split(CashuRegex).map(a => {
-          return {
-            type: "cashu",
-            content: a,
-          } as ParsedFragment;
-        });
-      }
-      return f;
-    })
-    .flat();
+  return mapFragments(fragments, f => {
+    if (f.includes("cashuA")) {
+      return splitAndParseRegex(f, CashuRegex, FragmentType.Cashu);
+    }
+    return f;
+  });
 }
 
 function extractInvoices(fragments: Fragment[]) {
-  return fragments
-    .map(f => {
-      if (typeof f === "string") {
-        return f.split(InvoiceRegex).map(i => {
-          if (i.toLowerCase().startsWith("lnbc")) {
-            return {
-              type: "invoice",
-              content: i,
-            } as ParsedFragment;
-          } else {
-            return i;
-          }
-        });
-      }
-      return f;
-    })
-    .flat();
+  return mapFragments(fragments, f => splitAndParseRegex(f, InvoiceRegex, FragmentType.Invoice));
 }
 
 function extractHashtags(fragments: Fragment[]) {
-  return fragments
-    .map(f => {
-      if (typeof f === "string") {
-        return f.split(HashtagRegex).map(i => {
-          if (i.match(HashtagRegex)) {
-            return {
-              type: "hashtag",
-              content: i.substring(1),
-            } as ParsedFragment;
-          } else {
-            return i;
-          }
-        });
-      }
-      return f;
-    })
-    .flat();
+  return mapFragments(fragments, f =>
+    splitAndParseRegex(f, HashtagRegex, FragmentType.Hashtag, match => ({
+      content: match.substring(1), // Remove the # prefix
+    })),
+  );
 }
 
 function extractTagRefs(fragments: Fragment[], tags: Array<Array<string>>) {
-  return fragments
-    .map(f => {
-      if (typeof f === "string") {
-        return f.split(TagRefRegex).map(i => {
-          if (i.startsWith("#")) {
-            const tag = tags[Number(i.slice(2, -1))];
-            if (tag) {
-              try {
-                return {
-                  type: "mention",
-                  content: `nostr:${NostrLink.fromTag(tag).encode()}`,
-                } as ParsedFragment;
-              } catch (e) {
-                // ignore
-              }
-            }
-          }
-          return i;
-        });
+  return mapFragments(fragments, f =>
+    splitAndParseRegex(f, TagRefRegex, FragmentType.Mention, match => {
+      // Extract tag index from #[0] pattern
+      const tagIndex = Number(match.slice(2, -1));
+      const tag = tags[tagIndex];
+
+      if (tag) {
+        try {
+          return {
+            content: `nostr:${NostrLink.fromTag(tag).encode()}`,
+          };
+        } catch (e) {
+          // If NostrLink.fromTag fails, treat as text
+          return undefined;
+        }
       }
-      return f;
-    })
-    .flat();
+
+      // No tag found, treat as text
+      return undefined;
+    }),
+  );
 }
 
 function extractCustomEmoji(fragments: Fragment[], tags: Array<Array<string>>) {
-  return fragments
-    .map(f => {
-      if (typeof f === "string") {
-        return f.split(/:(\w+):/g).map(i => {
-          const t = tags.find(a => a[0] === "emoji" && a[1] === i);
-          if (t) {
-            return {
-              type: "custom_emoji",
-              content: t[2],
-            } as ParsedFragment;
-          } else {
-            return i;
-          }
-        });
+  const emojiRegex = /:(\w+):/g;
+
+  return mapFragments(fragments, f =>
+    splitAndParseRegex(f, emojiRegex, FragmentType.CustomEmoji, match => {
+      // Extract emoji name from :name: pattern
+      const emojiName = match.slice(1, -1);
+      const tag = tags.find(a => a[0] === "emoji" && a[1] === emojiName);
+
+      if (tag) {
+        return { content: tag[2] }; // URL of the emoji
       }
-      return f;
-    })
-    .flat();
+
+      // Return undefined to treat as text if emoji not found
+      return undefined;
+    }),
+  );
 }
 
 function extractMarkdownCode(fragments: Fragment[]): (string | ParsedFragment)[] {
-  return fragments
-    .map(f => {
-      if (typeof f === "string") {
-        return f
-          .split(MarkdownCodeRegex)
-          .map(i => {
-            if (i.startsWith("```") && i.endsWith("```")) {
-              const cleaned = i.slice(3, i.length - 3);
-              const isMultiLine = cleaned.includes("\n");
-              const language = isMultiLine ? cleaned.slice(0, cleaned.indexOf("\n")).trim() : undefined;
-              const content = isMultiLine ? cleaned.slice(cleaned.indexOf("\n") + 1) : cleaned;
-              return {
-                type: "code_block",
-                content: content,
-                language: language,
-              } as ParsedFragment;
-            } else {
-              return i;
-            }
-          })
-          .filter(i => typeof i !== "string" || i.length > 0);
-      }
-
-      return f;
-    })
-    .flat();
+  return mapFragments(fragments, f =>
+    splitAndParseRegex(f, MarkdownCodeRegex, FragmentType.CodeBlock, match => {
+      const cleaned = match.slice(3, match.length - 3);
+      const isMultiLine = cleaned.includes("\n");
+      const language = isMultiLine ? cleaned.slice(0, cleaned.indexOf("\n")).trim() : undefined;
+      const content = isMultiLine ? cleaned.slice(cleaned.indexOf("\n") + 1) : cleaned;
+      return {
+        content,
+        language,
+      };
+    }),
+  );
 }
 
 function extractInlineCode(fragments: Fragment[]): (string | ParsedFragment)[] {
-  return fragments
-    .map(f => {
-      if (typeof f === "string") {
-        return f
-          .split(InlineCodeRegex)
-          .map(i => {
-            if (i.startsWith("`") && i.endsWith("`")) {
-              return {
-                type: "inline_code",
-                content: i.slice(1, i.length - 1),
-              } as ParsedFragment;
-            } else {
-              return i;
-            }
-          })
-          .filter(i => typeof i !== "string" || i.length > 0);
-      }
-
-      return f;
-    })
-    .flat();
+  return mapFragments(fragments, f =>
+    splitAndParseRegex(f, InlineCodeRegex, FragmentType.InlineCode, match => ({
+      content: match.slice(1, match.length - 1), // Remove backticks
+    })),
+  );
 }
 
 export function parseIMeta(tags: Array<Array<string>>) {
@@ -295,25 +338,6 @@ export function parseIMeta(tags: Array<Array<string>>) {
     }
   }
   return ret;
-}
-
-export function parseInlineMetaHack(u: URL) {
-  if (u.hash) {
-    const params = new URLSearchParams(u.hash.substring(1));
-
-    let imeta: IMeta = {};
-    const dim = params.get("dim");
-    if (dim) {
-      const [w, h] = dim.split("x");
-      imeta.height = Number(h);
-      imeta.width = Number(w);
-    }
-    imeta.blurHash = params.get("blurhash") ?? undefined;
-    imeta.sha256 = params.get("x") ?? undefined;
-    imeta.alt = params.get("alt") ?? undefined;
-
-    return imeta;
-  }
 }
 
 export function transformText(body: string, tags: Array<Array<string>>) {
@@ -338,14 +362,14 @@ export function transformText(body: string, tags: Array<Array<string>>) {
     }),
   );
 
+  // attach imeta data
   const imeta = parseIMeta(tags);
   if (imeta) {
     for (const f of frags) {
-      if (f.type === "media") {
-        const ix = imeta[f.content];
-        if (ix) {
-          f.data = ix;
-        }
+      const ix = imeta[f.content];
+      if (ix) {
+        f.data = ix;
+        f.mimeType = ix.mimeType ?? f.mimeType;
       }
     }
   }

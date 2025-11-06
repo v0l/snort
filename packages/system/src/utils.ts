@@ -51,16 +51,41 @@ export function flatFilterEq(a: FlatReqFilter, b: FlatReqFilter): boolean {
   );
 }
 
-export function splitByUrl(str: string) {
-  const urlRegex =
-    /((?:http|ftp|https|nostr|web\+nostr|magnet|lnurl[p|w]?):\/?\/?(?:[\w+?.\w+])+(?:[\p{L}\p{N}~!@#$%^&*()_\-=+\\/?.:;',]*)?(?:[-a-z0-9+&@#/%=~()_|]))/iu;
+export const UrlRegex =
+  /((?:http|ftp|https|nostr|web\+nostr|magnet|lnurl[p|w]?|blossom):\/?\/?(?:[\w+?.\w+])+(?:[\p{L}\p{N}~!@#$%^&*()_\-=+\\/?.:;',]*)?(?:[-a-z0-9+&@#/%=~()_|]))/giu;
 
-  return str.split(urlRegex);
+export function splitByUrl(str: string) {
+  return str.split(UrlRegex);
 }
 
-export function getHex64(json: string, field: string): string {
-  let len = field.length + 3;
-  let idx = json.indexOf(`"${field}":`) + len;
-  let s = json.slice(idx).indexOf(`"`) + idx + 1;
-  return json.slice(s, s + 64);
+/**
+ * Image file extensions
+ */
+export const ImageExtensions = ["gif", "jpg", "jpeg", "jfif", "png", "bmp", "webp"];
+
+/**
+ * Audio file extensions
+ */
+export const AudioExtensions = ["wav", "mp3", "ogg", "m4a"];
+
+/**
+ * Video file extensions
+ */
+export const VideoExtensions = ["mp4", "mov", "mkv", "avi", "m4v", "webm", "m3u8"];
+
+/**
+ * Converts a file extension into mime type string
+ */
+export function extensionToMime(e: string) {
+  let ext = e.toLowerCase();
+  if (ext.startsWith(".")) {
+    ext = ext.slice(1);
+  }
+  if (ImageExtensions.includes(ext)) {
+    return `image/${ext}`;
+  } else if (AudioExtensions.includes(ext)) {
+    return `audio/${ext}`;
+  } else if (VideoExtensions.includes(ext)) {
+    return `video/${ext}`;
+  }
 }

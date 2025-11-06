@@ -40,10 +40,10 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef, tags: Array<
         throw new Error("Invalid heading");
       }
       case "codespan": {
-        return <code className="bg-neutral-600 light:bg-neutral-300 px-2 py-0.5 rounded-sm text-sm">{t.text}</code>;
+        return <code className="bg-neutral-600 light:bg-neutral-300 px-2 py-0.5 rounded-lg text-sm">{t.text}</code>;
       }
       case "code": {
-        return <pre className="bg-neutral-600 light:bg-neutral-300 px-2 py-0.5 rounded-sm text-sm">{t.text}</pre>;
+        return <pre className="bg-neutral-600 light:bg-neutral-300 px-2 py-0.5 rounded-lg text-sm">{t.text}</pre>;
       }
       case "br": {
         return <br />;

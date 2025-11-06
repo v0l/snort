@@ -48,10 +48,10 @@ export function LogoHeader({ showText = false }: { showText: boolean }) {
 
   return (
     <Link to="/" className="logo hover:no-underline" onClick={handleLogoClick}>
-      <h1 className="flex flex-row items-center md:justify-center font-bold my-0 p-0 md:mx-3 font-bold text-3xl">
+      <h1 className="flex flex-row items-center md:justify-center my-0 p-0 md:mx-3 font-bold text-3xl">
         {CONFIG.navLogo && <img src={CONFIG.navLogo} className="w-8" />}
         {!CONFIG.navLogo && (
-          <span className="p-3 md:p-5 text-xl md:text-3xl flex xl:hidden w-8 h-8 rounded-xl bg-dark flex items-center justify-center">
+          <span className="p-3 md:p-5 text-xl md:text-3xl xl:hidden w-8 h-8 rounded-lg bg-dark flex items-center justify-center">
             {CONFIG.appName[0]}
           </span>
         )}

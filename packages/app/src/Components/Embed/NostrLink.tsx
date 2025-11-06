@@ -12,7 +12,7 @@ export default function NostrLink({ link, depth, className }: { link: string; de
   if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
     return <Mention link={nav} className={className} />;
   } else if (nav?.type === NostrPrefix.Note || nav?.type === NostrPrefix.Event || nav?.type === NostrPrefix.Address) {
-    if ((depth ?? 0) > 0) {
+    if ((depth ?? 0) > 1) {
       const evLink = nav.encode();
       return (
         <Link

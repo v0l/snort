@@ -3,10 +3,13 @@ import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
+/**
+ * Find popular blossom servers based on blossom server list events
+ */
 export default function useDiscoverMediaServers() {
   const sub = useMemo(() => {
     const rb = new RequestBuilder("media-servers-all");
-    rb.withFilter().kinds([EventKind.BlossomServerList]);
+    rb.withFilter().kinds([EventKind.BlossomServerList]).limit(100);
     return rb;
   }, []);
 
