@@ -1,4 +1,4 @@
-import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrLink } from "@snort/system";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -11,15 +11,16 @@ import messages from "@/Components/messages";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import { useNoteContext } from "./NoteContext";
 
 export default function NoteHeader(props: {
-  ev: TaggedNostrEvent;
   options: NotePropsOptions;
   context?: React.ReactNode;
 }) {
-  const { ev, options } = props;
+  const { options } = props;
   const { formatMessage } = useIntl();
   const { publisher } = useEventPublisher();
+  const { ev } = useNoteContext();
   const login = useLogin();
 
   async function unpin() {

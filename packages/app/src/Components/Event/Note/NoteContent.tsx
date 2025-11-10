@@ -25,7 +25,7 @@ export function NoteContent({ props, options, goToEvent, setSeenAtRef, waitUntil
 
   return (
     <>
-      {options.showHeader && <NoteHeader ev={ev} options={options} />}
+      {options.showHeader && <NoteHeader options={options} />}
       <div onClick={e => goToEvent(e, ev)} className={classNames("min-h-0", props.inset)} ref={setSeenAtRef}>
         <NoteText {...props} translated={translated} showTranslation={showTranslation} />
         {translated && <TranslationInfo />}
