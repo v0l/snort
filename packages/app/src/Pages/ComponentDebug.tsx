@@ -383,7 +383,7 @@ export default function ComponentDebugPage() {
 
             <div className="flex flex-col gap-2">
               <span className="text-sm ">AsyncButton (Disabled)</span>
-              <AsyncButton disabled onClick={async () => { }}>
+              <AsyncButton disabled onClick={async () => {}}>
                 Disabled
               </AsyncButton>
             </div>
@@ -751,7 +751,7 @@ export default function ComponentDebugPage() {
 
           <div>
             <span className="mb-2">ZapsSummary:</span>
-            <ZapsSummary zaps={[]} onClick={() => { }} />
+            <ZapsSummary zaps={[]} onClick={() => {}} />
           </div>
         </div>
 
@@ -999,8 +999,8 @@ export default function ComponentDebugPage() {
           <div className="bg-neutral-800 p-4 rounded">
             <h3>Button States</h3>
             <div className="flex items-center gap-4 flex-wrap">
-              <AsyncButton onClick={async () => { }}>Normal</AsyncButton>
-              <AsyncButton disabled onClick={async () => { }}>
+              <AsyncButton onClick={async () => {}}>Normal</AsyncButton>
+              <AsyncButton disabled onClick={async () => {}}>
                 Disabled
               </AsyncButton>
               <AsyncButton onClick={async () => new Promise(resolve => setTimeout(resolve, 50000))}>

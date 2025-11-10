@@ -13,10 +13,7 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { useNoteContext } from "./NoteContext";
 
-export default function NoteHeader(props: {
-  options: NotePropsOptions;
-  context?: React.ReactNode;
-}) {
+export default function NoteHeader(props: { options: NotePropsOptions; context?: React.ReactNode }) {
   const { options } = props;
   const { formatMessage } = useIntl();
   const { publisher } = useEventPublisher();

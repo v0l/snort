@@ -19,7 +19,6 @@ export function useArticles(limit = 10) {
   return useRequestBuilder(sub);
 }
 
-
 export function useCachedArticles(limit = 10) {
   const { followList } = useFollowsControls();
   const system = useContext(SnortContext);
