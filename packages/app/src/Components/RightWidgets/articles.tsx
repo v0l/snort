@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import { useArticles } from "@/Feed/ArticlesFeed";
+import { useCachedArticles } from "@/Feed/ArticlesFeed";
 import { findTag } from "@/Utils";
 
 import IconButton from "../Button/IconButton";
@@ -13,7 +13,7 @@ import { BaseWidget } from "./base";
 
 export default function LatestArticlesWidget() {
   const [idx, setIdx] = useState(0);
-  const articles = useArticles();
+  const articles = useCachedArticles();
   const selected = articles.at(idx);
 
   function next(i: number) {

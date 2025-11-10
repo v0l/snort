@@ -20,12 +20,14 @@ export default function useFollowsControls() {
           state.follow(NostrLink.publicKey(p));
         }
         await state.saveContacts();
+        // TODO: update WOT
       },
       removeFollow: async (pk: Array<string>) => {
         for (const p of pk) {
           state.unfollow(NostrLink.publicKey(p));
         }
         await state.saveContacts();
+        // TODO: update WOT
       },
       setFollows: async (pk: Array<string>) => {
         state.replaceFollows(pk.map(a => NostrLink.publicKey(a)));
