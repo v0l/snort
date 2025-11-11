@@ -135,7 +135,7 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
     req.withOptions({ leaveOpen: false, skipCache: true, useSyncModule: true });
 
     const fres = await this.#system.Fetch(req, async x => {
-      const results = removeUndefined(x.map(this.onEvent));
+      const results = removeUndefined(x.map(e => this.onEvent(e)));
       ret.push(...results);
       await Promise.all(results.map(a => this.cache.update(a)));
     });
