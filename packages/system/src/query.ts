@@ -173,11 +173,6 @@ export class Query extends EventEmitter<QueryEvents> {
   #cancelAt?: number;
 
   /**
-   * Timer used to track tracing status
-   */
-  #checkTrace?: ReturnType<typeof setInterval>;
-
-  /**
    * Feed object which collects events
    */
   #feed: NoteCollection;
@@ -242,7 +237,6 @@ export class Query extends EventEmitter<QueryEvents> {
     if (req.numFilters > 0) {
       this.#log("Add query %O to %s", req, this.id);
       this.requests.push(...req.buildRaw());
-      this.start();
       this.#builderInstances.add(req.instance);
       return true;
     }
@@ -278,6 +272,14 @@ export class Query extends EventEmitter<QueryEvents> {
 
   get leaveOpen() {
     return this.#leaveOpen;
+  }
+
+  /**
+   * Flush any buffered data
+   */
+  flush() {
+    this.feed.flushEmit();
+    this.#emitFilters();
   }
 
   /**
@@ -390,6 +392,7 @@ export class Query extends EventEmitter<QueryEvents> {
   }
 
   async #emitFilters() {
+    if (this.requests.length === 0) return;
     this.#log("Starting emit of %s", this.id);
     let rawFilters = [...this.requests];
     this.requests = [];

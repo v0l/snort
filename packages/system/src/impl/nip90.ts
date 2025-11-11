@@ -394,6 +394,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
     const q = system.Query(rbReply);
     q.uncancel(); // might already exist so uncancel
     q.on("event", evs => this.#handleReplyEvents(evs));
+    q.start();
 
     // send request
     if (relays) {

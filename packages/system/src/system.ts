@@ -20,8 +20,22 @@ export type QueryLike = {
     add: (evs: Array<TaggedNostrEvent>) => void;
     clear: () => void;
   };
+  /**
+   * Mark query for cancellation
+   */
   cancel: () => void;
+  /**
+   * Un-mark query for cancellation
+   */
   uncancel: () => void;
+  /**
+   * Start query request flow
+   */
+  start: () => void;
+  /**
+   * Flush any buffered data
+   */
+  flush: () => void;
   get snapshot(): Array<TaggedNostrEvent>;
 } & EventEmitter<QueryEvents>;
 

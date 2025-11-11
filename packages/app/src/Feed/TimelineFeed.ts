@@ -92,9 +92,13 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
   const mainQuery = useRequestBuilderAdvanced(sub);
   const main = useSyncExternalStore(
     h => {
-      mainQuery?.on("event", h);
+      mainQuery.uncancel();
+      mainQuery.on("event", h);
+      mainQuery.start();
       return () => {
-        mainQuery?.off("event", h);
+        mainQuery.flush();
+        mainQuery.cancel();
+        mainQuery.off("event", h);
       };
     },
     () => mainQuery?.snapshot,
@@ -115,9 +119,13 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
   const latestQuery = useRequestBuilderAdvanced(subRealtime);
   const latest = useSyncExternalStore(
     h => {
-      latestQuery?.on("event", h);
+      latestQuery.uncancel();
+      latestQuery.on("event", h);
+      latestQuery.start();
       return () => {
-        latestQuery?.off("event", h);
+        latestQuery.flush();
+        latestQuery.cancel();
+        latestQuery.off("event", h);
       };
     },
     () => latestQuery?.snapshot,

@@ -49,11 +49,17 @@ export abstract class HookedNoteStore extends NoteStore {
     this.#bufEmit.push(...changes);
     if (!this.#nextEmit) {
       this.#nextEmit = setTimeout(() => {
-        const cloned = [...this.#bufEmit];
-        this.#bufEmit = [];
-        this.#nextEmit = undefined;
-        this.emit("event", cloned);
+        this.flushEmit();
       }, this.emitInterval);
+    }
+  }
+
+  flushEmit() {
+    if (this.#bufEmit.length > 0) {
+      const cloned = [...this.#bufEmit];
+      this.#bufEmit = [];
+      this.#nextEmit = undefined;
+      this.emit("event", cloned);
     }
   }
 }

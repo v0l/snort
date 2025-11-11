@@ -11,7 +11,9 @@ export function useRequestBuilder(rb: RequestBuilder) {
       };
       q.uncancel();
       q.on("event", handle);
+      q.start();
       return () => {
+        q.flush();
         q.off("event", handle);
         q.cancel();
       };

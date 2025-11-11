@@ -132,6 +132,7 @@ export class SnortBot extends EventEmitter<BotEvents> {
         this.#handleEvent(e);
       }
     });
+    q.start();
 
     // setup chat query, its empty for now
     const rbChat = new RequestBuilder("stream-chat");
@@ -142,6 +143,7 @@ export class SnortBot extends EventEmitter<BotEvents> {
         this.#handleEvent(e);
       }
     });
+    qChat.start();
 
     return this;
   }
@@ -198,7 +200,8 @@ export class SnortBot extends EventEmitter<BotEvents> {
       .kinds([1311 as EventKind])
       .replyToLink(links)
       .since(Math.floor(new Date().getTime() / 1000));
-    this.system.Query(rb);
+    const q = this.system.Query(rb);
+    q.start();
 
     console.log("Looking for chat messages from: ", linkStr);
     this.#activeStreamSub = new Set(linkStr);

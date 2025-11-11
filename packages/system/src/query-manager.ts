@@ -105,6 +105,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     const existing = this.#queries.get(req.id);
     if (existing) {
       if (existing.addRequest(req)) {
+        existing.start(); // start emit again
         this.emit("change");
       }
       return existing;
@@ -125,7 +126,6 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       if (req.numFilters > 0) {
         this.emit("change");
       }
-      q.start();
       return q;
     }
   }
@@ -141,16 +141,20 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    * Async fetch results
    */
   async fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
+    req.withOptions({ groupingDelay: 0 }); //disable grouping timer
     const filters = req.buildRaw();
     const q = this.query(req);
     if (cb) {
       q.on("event", cb);
     }
-    await new Promise<void>(resolve => {
+    const pDone = new Promise<void>(resolve => {
       q.once("done", resolve);
     });
+    q.start();
+    await pDone;
     const results = q.feed.takeSnapshot();
     if (cb) {
+      q.flush();
       q.off("event", cb);
     }
     return results.filter(a => filters.some(b => eventMatchesFilter(a, b)));

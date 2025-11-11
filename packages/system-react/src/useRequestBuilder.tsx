@@ -13,7 +13,9 @@ export function useRequestBuilder(rb: RequestBuilder): Array<TaggedNostrEvent> {
       // race condition here
       q.on("event", v);
       q.uncancel();
+      q.start();
       return () => {
+        q.flush();
         q.off("event", v);
         q.cancel();
       };
@@ -38,12 +40,6 @@ export function useRequestBuilderAdvanced(rb: RequestBuilder) {
     const q = system.Query(rb);
     return q;
   }, [rb]);
-  useEffect(() => {
-    q.uncancel();
-    return () => {
-      q?.cancel();
-    };
-  }, [q]);
 
   return q;
 }
