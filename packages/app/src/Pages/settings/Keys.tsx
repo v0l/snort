@@ -7,6 +7,7 @@ import Copy from "@/Components/Copy/Copy";
 import useLogin from "@/Hooks/useLogin";
 import { seedToMnemonic } from "@/Utils/nip6";
 import { encodeTLV, hexToBech32, NostrPrefix } from "@snort/shared";
+import { hexToBytes } from "@noble/hashes/utils.js";
 
 export default function ExportKeys() {
   const { publicKey, privateKeyData, generatedEntropy } = useLogin();
@@ -23,7 +24,7 @@ export default function ExportKeys() {
         />
       </small>
       <Copy text={hexToBech32("npub", publicKey ?? "")} className={copyClass} />
-      <Copy text={encodeTLV(NostrPrefix.Profile, publicKey ?? "")} className={copyClass} />
+      <Copy text={encodeTLV(NostrPrefix.Profile, hexToBytes(publicKey ?? ""))} className={copyClass} />
       {privateKeyData instanceof KeyStorage && (
         <>
           <div className="text-xl">

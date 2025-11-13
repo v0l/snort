@@ -24,3 +24,10 @@ export enum NostrPrefix {
   Relay = "nrelay",
   Address = "naddr",
 }
+
+/**
+ * Is the TLV encoded type 0 (special) a decoded hex string
+ */
+export function isPrefixTlvIdHex(prefix: NostrPrefix) {
+  return [NostrPrefix.Event, NostrPrefix.Profile].includes(prefix);
+}

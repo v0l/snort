@@ -1,5 +1,4 @@
-import { bytesToHex, concatBytes } from "@noble/hashes/utils.js";
-import { hmac } from "@noble/hashes/hmac.js";
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { base32hex } from "@scure/base";
 import { bech32ToHex, encodeTLV, hexToBech32, isOffline, NostrPrefix } from "@snort/shared";
 import { CachedMetadata, EventKind, NostrEvent, NostrLink, TaggedNostrEvent, UserMetadata } from "@snort/system";
@@ -10,7 +9,6 @@ import { Birthday, Day } from "@/Utils/Const";
 
 import TZ from "../tz.json";
 import { LoginStore } from "./Login";
-import { sha256 } from "@noble/hashes/sha2.js";
 
 export async function openFile(): Promise<File | undefined> {
   return new Promise(resolve => {
@@ -67,7 +65,7 @@ export function parseId(id: string) {
  */
 export function eventLink(hex: string, relays?: Array<string> | string) {
   const encoded = relays
-    ? encodeTLV(NostrPrefix.Event, hex, Array.isArray(relays) ? relays : [relays])
+    ? encodeTLV(NostrPrefix.Event, hexToBytes(hex), Array.isArray(relays) ? relays : [relays])
     : hexToBech32(NostrPrefix.Note, hex);
   return `/${encoded}`;
 }

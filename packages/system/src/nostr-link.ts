@@ -11,9 +11,12 @@ import {
   encodeTLV,
   decodeTLV,
   TLVEntryType,
+  isPrefixTlvIdHex,
 } from "@snort/shared";
 import { EventExt, EventKind, Nip10, NostrEvent, TaggedNostrEvent } from ".";
 import { findTag } from "./utils";
+import { hexToBytes } from "@noble/hashes/utils.js";
+import { utf8ToBytes } from "@noble/ciphers/utils.js";
 
 /**
  * An object which can be stored in a nostr event as a tag
@@ -98,7 +101,7 @@ export class NostrLink implements ToNostrEventTag {
     readonly relays?: Array<string>,
     scope?: LinkScope | string,
   ) {
-    if (type !== NostrPrefix.Address && !isHex(id)) {
+    if (isPrefixTlvIdHex(type) && !isHex(id)) {
       throw new Error(`ID must be hex: ${JSON.stringify(id)}`);
     }
     if (author && !isHex(author)) {
@@ -141,8 +144,10 @@ export class NostrLink implements ToNostrEventTag {
       let newType = this.type === NostrPrefix.Address ? this.type : (type ?? this.type);
       if (newType === NostrPrefix.Note || newType === NostrPrefix.PrivateKey || newType === NostrPrefix.PublicKey) {
         return hexToBech32(newType, this.id);
+      } else if (!isPrefixTlvIdHex(newType)) {
+        return encodeTLV(newType, utf8ToBytes(this.id), this.relays, this.kind, this.author);
       } else {
-        return encodeTLV(newType, this.id, this.relays, this.kind, this.author);
+        return encodeTLV(newType, hexToBytes(this.id), this.relays, this.kind, this.author);
       }
     } catch (e) {
       console.error("Invalid data", this, e);

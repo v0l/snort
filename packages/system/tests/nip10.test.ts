@@ -150,7 +150,7 @@ describe("Nip10", () => {
     test("should return undefined for event with no thread tags", () => {
       const event = {
         content: "Just a regular note",
-        id: "6834ffc491000000000000000000000000000000000000000000000000000005",
+        id: "6834ffc492000000000000000000000000000000000000000000000000000006",
         kind: 1,
         created_at: 1,
         pubkey: "0000000000000000000000000000000000000000000000000000000000000001",
@@ -164,7 +164,7 @@ describe("Nip10", () => {
     test("should extract pubKeys from thread", () => {
       const event = {
         content: "Reply with mentions",
-        id: "6834ffc491000000000000000000000000000000000000000000000000000005",
+        id: "6834ffc493000000000000000000000000000000000000000000000000000007",
         kind: 1,
         created_at: 1,
         pubkey: "0000000000000000000000000000000000000000000000000000000000000001",
@@ -225,7 +225,7 @@ describe("Nip10", () => {
       // Create a root note
       const samePubkey = "bbbb000000000000000000000000000000000000000000000000000000000002";
       const rootNote: TaggedNostrEvent = {
-        id: "aaaa000000000000000000000000000000000000000000000000000000000001",
+        id: "aaaa000000000000000000000000000000000000000000000000000000000002",
         kind: 1,
         pubkey: samePubkey,
         created_at: 1234567890,
@@ -308,7 +308,7 @@ describe("Nip10", () => {
     test("should add replyTo pubkey for note author when replying to threaded note with p-tags", () => {
       // Create a threaded note WITH p-tags (including the author)
       const threadedNote: TaggedNostrEvent = {
-        id: "dddd000000000000000000000000000000000000000000000000000000000004",
+        id: "dddd000000000000000000000000000000000000000000000000000000000005",
         kind: 1,
         pubkey: "eeee000000000000000000000000000000000000000000000000000000000005",
         created_at: 1234567890,
@@ -412,7 +412,7 @@ describe("Nip10", () => {
     test("should not add duplicate p-tag when author is already in thread p-tags", () => {
       // Event where the author's pubkey is already in the p-tags
       const event: TaggedNostrEvent = {
-        id: "aaaa000000000000000000000000000000000000000000000000000000000001",
+        id: "aaaa000000000000000000000000000000000000000000000000000000000003",
         kind: 1,
         pubkey: "bbbb000000000000000000000000000000000000000000000000000000000002",
         created_at: 1234567890,
@@ -464,7 +464,7 @@ describe("Nip10", () => {
       // NIP-25: Reactions MUST have an e tag to the event being reacted to
       // and SHOULD have a p tag to the author
       const reaction: TaggedNostrEvent = {
-        id: "92723125c4a564f90a073ac4a0073f440d8b472453a42d7a32bbf710f1503d11",
+        id: "92723125c4a564f90a073ac4a0073f440d8b472453a42d7a32bbf710f1503d12",
         kind: 7,
         pubkey: "20d29810d6a5f92b045ade02ebbadc9036d741cc686b00415c42b4236fe4ad2f",
         created_at: 1674164545,

@@ -2,7 +2,6 @@ import { hexToBytes, bytesToHex, concatBytes } from "@noble/hashes/utils.js";
 import * as secp from "@noble/curves/secp256k1.js";
 import { sha256 as sha2 } from "@noble/hashes/sha2.js";
 import { bech32 } from "@scure/base";
-import { encodeTLV } from "./tlv";
 import { hmac } from "@noble/hashes/hmac.js";
 
 export function unwrap<T>(v: T | undefined | null): T {
@@ -139,11 +138,9 @@ export const sha256 = (str: string | Uint8Array): string => {
   return bytesToHex(sha2(buf));
 };
 
-
 export function hmacSha256(key: Uint8Array, ...messages: Uint8Array[]) {
   return hmac(sha2, key, concatBytes(...messages));
 }
-
 
 export function getPublicKey(privKey: string | Uint8Array) {
   const buf = typeof privKey === "string" ? hexToBytes(privKey) : privKey;
@@ -159,20 +156,16 @@ export function bech32ToHex(str: string) {
 /**
  * Convert hex to bech32
  */
-export function hexToBech32(hrp: string, hex?: string) {
-  if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0 || !isHex(hex)) {
+export function hexToBech32(hrp: string, id?: string) {
+  if (typeof id !== "string" || id.length === 0 || id.length % 2 !== 0 || !isHex(id)) {
     return "";
   }
 
   try {
-    if (hrp === "note" || hrp === "nsec" || hrp === "npub") {
-      const buf = hexToBytes(hex);
-      return bech32.encode(hrp, bech32.toWords(buf));
-    } else {
-      return encodeTLV(hrp, hex);
-    }
+    const buf = hexToBytes(id);
+    return bech32.encode(hrp, bech32.toWords(buf));
   } catch (e) {
-    console.warn("Invalid hex", hex, e);
+    console.warn("Invalid hex", id, e);
     return "";
   }
 }
@@ -273,7 +266,7 @@ export function normalizeReaction(content: string) {
   }
 }
 
-export class OfflineError extends Error {}
+export class OfflineError extends Error { }
 
 export function throwIfOffline() {
   if (isOffline()) {

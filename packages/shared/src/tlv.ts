@@ -1,5 +1,4 @@
-import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
-import { isHex } from "./utils";
+import { bytesToHex, hexToBytes, utf8ToBytes } from "@noble/hashes/utils.js";
 import { bech32 } from "@scure/base";
 import { NostrPrefix } from ".";
 
@@ -19,15 +18,12 @@ export interface TLVEntry {
 // Max length of any nostr link in chars
 const MaxLength = 10_000;
 
-export function encodeTLV(prefix: string, id: string | Uint8Array, relays?: string[], kind?: number, author?: string) {
-  const enc = new TextEncoder();
-  const buf = typeof id === "string" ? (isHex(id) ? hexToBytes(id) : enc.encode(id)) : id;
-
-  const tl0 = [0, buf.length, ...buf];
+export function encodeTLV(prefix: string, id: Uint8Array, relays?: string[], kind?: number, author?: string) {
+  const tl0 = [0, id.length, ...id];
   const tl1 =
     relays
       ?.map(a => {
-        const data = enc.encode(a);
+        const data = utf8ToBytes(a);
         return [1, data.length, ...data];
       })
       .flat() ?? [];
