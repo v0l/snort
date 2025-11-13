@@ -1,5 +1,14 @@
 import { FileExtensionRegex } from "../const";
 
+/**
+ * https://github.com/nostr-protocol/nips/blob/master/94.md impl
+ */
+export class Nip94 {
+  static parse(tags: Array<Array<string>>) {
+    return readNip94Tags(tags);
+  }
+}
+
 export interface Nip94Tags {
   url?: string;
   mimeType?: string;
@@ -24,10 +33,17 @@ export interface Nip94Tags {
 export function readNip94Tags(tags: Array<Array<string>>) {
   const res: Nip94Tags = {};
   for (const tx of tags) {
-    const [k, v] = tx;
+    const [k, v] = tx as [string, string | undefined];
+    if (v === undefined) continue;
     switch (k) {
       case "url": {
-        res.url = v;
+        // if URL already set, treat next url as fallback
+        if (res.url) {
+          res.fallback ??= [];
+          res.fallback.push(v);
+        } else {
+          res.url = v;
+        }
         break;
       }
       case "m": {

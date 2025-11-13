@@ -1,9 +1,32 @@
 import { Nip94Tags, readNip94Tags } from "./nip94";
 
 /**
+ * https://github.com/nostr-protocol/nips/blob/master/92.md impl
+ */
+export class Nip92 {
+  /**
+   * Read NIP-94 tags from `imeta` tag
+   */
+  static parse(tag: Array<string>) {
+    return readNip94TagsFromIMeta(tag);
+  }
+
+  /**
+  * Read NIP-94 tags from all `imeta` tags
+  */
+  static parseAll(tags: Array<Array<string>>) {
+    const iMetaTags = tags.filter(a => a[0] === "imeta");
+    return iMetaTags.map(a => Nip92.parse(a));
+  }
+}
+
+/**
  * Read NIP-94 tags from `imeta` tag
  */
 export function readNip94TagsFromIMeta(tag: Array<string>) {
+  if (tag.length < 2) {
+    throw new Error("Invalid tag, must have more than 1 string");
+  }
   const asTags = tag.slice(1).map(a => a.split(" ", 2));
   return readNip94Tags(asTags);
 }
