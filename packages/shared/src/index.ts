@@ -8,6 +8,7 @@ export * from "./cache-store";
 export * from "./SortedMap/SortedMap";
 export * from "./const";
 export * from "./tlv";
+export * from "./imgproxy";
 
 /**
  * Well-known nostr entity HRP's

@@ -379,10 +379,6 @@ export function findTag(e: NostrEvent, tag: string) {
   return maybeTag && maybeTag[1];
 }
 
-export function hmacSha256(key: Uint8Array, ...messages: Uint8Array[]) {
-  return hmac(sha256, key, concatBytes(...messages));
-}
-
 export function getRelayName(url: string) {
   try {
     const parsedUrl = new URL(url);

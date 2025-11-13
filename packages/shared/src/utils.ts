@@ -1,8 +1,9 @@
-import { hexToBytes, bytesToHex } from "@noble/hashes/utils.js";
+import { hexToBytes, bytesToHex, concatBytes } from "@noble/hashes/utils.js";
 import * as secp from "@noble/curves/secp256k1.js";
 import { sha256 as sha2 } from "@noble/hashes/sha2.js";
 import { bech32 } from "@scure/base";
 import { encodeTLV } from "./tlv";
+import { hmac } from "@noble/hashes/hmac.js";
 
 export function unwrap<T>(v: T | undefined | null): T {
   if (v === undefined || v === null) {
@@ -137,6 +138,12 @@ export const sha256 = (str: string | Uint8Array): string => {
   const buf = typeof str === "string" ? new TextEncoder().encode(str) : str;
   return bytesToHex(sha2(buf));
 };
+
+
+export function hmacSha256(key: Uint8Array, ...messages: Uint8Array[]) {
+  return hmac(sha2, key, concatBytes(...messages));
+}
+
 
 export function getPublicKey(privKey: string | Uint8Array) {
   const buf = typeof privKey === "string" ? hexToBytes(privKey) : privKey;
