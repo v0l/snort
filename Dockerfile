@@ -2,7 +2,7 @@ FROM oven/bun:latest AS build
 WORKDIR /src
 RUN apt update \
     && apt install -y --no-install-recommends git ca-certificates \
-    && git clone --single-branch -b bun-migrate https://github.com/v0l/snort \
+    && git clone --single-branch -b main https://github.com/v0l/snort \
     && cd snort \
     && bun install \
     && bun run build
