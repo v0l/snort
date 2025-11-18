@@ -14,6 +14,21 @@ export default defineConfig({
         configFile: true,
       },
     }),
+    {
+      name: "html-transform",
+      transformIndexHtml(html: string) {
+        const hostname = appConfig.get("hostname") as string;
+        const appTitle = appConfig.get("appTitle") as string;
+        const appName = appConfig.get("appName") as string;
+        const icon = appConfig.get("icon") as string;
+
+        return html
+          .replace(/{{HOSTNAME}}/g, `https://${hostname}/`)
+          .replace(/{{APP_TITLE}}/g, appTitle)
+          .replace(/{{APP_NAME}}/g, appName)
+          .replace(/{{OG_IMAGE}}/g, `https://${hostname}${icon}`);
+      },
+    },
     VitePWA({
       strategies: "injectManifest",
       injectRegister: "script",

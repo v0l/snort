@@ -1,23 +1,50 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Feature packed nostr client" />
-    <meta
-      name="keywords"
-      content="nostr snort phoenix fast decentralized social media censorship resistant open source software" />
-    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" href="/favicon.png" />
-    <title></title>
-  </head>
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/index.tsx"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+
+  <!-- Primary Meta Tags -->
+  <title>{{APP_TITLE}}</title>
+  <meta name="title" content="{{APP_TITLE}}" />
+  <meta name="description"
+    content="{{APP_NAME}} is a feature-packed, decentralized social media client built on Nostr protocol. Fast, censorship-resistant, and open source. Connect with the decentralized web." />
+  <meta name="keywords"
+    content="nostr, {{APP_NAME}}, fast, decentralized, social media, censorship resistant, open source, web3, decentralized social network, nostr client" />
+  <meta name="author" content="{{APP_NAME}}" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{HOSTNAME}}" />
+  <meta property="og:title" content="{{APP_TITLE}}" />
+  <meta property="og:description"
+    content="{{APP_NAME}} is a feature-packed, decentralized social media client built on Nostr protocol. Fast, censorship-resistant, and open source." />
+  <meta property="og:image" content="{{OG_IMAGE}}" />
+  <meta property="og:site_name" content="{{APP_NAME}}" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="{{HOSTNAME}}" />
+  <meta name="twitter:title" content="{{APP_TITLE}}" />
+  <meta name="twitter:description"
+    content="{{APP_NAME}} is a feature-packed, decentralized social media client built on Nostr protocol. Fast, censorship-resistant, and open source." />
+  <meta name="twitter:image" content="{{OG_IMAGE}}" />
+
+  <!-- Canonical URL -->
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="{{HOSTNAME}}" />
+
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/favicon.png" />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/index.tsx"></script>
+</body>
+
 </html>
