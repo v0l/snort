@@ -11,11 +11,8 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: "npm"
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install Dependencies
         run: bun install
@@ -27,4 +24,4 @@ jobs:
         run: cp packages/app/build/index.html packages/app/build/404.html
 
       - name: Deploy nsite
-        run: npx -y nsite-cli upload packages/app/build --verbose --purge --privatekey ${{ secrets.NSITE_KEY }} --servers 'https://nostr.download,https://blossom.band'
+        run: bunx nsite-cli upload packages/app/build --verbose --purge --privatekey ${{ secrets.NSITE_KEY }} --servers 'https://nostr.download,https://blossom.band'
