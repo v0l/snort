@@ -1,0 +1,30 @@
+name: Deploy nsite
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "bun"
+
+      - name: Install Dependencies
+        run: bun install
+
+      - name: Build
+        run: bun run build
+
+      - name: Redirect 404 to Index for SPA
+        run: cp packages/app/build/index.html packages/app/build/404.html
+
+      - name: Deploy nsite
+        run: npx -y nsite-cli upload packages/app/build --verbose --purge --privatekey ${{ secrets.NSITE_KEY }} --servers 'https://nostr.download,https://blossom.band'
