@@ -24,10 +24,10 @@ export const TabSelector = ({ t, tab, setTab }: TabElementProps) => {
   return (
     <div
       className={classNames(
-        "flex gap-2 items-center px-4 py-2 my-1 layer-1-hover rounded-full cursor-pointer font-semibold",
+        "flex gap-2 items-center px-4 py-2 my-1 layer-1-hover rounded-full cursor-pointer font-semibold whitespace-pre",
         "hover:drop-shadow-sm",
         {
-          "": tab.value === t.value,
+          "bg-layer-3": tab.value === t.value,
           disabled: t.disabled,
         },
       )}
@@ -40,7 +40,7 @@ export const TabSelector = ({ t, tab, setTab }: TabElementProps) => {
 const TabSelectors = ({ tabs, tab, className, setTab }: TabsProps) => {
   const horizontalScroll = useHorizontalScroll();
   return (
-    <div className={classNames(className, "flex gap-2 overflow-y-auto hide-scrollbar")} ref={horizontalScroll}>
+    <div className={classNames(className, "flex gap-2 overflow-hidden hide-scrollbar w-full")} ref={horizontalScroll}>
       {tabs.map((t, index) => (
         <TabSelector key={index} tab={tab} setTab={setTab} t={t} />
       ))}

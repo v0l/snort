@@ -195,6 +195,9 @@
   "2ukA4d": {
     "defaultMessage": "{n} hours"
   },
+  "2xzTkL": {
+    "defaultMessage": "Curated lists of people to follow."
+  },
   "2z7Kky": {
     "defaultMessage": "Latest Articles"
   },
@@ -562,6 +565,9 @@
   "BWpuKl": {
     "defaultMessage": "Update"
   },
+  "Bb19fh": {
+    "defaultMessage": "Posts by users that you are not following directly, but your follows are following them."
+  },
   "BfuAQ5": {
     "defaultMessage": "Marketplace UI/UX"
   },
@@ -586,6 +592,9 @@
   },
   "C8FsOr": {
     "defaultMessage": "Popular Servers"
+  },
+  "C8HhVE": {
+    "defaultMessage": "Suggested Follows"
   },
   "CA1efg": {
     "defaultMessage": "Video sets"
@@ -849,6 +858,9 @@
   },
   "HAlOn1": {
     "defaultMessage": "Name"
+  },
+  "HCUGGO": {
+    "defaultMessage": "DVM suggested users to follow."
   },
   "HFls6j": {
     "defaultMessage": "name will be available later"
@@ -1365,6 +1377,9 @@
   "TwyMau": {
     "defaultMessage": "Account"
   },
+  "TzA+w1": {
+    "defaultMessage": "Followed By Friends"
+  },
   "U/fbvs": {
     "defaultMessage": "Git Replies (deprecated)"
   },
@@ -1653,6 +1668,9 @@
   "c6BMLV": {
     "defaultMessage": "Starter Pack"
   },
+  "cE4Hfw": {
+    "defaultMessage": "Discover"
+  },
   "cF3ruj": {
     "defaultMessage": "Follow All"
   },
@@ -1842,6 +1860,9 @@
   },
   "gSqFQf": {
     "defaultMessage": "Double newlines before quoted notes"
+  },
+  "gWDnbF": {
+    "defaultMessage": "Recent content that people you follow have reacted to."
   },
   "gXgY3+": {
     "defaultMessage": "Not all clients support this yet"
@@ -2190,6 +2211,9 @@
   },
   "puLNUJ": {
     "defaultMessage": "Pin"
+  },
+  "pxF+t0": {
+    "defaultMessage": "Popular"
   },
   "pyjJ5f": {
     "defaultMessage": "Nostr Marketplace (for resilient marketplaces)"

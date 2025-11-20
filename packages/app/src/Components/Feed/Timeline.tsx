@@ -1,6 +1,6 @@
 import { unixNow } from "@snort/shared";
 import { TaggedNostrEvent } from "@snort/system";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";

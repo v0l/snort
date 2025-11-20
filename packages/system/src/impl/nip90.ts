@@ -383,7 +383,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
 
     // sub to replies first
     const rbReply = new RequestBuilder(`dvm-replies:${this.#jobEvent.id}`);
-    rbReply.withOptions({ leaveOpen: true });
+    rbReply.withOptions({ leaveOpen: true, skipCache: true, groupingDelay: 0 });
     const f = rbReply.withFilter().kinds([this.responseKind, 7000]).tag("e", [this.#jobEvent.id]);
 
     // list for replies on the reply relays if specified
@@ -394,17 +394,20 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
     const q = system.Query(rbReply);
     q.uncancel(); // might already exist so uncancel
     q.on("event", evs => this.#handleReplyEvents(evs));
-    q.start();
 
-    // send request
-    if (relays) {
-      for (const r of relays) {
-        await system.WriteOnceToRelay(r, this.#jobEvent);
+    // wait for the request to be EOSE from the reply query before sending the request
+    const jobToSend = this.#jobEvent;
+    q.once("eose", async () => {
+      // send request
+      if (relays) {
+        for (const r of relays) {
+          await system.WriteOnceToRelay(r, jobToSend);
+        }
+      } else {
+        await system.BroadcastEvent(jobToSend);
       }
-    } else {
-      await system.BroadcastEvent(this.#jobEvent);
-    }
-
+    });
+    q.start();
     // abort self when resut
     this.on("result", () => {
       q.cancel();

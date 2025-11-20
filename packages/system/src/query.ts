@@ -116,8 +116,6 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
    * If tracing is finished
    */
   get finished() {
-    if (this.leaveOpen) return false;
-
     return [
       QueryTraceState.EOSE,
       QueryTraceState.TIMEOUT,
@@ -132,8 +130,14 @@ export interface QueryEvents {
   trace: (event: QueryTraceEvent) => void;
   request: (subId: string, req: Array<ReqFilter>) => void;
   event: (evs: Array<TaggedNostrEvent>) => void;
+  /**
+   * Emitted when the query will be removed
+   */
   end: () => void;
-  done: () => void;
+  /**
+   * Emitted when the query has either been EOSE / CLOSED / TIMEOUT
+   */
+  eose: () => void;
 }
 
 /**
@@ -300,8 +304,9 @@ export class Query extends EventEmitter<QueryEvents> {
           QueryTraceState.LOCAL_CLOSE,
         ].includes(event.state)
       ) {
+        this.#log("Trace state changed to %s, progress=%d", event.state, this.progress);
         if (this.progress === 1) {
-          this.emit("done");
+          this.emit("eose");
         }
       }
     });

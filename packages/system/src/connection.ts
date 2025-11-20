@@ -27,7 +27,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   #ephemeral: boolean;
   #closing = false;
   #downCount = 0;
-  #activeRequests = new Set<string>();
+  #activeRequests = new Map<string, ReqCommand>();
   #connectStarted = false;
   #wasUp = false;
 
@@ -80,7 +80,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   }
 
   get ActiveRequests() {
-    return [...this.#activeRequests];
+    return [...this.#activeRequests.keys()];
   }
 
   async connect(awaitOpen = false) {
@@ -146,12 +146,20 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   }
 
   #onClose(e: WebSocket.CloseEvent) {
+    // Log close event details to console for debugging
+    const closeMsg = `[${this.address}] WebSocket closed - Code: ${e.code}${e.reason ? `, Reason: ${e.reason}` : ""} (wasUp=${this.#wasUp}, connecting=${this.#connectStarted}, closing=${this.#closing})`;
+    if (e.code !== 1000 && e.code !== 1001) {
+      // Abnormal closure codes
+      console.warn(closeMsg);
+    } else {
+      this.#log(closeMsg);
+    }
+
     // if not explicity closed or closed after, start re-connect timer
     if (this.#wasUp && !this.#closing) {
       this.#downCount++;
       this.#reconnectTimer(e);
     } else {
-      this.#log(`Closed: connecting=${this.#connectStarted}, closing=${this.#closing}`);
       this.#downCount = 0;
       if (this.ReconnectTimer) {
         clearTimeout(this.ReconnectTimer);
@@ -243,8 +251,18 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     }
   }
 
-  #onError(e: WebSocket.Event) {
-    this.#log("Error: %O", e);
+  #onError(e: WebSocket.ErrorEvent) {
+    // WebSocket errors in browsers typically don't contain useful information
+    // The close event will have more details (code and reason)
+    if (e.error instanceof Error) {
+      console.error(`[${this.address}] WebSocket error:`, e.error.message);
+      this.#log("Error with details: %O", e.error);
+    } else {
+      console.warn(
+        `[${this.address}] WebSocket error occurred (close event will contain more details). ReadyState: ${this.Socket?.readyState}`,
+      );
+      this.#log("Error event: %O", e);
+    }
     this.emit("change");
     this.emit("error");
   }
@@ -325,7 +343,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   request(cmd: ReqCommand, cbSent?: () => void): void {
     const filters = cmd.slice(2) as Array<ReqFilter>;
     const requestKinds = new Set(filters.flatMap(a => a.kinds ?? []));
-    const ExpectAuth = [EventKind.DirectMessage, EventKind.GiftWrap];
+    const ExpectAuth = [EventKind.DirectMessage, EventKind.GiftWrap, 7000 as EventKind];
     if (ExpectAuth.some(a => requestKinds.has(a)) && !this.#expectAuth) {
       this.#expectAuth = true;
       this.#log("Setting expectAuth flag %o", requestKinds);
@@ -337,7 +355,8 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   }
 
   closeRequest(id: string) {
-    if (this.#activeRequests.delete(id)) {
+    if (this.#activeRequests.has(id)) {
+      this.#activeRequests.delete(id);
       this.#send(["CLOSE", id]);
       this.emit("eose", id);
       this.emit("change");
@@ -354,7 +373,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
 
   #sendRequestCommand(cmd: ReqCommand) {
     try {
-      this.#activeRequests.add(cmd[1]);
+      this.#activeRequests.set(cmd[1], cmd);
       this.#send(cmd);
     } catch (e) {
       console.error(e);
@@ -365,9 +384,9 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     // reset connection Id on disconnect, for query-tracking
     this.id = uuid();
     this.#expectAuth = false;
-    this.#log("Reset active=%O, raw=%O", [...this.#activeRequests], [...this.PendingRaw]);
-    for (const active of this.#activeRequests) {
-      this.emit("closed", active, "connection closed");
+    this.#log("Reset active=%O, raw=%O", [...this.#activeRequests.keys()], [...this.PendingRaw]);
+    for (const [id] of this.#activeRequests) {
+      this.emit("closed", id, "connection closed");
     }
     for (const raw of this.PendingRaw) {
       if (Array.isArray(raw) && raw[0] === "REQ") {
@@ -442,6 +461,11 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
         authCleanup();
         if (msg.length > 3 && msg[2] === true) {
           this.Authed = true;
+          // Resend all active requests after successful auth
+          this.#log("Auth successful, resending %d active requests", this.#activeRequests.size);
+          for (const [, cmd] of this.#activeRequests) {
+            this.#sendOnWire(cmd);
+          }
         }
         resolve();
       });

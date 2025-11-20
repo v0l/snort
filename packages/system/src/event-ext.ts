@@ -1,5 +1,5 @@
 import { getPublicKey, sha256, unixNow, unwrap } from "@snort/shared";
-import { EventKind, Nip10, Nip22, NostrEvent, NostrLink, NotSignedNostrEvent } from ".";
+import { EventKind, Nip10, Nip22, NostrEvent, NostrLink, NotSignedNostrEvent, parseZap } from ".";
 import { minePow } from "./pow-util";
 import { findTag } from "./utils";
 import { schnorr } from "@noble/curves/secp256k1.js";
@@ -35,13 +35,24 @@ const ThreadCache = new LRUCache<string, Thread | undefined>({
  */
 export abstract class EventExt {
   /**
-   * Get the pub key of the creator of this event NIP-26
+   * Get the pub key of the creator of this event
    */
   static getRootPubKey(e: NostrEvent): string {
     const delegation = e.tags.find(a => a[0] === "delegation");
     if (delegation?.[1]) {
       // todo: verify sig
       return delegation[1];
+    }
+
+    if (e.kind === EventKind.ZapReceipt) {
+      const bigP = findTag(e, "P");
+      if (bigP) {
+        return bigP;
+      }
+      const parsedZap = parseZap(e);
+      if (parsedZap?.sender) {
+        return parsedZap.sender;
+      }
     }
     return e.pubkey;
   }

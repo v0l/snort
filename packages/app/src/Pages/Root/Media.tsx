@@ -5,12 +5,12 @@ import { Day } from "@/Utils/Const";
 
 export default function MediaPosts() {
   return (
-    <div className="px-3 py-2">
+    <div className="py-2">
       <TimelineFollows
         id="media"
         postsOnly={true}
         kinds={[EventKind.Photo, EventKind.Video, EventKind.ShortVideo]}
-        firstChunkSize={Day}
+        firstChunkSize={Day * 7}
         windowSize={Day}
       />
     </div>

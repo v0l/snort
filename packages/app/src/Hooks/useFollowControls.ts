@@ -34,6 +34,7 @@ export default function useFollowsControls() {
         await state.saveContacts();
       },
       followList: follows ?? [],
+      pubkey: state.pubkey,
     };
   }, [v]);
 }

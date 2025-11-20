@@ -266,7 +266,7 @@ export function normalizeReaction(content: string) {
   }
 }
 
-export class OfflineError extends Error { }
+export class OfflineError extends Error {}
 
 export function throwIfOffline() {
   if (isOffline()) {

@@ -23,9 +23,9 @@ const MENU_ITEMS = [
     nonLoggedIn: true,
   },
   {
-    label: <FormattedMessage defaultMessage="Search" />,
+    label: <FormattedMessage defaultMessage="Discover" />,
     icon: "search",
-    link: "/search",
+    link: "/discover",
     nonLoggedIn: true,
   },
   {

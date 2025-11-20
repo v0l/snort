@@ -1,15 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";
 import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
-import TrendingNotes from "@/Components/Trending/TrendingPosts";
-import TrendingUsers from "@/Components/Trending/TrendingUsers";
 import FollowListBase from "@/Components/User/FollowListBase";
 import { TimelineSubject } from "@/Feed/TimelineFeed";
 import useProfileSearch from "@/Hooks/useProfileSearch";
-import { debounce } from "@/Utils";
 
 const NOTES = 0;
 const PROFILES = 1;
@@ -18,17 +15,17 @@ const Profiles = ({ keyword }: { keyword: string }) => {
   const searchFn = useProfileSearch();
   const results = useMemo(() => searchFn(keyword), [keyword, searchFn]);
   const ids = useMemo(() => results.map(r => r.pubkey), [results]);
-  const content = keyword ? (
-    <FollowListBase
-      pubkeys={ids}
-      profilePreviewProps={{
-        options: { about: true },
-      }}
-    />
-  ) : (
-    <TrendingUsers />
+  if (!keyword) return;
+  return (
+    <div className="px-3">
+      <FollowListBase
+        pubkeys={ids}
+        profilePreviewProps={{
+          options: { about: true },
+        }}
+      />
+    </div>
   );
-  return <div className="px-3">{content}</div>;
 };
 
 const SearchPage = () => {
@@ -57,7 +54,7 @@ const SearchPage = () => {
     }
 
     if (!params.keyword) {
-      return <TrendingNotes />;
+      return;
     }
 
     return <Timeline key={params.keyword} subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} />;

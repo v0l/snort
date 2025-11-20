@@ -12,8 +12,8 @@ export class Nip92 {
   }
 
   /**
-  * Read NIP-94 tags from all `imeta` tags
-  */
+   * Read NIP-94 tags from all `imeta` tags
+   */
   static parseAll(tags: Array<Array<string>>) {
     const iMetaTags = tags.filter(a => a[0] === "imeta");
     return iMetaTags.map(a => Nip92.parse(a));

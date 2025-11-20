@@ -148,7 +148,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       q.on("event", cb);
     }
     const pDone = new Promise<void>(resolve => {
-      q.once("done", resolve);
+      q.once("eose", resolve);
     });
     q.start();
     await pDone;
