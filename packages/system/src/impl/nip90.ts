@@ -394,20 +394,17 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
     const q = system.Query(rbReply);
     q.uncancel(); // might already exist so uncancel
     q.on("event", evs => this.#handleReplyEvents(evs));
-
-    // wait for the request to be EOSE from the reply query before sending the request
-    const jobToSend = this.#jobEvent;
-    q.once("eose", async () => {
-      // send request
-      if (relays) {
-        for (const r of relays) {
-          await system.WriteOnceToRelay(r, jobToSend);
-        }
-      } else {
-        await system.BroadcastEvent(jobToSend);
-      }
-    });
     q.start();
+
+    // send request
+    if (relays) {
+      for (const r of relays) {
+        await system.WriteOnceToRelay(r, this.#jobEvent);
+      }
+    } else {
+      await system.BroadcastEvent(this.#jobEvent);
+    }
+    
     // abort self when resut
     this.on("result", () => {
       q.cancel();
