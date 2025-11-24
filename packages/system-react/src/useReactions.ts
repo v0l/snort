@@ -21,6 +21,12 @@ export function useReactions(
   others?: (rb: RequestBuilder) => void,
   leaveOpen?: boolean,
 ) {
+  // Use stable keys for memoization to prevent unnecessary re-subscriptions
+  const idsKey = useMemo(() => {
+    const links = Array.isArray(ids) ? ids : [ids];
+    return links.map(l => l.tagKey).sort().join(',');
+  }, [ids]);
+
   const sub = useMemo(() => {
     const rb = new RequestBuilder(subId);
     rb.withOptions({ leaveOpen });
@@ -42,7 +48,7 @@ export function useReactions(
     }
     others?.(rb);
     return rb;
-  }, [ids, others]);
+  }, [idsKey, others, subId, leaveOpen]);
 
   return useRequestBuilder(sub);
 }
