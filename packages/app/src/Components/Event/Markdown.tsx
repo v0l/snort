@@ -1,5 +1,5 @@
 import { transformText } from "@snort/system";
-import { marked, Token } from "marked";
+import { marked, Token, Tokens } from "marked";
 import markedFootnote, { Footnote, FootnoteRef, Footnotes } from "marked-footnote";
 import { forwardRef, ReactNode, useMemo } from "react";
 import { Link } from "react-router-dom";
@@ -89,6 +89,32 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef, tags: Array<
       case "footnotes":
       case "footnote": {
         return;
+      }
+      case "table": {
+        return (
+          <table className="table-auto border-collapse">
+            <thead>
+              <tr>
+                {(t.header as Tokens.TableCell[]).map(v => (
+                  <th className="border">
+                    {v.tokens ? v.tokens.map(a => renderToken(a, tags)) : v.text}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {(t.rows as Tokens.TableCell[][]).map(v => (
+                <tr>
+                  {v.map((d, d_key) => (
+                    <td className="border px-2 py-1" key={d_key}>
+                      {d.tokens ? d.tokens.map(a => renderToken(a, tags)) : d.text}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        );
       }
       default: {
         if ("tokens" in t) {
