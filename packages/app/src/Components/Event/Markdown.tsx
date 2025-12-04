@@ -96,9 +96,7 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef, tags: Array<
             <thead>
               <tr>
                 {(t.header as Tokens.TableCell[]).map(v => (
-                  <th className="border">
-                    {v.tokens ? v.tokens.map(a => renderToken(a, tags)) : v.text}
-                  </th>
+                  <th className="border">{v.tokens ? v.tokens.map(a => renderToken(a, tags)) : v.text}</th>
                 ))}
               </tr>
             </thead>

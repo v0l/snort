@@ -404,7 +404,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
     } else {
       await system.BroadcastEvent(this.#jobEvent);
     }
-    
+
     // abort self when resut
     this.on("result", () => {
       q.cancel();

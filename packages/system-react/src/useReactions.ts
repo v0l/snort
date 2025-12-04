@@ -24,7 +24,10 @@ export function useReactions(
   // Use stable keys for memoization to prevent unnecessary re-subscriptions
   const idsKey = useMemo(() => {
     const links = Array.isArray(ids) ? ids : [ids];
-    return links.map(l => l.tagKey).sort().join(',');
+    return links
+      .map(l => l.tagKey)
+      .sort()
+      .join(",");
   }, [ids]);
 
   const sub = useMemo(() => {
