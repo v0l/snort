@@ -1,7 +1,7 @@
 import { fetchNip05Pubkey, LNURL, NostrPrefix } from "@snort/shared";
 import { CachedMetadata, tryParseNostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { ProxyImg } from "@/Components/ProxyImg";
@@ -35,7 +35,7 @@ interface ProfilePageProps {
 export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   const params = useParams();
   const location = useLocation();
-  const spotlight = useContext(SpotlightContext);
+  const spotlight = use(SpotlightContext);
   const profileState = (location.state as CachedMetadata | undefined) || state;
   const navigate = useNavigate();
   const [id, setId] = useState<string | undefined>(profileState?.pubkey);

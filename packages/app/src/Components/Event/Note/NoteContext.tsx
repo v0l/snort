@@ -1,6 +1,6 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions, useReactions } from "@snort/system-react";
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, ReactNode, useCallback, use, useEffect, useMemo, useState } from "react";
 import { LRUCache } from "typescript-lru-cache";
 
 import useModeration from "@/Hooks/useModeration";
@@ -130,7 +130,7 @@ export function NoteProvider({ ev, children }: NoteProviderProps) {
 }
 
 export function useNoteContext() {
-  const context = useContext(NoteContext);
+  const context = use(NoteContext);
   if (!context) {
     throw new Error("useNoteContext must be used within a NoteProvider");
   }

@@ -1,12 +1,12 @@
 import { NostrEvent, NostrLink } from "@snort/system";
-import { useContext, useMemo } from "react";
+import { use, useMemo } from "react";
 
 import TimelineFollows from "@/Components/Feed/TimelineFollows";
 import { DeckContext } from "@/Pages/Deck/DeckLayout";
 
 export const NotesTab = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const deckContext = useContext(DeckContext);
+  const deckContext = use(DeckContext);
 
   const noteOnClick = useMemo(() => {
     if (deckContext) {

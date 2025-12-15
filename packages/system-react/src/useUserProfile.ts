@@ -1,4 +1,4 @@
-import { useContext, useSyncExternalStore } from "react";
+import { use, useSyncExternalStore } from "react";
 import { CachedMetadata } from "@snort/system";
 import { SnortContext } from "./context";
 
@@ -6,7 +6,7 @@ import { SnortContext } from "./context";
  * Gets a profile from cache or requests it from the relays
  */
 export function useUserProfile(pubKey?: string): CachedMetadata | undefined {
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
   return useSyncExternalStore<CachedMetadata | undefined>(
     h => {
       if (pubKey) {

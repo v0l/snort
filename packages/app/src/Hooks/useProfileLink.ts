@@ -1,11 +1,11 @@
 import { CachedMetadata, NostrLink, UserMetadata } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { useContext } from "react";
+import { use } from "react";
 
 import { randomSample } from "@/Utils";
 
 export function useProfileLink(pubkey?: string, user?: UserMetadata | CachedMetadata) {
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
   if (!pubkey) return "#";
   const relays = system.config.relays
     .getFromCache(pubkey)

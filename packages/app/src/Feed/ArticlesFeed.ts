@@ -1,6 +1,6 @@
 import { EventKind, RequestBuilder } from "@snort/system";
 import { SnortContext, useCached, useRequestBuilder } from "@snort/system-react";
-import { useCallback, useContext, useMemo } from "react";
+import { useCallback, use, useMemo } from "react";
 
 import useFollowsControls from "@/Hooks/useFollowControls";
 import { Hour } from "@/Utils/Const";
@@ -21,7 +21,7 @@ export function useArticles(limit = 10) {
 
 export function useCachedArticles(limit = 10) {
   const { followList } = useFollowsControls();
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
 
   const sub = useMemo(() => {
     const rb = new RequestBuilder("articles");

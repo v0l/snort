@@ -1,7 +1,7 @@
 import { encodeTLVEntries, hexToBech32, LNURL, NostrPrefix, TLVEntryType } from "@snort/shared";
 import { CachedMetadata, NostrLink } from "@snort/system";
 import { ZapTarget } from "@snort/wallet";
-import { useContext, useMemo, useState } from "react";
+import { use, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -34,7 +34,7 @@ const AvatarSection = ({
   readonly?: boolean;
 }) => {
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
-  const spotlight = useContext(SpotlightContext);
+  const spotlight = use(SpotlightContext);
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [prefix, setPrefix] = useState<NostrPrefix>(CONFIG.profileLinkPrefix);
 

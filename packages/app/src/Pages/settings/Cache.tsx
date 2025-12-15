@@ -1,7 +1,7 @@
 import { CachedTable } from "@snort/shared";
 import { ConnectionCacheRelay } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
-import { ReactNode, useContext, useEffect, useState, useSyncExternalStore } from "react";
+import { ReactNode, use, useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +12,7 @@ import { SnortContext } from "@snort/system-react";
 import { CollapsedSection } from "@/Components/Collapsed";
 
 export function CacheSettings() {
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
   return (
     <div className="flex flex-col gap-2">
       <h3>

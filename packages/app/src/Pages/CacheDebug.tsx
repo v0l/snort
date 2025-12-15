@@ -1,11 +1,11 @@
 import { NostrEvent, TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { useContext, useState } from "react";
+import { use, useState } from "react";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 
 export function DebugPage() {
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
   const [filter, setFilter] = useState("");
   const [event, setEvent] = useState("");
   const [results, setResult] = useState<Array<TaggedNostrEvent>>([]);

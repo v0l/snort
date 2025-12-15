@@ -1,6 +1,6 @@
 import { OkResponse, TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { useContext, useState } from "react";
+import { use, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
@@ -11,7 +11,7 @@ export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: Tagged
   const [selected, setSelected] = useState<Array<string>>();
   const [replies, setReplies] = useState<Array<OkResponse>>([]);
   const [sending, setSending] = useState(false);
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
   const relays = useRelays();
 
   async function sendReBroadcast() {

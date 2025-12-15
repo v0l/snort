@@ -1,5 +1,5 @@
 import { TaggedNostrEvent } from "@snort/system";
-import { ChangeEvent, useContext, useMemo, useState } from "react";
+import { ChangeEvent, use, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import Note from "@/Components/Event/EventComponent";
@@ -17,7 +17,7 @@ const Bookmarks = ({ pubkey, bookmarks }: BookmarksProps) => {
   const [onlyPubkey, setOnlyPubkey] = useState<string | "all">("all");
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
 
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
   const ps = useMemo(() => {
     return [...new Set(bookmarks.map(ev => ev.pubkey))];
   }, [bookmarks]);

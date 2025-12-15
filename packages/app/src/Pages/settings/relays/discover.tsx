@@ -1,7 +1,7 @@
 import { dedupe } from "@snort/shared";
 import { OutboxModel } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { useContext, useMemo } from "react";
+import { use, useMemo } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { Link } from "react-router-dom";
 
@@ -21,7 +21,7 @@ export function DiscoverRelays() {
     v: l.state.version,
     state: l.state,
   }));
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
 
   const topWriteRelays = useMemo(() => {
     const outbox = OutboxModel.fromSystem(system);

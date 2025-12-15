@@ -1,5 +1,5 @@
 import { EventExt, TaggedNostrEvent } from "@snort/system";
-import { ReactNode, useCallback, useContext, useMemo, useState } from "react";
+import { ReactNode, useCallback, use, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +19,7 @@ interface ThreadProps {
 }
 
 export function ThreadElement(props: ThreadProps) {
-  const thread = useContext(ThreadContext);
+  const thread = use(ThreadContext);
 
   if (!thread) {
     return (
@@ -147,7 +147,7 @@ function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContext
 }
 
 function ThreadDebug() {
-  const thread = useContext(ThreadContext);
+  const thread = use(ThreadContext);
   const [show, setShow] = useState(false);
 
   if (!thread) return;

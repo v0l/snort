@@ -1,6 +1,6 @@
 import { SystemInterface, TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { useContext, useMemo } from "react";
+import { use, useMemo } from "react";
 
 export interface WoT {
   sortEvents: (events: Array<TaggedNostrEvent>) => Array<TaggedNostrEvent>;
@@ -24,6 +24,6 @@ function wotOnSystem(system: SystemInterface) {
 }
 
 export default function useWoT() {
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
   return useMemo<WoT>(() => wotOnSystem(system), [system]);
 }

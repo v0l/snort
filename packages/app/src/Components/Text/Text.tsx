@@ -1,6 +1,6 @@
 import { ParsedFragment, tryParseNostrLink } from "@snort/system";
 import classNames from "classnames";
-import React, { lazy, ReactNode, Suspense, useContext } from "react";
+import React, { lazy, ReactNode, Suspense, use } from "react";
 
 const CashuNuts = lazy(async () => await import("@/Components/Embed/CashuNuts"));
 import Hashtag from "@/Components/Embed/Hashtag";
@@ -49,7 +49,7 @@ export default function Text({
   highlightText,
   onClick,
 }: TextProps) {
-  const spotlight = useContext(SpotlightContext);
+  const spotlight = use(SpotlightContext);
   const elements = useTextTransformer(id, content, tags);
 
   const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content);

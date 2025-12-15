@@ -1,11 +1,11 @@
 import { QueryTraceState, TimelineEntry } from "@snort/system";
 import { SnortContext } from "../context";
-import { useContext, useMemo, useSyncExternalStore } from "react";
+import { use, useMemo, useSyncExternalStore } from "react";
 import "./TraceTimeline.css";
 import { sanitizeRelayUrl } from "@snort/shared";
 
 export function TraceStatsView() {
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
 
   const timeline = useSyncExternalStore(
     c => system.traceTimeline?.hook(c) ?? (() => {}),

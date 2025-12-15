@@ -1,7 +1,7 @@
 import { dedupe } from "@snort/shared";
 import { OutboxModel } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { ReactNode, useContext, useMemo } from "react";
+import { ReactNode, use, useMemo } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import { CollapsedSection } from "@/Components/Collapsed";
@@ -18,7 +18,7 @@ export function FollowsRelayHealth({
   popularRelays?: boolean;
   missingRelaysActions?: (k: string) => ReactNode;
 }) {
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
   const { followList: follows } = useFollowsControls();
   const uniqueFollows = dedupe(follows);
 

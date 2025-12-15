@@ -1,6 +1,6 @@
 import { EventKind, RequestFilterBuilder } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { useContext, useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import { FooterZapButton } from "@/Components/Event/Note/NoteFooter/FooterZapButton";
 import { LikeButton } from "@/Components/Event/Note/NoteFooter/LikeButton";
@@ -22,7 +22,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { ev, link, reactions, setShowReactionsModal } = useNoteContext();
   const [replyCount, setReplyCount] = useState(props.replyCount);
 
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
 
   const { reactions: reactionGroups, zaps, reposts } = reactions;
   const { positive } = reactionGroups;

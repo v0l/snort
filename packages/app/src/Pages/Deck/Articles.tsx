@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { use } from "react";
 
 import Note, { NoteProps } from "@/Components/Event/EventComponent";
 import { useArticles } from "@/Feed/ArticlesFeed";
@@ -6,7 +6,7 @@ import { DeckContext } from "@/Pages/Deck/DeckLayout";
 
 export default function Articles({ noteProps }: { noteProps?: Omit<NoteProps, "data"> }) {
   const data = useArticles();
-  const deck = useContext(DeckContext);
+  const deck = use(DeckContext);
 
   return (
     <>

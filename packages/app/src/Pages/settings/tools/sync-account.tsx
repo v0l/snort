@@ -1,7 +1,7 @@
 import { unwrap } from "@snort/shared";
 import { RangeSync, TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { useContext, useState } from "react";
+import { use, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
@@ -10,7 +10,7 @@ import useRelays from "@/Hooks/useRelays";
 import { SearchRelays } from "@/Utils/Const";
 
 export default function SyncAccountTool() {
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
   const login = useLogin();
   const [scan, setScan] = useState<number>();
   const [results, setResults] = useState<Array<TaggedNostrEvent>>([]);

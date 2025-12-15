@@ -3,7 +3,7 @@ import { trackEvent } from "@/Utils";
 import { generateNewLogin, generateNewLoginKeys } from "@/Utils/Login";
 import { NotEncrypted } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { useState, useContext, FormEvent } from "react";
+import { useState, use, FormEvent } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate, Link } from "react-router-dom";
 import { NewUserState } from ".";
@@ -13,7 +13,7 @@ export default function SignUp() {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();

@@ -1,5 +1,5 @@
 import { SnortContext } from "@snort/system-react";
-import { useContext, useMemo, useSyncExternalStore } from "react";
+import { use, useMemo, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
@@ -21,7 +21,7 @@ const DataProviders = [
 
 export function ZapPoolPageInner() {
   const defaultZapAmount = usePreferences(s => s.defaultZapAmount);
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
   const zapPool = useSyncExternalStore(
     c => unwrap(ZapPoolController).hook(c),
     () => unwrap(ZapPoolController).snapshot(),

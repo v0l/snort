@@ -1,6 +1,6 @@
 import { NotEncrypted } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { useContext, useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -12,7 +12,7 @@ import { generateNewLogin, generateNewLoginKeys } from "@/Utils/Login";
 import { NewUserState } from ".";
 
 export default function Profile() {
-  const system = useContext(SnortContext);
+  const system = use(SnortContext);
   const [keys, setNewKeys] = useState<{ entropy: Uint8Array; privateKey: string }>();
   const [picture, setPicture] = useState<string>();
   const [error, setError] = useState("");
