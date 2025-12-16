@@ -1,3 +1,97 @@
+# v0.4.0
+
+`+21,991,-31,914`
+
+## Added
+
+- Discover page with trending content
+- DVM (Data Vending Machine) integration for trending posts and content discovery
+- Select content discovery DVM in settings
+- Show suggestions by DVM
+- Nests audio rooms - chat and speak functionality
+- Link to Nests from live streams header
+- Follow sets page for managing custom follow lists
+- Filter follow sets
+- Media root tab for browsing media content
+- Blossom blob support for decentralized file storage
+- Blossom fallback image loader
+- Client tags (NIP) for identifying client applications
+- Application handler note render
+- Support rendering kind 20, 21, 22 (media notes)
+- Reply to non-text-note as kind 1111
+- Table render support in markdown
+- Paginate follow list for better performance
+- Show NIP-05 handles on profiles
+- VertexLabs suggested follows integration
+- Note context wrapper for improved caching
+- Cache articles for faster loading
+- Cache thread parsing results
+- Auto-translate enabled by default
+- Worker relay delete handling
+- Worker relay logging interface
+- Show USD price in wallet
+- Skip query cache option
+- Index event tags for faster lookups
+- disableSyncModule config option
+- Phoenix relay config
+- Soloco.nl relay config
+- NIP-119 compatibility
+
+## Changed
+
+- **Migrated from Yarn/Node to Bun** for faster builds and development
+- Replaced NIP-96 with Blossom for file uploads
+- Replaced `useContext` with React 19 `use` hook
+- Refactored cache systems for improved performance
+- Refactored query system with improved link previews
+- Improved profile loader with pagination
+- Cleaned up NIP-05 implementation
+- Replaced `useCachedFetch` hook with generic `useCached` hook
+- Refactored text transformer
+- Client fingerprinting improvements - only show profile card on avatar hover
+- Moved imgproxy logic to `@snort/shared` package
+- Improved messages with Web of Trust filter and read status indicators
+- Setup Biome for linting and formatting (replacing ESLint/Prettier)
+- Removed LNC / Cashu wallet integrations
+- Removed NIP-28 public chat support
+- Removed COEP header from Docker image
+- Updated to Vite 7 with ESM imports
+
+## Fixed
+
+- Query system race conditions
+- DVM requests handling
+- Nsite build with Bun
+- D tag hex decoding issues
+- Background loader reliability
+- Profile update sync in worker relay
+- Profile loading issues
+- Note creator auto-complete dialogs
+- Badge list rendering
+- Clear attachments on reset
+- Filter invalid NIP-17 DMs
+- Quote repost functionality
+- Link previews rendering
+- Negentropy sync missing events
+- preloadSocialGraph initialization
+- Check event ID from signer
+- imgproxy settings
+- OpenGraph tag API URL
+- Support `ws://` relays (fixes #600)
+- Follow by tab display
+- Handle invalid client tags
+- Search box functionality
+- PRE and RE query/insert operations
+- Note creator tagging
+- NIP-96 upload issues
+- Birthday field handling
+- Table widths in markdown
+- Skip proxy for default avatar
+- Memoize IDs in useReactions
+- Various build and import fixes
+
+---
+
 # v0.2.0
 
 `+16,990,-9,649`
