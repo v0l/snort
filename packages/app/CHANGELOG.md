@@ -2,93 +2,49 @@
 
 `+21,991,-31,914`
 
+## Highlights
+
+- **Bun Migration**: Moved entire build system from Yarn/Node to Bun
+- **Blossom Storage**: Replaced NIP-96 with Blossom for decentralized file uploads
+- **Nests Integration**: Audio rooms with chat and speak functionality
+- **DVM Content Discovery**: Trending posts and suggestions powered by Data Vending Machines
+- **Biome Toolchain**: Replaced ESLint/Prettier with Biome for linting and formatting
+
 ## Added
 
-- Discover page with trending content
-- DVM (Data Vending Machine) integration for trending posts and content discovery
-- Select content discovery DVM in settings
-- Show suggestions by DVM
-- Nests audio rooms - chat and speak functionality
-- Link to Nests from live streams header
+- Discover page with DVM-powered trending content
+- Nests audio rooms integration (linked from live streams)
 - Follow sets page for managing custom follow lists
-- Filter follow sets
-- Media root tab for browsing media content
-- Blossom blob support for decentralized file storage
-- Blossom fallback image loader
-- Client tags (NIP) for identifying client applications
-- Application handler note render
-- Support rendering kind 20, 21, 22 (media notes)
-- Reply to non-text-note as kind 1111
-- Table render support in markdown
-- Paginate follow list for better performance
-- Show NIP-05 handles on profiles
-- VertexLabs suggested follows integration
-- Note context wrapper for improved caching
-- Cache articles for faster loading
-- Cache thread parsing results
-- Auto-translate enabled by default
-- Worker relay delete handling
-- Worker relay logging interface
-- Show USD price in wallet
-- Skip query cache option
-- Index event tags for faster lookups
-- disableSyncModule config option
-- Phoenix relay config
-- Soloco.nl relay config
+- Media tab on root page for browsing media content
+- Blossom blob support with fallback image loading
+- Support for kind 20, 21, 22 (media notes) and kind 1111 replies
+- Client tags for identifying applications
 - NIP-119 compatibility
+- Auto-translate enabled by default
+- Show NIP-05 handles and USD price in wallet
+- VertexLabs suggested follows
+- Table rendering in markdown
 
 ## Changed
 
-- **Migrated from Yarn/Node to Bun** for faster builds and development
-- Replaced NIP-96 with Blossom for file uploads
-- Replaced `useContext` with React 19 `use` hook
-- Refactored cache systems for improved performance
-- Refactored query system with improved link previews
-- Improved profile loader with pagination
-- Cleaned up NIP-05 implementation
-- Replaced `useCachedFetch` hook with generic `useCached` hook
-- Refactored text transformer
-- Client fingerprinting improvements - only show profile card on avatar hover
-- Moved imgproxy logic to `@snort/shared` package
-- Improved messages with Web of Trust filter and read status indicators
-- Setup Biome for linting and formatting (replacing ESLint/Prettier)
-- Removed LNC / Cashu wallet integrations
-- Removed NIP-28 public chat support
-- Removed COEP header from Docker image
-- Updated to Vite 7 with ESM imports
+- Replaced NIP-96 uploads with Blossom
+- Upgraded to React 19 `use` hook (replacing `useContext`)
+- Upgraded to Vite 7 with ESM imports
+- Improved messages with WoT filter and read status
+- Refactored cache systems, query system, and profile loader
+- Moved imgproxy logic to `@snort/shared`
+- **Removed**: LNC and Cashu wallet integrations
+- **Removed**: NIP-28 public chat support
 
 ## Fixed
 
-- Query system race conditions
-- DVM requests handling
-- Nsite build with Bun
-- D tag hex decoding issues
-- Background loader reliability
-- Profile update sync in worker relay
-- Profile loading issues
-- Note creator auto-complete dialogs
-- Badge list rendering
-- Clear attachments on reset
-- Filter invalid NIP-17 DMs
-- Quote repost functionality
-- Link previews rendering
+- Query system race conditions and DVM request handling
+- Profile sync and loading issues
+- Note creator auto-complete and tagging
+- Link previews and quote reposts
 - Negentropy sync missing events
-- preloadSocialGraph initialization
-- Check event ID from signer
-- imgproxy settings
-- OpenGraph tag API URL
-- Support `ws://` relays (fixes #600)
-- Follow by tab display
-- Handle invalid client tags
-- Search box functionality
-- PRE and RE query/insert operations
-- Note creator tagging
-- NIP-96 upload issues
-- Birthday field handling
-- Table widths in markdown
-- Skip proxy for default avatar
-- Memoize IDs in useReactions
-- Various build and import fixes
+- Support for `ws://` relays (#600)
+- Search box and various build issues
 
 ---
 
@@ -96,121 +52,57 @@
 
 `+35,347,-17,720`
 
+## Highlights
+
+- **For You Feed**: Personalized content algorithm based on your social graph
+- **Web of Trust**: Spam filtering based on your network of trust
+- **NIP-46 OAuth**: New login and sign up flow with remote signers
+- **Relay Overhaul**: Detailed relay pages with uptime, stats, and recommendations
+- **NIP-17 Migration**: Dropped NIP-4 in favor of NIP-17 encrypted DMs
+
 ## Added
 
-- NIP-46 OAuth login and sign up flow
+- For You feed with personalized content scoring
+- Web of Trust (WoT) spam filter (enabled for all users)
+- NIP-46 OAuth login and sign up
 - NIP-55 Android signer support
 - NIP-44 v2 encryption
 - NIP-89 application handlers
-- NIP-96 server list and custom server selection
-- NIP-107 data rendering
-- NIP-114 filter.ids_only and HAVE message support
-- Web of Trust (WoT) filter for spam protection
-- For You feed algorithm with personalized content scoring
-- Relay management overhaul:
-  - Relay info page with detailed statistics
-  - Relay uptime tracking
-  - Reliable relays indicator
-  - Recommended relays with descriptions
-  - Close relays functionality
+- NIP-96 server list with custom server selection
+- Relay management: info pages, uptime tracking, reliable indicators
 - Revamped note creator
-- Modular right sidebar with latest articles widget
-- Profile tab showing top zappers
 - LiveKit integration for audio/video
-- `@snort/bot` package for building Nostr bots
-- Automated social graph using `nostr-social-graph`
-- Diff-sync for follows list
-- Safe sync for app data
-- Quote note loading from multiple relays
-- Track events seen on relays
-- Show note footer for reposts
-- Replace HTTP nostr links with native `nostr:` links
-- Npub/nprofile QR code selector
-- Render embeds from link preview
-- Improved key export page
-- Unified NWC wallet icon
-- Redirect to login when attempting reactions while logged out
-- Profile card hover timing improvements
-- Sync account tool
-- Reply count shown in feed
-- Notifications timestamps
-- Korean translations enabled
+- `@snort/bot` package for building bots
+- `nostr-social-graph` integration
+- Modular right sidebar with articles widget
+- Profile top zappers tab
+- Reply count in feed
+- Quote notes load from multiple relays
+- Npub/nprofile QR selector
+- Embeds from link previews
+- Korean translations
 
 ## Changed
 
-- **Integrated nostr-social-graph** for improved social features
-- **Dropped NIP-4 DMs** in favor of NIP-17
-- **Upgraded to NIP-17** for encrypted direct messages
-- Moved zapper functionality to `@snort/wallet` package
-- Refactored outbox model into abstract RequestRouter
-- Improved thread loading performance
-- Improved rebroadcaster reliability
-- Refactored useRequestBuilder hook
-- Live streams refactor
-- Timeline render flow improvements
-- Profile loader optimizations
-- Always fallback to in-memory relay
-- Worker-relay fixes for external users
+- **Breaking**: Dropped NIP-4 DMs, now using NIP-17 only
+- Integrated `nostr-social-graph` for social features
+- Moved zapper to `@snort/wallet` package
+- Refactored outbox model into RequestRouter
+- Improved thread loading and timeline rendering
 - Preload follows list for faster startup
-- Include relays in kind 3 contact list
-- Removed summary chart from notifications
-- Removed dislike reactions
-- Removed Tauri desktop build
-- Use optimizer compress for better performance
-- Use localhost relay over worker-relay when available
-- Enable WoT filter for existing sessions
-- Meku app configuration added
-- TIDAL embed improvements with allow/sandbox attributes
-- Cache compressed filters
+- **Removed**: Tauri desktop build
+- **Removed**: Dislike reactions
+- **Removed**: Notification summary chart
 
 ## Fixed
 
-- Use NIP-44 for NIP-46 communications
-- Client tag formatting
-- Relays tag missing from events
-- Note creator issues
-- Floating point created_at timestamps
-- NIP-17 inner created_at timestamp handling
-- Negentropy version check
-- NIP-6 mnemonic login
-- Mute buttons functionality
-- Relay loader bugs
-- Hide unknown event JSON
-- TLV max length validation
-- Manually connect to local cache relay
-- Display name handling
-- Relay icon highlight
-- Copy text from notes
-- Outline overflow
-- Default NIP-96 server
-- nprofile login
-- Social graph loading for follows only
-- Reduce timeline reloads
-- APK signer
-- Mute list issues
-- Reconnection spam
-- Reactions loading
-- Connection race conditions
-- Moderation updates
-- Plain image link preview size
-- Topic buttons
-- Remove reposts from grid view
-- Hashtag parser
-- Service worker bugs
-- File extension on NIP-96 uploads
-- isReplyToThis logic
-- Reply check simplification
-- Follow graph for readonly login
-- Startup migration issues
-- Muted words
-- Unknown thread context
-- oAuth bugs
-- Multiple tag queries
-- Embed sqlite3.wasm in lib for production
-- Duplicate relays
-- Highlighted text in searched notes
-- Feed glitches with memoized NoteText
-- Avatar CSS on zap splits
+- NIP-46 now uses NIP-44 encryption
+- NIP-6 mnemonic and nprofile login
+- Note creator, mute buttons, and muted words
+- Connection race conditions and reconnection spam
+- Service worker and startup migration issues
+- Feed glitches and timeline reloads
+- Hashtag parser and topic buttons
 
 ---
 
