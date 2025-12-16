@@ -11,7 +11,7 @@ export const Day = Hour * 24;
 /**
  * Day this project started
  */
-export const Birthday = new Date(2022, 11, 17);
+export const Birthday = new Date(2022, (12 - 1), 17);
 
 /**
  * Add-on api for snort features
