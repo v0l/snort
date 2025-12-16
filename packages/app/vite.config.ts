@@ -5,9 +5,11 @@ import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import { vitePluginVersionMark } from "vite-plugin-version-mark";
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     basicSsl(),
     react({
       babel: {

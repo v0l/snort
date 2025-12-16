@@ -1,8 +1,0 @@
-.yarn/
-build/
-.vscode/
-.github/
-transifex.yml
-dist/
-src-tauri/
-target/
