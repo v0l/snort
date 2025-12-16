@@ -11,7 +11,7 @@ import { Day } from "@/Utils/Const";
 
 import { FollowsRelayHealth } from "./follows-relay-health";
 
-const enum PruneStage {
+enum PruneStage {
   FetchLastPostTimestamp,
   Done,
 }

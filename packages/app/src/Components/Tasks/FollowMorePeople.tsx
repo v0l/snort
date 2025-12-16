@@ -1,9 +1,9 @@
-import { CachedMetadata } from "@snort/system";
+import type { CachedMetadata } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
 import { BaseUITask } from "@/Components/Tasks/index";
-import { LoginSession } from "@/Utils/Login";
+import type { LoginSession } from "@/Utils/Login";
 
 export class FollowMorePeopleTask extends BaseUITask {
   id = "follow-more-people";

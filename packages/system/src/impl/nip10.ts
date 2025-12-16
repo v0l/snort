@@ -1,5 +1,5 @@
 import { dedupeBy, NostrPrefix } from "@snort/shared";
-import { NostrEvent, NostrLink, Thread, EventBuilder, LinkScope, TaggedNostrEvent } from "..";
+import { type NostrEvent, NostrLink, type Thread, type EventBuilder, LinkScope, type TaggedNostrEvent } from "..";
 import { LRUCache } from "typescript-lru-cache";
 
 const ThreadCache = new LRUCache<string, Thread | undefined>({ maxSize: 1000 });

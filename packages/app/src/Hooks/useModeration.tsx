@@ -1,5 +1,5 @@
 import { dedupe } from "@snort/shared";
-import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent, ToNostrEventTag, UnknownTag } from "@snort/system";
+import { EventKind, type NostrEvent, NostrLink, type TaggedNostrEvent, type ToNostrEventTag, UnknownTag } from "@snort/system";
 
 import useLogin from "@/Hooks/useLogin";
 

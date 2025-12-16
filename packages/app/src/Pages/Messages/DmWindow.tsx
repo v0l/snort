@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { Chat, useChat } from "@/chat";
+import { type Chat, useChat } from "@/chat";
 import ProfileImage from "@/Components/User/ProfileImage";
 import DM from "@/Pages/Messages/DM";
 import WriteMessage from "@/Pages/Messages/WriteMessage";

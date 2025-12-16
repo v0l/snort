@@ -1,6 +1,6 @@
 import fuzzySearch from "@/Db/FuzzySearch";
 
-import useWoT, { WoT } from "./useWoT";
+import useWoT, { type WoT } from "./useWoT";
 
 export default function useProfileSearch() {
   const wot = useWoT();

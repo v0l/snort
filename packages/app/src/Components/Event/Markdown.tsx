@@ -1,7 +1,7 @@
 import { transformText } from "@snort/system";
-import { marked, Token, Tokens } from "marked";
-import markedFootnote, { Footnote, FootnoteRef, Footnotes } from "marked-footnote";
-import { forwardRef, ReactNode, useMemo } from "react";
+import { marked, type Token, type Tokens } from "marked";
+import markedFootnote, { type Footnote, type FootnoteRef, type Footnotes } from "marked-footnote";
+import { forwardRef, type ReactNode, useMemo } from "react";
 import { Link } from "react-router-dom";
 
 import NostrLink from "@/Components/Embed/NostrLink";

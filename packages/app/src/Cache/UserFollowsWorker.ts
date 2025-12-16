@@ -1,5 +1,5 @@
 import { unixNowMs } from "@snort/shared";
-import { CacheRelay, EventKind, NostrEvent, UsersFollows } from "@snort/system";
+import { type CacheRelay, EventKind, type NostrEvent, type UsersFollows } from "@snort/system";
 import { WorkerBaseCache } from "./worker-cached";
 
 export class UserFollowsWorker extends WorkerBaseCache<UsersFollows> {

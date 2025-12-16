@@ -9,7 +9,7 @@ import ZapButton from "@/Components/Event/ZapButton";
 import Modal from "@/Components/Modal/Modal";
 import QrCode from "@/Components/QrCode";
 import ProfilePreview from "@/Components/User/ProfilePreview";
-import SnortApi, { RevenueSplit, RevenueToday } from "@/External/SnortApi";
+import SnortApi, { type RevenueSplit, type RevenueToday } from "@/External/SnortApi";
 import { Contributors, DonateLNURL, Translators } from "@/Pages/Donate/const";
 import { ZapPoolDonateSection } from "@/Pages/Donate/ZapPoolDonateSection";
 import { SnortPubKey } from "@/Utils/Const";

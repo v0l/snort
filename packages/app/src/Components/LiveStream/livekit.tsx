@@ -9,16 +9,16 @@ import {
 import { unixNow } from "@snort/shared";
 import {
   EventKind,
-  EventPublisher,
+  type EventPublisher,
   Nip10,
   NostrLink,
   RequestBuilder,
-  SystemInterface,
-  TaggedNostrEvent,
+  type SystemInterface,
+  type TaggedNostrEvent,
 } from "@snort/system";
 import { useRequestBuilder, useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
-import { LocalParticipant, LocalTrackPublication, RemoteParticipant, RoomEvent, Track } from "livekit-client";
+import { LocalParticipant, type LocalTrackPublication, type RemoteParticipant, RoomEvent, Track } from "livekit-client";
 import { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 

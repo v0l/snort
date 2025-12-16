@@ -1,4 +1,4 @@
-import { Nip11, RelayInfoDocument } from "@snort/system";
+import { Nip11, type RelayInfoDocument } from "@snort/system";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, useParams } from "react-router-dom";

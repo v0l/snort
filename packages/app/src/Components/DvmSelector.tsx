@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { EventKind } from "@snort/system";
+import type { EventKind } from "@snort/system";
 
 import Modal from "@/Components/Modal/Modal";
 import useAppHandler from "@/Hooks/useAppHandler";

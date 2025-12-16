@@ -1,5 +1,5 @@
 import { use, useEffect, useMemo, useSyncExternalStore } from "react";
-import { EmptySnapshot, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { EmptySnapshot, type RequestBuilder, type TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "./context";
 
 /**

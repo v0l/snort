@@ -1,5 +1,6 @@
 import classNames from "classnames";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 
 import NavLink from "@/Components/Button/NavLink";
 import { NoteCreatorButton } from "@/Components/Event/Create/NoteCreatorButton";

@@ -1,6 +1,6 @@
 import debug from "debug";
 import { removeUndefined, unixNowMs } from "./utils";
-import { CacheStore } from "./cache-store";
+import type { CacheStore } from "./cache-store";
 import { EventEmitter } from "eventemitter3";
 
 type HookFn = () => void;

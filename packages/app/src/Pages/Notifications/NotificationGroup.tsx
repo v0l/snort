@@ -1,5 +1,5 @@
 import { unwrap } from "@snort/shared";
-import { EventKind, NostrLink, parseZap, TaggedNostrEvent } from "@snort/system";
+import { EventKind, type NostrLink, parseZap, type TaggedNostrEvent } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useMemo } from "react";
 import { useInView } from "react-intersection-observer";

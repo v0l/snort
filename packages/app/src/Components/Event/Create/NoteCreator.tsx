@@ -1,22 +1,22 @@
 /* eslint-disable max-lines */
 import { fetchNip05Pubkey, NostrPrefix, unixNow } from "@snort/shared";
 import {
-  EventBuilder,
+  type EventBuilder,
   EventKind,
   LinkScope,
   Nip18,
-  Nip94Tags,
+  type Nip94Tags,
   nip94TagsToIMeta,
   NostrLink,
   readNip94Tags,
-  TaggedNostrEvent,
+  type TaggedNostrEvent,
   tryParseNostrLink,
 } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { ZapTarget } from "@snort/wallet";
+import type { ZapTarget } from "@snort/wallet";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import classNames from "classnames";
-import { ClipboardEventHandler, DragEvent, useEffect } from "react";
+import { type ClipboardEventHandler, type DragEvent, useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
@@ -24,7 +24,7 @@ import { AsyncIcon } from "@/Components/Button/AsyncIcon";
 import CloseButton from "@/Components/Button/CloseButton";
 import IconButton from "@/Components/Button/IconButton";
 import { sendEventToRelays } from "@/Components/Event/Create/util";
-import Note, { NoteProps, NotePropsOptions } from "@/Components/Event/EventComponent";
+import Note, { NoteProps, type NotePropsOptions } from "@/Components/Event/EventComponent";
 import Flyout from "@/Components/flyout";
 import Icon from "@/Components/Icons/Icon";
 import { ToggleSwitch } from "@/Components/Icons/Toggle";
@@ -216,7 +216,7 @@ export function NoteCreator() {
   async function sendNote() {
     const ev = await buildNote();
     if (ev) {
-      let props: Record<string, boolean> | undefined = undefined;
+      let props: Record<string, boolean> | undefined ;
       if (ev.tags.find(a => a[0] === "content-warning")) {
         props ??= {};
         props["content-warning"] = true;
@@ -594,7 +594,7 @@ export function NoteCreator() {
   const handlePaste: ClipboardEventHandler<HTMLDivElement> = evt => {
     if (evt.clipboardData) {
       const clipboardItems = evt.clipboardData.items;
-      const items: DataTransferItem[] = Array.from(clipboardItems).filter(function (item: DataTransferItem) {
+      const items: DataTransferItem[] = Array.from(clipboardItems).filter((item: DataTransferItem) => {
         // Filter the image items only
         return /^image\//.test(item.type);
       });

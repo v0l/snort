@@ -1,4 +1,4 @@
-import { NostrEvent, NostrLink } from "@snort/system";
+import { type NostrEvent, NostrLink } from "@snort/system";
 import { Zapper } from "@snort/wallet";
 import { useState } from "react";
 import { FormattedNumber } from "react-intl";

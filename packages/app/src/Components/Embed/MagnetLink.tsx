@@ -1,6 +1,6 @@
 import { FormattedMessage } from "react-intl";
 
-import { Magnet } from "@/Utils";
+import type { Magnet } from "@/Utils";
 import Icon from "../Icons/Icon";
 
 interface MagnetLinkProps {

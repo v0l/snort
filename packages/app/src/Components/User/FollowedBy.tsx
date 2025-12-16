@@ -5,7 +5,7 @@ import { AvatarGroup } from "@/Components/User/AvatarGroup";
 import DisplayName from "@/Components/User/DisplayName";
 import { ProfileLink } from "@/Components/User/ProfileLink";
 import useWoT from "@/Hooks/useWoT";
-import { ProfileImageProps } from "./ProfileImage";
+import type { ProfileImageProps } from "./ProfileImage";
 
 const MAX_FOLLOWED_BY_FRIENDS = 3;
 

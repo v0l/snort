@@ -1,6 +1,6 @@
 import "./ZapstrEmbed.css";
 
-import { NostrEvent, NostrLink } from "@snort/system";
+import { type NostrEvent, NostrLink } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 

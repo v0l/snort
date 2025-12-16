@@ -1,9 +1,9 @@
 import { ExternalStore } from "@snort/shared";
-import { NostrEvent, TaggedNostrEvent } from "@snort/system";
-import { ZapTarget } from "@snort/wallet";
+import type { NostrEvent, TaggedNostrEvent } from "@snort/system";
+import type { ZapTarget } from "@snort/wallet";
 import { useSyncExternalStoreWithSelector } from "use-sync-external-store/with-selector";
 
-import { BlobDescriptor } from "@/Utils/Upload/blossom";
+import type { BlobDescriptor } from "@/Utils/Upload/blossom";
 
 interface NoteCreatorDataSnapshot {
   show: boolean;

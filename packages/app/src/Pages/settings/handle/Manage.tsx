@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
 
-import { ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
+import type { ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
 
 import LNForwardAddress from "./LNAddress";
 import TransferHandle from "./TransferHandle";

@@ -7,7 +7,7 @@ import { useIntl } from "react-intl";
 import TextareaAutosize from "react-textarea-autosize";
 
 import Avatar from "@/Components/User/Avatar";
-import { FuzzySearchResult } from "@/Db/FuzzySearch";
+import type { FuzzySearchResult } from "@/Db/FuzzySearch";
 import useProfileSearch from "@/Hooks/useProfileSearch";
 import searchEmoji from "@/Utils/emoji-search";
 
@@ -65,7 +65,7 @@ const Textarea = (props: TextareaProps) => {
   };
 
   return (
-    // @ts-ignore 2769
+    // @ts-expect-error 2769
     <ReactTextareaAutocomplete<TriggerData>
       dir="auto"
       {...props}

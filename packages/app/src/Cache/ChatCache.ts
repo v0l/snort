@@ -1,5 +1,5 @@
 import { FeedCache } from "@snort/shared";
-import { NostrEvent } from "@snort/system";
+import type { NostrEvent } from "@snort/system";
 
 export class ChatCache extends FeedCache<NostrEvent> {
   constructor() {

@@ -1,4 +1,4 @@
-import { SystemInterface, UsersRelays } from "..";
+import type { SystemInterface, UsersRelays } from "..";
 
 export const DefaultPickNRelays = 2;
 

@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 
 import Icon from "@/Components/Icons/Icon";
-import { SettingsMenuItems } from "@/Pages/settings/Menu/Menu";
+import type { SettingsMenuItems } from "@/Pages/settings/Menu/Menu";
 
 export function SettingsMenuComponent({ menu }: { menu: SettingsMenuItems }) {
   return (

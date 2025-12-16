@@ -1,4 +1,4 @@
-import { SystemInterface, TaggedNostrEvent } from "@snort/system";
+import type { SystemInterface, TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { use, useMemo } from "react";
 

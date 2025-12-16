@@ -1,5 +1,5 @@
-import { TaggedNostrEvent } from "@snort/system";
-import { ReactNode } from "react";
+import type { TaggedNostrEvent } from "@snort/system";
+import type { ReactNode } from "react";
 
 import Note from "@/Components/Event/EventComponent";
 

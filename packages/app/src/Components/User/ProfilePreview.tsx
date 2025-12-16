@@ -1,10 +1,10 @@
-import { UserMetadata } from "@snort/system";
+import type { UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
-import { forwardRef, ReactNode } from "react";
+import { forwardRef, type ReactNode } from "react";
 
 import FollowButton from "@/Components/User/FollowButton";
-import ProfileImage, { ProfileImageProps } from "@/Components/User/ProfileImage";
+import ProfileImage, { type ProfileImageProps } from "@/Components/User/ProfileImage";
 
 export interface ProfilePreviewProps {
   pubkey: string;

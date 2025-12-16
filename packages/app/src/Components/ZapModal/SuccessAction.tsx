@@ -1,4 +1,4 @@
-import { LNURLSuccessAction } from "@snort/shared";
+import type { LNURLSuccessAction } from "@snort/shared";
 import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";

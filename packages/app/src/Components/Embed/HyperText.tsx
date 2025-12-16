@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import AppleMusicEmbed from "@/Components/Embed/AppleMusicEmbed";
 import LinkPreview from "@/Components/Embed/LinkPreview";

@@ -3,11 +3,11 @@ import AlbyWallet from "./AlbyWallet";
 import LNDHubWallet from "./LNDHub";
 import { NostrConnectWallet } from "./NostrWalletConnect";
 import { WebLNWallet } from "./WebLN";
-import EventEmitter from "eventemitter3";
+import type EventEmitter from "eventemitter3";
 
 export * from "./zapper";
 
-export const enum WalletKind {
+export enum WalletKind {
   LNDHub = 1,
   //LNC = 2,
   WebLN = 3,

@@ -1,6 +1,6 @@
-import { NostrLink } from "@snort/system";
+import type { NostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { ZapTarget } from "@snort/wallet";
+import type { ZapTarget } from "@snort/wallet";
 import { useState } from "react";
 
 import Icon from "@/Components/Icons/Icon";

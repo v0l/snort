@@ -1,4 +1,4 @@
-import { EventBuilder, EventExt, NostrEvent, NostrLink } from "@snort/system";
+import { EventBuilder, EventExt, type NostrEvent, NostrLink } from "@snort/system";
 import { NostrPrefix, bech32ToHex, sha256, unixNow } from "@snort/shared";
 import { useState } from "react";
 
@@ -65,7 +65,7 @@ import Collapsed, { CollapsedSection } from "@/Components/Collapsed";
 import Modal from "@/Components/Modal/Modal";
 import { WarningNotice } from "@/Components/WarningNotice/WarningNotice";
 import Progress from "@/Components/Progress/Progress";
-import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
+import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors";
 import PageSpinner from "@/Components/PageSpinner";
 import Toaster, { Toastore } from "@/Components/Toaster/Toaster";
 import { Markdown } from "@/Components/Event/Markdown";

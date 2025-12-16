@@ -8,7 +8,7 @@ import { rootTabItems } from "@/Components/Feed/RootTabItems";
 import Icon from "@/Components/Icons/Icon";
 import useLogin from "@/Hooks/useLogin";
 import usePreferences from "@/Hooks/usePreferences";
-import { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes";
+import type { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes";
 
 export function RootTabs({ base = "/" }: { base: string }) {
   const navigate = useNavigate();

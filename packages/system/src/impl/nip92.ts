@@ -1,4 +1,4 @@
-import { Nip94Tags, readNip94Tags } from "./nip94";
+import { type Nip94Tags, readNip94Tags } from "./nip94";
 
 /**
  * https://github.com/nostr-protocol/nips/blob/master/92.md impl

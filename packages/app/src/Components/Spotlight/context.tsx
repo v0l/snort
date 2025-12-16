@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, type ReactNode, useState } from "react";
 import Modal from "../Modal/Modal";
 import { SpotlightMedia } from "./SpotlightMedia";
 

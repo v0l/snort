@@ -1,6 +1,7 @@
-import { ParsedFragment, tryParseNostrLink } from "@snort/system";
+import { type ParsedFragment, tryParseNostrLink } from "@snort/system";
 import classNames from "classnames";
-import React, { lazy, ReactNode, Suspense, use } from "react";
+import type React from "react";
+import { lazy, type ReactNode, Suspense, use } from "react"
 
 const CashuNuts = lazy(async () => await import("@/Components/Embed/CashuNuts"));
 import Hashtag from "@/Components/Embed/Hashtag";
@@ -10,7 +11,7 @@ import { baseImageWidth, GRID_GAP, gridConfigMap, ROW_HEIGHT } from "@/Component
 import DisableMedia from "@/Components/Text/DisableMedia";
 import { useTextTransformer } from "@/Hooks/useTextTransformCache";
 
-import RevealMedia, { RevealMediaProps } from "../Event/RevealMedia";
+import RevealMedia, { type RevealMediaProps } from "../Event/RevealMedia";
 import { ProxyImg } from "../ProxyImg";
 import HighlightedText from "./HighlightedText";
 import Mention from "../Embed/Mention";

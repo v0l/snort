@@ -1,5 +1,5 @@
 import { bech32ToHex, fetchNostrAddress, NostrPrefix, unwrap } from "@snort/shared";
-import { KeyStorage, Nip46Signer, tryParseNostrLink } from "@snort/system";
+import { type KeyStorage, Nip46Signer, tryParseNostrLink } from "@snort/system";
 import { useIntl } from "react-intl";
 
 import { EmailRegex, MnemonicRegex } from "@/Utils/Const";

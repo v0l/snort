@@ -1,9 +1,9 @@
 import { FormattedMessage } from "react-intl";
-import { RouteObject } from "react-router-dom";
+import type { RouteObject } from "react-router-dom";
 
 import { SettingsMenuComponent } from "@/Pages/settings/Menu/SettingsMenuComponent";
 
-import { SettingsMenuItems } from "../Menu/Menu";
+import type { SettingsMenuItems } from "../Menu/Menu";
 
 const ToolMenuItems = [
   {

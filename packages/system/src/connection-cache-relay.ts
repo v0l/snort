@@ -1,6 +1,6 @@
-import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr";
-import { CacheRelay } from "./cache-relay";
-import { Connection } from "./connection";
+import type { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr";
+import type { CacheRelay } from "./cache-relay";
+import type { Connection } from "./connection";
 import { NoteCollection } from "./note-collection";
 import { v4 as uuid } from "uuid";
 

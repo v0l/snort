@@ -1,5 +1,5 @@
-import { ImgProxySettings } from "@/Hooks/useImgProxy";
-import { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes";
+import type { ImgProxySettings } from "@/Hooks/useImgProxy";
+import type { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes";
 import { DefaultImgProxy } from "@/Utils/Const";
 
 export interface UserPreferences {

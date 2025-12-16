@@ -1,8 +1,8 @@
-import { EventKind, NostrEvent, EventSigner, PowMiner } from ".";
+import type { EventKind, NostrEvent, EventSigner, PowMiner } from ".";
 import { HashtagRegex, MentionNostrEntityRegex } from "./const";
 import { getPublicKey, jitter, NostrPrefix, unixNow } from "@snort/shared";
 import { EventExt } from "./event-ext";
-import { NostrLink, tryParseNostrLink } from "./nostr-link";
+import { type NostrLink, tryParseNostrLink } from "./nostr-link";
 
 export class EventBuilder {
   /**

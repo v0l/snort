@@ -5,7 +5,7 @@ import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import Icon from "@/Components/Icons/Icon";
 import { useWallet } from "@/Wallet";
-import { WalletInvoice } from "@snort/wallet";
+import type { WalletInvoice } from "@snort/wallet";
 
 export function WalletSendPage() {
   const wallets = useWallet();

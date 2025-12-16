@@ -1,5 +1,5 @@
-import { UserMetadata } from "@snort/system";
-import { ReactNode } from "react";
+import type { UserMetadata } from "@snort/system";
+import type { ReactNode } from "react";
 import * as HoverCard from "@radix-ui/react-hover-card";
 
 import { ProfileCard } from "./ProfileCard";

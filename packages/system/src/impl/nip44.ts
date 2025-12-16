@@ -1,5 +1,5 @@
 import { nip44 } from "../encryption/nip44";
-import { MessageEncryptor } from "..";
+import type { MessageEncryptor } from "..";
 
 export class Nip44Encryptor implements MessageEncryptor {
   constructor(

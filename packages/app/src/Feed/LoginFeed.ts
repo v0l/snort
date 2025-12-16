@@ -10,7 +10,7 @@ import { System } from "@/system";
 import { unwrap } from "@/Utils";
 import { SnortPubKey } from "@/Utils/Const";
 import { addSubscription } from "@/Utils/Login";
-import { SubscriptionEvent } from "@/Utils/Subscription";
+import type { SubscriptionEvent } from "@/Utils/Subscription";
 
 /**
  * Managed loading data for the current logged in user

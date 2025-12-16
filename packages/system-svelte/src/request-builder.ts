@@ -1,4 +1,4 @@
-import { TaggedNostrEvent, type RequestBuilder, type SystemInterface } from "@snort/system";
+import type { TaggedNostrEvent, RequestBuilder, SystemInterface } from "@snort/system";
 import { getContext } from "svelte";
 
 export function useRequestBuilder(rb: RequestBuilder) {

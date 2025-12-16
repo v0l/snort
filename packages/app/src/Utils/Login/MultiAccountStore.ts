@@ -1,10 +1,10 @@
 import { ExternalStore, getPublicKey, unwrap } from "@snort/shared";
-import { EventKind, EventPublisher, KeyStorage, RelaySettings, UserState, UserStateObject } from "@snort/system";
+import { EventKind, EventPublisher, KeyStorage, type RelaySettings, UserState, type UserStateObject } from "@snort/system";
 import { v4 as uuid } from "uuid";
 
-import { createPublisher, LoginSession, LoginSessionType, SnortAppData } from "@/Utils/Login/index";
+import { createPublisher, type LoginSession, LoginSessionType, type SnortAppData } from "@/Utils/Login/index";
 
-import { DefaultPreferences, UserPreferences } from "./Preferences";
+import { DefaultPreferences, type UserPreferences } from "./Preferences";
 
 const AccountStoreKey = "sessions";
 const LoggedOut = {
@@ -133,7 +133,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   }
 
   allSubscriptions() {
-    return [...this.#accounts.values()].map(a => a.subscriptions).flat();
+    return [...this.#accounts.values()].flatMap(a => a.subscriptions);
   }
 
   switchAccount(id: string) {

@@ -1,7 +1,7 @@
 import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
-import { Tab } from "@/Components/TabSelectors/TabSelectors";
+import type { Tab } from "@/Components/TabSelectors/TabSelectors";
 import { ProfileTabType } from "@/Pages/Profile/ProfileTabType";
 
 const ProfileTabSelectors = {

@@ -1,10 +1,10 @@
 import debug from "debug";
 import { EventEmitter } from "eventemitter3";
-import { BuiltRawReqFilter, Nips, ReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from ".";
-import { Query, QueryTrace, QueryTraceEvent } from "./query";
+import { type BuiltRawReqFilter, Nips, type ReqFilter, type RequestBuilder, type SystemInterface, type TaggedNostrEvent } from ".";
+import { Query, QueryTrace, type QueryTraceEvent } from "./query";
 import { trimFilters } from "./request-trim";
 import { eventMatchesFilter, isRequestSatisfied } from "./request-matcher";
-import { ConnectionType } from "./connection-pool";
+import type { ConnectionType } from "./connection-pool";
 import { EventExt } from "./event-ext";
 import { NegentropyFlow } from "./negentropy/negentropy-flow";
 import { RangeSync } from "./sync/range-sync";

@@ -1,5 +1,5 @@
 import { setLogging } from "./debug";
-import { EventMetadata, NostrEvent, OkResponse, ReqCommand, WorkerMessage, WorkerMessageCommand } from "./types";
+import type { EventMetadata, NostrEvent, OkResponse, ReqCommand, WorkerMessage, WorkerMessageCommand } from "./types";
 import { v4 as uuid } from "uuid";
 
 export interface InitAargs {

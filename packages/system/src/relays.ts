@@ -1,6 +1,6 @@
 import { sanitizeRelayUrl, removeUndefined } from "@snort/shared";
 import EventKind from "./event-kind";
-import { FullRelaySettings, NostrEvent } from "./nostr";
+import type { FullRelaySettings, NostrEvent } from "./nostr";
 
 export function parseRelayTag(tag: Array<string>) {
   if (tag[0] !== "r") return;

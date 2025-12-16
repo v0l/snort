@@ -1,4 +1,4 @@
-import { NostrEvent } from "@snort/system";
+import type { NostrEvent } from "@snort/system";
 import { JsonApi } from "./base";
 
 export interface TrendingProfile {

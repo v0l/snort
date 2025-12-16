@@ -1,11 +1,11 @@
 import {
-  EventKind,
+  type EventKind,
   mapEventToProfile,
-  NostrEvent,
+  type NostrEvent,
   NostrLink,
   RequestBuilder,
-  TaggedNostrEvent,
-  UserMetadata,
+  type TaggedNostrEvent,
+  type UserMetadata,
 } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";

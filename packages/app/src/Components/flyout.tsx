@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 import IconButton from "@/Components/Button/IconButton";

@@ -1,5 +1,5 @@
 import { SafeSync } from "./safe-sync";
-import { decryptSigner, EventBuilder, EventSigner, NostrEvent, NostrLink, SystemInterface } from "..";
+import { decryptSigner, EventBuilder, type EventSigner, type NostrEvent, type NostrLink, type SystemInterface } from "..";
 import debug from "debug";
 import EventEmitter from "eventemitter3";
 

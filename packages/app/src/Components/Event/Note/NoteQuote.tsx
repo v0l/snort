@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import Copy from "@/Components/Copy/Copy";
-import Note, { NotePropsOptions } from "@/Components/Event/EventComponent";
+import Note, { type NotePropsOptions } from "@/Components/Event/EventComponent";
 import Spinner from "@/Components/Icons/Spinner";
 import classNames from "classnames";
 

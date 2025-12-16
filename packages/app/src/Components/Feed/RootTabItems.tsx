@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
-import { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes";
+import type { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes";
 
 export function rootTabItems(base: string, pubKey: string | undefined, tags: Array<string>) {
   const menuItems = [

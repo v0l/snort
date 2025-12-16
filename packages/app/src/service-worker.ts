@@ -6,7 +6,7 @@ import { NostrLink, tryParseNostrLink } from "@snort/system/dist/nostr-link";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
-import { precacheAndRoute, PrecacheEntry } from "workbox-precaching";
+import { precacheAndRoute, type PrecacheEntry } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
 
@@ -131,7 +131,7 @@ self.addEventListener("install", event => {
   self.skipWaiting();
 });
 
-const enum PushType {
+enum PushType {
   Mention = 1,
   Reaction = 2,
   Zap = 3,

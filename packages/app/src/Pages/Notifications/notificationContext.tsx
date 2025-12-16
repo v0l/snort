@@ -1,4 +1,4 @@
-import { EventKind, NostrLink } from "@snort/system";
+import { EventKind, type NostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 
 import { LiveEvent } from "@/Components/LiveStream/LiveEvent";

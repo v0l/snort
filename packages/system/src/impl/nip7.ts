@@ -1,5 +1,5 @@
-import { WorkQueueItem, processWorkQueue, barrierQueue, unwrap } from "@snort/shared";
-import { EventSigner, NostrEvent } from "..";
+import { type WorkQueueItem, processWorkQueue, barrierQueue, unwrap } from "@snort/shared";
+import type { EventSigner, NostrEvent } from "..";
 
 const Nip7Queue: Array<WorkQueueItem> = [];
 processWorkQueue(Nip7Queue);
@@ -62,8 +62,9 @@ export class Nip7Signer implements EventSigner {
       throw new Error("Cannot use NIP-07 signer, not found!");
     }
     return await barrierQueue(Nip7Queue, async () => {
-      const window = globalThis.window;
-      return await window.nostr!.nip44!.encrypt(key, content);
+      const nostr = globalThis.window.nostr;
+      if(!nostr) throw new Error("Nostr signer not found");
+      return await nostr.nip44!.encrypt(key, content);
     });
   }
 
@@ -72,8 +73,9 @@ export class Nip7Signer implements EventSigner {
       throw new Error("Cannot use NIP-07 signer, not found!");
     }
     return await barrierQueue(Nip7Queue, async () => {
-      const window = globalThis.window;
-      return await window.nostr!.nip44!.decrypt(otherKey, content);
+      const nostr = globalThis.window.nostr;
+      if(!nostr) throw new Error("Nostr signer not found");
+      return await nostr.nip44!.decrypt(otherKey, content);
     });
   }
 

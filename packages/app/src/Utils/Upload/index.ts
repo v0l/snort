@@ -1,4 +1,4 @@
-import { EventPublisher, Nip94Tags, NostrEvent } from "@snort/system";
+import { EventPublisher, type Nip94Tags, type NostrEvent } from "@snort/system";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { useMediaServerList } from "@/Hooks/useMediaServerList";

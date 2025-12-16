@@ -5,15 +5,15 @@ import {
   ExternalStore,
   NostrPrefix,
   removeUndefined,
-  TLVEntry,
+  type TLVEntry,
   TLVEntryType,
 } from "@snort/shared";
-import { EventKind, EventPublisher, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { EventKind, type EventPublisher, type NostrEvent, RequestBuilder, type TaggedNostrEvent } from "@snort/system";
 
 import { GiftsCache } from "@/Cache";
-import { GiftWrapCache, UnwrappedGift } from "@/Cache/GiftWrapCache";
-import { Chat, ChatSystem, ChatType, lastReadInChat, setLastReadIn } from "@/chat";
-import { LoginSession } from "@/Utils/Login";
+import type { GiftWrapCache, UnwrappedGift } from "@/Cache/GiftWrapCache";
+import { type Chat, type ChatSystem, ChatType, lastReadInChat, setLastReadIn } from "@/chat";
+import type { LoginSession } from "@/Utils/Login";
 import { GetPowWorker } from "@/Utils/wasm";
 
 export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {

@@ -1,5 +1,5 @@
 import { bech32ToHex, ExternalStore, LNURL, unixNow } from "@snort/shared";
-import { LNWallet, WalletInvoiceState } from "@snort/wallet";
+import { type LNWallet, WalletInvoiceState } from "@snort/wallet";
 import debug from "debug";
 
 import { ProfilesCache } from "@/Cache";

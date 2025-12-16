@@ -1,6 +1,6 @@
-import { encodeTLVEntries, hexToBech32, LNURL, NostrPrefix, TLVEntryType } from "@snort/shared";
-import { CachedMetadata, NostrLink } from "@snort/system";
-import { ZapTarget } from "@snort/wallet";
+import { encodeTLVEntries, hexToBech32, type LNURL, NostrPrefix, TLVEntryType } from "@snort/shared";
+import { type CachedMetadata, NostrLink } from "@snort/system";
+import type { ZapTarget } from "@snort/wallet";
 import { use, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";

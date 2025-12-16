@@ -1,6 +1,6 @@
 import { EventKind } from "@snort/system";
 import classNames from "classnames";
-import { ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
@@ -44,8 +44,7 @@ export default function Topics() {
         onClick={async () => {
           const tags = Object.entries(FixedTopics)
             .filter(([k]) => topics.includes(k))
-            .map(([, v]) => v.tags)
-            .flat();
+            .flatMap(([, v]) => v.tags);
 
           if (tags.length > 0) {
             const ev = await publisher?.generic(eb => {

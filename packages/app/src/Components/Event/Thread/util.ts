@@ -1,5 +1,5 @@
 import { removeUndefined } from "@snort/shared";
-import { EventExt, TaggedNostrEvent } from "@snort/system";
+import { EventExt, type TaggedNostrEvent } from "@snort/system";
 
 export function getReplies(
   from: string,

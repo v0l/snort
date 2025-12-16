@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
-import { SystemSnapshot } from "@snort/system";
-import { ExternalStore } from "@snort/shared";
+import type { SystemSnapshot } from "@snort/system";
+import type { ExternalStore } from "@snort/shared";
 
 export function useSystemState(system: ExternalStore<SystemSnapshot>) {
   return useSyncExternalStore<SystemSnapshot>(

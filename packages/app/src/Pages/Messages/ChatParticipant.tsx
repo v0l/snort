@@ -1,6 +1,6 @@
-import { CachedMetadata } from "@snort/system";
+import type { CachedMetadata } from "@snort/system";
 
-import { ChatParticipant } from "@/chat";
+import type { ChatParticipant } from "@/chat";
 import NoteToSelf from "@/Components/User/NoteToSelf";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useLogin from "@/Hooks/useLogin";

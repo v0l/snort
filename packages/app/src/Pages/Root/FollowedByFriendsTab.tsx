@@ -1,5 +1,5 @@
 import Timeline from "@/Components/Feed/Timeline";
-import { TimelineSubject } from "@/Feed/TimelineFeed";
+import type { TimelineSubject } from "@/Feed/TimelineFeed";
 import useLogin from "@/Hooks/useLogin";
 
 export const FollowedByFriendsTab = () => {

@@ -1,5 +1,5 @@
 import Progress from "@/Components/Progress/Progress";
-import { UploadProgress } from "@/Utils/Upload";
+import type { UploadProgress } from "@/Utils/Upload";
 
 export default function FileUploadProgress({ progress }: { progress: Array<UploadProgress> }) {
   return (

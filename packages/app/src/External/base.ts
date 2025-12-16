@@ -1,5 +1,5 @@
 import { throwIfOffline, unwrap } from "@snort/shared";
-import { EventBuilder, EventKind, EventSigner } from "@snort/system";
+import { EventBuilder, EventKind, type EventSigner } from "@snort/system";
 
 export abstract class JsonApi {
   abstract url: string;

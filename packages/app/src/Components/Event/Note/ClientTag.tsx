@@ -1,10 +1,10 @@
 import Icon from "@/Components/Icons/Icon";
-import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { EventKind, type NostrEvent, NostrLink, type TaggedNostrEvent } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Modal from "@/Components/Modal/Modal";
-import { FingerprintEngine, FingerprintResult } from "./ClientFingerprinting";
+import { FingerprintEngine, type FingerprintResult } from "./ClientFingerprinting";
 
 export function ClientTag({ ev }: { ev: TaggedNostrEvent }) {
   const info = getClientInfo(ev);
@@ -120,7 +120,7 @@ interface ClientInfo {
 }
 
 export function getClientInfo(ev: NostrEvent): ClientInfo | undefined {
-  let tag = ev.tags.find(a => a[0] === "client");
+  const tag = ev.tags.find(a => a[0] === "client");
   if (tag) {
     const link = tag[2] && tag[2].includes(":") ? NostrLink.tryFromTag(["a", tag[2]]) : undefined;
     return {

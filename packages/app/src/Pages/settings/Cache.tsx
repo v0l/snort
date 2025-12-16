@@ -1,7 +1,7 @@
-import { CachedTable } from "@snort/shared";
+import type { CachedTable } from "@snort/shared";
 import { ConnectionCacheRelay } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
-import { ReactNode, use, useEffect, useState, useSyncExternalStore } from "react";
+import { type ReactNode, use, useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { useNavigate } from "react-router-dom";
 

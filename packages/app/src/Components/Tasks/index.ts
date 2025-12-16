@@ -1,7 +1,7 @@
-import { CachedMetadata } from "@snort/system";
+import type { CachedMetadata } from "@snort/system";
 
-import { LoginSession } from "@/Utils/Login";
-import { ReactElement } from "react";
+import type { LoginSession } from "@/Utils/Login";
+import type { ReactElement } from "react";
 
 export interface UITask {
   id: string;

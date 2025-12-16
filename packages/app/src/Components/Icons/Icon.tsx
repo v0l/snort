@@ -1,4 +1,4 @@
-import { forwardRef, HTMLProps } from "react";
+import { forwardRef, type HTMLProps } from "react";
 
 import IconsSvg from "@/Components/Icons/icons.svg";
 

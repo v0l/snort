@@ -1,5 +1,5 @@
-import { NostrEvent } from "@snort/system";
-import { ReactNode } from "react";
+import type { NostrEvent } from "@snort/system";
+import type { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 
 export interface CheckResult {

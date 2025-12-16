@@ -1,9 +1,10 @@
-import { Nip94Tags } from "@snort/system";
+import type { Nip94Tags } from "@snort/system";
 import classNames from "classnames";
-import React, { CSSProperties, useEffect, useRef, useState } from "react";
+import type React from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react"
 import { useInView } from "react-intersection-observer";
 
-import { ProxyImg, ProxyImgProps } from "@/Components/ProxyImg";
+import { ProxyImg, type ProxyImgProps } from "@/Components/ProxyImg";
 import useImgProxy from "@/Hooks/useImgProxy";
 
 export interface MediaElementProps {

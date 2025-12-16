@@ -1,4 +1,4 @@
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, type TaggedNostrEvent } from "@snort/system";
 import { lazy, Suspense, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";

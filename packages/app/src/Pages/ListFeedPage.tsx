@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";
 import PageSpinner from "@/Components/PageSpinner";
-import { TimelineSubject } from "@/Feed/TimelineFeed";
+import type { TimelineSubject } from "@/Feed/TimelineFeed";
 import { Hour } from "@/Utils/Const";
 
 export function ListFeedPage() {

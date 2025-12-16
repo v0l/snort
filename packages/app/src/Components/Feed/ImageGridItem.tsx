@@ -1,5 +1,5 @@
-import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
-import { memo, MouseEvent, ReactNode } from "react";
+import { EventKind, NostrLink, type TaggedNostrEvent } from "@snort/system";
+import { memo, type MouseEvent, type ReactNode } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 

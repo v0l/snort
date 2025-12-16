@@ -4,7 +4,7 @@ import { Fragment, useSyncExternalStore } from "react";
 
 import CloseButton from "@/Components/Button/CloseButton";
 import Icon from "@/Components/Icons/Icon";
-import { UITask } from "@/Components/Tasks/index";
+import type { UITask } from "@/Components/Tasks/index";
 import useLogin from "@/Hooks/useLogin";
 
 import { BackupKeyTask } from "./BackupKey";

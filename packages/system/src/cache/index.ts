@@ -1,4 +1,4 @@
-import { FullRelaySettings, NostrEvent, UserMetadata } from "..";
+import type { FullRelaySettings, NostrEvent, UserMetadata } from "..";
 import { unixNowMs } from "@snort/shared";
 
 export interface CachedBase {
@@ -32,7 +32,7 @@ export function mapEventToProfile(ev: NostrEvent) {
   if (ev.kind !== 0 && ev.kind !== 31990) return;
   try {
     const data: UserMetadata = JSON.parse(ev.content);
-    let ret = {
+    const ret = {
       ...data,
       pubkey: ev.pubkey,
       created: ev.created_at,

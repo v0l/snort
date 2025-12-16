@@ -1,12 +1,12 @@
 import { fetchNip05Pubkey, LNURL, NostrPrefix } from "@snort/shared";
-import { CachedMetadata, tryParseNostrLink } from "@snort/system";
+import { type CachedMetadata, tryParseNostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { use, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { ProxyImg } from "@/Components/ProxyImg";
 import { SpotlightContext } from "@/Components/Spotlight/context";
-import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
+import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors";
 import FollowsList from "@/Components/User/FollowListBase";
 import MutedList from "@/Components/User/MutedList";
 import useFollowsFeed from "@/Feed/FollowsFeed";

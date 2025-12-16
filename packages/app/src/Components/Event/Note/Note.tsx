@@ -1,4 +1,4 @@
-import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrLink, type TaggedNostrEvent } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 import classNames from "classnames";
 import { useCallback, useEffect } from "react";
@@ -9,7 +9,7 @@ import { Relay } from "@/Cache";
 import { NoteProvider } from "@/Components/Event/Note/NoteContext";
 import useModeration from "@/Hooks/useModeration";
 
-import { NoteProps, NotePropsOptions } from "../EventComponent";
+import type { NoteProps, NotePropsOptions } from "../EventComponent";
 import HiddenNote from "../HiddenNote";
 import NoteAppHandler from "./NoteAppHandler";
 import { NoteContent } from "./NoteContent";

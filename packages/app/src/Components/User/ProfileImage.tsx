@@ -1,7 +1,8 @@
-import { UserMetadata } from "@snort/system";
+import type { UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
-import React, { ReactNode } from "react";
+import type React from "react";
+import type { ReactNode } from "react";
 
 import Avatar from "@/Components/User/Avatar";
 import FollowDistanceIndicator from "@/Components/User/FollowDistanceIndicator";

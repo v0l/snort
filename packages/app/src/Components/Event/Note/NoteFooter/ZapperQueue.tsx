@@ -1,4 +1,4 @@
-import { processWorkQueue, WorkQueueItem } from "@snort/shared";
+import { processWorkQueue, type WorkQueueItem } from "@snort/shared";
 
 export const ZapperQueue: Array<WorkQueueItem> = [];
 

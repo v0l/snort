@@ -13,7 +13,7 @@ import {
   TLVEntryType,
   isPrefixTlvIdHex,
 } from "@snort/shared";
-import { EventExt, EventKind, Nip10, NostrEvent, TaggedNostrEvent } from ".";
+import { EventExt, EventKind, Nip10, type NostrEvent, type TaggedNostrEvent } from ".";
 import { findTag } from "./utils";
 import { hexToBytes } from "@noble/hashes/utils.js";
 import { utf8ToBytes } from "@noble/ciphers/utils.js";
@@ -141,7 +141,7 @@ export class NostrLink implements ToNostrEventTag {
   encode(type?: NostrPrefix): string {
     try {
       // cant encode 'naddr' to 'note'/'nevent' because 'id' is not hex
-      let newType = this.type === NostrPrefix.Address ? this.type : (type ?? this.type);
+      const newType = this.type === NostrPrefix.Address ? this.type : (type ?? this.type);
       if (newType === NostrPrefix.Note || newType === NostrPrefix.PrivateKey || newType === NostrPrefix.PublicKey) {
         return hexToBech32(newType, this.id);
       } else if (!isPrefixTlvIdHex(newType)) {
@@ -182,7 +182,7 @@ export class NostrLink implements ToNostrEventTag {
       }
     } else if (this.type === NostrPrefix.Event || this.type === NostrPrefix.Note) {
       const ifSetCheck = <T>(a: T | undefined, b: T) => {
-        return !Boolean(a) || a === b;
+        return !a || a === b;
       };
       return (
         (EventExt.isReplaceable(ev.kind) || ifSetCheck(this.id, ev.id)) &&

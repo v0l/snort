@@ -3,7 +3,7 @@ import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import ProfilePreview from "@/Components/User/ProfilePreview";
 import usePreferences from "@/Hooks/usePreferences";
-import { ZapPoolController, ZapPoolRecipient } from "@/Utils/ZapPoolController";
+import { ZapPoolController, type ZapPoolRecipient } from "@/Utils/ZapPoolController";
 
 function ZapPoolTargetInner({ target }: { target: ZapPoolRecipient }) {
   const profile = useUserProfile(target.pubkey);

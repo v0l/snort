@@ -1,4 +1,4 @@
-import { CachedMetadata, NostrEvent } from "@snort/system";
+import type { CachedMetadata, NostrEvent } from "@snort/system";
 import Fuse from "fuse.js";
 
 export type FuzzySearchResult = {

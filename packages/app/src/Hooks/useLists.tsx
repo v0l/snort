@@ -15,7 +15,7 @@ export function useLinkList(id: string, fn: (rb: RequestBuilder) => void) {
   const listStore = useRequestBuilder(sub);
   return useMemo(() => {
     if (listStore && listStore.length > 0) {
-      return listStore.map(e => NostrLink.fromTags(e.tags)).flat();
+      return listStore.flatMap(e => NostrLink.fromTags(e.tags));
     }
     return [];
   }, [listStore]);

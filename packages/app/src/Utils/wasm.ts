@@ -1,4 +1,4 @@
-import { FlatReqFilter, NostrEvent, Optimizer, PowMiner, PowWorker, ReqFilter } from "@snort/system";
+import { type FlatReqFilter, type NostrEvent, type Optimizer, type PowMiner, PowWorker, type ReqFilter } from "@snort/system";
 import PowWorkerURL from "@snort/system/src/pow-worker.ts?worker&url";
 
 import { unwrap } from "@/Utils/index";

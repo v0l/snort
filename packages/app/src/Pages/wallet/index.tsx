@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { LNWallet, Sats, WalletInvoice } from "@snort/wallet";
+import type { LNWallet, Sats, WalletInvoice } from "@snort/wallet";
 import classNames from "classnames";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";

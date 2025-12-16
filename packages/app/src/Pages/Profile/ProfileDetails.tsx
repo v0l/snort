@@ -1,5 +1,5 @@
-import { LNURL } from "@snort/shared";
-import { CachedMetadata } from "@snort/system";
+import type { LNURL } from "@snort/shared";
+import type { CachedMetadata } from "@snort/system";
 import { useState } from "react";
 
 import Icon from "@/Components/Icons/Icon";

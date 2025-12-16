@@ -1,4 +1,4 @@
-import { EventExt, TaggedNostrEvent } from "@snort/system";
+import { EventExt, type TaggedNostrEvent } from "@snort/system";
 
 import Note from "@/Components/Event/EventComponent";
 import { getReplies } from "@/Components/Event/Thread/util";

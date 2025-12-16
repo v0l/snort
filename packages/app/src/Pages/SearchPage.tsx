@@ -3,9 +3,9 @@ import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";
-import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
+import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors";
 import FollowListBase from "@/Components/User/FollowListBase";
-import { TimelineSubject } from "@/Feed/TimelineFeed";
+import type { TimelineSubject } from "@/Feed/TimelineFeed";
 import useProfileSearch from "@/Hooks/useProfileSearch";
 
 const NOTES = 0;

@@ -1,5 +1,5 @@
-import { CachedMetadata } from ".";
-import { FeedCache, CacheStore } from "@snort/shared";
+import type { CachedMetadata } from ".";
+import { FeedCache, type CacheStore } from "@snort/shared";
 
 export class UserProfileCache extends FeedCache<CachedMetadata> {
   constructor(store?: CacheStore<CachedMetadata>) {

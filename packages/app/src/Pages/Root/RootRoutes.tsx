@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { Outlet, RouteObject, useLocation } from "react-router-dom";
+import { Outlet, type RouteObject, useLocation } from "react-router-dom";
 
 import { LiveStreams } from "@/Components/LiveStream/LiveStreams";
 import { RootTabRoutes } from "@/Pages/Root/RootTabRoutes";

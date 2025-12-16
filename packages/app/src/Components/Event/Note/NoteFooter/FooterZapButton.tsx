@@ -1,8 +1,9 @@
 import { barrierQueue } from "@snort/shared";
-import { NostrLink, ParsedZap, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, type ParsedZap, type TaggedNostrEvent } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { Zapper, ZapTarget } from "@snort/wallet";
-import React, { useEffect, useState } from "react";
+import { Zapper, type ZapTarget } from "@snort/wallet";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
 

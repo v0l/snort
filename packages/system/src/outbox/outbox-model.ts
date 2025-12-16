@@ -1,8 +1,8 @@
-import { EventKind, NostrEvent, parseRelaysFromKind, ReqFilter, RequestBuilder, SystemInterface } from "..";
+import { EventKind, type NostrEvent, parseRelaysFromKind, type ReqFilter, RequestBuilder, type SystemInterface } from "..";
 import { appendDedupe, dedupe, removeUndefined, unixNowMs, unwrap } from "@snort/shared";
-import { FlatReqFilter } from "../query-optimizer";
+import type { FlatReqFilter } from "../query-optimizer";
 import { RelayListCacheExpire } from "../const";
-import { AuthorsRelaysCache, EventFetcher, PickedRelays, DefaultPickNRelays } from ".";
+import { type AuthorsRelaysCache, type EventFetcher, type PickedRelays, DefaultPickNRelays } from ".";
 import debug from "debug";
 import { BaseRequestRouter } from "../request-router";
 
@@ -176,7 +176,7 @@ export class OutboxModel extends BaseRequestRouter {
     const recipients = dedupe([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1])]);
     await this.updateRelayLists(recipients);
     const relays = this.pickTopRelays(recipients, pickN ?? DefaultPickNRelays, "read");
-    const ret = removeUndefined(dedupe(relays.map(a => a.relays).flat()));
+    const ret = removeUndefined(dedupe(relays.flatMap(a => a.relays)));
 
     this.#log("Picked: pattern=%s, input=%O, output=%O", "inbox", ev, ret);
     return ret;
@@ -186,7 +186,7 @@ export class OutboxModel extends BaseRequestRouter {
     const recipients = [pk];
     await this.updateRelayLists(recipients);
     const relays = this.pickTopRelays(recipients, pickN ?? DefaultPickNRelays, "read");
-    const ret = removeUndefined(dedupe(relays.map(a => a.relays).flat()));
+    const ret = removeUndefined(dedupe(relays.flatMap(a => a.relays)));
 
     this.#log("Picked: pattern=%s, input=%s, output=%O", "inbox", pk, ret);
     return ret;

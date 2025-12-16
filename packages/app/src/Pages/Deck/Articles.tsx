@@ -1,6 +1,6 @@
 import { use } from "react";
 
-import Note, { NoteProps } from "@/Components/Event/EventComponent";
+import Note, { type NoteProps } from "@/Components/Event/EventComponent";
 import { useArticles } from "@/Feed/ArticlesFeed";
 import { DeckContext } from "@/Pages/Deck/DeckLayout";
 

@@ -3,10 +3,10 @@ import { trackEvent } from "@/Utils";
 import { generateNewLogin, generateNewLoginKeys } from "@/Utils/Login";
 import { NotEncrypted } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { useState, use, FormEvent } from "react";
+import { useState, use, type FormEvent } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate, Link } from "react-router-dom";
-import { NewUserState } from ".";
+import type { NewUserState } from ".";
 import { Bech32Regex } from "@snort/shared";
 
 export default function SignUp() {

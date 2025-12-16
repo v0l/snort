@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid";
 
 import PageSpinner from "@/Components/PageSpinner";
 import { getAlbyOAuth } from "@/Pages/settings/wallet/utils";
-import { WalletConfig, Wallets } from "@/Wallet";
+import { type WalletConfig, Wallets } from "@/Wallet";
 
 export default function AlbyOAuth() {
   const navigate = useNavigate();

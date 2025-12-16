@@ -1,6 +1,6 @@
 import classNames from "classnames";
 
-import { AsyncIcon, AsyncIconProps } from "@/Components/Button/AsyncIcon";
+import { AsyncIcon, type AsyncIconProps } from "@/Components/Button/AsyncIcon";
 import { formatShort } from "@/Utils/Number";
 
 export const AsyncFooterIcon = (props: AsyncIconProps & { value: number }) => {

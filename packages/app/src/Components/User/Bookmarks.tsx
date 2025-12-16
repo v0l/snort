@@ -1,5 +1,5 @@
-import { TaggedNostrEvent } from "@snort/system";
-import { ChangeEvent, use, useMemo, useState } from "react";
+import type { TaggedNostrEvent } from "@snort/system";
+import { type ChangeEvent, use, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import Note from "@/Components/Event/EventComponent";

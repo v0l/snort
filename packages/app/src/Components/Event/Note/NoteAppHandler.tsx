@@ -1,4 +1,4 @@
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, type TaggedNostrEvent } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";

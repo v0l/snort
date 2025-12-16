@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { ApiHost } from "@/Utils/Const";
-import SnortServiceProvider, { ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
+import SnortServiceProvider, { type ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
 import Nip05 from "@/Components/User/Nip05";
 
 export default function ListHandles() {

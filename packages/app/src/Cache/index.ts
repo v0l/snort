@@ -1,5 +1,5 @@
 import {
-  CacheRelay,
+  type CacheRelay,
   Connection,
   ConnectionCacheRelay,
   UserFollowsCache,

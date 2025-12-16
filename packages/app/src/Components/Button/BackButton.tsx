@@ -1,7 +1,7 @@
 import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 interface BackButtonProps {
   text?: ReactNode;

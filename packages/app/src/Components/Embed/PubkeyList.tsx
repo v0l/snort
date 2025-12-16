@@ -1,5 +1,5 @@
 import { hexToBech32, LNURL } from "@snort/shared";
-import { NostrEvent } from "@snort/system";
+import type { NostrEvent } from "@snort/system";
 import { WalletInvoiceState } from "@snort/wallet";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 

@@ -1,6 +1,6 @@
 import type { UserMetadata } from "@snort/system";
 import classNames from "classnames";
-import { forwardRef, HTMLProps, ReactNode, useMemo } from "react";
+import { forwardRef, type HTMLProps, type ReactNode, useMemo } from "react";
 
 import { ProxyImg } from "@/Components/ProxyImg";
 import { defaultAvatar, getDisplayName } from "@/Utils";
@@ -20,10 +20,10 @@ interface AvatarProps {
 const Avatar = forwardRef<
   HTMLDivElement,
   AvatarProps & Omit<HTMLProps<HTMLDivElement>, "onClick" | "style" | "className">
->(function (
+>((
   { pubkey, user, size = 48, onClick, image, imageOverlay, icons, className, showTitle = true, children, ...others },
   ref,
-) {
+) => {
   const defaultImg = defaultAvatar(pubkey);
   const url = useMemo(() => {
     if ((image?.length ?? 0) > 0) return image;

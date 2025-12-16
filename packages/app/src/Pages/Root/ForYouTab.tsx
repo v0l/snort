@@ -1,11 +1,11 @@
-import { EventKind, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { EventKind, type NostrEvent, RequestBuilder, type TaggedNostrEvent } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 import { memo, useEffect, useMemo, useState } from "react";
 import { useNavigationType } from "react-router-dom";
 
 import { Relay } from "@/Cache";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
-import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
+import useTimelineFeed, { type TimelineFeedOptions, type TimelineSubject } from "@/Feed/TimelineFeed";
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useHistoryState from "@/Hooks/useHistoryState";
 import useLogin from "@/Hooks/useLogin";

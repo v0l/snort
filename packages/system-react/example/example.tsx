@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { SnortContext, useRequestBuilder, useUserProfile } from "../src";
 
-import { NostrSystem, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { NostrSystem, RequestBuilder, type TaggedNostrEvent } from "@snort/system";
 
 const System = new NostrSystem({});
 

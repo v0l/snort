@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { NostrLink, parseNostrLink } from "../src/nostr-link";
 import { NostrPrefix } from "@snort/shared";
-import { NostrEvent } from "../src/nostr";
+import type { NostrEvent } from "../src/nostr";
 
 describe("NostrLink", () => {
   describe("d tag handling", () => {

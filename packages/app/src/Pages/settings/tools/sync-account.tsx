@@ -1,5 +1,5 @@
 import { unwrap } from "@snort/shared";
-import { RangeSync, TaggedNostrEvent } from "@snort/system";
+import { RangeSync, type TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { use, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";

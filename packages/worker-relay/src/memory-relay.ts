@@ -1,5 +1,5 @@
 import { EventEmitter } from "eventemitter3";
-import { NostrEvent, RelayHandler, RelayHandlerEvents, ReqFilter, eventMatchesFilter, EventMetadata } from "./types";
+import { type NostrEvent, type RelayHandler, type RelayHandlerEvents, type ReqFilter, eventMatchesFilter, type EventMetadata } from "./types";
 import { debugLog } from "./debug";
 
 /**
@@ -25,7 +25,7 @@ export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements R
   }
 
   summary(): Record<string, number> {
-    let ret = {} as Record<string, number>;
+    const ret = {} as Record<string, number>;
     for (const [k, v] of this.#events) {
       ret[v.kind.toString()] ??= 0;
       ret[v.kind.toString()]++;

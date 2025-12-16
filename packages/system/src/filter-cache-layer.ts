@@ -1,6 +1,6 @@
-import { BuiltRawReqFilter } from "./request-builder";
-import { NostrEvent } from "./nostr";
-import { Query } from "./query";
+import type { BuiltRawReqFilter } from "./request-builder";
+import type { NostrEvent } from "./nostr";
+import type { Query } from "./query";
 
 export interface EventCache {
   bulkGet: (ids: Array<string>) => Promise<Array<NostrEvent>>;

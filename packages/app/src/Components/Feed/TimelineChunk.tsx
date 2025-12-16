@@ -1,8 +1,8 @@
-import { NostrEvent, RequestBuilder } from "@snort/system";
+import { type NostrEvent, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
-import { ReactNode, useMemo } from "react";
+import { type ReactNode, useMemo } from "react";
 
-import { WindowChunk } from "@/Hooks/useTimelineChunks";
+import type { WindowChunk } from "@/Hooks/useTimelineChunks";
 import { TimelineRenderer } from "./TimelineRenderer";
 
 export interface TimelineChunkProps {

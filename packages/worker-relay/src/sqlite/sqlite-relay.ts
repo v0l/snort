@@ -1,6 +1,6 @@
-import sqlite3InitModule, { Database, SAHPoolUtil, Sqlite3Static } from "@sqlite.org/sqlite-wasm";
+import sqlite3InitModule, { type Database, type SAHPoolUtil, type Sqlite3Static } from "@sqlite.org/sqlite-wasm";
 import { EventEmitter } from "eventemitter3";
-import { EventMetadata, NostrEvent, RelayHandler, RelayHandlerEvents, ReqFilter, unixNowMs } from "../types";
+import { type EventMetadata, type NostrEvent, type RelayHandler, type RelayHandlerEvents, type ReqFilter, unixNowMs } from "../types";
 import migrate from "./migrations";
 import { debugLog } from "../debug";
 
@@ -102,7 +102,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
    */
   eventBatch(evs: Array<NostrEvent>) {
     const start = unixNowMs();
-    let eventsInserted: Array<NostrEvent> = [];
+    const eventsInserted: Array<NostrEvent> = [];
     this.db?.transaction(db => {
       for (const ev of evs) {
         if (this.#insertEvent(db, ev)) {
@@ -485,7 +485,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
 
     if (shouldIndex) {
       // Always include content + any searchable tag content
-      let fullContent = [ev.content, indexContent, searchableTagContent]
+      const fullContent = [ev.content, indexContent, searchableTagContent]
         .filter(content => content && content.trim().length > 0)
         .join(" ");
 

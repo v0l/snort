@@ -1,6 +1,6 @@
 import { unixNow } from "@snort/shared";
 import EventEmitter from "eventemitter3";
-import { ReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from "..";
+import { type ReqFilter, RequestBuilder, type SystemInterface, type TaggedNostrEvent } from "..";
 import { v4 as uuid } from "uuid";
 
 /**

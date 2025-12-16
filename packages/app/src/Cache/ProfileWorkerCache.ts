@@ -1,4 +1,4 @@
-import { CachedMetadata, CacheRelay, EventKind, mapEventToProfile, NostrEvent } from "@snort/system";
+import { type CachedMetadata, type CacheRelay, EventKind, mapEventToProfile, type NostrEvent } from "@snort/system";
 import { WorkerBaseCache } from "./worker-cached";
 
 export class ProfileCacheRelayWorker extends WorkerBaseCache<CachedMetadata> {

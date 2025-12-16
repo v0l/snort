@@ -2,19 +2,19 @@ import { unwrap } from "@snort/shared";
 
 import {
   EventKind,
-  EventSigner,
-  FullRelaySettings,
-  NostrEvent,
+  type EventSigner,
+  type FullRelaySettings,
+  type NostrEvent,
   NostrLink,
-  NotSignedNostrEvent,
-  PowMiner,
+  type NotSignedNostrEvent,
+  type PowMiner,
   PrivateKeySigner,
-  RelaySettings,
+  type RelaySettings,
   settingsToRelayTag,
-  SignerSupports,
-  TaggedNostrEvent,
-  ToNostrEventTag,
-  UserMetadata,
+  type SignerSupports,
+  type TaggedNostrEvent,
+  type ToNostrEventTag,
+  type UserMetadata,
 } from ".";
 
 import { EventBuilder } from "./event-builder";

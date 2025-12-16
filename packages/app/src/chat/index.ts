@@ -1,12 +1,12 @@
-import { encodeTLVEntries, ExternalStore, NostrPrefix, TLVEntry, TLVEntryType, unixNow, unwrap } from "@snort/shared";
+import { encodeTLVEntries, type ExternalStore, NostrPrefix, type TLVEntry, TLVEntryType, unixNow, unwrap } from "@snort/shared";
 import {
   EventKind,
-  EventPublisher,
-  NostrEvent,
-  RequestBuilder,
-  SystemInterface,
-  TaggedNostrEvent,
-  UserMetadata,
+  type EventPublisher,
+  type NostrEvent,
+  type RequestBuilder,
+  type SystemInterface,
+  type TaggedNostrEvent,
+  type UserMetadata,
 } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useEffect, useMemo, useSyncExternalStore } from "react";
@@ -15,7 +15,7 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
 import { findTag } from "@/Utils";
-import { LoginSession } from "@/Utils/Login";
+import type { LoginSession } from "@/Utils/Login";
 
 import { Nip17Chats, Nip17ChatSystem } from "./nip17";
 

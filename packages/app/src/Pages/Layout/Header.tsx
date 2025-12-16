@@ -1,8 +1,9 @@
 import { Bech32Regex, bech32ToHex, NostrPrefix, unwrap } from "@snort/shared";
-import { EventKind, NostrLink, tryParseNostrLink } from "@snort/system";
+import { EventKind, type NostrLink, tryParseNostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 import classNames from "classnames";
-import React, { useCallback, useMemo } from "react";
+import type React from "react";
+import { useCallback, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
 

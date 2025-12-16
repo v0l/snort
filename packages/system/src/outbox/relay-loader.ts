@@ -1,4 +1,4 @@
-import { EventKind, RequestBuilder, TaggedNostrEvent, UsersRelays, parseRelaysFromKind } from "..";
+import { EventKind, RequestBuilder, type TaggedNostrEvent, type UsersRelays, parseRelaysFromKind } from "..";
 import { unixNowMs } from "@snort/shared";
 import { RelayListCacheExpire } from "../const";
 import { BackgroundLoader } from "../background-loader";

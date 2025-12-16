@@ -1,4 +1,4 @@
-import { CachedMetadata } from "@snort/system";
+import type { CachedMetadata } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 

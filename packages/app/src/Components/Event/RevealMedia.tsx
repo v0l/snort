@@ -1,7 +1,7 @@
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import { MediaElement, MediaElementProps } from "@/Components/Embed/MediaElement";
+import { MediaElement, type MediaElementProps } from "@/Components/Embed/MediaElement";
 import Reveal from "@/Components/Event/Reveal";
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
@@ -24,7 +24,7 @@ export default function RevealMedia(props: RevealMediaProps) {
 
   const url = new URL(props.src);
   const hostname = url.hostname;
-  let ext = url.pathname.match(FileExtensionRegex);
+  const ext = url.pathname.match(FileExtensionRegex);
   const mime = extensionToMime(ext?.[1] ?? "") ?? props.meta?.mimeType ?? "unknown";
 
   if (hideMedia) {

@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-import { minePow, NostrPowEvent } from "./pow-util";
+import { minePow, type NostrPowEvent } from "./pow-util";
 
 export interface PowWorkerMessage {
   id: string;

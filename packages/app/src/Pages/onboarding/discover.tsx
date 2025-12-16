@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import TrendingUsers from "@/Components/Trending/TrendingUsers";
 
-import { NewUserState } from ".";
+import type { NewUserState } from ".";
 
 export default function Discover() {
   const location = useLocation();

@@ -1,4 +1,4 @@
-import { UserMetadata } from "@snort/system";
+import type { UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
 import { useMemo } from "react";

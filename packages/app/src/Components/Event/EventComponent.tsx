@@ -1,5 +1,5 @@
-import { EventKind, NostrEvent, parseIMeta, TaggedNostrEvent } from "@snort/system";
-import { ReactNode } from "react";
+import { EventKind, NostrEvent, parseIMeta, type TaggedNostrEvent } from "@snort/system";
+import type { ReactNode } from "react";
 
 import PubkeyList from "@/Components/Embed/PubkeyList";
 import ZapstrEmbed from "@/Components/Embed/ZapstrEmbed";

@@ -1,4 +1,4 @@
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, type TaggedNostrEvent } from "@snort/system";
 import { Link } from "react-router-dom";
 
 import NoteTime from "@/Components/Event/Note/NoteTime";
@@ -7,7 +7,7 @@ import ProfileImage from "@/Components/User/ProfileImage";
 
 export default function TrendingNote({ event }: { event: TaggedNostrEvent }) {
   // replace newlines with spaces, replace double spaces with single spaces
-  const content = event.content.slice(0, 80).replace(/\n/g, " ").replace(/  +/g, " ");
+  const content = event.content.slice(0, 80).replace(/\n/g, " ").replace(/ {2,}/g, " ");
   return (
     <Link
       to={`/${NostrLink.fromEvent(event).encode(CONFIG.eventLinkPrefix)}`}

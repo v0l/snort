@@ -1,5 +1,5 @@
 import { sanitizeRelayUrl, unwrap } from "@snort/shared";
-import { OkResponse } from "@snort/system";
+import type { OkResponse } from "@snort/system";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 

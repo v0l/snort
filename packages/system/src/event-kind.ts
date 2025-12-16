@@ -1,4 +1,4 @@
-const enum EventKind {
+enum EventKind {
   Unknown = -1,
   SetMetadata = 0,
   TextNote = 1,

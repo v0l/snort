@@ -38,21 +38,19 @@ function getUint8Memory0() {
 
 const lTextEncoder = typeof TextEncoder === "undefined" ? (0, module.require)("util").TextEncoder : TextEncoder;
 
-let cachedTextEncoder = new lTextEncoder("utf-8");
+const cachedTextEncoder = new lTextEncoder("utf-8");
 
 const encodeString =
   typeof cachedTextEncoder.encodeInto === "function"
-    ? function (arg, view) {
-        return cachedTextEncoder.encodeInto(arg, view);
-      }
-    : function (arg, view) {
+    ? ((arg, view) => cachedTextEncoder.encodeInto(arg, view))
+    : ((arg, view) => {
         const buf = cachedTextEncoder.encode(arg);
         view.set(buf);
         return {
           read: arg.length,
           written: buf.length,
         };
-      };
+      });
 
 function passStringToWasm0(arg, malloc, realloc) {
   if (realloc === undefined) {
@@ -117,7 +115,7 @@ function addHeapObject(obj) {
 
 const lTextDecoder = typeof TextDecoder === "undefined" ? (0, module.require)("util").TextDecoder : TextDecoder;
 
-let cachedTextDecoder = new lTextDecoder("utf-8", { ignoreBOM: true, fatal: true });
+const cachedTextDecoder = new lTextDecoder("utf-8", { ignoreBOM: true, fatal: true });
 
 cachedTextDecoder.decode();
 
@@ -462,7 +460,7 @@ export function __wbg_length_fff51ee6522a1a18(arg0) {
 }
 
 export function __wbg_new_898a68150f225f2e() {
-  const ret = new Array();
+  const ret = [];
   return addHeapObject(ret);
 }
 
@@ -477,7 +475,7 @@ export function __wbg_next_526fc47e980da008(arg0) {
 }
 
 export function __wbg_next_ddb3312ca1c4e32a() {
-  return handleError(function (arg0) {
+  return handleError((arg0) => {
     const ret = getObject(arg0).next();
     return addHeapObject(ret);
   }, arguments);
@@ -499,14 +497,14 @@ export function __wbg_iterator_97f0c81209c6c35a() {
 }
 
 export function __wbg_get_97b561fb56f034b5() {
-  return handleError(function (arg0, arg1) {
+  return handleError((arg0, arg1) => {
     const ret = Reflect.get(getObject(arg0), getObject(arg1));
     return addHeapObject(ret);
   }, arguments);
 }
 
 export function __wbg_call_cb65541d95d71282() {
-  return handleError(function (arg0, arg1) {
+  return handleError((arg0, arg1) => {
     const ret = getObject(arg0).call(getObject(arg1));
     return addHeapObject(ret);
   }, arguments);

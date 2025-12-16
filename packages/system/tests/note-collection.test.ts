@@ -1,4 +1,4 @@
-import { TaggedNostrEvent } from "../src/nostr";
+import type { TaggedNostrEvent } from "../src/nostr";
 import { describe, expect, test } from "bun:test";
 import { NoteCollection, KeyedReplaceableNoteStore } from "../src/note-collection";
 

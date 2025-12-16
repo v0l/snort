@@ -8,20 +8,11 @@
     "build": "bun --cwd=packages/shared run build && bun --cwd=packages/system run build && bun --cwd=packages/wallet run build && bun --cwd=packages/worker-relay run build && bun --cwd=packages/app run build",
     "push-prod": "git switch snort-prod && git merge --ff-only main && git push && git checkout main",
     "docs": "typedoc --entryPointStrategy packages ./packages/* --exclude ./packages/app --exclude ./packages/webrtc-server --name snort.social",
-    "pre:commit": "bun --cwd=packages/app run intl-extract && bun --cwd=packages/app run intl-compile && bunx prettier --write ."
-  },
-  "prettier": {
-    "printWidth": 120,
-    "bracketSameLine": true,
-    "arrowParens": "avoid",
-    "trailingComma": "all",
-    "endOfLine": "lf"
+    "pre:commit": "bun --cwd=packages/app run intl-extract && bun --cwd=packages/app run intl-compile && bunx --bun biome lint --write"
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20251011.0",
-    "eslint": "^9.37.0",
     "jiti": "^2.6.1",
-    "prettier": "^3.6.2",
     "typescript": "^5.9.3"
   },
   "devDependencies": {

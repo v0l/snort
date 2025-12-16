@@ -1,6 +1,6 @@
 import debug from "debug";
-import { NostrEvent, NotSignedNostrEvent } from "../nostr";
-import { EventSigner } from "../signer";
+import type { NostrEvent, NotSignedNostrEvent } from "../nostr";
+import type { EventSigner } from "../signer";
 import { v4 as uuid } from "uuid";
 import { bech32ToHex } from "@snort/shared";
 

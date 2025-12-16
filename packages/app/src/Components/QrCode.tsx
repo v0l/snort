@@ -35,7 +35,7 @@ export default function QrCode(props: QrCodeProps) {
       qrRef.current.innerHTML = "";
       qr.append(qrRef.current);
       if (props.link) {
-        qrRef.current.onclick = function () {
+        qrRef.current.onclick = () => {
           const elm = document.createElement("a");
           elm.href = props.link ?? "";
           elm.click();

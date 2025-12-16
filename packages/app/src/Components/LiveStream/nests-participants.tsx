@@ -1,5 +1,5 @@
 import { dedupe, unixNow } from "@snort/shared";
-import { EventKind, NostrLink, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { type EventKind, NostrLink, RequestBuilder, type TaggedNostrEvent } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 

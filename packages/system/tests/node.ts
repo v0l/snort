@@ -1,4 +1,4 @@
-import { NostrSystem, SystemInterface } from "..";
+import { NostrSystem, type SystemInterface } from "..";
 
 const Relay = "wss://relay.snort.social/";
 

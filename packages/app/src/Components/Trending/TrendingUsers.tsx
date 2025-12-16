@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import PageSpinner from "@/Components/PageSpinner";
-import FollowListBase, { FollowListBaseProps } from "@/Components/User/FollowListBase";
+import FollowListBase, { type FollowListBaseProps } from "@/Components/User/FollowListBase";
 import NostrBandApi from "@/External/NostrBand";
 
 import { ErrorOrOffline } from "../ErrorOrOffline";

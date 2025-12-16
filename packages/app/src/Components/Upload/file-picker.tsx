@@ -6,7 +6,7 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import useImgProxy from "@/Hooks/useImgProxy";
 import useLogin from "@/Hooks/useLogin";
 import { useMediaServerList } from "@/Hooks/useMediaServerList";
-import { BlobDescriptor, Blossom } from "@/Utils/Upload/blossom";
+import { type BlobDescriptor, Blossom } from "@/Utils/Upload/blossom";
 
 import AsyncButton from "../Button/AsyncButton";
 

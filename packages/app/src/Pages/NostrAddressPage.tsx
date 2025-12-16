@@ -16,7 +16,7 @@ export default function NostrAddressPage() {
           defaultMessage="Nostr address' use the <a>NIP-05</a> specification which is a DNS based verification spec which helps to validate you as a real user."
           values={{
             a: c => (
-              <a href="https://nostr-nips.com/nip-05" target="_blank" className="!underline">
+              <a href="https://nostr-nips.com/nip-05" target="_blank" className="!underline" rel="noopener">
                 {c}
               </a>
             ),

@@ -1,4 +1,4 @@
-import { EventPublisher, FullRelaySettings, RelaySettings, SystemInterface } from "@snort/system";
+import type { EventPublisher, FullRelaySettings, RelaySettings, SystemInterface } from "@snort/system";
 
 import { Blasters } from "@/Utils/Const";
 

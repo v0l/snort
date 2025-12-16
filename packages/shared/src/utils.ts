@@ -247,7 +247,7 @@ export function removeUndefined<T>(v: Array<T | undefined>) {
 /**
  * Reaction types
  */
-export const enum Reaction {
+export enum Reaction {
   Positive = "+",
   Negative = "-",
 }

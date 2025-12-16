@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
-import { NostrEvent } from "./nostr";
-import { PowWorkerMessage } from "./pow-worker";
+import type { NostrEvent } from "./nostr";
+import type { PowWorkerMessage } from "./pow-worker";
 
 export interface PowMiner {
   minePow(ev: NostrEvent, target: number): Promise<NostrEvent>;

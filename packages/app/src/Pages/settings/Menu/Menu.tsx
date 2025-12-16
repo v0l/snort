@@ -1,4 +1,4 @@
-import { ReactNode, useCallback } from "react";
+import { type ReactNode, useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 

@@ -70,8 +70,7 @@ steps:
       - bun install
       - bun run build
       - bun test
-      - bun run --filter @snort/app eslint
-      - bun run prettier --check .
+      - bunx --bun biome lint
 volumes:
   - name: cache
     claim:
@@ -110,7 +109,7 @@ steps:
       - bun install
       - bunx @crowdin/cli upload sources -b main -T $CTOKEN
       - bunx @crowdin/cli pull -b main -T $CTOKEN
-      - bun run prettier --write .
+      - bunx --bun biome lint --write
       - git add .
       - >
         if output=$(git status --porcelain) && [ -n "$output" ]; then

@@ -1,5 +1,5 @@
 import { ExternalStore, unwrap } from "@snort/shared";
-import { LNWallet, loadWallet, WalletInfo, WalletKind } from "@snort/wallet";
+import { type LNWallet, loadWallet, type WalletInfo, WalletKind } from "@snort/wallet";
 import { useEffect, useSyncExternalStore } from "react";
 
 export interface WalletConfig {

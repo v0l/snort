@@ -1,7 +1,7 @@
 import { Nip10 } from "../src/impl/nip10";
 import { describe, expect, test } from "bun:test";
 import { NostrPrefix } from "@snort/shared";
-import { TaggedNostrEvent } from "../src/nostr";
+import type { TaggedNostrEvent } from "../src/nostr";
 import { EventBuilder } from "../src/event-builder";
 
 describe("Nip10", () => {

@@ -1,11 +1,11 @@
-import { TaggedNostrEvent } from "@snort/system";
+import type { TaggedNostrEvent } from "@snort/system";
 import { Fragment, useMemo, useState } from "react";
-import { FormattedMessage, MessageDescriptor, useIntl } from "react-intl";
+import { FormattedMessage, type MessageDescriptor, useIntl } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
 import Modal from "@/Components/Modal/Modal";
 import { useNoteContext } from "@/Components/Event/Note/NoteContext";
-import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
+import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors";
 import ProfileImage from "@/Components/User/ProfileImage";
 import ZapAmount from "@/Components/zap-amount";
 import useWoT from "@/Hooks/useWoT";

@@ -1,6 +1,6 @@
 import { unixNow } from "@snort/shared";
-import { EventKind, NostrEvent, RequestBuilder } from "@snort/system";
-import { ReactNode, useCallback } from "react";
+import { EventKind, type NostrEvent, type RequestBuilder } from "@snort/system";
+import { type ReactNode, useCallback } from "react";
 
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useHistoryState from "@/Hooks/useHistoryState";

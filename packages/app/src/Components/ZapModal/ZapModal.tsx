@@ -1,11 +1,11 @@
-import { LNURLSuccessAction } from "@snort/shared";
-import { Zapper, ZapTarget, ZapTargetResult } from "@snort/wallet";
-import { ReactNode, useEffect, useState } from "react";
+import type { LNURLSuccessAction } from "@snort/shared";
+import { Zapper, type ZapTarget, type ZapTargetResult } from "@snort/wallet";
+import { type ReactNode, useEffect, useState } from "react";
 
 import CloseButton from "@/Components/Button/CloseButton";
 import Modal from "@/Components/Modal/Modal";
 import { SuccessAction } from "@/Components/ZapModal/SuccessAction";
-import { SendSatsInputSelection, ZapModalInput } from "@/Components/ZapModal/ZapModalInput";
+import { type SendSatsInputSelection, ZapModalInput } from "@/Components/ZapModal/ZapModalInput";
 import { ZapModalInvoice } from "@/Components/ZapModal/ZapModalInvoice";
 import { ZapModalTitle } from "@/Components/ZapModal/ZapModalTitle";
 import { ZapType } from "@/Components/ZapModal/ZapType";

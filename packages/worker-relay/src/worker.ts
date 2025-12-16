@@ -4,14 +4,14 @@ import { SqliteRelay } from "./sqlite/sqlite-relay";
 import { InMemoryRelay } from "./memory-relay";
 import { setLogging } from "./debug";
 import {
-  NostrEvent,
-  RelayHandler,
-  ReqCommand,
-  ReqFilter,
-  WorkerMessage,
+  type NostrEvent,
+  type RelayHandler,
+  type ReqCommand,
+  type ReqFilter,
+  type WorkerMessage,
   unixNowMs,
-  EventMetadata,
-  OkResponse,
+  type EventMetadata,
+  type OkResponse,
 } from "./types";
 import { getForYouFeed } from "./forYouFeed";
 
@@ -133,7 +133,7 @@ const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: Mes
       }
       case "delete": {
         const req = msg.args as ReqCommand;
-        let results = [];
+        const results = [];
         const filters = req.slice(2) as Array<ReqFilter>;
         for (const r of filters) {
           const c = relay!.delete(r);

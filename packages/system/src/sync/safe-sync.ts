@@ -1,13 +1,13 @@
 import EventEmitter from "eventemitter3";
 import {
   EventExt,
-  EventSigner,
+  type EventSigner,
   EventType,
-  NostrEvent,
-  NostrLink,
-  NotSignedNostrEvent,
+  type NostrEvent,
+  type NostrLink,
+  type NotSignedNostrEvent,
   RequestBuilder,
-  SystemInterface,
+  type SystemInterface,
 } from "..";
 import { unixNow } from "@snort/shared";
 import debug from "debug";

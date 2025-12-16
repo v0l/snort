@@ -1,8 +1,8 @@
-import { EventKind, EventPublisher, NostrEvent, TaggedNostrEvent } from "@snort/system";
+import { EventKind, type EventPublisher, type NostrEvent, type TaggedNostrEvent } from "@snort/system";
 
 import { findTag, unwrap } from "@/Utils";
 
-import { RefreshFeedCache, TWithCreated } from "./RefreshFeedCache";
+import { RefreshFeedCache, type TWithCreated } from "./RefreshFeedCache";
 
 export interface UnwrappedGift {
   id: string;

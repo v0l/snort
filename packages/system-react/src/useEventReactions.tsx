@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { normalizeReaction, Reaction } from "@snort/shared";
-import { EventKind, NostrLink, parseZap, TaggedNostrEvent } from "@snort/system";
+import { EventKind, type NostrLink, parseZap, type TaggedNostrEvent } from "@snort/system";
 
 /**
  * Parse reactions to a given event from a set of related events

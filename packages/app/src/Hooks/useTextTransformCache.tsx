@@ -1,4 +1,4 @@
-import { ParsedFragment, transformText } from "@snort/system";
+import { type ParsedFragment, transformText } from "@snort/system";
 import { LRUCache } from "typescript-lru-cache";
 
 const TextCache = new LRUCache<string, Array<ParsedFragment>>({

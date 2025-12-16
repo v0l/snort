@@ -1,6 +1,6 @@
-import { EventKind, EventPublisher } from "@snort/system";
+import { EventKind, type EventPublisher } from "@snort/system";
 
-import { ServiceError, ServiceProvider } from "./ServiceProvider";
+import { type ServiceError, ServiceProvider } from "./ServiceProvider";
 
 export interface ManageHandle {
   id: string;

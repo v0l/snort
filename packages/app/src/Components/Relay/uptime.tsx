@@ -1,5 +1,5 @@
 import { sanitizeRelayUrl, unixNow } from "@snort/shared";
-import { EventKind, RequestBuilder } from "@snort/system";
+import { type EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 

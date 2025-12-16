@@ -3,9 +3,9 @@ import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 import { unixNowMs } from "@snort/shared";
 
-import { ReqFilter, TaggedNostrEvent } from ".";
+import type { ReqFilter, TaggedNostrEvent } from ".";
 import { NoteCollection } from "./note-collection";
-import { RequestBuilder } from "./request-builder";
+import type { RequestBuilder } from "./request-builder";
 import { eventMatchesFilter } from "./request-matcher";
 
 export enum QueryTraceState {
@@ -399,7 +399,7 @@ export class Query extends EventEmitter<QueryEvents> {
   async #emitFilters() {
     if (this.requests.length === 0) return;
     this.#log("Starting emit of %s", this.id);
-    let rawFilters = [...this.requests];
+    const rawFilters = [...this.requests];
     this.requests = [];
     if (this.#replaceable) {
       rawFilters.push(...this.filters);

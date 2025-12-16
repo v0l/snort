@@ -1,4 +1,4 @@
-import { ParsedZap } from "@snort/system";
+import type { ParsedZap } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import Text from "@/Components/Text/Text";

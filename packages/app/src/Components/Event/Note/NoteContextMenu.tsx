@@ -1,4 +1,4 @@
-import { EventKind, NostrEvent, NostrLink } from "@snort/system";
+import { EventKind, type NostrEvent, NostrLink } from "@snort/system";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";

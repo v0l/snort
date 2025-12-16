@@ -22,11 +22,10 @@ export function encodeTLV(prefix: string, id: Uint8Array, relays?: string[], kin
   const tl0 = [0, id.length, ...id];
   const tl1 =
     relays
-      ?.map(a => {
+      ?.flatMap(a => {
         const data = utf8ToBytes(a);
         return [1, data.length, ...data];
-      })
-      .flat() ?? [];
+      }) ?? [];
 
   const tl2 = author ? [2, 32, ...hexToBytes(author)] : [];
   const tl3 = kind ? [3, 4, ...new Uint8Array(new Uint32Array([kind]).buffer).reverse()] : [];

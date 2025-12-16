@@ -1,5 +1,5 @@
 import { ExternalStore } from "@snort/shared";
-import { QueryTraceEvent, QueryTraceState } from "./query";
+import { type QueryTraceEvent, QueryTraceState } from "./query";
 
 export interface TimelineEntry {
   event: QueryTraceEvent;

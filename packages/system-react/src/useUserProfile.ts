@@ -1,5 +1,5 @@
 import { use, useSyncExternalStore } from "react";
-import { CachedMetadata } from "@snort/system";
+import type { CachedMetadata } from "@snort/system";
 import { SnortContext } from "./context";
 
 /**

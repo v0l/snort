@@ -2,7 +2,7 @@ import { getPublicKey } from "@snort/shared";
 import { EventExt } from "./event-ext";
 import { Nip4WebCryptoEncryptor } from "./impl/nip4";
 import { Nip44Encryptor } from "./impl/nip44";
-import { NostrEvent, NotSignedNostrEvent } from "./nostr";
+import type { NostrEvent, NotSignedNostrEvent } from "./nostr";
 import { bytesToHex, randomBytes } from "@noble/hashes/utils.js";
 import { schnorr } from "@noble/curves/secp256k1.js";
 

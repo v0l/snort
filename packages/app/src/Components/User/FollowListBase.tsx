@@ -1,8 +1,8 @@
 import classNames from "classnames";
-import { ReactNode, useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import ProfilePreview, { ProfilePreviewProps } from "@/Components/User/ProfilePreview";
+import ProfilePreview, { type ProfilePreviewProps } from "@/Components/User/ProfilePreview";
 import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
 import useWoT from "@/Hooks/useWoT";

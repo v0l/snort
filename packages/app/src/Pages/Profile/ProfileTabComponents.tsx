@@ -1,4 +1,4 @@
-import { EventKind, NostrLink, ParsedZap } from "@snort/system";
+import { EventKind, NostrLink, type ParsedZap } from "@snort/system";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -12,7 +12,7 @@ import ZapAmount from "@/Components/zap-amount";
 import useFollowersFeed from "@/Feed/FollowersFeed";
 import useFollowsFeed from "@/Feed/FollowsFeed";
 import useRelaysFeed from "@/Feed/RelaysFeed";
-import { TimelineSubject } from "@/Feed/TimelineFeed";
+import type { TimelineSubject } from "@/Feed/TimelineFeed";
 import useZapsFeed from "@/Feed/ZapsFeed";
 import { useBookmarkList, usePinList } from "@/Hooks/useLists";
 import { NostrPrefix } from "@snort/shared";

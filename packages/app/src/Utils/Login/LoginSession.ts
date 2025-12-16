@@ -1,7 +1,7 @@
-import { KeyStorage, UserState } from "@snort/system";
+import type { KeyStorage, UserState } from "@snort/system";
 
-import { UserPreferences } from "@/Utils/Login/index";
-import { SubscriptionEvent } from "@/Utils/Subscription";
+import type { UserPreferences } from "@/Utils/Login/index";
+import type { SubscriptionEvent } from "@/Utils/Subscription";
 
 /**
  * Stores latest copy of an item
@@ -11,7 +11,7 @@ export interface Newest<T> {
   timestamp: number;
 }
 
-export const enum LoginSessionType {
+export enum LoginSessionType {
   PrivateKey = "private_key",
   PublicKey = "public_key",
   Nip7 = "nip7",

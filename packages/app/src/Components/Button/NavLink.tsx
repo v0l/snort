@@ -1,4 +1,4 @@
-import { NavLink as RouterNavLink, NavLinkProps, useLocation } from "react-router-dom";
+import { NavLink as RouterNavLink, type NavLinkProps, useLocation } from "react-router-dom";
 
 export default function NavLink(props: NavLinkProps) {
   const { to, onClick, ...rest } = props;

@@ -1,7 +1,7 @@
 import { EventExt, EventType } from "../src/event-ext";
 import { describe, expect, test } from "bun:test";
 import { NostrPrefix } from "@snort/shared";
-import { NostrEvent } from "../src/nostr";
+import type { NostrEvent } from "../src/nostr";
 import EventKind from "../src/event-kind";
 
 describe("EventExt", () => {

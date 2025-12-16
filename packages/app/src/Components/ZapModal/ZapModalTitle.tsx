@@ -1,8 +1,8 @@
-import { Zapper, ZapTarget } from "@snort/wallet";
+import type { Zapper, ZapTarget } from "@snort/wallet";
 import { FormattedMessage } from "react-intl";
 
 import ProfileImage from "@/Components/User/ProfileImage";
-import { SendSatsInputSelection } from "@/Components/ZapModal/ZapModalInput";
+import type { SendSatsInputSelection } from "@/Components/ZapModal/ZapModalInput";
 import { formatShort } from "@/Utils/Number";
 
 export function ZapModalTitle({

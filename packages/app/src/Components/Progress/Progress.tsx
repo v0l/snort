@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { FormattedNumber } from "react-intl";
 
 export default function Progress({ value, status }: { value: number; status?: ReactNode }) {

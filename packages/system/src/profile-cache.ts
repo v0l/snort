@@ -1,7 +1,7 @@
 import { unixNowMs } from "@snort/shared";
-import { EventKind, TaggedNostrEvent, RequestBuilder } from ".";
+import { EventKind, type TaggedNostrEvent, RequestBuilder } from ".";
 import { ProfileCacheExpire } from "./const";
-import { mapEventToProfile, CachedMetadata } from "./cache";
+import { mapEventToProfile, type CachedMetadata } from "./cache";
 import { BackgroundLoader } from "./background-loader";
 
 export class ProfileLoaderService extends BackgroundLoader<CachedMetadata> {

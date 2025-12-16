@@ -70,8 +70,7 @@ export default function Moderation() {
         onClick={async () => {
           const words = Object.entries(FixedModeration)
             .filter(([k]) => topics.includes(k))
-            .map(([, v]) => v.words)
-            .flat()
+            .flatMap(([, v]) => v.words)
             .concat(
               extraTerms
                 .split(",")

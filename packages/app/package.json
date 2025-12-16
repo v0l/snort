@@ -1,6 +1,7 @@
 {
   "name": "@snort/app",
   "version": "0.3.0",
+  "type": "module",
   "dependencies": {
     "@cashu/cashu-ts": "^2.7.2",
     "@livekit/components-react": "^2.9.15",

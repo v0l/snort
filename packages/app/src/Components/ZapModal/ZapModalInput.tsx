@@ -1,4 +1,4 @@
-import { Zapper } from "@snort/wallet";
+import type { Zapper } from "@snort/wallet";
 import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 

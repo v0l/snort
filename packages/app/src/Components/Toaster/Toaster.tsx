@@ -1,5 +1,5 @@
 import { ExternalStore, unixNow } from "@snort/shared";
-import { ReactNode, useSyncExternalStore } from "react";
+import { type ReactNode, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { v4 as uuid } from "uuid";
 

@@ -1,10 +1,10 @@
-import { CachedTable } from "@snort/shared";
-import { CachedMetadata, UsersFollows } from "./cache";
-import { CacheRelay } from "./cache-relay";
+import type { CachedTable } from "@snort/shared";
+import type { CachedMetadata, UsersFollows } from "./cache";
+import type { CacheRelay } from "./cache-relay";
 import { UserFollowsCache } from "./cache/user-follows-lists";
 import { UserRelaysCache, UserProfileCache } from "./index";
-import { DefaultOptimizer, Optimizer } from "./query-optimizer";
-import { NostrSystemEvents, SystemConfig } from "./system";
+import { DefaultOptimizer, type Optimizer } from "./query-optimizer";
+import type { NostrSystemEvents, SystemConfig } from "./system";
 import { EventEmitter } from "eventemitter3";
 import { SocialGraph } from "nostr-social-graph";
 

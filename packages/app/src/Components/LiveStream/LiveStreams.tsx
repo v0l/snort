@@ -1,7 +1,7 @@
-import { NostrEvent, NostrLink } from "@snort/system";
+import { type NostrEvent, NostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 

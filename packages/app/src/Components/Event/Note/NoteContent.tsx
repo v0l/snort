@@ -1,7 +1,7 @@
-import { EventExt, EventKind, TaggedNostrEvent } from "@snort/system";
+import { EventExt, EventKind, type TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
 
-import { NotePropsOptions, NoteProps } from "@/Components/Event/EventComponent";
+import type { NotePropsOptions, NoteProps } from "@/Components/Event/EventComponent";
 import Poll from "@/Components/Event/Poll";
 import NoteHeader from "@/Components/Event/Note/NoteHeader";
 import { NoteText } from "@/Components/Event/Note/NoteText";

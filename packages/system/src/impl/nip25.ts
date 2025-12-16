@@ -1,5 +1,5 @@
 import { unwrap } from "@snort/shared";
-import { EventExt, TaggedNostrEvent, NostrEvent } from "..";
+import { EventExt, type TaggedNostrEvent, type NostrEvent } from "..";
 import { findTag } from "../utils";
 
 /**

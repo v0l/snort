@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { LeaderBadge } from "@/Components/CommunityLeaders/LeaderBadge";
 import Copy from "@/Components/Copy/Copy";
-import SnortApi, { RefCodeResponse } from "@/External/SnortApi";
+import SnortApi, { type RefCodeResponse } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { useCached } from "@snort/system-react";
 

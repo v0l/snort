@@ -1,11 +1,11 @@
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, type TaggedNostrEvent } from "@snort/system";
 import { useEventReactions, useReactions } from "@snort/system-react";
-import { createContext, ReactNode, useCallback, use, useEffect, useMemo, useState } from "react";
+import { createContext, type ReactNode, useCallback, use, useEffect, useMemo, useState } from "react";
 import { LRUCache } from "typescript-lru-cache";
 
 import useModeration from "@/Hooks/useModeration";
 
-import { NoteTranslation } from "./types";
+import type { NoteTranslation } from "./types";
 import SnortApi from "@/External/SnortApi";
 import usePreferences from "@/Hooks/usePreferences";
 import ReactionsModal from "./ReactionsModal";

@@ -1,12 +1,12 @@
-import { NostrLink, ToNostrEventTag } from "./nostr-link";
+import { NostrLink, type ToNostrEventTag } from "./nostr-link";
 import { DiffSyncTags, JsonEventSync } from "./sync";
 import EventKind from "./event-kind";
 import {
-  EventSigner,
-  FullRelaySettings,
-  RelaySettings,
-  SystemInterface,
-  UserMetadata,
+  type EventSigner,
+  type FullRelaySettings,
+  type RelaySettings,
+  type SystemInterface,
+  type UserMetadata,
   parseRelayTags,
   parseRelaysFromKind,
   settingsToRelayTag,
@@ -31,7 +31,7 @@ export interface UserStateObject<TAppData> {
   appdata?: TAppData;
 }
 
-export const enum UserStateChangeType {
+export enum UserStateChangeType {
   Profile,
   Contacts,
   Relays,

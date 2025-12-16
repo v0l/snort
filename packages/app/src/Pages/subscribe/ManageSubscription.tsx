@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 import PageSpinner from "@/Components/PageSpinner";
-import SnortApi, { Subscription, SubscriptionError } from "@/External/SnortApi";
+import SnortApi, { type Subscription, SubscriptionError } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { mapSubscriptionErrorCode } from "@/Pages/subscribe/utils";
 

@@ -1,4 +1,4 @@
-import { countLeadingZeros, TaggedNostrEvent } from "@snort/system";
+import { countLeadingZeros, type TaggedNostrEvent } from "@snort/system";
 import { useIntl } from "react-intl";
 
 import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon";

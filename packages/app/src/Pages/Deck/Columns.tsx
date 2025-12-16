@@ -1,4 +1,4 @@
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, type TaggedNostrEvent } from "@snort/system";
 import { useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 import { Outlet } from "react-router-dom";

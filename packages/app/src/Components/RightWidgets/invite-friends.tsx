@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 
-import SnortApi, { RefCodeResponse } from "@/External/SnortApi";
+import SnortApi, { type RefCodeResponse } from "@/External/SnortApi";
 import { useCopy } from "@/Hooks/useCopy";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 

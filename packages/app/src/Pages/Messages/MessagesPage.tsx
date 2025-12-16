@@ -1,9 +1,10 @@
 import classNames from "classnames";
-import React, { useMemo } from "react";
+import type React from "react";
+import { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Chat, ChatType, useChatSystems } from "@/chat";
+import { type Chat, type ChatType, useChatSystems } from "@/chat";
 import { CollapsedSection } from "@/Components/Collapsed";
 import NoteTime from "@/Components/Event/Note/NoteTime";
 import NoteToSelf from "@/Components/User/NoteToSelf";

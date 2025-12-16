@@ -1,4 +1,4 @@
-import { mapEventToProfile, TaggedNostrEvent } from "@snort/system";
+import { mapEventToProfile, type TaggedNostrEvent } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import KindName from "../kind-name";

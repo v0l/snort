@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { QueryTraceState, TimelineEntry } from "@snort/system";
+import { QueryTraceState, type TimelineEntry } from "@snort/system";
 import { SnortContext } from "../context";
 import { use, useMemo, useState, useSyncExternalStore } from "react";
 import "./TraceTimeline.css";

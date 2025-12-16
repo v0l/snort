@@ -7,7 +7,7 @@ export const DefaultConnectTimeout = 2000;
  * Hashtag regex
  */
 // eslint-disable-next-line no-useless-escape
-export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/g;
+export const HashtagRegex = /(#[^\s!@#$%^&*()=+./,[{\]};:'"?><]+)/g;
 
 /**
  * Legacy tag reference regex

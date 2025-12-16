@@ -1,6 +1,6 @@
-import { CachedMetadata, UserMetadata } from "@snort/system";
-import { ReactNode } from "react";
-import { Link, LinkProps } from "react-router-dom";
+import type { CachedMetadata, UserMetadata } from "@snort/system";
+import type { ReactNode } from "react";
+import { Link, type LinkProps } from "react-router-dom";
 
 import { useProfileLink } from "@/Hooks/useProfileLink";
 

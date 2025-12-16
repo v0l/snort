@@ -1,6 +1,6 @@
 import useBlossomServers from "@/Hooks/useBlossomServers";
 import { appendDedupe, dedupe, isHex, NostrPrefix, removeUndefined } from "@snort/shared";
-import { NostrLink, tryParseNostrLink } from "@snort/system";
+import { type NostrLink, tryParseNostrLink } from "@snort/system";
 import { randomSample } from "@/Utils";
 import RevealMedia from "../Event/RevealMedia";
 import Icon from "../Icons/Icon";

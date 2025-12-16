@@ -1,23 +1,23 @@
 import debug from "debug";
 
 import { unixNowMs } from "@snort/shared";
-import { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr";
-import { RelaySettings } from "./connection";
-import { RequestBuilder } from "./request-builder";
+import type { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr";
+import type { RelaySettings } from "./connection";
+import type { RequestBuilder } from "./request-builder";
 import { TraceTimeline } from "./trace-timeline";
 import {
   ProfileLoaderService,
-  SystemInterface,
-  SystemSnapshot,
-  QueryLike,
+  type SystemInterface,
+  type SystemSnapshot,
+  type QueryLike,
   OutboxModel,
   EventKind,
-  SystemConfig,
+  type SystemConfig,
 } from ".";
 import { RelayMetadataLoader } from "./outbox";
-import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
+import { type ConnectionPool, DefaultConnectionPool } from "./connection-pool";
 import { QueryManager } from "./query-manager";
-import { RequestRouter } from "./request-router";
+import type { RequestRouter } from "./request-router";
 import { SystemBase } from "./system-base";
 import { SocialGraph } from "nostr-social-graph";
 import { base64 } from "@scure/base";

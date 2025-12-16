@@ -1,4 +1,4 @@
-import { TaggedNostrEvent } from "@snort/system";
+import type { TaggedNostrEvent } from "@snort/system";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import classNames from "classnames";
 import { FormattedMessage, useIntl } from "react-intl";

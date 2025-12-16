@@ -1,4 +1,4 @@
-import { TaggedNostrEvent } from "@snort/system";
+import type { TaggedNostrEvent } from "@snort/system";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 

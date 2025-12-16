@@ -1,15 +1,15 @@
-import { barrierQueue, processWorkQueue, unwrap, WorkQueueItem } from "@snort/shared";
+import { barrierQueue, processWorkQueue, unwrap, type WorkQueueItem } from "@snort/shared";
 
 import {
-  InvoiceRequest,
-  LNWallet,
+  type InvoiceRequest,
+  type LNWallet,
   prToWalletInvoice,
-  Sats,
+  type Sats,
   WalletError,
   WalletErrorCode,
-  WalletEvents,
-  WalletInfo,
-  WalletInvoice,
+  type WalletEvents,
+  type WalletInfo,
+  type WalletInvoice,
   WalletInvoiceState,
 } from ".";
 import EventEmitter from "eventemitter3";

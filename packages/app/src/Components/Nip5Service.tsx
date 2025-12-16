@@ -1,6 +1,6 @@
-import { mapEventToProfile, UserMetadata } from "@snort/system";
+import { mapEventToProfile, type UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { ChangeEvent, ReactElement, useEffect, useMemo, useState } from "react";
+import { type ChangeEvent, type ReactElement, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
@@ -13,12 +13,12 @@ import useLogin from "@/Hooks/useLogin";
 import { unwrap } from "@/Utils";
 import { debounce } from "@/Utils";
 import {
-  CheckRegisterResponse,
-  HandleAvailability,
-  HandleRegisterResponse,
-  ServiceConfig,
-  ServiceError,
-  ServiceErrorCode,
+  type CheckRegisterResponse,
+  type HandleAvailability,
+  type HandleRegisterResponse,
+  type ServiceConfig,
+  type ServiceError,
+  type ServiceErrorCode,
   ServiceProvider,
 } from "@/Utils/Nip05/ServiceProvider";
 import SnortServiceProvider from "@/Utils/Nip05/SnortServiceProvider";

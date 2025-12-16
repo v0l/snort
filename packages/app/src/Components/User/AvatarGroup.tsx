@@ -1,4 +1,4 @@
-import ProfileImage, { ProfileImageProps } from "@/Components/User/ProfileImage";
+import ProfileImage, { type ProfileImageProps } from "@/Components/User/ProfileImage";
 
 export function AvatarGroup({ ids, ...props }: { ids: string[] } & Omit<ProfileImageProps, "pubkey">) {
   // set defaults

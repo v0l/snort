@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
@@ -7,7 +7,7 @@ import { useLocale } from "@/Components/IntlProvider/useLocale";
 import { useAllPreferences } from "@/Hooks/usePreferences";
 import { unwrap } from "@/Utils";
 import { DefaultImgProxy } from "@/Utils/Const";
-import { UserPreferences } from "@/Utils/Login";
+import type { UserPreferences } from "@/Utils/Login";
 
 import messages from "./messages";
 

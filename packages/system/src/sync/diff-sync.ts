@@ -1,12 +1,12 @@
 import { EventEmitter } from "eventemitter3";
 import {
   EventBuilder,
-  EventSigner,
+  type EventSigner,
   NostrEvent,
-  NostrLink,
-  NotSignedNostrEvent,
+  type NostrLink,
+  type NotSignedNostrEvent,
   decryptSigner,
-  SystemInterface,
+  type SystemInterface,
 } from "..";
 import { SafeSync } from "./safe-sync";
 import debug from "debug";
@@ -124,7 +124,7 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
 
     const isNew = this.#sync.value === undefined;
     const next = this.#nextEvent(content);
-    let nextDecryptedContent = undefined;
+    let nextDecryptedContent ;
     // content is populated as tags, encrypt it
     if (next.content.length > 0 && !content) {
       nextDecryptedContent = next.content;

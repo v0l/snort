@@ -1,4 +1,4 @@
-import { RelaySettings, SystemInterface } from "@snort/system";
+import type { RelaySettings, SystemInterface } from "@snort/system";
 import { useEffect } from "react";
 
 import useEventPublisher from "./useEventPublisher";

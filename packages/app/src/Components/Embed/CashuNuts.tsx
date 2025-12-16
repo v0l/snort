@@ -8,7 +8,7 @@ import Icon from "@/Components/Icons/Icon";
 import { useCopy } from "@/Hooks/useCopy";
 import useLogin from "@/Hooks/useLogin";
 import { WarningNotice } from "../WarningNotice/WarningNotice";
-import { getDecodedToken, Token } from "@cashu/cashu-ts";
+import { getDecodedToken, type Token } from "@cashu/cashu-ts";
 
 export default function CashuNuts({ token }: { token: string }) {
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));

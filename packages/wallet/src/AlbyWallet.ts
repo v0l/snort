@@ -2,14 +2,14 @@ import { base64 } from "@scure/base";
 import { unixNow, unwrap } from "@snort/shared";
 
 import {
-  InvoiceRequest,
-  LNWallet,
+  type InvoiceRequest,
+  type LNWallet,
   prToWalletInvoice,
   WalletError,
   WalletErrorCode,
-  WalletEvents,
-  WalletInfo,
-  WalletInvoice,
+  type WalletEvents,
+  type WalletInfo,
+  type WalletInvoice,
   WalletInvoiceState,
 } from ".";
 import EventEmitter from "eventemitter3";

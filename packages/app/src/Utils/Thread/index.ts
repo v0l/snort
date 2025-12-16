@@ -1,4 +1,4 @@
-import { EventExt, EventKind, Nip10, TaggedNostrEvent, Thread } from "@snort/system";
+import { EventExt, EventKind, Nip10, type TaggedNostrEvent, type Thread } from "@snort/system";
 import { createContext } from "react";
 import { ThreadContextWrapper } from "./ThreadContextWrapper";
 

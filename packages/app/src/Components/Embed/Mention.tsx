@@ -1,6 +1,6 @@
-import { NostrLink } from "@snort/system";
+import type { NostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import DisplayName from "@/Components/User/DisplayName";
 import { ProfileCardWrapper } from "@/Components/User/ProfileCardWrapper";

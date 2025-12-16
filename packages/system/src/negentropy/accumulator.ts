@@ -39,7 +39,7 @@ export class Accumulator {
     const p = new DataView(this.#buf.buffer);
 
     for (let i = 0; i < 8; i++) {
-      let offset = i * 4;
+      const offset = i * 4;
       p.setUint32(offset, ~p.getUint32(offset, true));
     }
 

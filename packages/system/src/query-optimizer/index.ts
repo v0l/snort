@@ -1,5 +1,5 @@
 import { schnorr } from "@noble/curves/secp256k1.js";
-import { NostrEvent, ReqFilter } from "../nostr";
+import type { NostrEvent, ReqFilter } from "../nostr";
 import { expandFilter } from "./request-expander";
 import { flatMerge, mergeSimilar } from "./request-merger";
 import { diffFilters } from "./request-splitter";

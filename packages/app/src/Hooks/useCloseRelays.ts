@@ -1,5 +1,5 @@
 import { unixNow } from "@snort/shared";
-import { EventKind, NostrEvent, RequestBuilder } from "@snort/system";
+import { type EventKind, type NostrEvent, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import Geohash from "latlon-geohash";
 import { useMemo } from "react";

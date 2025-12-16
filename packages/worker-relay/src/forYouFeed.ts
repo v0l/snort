@@ -1,5 +1,5 @@
 import { debugLog } from "./debug";
-import { RelayHandler, NostrEvent } from "./types";
+import type { RelayHandler, NostrEvent } from "./types";
 
 // import { parseZap } from "../../system/src/zaps";
 // placeholder:

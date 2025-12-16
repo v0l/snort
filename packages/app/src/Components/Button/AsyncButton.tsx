@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { ForwardedRef } from "react";
+import React, { type ForwardedRef } from "react";
 
 import Spinner from "@/Components/Icons/Spinner";
 import useLoading from "@/Hooks/useLoading";

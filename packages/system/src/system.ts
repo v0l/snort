@@ -1,18 +1,18 @@
-import { CachedTable } from "@snort/shared";
-import { UsersRelays, CachedMetadata, UsersFollows } from "./cache";
-import { CacheRelay } from "./cache-relay";
-import { RelaySettings } from "./connection";
-import { ConnectionPool } from "./connection-pool";
-import { TaggedNostrEvent, OkResponse, ReqFilter, NostrEvent } from "./nostr";
-import { RelayMetadataLoader } from "./outbox";
-import { ProfileLoaderService } from "./profile-cache";
-import { Optimizer } from "./query-optimizer";
-import { RequestBuilder } from "./request-builder";
-import { RequestRouter } from "./request-router";
-import { QueryEvents } from "./query";
-import { TraceTimeline } from "./trace-timeline";
-import EventEmitter from "eventemitter3";
-import { SocialGraph } from "nostr-social-graph";
+import type { CachedTable } from "@snort/shared";
+import type { UsersRelays, CachedMetadata, UsersFollows } from "./cache";
+import type { CacheRelay } from "./cache-relay";
+import type { RelaySettings } from "./connection";
+import type { ConnectionPool } from "./connection-pool";
+import type { TaggedNostrEvent, OkResponse, ReqFilter, NostrEvent } from "./nostr";
+import type { RelayMetadataLoader } from "./outbox";
+import type { ProfileLoaderService } from "./profile-cache";
+import type { Optimizer } from "./query-optimizer";
+import type { RequestBuilder } from "./request-builder";
+import type { RequestRouter } from "./request-router";
+import type { QueryEvents } from "./query";
+import type { TraceTimeline } from "./trace-timeline";
+import type EventEmitter from "eventemitter3";
+import type { SocialGraph } from "nostr-social-graph";
 
 export type QueryLike = {
   get progress(): number;

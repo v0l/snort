@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { RequestBuilder, NostrLink } from "@snort/system";
+import { RequestBuilder, type NostrLink } from "@snort/system";
 import { useRequestBuilder } from "./useRequestBuilder";
 
 export function useEventFeed(link: NostrLink) {

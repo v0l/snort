@@ -1,5 +1,5 @@
 import { getPublicKey, sha256, unixNow, unwrap } from "@snort/shared";
-import { EventKind, Nip10, Nip22, NostrEvent, NostrLink, NotSignedNostrEvent, parseZap } from ".";
+import { EventKind, Nip10, Nip22, type NostrEvent, type NostrLink, type NotSignedNostrEvent, parseZap } from ".";
 import { minePow } from "./pow-util";
 import { findTag } from "./utils";
 import { schnorr } from "@noble/curves/secp256k1.js";
@@ -17,7 +17,7 @@ export interface Thread {
   pubKeys: Array<NostrLink>;
 }
 
-export const enum EventType {
+export enum EventType {
   Regular,
   Replaceable,
   Addressable,
@@ -62,7 +62,7 @@ export abstract class EventExt {
    */
   static sign(e: NostrEvent, key: string) {
     e.pubkey = getPublicKey(key);
-    e.id = this.createId(e);
+    e.id = EventExt.createId(e);
 
     const sig = schnorr.sign(hexToBytes(e.id), hexToBytes(key));
     e.sig = bytesToHex(sig);
@@ -75,7 +75,7 @@ export abstract class EventExt {
    */
   static verify(e: NostrEvent) {
     if ((e.sig?.length ?? 0) < 64) return false;
-    const id = this.createId(e);
+    const id = EventExt.createId(e);
     const result = schnorr.verify(hexToBytes(e.sig), hexToBytes(id), hexToBytes(e.pubkey));
     return result;
   }

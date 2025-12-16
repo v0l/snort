@@ -1,4 +1,4 @@
-import { TaggedNostrEvent } from "@snort/system";
+import type { TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
 import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";

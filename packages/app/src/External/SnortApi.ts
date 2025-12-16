@@ -1,7 +1,7 @@
-import { EventPublisher, EventSigner } from "@snort/system";
+import { EventPublisher, type EventSigner } from "@snort/system";
 
 import { ApiHost } from "@/Utils/Const";
-import { SubscriptionType } from "@/Utils/Subscription";
+import type { SubscriptionType } from "@/Utils/Subscription";
 import { JsonApi } from "./base";
 
 export interface RevenueToday {

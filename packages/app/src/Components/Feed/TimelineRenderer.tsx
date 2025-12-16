@@ -1,5 +1,5 @@
-import { TaggedNostrEvent } from "@snort/system";
-import { ReactNode, useEffect, useRef } from "react";
+import type { TaggedNostrEvent } from "@snort/system";
+import { type ReactNode, useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage } from "react-intl";
 

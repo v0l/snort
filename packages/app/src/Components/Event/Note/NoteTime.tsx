@@ -1,4 +1,5 @@
-import React, { ReactNode, useCallback, useMemo, useState } from "react";
+import type React from "react";
+import { type ReactNode, useCallback, useMemo, useState } from "react"
 import { FormattedMessage } from "react-intl";
 
 export interface NoteTimeProps {

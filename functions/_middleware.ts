@@ -1,4 +1,4 @@
-interface Env {}
+type Env = {}
 
 const HOST = "snort.social";
 

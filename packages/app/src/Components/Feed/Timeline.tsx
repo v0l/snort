@@ -1,9 +1,9 @@
 import { unixNow } from "@snort/shared";
-import { TaggedNostrEvent } from "@snort/system";
+import type { TaggedNostrEvent } from "@snort/system";
 import { useCallback, useMemo } from "react";
 
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
-import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";
+import useTimelineFeed, { type TimelineFeed, type TimelineSubject } from "@/Feed/TimelineFeed";
 import useHistoryState from "@/Hooks/useHistoryState";
 import useWoT from "@/Hooks/useWoT";
 import { dedupeByPubkey } from "@/Utils";

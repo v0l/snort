@@ -1,7 +1,7 @@
 import { FormattedMessage } from "react-intl";
 import { BlindSpots } from "./Root/BlindSpots";
-import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
-import { ReactNode, useState } from "react";
+import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors";
+import { type ReactNode, useState } from "react";
 import SuggestedProfiles from "@/Components/SuggestedProfiles";
 import { useNavigate } from "react-router-dom";
 import { FollowedByFriendsTab } from "./Root/FollowedByFriendsTab";

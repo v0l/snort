@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Chat } from "@/chat";
+import type { Chat } from "@/chat";
 import { AsyncIcon } from "@/Components/Button/AsyncIcon";
 import Textarea from "@/Components/Textarea/Textarea";
 import useEventPublisher from "@/Hooks/useEventPublisher";

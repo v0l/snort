@@ -1,12 +1,12 @@
 import { base64 } from "@scure/base";
 import { removeUndefined, unwrap } from "@snort/shared";
-import { CachedMetadata, EventKind, EventPublisher, TaggedNostrEvent } from "@snort/system";
+import { type CachedMetadata, EventKind, type EventPublisher, type TaggedNostrEvent } from "@snort/system";
 
 import { ProfilesCache } from "@/Cache";
 import SnortApi from "@/External/SnortApi";
 import { MentionRegex } from "@/Utils/Const";
 import { defaultAvatar, getDisplayName, tagFilterOfTextRepost } from "@/Utils/index";
-import { LoginSession } from "@/Utils/Login";
+import type { LoginSession } from "@/Utils/Login";
 
 export interface NotificationRequest {
   title: string;

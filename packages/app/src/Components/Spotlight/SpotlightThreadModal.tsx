@@ -1,4 +1,4 @@
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, type TaggedNostrEvent } from "@snort/system";
 
 import { ThreadElement } from "@/Components/Event/Thread/Thread";
 import Modal from "@/Components/Modal/Modal";

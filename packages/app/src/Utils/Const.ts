@@ -52,7 +52,7 @@ export const Blasters = [];
  */
 export const EmailRegex =
   // eslint-disable-next-line no-useless-escape
-  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 /**
  * Regex to match a mnemonic seed
@@ -86,7 +86,7 @@ export const YoutubeUrlRegex =
  * Hashtag regex
  */
 // eslint-disable-next-line no-useless-escape
-export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/g;
+export const HashtagRegex = /(#[^\s!@#$%^&*()=+./,[{\]};:'"?><]+)/g;
 
 /**
  * Tidal share link regex

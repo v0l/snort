@@ -1,4 +1,4 @@
-import { UserMetadata } from "@snort/system";
+import type { UserMetadata } from "@snort/system";
 
 import Text from "@/Components/Text/Text";
 import FollowedBy from "@/Components/User/FollowedBy";

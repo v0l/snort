@@ -1,6 +1,6 @@
 import { FormattedMessage } from "react-intl";
 
-import { SubscriptionError, SubscriptionErrorCode } from "@/External/SnortApi";
+import { type SubscriptionError, SubscriptionErrorCode } from "@/External/SnortApi";
 import { LockedFeatures, SubscriptionType } from "@/Utils/Subscription";
 
 export function mapPlanName(id: number) {

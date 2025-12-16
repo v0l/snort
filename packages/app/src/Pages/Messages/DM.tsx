@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { Chat, ChatMessage, ChatType } from "@/chat";
+import { type Chat, type ChatMessage, ChatType } from "@/chat";
 import NoteTime from "@/Components/Event/Note/NoteTime";
 import messages from "@/Components/messages";
 import Text from "@/Components/Text/Text";

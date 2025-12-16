@@ -1,4 +1,4 @@
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import type { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { createContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, useLocation, useNavigate } from "react-router-dom";

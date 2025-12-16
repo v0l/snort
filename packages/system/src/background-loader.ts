@@ -1,6 +1,6 @@
 import debug from "debug";
-import { CachedTable, isHex, removeUndefined } from "@snort/shared";
-import { SystemInterface, TaggedNostrEvent, RequestBuilder } from ".";
+import { type CachedTable, isHex, removeUndefined } from "@snort/shared";
+import type { SystemInterface, TaggedNostrEvent, RequestBuilder } from ".";
 
 export abstract class BackgroundLoader<T extends { loaded: number; created: number }> {
   #system: SystemInterface;

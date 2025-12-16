@@ -1,4 +1,4 @@
-import { CachedMetadata, NostrLink, UserMetadata } from "@snort/system";
+import { type CachedMetadata, NostrLink, type UserMetadata } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { use } from "react";
 

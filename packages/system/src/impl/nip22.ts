@@ -1,6 +1,6 @@
 import { dedupe, dedupeBy, NostrPrefix } from "@snort/shared";
 import { findTag } from "../utils";
-import { EventBuilder, LinkScope, NostrEvent, NostrLink, Thread } from "../index";
+import { type EventBuilder, LinkScope, type NostrEvent, NostrLink, type Thread } from "../index";
 
 export class Nip22 {
   /**

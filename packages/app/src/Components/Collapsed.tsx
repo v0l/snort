@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 
 import Icon from "@/Components/Icons/Icon";
 

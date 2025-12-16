@@ -1,4 +1,4 @@
-import { forwardRef, HTMLProps, memo, ReactNode, useEffect, useState } from "react";
+import { forwardRef, type HTMLProps, memo, type ReactNode, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";

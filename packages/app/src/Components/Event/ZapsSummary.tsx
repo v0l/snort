@@ -1,5 +1,6 @@
-import { ParsedZap } from "@snort/system";
-import React, { useMemo } from "react";
+import type { ParsedZap } from "@snort/system";
+import type React from "react";
+import { useMemo } from "react";
 
 import { AvatarGroup } from "@/Components/User/AvatarGroup";
 import { dedupe } from "@/Utils";

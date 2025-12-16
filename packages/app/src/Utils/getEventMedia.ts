@@ -1,4 +1,4 @@
-import { EventKind, ParsedFragment, readNip94TagsFromIMeta, TaggedNostrEvent } from "@snort/system";
+import { EventKind, type ParsedFragment, readNip94TagsFromIMeta, type TaggedNostrEvent } from "@snort/system";
 
 import { transformTextCached } from "@/Hooks/useTextTransformCache";
 

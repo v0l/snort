@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import ZapModal from "@/Components/ZapModal/ZapModal";
-import SnortApi, { Subscription, SubscriptionError } from "@/External/SnortApi";
+import SnortApi, { type Subscription, SubscriptionError } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { mapPlanName, mapSubscriptionErrorCode } from "@/Pages/subscribe/utils";

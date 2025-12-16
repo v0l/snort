@@ -1,5 +1,5 @@
-import { LNWallet, ZapTargetResult } from "@snort/wallet";
-import { ReactNode } from "react";
+import type { LNWallet, ZapTargetResult } from "@snort/wallet";
+import type { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 
 import Copy from "@/Components/Copy/Copy";

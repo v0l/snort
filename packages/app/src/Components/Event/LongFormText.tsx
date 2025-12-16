@@ -1,4 +1,4 @@
-import { TaggedNostrEvent } from "@snort/system";
+import type { TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";

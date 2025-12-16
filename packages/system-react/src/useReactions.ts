@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { RequestBuilder, EventKind, NostrLink } from "@snort/system";
+import { RequestBuilder, EventKind, type NostrLink } from "@snort/system";
 import { useRequestBuilder } from "./useRequestBuilder";
 
 /**

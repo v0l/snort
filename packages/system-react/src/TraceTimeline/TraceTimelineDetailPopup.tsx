@@ -1,4 +1,4 @@
-import { QueryTraceState, TimelineEntry } from "@snort/system";
+import { QueryTraceState, type TimelineEntry } from "@snort/system";
 import "./TraceTimeline.css";
 
 interface TraceTimelineDetailPopupProps {

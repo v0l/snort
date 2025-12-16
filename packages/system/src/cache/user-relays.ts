@@ -1,5 +1,5 @@
-import { UsersRelays } from ".";
-import { CacheStore, FeedCache } from "@snort/shared";
+import type { UsersRelays } from ".";
+import { type CacheStore, FeedCache } from "@snort/shared";
 
 export class UserRelaysCache extends FeedCache<UsersRelays> {
   constructor(store?: CacheStore<UsersRelays>) {

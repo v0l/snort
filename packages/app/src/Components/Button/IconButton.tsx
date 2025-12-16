@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import type { ReactNode } from "react";
 
-import Icon, { IconProps } from "@/Components/Icons/Icon";
+import Icon, { type IconProps } from "@/Components/Icons/Icon";
 
 interface IconButtonProps {
   onClick?: () => void;

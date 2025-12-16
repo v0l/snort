@@ -1,7 +1,7 @@
 import { dedupe } from "@snort/shared";
 import { OutboxModel } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { ReactNode, use, useMemo } from "react";
+import { type ReactNode, use, useMemo } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import { CollapsedSection } from "@/Components/Collapsed";

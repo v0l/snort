@@ -1,5 +1,5 @@
 import { bytesToHex } from "@noble/hashes/utils.js";
-import { DefaultQueryOptimizer, EventExt, FlatReqFilter, PowMiner, QueryOptimizer, ReqFilter } from "@snort/system";
+import { DefaultQueryOptimizer, EventExt, type FlatReqFilter, type PowMiner, type QueryOptimizer, type ReqFilter } from "@snort/system";
 import { compress, default as wasmInit, expand_filter, flat_merge, get_diff, pow } from "@snort/system-wasm";
 import WasmPath from "@snort/system-wasm/pkg/system_wasm_bg.wasm";
 

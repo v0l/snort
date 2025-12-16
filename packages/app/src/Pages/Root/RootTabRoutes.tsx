@@ -11,9 +11,9 @@ import MediaPosts from "@/Pages/Root/Media";
 import { NotesTab } from "@/Pages/Root/NotesTab";
 import { TagsTab } from "@/Pages/Root/TagsTab";
 import { TopicsPage } from "@/Pages/TopicsPage";
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import RelayFeedPage from "@/Pages/Root/RelayFeedPage";
-import { RouteObject } from "react-router-dom";
+import type { RouteObject } from "react-router-dom";
 import SuggestedProfiles from "@/Components/SuggestedProfiles";
 
 export type RootTabRoutePath =

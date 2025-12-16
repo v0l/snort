@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { ApiHost } from "@/Utils/Const";
-import SnortServiceProvider, { ForwardType, ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
+import SnortServiceProvider, { ForwardType, type ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
 
 export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
   const { formatMessage } = useIntl();

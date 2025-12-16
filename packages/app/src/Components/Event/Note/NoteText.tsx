@@ -2,8 +2,8 @@ import React, { memo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import { NoteProps } from "@/Components/Event/EventComponent";
-import { NoteTranslation } from "@/Components/Event/Note/types";
+import type { NoteProps } from "@/Components/Event/EventComponent";
+import type { NoteTranslation } from "@/Components/Event/Note/types";
 import Reveal from "@/Components/Event/Reveal";
 import Text from "@/Components/Text/Text";
 import usePreferences from "@/Hooks/usePreferences";

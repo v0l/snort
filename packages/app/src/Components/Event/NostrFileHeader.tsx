@@ -1,4 +1,4 @@
-import { NostrEvent, NostrLink } from "@snort/system";
+import type { NostrEvent, NostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 import { FormattedMessage } from "react-intl";
 

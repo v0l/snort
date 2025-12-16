@@ -1,4 +1,4 @@
-import { ReqFilter } from "../src";
+import type { ReqFilter } from "../src";
 import {
   canMergeFilters,
   filterIncludes,
@@ -6,7 +6,7 @@ import {
   mergeSimilar,
   simpleMerge,
 } from "../src/query-optimizer/request-merger";
-import { FlatReqFilter } from "../src/query-optimizer";
+import type { FlatReqFilter } from "../src/query-optimizer";
 import { expandFilter } from "../src/query-optimizer/request-expander";
 import { describe, expect, test } from "bun:test";
 

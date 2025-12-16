@@ -2,14 +2,14 @@ import { dedupeBy, unwrap } from "@snort/shared";
 import {
   EventExt,
   EventKind,
-  NostrLink,
+  type NostrLink,
   NoteCollection,
   NoteStore,
   RequestBuilder,
-  TaggedNostrEvent,
+  type TaggedNostrEvent,
 } from "@snort/system";
 import { useEventFeed, useRequestBuilder } from "@snort/system-react";
-import { ReactNode, useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import useModeration from "@/Hooks/useModeration";

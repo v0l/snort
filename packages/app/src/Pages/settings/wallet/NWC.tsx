@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { unwrap } from "@/Utils";
-import { WalletConfig, Wallets } from "@/Wallet";
+import { type WalletConfig, Wallets } from "@/Wallet";
 
 const ConnectNostrWallet = () => {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import { OkResponse, TaggedNostrEvent } from "@snort/system";
+import type { OkResponse, TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { use, useState } from "react";
 import { FormattedMessage } from "react-intl";

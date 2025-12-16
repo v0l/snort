@@ -1,7 +1,7 @@
 import { bytesToHex } from "@noble/hashes/utils.js";
 import { base64 } from "@scure/base";
 import { throwIfOffline, unixNow } from "@snort/shared";
-import { EventKind, EventPublisher } from "@snort/system";
+import type { EventKind, EventPublisher } from "@snort/system";
 
 export interface BlobDescriptor {
   url?: string;

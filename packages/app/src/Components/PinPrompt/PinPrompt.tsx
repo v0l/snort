@@ -1,6 +1,6 @@
 import { unwrap } from "@snort/shared";
 import { EventPublisher, InvalidPinError, PinEncrypted } from "@snort/system";
-import { ReactNode, useRef, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";

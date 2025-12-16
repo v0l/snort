@@ -1,4 +1,4 @@
-export const enum MessageEncryptorVersion {
+export enum MessageEncryptorVersion {
   Nip4 = 0,
   Nip44 = 1,
 }

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { FormattedNumber } from "react-intl";
-import { Line, LineChart, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from "recharts";
+import { Line, LineChart, ResponsiveContainer, Tooltip, type TooltipProps, XAxis, YAxis } from "recharts";
 
 import { useRateHistory } from "@/Hooks/useRates";
 

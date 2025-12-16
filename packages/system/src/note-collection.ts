@@ -1,5 +1,5 @@
 import { SortedMap, appendDedupe } from "@snort/shared";
-import { EventExt, EventType, TaggedNostrEvent } from ".";
+import { EventExt, EventType, type TaggedNostrEvent } from ".";
 import { findTag } from "./utils";
 import { EventEmitter } from "eventemitter3";
 

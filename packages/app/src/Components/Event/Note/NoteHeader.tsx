@@ -1,8 +1,8 @@
 import { EventKind, NostrLink } from "@snort/system";
-import React from "react";
+import type React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { NotePropsOptions } from "@/Components/Event/EventComponent";
+import type { NotePropsOptions } from "@/Components/Event/EventComponent";
 import { NoteContextMenu } from "@/Components/Event/Note/NoteContextMenu";
 import NoteTime from "@/Components/Event/Note/NoteTime";
 import ReplyTag from "@/Components/Event/Note/ReplyTag";

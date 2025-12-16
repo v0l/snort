@@ -9,7 +9,7 @@ import AvatarEditor from "@/Components/User/AvatarEditor";
 import { trackEvent } from "@/Utils";
 import { generateNewLogin, generateNewLoginKeys } from "@/Utils/Login";
 
-import { NewUserState } from ".";
+import type { NewUserState } from ".";
 
 export default function Profile() {
   const system = use(SnortContext);

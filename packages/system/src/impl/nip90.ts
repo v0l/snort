@@ -1,8 +1,8 @@
 import { isHex, sanitizeRelayUrl } from "@snort/shared";
-import { EventSigner } from "../signer";
+import type { EventSigner } from "../signer";
 import { EventBuilder } from "../event-builder";
-import { NostrEvent, TaggedNostrEvent } from "../nostr";
-import { SystemInterface } from "../system";
+import type { NostrEvent, TaggedNostrEvent } from "../nostr";
+import type { SystemInterface } from "../system";
 import { RequestBuilder } from "../request-builder";
 import { NostrLink } from "../nostr-link";
 import { findTag } from "../utils";

@@ -1,4 +1,4 @@
-import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrLink, type TaggedNostrEvent } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useMemo } from "react";
 import { useInView } from "react-intersection-observer";

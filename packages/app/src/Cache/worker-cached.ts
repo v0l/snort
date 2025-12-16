@@ -1,5 +1,5 @@
-import { CachedTable, CacheEvents, removeUndefined, unixNowMs } from "@snort/shared";
-import { CacheRelay, NostrEvent, ReqFilter, CachedBase } from "@snort/system";
+import { type CachedTable, type CacheEvents, removeUndefined, unixNowMs } from "@snort/shared";
+import type { CacheRelay, NostrEvent, ReqFilter, CachedBase } from "@snort/system";
 import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 import { LRUCache } from "typescript-lru-cache";

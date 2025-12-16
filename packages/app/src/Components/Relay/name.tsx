@@ -1,6 +1,6 @@
 import useRelayState from "@/Feed/RelayState";
 import { getRelayName } from "@/Utils";
-import { Nip11, RelayInfoDocument } from "@snort/system";
+import { Nip11, type RelayInfoDocument } from "@snort/system";
 import { useEffect, useState } from "react";
 
 export function RelayName({ url }: { url: string }) {

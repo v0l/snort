@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { Link, Outlet, RouteObject } from "react-router-dom";
+import { Link, Outlet, type RouteObject } from "react-router-dom";
 
 function ManageHandlePage() {
   return (

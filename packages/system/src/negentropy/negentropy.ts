@@ -1,6 +1,6 @@
 import { bytesToHex } from "@noble/hashes/utils.js";
 import { WrappedBuffer } from "./wrapped-buffer";
-import { NegentropyStorageVector, VectorStorageItem } from "./vector-storage";
+import type { NegentropyStorageVector, VectorStorageItem } from "./vector-storage";
 import {
   PROTOCOL_VERSION,
   getByte,
@@ -50,7 +50,7 @@ export class Negentropy {
   }
 
   reconcile(query: WrappedBuffer | Uint8Array): [Uint8Array | undefined, Array<Uint8Array>, Array<Uint8Array>] {
-    let haveIds: Array<Uint8Array> = [],
+    const haveIds: Array<Uint8Array> = [],
       needIds: Array<Uint8Array> = [];
     query = query instanceof WrappedBuffer ? query : new WrappedBuffer(query);
 
@@ -73,9 +73,9 @@ export class Negentropy {
     let skip = false;
 
     while (query.length !== 0) {
-      let o = new WrappedBuffer();
+      const o = new WrappedBuffer();
 
-      let doSkip = () => {
+      const doSkip = () => {
         if (skip) {
           skip = false;
           o.append(this.encodeBound(prevBound));
@@ -83,17 +83,17 @@ export class Negentropy {
         }
       };
 
-      let currBound = this.decodeBound(query);
-      let mode = query.length === 0 ? 0 : decodeVarInt(query);
+      const currBound = this.decodeBound(query);
+      const mode = query.length === 0 ? 0 : decodeVarInt(query);
 
-      let lower = prevIndex;
+      const lower = prevIndex;
       let upper = this.#storage.findLowerBound(prevIndex, storageSize, currBound);
 
       if (mode === Mode.Skip) {
         skip = true;
       } else if (mode === Mode.Fingerprint) {
-        let theirFingerprint = getBytes(query, FINGERPRINT_SIZE);
-        let ourFingerprint = this.#storage.fingerprint(lower, upper);
+        const theirFingerprint = getBytes(query, FINGERPRINT_SIZE);
+        const ourFingerprint = this.#storage.fingerprint(lower, upper);
 
         if (compareUint8Array(theirFingerprint, ourFingerprint) !== 0) {
           doSkip();
@@ -102,16 +102,16 @@ export class Negentropy {
           skip = true;
         }
       } else if (mode === Mode.IdList) {
-        let numIds = decodeVarInt(query);
+        const numIds = decodeVarInt(query);
 
-        let theirElems = {} as Record<string, Uint8Array>; // stringified Uint8Array -> original Uint8Array (or hex)
+        const theirElems = {} as Record<string, Uint8Array>; // stringified Uint8Array -> original Uint8Array (or hex)
         for (let i = 0; i < numIds; i++) {
-          let e = getBytes(query, this.#storage.idSize);
+          const e = getBytes(query, this.#storage.idSize);
           theirElems[bytesToHex(e)] = e;
         }
 
         this.#storage.iterate(lower, upper, item => {
-          let k = bytesToHex(item.id);
+          const k = bytesToHex(item.id);
           if (!theirElems[k]) {
             // ID exists on our side, but not their side
             if (this.#isInitiator) haveIds.push(item.id);
@@ -126,14 +126,14 @@ export class Negentropy {
         if (this.#isInitiator) {
           skip = true;
 
-          for (let v of Object.values(theirElems)) {
+          for (const v of Object.values(theirElems)) {
             // ID exists on their side, but not our side
             needIds.push(v);
           }
         } else {
           doSkip();
 
-          let responseIds = new WrappedBuffer();
+          const responseIds = new WrappedBuffer();
           let numResponseIds = 0;
           let endBound = currBound;
 
@@ -163,7 +163,7 @@ export class Negentropy {
 
       if (this.exceededFrameSizeLimit(fullOutput.length + o.length)) {
         // frameSizeLimit exceeded: Stop range processing and return a fingerprint for the remaining range
-        let remainingFingerprint = this.#storage.fingerprint(upper, storageSize);
+        const remainingFingerprint = this.#storage.fingerprint(upper, storageSize);
 
         fullOutput.append(this.encodeBound(this.#bound(Number.MAX_VALUE)));
         fullOutput.append(encodeVarInt(Mode.Fingerprint));
@@ -203,8 +203,8 @@ export class Negentropy {
       let curr = lower;
 
       for (let i = 0; i < buckets; i++) {
-        let bucketSize = itemsPerBucket + (i < bucketsWithExtra ? 1 : 0);
-        let ourFingerprint = this.#storage.fingerprint(curr, curr + bucketSize);
+        const bucketSize = itemsPerBucket + (i < bucketsWithExtra ? 1 : 0);
+        const ourFingerprint = this.#storage.fingerprint(curr, curr + bucketSize);
         curr += bucketSize;
 
         let nextBound;
@@ -268,7 +268,7 @@ export class Negentropy {
       return encodeVarInt(0);
     }
 
-    let temp = timestamp;
+    const temp = timestamp;
     timestamp -= this.#lastTimestampOut;
     this.#lastTimestampOut = temp;
     return encodeVarInt(timestamp + 1);
@@ -289,8 +289,8 @@ export class Negentropy {
       return this.#bound(curr.timestamp);
     } else {
       let sharedPrefixBytes = 0;
-      let currKey = curr.id;
-      let prevKey = prev.id;
+      const currKey = curr.id;
+      const prevKey = prev.id;
 
       for (let i = 0; i < this.#storage.idSize; i++) {
         if (currKey[i] !== prevKey[i]) break;

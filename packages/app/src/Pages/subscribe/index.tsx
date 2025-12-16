@@ -3,7 +3,7 @@ import "./index.css";
 import classNames from "classnames";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { RouteObject } from "react-router-dom";
+import type { RouteObject } from "react-router-dom";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import ZapModal from "@/Components/ZapModal/ZapModal";

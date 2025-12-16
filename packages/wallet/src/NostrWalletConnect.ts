@@ -1,16 +1,16 @@
 /* eslint-disable max-lines */
 import { dedupe } from "@snort/shared";
-import { Connection, EventBuilder, EventKind, NostrEvent, PrivateKeySigner, decryptSigner } from "@snort/system";
+import { Connection, EventBuilder, EventKind, type NostrEvent, PrivateKeySigner, decryptSigner } from "@snort/system";
 import debug from "debug";
 
 import {
-  InvoiceRequest,
-  LNWallet,
+  type InvoiceRequest,
+  type LNWallet,
   WalletError,
   WalletErrorCode,
-  WalletEvents,
-  WalletInfo,
-  WalletInvoice,
+  type WalletEvents,
+  type WalletInfo,
+  type WalletInvoice,
   WalletInvoiceState,
 } from ".";
 import EventEmitter from "eventemitter3";

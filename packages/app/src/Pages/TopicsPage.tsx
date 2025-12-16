@@ -3,7 +3,7 @@ import { EventKind, NostrHashtagLink } from "@snort/system";
 import { useMemo } from "react";
 
 import Timeline from "@/Components/Feed/Timeline";
-import { TimelineSubject } from "@/Feed/TimelineFeed";
+import type { TimelineSubject } from "@/Feed/TimelineFeed";
 import useLogin from "@/Hooks/useLogin";
 
 export function TopicsPage() {

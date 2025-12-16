@@ -1,7 +1,7 @@
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { base32hex } from "@scure/base";
 import { bech32ToHex, encodeTLV, hexToBech32, isOffline, NostrPrefix } from "@snort/shared";
-import { CachedMetadata, EventKind, NostrEvent, NostrLink, TaggedNostrEvent, UserMetadata } from "@snort/system";
+import type { CachedMetadata, EventKind, NostrEvent, NostrLink, TaggedNostrEvent, UserMetadata } from "@snort/system";
 
 import Nostrich from "@/assets/img/nostrich.webp";
 import AnimalName from "@/Components/User/AnimalName";
@@ -481,8 +481,8 @@ export function getCountry() {
   return {
     zone: tz.timeZone,
     country: info?.[0],
-    lat: Number(lat) / Math.pow(10, lat.length - 3),
-    lon: Number(lon) / Math.pow(10, lon.length - 4),
+    lat: Number(lat) / 10 ** (lat.length - 3),
+    lon: Number(lon) / 10 ** (lon.length - 4),
     info,
   };
 }

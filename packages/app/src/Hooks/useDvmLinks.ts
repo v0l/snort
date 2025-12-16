@@ -1,4 +1,4 @@
-import { NostrLink, DVMJobRequest, DVMJobInput, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, DVMJobRequest, type DVMJobInput, type TaggedNostrEvent } from "@snort/system";
 import { useState, useMemo, useEffect } from "react";
 import useEventPublisher from "./useEventPublisher";
 

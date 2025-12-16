@@ -4,10 +4,10 @@ import { v4 as uuid } from "uuid";
 import debug from "debug";
 
 import { Connection } from "../connection";
-import { EventSigner, PrivateKeySigner } from "../signer";
-import { NostrEvent } from "../nostr";
+import { type EventSigner, PrivateKeySigner } from "../signer";
+import type { NostrEvent } from "../nostr";
 import { EventBuilder } from "../event-builder";
-import EventKind from "../event-kind";
+import type EventKind from "../event-kind";
 import { EventEmitter } from "eventemitter3";
 
 const NIP46_KIND = 24_133;

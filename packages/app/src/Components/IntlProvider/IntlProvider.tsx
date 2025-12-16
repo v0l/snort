@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
 
 import { DefaultLocale } from "@/Components/IntlProvider/IntlProviderUtils";

@@ -1,8 +1,8 @@
-import { CachedMetadata } from "@snort/system";
+import type { CachedMetadata } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import { BaseUITask } from "@/Components/Tasks/index";
-import { LoginSession } from "@/Utils/Login";
+import type { LoginSession } from "@/Utils/Login";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import useLogin from "@/Hooks/useLogin";
 

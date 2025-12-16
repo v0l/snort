@@ -1,4 +1,4 @@
-import { NostrEvent, NostrLink } from "@snort/system";
+import { type NostrEvent, NostrLink } from "@snort/system";
 import { use, useMemo } from "react";
 
 import TimelineFollows from "@/Components/Feed/TimelineFollows";

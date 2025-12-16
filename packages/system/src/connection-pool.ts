@@ -2,9 +2,9 @@ import { removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
 import debug from "debug";
 import { EventEmitter } from "eventemitter3";
 
-import { Connection, RelaySettings } from "./connection";
-import { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "./nostr";
-import { RelayInfoDocument, SystemInterface } from ".";
+import { Connection, type RelaySettings } from "./connection";
+import type { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "./nostr";
+import type { RelayInfoDocument, SystemInterface } from ".";
 
 /**
  * Events which the ConnectionType must emit
@@ -22,7 +22,7 @@ export interface ConnectionTypeEvents {
   unknownMessage: (obj: Array<any>) => void;
 }
 
-export interface ConnectionSubscription {}
+export type ConnectionSubscription = {}
 
 /**
  * Basic relay connection

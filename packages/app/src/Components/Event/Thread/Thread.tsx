@@ -1,11 +1,11 @@
-import { EventExt, TaggedNostrEvent } from "@snort/system";
-import { ReactNode, useCallback, use, useMemo, useState } from "react";
+import { EventExt, type TaggedNostrEvent } from "@snort/system";
+import { type ReactNode, useCallback, use, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import BackButton from "@/Components/Button/BackButton";
 import Note from "@/Components/Event/EventComponent";
-import { ThreadContext, ThreadContextState } from "@/Utils/Thread";
+import { ThreadContext, type ThreadContextState } from "@/Utils/Thread";
 import Modal from "@/Components/Modal/Modal";
 import JsonBlock from "@/Components/json";
 import Icon from "@/Components/Icons/Icon";

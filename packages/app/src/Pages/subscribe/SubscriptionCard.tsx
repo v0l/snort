@@ -3,7 +3,7 @@ import { FormattedDate, FormattedMessage, FormattedNumber } from "react-intl";
 import Icon from "@/Components/Icons/Icon";
 import Nip5Service from "@/Components/Nip5Service";
 import Nip05 from "@/Components/User/Nip05";
-import { Subscription } from "@/External/SnortApi";
+import type { Subscription } from "@/External/SnortApi";
 import { SnortNostrAddressService } from "@/Pages/settings/SnortNostrAddressService";
 import { mapPlanName } from "@/Pages/subscribe/utils";
 

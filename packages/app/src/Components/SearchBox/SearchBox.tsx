@@ -1,5 +1,5 @@
 import { NostrLink, tryParseNostrLink } from "@snort/system";
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
 

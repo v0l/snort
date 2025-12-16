@@ -1,4 +1,4 @@
-import { MessageEncryptor, MessageEncryptorVersion } from "..";
+import { type MessageEncryptor, MessageEncryptorVersion } from "..";
 import { secp256k1 } from "@noble/curves/secp256k1.js";
 import { hexToBytes } from "@noble/hashes/utils.js";
 import { base64 } from "@scure/base";

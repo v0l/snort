@@ -3,7 +3,7 @@ import { LRUCache } from "typescript-lru-cache";
 
 import { MediaElement } from "@/Components/Embed/MediaElement";
 import Spinner from "@/Components/Icons/Spinner";
-import { LinkPreviewData, NostrServices } from "@/External";
+import { type LinkPreviewData, NostrServices } from "@/External";
 
 import { ProxyImg } from "../ProxyImg";
 import GenericPlayer from "./GenericPlayer";

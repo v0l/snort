@@ -1,4 +1,4 @@
-import { CachedMetadata, UserMetadata } from "@snort/system";
+import type { CachedMetadata, UserMetadata } from "@snort/system";
 
 import Icon from "@/Components/Icons/Icon";
 

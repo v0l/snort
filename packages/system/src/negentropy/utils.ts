@@ -1,10 +1,10 @@
-import { VectorStorageItem } from "./vector-storage";
+import type { VectorStorageItem } from "./vector-storage";
 import { WrappedBuffer } from "./wrapped-buffer";
 
 export const PROTOCOL_VERSION = 0x61; // Version 1
 export const FINGERPRINT_SIZE = 16;
 
-export const enum Mode {
+export enum Mode {
   Skip = 0,
   Fingerprint = 1,
   IdList = 2,
@@ -35,7 +35,7 @@ export function decodeVarInt(buf: Uint8Array | WrappedBuffer) {
 export function encodeVarInt(n: number) {
   if (n === 0) return new Uint8Array([0]);
 
-  let o = [];
+  const o = [];
   while (n !== 0) {
     o.push(n & 127);
     n >>>= 7;

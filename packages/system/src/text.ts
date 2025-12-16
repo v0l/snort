@@ -12,7 +12,7 @@ import {
 } from "./const";
 import { NostrLink, tryParseNostrLink } from "./nostr-link";
 import { extensionToMime, UrlRegex } from "./utils";
-import { Nip94Tags, readNip94TagsFromIMeta } from ".";
+import { type Nip94Tags, readNip94TagsFromIMeta } from ".";
 
 export enum FragmentType {
   /**
@@ -105,13 +105,12 @@ function mapFragments(
   filterEmpty = true,
 ): Fragment[] {
   const result = fragments
-    .map(f => {
+    .flatMap(f => {
       if (typeof f === "string") {
         return fn(f);
       }
       return f;
-    })
-    .flat();
+    });
 
   if (filterEmpty) {
     return result.filter(f => typeof f !== "string" || f.length > 0);

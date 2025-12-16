@@ -5,11 +5,11 @@ import { unixNowMs } from "@snort/shared";
 import { EventEmitter } from "eventemitter3";
 
 import { DefaultConnectTimeout } from "./const";
-import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr";
+import type { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr";
 import EventKind from "./event-kind";
 import { EventExt } from "./event-ext";
-import { ConnectionType, ConnectionTypeEvents } from "./connection-pool";
-import { Nip11, RelayInfoDocument } from "./impl/nip11";
+import type { ConnectionType, ConnectionTypeEvents } from "./connection-pool";
+import { Nip11, type RelayInfoDocument } from "./impl/nip11";
 
 /**
  * Relay settings

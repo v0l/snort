@@ -1,4 +1,4 @@
-import { ConnectionType } from "@snort/system/dist/connection-pool";
+import type { ConnectionType } from "@snort/system/dist/connection-pool";
 import { FormattedMessage } from "react-intl";
 
 import useLogin from "@/Hooks/useLogin";

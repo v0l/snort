@@ -1,4 +1,4 @@
-import { DefaultPreferences, saveAppData, updateAppData, UserPreferences } from "@/Utils/Login";
+import { DefaultPreferences, saveAppData, updateAppData, type UserPreferences } from "@/Utils/Login";
 
 import useLogin from "./useLogin";
 

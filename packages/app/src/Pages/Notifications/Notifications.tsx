@@ -1,5 +1,5 @@
 import { unwrap } from "@snort/shared";
-import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { EventKind, type NostrEvent, type NostrLink, type TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
 import { useEffect, useMemo, useState } from "react";
 
@@ -13,7 +13,7 @@ import { markNotificationsRead } from "@/Utils/Login";
 import { getNotificationContext } from "./getNotificationContext";
 import { NotificationGroup } from "./NotificationGroup";
 
-const enum NotificationSummaryFilter {
+enum NotificationSummaryFilter {
   Reactions = 1,
   Reposts = 2,
   Mentions = 4,

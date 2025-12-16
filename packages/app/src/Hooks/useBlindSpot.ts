@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import useFollowsControls from "./useFollowControls";
-import { EventExt, EventKind, NostrLink, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { EventExt, EventKind, NostrLink, RequestBuilder, type TaggedNostrEvent } from "@snort/system";
 import { useEventsFeed, useRequestBuilder } from "@snort/system-react";
 import { dedupe } from "@snort/shared";
 

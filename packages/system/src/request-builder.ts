@@ -1,11 +1,11 @@
 import { v4 as uuid } from "uuid";
 import { appendDedupe, dedupe, NostrPrefix, removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
 
-import EventKind from "./event-kind";
-import { EventExt, NostrLink, ToNostrEventTag } from ".";
-import { ReqFilter, TaggedNostrEvent } from "./nostr";
-import { RequestRouter } from "./request-router";
-import { NostrEvent } from "nostr-social-graph";
+import type EventKind from "./event-kind";
+import { EventExt, NostrLink, type ToNostrEventTag } from ".";
+import type { ReqFilter, TaggedNostrEvent } from "./nostr";
+import type { RequestRouter } from "./request-router";
+import type { NostrEvent } from "nostr-social-graph";
 
 /**
  * A built REQ filter ready for sending to System
@@ -261,7 +261,7 @@ export class RequestFilterBuilder {
       tags[0][0],
       tags.map(v => v[1]),
     );
-    this.relay(removeUndefined(links.map(a => a.relays).flat()));
+    this.relay(removeUndefined(links.flatMap(a => a.relays)));
     return this;
   }
 

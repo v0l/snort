@@ -1,4 +1,4 @@
-import { EventExt, TaggedNostrEvent } from "@snort/system";
+import { EventExt, type TaggedNostrEvent } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 

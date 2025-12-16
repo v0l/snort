@@ -1,4 +1,4 @@
-import { QueryTraceState, TimelineEntry } from "@snort/system";
+import { QueryTraceState, type TimelineEntry } from "@snort/system";
 import { SnortContext } from "../context";
 import { use, useMemo, useSyncExternalStore } from "react";
 import "./TraceTimeline.css";

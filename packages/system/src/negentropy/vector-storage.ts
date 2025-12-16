@@ -99,7 +99,7 @@ export class NegentropyStorageVector {
 
     while (count > 0) {
       let it = first;
-      let step = Math.floor(count / 2);
+      const step = Math.floor(count / 2);
       it += step;
 
       if (cmp(arr[it])) {

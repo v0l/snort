@@ -1,5 +1,5 @@
 import Timeline from "@/Components/Feed/Timeline";
-import { TimelineSubject } from "@/Feed/TimelineFeed";
+import type { TimelineSubject } from "@/Feed/TimelineFeed";
 import { sanitizeRelayUrl } from "@snort/shared";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";

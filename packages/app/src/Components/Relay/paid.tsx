@@ -1,4 +1,4 @@
-import { RelayInfoDocument } from "@snort/system";
+import type { RelayInfoDocument } from "@snort/system";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 

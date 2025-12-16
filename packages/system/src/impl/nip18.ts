@@ -1,5 +1,5 @@
 import { NostrPrefix } from "@snort/shared";
-import { LinkScope, NostrLink } from "../nostr-link";
+import { LinkScope, type NostrLink } from "../nostr-link";
 
 /**
  * [NIP-18](https://github.com/nostr-protocol/nips/blob/master/18.md) specific methods
