@@ -92,6 +92,128 @@
 
 ---
 
+# v0.3.0
+
+`+35,347,-17,720`
+
+## Added
+
+- NIP-46 OAuth login and sign up flow
+- NIP-55 Android signer support
+- NIP-44 v2 encryption
+- NIP-89 application handlers
+- NIP-96 server list and custom server selection
+- NIP-107 data rendering
+- NIP-114 filter.ids_only and HAVE message support
+- Web of Trust (WoT) filter for spam protection
+- For You feed algorithm with personalized content scoring
+- Relay management overhaul:
+  - Relay info page with detailed statistics
+  - Relay uptime tracking
+  - Reliable relays indicator
+  - Recommended relays with descriptions
+  - Close relays functionality
+- Revamped note creator
+- Modular right sidebar with latest articles widget
+- Profile tab showing top zappers
+- LiveKit integration for audio/video
+- `@snort/bot` package for building Nostr bots
+- Automated social graph using `nostr-social-graph`
+- Diff-sync for follows list
+- Safe sync for app data
+- Quote note loading from multiple relays
+- Track events seen on relays
+- Show note footer for reposts
+- Replace HTTP nostr links with native `nostr:` links
+- Npub/nprofile QR code selector
+- Render embeds from link preview
+- Improved key export page
+- Unified NWC wallet icon
+- Redirect to login when attempting reactions while logged out
+- Profile card hover timing improvements
+- Sync account tool
+- Reply count shown in feed
+- Notifications timestamps
+- Korean translations enabled
+
+## Changed
+
+- **Integrated nostr-social-graph** for improved social features
+- **Dropped NIP-4 DMs** in favor of NIP-17
+- **Upgraded to NIP-17** for encrypted direct messages
+- Moved zapper functionality to `@snort/wallet` package
+- Refactored outbox model into abstract RequestRouter
+- Improved thread loading performance
+- Improved rebroadcaster reliability
+- Refactored useRequestBuilder hook
+- Live streams refactor
+- Timeline render flow improvements
+- Profile loader optimizations
+- Always fallback to in-memory relay
+- Worker-relay fixes for external users
+- Preload follows list for faster startup
+- Include relays in kind 3 contact list
+- Removed summary chart from notifications
+- Removed dislike reactions
+- Removed Tauri desktop build
+- Use optimizer compress for better performance
+- Use localhost relay over worker-relay when available
+- Enable WoT filter for existing sessions
+- Meku app configuration added
+- TIDAL embed improvements with allow/sandbox attributes
+- Cache compressed filters
+
+## Fixed
+
+- Use NIP-44 for NIP-46 communications
+- Client tag formatting
+- Relays tag missing from events
+- Note creator issues
+- Floating point created_at timestamps
+- NIP-17 inner created_at timestamp handling
+- Negentropy version check
+- NIP-6 mnemonic login
+- Mute buttons functionality
+- Relay loader bugs
+- Hide unknown event JSON
+- TLV max length validation
+- Manually connect to local cache relay
+- Display name handling
+- Relay icon highlight
+- Copy text from notes
+- Outline overflow
+- Default NIP-96 server
+- nprofile login
+- Social graph loading for follows only
+- Reduce timeline reloads
+- APK signer
+- Mute list issues
+- Reconnection spam
+- Reactions loading
+- Connection race conditions
+- Moderation updates
+- Plain image link preview size
+- Topic buttons
+- Remove reposts from grid view
+- Hashtag parser
+- Service worker bugs
+- File extension on NIP-96 uploads
+- isReplyToThis logic
+- Reply check simplification
+- Follow graph for readonly login
+- Startup migration issues
+- Muted words
+- Unknown thread context
+- oAuth bugs
+- Multiple tag queries
+- Embed sqlite3.wasm in lib for production
+- Duplicate relays
+- Highlighted text in searched notes
+- Feed glitches with memoized NoteText
+- Avatar CSS on zap splits
+
+---
+
 # v0.2.0
 
 `+16,990,-9,649`
