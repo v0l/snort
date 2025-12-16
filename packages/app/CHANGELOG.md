@@ -4,20 +4,21 @@
 
 ## Highlights
 
+- **Discover Page**: New discover page with DVM-powered trending posts and content suggestions
+- **Media Posts**: Support for kind 20, 21, 22 media notes with dedicated media tab
+- **Follow Sets**: Browse and filter follow sets from other users
+- **Blossom Storage**: Replaced NIP-96 with Blossom
 - **Bun Migration**: Moved entire build system from Yarn/Node to Bun
-- **Blossom Storage**: Replaced NIP-96 with Blossom for decentralized file uploads
 - **Nests Integration**: Audio rooms with chat and speak functionality
-- **DVM Content Discovery**: Trending posts and suggestions powered by Data Vending Machines
-- **Biome Toolchain**: Replaced ESLint/Prettier with Biome for linting and formatting
 
 ## Added
 
-- Discover page with DVM-powered trending content
-- Nests audio rooms integration (linked from live streams)
-- Follow sets page for managing custom follow lists
+- Discover page with selectable content discovery DVMs
 - Media tab on root page for browsing media content
-- Blossom blob support with fallback image loading
 - Support for kind 20, 21, 22 (media notes) and kind 1111 replies
+- Follow sets page with filtering options
+- Nests audio rooms integration (linked from live streams)
+- Blossom blob support with fallback image loading
 - Client tags for identifying applications
 - NIP-119 compatibility
 - Auto-translate enabled by default
