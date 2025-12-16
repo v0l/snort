@@ -27,7 +27,7 @@ function ordinal_suffix_of(i: number) {
 const getExtra = () => {
   if (isBirthday()) {
     const age = Math.floor((unixNowMs() - Birthday.getTime()) / (Day * 365_000));
-    return <span className="text-xs">{ordinal_suffix_of(age)} 🎂</span>;
+    return <span className="text-sm" title={`${ordinal_suffix_of(age)} Birthday`}>{ordinal_suffix_of(age)} 🎂</span>;
   }
   if (isHalloween()) return <span title="Happy Halloween!">🎃</span>;
   if (isStPatricksDay()) return <span title="Happy St. Patrick's Day!">🍀</span>;
