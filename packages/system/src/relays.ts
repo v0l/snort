@@ -1,4 +1,4 @@
-import { sanitizeRelayUrl, removeUndefined } from '@snort/shared'
+import { removeUndefined, sanitizeRelayUrl } from '@snort/shared'
 import EventKind from './event-kind'
 import type { FullRelaySettings, NostrEvent } from './nostr'
 
@@ -22,8 +22,16 @@ export function parseRelayTags(tag: Array<Array<string>>) {
 
 export function parseRelaysFromKind(ev: NostrEvent) {
   if (ev.kind === EventKind.ContactList) {
-    const relaysInContent =
-      ev.content.length > 0 ? (JSON.parse(ev.content) as Record<string, { read: boolean; write: boolean }>) : undefined
+    let relaysInContent: Record<string, { read: boolean; write: boolean }> | undefined
+    try {
+      relaysInContent =
+        ev.content.length > 0
+          ? (JSON.parse(ev.content) as Record<string, { read: boolean; write: boolean }>)
+          : undefined
+    } catch {
+      // Malformed kind-3 content — treat as if no relay list in content
+      relaysInContent = undefined
+    }
     if (relaysInContent) {
       return removeUndefined(
         Object.entries(relaysInContent).map(([k, v]) => {

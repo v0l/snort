@@ -240,7 +240,13 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     }
 
     const decryptedContent = await this.#insideSigner.nip44Decrypt(e.content, e.pubkey)
-    const reply = JSON.parse(decryptedContent) as Nip46Request | Nip46Response
+    let reply: Nip46Request | Nip46Response
+    try {
+      reply = JSON.parse(decryptedContent) as Nip46Request | Nip46Response
+    } catch {
+      this.#log('Dropping NIP-46 event with malformed JSON payload from %s', e.pubkey)
+      return
+    }
 
     let id = reply.id
     // Log only the id/method — never the decrypted params/result which may contain secrets.

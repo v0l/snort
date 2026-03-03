@@ -192,7 +192,13 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   #onMessage(e: WebSocket.MessageEvent) {
     this.#activity = unixNowMs()
     if ((e.data as string).length > 0) {
-      const msg = JSON.parse(e.data as string) as Array<string | NostrEvent | boolean>
+      let msg: Array<string | NostrEvent | boolean>
+      try {
+        msg = JSON.parse(e.data as string) as Array<string | NostrEvent | boolean>
+      } catch {
+        this.#log('Dropping malformed relay message (JSON parse error): %s', e.data)
+        return
+      }
       const tag = msg[0] as string
       switch (tag) {
         case 'AUTH': {

@@ -1,15 +1,15 @@
+import debug from 'debug'
 import { EventEmitter } from 'eventemitter3'
 import {
+  decryptSigner,
   EventBuilder,
   type EventSigner,
   NostrEvent,
   type NostrLink,
   type NotSignedNostrEvent,
-  decryptSigner,
   type SystemInterface,
 } from '..'
 import { SafeSync } from './safe-sync'
-import debug from 'debug'
 
 interface TagDiff {
   type: 'add' | 'remove' | 'replace' | 'update'
@@ -57,8 +57,13 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
    */
   get encryptedTags() {
     if (this.#decryptedContent && this.#decryptedContent.startsWith('[') && this.#decryptedContent.endsWith(']')) {
-      const tags = JSON.parse(this.#decryptedContent) as Array<Array<string>>
-      return tags
+      try {
+        const tags = JSON.parse(this.#decryptedContent) as Array<Array<string>>
+        return tags
+      } catch {
+        // Corrupted encrypted tag data — return empty rather than crashing
+        return []
+      }
     }
     return []
   }
