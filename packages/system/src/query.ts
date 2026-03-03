@@ -1,48 +1,48 @@
-import { v4 as uuid } from "uuid";
-import debug from "debug";
-import { EventEmitter } from "eventemitter3";
-import { unixNowMs } from "@snort/shared";
+import { v4 as uuid } from 'uuid'
+import debug from 'debug'
+import { EventEmitter } from 'eventemitter3'
+import { unixNowMs } from '@snort/shared'
 
-import type { ReqFilter, TaggedNostrEvent } from ".";
-import { NoteCollection } from "./note-collection";
-import type { RequestBuilder } from "./request-builder";
-import { eventMatchesFilter } from "./request-matcher";
+import type { ReqFilter, TaggedNostrEvent } from '.'
+import { NoteCollection } from './note-collection'
+import type { RequestBuilder } from './request-builder'
+import { eventMatchesFilter } from './request-matcher'
 
 export enum QueryTraceState {
-  NEW = "NEW", // New state, not used trace
-  QUEUED = "QUEUED", // When first created
-  WAITING = "WAITING", // Waiting for relay response (sent REQ to relay, will close on EOSE)
-  WAITING_STREAM = "WAITING_STREAM", // Streaming (sent REQ to relay, will stay open after EOSE)
-  SYNC_WAITING = "SYNC_WAITING", // Waiting for SYNC response (sent NEG-OPEN)
-  SYNC_FALLBACK = "SYNC_FALLBACK", // SYNC not supported, falling back to REQ
-  EOSE = "EOSE", // Server told us there are no more results
-  LOCAL_CLOSE = "LOCAL_CLOSE", // We sent close to server
-  REMOTE_CLOSE = "REMOTE_CLOSE", // Server closed the request
-  DROP = "DROP", // Dropped due to disconnect
-  TIMEOUT = "TIMEOUT", // Closed because taking too long
+  NEW = 'NEW', // New state, not used trace
+  QUEUED = 'QUEUED', // When first created
+  WAITING = 'WAITING', // Waiting for relay response (sent REQ to relay, will close on EOSE)
+  WAITING_STREAM = 'WAITING_STREAM', // Streaming (sent REQ to relay, will stay open after EOSE)
+  SYNC_WAITING = 'SYNC_WAITING', // Waiting for SYNC response (sent NEG-OPEN)
+  SYNC_FALLBACK = 'SYNC_FALLBACK', // SYNC not supported, falling back to REQ
+  EOSE = 'EOSE', // Server told us there are no more results
+  LOCAL_CLOSE = 'LOCAL_CLOSE', // We sent close to server
+  REMOTE_CLOSE = 'REMOTE_CLOSE', // Server closed the request
+  DROP = 'DROP', // Dropped due to disconnect
+  TIMEOUT = 'TIMEOUT', // Closed because taking too long
 }
 
 export interface QueryTraceEvent {
-  id: string;
-  relay: string;
-  connId: string;
-  state: QueryTraceState;
-  timestamp: number;
-  filters: Array<ReqFilter>;
+  id: string
+  relay: string
+  connId: string
+  state: QueryTraceState
+  timestamp: number
+  filters: Array<ReqFilter>
 }
 
 interface QueryTraceEvents {
-  stateChange: (event: QueryTraceEvent) => void;
+  stateChange: (event: QueryTraceEvent) => void
 }
 
 /**
  * Tracing for relay query status - pure state machine
  */
 export class QueryTrace extends EventEmitter<QueryTraceEvents> {
-  readonly id: string;
-  readonly createdAt: number;
-  #currentState: QueryTraceState = QueryTraceState.NEW;
-  filters: Array<ReqFilter>;
+  readonly id: string
+  readonly createdAt: number
+  #currentState: QueryTraceState = QueryTraceState.NEW
+  filters: Array<ReqFilter>
 
   constructor(
     readonly relay: string,
@@ -50,66 +50,66 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
     readonly connId: string,
     readonly leaveOpen: boolean,
   ) {
-    super();
-    this.id = uuid();
-    this.createdAt = unixNowMs();
-    this.filters = filters;
+    super()
+    this.id = uuid()
+    this.createdAt = unixNowMs()
+    this.filters = filters
   }
 
   #setState(state: QueryTraceState) {
     // Only emit state change if the state actually changed
     if (this.#currentState === state) {
-      return;
+      return
     }
-    this.#currentState = state;
-    this.emit("stateChange", {
+    this.#currentState = state
+    this.emit('stateChange', {
       id: this.id,
       relay: this.relay,
       connId: this.connId,
       state: state,
       timestamp: unixNowMs(),
       filters: this.filters,
-    });
+    })
   }
 
   get currentState() {
-    return this.#currentState;
+    return this.#currentState
   }
 
   queued() {
-    this.#setState(QueryTraceState.QUEUED);
+    this.#setState(QueryTraceState.QUEUED)
   }
 
   sent() {
-    this.#setState(this.leaveOpen ? QueryTraceState.WAITING_STREAM : QueryTraceState.WAITING);
+    this.#setState(this.leaveOpen ? QueryTraceState.WAITING_STREAM : QueryTraceState.WAITING)
   }
 
   sentSync() {
-    this.#setState(QueryTraceState.SYNC_WAITING);
+    this.#setState(QueryTraceState.SYNC_WAITING)
   }
 
   syncFallback() {
-    this.#setState(QueryTraceState.SYNC_FALLBACK);
+    this.#setState(QueryTraceState.SYNC_FALLBACK)
   }
 
   eose() {
-    this.#setState(QueryTraceState.EOSE);
+    this.#setState(QueryTraceState.EOSE)
   }
 
   remoteClosed() {
-    this.#setState(QueryTraceState.REMOTE_CLOSE);
+    this.#setState(QueryTraceState.REMOTE_CLOSE)
   }
 
   close() {
-    this.#setState(QueryTraceState.LOCAL_CLOSE);
+    this.#setState(QueryTraceState.LOCAL_CLOSE)
   }
 
   drop() {
-    this.#setState(QueryTraceState.DROP);
+    this.#setState(QueryTraceState.DROP)
   }
 
   timeout() {
-    this.#setState(QueryTraceState.TIMEOUT);
+    this.#setState(QueryTraceState.TIMEOUT)
   }
 
   /**
@@ -122,110 +122,110 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
       QueryTraceState.DROP,
       QueryTraceState.REMOTE_CLOSE,
       QueryTraceState.LOCAL_CLOSE,
-    ].includes(this.#currentState);
+    ].includes(this.#currentState)
   }
 }
 
 export interface QueryEvents {
-  trace: (event: QueryTraceEvent) => void;
-  request: (subId: string, req: Array<ReqFilter>) => void;
-  event: (evs: Array<TaggedNostrEvent>) => void;
+  trace: (event: QueryTraceEvent) => void
+  request: (subId: string, req: Array<ReqFilter>) => void
+  event: (evs: Array<TaggedNostrEvent>) => void
   /**
    * Emitted when the query will be removed
    */
-  end: () => void;
+  end: () => void
   /**
    * Emitted when the query has either been EOSE / CLOSED / TIMEOUT
    */
-  eose: () => void;
+  eose: () => void
 }
 
 /**
  * Active query - collects events and tracks traces
  */
 export class Query extends EventEmitter<QueryEvents> {
-  id: string;
+  id: string
 
   /**
    * RequestBuilder instance
    */
-  requests: Array<ReqFilter> = [];
+  requests: Array<ReqFilter> = []
 
   /**
    * Which relays this query has already been executed on (read-only tracking)
    */
-  #tracing: Map<string, QueryTrace> = new Map();
+  #tracing: Map<string, QueryTrace> = new Map()
 
   /**
    * Leave the query open until its removed
    */
-  #leaveOpen = false;
+  #leaveOpen = false
 
   /**
    * Skip cache layer
    */
-  skipCache = false;
+  skipCache = false
 
   /**
    * Use sync module for this query
    */
-  useSyncModule = false;
+  useSyncModule = false
 
   /**
    * Time when this query can be removed
    */
-  #cancelAt?: number;
+  #cancelAt?: number
 
   /**
    * Feed object which collects events
    */
-  #feed: NoteCollection;
+  #feed: NoteCollection
 
   /**
    * Maximum waiting time for this query
    */
-  readonly timeout: number;
+  readonly timeout: number
 
   /**
    * Milliseconds to wait before sending query (debounce)
    */
-  #groupingDelay?: number;
+  #groupingDelay?: number
 
   /**
    * Timer which waits for no-change before emitting filters
    */
-  #groupTimeout?: ReturnType<typeof setTimeout>;
+  #groupTimeout?: ReturnType<typeof setTimeout>
 
   /**
    * If the query should only every replace a previous trace on the same connection
    */
-  #replaceable: boolean = false;
+  #replaceable: boolean = false
 
   /**
    * List of UUID request builder instance ids appended to this query
    */
-  #builderInstances: Set<string>;
+  #builderInstances: Set<string>
 
   /** Total number of duplicates produced by this query */
-  #duplicates: number;
+  #duplicates: number
 
-  #log = debug("Query");
+  #log = debug('Query')
 
   constructor(req: RequestBuilder) {
-    super();
-    this.id = req.id;
-    this.#feed = new NoteCollection();
-    this.#feed.on("event", evs => this.emit("event", evs));
-    this.#builderInstances = new Set([]);
-    this.#leaveOpen = req.options?.leaveOpen ?? false;
-    this.skipCache = req.options?.skipCache ?? false;
-    this.useSyncModule = req.options?.useSyncModule ?? false;
-    this.timeout = req.options?.timeout ?? 5_000;
-    this.#groupingDelay = req.options?.groupingDelay ?? 100;
-    this.#replaceable = req.options?.replaceable ?? false;
-    this.#duplicates = 0;
+    super()
+    this.id = req.id
+    this.#feed = new NoteCollection()
+    this.#feed.on('event', evs => this.emit('event', evs))
+    this.#builderInstances = new Set([])
+    this.#leaveOpen = req.options?.leaveOpen ?? false
+    this.skipCache = req.options?.skipCache ?? false
+    this.useSyncModule = req.options?.useSyncModule ?? false
+    this.timeout = req.options?.timeout ?? 5_000
+    this.#groupingDelay = req.options?.groupingDelay ?? 100
+    this.#replaceable = req.options?.replaceable ?? false
+    this.#duplicates = 0
 
-    this.addRequest(req);
+    this.addRequest(req)
   }
 
   /**
@@ -233,66 +233,66 @@ export class Query extends EventEmitter<QueryEvents> {
    */
   addRequest(req: RequestBuilder) {
     if (this.#builderInstances.has(req.instance)) {
-      return;
+      return
     }
     if (req.options?.extraEvents) {
-      this.#feed.add(req.options.extraEvents);
+      this.#feed.add(req.options.extraEvents)
     }
     if (req.numFilters > 0) {
-      this.#log("Add query %O to %s", req, this.id);
-      this.requests.push(...req.buildRaw());
-      this.#builderInstances.add(req.instance);
-      return true;
+      this.#log('Add query %O to %s', req, this.id)
+      this.requests.push(...req.buildRaw())
+      this.#builderInstances.add(req.instance)
+      return true
     }
-    return false;
+    return false
   }
 
   isOpen() {
-    return this.#cancelAt === undefined && this.#leaveOpen;
+    return this.#cancelAt === undefined && this.#leaveOpen
   }
 
   canRemove() {
-    return this.#cancelAt !== undefined && this.#cancelAt < unixNowMs();
+    return this.#cancelAt !== undefined && this.#cancelAt < unixNowMs()
   }
 
   /**
    * Recompute the complete set of compressed filters from all query traces
    */
   get filters() {
-    return [...this.#tracing.values()].flatMap(a => a.filters);
+    return [...this.#tracing.values()].flatMap(a => a.filters)
   }
 
   get feed() {
-    return this.#feed;
+    return this.#feed
   }
 
   get snapshot() {
-    return this.#feed.snapshot;
+    return this.#feed.snapshot
   }
 
   get traces() {
-    return [...this.#tracing.values()];
+    return [...this.#tracing.values()]
   }
 
   get leaveOpen() {
-    return this.#leaveOpen;
+    return this.#leaveOpen
   }
 
   /**
    * Flush any buffered data
    */
   flush() {
-    this.feed.flushEmit();
-    this.#emitFilters();
+    this.feed.flushEmit()
+    this.#emitFilters()
   }
 
   /**
    * Add a trace to this query
    */
   addTrace(trace: QueryTrace) {
-    this.#tracing.set(trace.id, trace);
-    trace.on("stateChange", event => {
-      this.emit("trace", event);
+    this.#tracing.set(trace.id, trace)
+    trace.on('stateChange', event => {
+      this.emit('trace', event)
 
       // Check if done when reaching terminal state
       if (
@@ -304,39 +304,39 @@ export class Query extends EventEmitter<QueryEvents> {
           QueryTraceState.LOCAL_CLOSE,
         ].includes(event.state)
       ) {
-        this.#log("Trace state changed to %s, progress=%d", event.state, this.progress);
+        this.#log('Trace state changed to %s, progress=%d', event.state, this.progress)
         if (this.progress === 1) {
-          this.emit("eose");
+          this.emit('eose')
         }
       }
-    });
+    })
   }
 
   /**
    * Remove a trace from this query
    */
   removeTrace(traceId: string) {
-    this.#tracing.delete(traceId);
+    this.#tracing.delete(traceId)
   }
 
   /**
    * Add event to feed if it matches any trace filter
    */
   addEvent(sub: string, e: TaggedNostrEvent) {
-    const trace = this.#tracing.get(sub);
-    if (trace || sub === "*") {
-      const filters = trace ? trace.filters : this.filters;
+    const trace = this.#tracing.get(sub)
+    if (trace || sub === '*') {
+      const filters = trace ? trace.filters : this.filters
       if (filters.some(v => eventMatchesFilter(e, v))) {
-        const added = this.feed.add(e);
+        const added = this.feed.add(e)
         if (added === 0) {
-          this.#duplicates++;
-          const ratio = this.#duplicates / this.feed.snapshot.length;
+          this.#duplicates++
+          const ratio = this.#duplicates / this.feed.snapshot.length
           if (ratio > 2) {
-            this.#log("High number of duplicates for: ", this.id, ratio, this.feed.snapshot.length);
+            this.#log('High number of duplicates for: ', this.id, ratio, this.feed.snapshot.length)
           }
         }
       } else {
-        this.#log("Event did not match filter, rejecting %O", e);
+        this.#log('Event did not match filter, rejecting %O', e)
       }
     }
   }
@@ -345,40 +345,40 @@ export class Query extends EventEmitter<QueryEvents> {
    * This function should be called when this Query object and FeedStore is no longer needed
    */
   cancel() {
-    this.#cancelAt = unixNowMs() + 1_000;
+    this.#cancelAt = unixNowMs() + 1_000
   }
 
   uncancel() {
-    this.#cancelAt = undefined;
+    this.#cancelAt = undefined
   }
 
   cleanup() {
     if (this.#groupTimeout) {
-      clearTimeout(this.#groupTimeout);
-      this.#groupTimeout = undefined;
+      clearTimeout(this.#groupTimeout)
+      this.#groupTimeout = undefined
     }
-    this.emit("end");
+    this.emit('end')
   }
 
   closeQuery() {
     for (const qt of this.#tracing.values()) {
       if (!qt.finished) {
-        qt.close();
+        qt.close()
       }
     }
-    this.cleanup();
+    this.cleanup()
   }
 
   /**
    * Get the progress to EOSE, can be used to determine when we should load more content
    */
   get progress() {
-    const traces = [...this.#tracing.values()];
-    const thisProgress = traces.reduce((acc, v) => (acc += v.finished ? 1 : 0), 0) / traces.length;
+    const traces = [...this.#tracing.values()]
+    const thisProgress = traces.reduce((acc, v) => (acc += v.finished ? 1 : 0), 0) / traces.length
     if (isNaN(thisProgress)) {
-      return 0;
+      return 0
     }
-    return thisProgress;
+    return thisProgress
   }
 
   /**
@@ -386,26 +386,26 @@ export class Query extends EventEmitter<QueryEvents> {
    */
   start() {
     if (this.#groupingDelay) {
-      if (this.#groupTimeout !== undefined) return;
+      if (this.#groupTimeout !== undefined) return
       this.#groupTimeout = setTimeout(() => {
-        this.#emitFilters();
-        this.#groupTimeout = undefined;
-      }, this.#groupingDelay);
+        this.#emitFilters()
+        this.#groupTimeout = undefined
+      }, this.#groupingDelay)
     } else {
-      this.#emitFilters();
+      this.#emitFilters()
     }
   }
 
   async #emitFilters() {
-    if (this.requests.length === 0) return;
-    this.#log("Starting emit of %s", this.id);
-    const rawFilters = [...this.requests];
-    this.requests = [];
+    if (this.requests.length === 0) return
+    this.#log('Starting emit of %s', this.id)
+    const rawFilters = [...this.requests]
+    this.requests = []
     if (this.#replaceable) {
-      rawFilters.push(...this.filters);
+      rawFilters.push(...this.filters)
     }
     if (rawFilters.length > 0) {
-      this.emit("request", this.id, rawFilters);
+      this.emit('request', this.id, rawFilters)
     }
   }
 }
