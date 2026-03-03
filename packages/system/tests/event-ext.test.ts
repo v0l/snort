@@ -612,5 +612,87 @@ describe('EventExt', () => {
 
       expect(EventExt.verify(event)).toBe(false)
     })
+
+    test('should return false (not throw) for non-hex sig of valid length', () => {
+      const event = {
+        id: 'abc123def456abc123def456abc123def456abc123def456abc123def456abc1',
+        kind: 1,
+        pubkey: '1111111111111111111111111111111111111111111111111111111111111111',
+        created_at: 1234567890,
+        content: 'test',
+        tags: [],
+        sig: 'g'.repeat(128), // correct length but non-hex
+      } as NostrEvent
+
+      expect(() => EventExt.verify(event)).not.toThrow()
+      expect(EventExt.verify(event)).toBe(false)
+      expect(() => EventExt.isValid(event)).not.toThrow()
+      expect(EventExt.isValid(event)).toBe(false)
+    })
+
+    test('should return false (not throw) for odd-length hex sig', () => {
+      const event = {
+        id: 'abc123def456abc123def456abc123def456abc123def456abc123def456abc1',
+        kind: 1,
+        pubkey: '1111111111111111111111111111111111111111111111111111111111111111',
+        created_at: 1234567890,
+        content: 'test',
+        tags: [],
+        sig: 'a'.repeat(127), // odd-length hex
+      } as NostrEvent
+
+      expect(() => EventExt.verify(event)).not.toThrow()
+      expect(EventExt.verify(event)).toBe(false)
+    })
+
+    test('should return false (not throw) for invalid pubkey length', () => {
+      const event = {
+        id: 'abc123def456abc123def456abc123def456abc123def456abc123def456abc1',
+        kind: 1,
+        pubkey: 'abcd', // too short
+        created_at: 1234567890,
+        content: 'test',
+        tags: [],
+        sig: 'b'.repeat(128),
+      } as NostrEvent
+
+      expect(() => EventExt.verify(event)).not.toThrow()
+      expect(EventExt.verify(event)).toBe(false)
+    })
+
+    test('should return false when id field does not match computed hash', () => {
+      const privateKey = '0000000000000000000000000000000000000000000000000000000000000001'
+      const event = {
+        pubkey: '',
+        kind: 1,
+        created_at: 1234567890,
+        content: 'hello',
+        tags: [],
+        id: '',
+        sig: '',
+      } as NostrEvent
+      EventExt.sign(event, privateKey)
+      // Tamper with the id field without changing content
+      event.id = event.id.replace(/^./, '0')
+
+      expect(EventExt.verify(event)).toBe(false)
+      expect(EventExt.isValid(event)).toBe(false)
+    })
+  })
+
+  describe('isWellFormed', () => {
+    test('should return false (not throw) when tags is missing', () => {
+      const event = {
+        id: 'test',
+        kind: 1,
+        pubkey: '1111111111111111111111111111111111111111111111111111111111111111',
+        created_at: 1234567890,
+        content: 'test',
+        sig: 'test-sig',
+      } as any // tags deliberately omitted
+
+      expect(() => EventExt.isWellFormed(event)).not.toThrow()
+      expect(EventExt.isWellFormed(event)).toBe(false)
+    })
   })
 })
