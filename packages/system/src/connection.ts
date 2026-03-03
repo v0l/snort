@@ -4,7 +4,7 @@ import { EventEmitter } from 'eventemitter3'
 import WebSocket from 'isomorphic-ws'
 import { v4 as uuid } from 'uuid'
 import type { ConnectionType, ConnectionTypeEvents } from './connection-pool'
-import { DefaultConnectTimeout } from './const'
+import { AuthTimeout, DefaultConnectTimeout } from './const'
 import { EventExt } from './event-ext'
 import EventKind from './event-kind'
 import { Nip11, type RelayInfoDocument } from './impl/nip11'
@@ -442,9 +442,16 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       this.AwaitingAuth.delete(challenge)
     }
     this.AwaitingAuth.set(challenge, true)
-    const authEvent = await new Promise<NostrEvent>((resolve, reject) =>
-      this.emit('auth', challenge, this.address, resolve),
-    )
+    const authEvent = await new Promise<NostrEvent>((resolve, reject) => {
+      const t = setTimeout(() => {
+        authCleanup()
+        reject(new Error('AUTH handler timed out — no auth event provided'))
+      }, AuthTimeout)
+      this.emit('auth', challenge, this.address, (ev: NostrEvent) => {
+        clearTimeout(t)
+        resolve(ev)
+      })
+    })
     this.#log('Auth result: %o', authEvent)
     if (!authEvent) {
       authCleanup()
@@ -455,7 +462,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       const t = setTimeout(() => {
         authCleanup()
         resolve()
-      }, 10_000)
+      }, AuthTimeout)
 
       this.EventsCallback.set(authEvent.id, msg => {
         clearTimeout(t)

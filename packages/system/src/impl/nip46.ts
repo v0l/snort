@@ -4,6 +4,7 @@ import debug from 'debug'
 import { EventEmitter } from 'eventemitter3'
 import { v4 as uuid } from 'uuid'
 import { Connection } from '../connection'
+import { Nip46RpcTimeout } from '../const'
 import { EventBuilder } from '../event-builder'
 import { EventExt } from '../event-ext'
 import type EventKind from '../event-kind'
@@ -294,11 +295,19 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
 
     this.#sendCommand(payload, unwrap(this.#remotePubkey))
     return await new Promise<Nip46Response>((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        this.#commandQueue.delete(payload.id)
+        reject(new Error(`NIP-46 RPC timed out after ${Nip46RpcTimeout}ms (method=${method})`))
+      }, Nip46RpcTimeout)
       this.#commandQueue.set(payload.id, {
         resolve: async (o: Nip46Response) => {
+          clearTimeout(timeout)
           resolve(o)
         },
-        reject,
+        reject: (e: Error) => {
+          clearTimeout(timeout)
+          reject(e)
+        },
       })
     })
   }
