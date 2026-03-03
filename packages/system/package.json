@@ -12,10 +12,7 @@
   "scripts": {
     "build": "rm -rf dist && bunx --bun tsc"
   },
-  "files": [
-    "src",
-    "dist"
-  ],
+  "files": ["src", "dist"],
   "devDependencies": {
     "@peculiar/webcrypto": "^1.5.0",
     "@types/debug": "^4.1.12",
@@ -30,7 +27,6 @@
     "@noble/hashes": "^2.0.1",
     "@scure/base": "^2.0.0",
     "@snort/shared": "^2.0.0-pre.3",
-    "@stablelib/xchacha20": "^2.0.1",
     "debug": "^4.4.3",
     "eventemitter3": "^5.0.1",
     "isomorphic-ws": "^5.0.0",

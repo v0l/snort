@@ -71,23 +71,41 @@ export class PinEncrypted extends KeyStorage {
   }
 
   override async unlock(pin: string) {
-    const salt = base64.decode(this.#encrypted.salt)
+    // Only the v2 (encrypt-then-MAC with key separation) format is supported.
+    // Legacy v1 payloads (no `v` field) used MAC-then-encrypt with a shared key
+    // and cannot be decrypted securely — they must be re-encrypted by the user.
+    if (this.#encrypted.v !== 2) throw new InvalidPinError()
+
+    let salt: Uint8Array, ciphertext: Uint8Array, nonce: Uint8Array, actualMac: Uint8Array
+    try {
+      salt = base64.decode(this.#encrypted.salt)
+      ciphertext = base64.decode(this.#encrypted.ciphertext)
+      nonce = base64.decode(this.#encrypted.iv)
+      actualMac = base64.decode(this.#encrypted.mac)
+    } catch {
+      throw new InvalidPinError()
+    }
+
+    // Validate expected field lengths before any cryptographic operation
+    if (salt.length !== 24 || nonce.length !== 24 || actualMac.length !== 32) throw new InvalidPinError()
+
     const masterKey = await scryptAsync(pin, salt, PinEncrypted.#opts)
     const encKey = hkdf(sha256, masterKey, salt, utf8ToBytes('pin-enc'), 32)
     const macKey = hkdf(sha256, masterKey, salt, utf8ToBytes('pin-mac'), 32)
-
-    const ciphertext = base64.decode(this.#encrypted.ciphertext)
-    const nonce = base64.decode(this.#encrypted.iv)
 
     // Verify MAC over (nonce || ciphertext) before decryption — encrypt-then-MAC
     const macData = new Uint8Array(nonce.length + ciphertext.length)
     macData.set(nonce, 0)
     macData.set(ciphertext, nonce.length)
     const expectedMac = hmac(sha256, macKey, macData)
-    const actualMac = base64.decode(this.#encrypted.mac)
     if (!equalBytes(expectedMac, actualMac)) throw new InvalidPinError()
 
-    const plaintext = xchacha20(encKey, nonce, ciphertext)
+    let plaintext: Uint8Array
+    try {
+      plaintext = xchacha20(encKey, nonce, ciphertext)
+    } catch {
+      throw new InvalidPinError()
+    }
     if (plaintext.length !== 32) throw new InvalidPinError()
     this.#decrypted = plaintext
   }
@@ -97,9 +115,12 @@ export class PinEncrypted extends KeyStorage {
   }
 
   static async create(content: string, pin: string) {
+    const plaintext = hexToBytes(content)
+    if (plaintext.length !== 32) {
+      throw new Error('PinEncrypted content must be exactly 32 bytes (64 hex characters)')
+    }
     const salt = randomBytes(24)
     const nonce = randomBytes(24)
-    const plaintext = hexToBytes(content)
     const masterKey = await scryptAsync(pin, salt, PinEncrypted.#opts)
     const encKey = hkdf(sha256, masterKey, salt, utf8ToBytes('pin-enc'), 32)
     const macKey = hkdf(sha256, masterKey, salt, utf8ToBytes('pin-mac'), 32)
@@ -112,6 +133,7 @@ export class PinEncrypted extends KeyStorage {
     const mac = base64.encode(hmac(sha256, macKey, macData))
 
     const ret = new PinEncrypted({
+      v: 2,
       salt: base64.encode(salt),
       ciphertext: base64.encode(ciphertext),
       iv: base64.encode(nonce),
@@ -150,6 +172,8 @@ export class NotEncrypted extends KeyStorage {
 }
 
 export interface PinEncryptedPayload {
+  /** Format version. v2 = encrypt-then-MAC with HKDF key separation. Absence = legacy v1. */
+  v?: number
   salt: string // for KDF
   ciphertext: string
   iv: string
