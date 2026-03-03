@@ -1,10 +1,10 @@
+import { schnorr } from '@noble/curves/secp256k1.js'
+import { bytesToHex, hexToBytes } from '@noble/hashes/utils.js'
 import { getPublicKey, sha256, unixNow, unwrap } from '@snort/shared'
+import { LRUCache } from 'typescript-lru-cache'
 import { EventKind, Nip10, Nip22, type NostrEvent, type NostrLink, type NotSignedNostrEvent, parseZap } from '.'
 import { minePow } from './pow-util'
 import { findTag } from './utils'
-import { schnorr } from '@noble/curves/secp256k1.js'
-import { bytesToHex, hexToBytes } from '@noble/hashes/utils.js'
-import { LRUCache } from 'typescript-lru-cache'
 
 /**
  * Generic thread structure extracted from a note
@@ -35,15 +35,14 @@ const ThreadCache = new LRUCache<string, Thread | undefined>({
  */
 export abstract class EventExt {
   /**
-   * Get the pub key of the creator of this event
+   * Get the pub key of the creator of this event.
+   *
+   * NIP-26 delegation tags are intentionally ignored: accepting an unverified
+   * delegation tag would allow any event to claim authorship by any pubkey.
+   * Full NIP-26 support requires verifying the delegation token signature
+   * before trusting the delegator pubkey.
    */
   static getRootPubKey(e: NostrEvent): string {
-    const delegation = e.tags.find(a => a[0] === 'delegation')
-    if (delegation?.[1]) {
-      // todo: verify sig
-      return delegation[1]
-    }
-
     if (e.kind === EventKind.ZapReceipt) {
       const bigP = findTag(e, 'P')
       if (bigP) {
