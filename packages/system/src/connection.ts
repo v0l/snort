@@ -2,7 +2,6 @@ import { unixNowMs } from '@snort/shared'
 import debug from 'debug'
 import { EventEmitter } from 'eventemitter3'
 import WebSocket from 'isomorphic-ws'
-import { v4 as uuid } from 'uuid'
 import type { ConnectionType, ConnectionTypeEvents } from './connection-pool'
 import { AuthTimeout, DefaultConnectTimeout } from './const'
 import { EventExt } from './event-ext'
@@ -48,7 +47,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
 
   constructor(addr: string, options: RelaySettings, ephemeral: boolean = false) {
     super()
-    this.id = uuid()
+    this.id = crypto.randomUUID()
     this.address = addr
     this.settings = options
     this.EventsCallback = new Map()
@@ -102,7 +101,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     try {
       const wasReconnect = this.Socket !== null
       if (this.Socket) {
-        this.id = uuid()
+        this.id = crypto.randomUUID()
         if (this.isOpen) {
           this.Socket.close()
         }
@@ -389,7 +388,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
 
   #reset() {
     // reset connection Id on disconnect, for query-tracking
-    this.id = uuid()
+    this.id = crypto.randomUUID()
     this.#expectAuth = false
     this.#log('Reset active=%O, raw=%O', [...this.#activeRequests.keys()], [...this.PendingRaw])
     for (const [id] of this.#activeRequests) {

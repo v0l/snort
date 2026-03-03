@@ -17,7 +17,6 @@
     "@peculiar/webcrypto": "^1.5.0",
     "@types/debug": "^4.1.12",
     "@types/node": "^24.8.1",
-    "@types/uuid": "^11.0.0",
     "@types/ws": "^8.18.1",
     "typescript": "^5.9.3"
   },
@@ -32,7 +31,6 @@
     "isomorphic-ws": "^5.0.0",
     "nostr-social-graph": "^1.0.33",
     "typescript-lru-cache": "^2.0.0",
-    "uuid": "^13.0.0",
     "ws": "^8.18.3"
   }
 }

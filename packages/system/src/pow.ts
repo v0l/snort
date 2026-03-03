@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid'
 import type { NostrEvent } from './nostr'
 import type { PowWorkerMessage } from './pow-worker'
 
@@ -38,7 +37,7 @@ export class PowWorker implements PowMiner {
   minePow(ev: NostrEvent, target: number) {
     return new Promise<NostrEvent>((resolve, reject) => {
       const req = {
-        id: uuid(),
+        id: crypto.randomUUID(),
         cmd: 'req',
         event: ev,
         target,

@@ -8,7 +8,6 @@ import { NostrLink } from '../nostr-link'
 import { findTag } from '../utils'
 import debug from 'debug'
 import EventEmitter from 'eventemitter3'
-import { v4 as uuid } from 'uuid'
 
 export enum DVMJobState {
   /**
@@ -106,7 +105,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
   /**
    * Internal instance ID
    */
-  #id = uuid()
+  #id = crypto.randomUUID()
 
   /**
    * Internal job state

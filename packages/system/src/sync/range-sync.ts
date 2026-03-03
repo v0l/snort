@@ -1,7 +1,6 @@
 import { unixNow } from '@snort/shared'
 import EventEmitter from 'eventemitter3'
 import { type ReqFilter, RequestBuilder, type SystemInterface, type TaggedNostrEvent } from '..'
-import { v4 as uuid } from 'uuid'
 
 /**
  * When nostr was created
@@ -17,7 +16,7 @@ interface RangeSyncEvents {
  * A simple time based sync for pulling lots of data from nostr
  */
 export class RangeSync extends EventEmitter<RangeSyncEvents> {
-  #id = uuid()
+  #id = crypto.randomUUID()
   #start: number = NostrBirthday
   #windowSize: number = 60 * 60 * 12
   #fetcher!: SystemInterface['Fetch']

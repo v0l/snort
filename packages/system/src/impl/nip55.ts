@@ -1,6 +1,5 @@
 import { bech32ToHex } from '@snort/shared'
 import debug from 'debug'
-import { v4 as uuid } from 'uuid'
 import { Nip55SignerTimeout } from '../const'
 import type { NostrEvent, NotSignedNostrEvent } from '../nostr'
 import type { EventSigner } from '../signer'
@@ -53,7 +52,7 @@ export class Nip55Signer implements EventSigner {
     obj?: NostrEvent | NotSignedNostrEvent | string,
     otherParams?: Map<string, string>,
   ) {
-    const id = uuid()
+    const id = crypto.randomUUID()
     const objString = typeof obj === 'string' ? obj : obj != undefined ? JSON.stringify(obj) : undefined
 
     const params = new URLSearchParams()
