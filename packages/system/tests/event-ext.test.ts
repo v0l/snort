@@ -339,7 +339,11 @@ describe('EventExt', () => {
       expect(EventExt.getRootPubKey(event)).toBe('1111111111111111111111111111111111111111111111111111111111111111')
     })
 
-    test('should return delegator pubkey when delegation tag exists', () => {
+    test('should ignore unverified delegation tag and return event pubkey', () => {
+      // NIP-26 delegation tags without signature verification must not be trusted —
+      // any event could claim authorship by any pubkey. Until a full NIP-26
+      // implementation with delegation-token signature verification is added,
+      // getRootPubKey() falls back to e.pubkey.
       const event = {
         id: 'test',
         kind: 1,
@@ -350,7 +354,7 @@ describe('EventExt', () => {
         sig: 'test',
       } as NostrEvent
 
-      expect(EventExt.getRootPubKey(event)).toBe('1111111111111111111111111111111111111111111111111111111111111111')
+      expect(EventExt.getRootPubKey(event)).toBe('2222222222222222222222222222222222222222222222222222222222222222')
     })
   })
 
