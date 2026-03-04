@@ -1,3 +1,4 @@
+import { unixNowMs } from '@snort/shared'
 import debug from 'debug'
 import { EventEmitter } from 'eventemitter3'
 import {
@@ -8,15 +9,14 @@ import {
   type SystemInterface,
   type TaggedNostrEvent,
 } from '.'
-import { Query, QueryTrace, type QueryTraceEvent } from './query'
-import { trimFilters } from './request-trim'
-import { eventMatchesFilter, isRequestSatisfied } from './request-matcher'
 import type { ConnectionType } from './connection-pool'
 import { EventExt } from './event-ext'
 import { NegentropyFlow } from './negentropy/negentropy-flow'
-import { RangeSync } from './sync/range-sync'
 import { NoteCollection } from './note-collection'
-import { unixNowMs } from '@snort/shared'
+import { Query, QueryTrace, type QueryTraceEvent } from './query'
+import { eventMatchesFilter, isRequestSatisfied } from './request-matcher'
+import { trimFilters } from './request-trim'
+import { RangeSync } from './sync/range-sync'
 
 interface QueryManagerEvents {
   change: () => void
@@ -57,6 +57,11 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    */
   #connectionListeners: Set<string> = new Set()
 
+  /**
+   * Handle for the cleanup interval so it can be cleared on destroy()
+   */
+  #cleanupInterval?: ReturnType<typeof setInterval>
+
   constructor(system: SystemInterface) {
     super()
     this.#system = system
@@ -64,7 +69,23 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     // Set up global connection listeners for cleanup
     this.#setupConnectionListeners()
 
-    setInterval(() => this.#cleanup(), 1_000)
+    this.#cleanupInterval = setInterval(() => this.#cleanup(), 1_000)
+  }
+
+  /**
+   * Stop all timers and remove all listeners.
+   * Call this when the QueryManager is no longer needed to prevent leaks.
+   */
+  destroy() {
+    if (this.#cleanupInterval) {
+      clearInterval(this.#cleanupInterval)
+      this.#cleanupInterval = undefined
+    }
+    for (const [, q] of this.#queries) {
+      q.cancel()
+    }
+    this.#queries.clear()
+    this.removeAllListeners()
   }
 
   #setupConnectionListeners() {

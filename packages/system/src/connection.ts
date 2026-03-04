@@ -1,15 +1,14 @@
-import { v4 as uuid } from 'uuid'
-import debug from 'debug'
-import WebSocket from 'isomorphic-ws'
 import { unixNowMs } from '@snort/shared'
+import debug from 'debug'
 import { EventEmitter } from 'eventemitter3'
-
-import { DefaultConnectTimeout } from './const'
-import type { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from './nostr'
-import EventKind from './event-kind'
-import { EventExt } from './event-ext'
+import WebSocket from 'isomorphic-ws'
+import { v4 as uuid } from 'uuid'
 import type { ConnectionType, ConnectionTypeEvents } from './connection-pool'
+import { DefaultConnectTimeout } from './const'
+import { EventExt } from './event-ext'
+import EventKind from './event-kind'
 import { Nip11, type RelayInfoDocument } from './impl/nip11'
+import type { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from './nostr'
 
 /**
  * Relay settings
@@ -139,6 +138,8 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     this.#downCount = 0
     this.#connectStarted = false
     this.#wasUp = true
+    // Reset backoff so the next disconnect starts from DefaultConnectTimeout again
+    this.ConnectTimeout = DefaultConnectTimeout
     this.#log(`Open!`)
     this.#setupEphemeral()
     this.emit('connected', wasReconnect)
