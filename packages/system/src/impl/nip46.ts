@@ -1,14 +1,14 @@
-import { unwrap, bech32ToHex } from '@snort/shared'
 import { secp256k1 } from '@noble/curves/secp256k1.js'
-import { v4 as uuid } from 'uuid'
+import { bech32ToHex, unwrap } from '@snort/shared'
 import debug from 'debug'
-
-import { Connection } from '../connection'
-import { type EventSigner, PrivateKeySigner } from '../signer'
-import type { NostrEvent } from '../nostr'
-import { EventBuilder } from '../event-builder'
-import type EventKind from '../event-kind'
 import { EventEmitter } from 'eventemitter3'
+import { v4 as uuid } from 'uuid'
+import { Connection } from '../connection'
+import { EventBuilder } from '../event-builder'
+import { EventExt } from '../event-ext'
+import type EventKind from '../event-kind'
+import type { NostrEvent } from '../nostr'
+import { type EventSigner, PrivateKeySigner } from '../signer'
 
 const NIP46_KIND = 24_133
 // FIXME add all kinds that Snort signs
@@ -111,8 +111,14 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     this.#localPubkey = await this.#insideSigner.getPubKey()
     return await new Promise<void>((resolve, reject) => {
       this.#conn = new Connection(this.#relay, { read: true, write: true })
-      this.#conn.on('unverifiedEvent', async (_sub, e) => {
-        await this.#onReply(e)
+      this.#conn.on('unverifiedEvent', (_sub, e) => {
+        // Verify the Schnorr signature before processing the NIP-46 message to
+        // prevent forged protocol messages from an attacker on a public relay.
+        if (!EventExt.isValid(e)) {
+          this.#log('Dropping NIP-46 event with invalid signature from %s', e.pubkey)
+          return
+        }
+        this.#onReply(e).catch(err => this.#log('Error handling NIP-46 reply: %O', err))
       })
       this.#conn.on('connected', async () => {
         this.#conn!.request([
@@ -237,7 +243,12 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     const reply = JSON.parse(decryptedContent) as Nip46Request | Nip46Response
 
     let id = reply.id
-    this.#log('Recv: %O', reply)
+    // Log only the id/method — never the decrypted params/result which may contain secrets.
+    if ('method' in reply) {
+      this.#log('Recv request id=%s method=%s', reply.id, reply.method)
+    } else {
+      this.#log('Recv response id=%s error=%s', reply.id, reply.error || '(none)')
+    }
     if ('method' in reply && reply.method === 'connect') {
       this.#remotePubkey = reply.params[0]
       await this.#sendCommand(
@@ -300,7 +311,12 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
       .content(await this.#insideSigner.nip44Encrypt(JSON.stringify(payload), target))
       .tag(['p', target])
 
-    this.#log('Send: %O', payload)
+    // Log only the id/method — never the params which may contain secrets.
+    if ('method' in payload) {
+      this.#log('Send request id=%s method=%s', payload.id, payload.method)
+    } else {
+      this.#log('Send response id=%s', payload.id)
+    }
     const evCommand = await eb.buildAndSign(this.#insideSigner)
     await this.#conn.publish(evCommand)
   }
