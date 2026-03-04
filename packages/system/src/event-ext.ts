@@ -1,10 +1,10 @@
+import { schnorr } from '@noble/curves/secp256k1.js'
+import { bytesToHex, hexToBytes } from '@noble/hashes/utils.js'
 import { getPublicKey, sha256, unixNow, unwrap } from '@snort/shared'
+import { LRUCache } from 'typescript-lru-cache'
 import { EventKind, Nip10, Nip22, type NostrEvent, type NostrLink, type NotSignedNostrEvent, parseZap } from '.'
 import { minePow } from './pow-util'
 import { findTag } from './utils'
-import { schnorr } from '@noble/curves/secp256k1.js'
-import { bytesToHex, hexToBytes } from '@noble/hashes/utils.js'
-import { LRUCache } from 'typescript-lru-cache'
 
 /**
  * Generic thread structure extracted from a note
@@ -70,14 +70,27 @@ export abstract class EventExt {
   }
 
   /**
-   * Check the signature of this message
-   * @returns True if valid signature
+   * Check the signature of this event.
+   * - Validates that `sig` and `pubkey` are correctly-formatted hex strings.
+   * - Validates that `id` matches the canonical hash of the event payload.
+   * - Verifies the Schnorr signature.
+   * Never throws; returns `false` for any malformed or untrusted input.
+   * @returns True only if the event is cryptographically authentic.
    */
   static verify(e: NostrEvent) {
-    if ((e.sig?.length ?? 0) < 64) return false
+    // Schnorr sig = 64 bytes = 128 hex chars; pubkey = 32 bytes = 64 hex chars
+    if (!e.sig || e.sig.length !== 128 || !/^[0-9a-f]+$/i.test(e.sig)) return false
+    if (!e.pubkey || e.pubkey.length !== 64 || !/^[0-9a-f]+$/i.test(e.pubkey)) return false
+
     const id = EventExt.createId(e)
-    const result = schnorr.verify(hexToBytes(e.sig), hexToBytes(id), hexToBytes(e.pubkey))
-    return result
+    // Verify that the event's id field matches the computed hash
+    if (e.id !== id) return false
+
+    try {
+      return schnorr.verify(hexToBytes(e.sig), hexToBytes(id), hexToBytes(e.pubkey))
+    } catch {
+      return false
+    }
   }
 
   static createId(e: NostrEvent | NotSignedNostrEvent) {
@@ -160,12 +173,30 @@ export abstract class EventExt {
     return t === EventType.Addressable
   }
 
-  static isValid(ev: NostrEvent) {
+  /**
+   * Check that an event is structurally well-formed WITHOUT verifying the
+   * Schnorr signature. Specifically: `sig` must be present, `tags` must be
+   * an array, and addressable events must have a `"d"` tag.
+   * Never throws; returns `false` for any malformed input.
+   * Use `isValid` when cryptographic authenticity is required.
+   */
+  static isWellFormed(ev: NostrEvent) {
+    if (ev.sig === undefined) return false
+    if (!Array.isArray(ev.tags)) return false
     const type = EventExt.getType(ev.kind)
     if (type === EventType.Addressable) {
       if (!findTag(ev, 'd')) return false
     }
-    return ev.sig !== undefined
+    return true
+  }
+
+  /**
+   * Check that an event is structurally well-formed AND has a valid Schnorr
+   * signature. Use this wherever event authenticity matters (relay message
+   * handlers, NIP-46, etc.).
+   */
+  static isValid(ev: NostrEvent) {
+    return EventExt.isWellFormed(ev) && EventExt.verify(ev)
   }
 
   /**
