@@ -7,9 +7,11 @@ import { sanitizeRelayUrl } from "@snort/shared";
 export function TraceStatsView() {
   const system = use(SnortContext);
 
+  const emptyTimeline = { entries: [] as TimelineEntry[] };
   const timeline = useSyncExternalStore(
-    c => system.traceTimeline?.hook(c) ?? (() => {}),
-    () => system.traceTimeline?.snapshot() ?? { entries: [] },
+    (c) => system.traceTimeline?.hook(c) ?? (() => {}),
+    () => system.traceTimeline?.snapshot() ?? emptyTimeline,
+    () => emptyTimeline,
   );
 
   const entries = timeline.entries;
@@ -32,17 +34,29 @@ export function TraceStatsView() {
 
     const latestEntries = Array.from(latestStateByTrace.values());
 
-    const forcedCount = latestEntries.filter(e =>
+    const forcedCount = latestEntries.filter((e) =>
       [QueryTraceState.TIMEOUT, QueryTraceState.DROP].includes(e.event.state),
     ).length;
-    const completedCount = latestEntries.filter(e =>
-      [QueryTraceState.EOSE, QueryTraceState.REMOTE_CLOSE, QueryTraceState.LOCAL_CLOSE].includes(e.event.state),
+    const completedCount = latestEntries.filter((e) =>
+      [
+        QueryTraceState.EOSE,
+        QueryTraceState.REMOTE_CLOSE,
+        QueryTraceState.LOCAL_CLOSE,
+      ].includes(e.event.state),
     ).length;
-    const queuedCount = latestEntries.filter(e => e.event.state === QueryTraceState.QUEUED).length;
-    const waitingCount = latestEntries.filter(e => e.event.state === QueryTraceState.WAITING).length;
-    const streamingCount = latestEntries.filter(e => e.event.state === QueryTraceState.WAITING_STREAM).length;
-    const syncCount = latestEntries.filter(e =>
-      [QueryTraceState.SYNC_WAITING, QueryTraceState.SYNC_FALLBACK].includes(e.event.state),
+    const queuedCount = latestEntries.filter(
+      (e) => e.event.state === QueryTraceState.QUEUED,
+    ).length;
+    const waitingCount = latestEntries.filter(
+      (e) => e.event.state === QueryTraceState.WAITING,
+    ).length;
+    const streamingCount = latestEntries.filter(
+      (e) => e.event.state === QueryTraceState.WAITING_STREAM,
+    ).length;
+    const syncCount = latestEntries.filter((e) =>
+      [QueryTraceState.SYNC_WAITING, QueryTraceState.SYNC_FALLBACK].includes(
+        e.event.state,
+      ),
     ).length;
 
     // Calculate timing statistics - time from sent to first response
@@ -63,26 +77,39 @@ export function TraceStatsView() {
       traceEntries.sort((a, b) => a.event.timestamp - b.event.timestamp);
 
       // Find the first "sent" event (WAITING or WAITING_STREAM)
-      const sentEntry = traceEntries.find(e =>
-        [QueryTraceState.WAITING, QueryTraceState.WAITING_STREAM].includes(e.event.state),
+      const sentEntry = traceEntries.find((e) =>
+        [QueryTraceState.WAITING, QueryTraceState.WAITING_STREAM].includes(
+          e.event.state,
+        ),
       );
 
       // Find the first completion event
-      const completionEntry = traceEntries.find(e =>
-        [QueryTraceState.EOSE, QueryTraceState.REMOTE_CLOSE, QueryTraceState.LOCAL_CLOSE].includes(e.event.state),
+      const completionEntry = traceEntries.find((e) =>
+        [
+          QueryTraceState.EOSE,
+          QueryTraceState.REMOTE_CLOSE,
+          QueryTraceState.LOCAL_CLOSE,
+        ].includes(e.event.state),
       );
 
       if (sentEntry && completionEntry) {
-        const responseTime = completionEntry.event.timestamp - sentEntry.event.timestamp;
+        const responseTime =
+          completionEntry.event.timestamp - sentEntry.event.timestamp;
         traceTimings.set(traceId, responseTime);
       }
     }
 
     const runtimes = Array.from(traceTimings.values());
-    const avgRuntime = runtimes.length > 0 ? runtimes.reduce((a, b) => a + b, 0) / runtimes.length : 0;
+    const avgRuntime =
+      runtimes.length > 0
+        ? runtimes.reduce((a, b) => a + b, 0) / runtimes.length
+        : 0;
     const minRuntime = runtimes.length > 0 ? Math.min(...runtimes) : 0;
     const maxRuntime = runtimes.length > 0 ? Math.max(...runtimes) : 0;
-    const medianRuntime = runtimes.length > 0 ? runtimes.sort((a, b) => a - b)[Math.floor(runtimes.length / 2)] : 0;
+    const medianRuntime =
+      runtimes.length > 0
+        ? runtimes.sort((a, b) => a - b)[Math.floor(runtimes.length / 2)]
+        : 0;
 
     interface RelayStatDetails {
       count: number;
@@ -112,12 +139,18 @@ export function TraceStatsView() {
         maxRuntime: 0,
       };
       existing.count++;
-      if (entry.event.state === QueryTraceState.TIMEOUT) existing.timeoutCount++;
+      if (entry.event.state === QueryTraceState.TIMEOUT)
+        existing.timeoutCount++;
       if (entry.event.state === QueryTraceState.DROP) existing.dropCount++;
       if (entry.event.state === QueryTraceState.QUEUED) existing.queuedCount++;
-      if (entry.event.state === QueryTraceState.WAITING_STREAM) existing.streamingCount++;
+      if (entry.event.state === QueryTraceState.WAITING_STREAM)
+        existing.streamingCount++;
       if (
-        [QueryTraceState.EOSE, QueryTraceState.REMOTE_CLOSE, QueryTraceState.LOCAL_CLOSE].includes(entry.event.state)
+        [
+          QueryTraceState.EOSE,
+          QueryTraceState.REMOTE_CLOSE,
+          QueryTraceState.LOCAL_CLOSE,
+        ].includes(entry.event.state)
       ) {
         existing.completedCount++;
       }
@@ -130,17 +163,24 @@ export function TraceStatsView() {
       traceEntries.sort((a, b) => a.event.timestamp - b.event.timestamp);
 
       // Find the first "sent" event (WAITING or WAITING_STREAM)
-      const sentEntry = traceEntries.find(e =>
-        [QueryTraceState.WAITING, QueryTraceState.WAITING_STREAM].includes(e.event.state),
+      const sentEntry = traceEntries.find((e) =>
+        [QueryTraceState.WAITING, QueryTraceState.WAITING_STREAM].includes(
+          e.event.state,
+        ),
       );
 
       // Find the first completion event
-      const completionEntry = traceEntries.find(e =>
-        [QueryTraceState.EOSE, QueryTraceState.REMOTE_CLOSE, QueryTraceState.LOCAL_CLOSE].includes(e.event.state),
+      const completionEntry = traceEntries.find((e) =>
+        [
+          QueryTraceState.EOSE,
+          QueryTraceState.REMOTE_CLOSE,
+          QueryTraceState.LOCAL_CLOSE,
+        ].includes(e.event.state),
       );
 
       if (sentEntry && completionEntry) {
-        const responseTime = completionEntry.event.timestamp - sentEntry.event.timestamp;
+        const responseTime =
+          completionEntry.event.timestamp - sentEntry.event.timestamp;
         const addr = sanitizeRelayUrl(sentEntry.event.relay)!;
         const stat = relayStats.get(addr);
         if (stat) {
@@ -153,7 +193,8 @@ export function TraceStatsView() {
 
     // Finalize averages
     for (const [relay, stat] of relayStats) {
-      stat.avgRuntime = stat.completedCount > 0 ? stat.avgRuntime / stat.completedCount : 0;
+      stat.avgRuntime =
+        stat.completedCount > 0 ? stat.avgRuntime / stat.completedCount : 0;
       if (stat.minRuntime === Infinity) stat.minRuntime = 0;
     }
 
@@ -161,7 +202,10 @@ export function TraceStatsView() {
     const queryNameStats = new Map<string, number>();
     for (const entry of latestEntries) {
       if (entry.queryName) {
-        queryNameStats.set(entry.queryName, (queryNameStats.get(entry.queryName) || 0) + 1);
+        queryNameStats.set(
+          entry.queryName,
+          (queryNameStats.get(entry.queryName) || 0) + 1,
+        );
       }
     }
 
@@ -177,7 +221,9 @@ export function TraceStatsView() {
       minRuntime,
       maxRuntime,
       medianRuntime,
-      relayStats: [...relayStats.entries()].sort((a, b) => b[1].count - a[1].count),
+      relayStats: [...relayStats.entries()].sort(
+        (a, b) => b[1].count - a[1].count,
+      ),
       queryNameStats: [...queryNameStats.entries()].sort((a, b) => b[1] - a[1]),
     };
   }, [entries]);
@@ -192,7 +238,9 @@ export function TraceStatsView() {
     const traceData = system.traceTimeline.exportGoogleTrace();
 
     // Download as JSON file
-    const blob = new Blob([JSON.stringify(traceData, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(traceData, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -265,14 +313,16 @@ export function TraceStatsView() {
           onClick={openInPerfetto}
           disabled={entries.length === 0}
           className="trace-timeline-btn-export"
-          title="Open trace in Perfetto UI">
+          title="Open trace in Perfetto UI"
+        >
           Open in Perfetto
         </button>
         <button
           onClick={exportGoogleTrace}
           disabled={entries.length === 0}
           className="trace-timeline-btn-export"
-          title="Download trace as JSON">
+          title="Download trace as JSON"
+        >
           Export JSON
         </button>
       </div>
@@ -286,18 +336,22 @@ export function TraceStatsView() {
         <div className="trace-stats-card">
           <div className="trace-stats-card-label">Completed</div>
           <div className="trace-stats-card-value-xl trace-stats-value-green">
-            {stats.completedCount} ({((stats.completedCount / stats.totalEntries) * 100).toFixed(1)}%)
+            {stats.completedCount} (
+            {((stats.completedCount / stats.totalEntries) * 100).toFixed(1)}%)
           </div>
         </div>
         <div className="trace-stats-card">
           <div className="trace-stats-card-label">Forced EOSE</div>
           <div className="trace-stats-card-value-xl trace-stats-value-yellow">
-            {stats.forcedCount} ({((stats.forcedCount / stats.totalEntries) * 100).toFixed(1)}%)
+            {stats.forcedCount} (
+            {((stats.forcedCount / stats.totalEntries) * 100).toFixed(1)}%)
           </div>
         </div>
         <div className="trace-stats-card">
           <div className="trace-stats-card-label">Queued</div>
-          <div className="trace-stats-card-value-xl trace-stats-value-blue">{stats.queuedCount}</div>
+          <div className="trace-stats-card-value-xl trace-stats-value-blue">
+            {stats.queuedCount}
+          </div>
         </div>
       </div>
 
@@ -307,11 +361,15 @@ export function TraceStatsView() {
         <div className="trace-stats-grid">
           <div>
             <div className="trace-stats-card-label">Waiting</div>
-            <div className="trace-stats-card-value-lg">{stats.waitingCount}</div>
+            <div className="trace-stats-card-value-lg">
+              {stats.waitingCount}
+            </div>
           </div>
           <div>
             <div className="trace-stats-card-label">Streaming</div>
-            <div className="trace-stats-card-value-lg trace-stats-value-purple">{stats.streamingCount}</div>
+            <div className="trace-stats-card-value-lg trace-stats-value-purple">
+              {stats.streamingCount}
+            </div>
           </div>
           <div>
             <div className="trace-stats-card-label">Syncing</div>
@@ -320,7 +378,12 @@ export function TraceStatsView() {
           <div>
             <div className="trace-stats-card-label">Success Rate</div>
             <div className="trace-stats-card-value-lg trace-stats-value-green">
-              {((stats.completedCount / (stats.completedCount + stats.forcedCount || 1)) * 100).toFixed(1)}%
+              {(
+                (stats.completedCount /
+                  (stats.completedCount + stats.forcedCount || 1)) *
+                100
+              ).toFixed(1)}
+              %
             </div>
           </div>
         </div>
@@ -332,15 +395,21 @@ export function TraceStatsView() {
         <div className="trace-stats-grid">
           <div>
             <div className="trace-stats-card-label">Average</div>
-            <div className="trace-stats-card-value-lg">{formatTime(stats.avgRuntime)}</div>
+            <div className="trace-stats-card-value-lg">
+              {formatTime(stats.avgRuntime)}
+            </div>
           </div>
           <div>
             <div className="trace-stats-card-label">Median</div>
-            <div className="trace-stats-card-value-lg">{formatTime(stats.medianRuntime)}</div>
+            <div className="trace-stats-card-value-lg">
+              {formatTime(stats.medianRuntime)}
+            </div>
           </div>
           <div>
             <div className="trace-stats-card-label">Min</div>
-            <div className="trace-stats-card-value-lg trace-stats-value-green">{formatTime(stats.minRuntime)}</div>
+            <div className="trace-stats-card-value-lg trace-stats-value-green">
+              {formatTime(stats.minRuntime)}
+            </div>
           </div>
           <div>
             <div className="trace-stats-card-label">Max</div>
@@ -390,51 +459,73 @@ export function TraceStatsView() {
             </thead>
             <tbody>
               {stats.relayStats.map(([relay, stat]) => (
-                <tr key={relay} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
-                  <td className="py-2 font-mono text-xs truncate max-w-xs" title={relay}>
+                <tr
+                  key={relay}
+                  className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
+                >
+                  <td
+                    className="py-2 font-mono text-xs truncate max-w-xs"
+                    title={relay}
+                  >
                     {new URL(relay).hostname}
                   </td>
                   <td className="text-right py-2">{stat.count}</td>
                   <td className="text-right py-2">
-                    <span className="text-green-600 dark:text-green-400">{stat.completedCount}</span>
+                    <span className="text-green-600 dark:text-green-400">
+                      {stat.completedCount}
+                    </span>
                   </td>
                   <td className="text-right py-2">
                     {stat.queuedCount > 0 ? (
-                      <span className="text-blue-600 dark:text-blue-400">{stat.queuedCount}</span>
+                      <span className="text-blue-600 dark:text-blue-400">
+                        {stat.queuedCount}
+                      </span>
                     ) : (
                       <span className="text-gray-400">-</span>
                     )}
                   </td>
                   <td className="text-right py-2">
                     {stat.streamingCount > 0 ? (
-                      <span className="text-purple-600 dark:text-purple-400">{stat.streamingCount}</span>
+                      <span className="text-purple-600 dark:text-purple-400">
+                        {stat.streamingCount}
+                      </span>
                     ) : (
                       <span className="text-gray-400">-</span>
                     )}
                   </td>
                   <td className="text-right py-2">
                     {stat.timeoutCount > 0 ? (
-                      <span className="text-red-600 dark:text-red-400">{stat.timeoutCount}</span>
+                      <span className="text-red-600 dark:text-red-400">
+                        {stat.timeoutCount}
+                      </span>
                     ) : (
                       <span className="text-gray-400">-</span>
                     )}
                   </td>
                   <td className="text-right py-2">
                     {stat.dropCount > 0 ? (
-                      <span className="text-orange-600 dark:text-orange-400">{stat.dropCount}</span>
+                      <span className="text-orange-600 dark:text-orange-400">
+                        {stat.dropCount}
+                      </span>
                     ) : (
                       <span className="text-gray-400">-</span>
                     )}
                   </td>
                   <td className="text-right py-2 font-mono text-xs">
-                    {stat.completedCount > 0 ? formatTime(stat.avgRuntime) : "-"}
+                    {stat.completedCount > 0
+                      ? formatTime(stat.avgRuntime)
+                      : "-"}
                   </td>
                   <td className="text-right py-2 font-mono text-xs">
                     {stat.completedCount > 0 ? (
                       <>
-                        <span className="text-green-600 dark:text-green-400">{formatTime(stat.minRuntime)}</span>
+                        <span className="text-green-600 dark:text-green-400">
+                          {formatTime(stat.minRuntime)}
+                        </span>
                         {" / "}
-                        <span className="text-yellow-600 dark:text-yellow-400">{formatTime(stat.maxRuntime)}</span>
+                        <span className="text-yellow-600 dark:text-yellow-400">
+                          {formatTime(stat.maxRuntime)}
+                        </span>
                       </>
                     ) : (
                       "-"

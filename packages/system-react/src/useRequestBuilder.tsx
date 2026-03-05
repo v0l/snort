@@ -1,5 +1,9 @@
 import { use, useEffect, useMemo, useSyncExternalStore } from "react";
-import { EmptySnapshot, type RequestBuilder, type TaggedNostrEvent } from "@snort/system";
+import {
+  EmptySnapshot,
+  type RequestBuilder,
+  type TaggedNostrEvent,
+} from "@snort/system";
 import { SnortContext } from "./context";
 
 /**
@@ -8,7 +12,7 @@ import { SnortContext } from "./context";
 export function useRequestBuilder(rb: RequestBuilder): Array<TaggedNostrEvent> {
   const system = use(SnortContext);
   return useSyncExternalStore(
-    v => {
+    (v) => {
       const q = system.Query(rb);
       // race condition here
       q.on("event", v);
@@ -28,6 +32,7 @@ export function useRequestBuilder(rb: RequestBuilder): Array<TaggedNostrEvent> {
         return EmptySnapshot;
       }
     },
+    () => EmptySnapshot,
   );
 }
 
