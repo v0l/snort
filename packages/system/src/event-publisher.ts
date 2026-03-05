@@ -10,19 +10,19 @@ import {
   type PowMiner,
   PrivateKeySigner,
   type RelaySettings,
-  settingsToRelayTag,
   type SignerSupports,
+  settingsToRelayTag,
   type TaggedNostrEvent,
   type ToNostrEventTag,
   type UserMetadata,
 } from '.'
 
 import { EventBuilder } from './event-builder'
-import { findTag } from './utils'
 import { Nip7Signer } from './impl/nip7'
 import { Nip10 } from './impl/nip10'
 import { Nip22 } from './impl/nip22'
 import { Nip25 } from './impl/nip25'
+import { findTag } from './utils'
 
 type EventBuilderHook = (ev: EventBuilder) => EventBuilder
 
@@ -326,7 +326,11 @@ export class EventPublisher {
 
   async unwrapGift(gift: NostrEvent) {
     const body = await this.#signer.nip44Decrypt(gift.content, gift.pubkey)
-    return JSON.parse(body) as NostrEvent
+    try {
+      return JSON.parse(body) as NostrEvent
+    } catch {
+      throw new Error(`Failed to parse gift-wrapped event content: ${gift.id}`)
+    }
   }
 
   /**
@@ -356,6 +360,10 @@ export class EventPublisher {
   async unsealRumor(inner: NostrEvent) {
     if (inner.kind !== EventKind.SealedRumor) throw new Error('Not a sealed rumor event')
     const body = await this.#signer.nip44Decrypt(inner.content, inner.pubkey)
-    return JSON.parse(body) as NostrEvent
+    try {
+      return JSON.parse(body) as NostrEvent
+    } catch {
+      throw new Error(`Failed to parse sealed rumor content: ${inner.id}`)
+    }
   }
 }
