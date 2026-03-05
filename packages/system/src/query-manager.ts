@@ -10,6 +10,7 @@ import {
   type TaggedNostrEvent,
 } from '.'
 import type { ConnectionType } from './connection-pool'
+import { QueryFetchTimeout } from './const'
 import { EventExt } from './event-ext'
 import { NegentropyFlow } from './negentropy/negentropy-flow'
 import { NoteCollection } from './note-collection'
@@ -175,8 +176,18 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     if (cb) {
       q.on('event', cb)
     }
-    const pDone = new Promise<void>(resolve => {
-      q.once('eose', resolve)
+    const pDone = new Promise<void>((resolve, reject) => {
+      const t = setTimeout(() => {
+        reject(
+          new Error(
+            `QueryManager.fetch() timed out after ${QueryFetchTimeout}ms — EOSE never received for "${req.id}"`,
+          ),
+        )
+      }, QueryFetchTimeout)
+      q.once('eose', () => {
+        clearTimeout(t)
+        resolve()
+      })
     })
     q.start()
     await pDone

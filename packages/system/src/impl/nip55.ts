@@ -1,8 +1,9 @@
+import { bech32ToHex } from '@snort/shared'
 import debug from 'debug'
+import { v4 as uuid } from 'uuid'
+import { Nip55SignerTimeout } from '../const'
 import type { NostrEvent, NotSignedNostrEvent } from '../nostr'
 import type { EventSigner } from '../signer'
-import { v4 as uuid } from 'uuid'
-import { bech32ToHex } from '@snort/shared'
 
 export class Nip55Signer implements EventSigner {
   #log = debug('NIP-55')
@@ -72,11 +73,17 @@ export class Nip55Signer implements EventSigner {
           if (text) {
             this.#log('Response: %s', text)
             await navigator.clipboard.writeText('')
-            resolve(text)
             clearInterval(t)
+            clearTimeout(timeout)
+            resolve(text)
           }
         }
       }, 500)
+
+      const timeout = setTimeout(() => {
+        clearInterval(t)
+        reject(new Error(`NIP-55 signer timed out after ${Nip55SignerTimeout}ms — no clipboard response received`))
+      }, Nip55SignerTimeout)
 
       const dst = `nostrsigner:${objString ?? ''}?${params.toString()}`
       this.#log('Sending command %s, %s', id, dst)

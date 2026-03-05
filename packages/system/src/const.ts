@@ -59,3 +59,23 @@ export const InlineCodeRegex = /(`[^`\n]+?`)/g
  * Public metadata relays
  */
 export const MetadataRelays = ['wss://purplepag.es/', 'wss://relay.nostr.band/', 'wss://relay.snort.social/']
+
+/**
+ * Timeout for relay AUTH challenge response (ms)
+ */
+export const AuthTimeout = 10_000
+
+/**
+ * Timeout for NIP-46 remote signer RPC response (ms)
+ */
+export const Nip46RpcTimeout = 30_000
+
+/**
+ * Timeout for query EOSE in QueryManager.fetch() (ms)
+ */
+export const QueryFetchTimeout = 30_000
+
+/**
+ * Timeout for NIP-55 clipboard-based signer response (ms)
+ */
+export const Nip55SignerTimeout = 120_000
