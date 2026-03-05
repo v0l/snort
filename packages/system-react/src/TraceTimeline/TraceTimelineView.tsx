@@ -7,7 +7,9 @@ import { TraceTimelineDetailPopup } from "./TraceTimelineDetailPopup";
 
 export function TraceTimelineView() {
   const system = use(SnortContext);
-  const [selectedEntry, setSelectedEntry] = useState<TimelineEntry | null>(null);
+  const [selectedEntry, setSelectedEntry] = useState<TimelineEntry | null>(
+    null,
+  );
   const [filter, setFilter] = useState<string>("");
   const [timeScale, setTimeScale] = useState<number | null>(null); // null = auto (full range)
 
@@ -25,9 +27,11 @@ export function TraceTimelineView() {
     60000: "1m",
   };
 
+  const emptyTimeline = { entries: [] as TimelineEntry[] };
   const timeline = useSyncExternalStore(
-    c => system.traceTimeline!.hook(c),
+    (c) => system.traceTimeline!.hook(c),
     () => system.traceTimeline!.snapshot(),
+    () => emptyTimeline,
   );
 
   const entries = timeline.entries;
@@ -36,13 +40,15 @@ export function TraceTimelineView() {
     if (!filter) return [...entries];
     const lowerFilter = filter.toLowerCase();
     return entries.filter(
-      e => e.event.relay.toLowerCase().includes(lowerFilter) || e.event.id?.toLowerCase().includes(lowerFilter),
+      (e) =>
+        e.event.relay.toLowerCase().includes(lowerFilter) ||
+        e.event.id?.toLowerCase().includes(lowerFilter),
     );
   }, [entries, filter]);
 
   const baseTimeRange = useMemo(() => {
     if (filteredEntries.length === 0) return { min: 0, max: 0, range: 1 };
-    const timestamps = filteredEntries.map(e => e.event.timestamp);
+    const timestamps = filteredEntries.map((e) => e.event.timestamp);
     const min = Math.min(...timestamps);
     const max = Math.max(...timestamps);
     return { min, max, range: max - min || 1000 };
@@ -102,12 +108,17 @@ export function TraceTimelineView() {
       let nextStreamingLevel = 0;
 
       // Create stacked bars with trace ID grouping
-      const stacked = sorted.map(entry => {
+      const stacked = sorted.map((entry) => {
         const startTime = entry.event.timestamp;
-        const isStreaming = entry.event.state === QueryTraceState.WAITING_STREAM;
+        const isStreaming =
+          entry.event.state === QueryTraceState.WAITING_STREAM;
         // For stacking purposes, streaming queries only occupy their start point
         // We'll render them longer, but they don't block the timeline
-        const endTime = isStreaming ? startTime : entry.runtime ? startTime + entry.runtime : startTime;
+        const endTime = isStreaming
+          ? startTime
+          : entry.runtime
+            ? startTime + entry.runtime
+            : startTime;
         const traceId = entry.event.id;
 
         // If this trace already has a level, use it
@@ -126,7 +137,10 @@ export function TraceTimelineView() {
           } else {
             // Non-streaming queries stack after all streaming queries
             level = nextStreamingLevel;
-            while (level < levelEndTimes.length && levelEndTimes[level] > startTime) {
+            while (
+              level < levelEndTimes.length &&
+              levelEndTimes[level] > startTime
+            ) {
               level++;
             }
           }
@@ -145,7 +159,7 @@ export function TraceTimelineView() {
         return { entry, startTime, endTime, level };
       });
 
-      const maxLevel = Math.max(0, ...stacked.map(s => s.level));
+      const maxLevel = Math.max(0, ...stacked.map((s) => s.level));
 
       return {
         relay,
@@ -166,8 +180,10 @@ export function TraceTimelineView() {
       "#14b8a6", // teal
       "#f97316", // orange
     ];
-    const relays = swimlanes.map(s => s.relay);
-    return new Map(relays.map((relay, i) => [relay, colors[i % colors.length]]));
+    const relays = swimlanes.map((s) => s.relay);
+    return new Map(
+      relays.map((relay, i) => [relay, colors[i % colors.length]]),
+    );
   }, [swimlanes]);
 
   const formatTime = (ms: number) => {
@@ -180,7 +196,7 @@ export function TraceTimelineView() {
     const traceEvents: Array<Record<string, unknown>> = [];
 
     // Add trace events - use duration events if runtime is available, instant events otherwise
-    filteredEntries.forEach(entry => {
+    filteredEntries.forEach((entry) => {
       const timestamp = entry.event.timestamp * 1000; // Convert to microseconds
 
       const pid = entry.event.relay; // Process ID = relay name
@@ -192,7 +208,11 @@ export function TraceTimelineView() {
         const duration = entry.runtime * 1000; // Convert to microseconds
         traceEvents.push({
           name: `${queryName} (${entry.event.state})`,
-          cat: [QueryTraceState.TIMEOUT, QueryTraceState.DROP].includes(entry.event.state) ? "timeout" : "complete",
+          cat: [QueryTraceState.TIMEOUT, QueryTraceState.DROP].includes(
+            entry.event.state,
+          )
+            ? "timeout"
+            : "complete",
           ph: "X", // Complete/duration event
           ts: timestamp,
           dur: duration,
@@ -212,7 +232,11 @@ export function TraceTimelineView() {
         // Instant event - shows as a point
         traceEvents.push({
           name: `${queryName} (${entry.event.state})`,
-          cat: [QueryTraceState.TIMEOUT, QueryTraceState.DROP].includes(entry.event.state) ? "timeout" : "complete",
+          cat: [QueryTraceState.TIMEOUT, QueryTraceState.DROP].includes(
+            entry.event.state,
+          )
+            ? "timeout"
+            : "complete",
           ph: "i", // Instant event
           ts: timestamp,
           pid: pid,
@@ -243,7 +267,9 @@ export function TraceTimelineView() {
     const traceData = generateTraceData();
 
     // Download as JSON file
-    const blob = new Blob([JSON.stringify(traceData, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(traceData, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -309,13 +335,18 @@ export function TraceTimelineView() {
 
     // For streaming queries, show as running until now
     const now = Date.now();
-    const endTime = isStreaming ? now : entry.runtime ? startTime + entry.runtime : startTime;
+    const endTime = isStreaming
+      ? now
+      : entry.runtime
+        ? startTime + entry.runtime
+        : startTime;
 
     // Use the zoom scale for width calculation
     const effectiveRange = timeScale ?? baseTimeRange.range;
 
     // Calculate position based on the full base time range
-    const startOffset = ((startTime - baseTimeRange.min) / baseTimeRange.range) * 100;
+    const startOffset =
+      ((startTime - baseTimeRange.min) / baseTimeRange.range) * 100;
     const duration = endTime - startTime;
     // Width is based on the zoomed range to make bars wider when zoomed in
     const width = (duration / effectiveRange) * 100;
@@ -335,7 +366,9 @@ export function TraceTimelineView() {
   const handleZoomIn = () => {
     if (timeScale === null) {
       // Start from the first scale smaller than the base range
-      const nextScale = [...timeScales].reverse().find(s => s < baseTimeRange.range);
+      const nextScale = [...timeScales]
+        .reverse()
+        .find((s) => s < baseTimeRange.range);
       if (nextScale !== undefined) {
         setTimeScale(nextScale);
       }
@@ -378,44 +411,56 @@ export function TraceTimelineView() {
           type="text"
           placeholder="Filter by relay or query ID..."
           value={filter}
-          onChange={e => setFilter(e.target.value)}
+          onChange={(e) => setFilter(e.target.value)}
           className="trace-timeline-filter-input"
         />
         <div className="trace-timeline-controls-right">
-          <button onClick={handleZoomOut} disabled={timeScale === null} className="trace-timeline-btn" title="Zoom out">
+          <button
+            onClick={handleZoomOut}
+            disabled={timeScale === null}
+            className="trace-timeline-btn"
+            title="Zoom out"
+          >
             -
           </button>
-          <div className="trace-timeline-scale-label">{timeScale === null ? "Auto" : timeScaleLabels[timeScale]}</div>
+          <div className="trace-timeline-scale-label">
+            {timeScale === null ? "Auto" : timeScaleLabels[timeScale]}
+          </div>
           <button
             onClick={handleZoomIn}
             disabled={timeScale === timeScales[0]}
             className="trace-timeline-btn"
-            title="Zoom in">
+            title="Zoom in"
+          >
             +
           </button>
           <button
             onClick={handleZoomReset}
             disabled={timeScale === null}
             className="trace-timeline-btn"
-            title="Reset zoom">
+            title="Reset zoom"
+          >
             Reset
           </button>
           <button
             onClick={openInPerfetto}
             disabled={filteredEntries.length === 0}
             className="trace-timeline-btn-export"
-            title="Open trace in Perfetto UI">
+            title="Open trace in Perfetto UI"
+          >
             Open in Perfetto
           </button>
           <button
             onClick={exportGoogleTrace}
             disabled={filteredEntries.length === 0}
             className="trace-timeline-btn-export"
-            title="Download trace as JSON">
+            title="Download trace as JSON"
+          >
             Export
           </button>
           <div className="trace-timeline-entry-count">
-            {filteredEntries.length} {filteredEntries.length === 1 ? "entry" : "entries"}
+            {filteredEntries.length}{" "}
+            {filteredEntries.length === 1 ? "entry" : "entries"}
           </div>
         </div>
       </div>
@@ -424,12 +469,21 @@ export function TraceTimelineView() {
         <div className="trace-timeline-chart">
           {/* Time ruler - fixed at top */}
           <div className="trace-timeline-header">
-            <div className="trace-timeline-header-label" style={{ width: HEADER_WIDTH, height: 24 }} />
+            <div
+              className="trace-timeline-header-label"
+              style={{ width: HEADER_WIDTH, height: 24 }}
+            />
             <div className="trace-timeline-header-ruler">
-              {[0, 25, 50, 75, 100].map(pct => (
-                <div key={pct} className="trace-timeline-ruler-mark" style={{ left: `${pct}%` }}>
+              {[0, 25, 50, 75, 100].map((pct) => (
+                <div
+                  key={pct}
+                  className="trace-timeline-ruler-mark"
+                  style={{ left: `${pct}%` }}
+                >
                   <div className="trace-timeline-ruler-mark-inner">
-                    <div className="trace-timeline-ruler-mark-text">{formatTime((timeRange.range * pct) / 100)}</div>
+                    <div className="trace-timeline-ruler-mark-text">
+                      {formatTime((timeRange.range * pct) / 100)}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -441,22 +495,32 @@ export function TraceTimelineView() {
             <div
               className="trace-timeline-swimlanes-content"
               style={{
-                width: timeScale ? `${(baseTimeRange.range / timeRange.range) * 100}%` : "100%",
+                width: timeScale
+                  ? `${(baseTimeRange.range / timeRange.range) * 100}%`
+                  : "100%",
                 minWidth: "100%",
-              }}>
-              {swimlanes.map(lane => (
+              }}
+            >
+              {swimlanes.map((lane) => (
                 <div
                   key={lane.relay}
                   className="trace-timeline-lane"
-                  style={{ height: lane.stackHeight * TRACK_HEIGHT }}>
+                  style={{ height: lane.stackHeight * TRACK_HEIGHT }}
+                >
                   {/* Relay label */}
-                  <div className="trace-timeline-lane-label" style={{ width: HEADER_WIDTH, flexShrink: 0 }}>
+                  <div
+                    className="trace-timeline-lane-label"
+                    style={{ width: HEADER_WIDTH, flexShrink: 0 }}
+                  >
                     <div className="trace-timeline-lane-label-content">
                       <div
                         className="trace-timeline-relay-color"
                         style={{ backgroundColor: relayColors.get(lane.relay) }}
                       />
-                      <span className="trace-timeline-relay-name" title={lane.relay}>
+                      <span
+                        className="trace-timeline-relay-name"
+                        title={lane.relay}
+                      >
                         {new URL(lane.relay).hostname}
                       </span>
                     </div>
@@ -465,7 +529,9 @@ export function TraceTimelineView() {
                   {/* Timeline bars for this lane */}
                   <div className="trace-timeline-lane-bars">
                     {lane.entries.map((stacked, entryIdx) => {
-                      const { left, width, isStreaming } = getBarPosition(stacked.entry);
+                      const { left, width, isStreaming } = getBarPosition(
+                        stacked.entry,
+                      );
                       const color = relayColors.get(lane.relay) || "#6b7280";
                       const isSelected = selectedEntry === stacked.entry;
                       const runtime = stacked.entry.runtime;
@@ -482,14 +548,19 @@ export function TraceTimelineView() {
                             background: isStreaming
                               ? `repeating-linear-gradient(45deg, ${color}, ${color} 10px, ${color}dd 10px, ${color}dd 20px)`
                               : color,
-                            opacity: [QueryTraceState.TIMEOUT, QueryTraceState.DROP].includes(stacked.entry.event.state)
+                            opacity: [
+                              QueryTraceState.TIMEOUT,
+                              QueryTraceState.DROP,
+                            ].includes(stacked.entry.event.state)
                               ? 0.6
                               : 0.9,
                             border: isSelected ? "2px solid white" : "none",
                             zIndex: isSelected ? 10 : 1,
-                            animation: isStreaming ? "pulse 2s ease-in-out infinite" : "none",
+                            animation: isStreaming
+                              ? "pulse 2s ease-in-out infinite"
+                              : "none",
                           }}
-                          onClick={e => {
+                          onClick={(e) => {
                             e.stopPropagation();
                             setSelectedEntry(stacked.entry);
                           }}
@@ -499,14 +570,23 @@ export function TraceTimelineView() {
                               : runtime !== undefined
                                 ? `${stacked.entry.event.state} (${formatTime(runtime)})`
                                 : stacked.entry.event.state
-                          }>
-                          {width > 5 && !isStreaming && runtime !== undefined && (
-                            <div className="trace-timeline-bar-label" style={{ lineHeight: `${TRACK_HEIGHT - 4}px` }}>
-                              {formatTime(runtime)}
-                            </div>
-                          )}
+                          }
+                        >
+                          {width > 5 &&
+                            !isStreaming &&
+                            runtime !== undefined && (
+                              <div
+                                className="trace-timeline-bar-label"
+                                style={{ lineHeight: `${TRACK_HEIGHT - 4}px` }}
+                              >
+                                {formatTime(runtime)}
+                              </div>
+                            )}
                           {width > 5 && isStreaming && (
-                            <div className="trace-timeline-bar-label" style={{ lineHeight: `${TRACK_HEIGHT - 4}px` }}>
+                            <div
+                              className="trace-timeline-bar-label"
+                              style={{ lineHeight: `${TRACK_HEIGHT - 4}px` }}
+                            >
                               streaming...
                             </div>
                           )}
@@ -522,7 +602,10 @@ export function TraceTimelineView() {
 
         {/* Query detail panel */}
         {selectedEntry && (
-          <TraceTimelineDetailPopup selectedEntry={selectedEntry} onClose={() => setSelectedEntry(null)} />
+          <TraceTimelineDetailPopup
+            selectedEntry={selectedEntry}
+            onClose={() => setSelectedEntry(null)}
+          />
         )}
       </div>
     </div>

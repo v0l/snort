@@ -8,7 +8,7 @@ import { SnortContext } from "./context";
 export function useUserProfile(pubKey?: string): CachedMetadata | undefined {
   const system = use(SnortContext);
   return useSyncExternalStore<CachedMetadata | undefined>(
-    h => {
+    (h) => {
       if (pubKey) {
         const handler = (keys: Array<string>) => {
           if (keys.includes(pubKey)) {
@@ -28,5 +28,6 @@ export function useUserProfile(pubKey?: string): CachedMetadata | undefined {
       };
     },
     () => system.profileLoader.cache.getFromCache(pubKey),
+    () => undefined,
   );
 }
