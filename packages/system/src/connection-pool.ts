@@ -1,98 +1,97 @@
-import { removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
-import debug from "debug";
-import { EventEmitter } from "eventemitter3";
-
-import { Connection, type RelaySettings } from "./connection";
-import type { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "./nostr";
-import type { RelayInfoDocument, SystemInterface } from ".";
+import { removeUndefined, sanitizeRelayUrl, unwrap } from '@snort/shared'
+import debug from 'debug'
+import { EventEmitter } from 'eventemitter3'
+import type { RelayInfoDocument, SystemInterface } from '.'
+import { Connection, type RelaySettings } from './connection'
+import type { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from './nostr'
 
 /**
  * Events which the ConnectionType must emit
  */
 export interface ConnectionTypeEvents {
-  change: () => void;
-  connected: (wasReconnect: boolean) => void;
-  error: () => void;
-  unverifiedEvent: (sub: string, e: TaggedNostrEvent) => void;
-  eose: (sub: string) => void;
-  closed: (sub: string, reason: string) => void;
-  disconnect: (code: number) => void;
-  auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
-  notice: (msg: string) => void;
-  unknownMessage: (obj: Array<any>) => void;
+  change: () => void
+  connected: (wasReconnect: boolean) => void
+  error: () => void
+  unverifiedEvent: (sub: string, e: TaggedNostrEvent) => void
+  eose: (sub: string) => void
+  closed: (sub: string, reason: string) => void
+  disconnect: (code: number) => void
+  auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void
+  notice: (msg: string) => void
+  unknownMessage: (obj: Array<unknown>) => void
 }
 
-export type ConnectionSubscription = {}
+export type ConnectionSubscription = Record<string, never>
 
 /**
  * Basic relay connection
  */
 export type ConnectionType = {
-  readonly id: string;
-  readonly address: string;
-  readonly info: RelayInfoDocument | undefined;
-  readonly isDown: boolean;
-  readonly isOpen: boolean;
-  readonly activeSubscriptions: number;
-  readonly maxSubscriptions: number;
-  settings: RelaySettings;
-  ephemeral: boolean;
+  readonly id: string
+  readonly address: string
+  readonly info: RelayInfoDocument | undefined
+  readonly isDown: boolean
+  readonly isOpen: boolean
+  readonly activeSubscriptions: number
+  readonly maxSubscriptions: number
+  settings: RelaySettings
+  ephemeral: boolean
 
   /**
    * Connect to relay
    */
-  connect: () => Promise<void>;
+  connect: () => Promise<void>
 
   /**
    * Disconnect relay
    */
-  close: () => void;
+  close: () => void
 
   /**
    * Publish an event to this relay
    */
-  publish: (ev: NostrEvent, timeout?: number) => Promise<OkResponse>;
+  publish: (ev: NostrEvent, timeout?: number) => Promise<OkResponse>
 
   /**
    * Send request to relay
    */
-  request: (req: ReqCommand, cbSent?: () => void) => void;
+  request: (req: ReqCommand, cbSent?: () => void) => void
 
   /**
    * Send raw json object on wire (used by negentropy sync)
    */
-  sendRaw: (obj: object) => void;
+  sendRaw: (obj: object) => void
 
   /**
    * Close a request
    */
-  closeRequest: (id: string) => void;
-} & EventEmitter<ConnectionTypeEvents>;
+  closeRequest: (id: string) => void
+} & EventEmitter<ConnectionTypeEvents>
 
 /**
  * Events which are emitted by the connection pool
  */
 export interface ConnectionPoolEvents {
-  connected: (address: string, wasReconnect: boolean) => void;
-  connectFailed: (address: string) => void;
-  event: (address: string, sub: string, e: TaggedNostrEvent) => void;
-  eose: (address: string, sub: string) => void;
-  disconnect: (address: string, code: number) => void;
-  auth: (address: string, challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
-  notice: (address: string, msg: string) => void;
+  connected: (address: string, wasReconnect: boolean) => void
+  connectFailed: (address: string) => void
+  event: (address: string, sub: string, e: TaggedNostrEvent) => void
+  eose: (address: string, sub: string) => void
+  disconnect: (address: string, code: number) => void
+  auth: (address: string, challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void
+  notice: (address: string, msg: string) => void
 }
 
 /**
  * Base connection pool
  */
 export type ConnectionPool = {
-  getConnection(id: string): ConnectionType | undefined;
-  connect(address: string, options: RelaySettings, ephemeral: boolean): Promise<ConnectionType | undefined>;
-  disconnect(address: string): void;
-  broadcast(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]>;
-  broadcastTo(address: string, ev: NostrEvent): Promise<OkResponse>;
+  getConnection(id: string): ConnectionType | undefined
+  connect(address: string, options: RelaySettings, ephemeral: boolean): Promise<ConnectionType | undefined>
+  disconnect(address: string): void
+  broadcast(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]>
+  broadcastTo(address: string, ev: NostrEvent): Promise<OkResponse>
 } & EventEmitter<ConnectionPoolEvents> &
-  Iterable<[string, ConnectionType]>;
+  Iterable<[string, ConnectionType]>
 
 /**
  * Function for building new connections
@@ -101,7 +100,7 @@ export type ConnectionBuilder<T extends ConnectionType> = (
   address: string,
   options: RelaySettings,
   ephemeral: boolean,
-) => Promise<T> | T;
+) => Promise<T> | T
 
 /**
  * Simple connection pool containing connections to multiple nostr relays
@@ -110,33 +109,33 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
   extends EventEmitter<ConnectionPoolEvents>
   implements ConnectionPool
 {
-  #system: SystemInterface;
-  #log = debug("ConnectionPool");
+  #system: SystemInterface
+  #log = debug('ConnectionPool')
 
   /**
    * Track if a connection request has started
    */
-  #connectStarted = new Set<string>();
+  #connectStarted = new Set<string>()
 
   /**
    * All currently connected websockets
    */
-  #sockets = new Map<string, T>();
+  #sockets = new Map<string, T>()
 
   /**
    * Builder function to create new sockets
    */
-  #connectionBuilder: ConnectionBuilder<T>;
+  #connectionBuilder: ConnectionBuilder<T>
 
   constructor(system: SystemInterface, builder?: ConnectionBuilder<T>) {
-    super();
-    this.#system = system;
+    super()
+    this.#system = system
     if (builder) {
-      this.#connectionBuilder = builder;
+      this.#connectionBuilder = builder
     } else {
-      this.#connectionBuilder = (addr, options, ephemeral) => {
-        return new Connection(addr, options, ephemeral) as unknown as T;
-      };
+      // Connection satisfies ConnectionType; the cast is safe when no custom builder is supplied.
+      this.#connectionBuilder = (addr, options, ephemeral) =>
+        new Connection(addr, options, ephemeral) as ConnectionType as T
     }
   }
 
@@ -144,9 +143,9 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
    * Get a connection object from the pool
    */
   getConnection(id: string) {
-    const addr = sanitizeRelayUrl(id);
+    const addr = sanitizeRelayUrl(id)
     if (addr) {
-      return this.#sockets.get(addr);
+      return this.#sockets.get(addr)
     }
   }
 
@@ -154,20 +153,20 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
    * Add a new relay to the pool
    */
   async connect(address: string, options: RelaySettings, ephemeral: boolean) {
-    const addr = unwrap(sanitizeRelayUrl(address));
+    const addr = unwrap(sanitizeRelayUrl(address))
 
     // If connection is already being established, wait for it
     if (this.#connectStarted.has(addr)) {
       // Poll for the connection to be established
-      const maxWait = 10000; // 10 seconds
-      const pollInterval = 100; // 100ms
-      const startTime = Date.now();
+      const maxWait = 10000 // 10 seconds
+      const pollInterval = 100 // 100ms
+      const startTime = Date.now()
 
       while (this.#connectStarted.has(addr) && Date.now() - startTime < maxWait) {
-        await new Promise(resolve => setTimeout(resolve, pollInterval));
-        const existing = this.#sockets.get(addr);
+        await new Promise(resolve => setTimeout(resolve, pollInterval))
+        const existing = this.#sockets.get(addr)
         if (existing) {
-          return existing;
+          return existing
         }
       }
 
@@ -175,49 +174,49 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
       // Fall through to check sockets or start new connection
     }
 
-    this.#connectStarted.add(addr);
+    this.#connectStarted.add(addr)
 
     try {
-      const existing = this.#sockets.get(addr);
+      const existing = this.#sockets.get(addr)
       if (!existing) {
-        const c = await this.#connectionBuilder(addr, options, ephemeral);
-        this.#sockets.set(addr, c);
+        const c = await this.#connectionBuilder(addr, options, ephemeral)
+        this.#sockets.set(addr, c)
 
         // This is where we do check sigs
-        c.on("unverifiedEvent", (s, e) => {
+        c.on('unverifiedEvent', (s, e) => {
           if (this.#system.checkSigs && !this.#system.optimizer.schnorrVerify(e)) {
-            this.#log("Reject invalid event %o", e);
-            return;
+            this.#log('Reject invalid event %o', e)
+            return
           }
-          this.emit("event", addr, s, e);
-        });
+          this.emit('event', addr, s, e)
+        })
 
-        c.on("eose", s => this.emit("eose", addr, s));
-        c.on("disconnect", code => this.emit("disconnect", addr, code));
-        c.on("connected", r => this.emit("connected", addr, r));
-        c.on("auth", (cx, r, cb) => this.emit("auth", addr, cx, r, cb));
-        await c.connect();
-        return c;
+        c.on('eose', s => this.emit('eose', addr, s))
+        c.on('disconnect', code => this.emit('disconnect', addr, code))
+        c.on('connected', r => this.emit('connected', addr, r))
+        c.on('auth', (cx, r, cb) => this.emit('auth', addr, cx, r, cb))
+        await c.connect()
+        return c
       } else {
         // update settings if already connected
-        existing.settings = options;
+        existing.settings = options
         // upgrade to non-ephemeral, never downgrade
         if (existing.ephemeral && !ephemeral) {
-          existing.ephemeral = ephemeral;
+          existing.ephemeral = ephemeral
         }
         // re-open if closed
         if (existing.ephemeral && !existing.isOpen) {
-          await existing.connect();
+          await existing.connect()
         }
-        return existing;
+        return existing
       }
     } catch (e) {
-      console.error(e);
-      this.#log("%O", e);
-      this.emit("connectFailed", addr);
-      this.#sockets.delete(addr);
+      console.error(e)
+      this.#log('%O', e)
+      this.emit('connectFailed', addr)
+      this.#sockets.delete(addr)
     } finally {
-      this.#connectStarted.delete(addr);
+      this.#connectStarted.delete(addr)
     }
   }
 
@@ -225,11 +224,11 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
    * Remove relay from pool
    */
   disconnect(address: string) {
-    const addr = unwrap(sanitizeRelayUrl(address));
-    const c = this.#sockets.get(addr);
+    const addr = unwrap(sanitizeRelayUrl(address))
+    const c = this.#sockets.get(addr)
     if (c) {
-      this.#sockets.delete(addr);
-      c.close();
+      this.#sockets.delete(addr)
+      c.close()
     }
   }
 
@@ -238,49 +237,51 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
    * @remarks Also write event to read relays of those who are `p` tagged in the event (Inbox model)
    */
   async broadcast(ev: NostrEvent, cb?: (rsp: OkResponse) => void) {
-    const writeRelays = [...this.#sockets.values()].filter(a => !a.ephemeral && a.settings.write);
-    const replyRelays = (await this.#system.requestRouter?.forReply(ev)) ?? [];
+    const writeRelays = [...this.#sockets.values()].filter(a => !a.ephemeral && a.settings.write)
+    const replyRelays = (await this.#system.requestRouter?.forReply(ev)) ?? []
     const oks = await Promise.all([
       ...writeRelays.map(async s => {
         try {
-          const rsp = await s.publish(ev);
-          cb?.(rsp);
-          return rsp;
+          const rsp = await s.publish(ev)
+          cb?.(rsp)
+          return rsp
         } catch (e) {
-          console.error(e);
+          console.error(e)
         }
-        return;
+        return
       }),
-      ...replyRelays?.filter(a => !this.#sockets.has(unwrap(sanitizeRelayUrl(a)))).map(a => this.broadcastTo(a, ev)),
-    ]);
-    return removeUndefined(oks);
+      ...(replyRelays ?? [])
+        .filter(a => !this.#sockets.has(unwrap(sanitizeRelayUrl(a))))
+        .map(a => this.broadcastTo(a, ev)),
+    ])
+    return removeUndefined(oks)
   }
 
   /**
    * Send event to specific relay
    */
   async broadcastTo(address: string, ev: NostrEvent): Promise<OkResponse> {
-    const addrClean = sanitizeRelayUrl(address);
+    const addrClean = sanitizeRelayUrl(address)
     if (!addrClean) {
-      throw new Error("Invalid relay address");
+      throw new Error('Invalid relay address')
     }
 
-    const existing = this.#sockets.get(addrClean);
+    const existing = this.#sockets.get(addrClean)
     if (existing) {
-      return await existing.publish(ev);
+      return await existing.publish(ev)
     } else {
       // Use internal connect method to avoid duplicate connections
-      const c = await this.connect(address, { write: true, read: true }, true);
+      const c = await this.connect(address, { write: true, read: true }, true)
       if (!c) {
-        throw new Error("Failed to connect to relay");
+        throw new Error('Failed to connect to relay')
       }
-      return await c.publish(ev);
+      return await c.publish(ev)
     }
   }
 
   *[Symbol.iterator]() {
     for (const kv of this.#sockets) {
-      yield kv;
+      yield kv
     }
   }
 }
