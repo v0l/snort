@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid'
 import { appendDedupe, dedupe, NostrPrefix, removeUndefined, sanitizeRelayUrl, unwrap } from '@snort/shared'
 
 import type EventKind from './event-kind'
@@ -74,7 +73,7 @@ export class RequestBuilder {
   #options?: RequestBuilderOptions
 
   constructor(id: string) {
-    this.instance = uuid()
+    this.instance = crypto.randomUUID()
     this.id = id
     this.#builders = []
   }

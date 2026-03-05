@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid'
 import debug from 'debug'
 import { EventEmitter } from 'eventemitter3'
 import { unixNowMs } from '@snort/shared'
@@ -51,7 +50,7 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
     readonly leaveOpen: boolean,
   ) {
     super()
-    this.id = uuid()
+    this.id = crypto.randomUUID()
     this.createdAt = unixNowMs()
     this.filters = filters
   }

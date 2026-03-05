@@ -2,7 +2,6 @@ import { secp256k1 } from '@noble/curves/secp256k1.js'
 import { bech32ToHex, unwrap } from '@snort/shared'
 import debug from 'debug'
 import { EventEmitter } from 'eventemitter3'
-import { v4 as uuid } from 'uuid'
 import { Connection } from '../connection'
 import { Nip46RpcTimeout } from '../const'
 import { EventBuilder } from '../event-builder'
@@ -294,7 +293,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     if (!this.#conn) throw new Error('Connection error')
 
     const payload = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       method,
       params,
     } as Nip46Request
