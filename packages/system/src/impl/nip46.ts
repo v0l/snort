@@ -15,22 +15,15 @@ const NIP46_KIND = 24_133
 const PERMS =
   'nip04_encrypt,nip04_decrypt,sign_event:0,sign_event:1,sign_event:3,sign_event:4,sign_event:6,sign_event:7,sign_event:30078'
 
-interface Nip46Metadata {
-  name: string
-  url?: string
-  description?: string
-  icons?: Array<string>
-}
-
 interface Nip46Request {
   id: string
   method: string
-  params: Array<any>
+  params: Array<string>
 }
 
 interface Nip46Response {
   id: string
-  result: any
+  result: string
   error: string
 }
 
@@ -92,10 +85,11 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     return [this.#relay]
   }
 
-  get privateKey() {
+  get privateKey(): string | undefined {
     if (this.#insideSigner instanceof PrivateKeySigner) {
       return this.#insideSigner.privateKey
     }
+    return undefined
   }
 
   get isBunker() {
@@ -121,7 +115,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
         this.#onReply(e).catch(err => this.#log('Error handling NIP-46 reply: %O', err))
       })
       this.#conn.on('connected', async () => {
-        this.#conn!.request([
+        this.#conn?.request([
           'REQ',
           'reply',
           {
@@ -169,13 +163,14 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
 
   async describe() {
     const rsp = await this.#rpc('describe', [])
-    return rsp.result as Array<string>
+    return JSON.parse(rsp.result) as Array<string>
   }
 
   async getPubKey() {
     //const rsp = await this.#rpc("get_public_key", []);
     //return rsp.result as string;
-    return this.#remotePubkey!
+    if (!this.#remotePubkey) throw new Error('Remote pubkey not yet known; call init() first')
+    return this.#remotePubkey
   }
 
   async nip4Encrypt(content: string, otherKey: string) {
@@ -188,11 +183,11 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     return rsp.result as string
   }
 
-  nip44Encrypt(content: string, key: string): Promise<string> {
+  nip44Encrypt(_content: string, _key: string): Promise<string> {
     throw new Error('Method not implemented.')
   }
 
-  nip44Decrypt(content: string, otherKey: string): Promise<string> {
+  nip44Decrypt(_content: string, _otherKey: string): Promise<string> {
     throw new Error('Method not implemented.')
   }
 
@@ -286,7 +281,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     }
   }
 
-  async #rpc(method: string, params: Array<any>) {
+  async #rpc(method: string, params: Array<string>) {
     if (!this.#didInit) {
       await this.init()
     }

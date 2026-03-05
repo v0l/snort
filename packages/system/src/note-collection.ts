@@ -1,65 +1,73 @@
-import { SortedMap, appendDedupe } from "@snort/shared";
-import { EventExt, EventType, type TaggedNostrEvent } from ".";
-import { findTag } from "./utils";
-import { EventEmitter } from "eventemitter3";
+import { appendDedupe, SortedMap } from '@snort/shared'
+import { EventEmitter } from 'eventemitter3'
+import { EventExt, EventType, type TaggedNostrEvent } from '.'
+import { findTag } from './utils'
 
-export const EmptySnapshot: NoteStoreSnapshotData = [];
-export type NoteStoreSnapshotData = Array<TaggedNostrEvent>;
-export type NoteStoreHook = () => void;
-export type NoteStoreHookRelease = () => void;
-export type OnEventCallback = (e: Readonly<Array<TaggedNostrEvent>>) => void;
-export type OnEventCallbackRelease = () => void;
-export type OnEoseCallback = (c: string) => void;
-export type OnEoseCallbackRelease = () => void;
+export const EmptySnapshot: NoteStoreSnapshotData = []
+export type NoteStoreSnapshotData = Array<TaggedNostrEvent>
+export type NoteStoreHook = () => void
+export type NoteStoreHookRelease = () => void
+export type OnEventCallback = (e: Readonly<Array<TaggedNostrEvent>>) => void
+export type OnEventCallbackRelease = () => void
+export type OnEoseCallback = (c: string) => void
+export type OnEoseCallbackRelease = () => void
 
 export interface NosteStoreEvents {
-  event: (evs: Array<TaggedNostrEvent>) => void;
+  event: (evs: Array<TaggedNostrEvent>) => void
 }
 
 /**
  * Generic note store interface
  */
 export abstract class NoteStore extends EventEmitter<NosteStoreEvents> {
-  abstract add(ev: Readonly<TaggedNostrEvent> | Readonly<Array<TaggedNostrEvent>>): void;
-  abstract clear(): void;
+  abstract add(ev: Readonly<TaggedNostrEvent> | Readonly<Array<TaggedNostrEvent>>): void
+  abstract clear(): void
 
-  abstract get snapshot(): NoteStoreSnapshotData;
+  abstract get snapshot(): NoteStoreSnapshotData
 }
 
 export abstract class HookedNoteStore extends NoteStore {
-  #storeSnapshot: NoteStoreSnapshotData = [];
-  #nextEmit?: ReturnType<typeof setTimeout>;
-  #bufEmit: Array<TaggedNostrEvent> = [];
+  #storeSnapshot: NoteStoreSnapshotData | undefined
+  #nextEmit?: ReturnType<typeof setTimeout>
+  #bufEmit: Array<TaggedNostrEvent> = []
 
   /**
    * Interval to emit changes in milli-seconds
    */
-  protected emitInterval = 300;
+  protected emitInterval = 300
 
+  /**
+   * Snapshot is computed lazily: only materialised when first read after a change.
+   * This avoids the O(n²) GC pressure of copying all events on every addition.
+   */
   get snapshot() {
-    return this.#storeSnapshot;
+    if (this.#storeSnapshot === undefined) {
+      this.#storeSnapshot = this.takeSnapshot() ?? []
+    }
+    return this.#storeSnapshot
   }
 
-  abstract override add(ev: Readonly<TaggedNostrEvent> | Readonly<Array<TaggedNostrEvent>>): void;
-  abstract override clear(): void;
-  protected abstract takeSnapshot(): NoteStoreSnapshotData | undefined;
+  abstract override add(ev: Readonly<TaggedNostrEvent> | Readonly<Array<TaggedNostrEvent>>): void
+  abstract override clear(): void
+  protected abstract takeSnapshot(): NoteStoreSnapshotData | undefined
 
   protected onChange(changes: Array<TaggedNostrEvent>): void {
-    this.#storeSnapshot = this.takeSnapshot() ?? [];
-    this.#bufEmit.push(...changes);
+    // Invalidate the cached snapshot; it will be recomputed on next read.
+    this.#storeSnapshot = undefined
+    this.#bufEmit.push(...changes)
     if (!this.#nextEmit) {
       this.#nextEmit = setTimeout(() => {
-        this.flushEmit();
-      }, this.emitInterval);
+        this.flushEmit()
+      }, this.emitInterval)
     }
   }
 
   flushEmit() {
     if (this.#bufEmit.length > 0) {
-      const cloned = [...this.#bufEmit];
-      this.#bufEmit = [];
-      this.#nextEmit = undefined;
-      this.emit("event", cloned);
+      const cloned = [...this.#bufEmit]
+      this.#bufEmit = []
+      this.#nextEmit = undefined
+      this.emit('event', cloned)
     }
   }
 }
@@ -68,41 +76,41 @@ export abstract class HookedNoteStore extends NoteStore {
  * A note store that holds a single replaceable event for a given user defined key generator function
  */
 export class KeyedReplaceableNoteStore extends HookedNoteStore {
-  #keyFn: (ev: TaggedNostrEvent) => string;
-  #events: SortedMap<string, TaggedNostrEvent> = new SortedMap([], (a, b) => b[1].created_at - a[1].created_at);
+  #keyFn: (ev: TaggedNostrEvent) => string
+  #events: SortedMap<string, TaggedNostrEvent> = new SortedMap([], (a, b) => b[1].created_at - a[1].created_at)
 
   constructor(fn: (ev: TaggedNostrEvent) => string) {
-    super();
-    this.#keyFn = fn;
+    super()
+    this.#keyFn = fn
   }
 
   add(ev: TaggedNostrEvent | Array<TaggedNostrEvent>) {
-    ev = Array.isArray(ev) ? ev : [ev];
-    const changes: Array<TaggedNostrEvent> = [];
+    ev = Array.isArray(ev) ? ev : [ev]
+    const changes: Array<TaggedNostrEvent> = []
     ev.forEach(a => {
-      const keyOnEvent = this.#keyFn(a);
-      const existing = this.#events.get(keyOnEvent);
+      const keyOnEvent = this.#keyFn(a)
+      const existing = this.#events.get(keyOnEvent)
       if (a.created_at > (existing?.created_at ?? 0)) {
         if (existing) {
-          a.relays = appendDedupe(existing.relays, a.relays);
+          a.relays = appendDedupe(existing.relays, a.relays)
         }
-        this.#events.set(keyOnEvent, a);
-        changes.push(a);
+        this.#events.set(keyOnEvent, a)
+        changes.push(a)
       }
-    });
+    })
     if (changes.length > 0) {
-      this.onChange(changes);
+      this.onChange(changes)
     }
-    return changes.length;
+    return changes.length
   }
 
   clear() {
-    this.#events.clear();
-    this.onChange([]);
+    this.#events.clear()
+    this.onChange([])
   }
 
   takeSnapshot() {
-    return [...this.#events.values()];
+    return [...this.#events.values()]
   }
 }
 
@@ -114,12 +122,12 @@ export class NoteCollection extends KeyedReplaceableNoteStore {
     super(e => {
       switch (EventExt.getType(e.kind)) {
         case EventType.Addressable:
-          return `${e.kind}:${e.pubkey}:${findTag(e, "d")}`;
+          return `${e.kind}:${e.pubkey}:${findTag(e, 'd')}`
         case EventType.Replaceable:
-          return `${e.kind}:${e.pubkey}`;
+          return `${e.kind}:${e.pubkey}`
         default:
-          return e.id;
+          return e.id
       }
-    });
+    })
   }
 }
