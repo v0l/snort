@@ -64,7 +64,8 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
 
   useEffect(() => {
     markNotificationsRead(login)
-  }, [login])
+    // biome-ignore lint/correctness/useExhaustiveDependencies: login.publicKey is the stable identity; full login object changes reference every render
+  }, [login.publicKey])
 
   const notifications = useNotificationsView()
 
