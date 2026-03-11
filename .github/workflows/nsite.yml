@@ -1,8 +1,9 @@
 name: Deploy nsite
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch: # temporarily disabled - nsite-cli upload hangs indefinitely
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   deploy:
