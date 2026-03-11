@@ -1,6 +1,6 @@
 import { NostrLink, type TaggedNostrEvent } from '@snort/system'
 import { useEventReactions, useReactions } from '@snort/system-react'
-import { createContext, type ReactNode, use, useCallback, useEffect, useMemo, useState } from 'react'
+import { createContext, type ReactNode, use, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { LRUCache } from 'typescript-lru-cache'
 import SnortApi from '@/External/SnortApi'
 import useModeration from '@/Hooks/useModeration'
@@ -40,7 +40,8 @@ export function NoteProvider({ ev, children }: NoteProviderProps) {
   )
   const { isMuted } = useModeration()
 
-  const link = useMemo(() => NostrLink.fromEvent(ev), [ev])
+  // biome-ignore lint/correctness/useExhaustiveDependencies: ev.id is the stable identity key for a Nostr event
+  const link = useMemo(() => NostrLink.fromEvent(ev), [ev.id])
   const relatedRaw = useReactions(`reactions:${link.tagKey}`, link)
   const related = useMemo(() => relatedRaw.filter(a => !isMuted(a.pubkey)), [relatedRaw, isMuted])
   const reactions = useEventReactions(link, related)
@@ -50,9 +51,11 @@ export function NoteProvider({ ev, children }: NoteProviderProps) {
     setShowTranslation(prev => !prev)
   }, [])
 
-  const translate = useCallback(async () => {
-    if (translated) return
+  const evContentRef = useRef(ev.content)
+  evContentRef.current = ev.content
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: translate is stable; translated guard is in the effect
+  const translate = useCallback(async () => {
     const lang = window.navigator.language
     const langNames = new Intl.DisplayNames([...window.navigator.languages], {
       type: 'language',
@@ -61,7 +64,7 @@ export function NoteProvider({ ev, children }: NoteProviderProps) {
     const api = new SnortApi()
     const targetLang = lang.split('-')[0].toUpperCase()
     const result = await api.translate({
-      text: [ev.content],
+      text: [evContentRef.current],
       target_lang: targetLang,
     })
 
@@ -83,15 +86,14 @@ export function NoteProvider({ ev, children }: NoteProviderProps) {
         skipped: true,
       })
     }
-  }, [translated, ev.content])
+  }, [])
 
   useEffect(() => {
+    if (translated || !autoTranslate) return
     let cancelled = false
-    if (!translated && autoTranslate) {
-      translate().catch(e => {
-        if (!cancelled) console.warn(e)
-      })
-    }
+    translate().catch(e => {
+      if (!cancelled) console.warn(e)
+    })
     return () => {
       cancelled = true
     }
