@@ -54,7 +54,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
   #system: SystemInterface
 
   /**
-   * Map tracking which connections have change listeners to prevent duplicates
+   * Map tracking which connections have had retry listeners attached to prevent duplicates
    */
   #connectionListeners: Set<string> = new Set()
 
@@ -90,17 +90,13 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
   }
 
   #setupConnectionListeners() {
-    // Listen for new connections to setup retry logic
+    // Listen for new connections to retry pending traces
     this.#system.pool.on('connected', address => {
       const conn = this.#system.pool.getConnection(address)
-      if (conn && !this.#connectionListeners.has(conn.id)) {
-        this.#connectionListeners.add(conn.id)
-
-        const changeHandler = () => {
-          this.#retryPendingTraces(conn)
-        }
-
-        conn.once('change', changeHandler)
+      if (conn) {
+        this.#connectionListeners.delete(conn.id)
+        // Retry immediately — the connection is now open
+        this.#retryPendingTraces(conn)
       }
     })
 
@@ -349,6 +345,13 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    */
   sendTrace(query: Query, trace: QueryTrace, connection: ConnectionType, filters: BuiltRawReqFilter): boolean {
     trace.queued()
+
+    // Queue if the connection is not yet open — will be retried on 'connected'
+    if (!connection.isOpen) {
+      this.#pendingTraces.push({ query, trace, connection, filters })
+      this.#log('Query queued for %s (not yet open): %O', connection.address, filters)
+      return false
+    }
 
     // Check if connection can handle more subscriptions
     if (connection.activeSubscriptions >= connection.maxSubscriptions) {
