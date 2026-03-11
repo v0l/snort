@@ -385,6 +385,119 @@ describe('NoteCollection', () => {
       expect(c.snapshot).toHaveLength(1)
       expect(c.snapshot[0].id).toBe('b')
     })
+
+    test('clear() emits event immediately with empty array', () => {
+      const c = new NoteCollection()
+      c.add(ev('a', 1, 100))
+      const emissions: Array<TaggedNostrEvent[]> = []
+      c.on('event', evs => emissions.push(evs))
+      c.clear()
+      expect(emissions).toHaveLength(1)
+      expect(emissions[0]).toHaveLength(0)
+    })
+
+    test('clear() cancels any pending buffered emit', async () => {
+      const c = new NoteCollection()
+      const emissions: Array<TaggedNostrEvent[]> = []
+      c.on('event', evs => emissions.push(evs))
+
+      c.add(ev('a', 1, 100)) // schedules 300ms timer, buffers 'a'
+      c.clear() // should cancel timer and emit [] immediately
+
+      await sleep(400) // wait past the 300ms emit interval
+
+      // Should have exactly one emission from clear() — the buffered 'a' add
+      // must NOT fire separately after clear()
+      expect(emissions).toHaveLength(1)
+      expect(emissions[0]).toHaveLength(0)
+    })
+
+    test('events added after clear() emit correctly', async () => {
+      const c = new NoteCollection()
+      const emissions: Array<TaggedNostrEvent[]> = []
+      c.on('event', evs => emissions.push(evs))
+
+      c.clear() // clear an already-empty store
+      c.add(ev('a', 1, 100))
+
+      await sleep(400)
+
+      // The clear() emits [], then the add should emit normally
+      expect(emissions).toHaveLength(2)
+      expect(emissions[0]).toHaveLength(0) // from clear()
+      expect(emissions[1][0].id).toBe('a') // from add()
+    })
+  })
+
+  describe('emission', () => {
+    test('add() emits event after 300ms interval', async () => {
+      const c = new NoteCollection()
+      const emissions: Array<TaggedNostrEvent[]> = []
+      c.on('event', evs => emissions.push(evs))
+
+      c.add(ev('a', 1, 100))
+      expect(emissions).toHaveLength(0) // not yet
+
+      await sleep(400)
+      expect(emissions).toHaveLength(1)
+      expect(emissions[0][0].id).toBe('a')
+    })
+
+    test('multiple adds within the interval are batched into one emission', async () => {
+      const c = new NoteCollection()
+      const emissions: Array<TaggedNostrEvent[]> = []
+      c.on('event', evs => emissions.push(evs))
+
+      c.add(ev('a', 1, 100))
+      c.add(ev('b', 1, 200))
+      c.add(ev('c', 1, 300))
+
+      await sleep(400)
+      expect(emissions).toHaveLength(1)
+      expect(emissions[0]).toHaveLength(3)
+    })
+
+    test('duplicate events do not emit', async () => {
+      const c = new NoteCollection()
+      const emissions: Array<TaggedNostrEvent[]> = []
+      c.on('event', evs => emissions.push(evs))
+
+      c.add(ev('a', 1, 100))
+      await sleep(400)
+      emissions.length = 0 // reset
+
+      c.add(ev('a', 1, 100)) // exact duplicate
+      await sleep(400)
+      expect(emissions).toHaveLength(0)
+    })
+
+    test('older replaceable event does not emit', async () => {
+      const c = new NoteCollection()
+      c.add(ev('new', 0, 200, 'alice'))
+      await sleep(400)
+
+      const emissions: Array<TaggedNostrEvent[]> = []
+      c.on('event', evs => emissions.push(evs))
+
+      c.add(ev('old', 0, 100, 'alice'))
+      await sleep(400)
+      expect(emissions).toHaveLength(0)
+    })
+
+    test('flushEmit() on empty buffer does not block future emissions', async () => {
+      const c = new NoteCollection()
+      const emissions: Array<TaggedNostrEvent[]> = []
+      c.on('event', evs => emissions.push(evs))
+
+      // Call flushEmit() manually when nothing is buffered (ghost-timer scenario)
+      c.flushEmit()
+
+      // Now add an event — it must still emit
+      c.add(ev('a', 1, 100))
+      await sleep(400)
+      expect(emissions).toHaveLength(1)
+      expect(emissions[0][0].id).toBe('a')
+    })
   })
 
   describe('batch add', () => {

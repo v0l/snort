@@ -63,12 +63,27 @@ export abstract class HookedNoteStore extends NoteStore {
   }
 
   flushEmit() {
+    // Always clear the timer handle so onChange() can schedule a new one
+    this.#nextEmit = undefined
     if (this.#bufEmit.length > 0) {
       const cloned = [...this.#bufEmit]
       this.#bufEmit = []
-      this.#nextEmit = undefined
       this.emit('event', cloned)
     }
+  }
+
+  /**
+   * Cancel any pending buffered emit and immediately notify listeners with an
+   * empty array, signalling that the store has been cleared.
+   */
+  protected onClear() {
+    this.#bufEmit = []
+    if (this.#nextEmit) {
+      clearTimeout(this.#nextEmit)
+      this.#nextEmit = undefined
+    }
+    this.#storeSnapshot = undefined
+    this.emit('event', [])
   }
 }
 
@@ -106,7 +121,7 @@ export class KeyedReplaceableNoteStore extends HookedNoteStore {
 
   clear() {
     this.#events.clear()
-    this.onChange([])
+    this.onClear()
   }
 
   takeSnapshot() {
