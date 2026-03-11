@@ -1,44 +1,53 @@
-import type { UserMetadata } from "@snort/system";
-import { useUserProfile } from "@snort/system-react";
-import classNames from "classnames";
-import { forwardRef, type ReactNode } from "react";
+import type { UserMetadata } from '@snort/system'
+import { useUserProfile } from '@snort/system-react'
+import classNames from 'classnames'
+import { forwardRef, type ReactNode, useRef } from 'react'
 
-import FollowButton from "@/Components/User/FollowButton";
-import ProfileImage, { type ProfileImageProps } from "@/Components/User/ProfileImage";
+import FollowButton from '@/Components/User/FollowButton'
+import ProfileImage, { type ProfileImageProps } from '@/Components/User/ProfileImage'
 
 export interface ProfilePreviewProps {
-  pubkey: string;
+  pubkey: string
   options?: {
-    about?: boolean;
-  };
-  profile?: UserMetadata;
-  actions?: ReactNode;
-  className?: string;
-  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
-  profileImageProps?: Omit<ProfileImageProps, "pubkey" | "profile">;
+    about?: boolean
+  }
+  profile?: UserMetadata
+  actions?: ReactNode
+  className?: string
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
+  profileImageProps?: Omit<ProfileImageProps, 'pubkey' | 'profile'>
 }
 const ProfilePreview = forwardRef<HTMLDivElement, ProfilePreviewProps>(function ProfilePreview(
   props: ProfilePreviewProps,
   ref,
 ) {
-  const pubkey = props.pubkey;
-  const user = useUserProfile(pubkey);
+  const pubkey = props.pubkey
+  const innerRef = useRef<HTMLDivElement>(null)
+  const user = useUserProfile(pubkey, innerRef)
   const options = {
     about: true,
     ...props.options,
-  };
+  }
 
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     if (props.onClick) {
-      e.stopPropagation();
-      e.preventDefault();
-      props.onClick(e);
+      e.stopPropagation()
+      e.preventDefault()
+      props.onClick(e)
     }
   }
 
   return (
     <>
-      <div className={classNames("flex items-center justify-between", props.className)} ref={ref} onClick={handleClick}>
+      <div
+        className={classNames('flex items-center justify-between', props.className)}
+        ref={el => {
+          innerRef.current = el
+          if (typeof ref === 'function') ref(el)
+          else if (ref) ref.current = el
+        }}
+        onClick={handleClick}
+      >
         <ProfileImage
           pubkey={pubkey}
           profile={props.profile}
@@ -59,7 +68,7 @@ const ProfilePreview = forwardRef<HTMLDivElement, ProfilePreviewProps>(function 
         )}
       </div>
     </>
-  );
-});
+  )
+})
 
-export default ProfilePreview;
+export default ProfilePreview

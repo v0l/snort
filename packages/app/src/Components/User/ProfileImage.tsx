@@ -1,35 +1,35 @@
-import type { UserMetadata } from "@snort/system";
-import { useUserProfile } from "@snort/system-react";
-import classNames from "classnames";
-import type React from "react";
-import type { ReactNode } from "react";
+import type { UserMetadata } from '@snort/system'
+import { useUserProfile } from '@snort/system-react'
+import classNames from 'classnames'
+import type React from 'react'
+import { type ReactNode, useRef } from 'react'
 
-import Avatar from "@/Components/User/Avatar";
-import FollowDistanceIndicator from "@/Components/User/FollowDistanceIndicator";
+import Avatar from '@/Components/User/Avatar'
+import FollowDistanceIndicator from '@/Components/User/FollowDistanceIndicator'
 
-import DisplayName from "./DisplayName";
-import { ProfileCardWrapper } from "./ProfileCardWrapper";
-import { ProfileLink } from "./ProfileLink";
-import Nip05 from "./Nip05";
+import DisplayName from './DisplayName'
+import Nip05 from './Nip05'
+import { ProfileCardWrapper } from './ProfileCardWrapper'
+import { ProfileLink } from './ProfileLink'
 
 export interface ProfileImageProps {
-  pubkey: string;
-  subHeader?: ReactNode;
-  showUsername?: boolean;
-  className?: string;
-  link?: string;
-  defaultNip?: string;
-  verifyNip?: boolean;
-  overrideUsername?: ReactNode;
-  profile?: UserMetadata;
-  size?: number;
-  onClick?: (e: React.MouseEvent) => void;
-  imageOverlay?: ReactNode;
-  showFollowDistance?: boolean;
-  icons?: ReactNode;
-  showProfileCard?: boolean;
-  displayNameClassName?: string;
-  showNip05?: boolean;
+  pubkey: string
+  subHeader?: ReactNode
+  showUsername?: boolean
+  className?: string
+  link?: string
+  defaultNip?: string
+  verifyNip?: boolean
+  overrideUsername?: ReactNode
+  profile?: UserMetadata
+  size?: number
+  onClick?: (e: React.MouseEvent) => void
+  imageOverlay?: ReactNode
+  showFollowDistance?: boolean
+  icons?: ReactNode
+  showProfileCard?: boolean
+  displayNameClassName?: string
+  showNip05?: boolean
 }
 
 export default function ProfileImage({
@@ -49,12 +49,13 @@ export default function ProfileImage({
   displayNameClassName,
   showNip05 = true,
 }: ProfileImageProps) {
-  const user = useUserProfile(profile ? "" : pubkey) ?? profile;
+  const ref = useRef<HTMLDivElement>(null)
+  const user = useUserProfile(profile ? '' : pubkey, ref) ?? profile
 
   function handleClick(e: React.MouseEvent) {
-    if (link === "") {
-      e.preventDefault();
-      onClick?.(e);
+    if (link === '') {
+      e.preventDefault()
+      onClick?.(e)
     }
   }
 
@@ -73,8 +74,9 @@ export default function ProfileImage({
               {showFollowDistance && <FollowDistanceIndicator pubkey={pubkey} />}
             </>
           ) : undefined
-        }></Avatar>
-    );
+        }
+      ></Avatar>
+    )
 
     return (
       <>
@@ -100,32 +102,35 @@ export default function ProfileImage({
           </div>
         )}
       </>
-    );
+    )
   }
 
   const classNamesOverInner = classNames(
-    "min-w-0 z-2",
+    'min-w-0 z-2',
     {
-      "flex gap-2 items-center": showUsername,
+      'flex gap-2 items-center': showUsername,
     },
     className,
-  );
+  )
 
   const content =
-    link === "" ? (
-      <div className={classNamesOverInner} onClick={handleClick}>
+    link === '' ? (
+      <div ref={ref} className={classNamesOverInner} onClick={handleClick}>
         {inner()}
       </div>
     ) : (
-      <ProfileLink
-        pubkey={pubkey}
-        user={user}
-        explicitLink={link}
-        className={classNamesOverInner}
-        onClick={handleClick}>
-        {inner()}
-      </ProfileLink>
-    );
+      <div ref={ref} className="contents">
+        <ProfileLink
+          pubkey={pubkey}
+          user={user}
+          explicitLink={link}
+          className={classNamesOverInner}
+          onClick={handleClick}
+        >
+          {inner()}
+        </ProfileLink>
+      </div>
+    )
 
-  return content;
+  return content
 }

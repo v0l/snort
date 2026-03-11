@@ -1,26 +1,25 @@
-import { EventKind, NostrLink, type TaggedNostrEvent } from "@snort/system";
-import { useUserProfile } from "@snort/system-react";
-import { useMemo } from "react";
-import { useInView } from "react-intersection-observer";
-import { FormattedMessage } from "react-intl";
-
-import Icon from "@/Components/Icons/Icon";
-import useModeration from "@/Hooks/useModeration";
-import { getDisplayName } from "@/Utils";
-
-import { NostrPrefix } from "@snort/shared";
-import NoteQuote from "./Note/NoteQuote";
+import { NostrPrefix } from '@snort/shared'
+import { EventKind, NostrLink, type TaggedNostrEvent } from '@snort/system'
+import { useUserProfile } from '@snort/system-react'
+import { useMemo, useRef } from 'react'
+import { useInView } from 'react-intersection-observer'
+import { FormattedMessage } from 'react-intl'
+import Icon from '@/Components/Icons/Icon'
+import useModeration from '@/Hooks/useModeration'
+import { getDisplayName } from '@/Utils'
+import NoteQuote from './Note/NoteQuote'
 
 export interface NoteReactionProps {
-  data: TaggedNostrEvent;
-  root?: TaggedNostrEvent;
-  depth?: number;
+  data: TaggedNostrEvent
+  root?: TaggedNostrEvent
+  depth?: number
 }
 export default function NoteReaction(props: NoteReactionProps) {
-  const { data: ev } = props;
-  const { isMuted } = useModeration();
-  const { inView, ref } = useInView({ triggerOnce: true, rootMargin: "2000px" });
-  const profile = useUserProfile(inView ? ev.pubkey : "");
+  const { data: ev } = props
+  const { isMuted } = useModeration()
+  const { inView, ref: inViewRef } = useInView({ triggerOnce: true, rootMargin: '2000px' })
+  const rootRef = useRef<HTMLDivElement>(null)
+  const profile = useUserProfile(ev.pubkey, rootRef)
 
   const opt = useMemo(
     () => ({
@@ -29,12 +28,12 @@ export default function NoteReaction(props: NoteReactionProps) {
       truncate: true,
     }),
     [ev],
-  );
-  const links = NostrLink.fromTags(ev.tags);
-  const refEvent = links.find(a => [NostrPrefix.Event, NostrPrefix.Note, NostrPrefix.Address].includes(a.type));
-  const isOpMuted = refEvent?.author && isMuted(refEvent.author);
+  )
+  const links = NostrLink.fromTags(ev.tags)
+  const refEvent = links.find(a => [NostrPrefix.Event, NostrPrefix.Note, NostrPrefix.Address].includes(a.type))
+  const isOpMuted = refEvent?.author && isMuted(refEvent.author)
   if (isOpMuted) {
-    return;
+    return
   }
 
   function action() {
@@ -50,7 +49,7 @@ export default function NoteReaction(props: NoteReactionProps) {
               }}
             />
           </>
-        );
+        )
       }
       case EventKind.Reaction: {
         return (
@@ -60,7 +59,7 @@ export default function NoteReaction(props: NoteReactionProps) {
               name: getDisplayName(profile, ev.pubkey),
             }}
           />
-        );
+        )
       }
     }
   }
@@ -81,12 +80,18 @@ export default function NoteReaction(props: NoteReactionProps) {
           />
         )}
       </>
-    );
+    )
   }
 
   return (
-    <div className="flex flex-col gap-2" ref={ref}>
+    <div
+      className="flex flex-col gap-2"
+      ref={el => {
+        rootRef.current = el
+        inViewRef(el)
+      }}
+    >
       {inView && inner()}
     </div>
-  );
+  )
 }
