@@ -1,812 +1,5884 @@
 {
-  "+D82kt": "Är du säker på att du vill dela vidare:{id}",
-  "+PzQ9Y": "Utbetalning nu",
-  "+QM0PJ": "Synka alla händelser för din profil till lokal cache",
-  "+QMdsy": "Stafettstatistik",
-  "+UjDmN": "Inloggad med skrivbehörighet",
-  "+Vxixo": "Hemlig grupp chatt",
-  "+aZY2h": "Zap Typ",
-  "+tShPg": "följer",
-  "+vA//S": "Inloggningar",
-  "+vIQlC": "Se till att spara följande lösenord för att hantera din profil i framtiden",
-  "+vVZ/G": "Anslut",
-  "+vj0U3": "redigera",
-  "+xliwN": "{name} delade",
-  "/B8zwF": "Ditt utrymme så som du vill ha det 😌",
-  "/GCoTA": "Rensa",
-  "/JE/X+": "Konto Support",
-  "/T7HId": "Integration av HTTP fillagring",
-  "/Xf4UW": "Skicka anonyma användarvärden",
-  "/b1IHW": "Gruppchattmeddelande",
-  "/d6vEc": "Gör din profil enklare att hitta och dela",
-  "/ioUrF": "Från filen",
-  "/n5KSF": "{n} ms",
-  "00LcfG": "Ladda fler",
-  "01iNut": "Nostr-adressen tillhör inte dig",
-  "08zn6O": "Exportnycklar",
-  "0Azlrb": "Hantera",
-  "0BUTMv": "Sök...",
-  "0MndVW": "Generisk LNDHub-plånbok (BTCPayServer / Alby / LNBits)",
-  "0jOEtS": "Ogiltig LNURL",
-  "0kOBMu": "Hantering av omnämnanden",
-  "0mch2Y": "namnet har otillåtna tecken",
-  "0siT4z": "Politik",
-  "0uoY11": "Visa status",
-  "0yO7wF": "{n} secs",
-  "0zASjL": "Starta",
-  "1/BFEj": "git-grejer",
-  "1Mo59U": "Är du säker på att du vill ta bort den här anteckningen från bokmärken?",
-  "1R43+L": "Skriv in Nostr Wallet Connect konfiguration",
-  "1UWegE": "Se till att säkerhetskopiera dina nycklar!",
-  "1c4YST": "Ansluten till: {node}🎉",
-  "1nYUGC": "{n} Följer",
-  "1o2BgB": "Kontrollera signaturer",
-  "1ozeyg": "Natur",
-  "1udzha": "Konversationer",
-  "2/2yg+": "Lägg till",
-  "25V4l1": "Banner",
-  "25WwxF": "Har du inget konto?",
-  "28oKbu": "Modererade Communities",
-  "29sHFE": "Plånbok Connect",
-  "2BBGxX": "Ämnestagg i texthändelser",
-  "2HIqeO": "Användarens emoji-lista",
-  "2IFGap": "Donera",
-  "2LbrkB": "Ange lösenord",
-  "2O2sfp": "Avsluta",
-  "2Qsf9/": "Generiska listor",
-  "2a2YiP": "{n} Bokmärken",
-  "2k0Cv+": "Gillar inte ({n})",
-  "2mcwT8": "Ny anteckning",
-  "2oCF7O": "Följs av vänner till vänner",
-  "2raFAu": "Applikationsspecifika data",
-  "2ukA4d": "{n} timmar",
-  "2z7Kky": "Senaste artiklar",
-  "3/onCd": "Svar",
-  "39AHJm": "Registrera dig",
-  "3GWu6/": "Användarstatusar",
-  "3KNMbJ": "Artiklar",
-  "3MKdAw": "Blobbar lagrade på mediaservers",
-  "3QwfJR": "~{amount}",
-  "3adEeb": "{n} tittare",
-  "3cc4Ct": "Ljust",
-  "3gOsZq": "Översättare",
-  "3kbIhS": "Utan titel",
-  "3qnJlS": "Du röstar med {amount} sats",
-  "3t3kok": "{n,plural,=1{{n} ny anteckning} other{{n} nya anteckningar}}",
-  "3tVy+Z": "{n} Följare",
-  "3yk8fB": "Plånbok",
-  "40VR6s": "Nostr Connect",
-  "41BSaT": "Totalt antal händelser:",
-  "450Fty": "Ingen",
-  "47E53q": "Wiki",
-  "47FYwb": "Avbryt",
-  "48zn4v": "Bud",
-  "4IPzdn": "Primära Utvecklare",
-  "4L2vUY": "Din nya NIP-05 är:",
-  "4MjsHk": "Liv",
-  "4OB335": "Ogilla",
-  "4P/kKm": "Kryptering med privat nyckel",
-  "4Vmpt4": "Nostr Plebs är en av de första NIP-05 leverantörerna och erbjuder en bra samling domäner till rimliga priser",
-  "4Z3t5i": "Använd imgproxy för att komprimera bilder",
-  "4emo2p": "Saknade reläer",
-  "4rYCjn": "Anteckning till mig själv",
-  "4wgYpI": "Rekommenderade applikationshanterare",
-  "5BVs2e": "zap",
-  "5CB6zB": "Zap Splits",
-  "5PRWs7": "API för notifieringar aktiverat",
-  "5dfmvv": "Zap-mål",
-  "5oTnfy": "Köp Namn",
-  "5qEWCr": "Metadata för filer",
-  "5u6iEc": "Överför till Pubkey",
-  "5vMmmR": "Användarnamn är inte unika på Nostr. Nostr-adressen är din unika människoläsbara adress som är unik för dig vid registrering.",
-  "5ykRmX": "Skicka zap",
-  "6/hB3S": "Titta på repris",
-  "60kEE3": "Mute-lista",
-  "62nsdy": "Försök igen",
-  "634VVz": "Anslutningen misslyckades:",
-  "6559gb": "Ny längd på följelistan {length}",
-  "65BmHb": "Det gick inte att proxybilden från {host}, klicka här för att ladda direkt",
-  "6D4Hhn": "Rekommendera relä",
-  "6KGebm": "Tätning",
-  "6OSOXl": "Anledning: <i>{reason}</i>",
-  "6WWD34": "Letar du efter..: {noteId}",
-  "6bgpn+": "Inte alla klienter stöder detta, kan du fortfarande få några zaps som om zap delning inte konfigurerades",
-  "6ewQqw": "Gillar ({n})",
-  "6mr8WU": "Följs av",
-  "6pdxsi": "Extra metadatafält och taggar",
-  "6uMqL1": "Obetald",
-  "6xNr8c": "Byta konto",
-  "6xap9L": "Bra",
-  "7+Domh": "Anteckningar",
-  "712i26": "Proxy använder HODL-fakturor för att vidarebefordra betalningen, vilket döljer pubkey för din nod",
-  "753yX5": "Etikett",
-  "769A8p": "Wiki-artikel",
-  "77nkEO": "Dokument med information om reläet",
-  "7LFU8U": "Sökfunktionalitet",
-  "7UOvbT": "Frånkopplad",
-  "7YkSA2": "Gemenskapens ledare",
-  "7gMmSL": "Reaktion",
-  "7hp70g": "NIP-05",
-  "7jfPsW": "Modulärt artikelinnehåll",
-  "7nAz/z": "Stäng av anteckningar från personer som du inte litar på",
-  "7pFGAQ": "Stäng reläer",
-  "8/vBbP": "Delningar ({n})",
-  "89q5wc": "Bekräfta Dela vidare",
-  "8BDFvJ": "Konventioner för klienters användning av e- och p-taggar i texthändelser",
-  "8ED/4u": "Svara till",
-  "8HJxXG": "Registrering",
-  "8QDesP": "Zap {n} sats",
-  "8Rkoyb": "Mottagare",
-  "8Y6bZQ": "Ogiltig zapsplit: {input}",
-  "8ZGqWl": "Grupptråd",
-  "8g2vyB": "namnet är för långt",
-  "8jmwT8": "bech32-kodade enheter",
-  "8v1NN+": "Parnings fras",
-  "8xdDLn": "Följ set",
-  "8za9Pq": "Utkast till klassificerad annonsering",
-  "9+Ddtu": "Nästa",
-  "9HU8vw": "Svara",
-  "9SvQep": "Följer {n}",
-  "9V0wg3": "Kalender Evenemang RSVP",
-  "9WRlF4": "Skicka",
-  "9kO0VQ": "Dölj tystade anteckningar",
-  "9kSari": "Försök att publicera igen",
-  "9pMqYs": "Nostr Adress",
-  "9wO4wJ": "Lightning-faktura",
-  "A86fJ+": "Generisk Repost",
-  "ADmfQT": "Förälder",
-  "ALdW69": "Anteckning av {name}",
-  "AN0Z7Q": "Tystade ord",
-  "ASRK0S": "Denna författare har tystats",
-  "AedFVZ": "Skapa eller uppdatera en produkt",
-  "Ai8VHU": "Obegränsat antal anteckningar på Snort-relä",
-  "AkCxS/": "Anledning",
-  "AktAk2": "Bra",
-  "Am8glJ": "Spel",
-  "AqGfF4": "Skapande av kanaler",
-  "Aujn2T": "Antal",
-  "Awq32I": "Push-meddelanden",
-  "AxDOiG": "Månader",
-  "AyGauy": "Logga in",
-  "B4C47Y": "namnet är för kort",
-  "B6+XJy": "zappad",
-  "B6H7eJ": "nsec, npub, nip-05, hex",
-  "B7wvUM": "Du kan lägga till ett eller flera reläer, ett per rad.",
-  "BGCM48": "Skriv åtkomst till Snort relä med 1 års lagring av event",
-  "BGGacK": "AI-inbäddningar / vektorlistor",
-  "BQW4gi": "Reläbaserade grupper",
-  "BWpuKl": "Uppdatera",
-  "BfuAQ5": "Marknadsplats UI/UX",
-  "BjNwZW": "Nostr adress (nip05)",
-  "Blxcdx": "Relä",
-  "Bo+O//": "HTTP-autentisering",
-  "C1LjMx": "Lightning donation",
-  "C6Lhhp": "Live-evenemang",
-  "C7642/": "Citera Repost",
-  "C81/uG": "Logga ut",
-  "C8FsOr": "Populära servrar",
-  "C8HhVE": "Föreslagna personer att följa",
-  "CA1efg": "Videouppsättningar",
-  "CHTbO3": "Det gick inte att ladda fakturan",
-  "CJx5Nd": "Profil Zaps",
-  "CM+Cfj": "Följ lista",
-  "CM0k0d": "Rensa följelistan",
-  "CVWeJ6": "Trendande personer",
-  "CYkOCI": "och {count} andra du följer",
-  "Cdxwi0": "Meddelanden om förvar",
-  "CmZ9ls": "{n} tystad",
-  "Coy6SH": "Kalender",
-  "CsCUYo": "{n} sats",
-  "Cu/K85": "Översatt från {lang}",
-  "CzHZoc": "Social graf",
-  "D++Njw": "Text Not Referenser",
-  "D+KzKd": "Zappa automatiskt varje anteckning när den är laddad",
-  "D09wbg": "Badge Definition",
-  "D3idYv": "Inställningar",
-  "D9xTLE": "Kanal Dölj meddelande",
-  "DBiVK1": "Cache",
-  "DKnriN": "Skicka sats",
-  "DZzCem": "Visa senaste {n} anteckningar",
-  "Dh3hbq": "Auto Zap",
-  "Dn82AL": "Live",
-  "DqUmXt": "Produkt som säljs som auktion",
-  "DrZqav": "Om-sektionen måste vara mindre än {limit} tecken",
-  "DtYelJ": "Överför",
-  "Dx4ey3": "Växla alla",
-  "E3oB+t": "Webbläsare",
-  "E5ZIPD": "<big>{amount}</big> <small>sats</small>",
-  "EHqHsu": "Faktura / Lightning-adress",
-  "EJbFi7": "Sök anteckningar",
-  "ELbg9p": "Dataleverantörer",
-  "EQKRE4": "Visa emblem på profilsidor",
-  "EWeVrH": "Reaktion på en webbplats",
-  "EWyQH5": "Global",
-  "Ebl/B2": "Översätt till {lang}",
-  "Ec+xLY": "Curation-uppsättningar",
-  "EcZF24": "Anpassade reläer",
-  "EcfIwB": "Användarnamnet är tillgängligt",
-  "EcglP9": "Nyckel",
-  "EjFyoR": "Donationsadress för On-chain",
-  "EnCOBJ": "Köpa",
-  "EsHX35": "Tyvärr förstår vi inte den här typen av händelse ({name}), prova någon av följande appar istället!",
-  "F/6VqP": "Server",
-  "F3l7xL": "Lägg till konto",
-  "F4eJ/3": "Rubricerade annonser",
-  "FDguSC": "{n} Zaps",
-  "FHWpHC": "Svar från plånboken",
-  "FHvSk3": "Autentisering av klienter till reläer",
-  "FMfjrl": "Visa statusmeddelanden på profilsidor",
-  "FSYL8G": "Trendande användare",
-  "FWJR1B": "Användargrupper",
-  "FcNSft": "Redirect utfärdar HTTP-redirect till den angivna lightning adressen",
-  "FdhSU2": "Hämta nu",
-  "FfYsOb": "Ett fel har uppstått!",
-  "FmXUJg": "följer dig",
-  "FvanT6": "Konton",
-  "FzbSGg": "Du har inga medieservrar, försök att lägga till några.",
-  "G/yZLu": "Ta bort",
-  "G1BGCg": "Välj plånbok",
-  "G3A56c": "Prenumererar på Push",
-  "GFOoEE": "Salt",
-  "GIqktu": "Stödda nationella vägledande program",
-  "GL8aXW": "Bokmärken ({n})",
-  "GSye7T": "Lightning-adress",
-  "GUlSVG": "Hämta din inkluderade Snort nostr adress",
-  "Gcn9NQ": "Magnet Link",
-  "GpkNYn": "Torrent",
-  "GqQeu/": "Ogiltig Lightning-adress",
-  "GspYR7": "{n} Ogillar",
-  "Gxcr08": "Sänd händelse",
-  "H+vHiz": "Hex Key..",
-  "H/oroO": "Hantering av okända händelser",
-  "H0JBH6": "Logga Ut",
-  "H0OG3T": "Info om ledare",
-  "H1GTaC": "Lista över bokmärken",
-  "H6/kLh": "Beställningen är betald!",
-  "HAlOn1": "Namn",
-  "HFls6j": "namnet kommer att vara tillgängligt senare",
-  "HOzFdo": "Tystad",
-  "HWbkEK": "Rensa cache och ladda om",
-  "HbefNb": "Öppna plånbok",
-  "HhcAVH": "Du följer inte denna person, klicka här för att ladda media från <i>{link}</i>, eller uppdatera <a><i>dina inställningar</i></a> för att alltid ladda media från alla.",
-  "HpAmQZ": "Recensioner av reläer",
-  "HqRNN8": "Stöd",
-  "HzSFeV": "Tidsstämpel för utgång",
-  "I0tYZf": "Skapa eller uppdatera ett stall",
-  "I1AoOu": "Senaste inlägg {time}",
-  "IEwZvs": "Är du säker på att du vill ta bort denna anteckningen?",
-  "IIOul1": "Kontouppgifter",
-  "IKKHqV": "Följer",
-  "IOu4Xh": "Du måste vara {tier} prenumerant för att få tillgång till {app} deck",
-  "IVbtTS": "Zappa alla {n} sats",
-  "IWz1ta": "Auto-översätt",
-  "IcHcWj": "Senast sedd:",
-  "Ig9/a1": "Skickade {n} sats till {name}",
-  "IgsWFG": "Följs inte av någon du följer",
-  "IoQq+a": "Klicka här för att ladda ändå",
-  "IvjoDS": "Ansluten",
-  "Ix8l+B": "Trendande anteckningar",
-  "J+dIsA": "Prenumerationer",
-  "J1iLmb": "Notiser inte tillåtna",
-  "J2HeQ+": "Använd kommatecken för att skilja ord åt, t.ex. ord1, ord2, ord3",
-  "J2Q92B": "Emoji-uppsättningar",
-  "J6N9xl": "Sign in with Android signer",
-  "JCIgkj": "Användarnamn",
-  "JGrt9q": "Skicka sats till {name}",
-  "JHEHCk": "Zaps ({n})",
-  "JIVWWA": "Sport",
-  "JPFYIM": "Ingen lightning adress",
-  "JSx7y9": "Prenumerera på {site_name} {plan} för {price} och få följande belöningar",
-  "JeoS4y": "Dela",
-  "Jh5zKH": "Sök reläer lista",
-  "JjGgXI": "Sök användare",
-  "JkLHGw": "Webbsida",
-  "JmcxzF": "Reläer är servrar som du ansluter till för att skicka och ta emot händelser. Sikta på 4-8 reläer.",
-  "JymXbw": "Privat nyckel",
-  "K1wl1/": "Genomsnittlig latenstid:",
-  "K3r6DQ": "Radera",
-  "K7AkdL": "Visa",
-  "K9zklU": "ID för externt innehåll",
-  "KAhAcM": "Ange LNDHub-konfiguration",
-  "KGmQjH": "Höjdpunkter",
-  "KJryGq": "Meddelande via livechatt",
-  "KQvWvD": "Raderad",
-  "KT9nox": "Skyddade händelser",
-  "KahimY": "Okänd händelsetyp: {kind}",
-  "KipVeG": "Mappning av Nostr-nycklar till DNS-baserade internetidentifierare",
-  "KtsyO0": "Ange PIN-kod",
-  "KyRp/q": "Begäran om plånbok",
-  "LBAnc7": "Visa som användare?",
-  "LEmxc8": "Zap-mål",
-  "LKw/ue": "Kolla in koden {link}",
-  "LR1XjT": "PIN-koden är för kort",
-  "LXxsbk": "Anonymt",
-  "LgbKvU": "Kommentar",
-  "LhLvRx": "Namnet måste vara mellan 8 och 15 tecken",
-  "LmdPXO": "Kan inte verifiera Nostr-adress",
-  "Lu5/Bj": "Öppna på Zapstr",
-  "LuDBLj": "Torrents",
-  "Lw+I+J": "{n,plural,one {}=0{{name} zappade} other{{name} & {n} andra zappade}}",
-  "LwYmVi": "Zaps på denna anteckning kommer att delas upp till följande användare.",
-  "M3Oirc": "Debug Menus",
-  "M6C/px": "Bli en ledare",
-  "MBAYRO": "Visar \"Kopiera ID\" och \"Kopiera händelse JSON\" i kontextmenyn på varje meddelande",
-  "MI2jkA": "Inte tillgänglig:",
-  "MKDHEa": "Gemensamt rum",
-  "MP54GY": "Plånbokens lösenord",
-  "MWTx65": "Förvald Sida",
-  "MYBYdJ": "Kort text Anmärkning",
-  "MYUBaG": "Autentisering av klient",
-  "MiMipu": "Ange som primär Nostr adress (nip05)",
-  "MkQ4FX": "Proxy Taggar",
-  "Ml7+RS": "Skicka denna länk till dina vänner och dela magin i nostr.",
-  "Mrpkot": "Betala för prenumeration",
-  "MuVeKe": "Köp nostr adress",
-  "Muhna4": "Räkna resultat",
-  "MzRYWH": "Köper {item}",
-  "Mzizei": "Iris.to konto",
-  "N2IrpM": "Bekräfta",
-  "NAidKb": "Notifikationer",
-  "NAuFNH": "Du har redan en prenumeration av den här typen, vänligen förnya eller betala",
-  "NDTFsp": "Feedback om jobbet",
-  "NepkXH": "Kan inte rösta med {amount} sats, vänligen ange ett annat förvalt zap-belopp",
-  "NndBJE": "Nya användares sida",
-  "Nr9Yyx": "Reposts",
-  "NxzeNU": "Död",
-  "O3Jz4E": "Använd din inbjudningskod för att tjäna sats!",
-  "OEW7yJ": "Zaps",
-  "OIqnZN": "OpenTimestamps Attestationer för händelser",
-  "OJHKIL": "Presentpapper",
-  "OKhRC6": "Dela",
-  "OLEm6z": "Okänt inloggningsfel",
-  "OQSOJF": "Få en gratis nostr adress",
-  "OQXnew": "Din prenumeration är fortfarande aktiv, du kan inte förnya ännu",
-  "ORGv1Q": "Skapad",
-  "ORa81+": "Slå samman förfrågningar",
-  "OoZgbB": "Misslyckades med uppdateringen, försök igen",
-  "OuProE": "Innehåll i lång form",
-  "OxPdQ0": "Skanning {date}",
-  "P2o+ZZ": "Ogiltig Nostr-adress",
-  "P61BTu": "Kopiera händelse JSON",
-  "P7FD0F": "System (standard)",
-  "P7nJT9": "Totalt idag (UTC): {amount} sats",
-  "P8JC58": "Avstånd",
-  "PCSt5T": "Inställningar",
-  "PXQ0z0": "Tar emot till <b>{wallet}</b>",
-  "PamNxw": "Okänd filrubrik: {name}",
-  "Pe0ogR": "Tema",
-  "PrsIg7": "Reaktioner kommer att visas på varje sida om inga reaktioner inaktiveras",
-  "QDFTjG": "{n} Reläer",
-  "QJfhKt": "Den privata nyckeln är som ett lösenord, men det går inte att återställa. Vakta den noga och visa den aldrig för någon. När någon har din privata nyckel har de tillgång till ditt konto för alltid.",
-  "QWhotP": "Zap Pool fungerar endast om du använder en av plånboksanslutningarna (WebLN, LNC, LNDHub eller Nostr Wallet Connect)",
-  "QpaLA3": "Kanalmeddelande",
-  "Qxv0B2": "Du har för närvarande {number} sats i din zap pool.",
-  "Qy6/Ft": "Privata direktmeddelanden",
-  "R/6nsx": "Prenumeration",
-  "R81upa": "Personer du följer",
-  "RDha9y": "Service Worker körs inte",
-  "RRz1cA": "Meddelanden om förvarets tillstånd",
-  "RSr2uB": "Användarnamnet får bara innehålla gemener och siffror",
-  "RahCRH": "Förfallen",
-  "RefZpK": "Porträttvideo i kortformat Event",
-  "RfhLwC": "Av: {author}",
-  "RhDAoS": "Är du säker på att du vill radera {id}",
-  "RmxSZo": "Varuautomater för data",
-  "RoOyAh": "Reläer",
-  "Rs4kCE": "Bokmärke",
-  "S/NV2G": "Laddningsinformation: {id}",
-  "SFuk1v": "Behörigheter",
-  "SLZGPn": "Ange en pin för att kryptera din privata nyckel, du måste ange denna pin varje gång du öppnar {site}.",
-  "SMO+on": "Skicka zap till {name}",
-  "SOqbe9": "Uppdatera Lightning-adress",
-  "SP0+yi": "Köp Prenumeration",
-  "SW3TFA": "Populära reläer som används av personer du följer.",
-  "SYQtZ7": "LN Adress Proxy",
-  "Sd0PKc": "Reläuppsättningar",
-  "SfwSIm": "Problemspårare",
-  "ShdEie": "Markera alla som lästa",
-  "Sjo1P4": "Anpassat",
-  "SmuYUd": "Vad ska vi kalla dig?",
-  "Ss0sWu": "Betala nu",
-  "SsUQnC": "Applikationsspecifika data",
-  "StKzTE": "Författaren har markerat denna anteckning som ett <i>känsligt ämne</i>",
-  "T83nqf": "Reläer i närheten av din geografiska plats.",
-  "TDR5ge": "Media i anteckningar visas automatiskt för valda personer, annars visas endast länken",
-  "TGc5nI": "Information om handläggare",
-  "TH1fFo": "Telegram",
-  "TJo5E6": "Förhandsvisning",
-  "TOG64f": "Använd lokalt relä",
-  "TP/cMX": "Avslutade",
-  "TaeBqw": "Logga in med Nostr Extension",
-  "TdTXXf": "Läs mer",
-  "TdtZQ5": "Krypto",
-  "Tdv6NY": "Räntesatser",
-  "TgDKhI": "Kalenderhändelser",
-  "TpgeGw": "Hex Salt..",
-  "Tpy00S": "Personer",
-  "TvKqBp": "gillade",
-  "TwyMau": "Konto",
-  "U1aPPi": "Sluta lyssna",
-  "U30H69": "Definition av gemenskapen",
-  "UJTWqI": "Ta bort från mina reläer",
-  "ULXFfP": "Ta emot",
-  "UNjfWJ": "Kontrollera alla signaturer mottagna från reläer",
-  "UT7Nkj": "Ny chatt",
-  "UUPFlt": "Användare måste acceptera innehållsvarningen för att visa innehållet i din anteckning.",
-  "UaCh1c": "Lägg till server",
-  "Ub+AGc": "Logga in",
-  "Up5U7K": "Blockera",
-  "Ups2/p": "Din ansökan är under behandling",
-  "UrKTqQ": "Du har ett aktivt iris.to konto",
-  "UsCzPc": "Dela en personlig inbjudan med dina vänner!",
-  "UxgyeY": "Din värvningskod är {code}",
-  "V20Og0": "Märkning",
-  "VOjC1i": "Välj vilken uppladdningstjänst du vill ladda upp bilagor till",
-  "VR5eHw": "Publik nyckel (npub/nprofile)",
-  "VcwrfF": "Ja tack",
-  "VfhYxG": "För att se en fullständig lista över ändringar kan du se ändringsloggen {here}",
-  "VlJkSk": "{n} tystad",
-  "VnXp8Z": "Avatar",
-  "W1yoZY": "Det verkar som om du inte har några prenumerationer, du kan skaffa en {link}",
-  "W2PiAr": "{n} Blockerad",
-  "W4SaxY": "Lokal",
-  "W9355R": "Avtysta",
-  "WeLEuL": "Från server",
-  "Wj5TbN": "Frågor",
-  "WmZhfL": "Översätt automatiskt anteckningar till ditt lokala språk",
-  "WvGmZT": "npub / nprofile / nostr adress",
-  "X6tipZ": "Logga in med nyckel",
-  "X7xU8J": "nsec, npub, nip-05, hex, mnemonic",
-  "XECMfW": "Skicka användningsstatistik",
-  "XICsE8": "Filvärdar",
-  "XPB8VV": "Alby plånboksanslutning",
-  "XQiFEl": "Följer relä-hälsa",
-  "XSdWHA": "Lösa in",
-  "XXm7jJ": "Trendande hashtaggar",
-  "XgWvGA": "Reaktioner",
-  "Xnimz0": "Skickar från <b>{wallet}</b>",
-  "Xopqkl": "Ditt förvalda zap-belopp är {number} sats, exempelvärden beräknas utifrån detta.",
-  "YDMrKK": "Användare",
-  "YDURw6": "Service URL",
-  "YH2RKk": "Populära medieservrar.",
-  "YQZY/S": "Det ser ut som om du inte följer tillräckligt många, ta en titt på {newUsersPage} för att upptäcka personer att följa!",
-  "YR2I9M": "Inga nycklar, ingen {app}, Det finns inget sätt att återställa den om du inte säkerhetskopierar. Det tar bara en minut.",
-  "YU7ZYp": "Offentlig chatt",
-  "YXA3AH": "Aktivera reaktioner",
-  "Yf3DwC": "Anslut en plånbok för att skicka omedelbara betalningar",
-  "YuoEb9": "Prova ett annat relä",
-  "Z48UEo": "Metadata för kanaler",
-  "Z4BMCZ": "Ange parningsfras",
-  "Z7kkeJ": "Delegerad signering av evenemang",
-  "ZFe9tl": "Skriva en anteckning",
-  "ZKORll": "Aktivera nu",
-  "ZLmyG9": "Bidragsgivare",
-  "ZS+jRE": "Skicka zap-delning till",
-  "Zff6lu": "Användarnamnet iris.to/<b>{name}</b> är reserverat för dig!",
-  "ZlIh4/": "Krypterade direktmeddelanden",
-  "ZlmK/p": "{name} bjöd in dig till {app}",
-  "a1x4gD": "Medieservrar lagrar media som du kan dela i anteckningar som bilder och videor",
-  "a5UPxh": "Finansiera utvecklare och plattformar som tillhandahåller NIP-05 verifieringstjänster",
-  "a7TDNm": "Anteckningar kommer att strömmas i realtid in i global och antecknings fliken",
-  "aHje0o": "Namn eller nym",
-  "aMaLBK": "Tillägg som stöds",
-  "aRex7h": "Betald {amount} sats, avgift {fee} sats",
-  "aSGz4J": "Anslut till din egen LND-nod med Lightning Node Connect",
-  "aWpBzj": "Visa mer",
-  "abbGKq": "{n} km",
-  "ak3MTf": "Bjud in vänner",
-  "b12Goz": "Mnemonic",
-  "b5vAk0": "Ditt namn kommer att fungera som en Lightning adress och kommer att omdirigeras till din valda LNURL eller Lightning adress",
-  "bF1MYT": "Du är en community leader och tjänar <b>{percent}</b> på hänvisade användares prenumerationer!",
-  "bG00/W": "Service Worker i drift",
-  "bJ+wrA": "Utarbeta en lista över gallringar",
-  "bLZL5a": "Skaffa adress",
-  "bMphls": "Inloggad med skrivskyddad åtkomst",
-  "bQdA2k": "Känsligt innehåll",
-  "bep9C3": "Publik nyckel",
-  "bfvyfs": "Anon",
-  "bxv59V": "Just nu",
-  "c+1p0i": "Kind mute sets",
-  "c+JYNI": "Nej tack",
-  "c2T+1B": "Omdirigeringar",
-  "c35bj2": "Om du har en förfrågan om din NIP-05 beställning, vänligen DM {link}",
-  "c3LlRO": "{n}KiB",
-  "c3g2hL": "Sänd igen",
-  "cFbU1B": "Använder du Alby? Gå till {link} för att få din NWC konfiguration!",
-  "cG/bKQ": "Native nostr plånboksanslutning",
-  "cHCwbF": "Fotografi",
-  "cKbMRX": "Direktmeddelande",
-  "cPIKU2": "Följer",
-  "cQfLWb": "URL..",
-  "cVcgLJ": "Mediaservrar",
-  "cWx9t8": "Tysta alla",
-  "cg1VJ2": "Anslut plånbok",
-  "cnwHgH": "Öppna tidsstämplar",
-  "cuP16y": "Stöd för flera konton",
-  "cuV2gK": "namnet är registrerat",
-  "cw1Ftc": "Levande aktiviteter",
-  "cyR7Kh": "Tillbaka",
-  "d+6YsV": "Listor för att stänga av ljudet:",
-  "d0qim7": "WoT-filter",
-  "d2ebEu": "Prenumererar inte på Push",
-  "d7d0/x": "LN Adress",
-  "dK2CcV": "Den publika nyckeln är som ditt användarnamn, du kan dela den med vem som helst.",
-  "dOQCL8": "Visnings namn",
-  "dZZIGe": "Modulär artikelrubrik",
-  "ddd3JX": "Populära hashtags",
-  "deEeEI": "Registrering",
-  "djLctd": "Belopp i sats",
-  "dmcsBA": "Klassificerad annonsering",
-  "dmsiLv": "En standard Zap Pool split av {n} har konfigurerats för {site} utvecklare, du kan inaktivera den när som helst i {link}",
-  "e5x8FT": "Typ",
-  "e61Jf3": "Kommer snart",
-  "e7VmYP": "Ange pin för att låsa upp din privata nyckel",
-  "e7qqly": "Markera alla som lästa",
-  "eF0Re7": "Använd ett nostr signer-tillägg för att logga in",
-  "eHAneD": "Reaktion emoji",
-  "eJj8HD": "Bli Verifierad",
-  "eSzf2G": "En enda zap med {nIn} sats kommer att fördela {nOut} sats till zappoolen.",
-  "eW/Bj9": "Foder",
-  "eXT2QQ": "Gruppchatt",
-  "eZtOxB": "window.nostr-funktion för webbläsare",
-  "egib+2": "{n,plural,=1{& {n} andra} other{& {n} andras}}",
-  "ejEGdx": "Hem",
-  "eoV49s": "Dålig",
-  "f1OxTe": "Community leaders är personer som får nostrs ekosystem att växa genom att vara aktiva i sina lokala samhällen och hjälpa till att få in nya användare. Vem som helst kan bli community leader, men få har den nuvarande hederstiteln.",
-  "f2CAxA": "Dumpa",
-  "fBI91o": "Zap",
-  "fBlba3": "Tack för att du använder {site}, vänligen överväg att donera om du kan.",
-  "fLIvbC": "Snort är ett open source-projekt som byggs av passionerade människor på deras fritid, dina donationer uppskattas mycket",
-  "fOksnD": "Kan inte rösta eftersom LNURL-tjänsten inte stöder zaps",
-  "fQN+tq": "Visa inlägg som har en varningstagg för innehåll",
-  "fWZYP5": "Fastnålad",
-  "fX5RYm": "Välj några ämnen av intresse",
-  "filwqD": "Läs",
-  "fjAcWo": "Gåvopaket",
-  "flnGvv": "Vad tänker du på?",
-  "fqwcJ1": "On-chain donation",
-  "fr+XYA": "Blixt Pub RPC",
-  "fsB/4p": "Sparad",
-  "fucxlm": "Bifoga media",
-  "furjvW": "Titta på Streamen",
-  "g5pX+a": "Om",
-  "g985Wp": "Misslyckades att skicka röst",
-  "gDzDRs": "Emoji att skicka när reagerar på en anteckning",
-  "gXgY3+": "Alla klienter stöder inte detta ännu",
-  "gczcC5": "Prenumerera",
-  "geppt8": "{count} ({count2} i minnet)",
-  "gjBiyj": "Laddar...",
-  "gkMmvC": "Android-signeringsapplikation",
-  "gl1NeW": "Listor",
-  "go2/QF": "Lista över användarservrar",
-  "grQ+mI": "Proof of Work",
-  "gtNjNP": "Beskrivning av grundläggande protokollflöde",
-  "h7jvCs": "{site} är roligare tillsammans!",
-  "h8XMJL": "Emblem",
-  "h9M0rW": "Metadata för användare",
-  "hF6IN2": "Rensa följelistan",
-  "hMQmIw": "Synkronisera konto",
-  "hMzcSq": "Meddelanden",
-  "hRTfTR": "PRO",
-  "hY4lzx": "Support",
-  "hYOE+U": "Inbjudan",
-  "hicxcO": "Visa svar",
-  "hmZ3Bz": "Media",
-  "hniz8Z": "här",
-  "hv/eRj": "Lista över blockerade reläer",
-  "hvFRBo": "Interaktion",
-  "i/dBAR": "Zap Pool",
-  "i5gBFz": "Dina skickade och mottagna betalningar kommer att visas här.",
-  "iCqGww": "Reaktioner ({n})",
-  "iEoXYx": "DeepL översättningar",
-  "iGT1eE": "Förhindra falska konton från att imitera dig",
-  "iHN12u": "Administratör",
-  "iICVoL": "{x} följer ({y} dubbletter)",
-  "iNWbVV": "Namn",
-  "iXPL0Z": "Kan inte logga in med privat nyckel på en osäker anslutning, använd ett tillägg för Nostr key manager istället",
-  "iYc3Ld": "Betalningar",
-  "icCxlA": "sida för nya användare",
-  "ieGrWo": "Följ",
-  "igUUst": "Gruppchatt Trådat svar",
-  "ipHVx5": "Generera faktura",
-  "itPgxd": "Profil",
-  "izWS4J": "Sluta följ",
-  "j9xbzF": "Redan säkerhetskopierad",
-  "jA3OE/": "{n,plural,=1{{n} sat} other{{n} sats}}",
-  "jAmfGl": "Ditt {site_name} abonnemang har löpt ut",
-  "jHa/ko": "Städa upp i ditt flöde",
-  "jMzO1S": "Internt fel: {msg}",
-  "jiAVXu": "Video Evenemang",
-  "jvo0vs": "Spara",
-  "jzgQ2z": "{n} Reaktioner",
-  "k0kCJp": "Ansök nu",
-  "k2veDA": "Skriv",
-  "k7sKNy": "Vår alldeles egna NIP-05 verifieringstjänst, hjälpa till att stödja utvecklingen av denna webbplats och få ett glänsande speciellt märke på vår webbplats!",
-  "k9SQm1": "Reläer som du har anslutit till tidigare och som verkar vara tillförlitliga.",
-  "kEZUR8": "Registrera ett användarnamn för Iris",
-  "kJYo0u": "{n,plural,one {}=0{{name} delade} other{{name} & {n} andra delade}}",
-  "kKC9ya": "Information om plånboken",
-  "kNd2FL": "Tidal inloggning",
-  "kQAf2d": "Välj",
-  "kaaf1E": "nu",
-  "kc79d3": "Ämnen",
-  "klCm96": "Godkännande av gemenskapspost",
-  "kqPQJD": "Konfigurera zap-pool",
-  "kuPHYE": "{n,plural,one {}=0{{name} gillade} other{{name} & {n} andra gillade}}",
-  "l+ikU1": "Allting i {plan}",
-  "l3H1EK": "Bjud in dina vänner",
-  "l3nTjd": "Grundläggande nyckel härledning från mnemonisk fröfras",
-  "lCILNz": "Köp Nu",
-  "lD3+8a": "Betala",
-  "lEnclp": "Mina händelser: {n}",
-  "lPWASz": "Snort nostr adress",
-  "lTbT3s": "Plånbokens lösenord",
-  "lbr3Lq": "Kopiera länk",
-  "lfOesV": "Non-Zap",
-  "lgg1KN": "konto sida",
-  "ll3xBp": "Bild proxy tjänst",
-  "lnaT9F": "Följer {n}",
-  "lsNFM1": "Klicka för att ladda innehåll från {link}",
-  "lvlPhZ": "Betala Faktura",
-  "m/59y2": "Zap-förfrågan",
-  "m6h2Eg": "Rekommendation för handläggare",
-  "mCEKiZ": "{n} noter har dämpats",
-  "mErPop": "Det verkar som om du inte har någon, kolla {link} för att köpa en!",
-  "mFtdYh": "{type} Arbetstagare Relä",
-  "mKAr6h": "Följ alla",
-  "mKh2HS": "Tjänst för filuppladdning",
-  "mKhgP9": "{n,plural,=0{} =1{zapped} other{zapped}}",
-  "mOFG3K": "Start",
-  "mfe8RW": "Alternativ: {n}",
-  "mmPSWH": "Endast läsning",
-  "n1Whvj": "Växla",
-  "n5l7tP": "Tidsbaserad kalenderhändelse",
-  "n8k1SG": "{n}MiB",
-  "nD4frR": "Bekräftelse av bud",
-  "nDejmx": "Avblockera",
-  "nGBrvw": "Bokmärken",
-  "nGGDsi": "Notiser tillåtna",
-  "nIchMQ": "Söker efter kontoaktivitet ({progress})",
-  "nPHrqp": "Coinjoin Pool",
-  "nUT0Lv": "Verktyg",
-  "nWQFic": "Förnya",
-  "nihgfo": "Lyssna på denna artikel",
-  "nwZXeh": "{n} blockerad",
-  "o/gK53": "Deck",
-  "o7e+nJ": "{n} följare",
-  "oJ+JJN": "Inget hittat :/",
-  "odFwjL": "Följer endast",
-  "ojzbwv": "Hej, det ser ut som du inte har en Nostr adress ännu, du bör skaffa en! Kolla in {link}",
-  "ozZ2Cj": "Badge-utmärkelse",
-  "p4N05H": "Ladda upp",
-  "p9Ps2l": "{x}/{y} har reläer ({percent})",
-  "pEEBFk": "Pålitliga reläer",
-  "pI+77w": "Nedladdningsbara säkerhetskopior från Snort relä",
-  "pRess9": "ZapPool",
-  "plOM0t": "Anpassad emoji",
-  "plg2Ua": "Kanal Mute Användare",
-  "puLNUJ": "Fäst",
-  "pyjJ5f": "Nostr Marketplace (för motståndskraftiga marknadsplatser)",
-  "pzTOmv": "Följare",
-  "q3OuMw": "Torrent Kommentar",
-  "qAY40L": "Datumbaserad kalenderhändelse",
-  "qBYNMb": "Svar på grupptråd",
-  "qD9EUF": "E-post <> DM brygga för din Snort nostr adress",
-  "qDwvZ4": "Okänt fel",
-  "qFIVx4": "Profilmärken",
-  "qMePPG": "Anteckning",
-  "qMx1sA": "Förvalt Zap-belopp",
-  "qUJTsT": "Blockerad",
-  "qXCbgZ": "Lås upp",
-  "qZsKBR": "Förnya {tier}",
-  "qcJFEJ": "API för notifieringar avaktiverat",
-  "qdGuQo": "Din privata nyckel är (dela inte detta med någon)",
-  "qfmMQh": "Den här anteckningen har tystats",
-  "qkvYUb": "Lägg till i min profil",
-  "qmJ8kD": "Översättning misslyckades",
-  "qtWLmt": "Gilla",
-  "qyJtWy": "Visa mindre",
-  "qydxOd": "Vetenskap",
-  "qz9fty": "Felaktig pin",
-  "r3C4x/": "Mjukvara",
-  "r5srDR": "Ange lösenord för plånboken",
-  "rAQG0X": "Metadata för relälista",
-  "rIsVe+": "Lista över offentliga chattar",
-  "rMgF34": "Säkerhetskopiera nu",
-  "rRRXtB": "Blixtnedslag",
-  "rT14Ow": "Lägg till reläer",
-  "reFEEC": "Rapportering",
-  "rfuMjE": "(Standard)",
-  "rkM7l8": "Krypterat direktmeddelande",
-  "rmdsT4": "{n} dagar",
-  "rn52n9": "Offentliga chattkanaler",
-  "rx1i0i": "Kort länk",
-  "sFUkSN": "Bokmärkesuppsättningar",
-  "sKDn4e": "Visa emblem",
-  "sUNhQE": "användare",
-  "sZQzjQ": "Misslyckades att tolka zapsplit: {input}",
-  "saInmO": "Det relänamn som visas är inte detsamma som den fullständiga URL som angetts.",
-  "saorw+": "Begäran om radering av evenemang",
-  "sfL/O+": "Tystade anteckningar kommer inte att visas",
-  "t79a6U": "Framgångsrik anslutning:",
-  "tDDiRL": "Intresseförteckning",
-  "tFpT/O": "Släpp artefaktuppsättningar",
-  "tO1oq9": "Videohändelser",
-  "tOdNiY": "Mörkt",
-  "tRGdV1": "Versionerad kryptering",
-  "tU0ADf": "Okänd NIP-{x}",
-  "tVuVg9": "Video Visa händelse",
-  "tf1lIh": "Gratis",
-  "th5lxp": "Skicka anteckning till en delmängd av dina skrivreläer",
-  "thnRpU": "Att få NIP-05 verifierat kan hjälpa:",
-  "tj6kdX": "{sign} {amount} sats",
-  "tjpYlr": "Relä statistik",
-  "ttxS0b": "Supporter Emblem",
-  "tzMNF3": "Status",
-  "u/vOPu": "Betald",
-  "u4I8q8": "Stiftlista",
-  "u81G9+": "Drifttid",
-  "u9NoC1": "Namnet måste vara mindre än {limit} tecken",
-  "uCk8r+": "Har du redan ett konto?",
-  "uD7Els": "Externa identiteter i profiler",
-  "uJaMkO": "Relay-lista för att ta emot DM",
-  "uSV4Ti": "Dela vidare måste bekräftas manuellt",
-  "uc0din": "Skicka sats-delningar till",
-  "ufvXH1": "Hittade {n} händelser",
-  "uhu5aG": "Allmänheten",
-  "un1nGw": "{n} anteckningar",
-  "usAvMr": "Redigera profil",
-  "v8lolG": "Starta chatt",
-  "vB3oQ/": "Måste vara en kontaktlista eller en pubkey lista",
-  "vBsZhD": "Lista över samhällen",
-  "vN5UH8": "Profilbild",
-  "vU/Q5i": "Detta verktyg kommer att söka efter den senaste händelsen som publiceras av alla dina följande och ta bort dem som inte har postat i 6 månader",
-  "vZ4quW": "NIP-05 är en DNS-baserad verifieringsspec som hjälper till att validera dig som en riktig användare.",
-  "vhlWFg": "Alternativ för omröstning",
-  "vlbWtt": "Få en kostnadsfri",
-  "voxBKC": "Följs av vänner",
-  "vxwnbh": "Mängd arbete att tillämpas för alla publicerade händelser",
-  "w1Fanr": "Företag",
-  "w6qrwX": "NSFW",
-  "wEQDC6": "Ändra",
-  "wOyDTB": "Lista över server för fillagring",
-  "wSZR47": "Skicka",
-  "wc9st7": "Bilagor för media",
-  "whSrs+": "Nostr Publik Chatt",
-  "wih7iJ": "namnet är blockerat",
-  "wlWMuh": "Plåster",
-  "wofVHy": "Moderation",
-  "wqyN/i": "Ta reda på mer om {service} på {link}",
-  "wtLjP6": "Kopiera ID",
-  "x+3fl6": "Mina reläer",
-  "x/Fx2P": "Finansiera de tjänster som du använder genom att dela upp en del av alla dina zaps i en pool med pengar!",
-  "x82IOl": "Tysta",
-  "xEjBS7": "För dig",
-  "xIcAOU": "Röster från {type}",
-  "xIoGG9": "Gå till",
-  "xPCyu+": "nostr: URI-schema",
-  "xaj9Ba": "Leverantör",
-  "xbVgIm": "Ladda media automatiskt",
-  "xhQMeQ": "Löper ut",
-  "xl4s/X": "Ytterligare villkor:",
-  "xmcVZ0": "Sök",
-  "xybOUv": "FAN",
-  "y/bmsG": "Tillåt",
-  "y1Z3or": "Språk",
-  "yAztTU": "{n} eSats",
-  "yCLnBC": "LNURL or Lightning Adress",
-  "yLzgxH": "Populära reläer",
-  "yeX8yA": "Nativ app",
-  "z3UjXR": "Felsökning",
-  "z3Ukvq": "Utarbeta innehåll i lång form",
-  "zCb8fX": "Vikt",
-  "zFegDD": "Kontakt",
-  "zINlao": "Ägare",
-  "zQvVDJ": "Alla",
-  "zcaOTs": "Zap belopp i sats",
-  "zi9MdS": "Schack (PGN)",
-  "zm6qS1": "{n} min att läsa",
-  "zonsdq": "Det gick inte att ladda LNURL-tjänsten",
-  "zvCDao": "Visa automatiskt de senaste anteckningarna",
-  "zx0myy": "Deltagare"
+  "+D82kt": [
+    {
+      "type": 0,
+      "value": "Är du säker på att du vill dela vidare:"
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "+PzQ9Y": [
+    {
+      "type": 0,
+      "value": "Utbetalning nu"
+    }
+  ],
+  "+QM0PJ": [
+    {
+      "type": 0,
+      "value": "Synka alla händelser för din profil till lokal cache"
+    }
+  ],
+  "+QMdsy": [
+    {
+      "type": 0,
+      "value": "Stafettstatistik"
+    }
+  ],
+  "+UjDmN": [
+    {
+      "type": 0,
+      "value": "Inloggad med skrivbehörighet"
+    }
+  ],
+  "+Vxixo": [
+    {
+      "type": 0,
+      "value": "Hemlig grupp chatt"
+    }
+  ],
+  "+aZY2h": [
+    {
+      "type": 0,
+      "value": "Zap Typ"
+    }
+  ],
+  "+tShPg": [
+    {
+      "type": 0,
+      "value": "följer"
+    }
+  ],
+  "+vA//S": [
+    {
+      "type": 0,
+      "value": "Inloggningar"
+    }
+  ],
+  "+vIQlC": [
+    {
+      "type": 0,
+      "value": "Se till att spara följande lösenord för att hantera din profil i framtiden"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "Anslut"
+    }
+  ],
+  "+vj0U3": [
+    {
+      "type": 0,
+      "value": "redigera"
+    }
+  ],
+  "+xliwN": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " delade"
+    }
+  ],
+  "/B8zwF": [
+    {
+      "type": 0,
+      "value": "Ditt utrymme så som du vill ha det 😌"
+    }
+  ],
+  "/GCoTA": [
+    {
+      "type": 0,
+      "value": "Rensa"
+    }
+  ],
+  "/JE/X+": [
+    {
+      "type": 0,
+      "value": "Konto Support"
+    }
+  ],
+  "/T7HId": [
+    {
+      "type": 0,
+      "value": "Integration av HTTP fillagring"
+    }
+  ],
+  "/Xf4UW": [
+    {
+      "type": 0,
+      "value": "Skicka anonyma användarvärden"
+    }
+  ],
+  "/b1IHW": [
+    {
+      "type": 0,
+      "value": "Gruppchattmeddelande"
+    }
+  ],
+  "/d6vEc": [
+    {
+      "type": 0,
+      "value": "Gör din profil enklare att hitta och dela"
+    }
+  ],
+  "/ioUrF": [
+    {
+      "type": 0,
+      "value": "Från filen"
+    }
+  ],
+  "/n5KSF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ms"
+    }
+  ],
+  "00LcfG": [
+    {
+      "type": 0,
+      "value": "Ladda fler"
+    }
+  ],
+  "01iNut": [
+    {
+      "type": 0,
+      "value": "Nostr-adressen tillhör inte dig"
+    }
+  ],
+  "08zn6O": [
+    {
+      "type": 0,
+      "value": "Exportnycklar"
+    }
+  ],
+  "0Azlrb": [
+    {
+      "type": 0,
+      "value": "Hantera"
+    }
+  ],
+  "0BUTMv": [
+    {
+      "type": 0,
+      "value": "Sök..."
+    }
+  ],
+  "0MndVW": [
+    {
+      "type": 0,
+      "value": "Generisk LNDHub-plånbok (BTCPayServer / Alby / LNBits)"
+    }
+  ],
+  "0jOEtS": [
+    {
+      "type": 0,
+      "value": "Ogiltig LNURL"
+    }
+  ],
+  "0kOBMu": [
+    {
+      "type": 0,
+      "value": "Hantering av omnämnanden"
+    }
+  ],
+  "0mch2Y": [
+    {
+      "type": 0,
+      "value": "namnet har otillåtna tecken"
+    }
+  ],
+  "0siT4z": [
+    {
+      "type": 0,
+      "value": "Politik"
+    }
+  ],
+  "0uoY11": [
+    {
+      "type": 0,
+      "value": "Visa status"
+    }
+  ],
+  "0yO7wF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " secs"
+    }
+  ],
+  "0zASjL": [
+    {
+      "type": 0,
+      "value": "Starta"
+    }
+  ],
+  "1/BFEj": [
+    {
+      "type": 0,
+      "value": "git-grejer"
+    }
+  ],
+  "1Mo59U": [
+    {
+      "type": 0,
+      "value": "Är du säker på att du vill ta bort den här anteckningen från bokmärken?"
+    }
+  ],
+  "1R43+L": [
+    {
+      "type": 0,
+      "value": "Skriv in Nostr Wallet Connect konfiguration"
+    }
+  ],
+  "1UWegE": [
+    {
+      "type": 0,
+      "value": "Se till att säkerhetskopiera dina nycklar!"
+    }
+  ],
+  "1c4YST": [
+    {
+      "type": 0,
+      "value": "Ansluten till: "
+    },
+    {
+      "type": 1,
+      "value": "node"
+    },
+    {
+      "type": 0,
+      "value": "🎉"
+    }
+  ],
+  "1nYUGC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Följer"
+    }
+  ],
+  "1o2BgB": [
+    {
+      "type": 0,
+      "value": "Kontrollera signaturer"
+    }
+  ],
+  "1ozeyg": [
+    {
+      "type": 0,
+      "value": "Natur"
+    }
+  ],
+  "1udzha": [
+    {
+      "type": 0,
+      "value": "Konversationer"
+    }
+  ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "Lägg till"
+    }
+  ],
+  "25V4l1": [
+    {
+      "type": 0,
+      "value": "Banner"
+    }
+  ],
+  "25WwxF": [
+    {
+      "type": 0,
+      "value": "Har du inget konto?"
+    }
+  ],
+  "28oKbu": [
+    {
+      "type": 0,
+      "value": "Modererade Communities"
+    }
+  ],
+  "29sHFE": [
+    {
+      "type": 0,
+      "value": "Plånbok Connect"
+    }
+  ],
+  "2BBGxX": [
+    {
+      "type": 0,
+      "value": "Ämnestagg i texthändelser"
+    }
+  ],
+  "2HIqeO": [
+    {
+      "type": 0,
+      "value": "Användarens emoji-lista"
+    }
+  ],
+  "2IFGap": [
+    {
+      "type": 0,
+      "value": "Donera"
+    }
+  ],
+  "2LbrkB": [
+    {
+      "type": 0,
+      "value": "Ange lösenord"
+    }
+  ],
+  "2O2sfp": [
+    {
+      "type": 0,
+      "value": "Avsluta"
+    }
+  ],
+  "2Qsf9/": [
+    {
+      "type": 0,
+      "value": "Generiska listor"
+    }
+  ],
+  "2a2YiP": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Bokmärken"
+    }
+  ],
+  "2k0Cv+": [
+    {
+      "type": 0,
+      "value": "Gillar inte ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "2mcwT8": [
+    {
+      "type": 0,
+      "value": "Ny anteckning"
+    }
+  ],
+  "2oCF7O": [
+    {
+      "type": 0,
+      "value": "Följs av vänner till vänner"
+    }
+  ],
+  "2raFAu": [
+    {
+      "type": 0,
+      "value": "Applikationsspecifika data"
+    }
+  ],
+  "2ukA4d": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " timmar"
+    }
+  ],
+  "2z7Kky": [
+    {
+      "type": 0,
+      "value": "Senaste artiklar"
+    }
+  ],
+  "3/onCd": [
+    {
+      "type": 0,
+      "value": "Svar"
+    }
+  ],
+  "39AHJm": [
+    {
+      "type": 0,
+      "value": "Registrera dig"
+    }
+  ],
+  "3GWu6/": [
+    {
+      "type": 0,
+      "value": "Användarstatusar"
+    }
+  ],
+  "3KNMbJ": [
+    {
+      "type": 0,
+      "value": "Artiklar"
+    }
+  ],
+  "3MKdAw": [
+    {
+      "type": 0,
+      "value": "Blobbar lagrade på mediaservers"
+    }
+  ],
+  "3QwfJR": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    }
+  ],
+  "3adEeb": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " tittare"
+    }
+  ],
+  "3cc4Ct": [
+    {
+      "type": 0,
+      "value": "Ljust"
+    }
+  ],
+  "3gOsZq": [
+    {
+      "type": 0,
+      "value": "Översättare"
+    }
+  ],
+  "3kbIhS": [
+    {
+      "type": 0,
+      "value": "Utan titel"
+    }
+  ],
+  "3qnJlS": [
+    {
+      "type": 0,
+      "value": "Du röstar med "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "3t3kok": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " ny anteckning"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " nya anteckningar"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "3tVy+Z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Följare"
+    }
+  ],
+  "3yk8fB": [
+    {
+      "type": 0,
+      "value": "Plånbok"
+    }
+  ],
+  "40VR6s": [
+    {
+      "type": 0,
+      "value": "Nostr Connect"
+    }
+  ],
+  "41BSaT": [
+    {
+      "type": 0,
+      "value": "Totalt antal händelser:"
+    }
+  ],
+  "450Fty": [
+    {
+      "type": 0,
+      "value": "Ingen"
+    }
+  ],
+  "47E53q": [
+    {
+      "type": 0,
+      "value": "Wiki"
+    }
+  ],
+  "47FYwb": [
+    {
+      "type": 0,
+      "value": "Avbryt"
+    }
+  ],
+  "48zn4v": [
+    {
+      "type": 0,
+      "value": "Bud"
+    }
+  ],
+  "4IPzdn": [
+    {
+      "type": 0,
+      "value": "Primära Utvecklare"
+    }
+  ],
+  "4L2vUY": [
+    {
+      "type": 0,
+      "value": "Din nya NIP-05 är:"
+    }
+  ],
+  "4MjsHk": [
+    {
+      "type": 0,
+      "value": "Liv"
+    }
+  ],
+  "4OB335": [
+    {
+      "type": 0,
+      "value": "Ogilla"
+    }
+  ],
+  "4P/kKm": [
+    {
+      "type": 0,
+      "value": "Kryptering med privat nyckel"
+    }
+  ],
+  "4Vmpt4": [
+    {
+      "type": 0,
+      "value": "Nostr Plebs är en av de första NIP-05 leverantörerna och erbjuder en bra samling domäner till rimliga priser"
+    }
+  ],
+  "4Z3t5i": [
+    {
+      "type": 0,
+      "value": "Använd imgproxy för att komprimera bilder"
+    }
+  ],
+  "4emo2p": [
+    {
+      "type": 0,
+      "value": "Saknade reläer"
+    }
+  ],
+  "4rYCjn": [
+    {
+      "type": 0,
+      "value": "Anteckning till mig själv"
+    }
+  ],
+  "4wgYpI": [
+    {
+      "type": 0,
+      "value": "Rekommenderade applikationshanterare"
+    }
+  ],
+  "5BVs2e": [
+    {
+      "type": 0,
+      "value": "zap"
+    }
+  ],
+  "5CB6zB": [
+    {
+      "type": 0,
+      "value": "Zap Splits"
+    }
+  ],
+  "5PRWs7": [
+    {
+      "type": 0,
+      "value": "API för notifieringar aktiverat"
+    }
+  ],
+  "5dfmvv": [
+    {
+      "type": 0,
+      "value": "Zap-mål"
+    }
+  ],
+  "5oTnfy": [
+    {
+      "type": 0,
+      "value": "Köp Namn"
+    }
+  ],
+  "5qEWCr": [
+    {
+      "type": 0,
+      "value": "Metadata för filer"
+    }
+  ],
+  "5u6iEc": [
+    {
+      "type": 0,
+      "value": "Överför till Pubkey"
+    }
+  ],
+  "5vMmmR": [
+    {
+      "type": 0,
+      "value": "Användarnamn är inte unika på Nostr. Nostr-adressen är din unika människoläsbara adress som är unik för dig vid registrering."
+    }
+  ],
+  "5ykRmX": [
+    {
+      "type": 0,
+      "value": "Skicka zap"
+    }
+  ],
+  "6/hB3S": [
+    {
+      "type": 0,
+      "value": "Titta på repris"
+    }
+  ],
+  "60kEE3": [
+    {
+      "type": 0,
+      "value": "Mute-lista"
+    }
+  ],
+  "62nsdy": [
+    {
+      "type": 0,
+      "value": "Försök igen"
+    }
+  ],
+  "634VVz": [
+    {
+      "type": 0,
+      "value": "Anslutningen misslyckades:"
+    }
+  ],
+  "6559gb": [
+    {
+      "type": 0,
+      "value": "Ny längd på följelistan "
+    },
+    {
+      "type": 1,
+      "value": "length"
+    }
+  ],
+  "65BmHb": [
+    {
+      "type": 0,
+      "value": "Det gick inte att proxybilden från "
+    },
+    {
+      "type": 1,
+      "value": "host"
+    },
+    {
+      "type": 0,
+      "value": ", klicka här för att ladda direkt"
+    }
+  ],
+  "6D4Hhn": [
+    {
+      "type": 0,
+      "value": "Rekommendera relä"
+    }
+  ],
+  "6KGebm": [
+    {
+      "type": 0,
+      "value": "Tätning"
+    }
+  ],
+  "6OSOXl": [
+    {
+      "type": 0,
+      "value": "Anledning: "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reason"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "6WWD34": [
+    {
+      "type": 0,
+      "value": "Letar du efter..: "
+    },
+    {
+      "type": 1,
+      "value": "noteId"
+    }
+  ],
+  "6bgpn+": [
+    {
+      "type": 0,
+      "value": "Inte alla klienter stöder detta, kan du fortfarande få några zaps som om zap delning inte konfigurerades"
+    }
+  ],
+  "6ewQqw": [
+    {
+      "type": 0,
+      "value": "Gillar ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "6mr8WU": [
+    {
+      "type": 0,
+      "value": "Följs av"
+    }
+  ],
+  "6pdxsi": [
+    {
+      "type": 0,
+      "value": "Extra metadatafält och taggar"
+    }
+  ],
+  "6uMqL1": [
+    {
+      "type": 0,
+      "value": "Obetald"
+    }
+  ],
+  "6xNr8c": [
+    {
+      "type": 0,
+      "value": "Byta konto"
+    }
+  ],
+  "6xap9L": [
+    {
+      "type": 0,
+      "value": "Bra"
+    }
+  ],
+  "7+Domh": [
+    {
+      "type": 0,
+      "value": "Anteckningar"
+    }
+  ],
+  "712i26": [
+    {
+      "type": 0,
+      "value": "Proxy använder HODL-fakturor för att vidarebefordra betalningen, vilket döljer pubkey för din nod"
+    }
+  ],
+  "753yX5": [
+    {
+      "type": 0,
+      "value": "Etikett"
+    }
+  ],
+  "769A8p": [
+    {
+      "type": 0,
+      "value": "Wiki-artikel"
+    }
+  ],
+  "77nkEO": [
+    {
+      "type": 0,
+      "value": "Dokument med information om reläet"
+    }
+  ],
+  "7LFU8U": [
+    {
+      "type": 0,
+      "value": "Sökfunktionalitet"
+    }
+  ],
+  "7UOvbT": [
+    {
+      "type": 0,
+      "value": "Frånkopplad"
+    }
+  ],
+  "7YkSA2": [
+    {
+      "type": 0,
+      "value": "Gemenskapens ledare"
+    }
+  ],
+  "7gMmSL": [
+    {
+      "type": 0,
+      "value": "Reaktion"
+    }
+  ],
+  "7hp70g": [
+    {
+      "type": 0,
+      "value": "NIP-05"
+    }
+  ],
+  "7jfPsW": [
+    {
+      "type": 0,
+      "value": "Modulärt artikelinnehåll"
+    }
+  ],
+  "7nAz/z": [
+    {
+      "type": 0,
+      "value": "Stäng av anteckningar från personer som du inte litar på"
+    }
+  ],
+  "7pFGAQ": [
+    {
+      "type": 0,
+      "value": "Stäng reläer"
+    }
+  ],
+  "8/vBbP": [
+    {
+      "type": 0,
+      "value": "Delningar ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "89q5wc": [
+    {
+      "type": 0,
+      "value": "Bekräfta Dela vidare"
+    }
+  ],
+  "8BDFvJ": [
+    {
+      "type": 0,
+      "value": "Konventioner för klienters användning av e- och p-taggar i texthändelser"
+    }
+  ],
+  "8ED/4u": [
+    {
+      "type": 0,
+      "value": "Svara till"
+    }
+  ],
+  "8HJxXG": [
+    {
+      "type": 0,
+      "value": "Registrering"
+    }
+  ],
+  "8QDesP": [
+    {
+      "type": 0,
+      "value": "Zap "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "8Rkoyb": [
+    {
+      "type": 0,
+      "value": "Mottagare"
+    }
+  ],
+  "8Y6bZQ": [
+    {
+      "type": 0,
+      "value": "Ogiltig zapsplit: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "8ZGqWl": [
+    {
+      "type": 0,
+      "value": "Grupptråd"
+    }
+  ],
+  "8g2vyB": [
+    {
+      "type": 0,
+      "value": "namnet är för långt"
+    }
+  ],
+  "8jmwT8": [
+    {
+      "type": 0,
+      "value": "bech32-kodade enheter"
+    }
+  ],
+  "8v1NN+": [
+    {
+      "type": 0,
+      "value": "Parnings fras"
+    }
+  ],
+  "8xdDLn": [
+    {
+      "type": 0,
+      "value": "Följ set"
+    }
+  ],
+  "8za9Pq": [
+    {
+      "type": 0,
+      "value": "Utkast till klassificerad annonsering"
+    }
+  ],
+  "9+Ddtu": [
+    {
+      "type": 0,
+      "value": "Nästa"
+    }
+  ],
+  "9HU8vw": [
+    {
+      "type": 0,
+      "value": "Svara"
+    }
+  ],
+  "9SvQep": [
+    {
+      "type": 0,
+      "value": "Följer "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "9V0wg3": [
+    {
+      "type": 0,
+      "value": "Kalender Evenemang RSVP"
+    }
+  ],
+  "9WRlF4": [
+    {
+      "type": 0,
+      "value": "Skicka"
+    }
+  ],
+  "9kO0VQ": [
+    {
+      "type": 0,
+      "value": "Dölj tystade anteckningar"
+    }
+  ],
+  "9kSari": [
+    {
+      "type": 0,
+      "value": "Försök att publicera igen"
+    }
+  ],
+  "9pMqYs": [
+    {
+      "type": 0,
+      "value": "Nostr Adress"
+    }
+  ],
+  "9wO4wJ": [
+    {
+      "type": 0,
+      "value": "Lightning-faktura"
+    }
+  ],
+  "A86fJ+": [
+    {
+      "type": 0,
+      "value": "Generisk Repost"
+    }
+  ],
+  "ADmfQT": [
+    {
+      "type": 0,
+      "value": "Förälder"
+    }
+  ],
+  "ALdW69": [
+    {
+      "type": 0,
+      "value": "Anteckning av "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "AN0Z7Q": [
+    {
+      "type": 0,
+      "value": "Tystade ord"
+    }
+  ],
+  "ASRK0S": [
+    {
+      "type": 0,
+      "value": "Denna författare har tystats"
+    }
+  ],
+  "AedFVZ": [
+    {
+      "type": 0,
+      "value": "Skapa eller uppdatera en produkt"
+    }
+  ],
+  "Ai8VHU": [
+    {
+      "type": 0,
+      "value": "Obegränsat antal anteckningar på Snort-relä"
+    }
+  ],
+  "AkCxS/": [
+    {
+      "type": 0,
+      "value": "Anledning"
+    }
+  ],
+  "AktAk2": [
+    {
+      "type": 0,
+      "value": "Bra"
+    }
+  ],
+  "Am8glJ": [
+    {
+      "type": 0,
+      "value": "Spel"
+    }
+  ],
+  "AqGfF4": [
+    {
+      "type": 0,
+      "value": "Skapande av kanaler"
+    }
+  ],
+  "Aujn2T": [
+    {
+      "type": 0,
+      "value": "Antal"
+    }
+  ],
+  "Awq32I": [
+    {
+      "type": 0,
+      "value": "Push-meddelanden"
+    }
+  ],
+  "AxDOiG": [
+    {
+      "type": 0,
+      "value": "Månader"
+    }
+  ],
+  "AyGauy": [
+    {
+      "type": 0,
+      "value": "Logga in"
+    }
+  ],
+  "B4C47Y": [
+    {
+      "type": 0,
+      "value": "namnet är för kort"
+    }
+  ],
+  "B6+XJy": [
+    {
+      "type": 0,
+      "value": "zappad"
+    }
+  ],
+  "B6H7eJ": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex"
+    }
+  ],
+  "B7wvUM": [
+    {
+      "type": 0,
+      "value": "Du kan lägga till ett eller flera reläer, ett per rad."
+    }
+  ],
+  "BGCM48": [
+    {
+      "type": 0,
+      "value": "Skriv åtkomst till Snort relä med 1 års lagring av event"
+    }
+  ],
+  "BGGacK": [
+    {
+      "type": 0,
+      "value": "AI-inbäddningar / vektorlistor"
+    }
+  ],
+  "BQW4gi": [
+    {
+      "type": 0,
+      "value": "Reläbaserade grupper"
+    }
+  ],
+  "BWpuKl": [
+    {
+      "type": 0,
+      "value": "Uppdatera"
+    }
+  ],
+  "BfuAQ5": [
+    {
+      "type": 0,
+      "value": "Marknadsplats UI/UX"
+    }
+  ],
+  "BjNwZW": [
+    {
+      "type": 0,
+      "value": "Nostr adress (nip05)"
+    }
+  ],
+  "Blxcdx": [
+    {
+      "type": 0,
+      "value": "Relä"
+    }
+  ],
+  "Bo+O//": [
+    {
+      "type": 0,
+      "value": "HTTP-autentisering"
+    }
+  ],
+  "C1LjMx": [
+    {
+      "type": 0,
+      "value": "Lightning donation"
+    }
+  ],
+  "C6Lhhp": [
+    {
+      "type": 0,
+      "value": "Live-evenemang"
+    }
+  ],
+  "C7642/": [
+    {
+      "type": 0,
+      "value": "Citera Repost"
+    }
+  ],
+  "C81/uG": [
+    {
+      "type": 0,
+      "value": "Logga ut"
+    }
+  ],
+  "C8FsOr": [
+    {
+      "type": 0,
+      "value": "Populära servrar"
+    }
+  ],
+  "C8HhVE": [
+    {
+      "type": 0,
+      "value": "Föreslagna personer att följa"
+    }
+  ],
+  "CA1efg": [
+    {
+      "type": 0,
+      "value": "Videouppsättningar"
+    }
+  ],
+  "CHTbO3": [
+    {
+      "type": 0,
+      "value": "Det gick inte att ladda fakturan"
+    }
+  ],
+  "CJx5Nd": [
+    {
+      "type": 0,
+      "value": "Profil Zaps"
+    }
+  ],
+  "CM+Cfj": [
+    {
+      "type": 0,
+      "value": "Följ lista"
+    }
+  ],
+  "CM0k0d": [
+    {
+      "type": 0,
+      "value": "Rensa följelistan"
+    }
+  ],
+  "CVWeJ6": [
+    {
+      "type": 0,
+      "value": "Trendande personer"
+    }
+  ],
+  "CYkOCI": [
+    {
+      "type": 0,
+      "value": "och "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " andra du följer"
+    }
+  ],
+  "Cdxwi0": [
+    {
+      "type": 0,
+      "value": "Meddelanden om förvar"
+    }
+  ],
+  "CmZ9ls": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " tystad"
+    }
+  ],
+  "Coy6SH": [
+    {
+      "type": 0,
+      "value": "Kalender"
+    }
+  ],
+  "CsCUYo": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "Cu/K85": [
+    {
+      "type": 0,
+      "value": "Översatt från "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "CzHZoc": [
+    {
+      "type": 0,
+      "value": "Social graf"
+    }
+  ],
+  "D++Njw": [
+    {
+      "type": 0,
+      "value": "Text Not Referenser"
+    }
+  ],
+  "D+KzKd": [
+    {
+      "type": 0,
+      "value": "Zappa automatiskt varje anteckning när den är laddad"
+    }
+  ],
+  "D09wbg": [
+    {
+      "type": 0,
+      "value": "Badge Definition"
+    }
+  ],
+  "D3idYv": [
+    {
+      "type": 0,
+      "value": "Inställningar"
+    }
+  ],
+  "D9xTLE": [
+    {
+      "type": 0,
+      "value": "Kanal Dölj meddelande"
+    }
+  ],
+  "DBiVK1": [
+    {
+      "type": 0,
+      "value": "Cache"
+    }
+  ],
+  "DKnriN": [
+    {
+      "type": 0,
+      "value": "Skicka sats"
+    }
+  ],
+  "DZzCem": [
+    {
+      "type": 0,
+      "value": "Visa senaste "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " anteckningar"
+    }
+  ],
+  "Dh3hbq": [
+    {
+      "type": 0,
+      "value": "Auto Zap"
+    }
+  ],
+  "Dn82AL": [
+    {
+      "type": 0,
+      "value": "Live"
+    }
+  ],
+  "DqUmXt": [
+    {
+      "type": 0,
+      "value": "Produkt som säljs som auktion"
+    }
+  ],
+  "DrZqav": [
+    {
+      "type": 0,
+      "value": "Om-sektionen måste vara mindre än "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " tecken"
+    }
+  ],
+  "DtYelJ": [
+    {
+      "type": 0,
+      "value": "Överför"
+    }
+  ],
+  "Dx4ey3": [
+    {
+      "type": 0,
+      "value": "Växla alla"
+    }
+  ],
+  "E3oB+t": [
+    {
+      "type": 0,
+      "value": "Webbläsare"
+    }
+  ],
+  "E5ZIPD": [
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "amount"
+        }
+      ],
+      "type": 8,
+      "value": "big"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "sats"
+        }
+      ],
+      "type": 8,
+      "value": "small"
+    }
+  ],
+  "EHqHsu": [
+    {
+      "type": 0,
+      "value": "Faktura / Lightning-adress"
+    }
+  ],
+  "EJbFi7": [
+    {
+      "type": 0,
+      "value": "Sök anteckningar"
+    }
+  ],
+  "ELbg9p": [
+    {
+      "type": 0,
+      "value": "Dataleverantörer"
+    }
+  ],
+  "EQKRE4": [
+    {
+      "type": 0,
+      "value": "Visa emblem på profilsidor"
+    }
+  ],
+  "EWeVrH": [
+    {
+      "type": 0,
+      "value": "Reaktion på en webbplats"
+    }
+  ],
+  "EWyQH5": [
+    {
+      "type": 0,
+      "value": "Global"
+    }
+  ],
+  "Ebl/B2": [
+    {
+      "type": 0,
+      "value": "Översätt till "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "Ec+xLY": [
+    {
+      "type": 0,
+      "value": "Curation-uppsättningar"
+    }
+  ],
+  "EcZF24": [
+    {
+      "type": 0,
+      "value": "Anpassade reläer"
+    }
+  ],
+  "EcfIwB": [
+    {
+      "type": 0,
+      "value": "Användarnamnet är tillgängligt"
+    }
+  ],
+  "EcglP9": [
+    {
+      "type": 0,
+      "value": "Nyckel"
+    }
+  ],
+  "EjFyoR": [
+    {
+      "type": 0,
+      "value": "Donationsadress för On-chain"
+    }
+  ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "Köpa"
+    }
+  ],
+  "EsHX35": [
+    {
+      "type": 0,
+      "value": "Tyvärr förstår vi inte den här typen av händelse ("
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "), prova någon av följande appar istället!"
+    }
+  ],
+  "F/6VqP": [
+    {
+      "type": 0,
+      "value": "Server"
+    }
+  ],
+  "F3l7xL": [
+    {
+      "type": 0,
+      "value": "Lägg till konto"
+    }
+  ],
+  "F4eJ/3": [
+    {
+      "type": 0,
+      "value": "Rubricerade annonser"
+    }
+  ],
+  "FDguSC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Zaps"
+    }
+  ],
+  "FHWpHC": [
+    {
+      "type": 0,
+      "value": "Svar från plånboken"
+    }
+  ],
+  "FHvSk3": [
+    {
+      "type": 0,
+      "value": "Autentisering av klienter till reläer"
+    }
+  ],
+  "FMfjrl": [
+    {
+      "type": 0,
+      "value": "Visa statusmeddelanden på profilsidor"
+    }
+  ],
+  "FSYL8G": [
+    {
+      "type": 0,
+      "value": "Trendande användare"
+    }
+  ],
+  "FWJR1B": [
+    {
+      "type": 0,
+      "value": "Användargrupper"
+    }
+  ],
+  "FcNSft": [
+    {
+      "type": 0,
+      "value": "Redirect utfärdar HTTP-redirect till den angivna lightning adressen"
+    }
+  ],
+  "FdhSU2": [
+    {
+      "type": 0,
+      "value": "Hämta nu"
+    }
+  ],
+  "FfYsOb": [
+    {
+      "type": 0,
+      "value": "Ett fel har uppstått!"
+    }
+  ],
+  "FmXUJg": [
+    {
+      "type": 0,
+      "value": "följer dig"
+    }
+  ],
+  "FvanT6": [
+    {
+      "type": 0,
+      "value": "Konton"
+    }
+  ],
+  "FzbSGg": [
+    {
+      "type": 0,
+      "value": "Du har inga medieservrar, försök att lägga till några."
+    }
+  ],
+  "G/yZLu": [
+    {
+      "type": 0,
+      "value": "Ta bort"
+    }
+  ],
+  "G1BGCg": [
+    {
+      "type": 0,
+      "value": "Välj plånbok"
+    }
+  ],
+  "G3A56c": [
+    {
+      "type": 0,
+      "value": "Prenumererar på Push"
+    }
+  ],
+  "GFOoEE": [
+    {
+      "type": 0,
+      "value": "Salt"
+    }
+  ],
+  "GIqktu": [
+    {
+      "type": 0,
+      "value": "Stödda nationella vägledande program"
+    }
+  ],
+  "GL8aXW": [
+    {
+      "type": 0,
+      "value": "Bokmärken ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "GSye7T": [
+    {
+      "type": 0,
+      "value": "Lightning-adress"
+    }
+  ],
+  "GUlSVG": [
+    {
+      "type": 0,
+      "value": "Hämta din inkluderade Snort nostr adress"
+    }
+  ],
+  "Gcn9NQ": [
+    {
+      "type": 0,
+      "value": "Magnet Link"
+    }
+  ],
+  "GpkNYn": [
+    {
+      "type": 0,
+      "value": "Torrent"
+    }
+  ],
+  "GqQeu/": [
+    {
+      "type": 0,
+      "value": "Ogiltig Lightning-adress"
+    }
+  ],
+  "GspYR7": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Ogillar"
+    }
+  ],
+  "Gxcr08": [
+    {
+      "type": 0,
+      "value": "Sänd händelse"
+    }
+  ],
+  "H+vHiz": [
+    {
+      "type": 0,
+      "value": "Hex Key.."
+    }
+  ],
+  "H/oroO": [
+    {
+      "type": 0,
+      "value": "Hantering av okända händelser"
+    }
+  ],
+  "H0JBH6": [
+    {
+      "type": 0,
+      "value": "Logga Ut"
+    }
+  ],
+  "H0OG3T": [
+    {
+      "type": 0,
+      "value": "Info om ledare"
+    }
+  ],
+  "H1GTaC": [
+    {
+      "type": 0,
+      "value": "Lista över bokmärken"
+    }
+  ],
+  "H6/kLh": [
+    {
+      "type": 0,
+      "value": "Beställningen är betald!"
+    }
+  ],
+  "HAlOn1": [
+    {
+      "type": 0,
+      "value": "Namn"
+    }
+  ],
+  "HFls6j": [
+    {
+      "type": 0,
+      "value": "namnet kommer att vara tillgängligt senare"
+    }
+  ],
+  "HOzFdo": [
+    {
+      "type": 0,
+      "value": "Tystad"
+    }
+  ],
+  "HWbkEK": [
+    {
+      "type": 0,
+      "value": "Rensa cache och ladda om"
+    }
+  ],
+  "HbefNb": [
+    {
+      "type": 0,
+      "value": "Öppna plånbok"
+    }
+  ],
+  "HhcAVH": [
+    {
+      "type": 0,
+      "value": "Du följer inte denna person, klicka här för att ladda media från "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "link"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": ", eller uppdatera "
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "type": 0,
+              "value": "dina inställningar"
+            }
+          ],
+          "type": 8,
+          "value": "i"
+        }
+      ],
+      "type": 8,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": " för att alltid ladda media från alla."
+    }
+  ],
+  "HpAmQZ": [
+    {
+      "type": 0,
+      "value": "Recensioner av reläer"
+    }
+  ],
+  "HqRNN8": [
+    {
+      "type": 0,
+      "value": "Stöd"
+    }
+  ],
+  "HzSFeV": [
+    {
+      "type": 0,
+      "value": "Tidsstämpel för utgång"
+    }
+  ],
+  "I0tYZf": [
+    {
+      "type": 0,
+      "value": "Skapa eller uppdatera ett stall"
+    }
+  ],
+  "I1AoOu": [
+    {
+      "type": 0,
+      "value": "Senaste inlägg "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    }
+  ],
+  "IEwZvs": [
+    {
+      "type": 0,
+      "value": "Är du säker på att du vill ta bort denna anteckningen?"
+    }
+  ],
+  "IIOul1": [
+    {
+      "type": 0,
+      "value": "Kontouppgifter"
+    }
+  ],
+  "IKKHqV": [
+    {
+      "type": 0,
+      "value": "Följer"
+    }
+  ],
+  "IOu4Xh": [
+    {
+      "type": 0,
+      "value": "Du måste vara "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    },
+    {
+      "type": 0,
+      "value": " prenumerant för att få tillgång till "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": " deck"
+    }
+  ],
+  "IVbtTS": [
+    {
+      "type": 0,
+      "value": "Zappa alla "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "IWz1ta": [
+    {
+      "type": 0,
+      "value": "Auto-översätt"
+    }
+  ],
+  "IcHcWj": [
+    {
+      "type": 0,
+      "value": "Senast sedd:"
+    }
+  ],
+  "Ig9/a1": [
+    {
+      "type": 0,
+      "value": "Skickade "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats till "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "IgsWFG": [
+    {
+      "type": 0,
+      "value": "Följs inte av någon du följer"
+    }
+  ],
+  "IoQq+a": [
+    {
+      "type": 0,
+      "value": "Klicka här för att ladda ändå"
+    }
+  ],
+  "IvjoDS": [
+    {
+      "type": 0,
+      "value": "Ansluten"
+    }
+  ],
+  "Ix8l+B": [
+    {
+      "type": 0,
+      "value": "Trendande anteckningar"
+    }
+  ],
+  "J+dIsA": [
+    {
+      "type": 0,
+      "value": "Prenumerationer"
+    }
+  ],
+  "J1iLmb": [
+    {
+      "type": 0,
+      "value": "Notiser inte tillåtna"
+    }
+  ],
+  "J2HeQ+": [
+    {
+      "type": 0,
+      "value": "Använd kommatecken för att skilja ord åt, t.ex. ord1, ord2, ord3"
+    }
+  ],
+  "J2Q92B": [
+    {
+      "type": 0,
+      "value": "Emoji-uppsättningar"
+    }
+  ],
+  "J6N9xl": [
+    {
+      "type": 0,
+      "value": "Sign in with Android signer"
+    }
+  ],
+  "JCIgkj": [
+    {
+      "type": 0,
+      "value": "Användarnamn"
+    }
+  ],
+  "JGrt9q": [
+    {
+      "type": 0,
+      "value": "Skicka sats till "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "JHEHCk": [
+    {
+      "type": 0,
+      "value": "Zaps ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "JIVWWA": [
+    {
+      "type": 0,
+      "value": "Sport"
+    }
+  ],
+  "JPFYIM": [
+    {
+      "type": 0,
+      "value": "Ingen lightning adress"
+    }
+  ],
+  "JSx7y9": [
+    {
+      "type": 0,
+      "value": "Prenumerera på "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": " för "
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " och få följande belöningar"
+    }
+  ],
+  "JeoS4y": [
+    {
+      "type": 0,
+      "value": "Dela"
+    }
+  ],
+  "Jh5zKH": [
+    {
+      "type": 0,
+      "value": "Sök reläer lista"
+    }
+  ],
+  "JjGgXI": [
+    {
+      "type": 0,
+      "value": "Sök användare"
+    }
+  ],
+  "JkLHGw": [
+    {
+      "type": 0,
+      "value": "Webbsida"
+    }
+  ],
+  "JmcxzF": [
+    {
+      "type": 0,
+      "value": "Reläer är servrar som du ansluter till för att skicka och ta emot händelser. Sikta på 4-8 reläer."
+    }
+  ],
+  "JymXbw": [
+    {
+      "type": 0,
+      "value": "Privat nyckel"
+    }
+  ],
+  "K1wl1/": [
+    {
+      "type": 0,
+      "value": "Genomsnittlig latenstid:"
+    }
+  ],
+  "K3r6DQ": [
+    {
+      "type": 0,
+      "value": "Radera"
+    }
+  ],
+  "K7AkdL": [
+    {
+      "type": 0,
+      "value": "Visa"
+    }
+  ],
+  "K9zklU": [
+    {
+      "type": 0,
+      "value": "ID för externt innehåll"
+    }
+  ],
+  "KAhAcM": [
+    {
+      "type": 0,
+      "value": "Ange LNDHub-konfiguration"
+    }
+  ],
+  "KGmQjH": [
+    {
+      "type": 0,
+      "value": "Höjdpunkter"
+    }
+  ],
+  "KJryGq": [
+    {
+      "type": 0,
+      "value": "Meddelande via livechatt"
+    }
+  ],
+  "KQvWvD": [
+    {
+      "type": 0,
+      "value": "Raderad"
+    }
+  ],
+  "KT9nox": [
+    {
+      "type": 0,
+      "value": "Skyddade händelser"
+    }
+  ],
+  "KahimY": [
+    {
+      "type": 0,
+      "value": "Okänd händelsetyp: "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    }
+  ],
+  "KipVeG": [
+    {
+      "type": 0,
+      "value": "Mappning av Nostr-nycklar till DNS-baserade internetidentifierare"
+    }
+  ],
+  "KtsyO0": [
+    {
+      "type": 0,
+      "value": "Ange PIN-kod"
+    }
+  ],
+  "KyRp/q": [
+    {
+      "type": 0,
+      "value": "Begäran om plånbok"
+    }
+  ],
+  "LBAnc7": [
+    {
+      "type": 0,
+      "value": "Visa som användare?"
+    }
+  ],
+  "LEmxc8": [
+    {
+      "type": 0,
+      "value": "Zap-mål"
+    }
+  ],
+  "LKw/ue": [
+    {
+      "type": 0,
+      "value": "Kolla in koden "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "LR1XjT": [
+    {
+      "type": 0,
+      "value": "PIN-koden är för kort"
+    }
+  ],
+  "LXxsbk": [
+    {
+      "type": 0,
+      "value": "Anonymt"
+    }
+  ],
+  "LgbKvU": [
+    {
+      "type": 0,
+      "value": "Kommentar"
+    }
+  ],
+  "LhLvRx": [
+    {
+      "type": 0,
+      "value": "Namnet måste vara mellan 8 och 15 tecken"
+    }
+  ],
+  "LmdPXO": [
+    {
+      "type": 0,
+      "value": "Kan inte verifiera Nostr-adress"
+    }
+  ],
+  "Lu5/Bj": [
+    {
+      "type": 0,
+      "value": "Öppna på Zapstr"
+    }
+  ],
+  "LuDBLj": [
+    {
+      "type": 0,
+      "value": "Torrents"
+    }
+  ],
+  "Lw+I+J": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " zappade"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " andra zappade"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "LwYmVi": [
+    {
+      "type": 0,
+      "value": "Zaps på denna anteckning kommer att delas upp till följande användare."
+    }
+  ],
+  "M3Oirc": [
+    {
+      "type": 0,
+      "value": "Debug Menus"
+    }
+  ],
+  "M6C/px": [
+    {
+      "type": 0,
+      "value": "Bli en ledare"
+    }
+  ],
+  "MBAYRO": [
+    {
+      "type": 0,
+      "value": "Visar \"Kopiera ID\" och \"Kopiera händelse JSON\" i kontextmenyn på varje meddelande"
+    }
+  ],
+  "MI2jkA": [
+    {
+      "type": 0,
+      "value": "Inte tillgänglig:"
+    }
+  ],
+  "MKDHEa": [
+    {
+      "type": 0,
+      "value": "Gemensamt rum"
+    }
+  ],
+  "MP54GY": [
+    {
+      "type": 0,
+      "value": "Plånbokens lösenord"
+    }
+  ],
+  "MWTx65": [
+    {
+      "type": 0,
+      "value": "Förvald Sida"
+    }
+  ],
+  "MYBYdJ": [
+    {
+      "type": 0,
+      "value": "Kort text Anmärkning"
+    }
+  ],
+  "MYUBaG": [
+    {
+      "type": 0,
+      "value": "Autentisering av klient"
+    }
+  ],
+  "MiMipu": [
+    {
+      "type": 0,
+      "value": "Ange som primär Nostr adress (nip05)"
+    }
+  ],
+  "MkQ4FX": [
+    {
+      "type": 0,
+      "value": "Proxy Taggar"
+    }
+  ],
+  "Ml7+RS": [
+    {
+      "type": 0,
+      "value": "Skicka denna länk till dina vänner och dela magin i nostr."
+    }
+  ],
+  "Mrpkot": [
+    {
+      "type": 0,
+      "value": "Betala för prenumeration"
+    }
+  ],
+  "MuVeKe": [
+    {
+      "type": 0,
+      "value": "Köp nostr adress"
+    }
+  ],
+  "Muhna4": [
+    {
+      "type": 0,
+      "value": "Räkna resultat"
+    }
+  ],
+  "MzRYWH": [
+    {
+      "type": 0,
+      "value": "Köper "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    }
+  ],
+  "Mzizei": [
+    {
+      "type": 0,
+      "value": "Iris.to konto"
+    }
+  ],
+  "N2IrpM": [
+    {
+      "type": 0,
+      "value": "Bekräfta"
+    }
+  ],
+  "NAidKb": [
+    {
+      "type": 0,
+      "value": "Notifikationer"
+    }
+  ],
+  "NAuFNH": [
+    {
+      "type": 0,
+      "value": "Du har redan en prenumeration av den här typen, vänligen förnya eller betala"
+    }
+  ],
+  "NDTFsp": [
+    {
+      "type": 0,
+      "value": "Feedback om jobbet"
+    }
+  ],
+  "NepkXH": [
+    {
+      "type": 0,
+      "value": "Kan inte rösta med "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, vänligen ange ett annat förvalt zap-belopp"
+    }
+  ],
+  "NndBJE": [
+    {
+      "type": 0,
+      "value": "Nya användares sida"
+    }
+  ],
+  "Nr9Yyx": [
+    {
+      "type": 0,
+      "value": "Reposts"
+    }
+  ],
+  "NxzeNU": [
+    {
+      "type": 0,
+      "value": "Död"
+    }
+  ],
+  "O3Jz4E": [
+    {
+      "type": 0,
+      "value": "Använd din inbjudningskod för att tjäna sats!"
+    }
+  ],
+  "OEW7yJ": [
+    {
+      "type": 0,
+      "value": "Zaps"
+    }
+  ],
+  "OIqnZN": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps Attestationer för händelser"
+    }
+  ],
+  "OJHKIL": [
+    {
+      "type": 0,
+      "value": "Presentpapper"
+    }
+  ],
+  "OKhRC6": [
+    {
+      "type": 0,
+      "value": "Dela"
+    }
+  ],
+  "OLEm6z": [
+    {
+      "type": 0,
+      "value": "Okänt inloggningsfel"
+    }
+  ],
+  "OQSOJF": [
+    {
+      "type": 0,
+      "value": "Få en gratis nostr adress"
+    }
+  ],
+  "OQXnew": [
+    {
+      "type": 0,
+      "value": "Din prenumeration är fortfarande aktiv, du kan inte förnya ännu"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "Skapad"
+    }
+  ],
+  "ORa81+": [
+    {
+      "type": 0,
+      "value": "Slå samman förfrågningar"
+    }
+  ],
+  "OoZgbB": [
+    {
+      "type": 0,
+      "value": "Misslyckades med uppdateringen, försök igen"
+    }
+  ],
+  "OuProE": [
+    {
+      "type": 0,
+      "value": "Innehåll i lång form"
+    }
+  ],
+  "OxPdQ0": [
+    {
+      "type": 0,
+      "value": "Skanning "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "P2o+ZZ": [
+    {
+      "type": 0,
+      "value": "Ogiltig Nostr-adress"
+    }
+  ],
+  "P61BTu": [
+    {
+      "type": 0,
+      "value": "Kopiera händelse JSON"
+    }
+  ],
+  "P7FD0F": [
+    {
+      "type": 0,
+      "value": "System (standard)"
+    }
+  ],
+  "P7nJT9": [
+    {
+      "type": 0,
+      "value": "Totalt idag (UTC): "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "P8JC58": [
+    {
+      "type": 0,
+      "value": "Avstånd"
+    }
+  ],
+  "PCSt5T": [
+    {
+      "type": 0,
+      "value": "Inställningar"
+    }
+  ],
+  "PXQ0z0": [
+    {
+      "type": 0,
+      "value": "Tar emot till "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "PamNxw": [
+    {
+      "type": 0,
+      "value": "Okänd filrubrik: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Pe0ogR": [
+    {
+      "type": 0,
+      "value": "Tema"
+    }
+  ],
+  "PrsIg7": [
+    {
+      "type": 0,
+      "value": "Reaktioner kommer att visas på varje sida om inga reaktioner inaktiveras"
+    }
+  ],
+  "QDFTjG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Reläer"
+    }
+  ],
+  "QJfhKt": [
+    {
+      "type": 0,
+      "value": "Den privata nyckeln är som ett lösenord, men det går inte att återställa. Vakta den noga och visa den aldrig för någon. När någon har din privata nyckel har de tillgång till ditt konto för alltid."
+    }
+  ],
+  "QWhotP": [
+    {
+      "type": 0,
+      "value": "Zap Pool fungerar endast om du använder en av plånboksanslutningarna (WebLN, LNC, LNDHub eller Nostr Wallet Connect)"
+    }
+  ],
+  "QpaLA3": [
+    {
+      "type": 0,
+      "value": "Kanalmeddelande"
+    }
+  ],
+  "Qxv0B2": [
+    {
+      "type": 0,
+      "value": "Du har för närvarande "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats i din zap pool."
+    }
+  ],
+  "Qy6/Ft": [
+    {
+      "type": 0,
+      "value": "Privata direktmeddelanden"
+    }
+  ],
+  "R/6nsx": [
+    {
+      "type": 0,
+      "value": "Prenumeration"
+    }
+  ],
+  "R81upa": [
+    {
+      "type": 0,
+      "value": "Personer du följer"
+    }
+  ],
+  "RDha9y": [
+    {
+      "type": 0,
+      "value": "Service Worker körs inte"
+    }
+  ],
+  "RRz1cA": [
+    {
+      "type": 0,
+      "value": "Meddelanden om förvarets tillstånd"
+    }
+  ],
+  "RSr2uB": [
+    {
+      "type": 0,
+      "value": "Användarnamnet får bara innehålla gemener och siffror"
+    }
+  ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "Förfallen"
+    }
+  ],
+  "RefZpK": [
+    {
+      "type": 0,
+      "value": "Porträttvideo i kortformat Event"
+    }
+  ],
+  "RfhLwC": [
+    {
+      "type": 0,
+      "value": "Av: "
+    },
+    {
+      "type": 1,
+      "value": "author"
+    }
+  ],
+  "RhDAoS": [
+    {
+      "type": 0,
+      "value": "Är du säker på att du vill radera "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "RmxSZo": [
+    {
+      "type": 0,
+      "value": "Varuautomater för data"
+    }
+  ],
+  "RoOyAh": [
+    {
+      "type": 0,
+      "value": "Reläer"
+    }
+  ],
+  "Rs4kCE": [
+    {
+      "type": 0,
+      "value": "Bokmärke"
+    }
+  ],
+  "S/NV2G": [
+    {
+      "type": 0,
+      "value": "Laddningsinformation: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "SFuk1v": [
+    {
+      "type": 0,
+      "value": "Behörigheter"
+    }
+  ],
+  "SLZGPn": [
+    {
+      "type": 0,
+      "value": "Ange en pin för att kryptera din privata nyckel, du måste ange denna pin varje gång du öppnar "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "SMO+on": [
+    {
+      "type": 0,
+      "value": "Skicka zap till "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "SOqbe9": [
+    {
+      "type": 0,
+      "value": "Uppdatera Lightning-adress"
+    }
+  ],
+  "SP0+yi": [
+    {
+      "type": 0,
+      "value": "Köp Prenumeration"
+    }
+  ],
+  "SW3TFA": [
+    {
+      "type": 0,
+      "value": "Populära reläer som används av personer du följer."
+    }
+  ],
+  "SYQtZ7": [
+    {
+      "type": 0,
+      "value": "LN Adress Proxy"
+    }
+  ],
+  "Sd0PKc": [
+    {
+      "type": 0,
+      "value": "Reläuppsättningar"
+    }
+  ],
+  "SfwSIm": [
+    {
+      "type": 0,
+      "value": "Problemspårare"
+    }
+  ],
+  "ShdEie": [
+    {
+      "type": 0,
+      "value": "Markera alla som lästa"
+    }
+  ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "Anpassat"
+    }
+  ],
+  "SmuYUd": [
+    {
+      "type": 0,
+      "value": "Vad ska vi kalla dig?"
+    }
+  ],
+  "Ss0sWu": [
+    {
+      "type": 0,
+      "value": "Betala nu"
+    }
+  ],
+  "SsUQnC": [
+    {
+      "type": 0,
+      "value": "Applikationsspecifika data"
+    }
+  ],
+  "StKzTE": [
+    {
+      "type": 0,
+      "value": "Författaren har markerat denna anteckning som ett "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "känsligt ämne"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "T83nqf": [
+    {
+      "type": 0,
+      "value": "Reläer i närheten av din geografiska plats."
+    }
+  ],
+  "TDR5ge": [
+    {
+      "type": 0,
+      "value": "Media i anteckningar visas automatiskt för valda personer, annars visas endast länken"
+    }
+  ],
+  "TGc5nI": [
+    {
+      "type": 0,
+      "value": "Information om handläggare"
+    }
+  ],
+  "TH1fFo": [
+    {
+      "type": 0,
+      "value": "Telegram"
+    }
+  ],
+  "TJo5E6": [
+    {
+      "type": 0,
+      "value": "Förhandsvisning"
+    }
+  ],
+  "TOG64f": [
+    {
+      "type": 0,
+      "value": "Använd lokalt relä"
+    }
+  ],
+  "TP/cMX": [
+    {
+      "type": 0,
+      "value": "Avslutade"
+    }
+  ],
+  "TaeBqw": [
+    {
+      "type": 0,
+      "value": "Logga in med Nostr Extension"
+    }
+  ],
+  "TdTXXf": [
+    {
+      "type": 0,
+      "value": "Läs mer"
+    }
+  ],
+  "TdtZQ5": [
+    {
+      "type": 0,
+      "value": "Krypto"
+    }
+  ],
+  "Tdv6NY": [
+    {
+      "type": 0,
+      "value": "Räntesatser"
+    }
+  ],
+  "TgDKhI": [
+    {
+      "type": 0,
+      "value": "Kalenderhändelser"
+    }
+  ],
+  "TpgeGw": [
+    {
+      "type": 0,
+      "value": "Hex Salt.."
+    }
+  ],
+  "Tpy00S": [
+    {
+      "type": 0,
+      "value": "Personer"
+    }
+  ],
+  "TvKqBp": [
+    {
+      "type": 0,
+      "value": "gillade"
+    }
+  ],
+  "TwyMau": [
+    {
+      "type": 0,
+      "value": "Konto"
+    }
+  ],
+  "U1aPPi": [
+    {
+      "type": 0,
+      "value": "Sluta lyssna"
+    }
+  ],
+  "U30H69": [
+    {
+      "type": 0,
+      "value": "Definition av gemenskapen"
+    }
+  ],
+  "UJTWqI": [
+    {
+      "type": 0,
+      "value": "Ta bort från mina reläer"
+    }
+  ],
+  "ULXFfP": [
+    {
+      "type": 0,
+      "value": "Ta emot"
+    }
+  ],
+  "UNjfWJ": [
+    {
+      "type": 0,
+      "value": "Kontrollera alla signaturer mottagna från reläer"
+    }
+  ],
+  "UT7Nkj": [
+    {
+      "type": 0,
+      "value": "Ny chatt"
+    }
+  ],
+  "UUPFlt": [
+    {
+      "type": 0,
+      "value": "Användare måste acceptera innehållsvarningen för att visa innehållet i din anteckning."
+    }
+  ],
+  "UaCh1c": [
+    {
+      "type": 0,
+      "value": "Lägg till server"
+    }
+  ],
+  "Ub+AGc": [
+    {
+      "type": 0,
+      "value": "Logga in"
+    }
+  ],
+  "Up5U7K": [
+    {
+      "type": 0,
+      "value": "Blockera"
+    }
+  ],
+  "Ups2/p": [
+    {
+      "type": 0,
+      "value": "Din ansökan är under behandling"
+    }
+  ],
+  "UrKTqQ": [
+    {
+      "type": 0,
+      "value": "Du har ett aktivt iris.to konto"
+    }
+  ],
+  "UsCzPc": [
+    {
+      "type": 0,
+      "value": "Dela en personlig inbjudan med dina vänner!"
+    }
+  ],
+  "UxgyeY": [
+    {
+      "type": 0,
+      "value": "Din värvningskod är "
+    },
+    {
+      "type": 1,
+      "value": "code"
+    }
+  ],
+  "V20Og0": [
+    {
+      "type": 0,
+      "value": "Märkning"
+    }
+  ],
+  "VOjC1i": [
+    {
+      "type": 0,
+      "value": "Välj vilken uppladdningstjänst du vill ladda upp bilagor till"
+    }
+  ],
+  "VR5eHw": [
+    {
+      "type": 0,
+      "value": "Publik nyckel (npub/nprofile)"
+    }
+  ],
+  "VcwrfF": [
+    {
+      "type": 0,
+      "value": "Ja tack"
+    }
+  ],
+  "VfhYxG": [
+    {
+      "type": 0,
+      "value": "För att se en fullständig lista över ändringar kan du se ändringsloggen "
+    },
+    {
+      "type": 1,
+      "value": "here"
+    }
+  ],
+  "VlJkSk": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " tystad"
+    }
+  ],
+  "VnXp8Z": [
+    {
+      "type": 0,
+      "value": "Avatar"
+    }
+  ],
+  "W1yoZY": [
+    {
+      "type": 0,
+      "value": "Det verkar som om du inte har några prenumerationer, du kan skaffa en "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "W2PiAr": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Blockerad"
+    }
+  ],
+  "W4SaxY": [
+    {
+      "type": 0,
+      "value": "Lokal"
+    }
+  ],
+  "W9355R": [
+    {
+      "type": 0,
+      "value": "Avtysta"
+    }
+  ],
+  "WeLEuL": [
+    {
+      "type": 0,
+      "value": "Från server"
+    }
+  ],
+  "Wj5TbN": [
+    {
+      "type": 0,
+      "value": "Frågor"
+    }
+  ],
+  "WmZhfL": [
+    {
+      "type": 0,
+      "value": "Översätt automatiskt anteckningar till ditt lokala språk"
+    }
+  ],
+  "WvGmZT": [
+    {
+      "type": 0,
+      "value": "npub / nprofile / nostr adress"
+    }
+  ],
+  "X6tipZ": [
+    {
+      "type": 0,
+      "value": "Logga in med nyckel"
+    }
+  ],
+  "X7xU8J": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex, mnemonic"
+    }
+  ],
+  "XECMfW": [
+    {
+      "type": 0,
+      "value": "Skicka användningsstatistik"
+    }
+  ],
+  "XICsE8": [
+    {
+      "type": 0,
+      "value": "Filvärdar"
+    }
+  ],
+  "XPB8VV": [
+    {
+      "type": 0,
+      "value": "Alby plånboksanslutning"
+    }
+  ],
+  "XQiFEl": [
+    {
+      "type": 0,
+      "value": "Följer relä-hälsa"
+    }
+  ],
+  "XSdWHA": [
+    {
+      "type": 0,
+      "value": "Lösa in"
+    }
+  ],
+  "XXm7jJ": [
+    {
+      "type": 0,
+      "value": "Trendande hashtaggar"
+    }
+  ],
+  "XgWvGA": [
+    {
+      "type": 0,
+      "value": "Reaktioner"
+    }
+  ],
+  "Xnimz0": [
+    {
+      "type": 0,
+      "value": "Skickar från "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "Xopqkl": [
+    {
+      "type": 0,
+      "value": "Ditt förvalda zap-belopp är "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats, exempelvärden beräknas utifrån detta."
+    }
+  ],
+  "YDMrKK": [
+    {
+      "type": 0,
+      "value": "Användare"
+    }
+  ],
+  "YDURw6": [
+    {
+      "type": 0,
+      "value": "Service URL"
+    }
+  ],
+  "YH2RKk": [
+    {
+      "type": 0,
+      "value": "Populära medieservrar."
+    }
+  ],
+  "YQZY/S": [
+    {
+      "type": 0,
+      "value": "Det ser ut som om du inte följer tillräckligt många, ta en titt på "
+    },
+    {
+      "type": 1,
+      "value": "newUsersPage"
+    },
+    {
+      "type": 0,
+      "value": " för att upptäcka personer att följa!"
+    }
+  ],
+  "YR2I9M": [
+    {
+      "type": 0,
+      "value": "Inga nycklar, ingen "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": ", Det finns inget sätt att återställa den om du inte säkerhetskopierar. Det tar bara en minut."
+    }
+  ],
+  "YU7ZYp": [
+    {
+      "type": 0,
+      "value": "Offentlig chatt"
+    }
+  ],
+  "YXA3AH": [
+    {
+      "type": 0,
+      "value": "Aktivera reaktioner"
+    }
+  ],
+  "Yf3DwC": [
+    {
+      "type": 0,
+      "value": "Anslut en plånbok för att skicka omedelbara betalningar"
+    }
+  ],
+  "YuoEb9": [
+    {
+      "type": 0,
+      "value": "Prova ett annat relä"
+    }
+  ],
+  "Z48UEo": [
+    {
+      "type": 0,
+      "value": "Metadata för kanaler"
+    }
+  ],
+  "Z4BMCZ": [
+    {
+      "type": 0,
+      "value": "Ange parningsfras"
+    }
+  ],
+  "Z7kkeJ": [
+    {
+      "type": 0,
+      "value": "Delegerad signering av evenemang"
+    }
+  ],
+  "ZFe9tl": [
+    {
+      "type": 0,
+      "value": "Skriva en anteckning"
+    }
+  ],
+  "ZKORll": [
+    {
+      "type": 0,
+      "value": "Aktivera nu"
+    }
+  ],
+  "ZLmyG9": [
+    {
+      "type": 0,
+      "value": "Bidragsgivare"
+    }
+  ],
+  "ZS+jRE": [
+    {
+      "type": 0,
+      "value": "Skicka zap-delning till"
+    }
+  ],
+  "Zff6lu": [
+    {
+      "type": 0,
+      "value": "Användarnamnet iris.to/"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "name"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " är reserverat för dig!"
+    }
+  ],
+  "ZlIh4/": [
+    {
+      "type": 0,
+      "value": "Krypterade direktmeddelanden"
+    }
+  ],
+  "ZlmK/p": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " bjöd in dig till "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    }
+  ],
+  "a1x4gD": [
+    {
+      "type": 0,
+      "value": "Medieservrar lagrar media som du kan dela i anteckningar som bilder och videor"
+    }
+  ],
+  "a5UPxh": [
+    {
+      "type": 0,
+      "value": "Finansiera utvecklare och plattformar som tillhandahåller NIP-05 verifieringstjänster"
+    }
+  ],
+  "a7TDNm": [
+    {
+      "type": 0,
+      "value": "Anteckningar kommer att strömmas i realtid in i global och antecknings fliken"
+    }
+  ],
+  "aHje0o": [
+    {
+      "type": 0,
+      "value": "Namn eller nym"
+    }
+  ],
+  "aMaLBK": [
+    {
+      "type": 0,
+      "value": "Tillägg som stöds"
+    }
+  ],
+  "aRex7h": [
+    {
+      "type": 0,
+      "value": "Betald "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, avgift "
+    },
+    {
+      "type": 1,
+      "value": "fee"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "aSGz4J": [
+    {
+      "type": 0,
+      "value": "Anslut till din egen LND-nod med Lightning Node Connect"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "Visa mer"
+    }
+  ],
+  "abbGKq": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " km"
+    }
+  ],
+  "ak3MTf": [
+    {
+      "type": 0,
+      "value": "Bjud in vänner"
+    }
+  ],
+  "b12Goz": [
+    {
+      "type": 0,
+      "value": "Mnemonic"
+    }
+  ],
+  "b5vAk0": [
+    {
+      "type": 0,
+      "value": "Ditt namn kommer att fungera som en Lightning adress och kommer att omdirigeras till din valda LNURL eller Lightning adress"
+    }
+  ],
+  "bF1MYT": [
+    {
+      "type": 0,
+      "value": "Du är en community leader och tjänar "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "percent"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " på hänvisade användares prenumerationer!"
+    }
+  ],
+  "bG00/W": [
+    {
+      "type": 0,
+      "value": "Service Worker i drift"
+    }
+  ],
+  "bJ+wrA": [
+    {
+      "type": 0,
+      "value": "Utarbeta en lista över gallringar"
+    }
+  ],
+  "bLZL5a": [
+    {
+      "type": 0,
+      "value": "Skaffa adress"
+    }
+  ],
+  "bMphls": [
+    {
+      "type": 0,
+      "value": "Inloggad med skrivskyddad åtkomst"
+    }
+  ],
+  "bQdA2k": [
+    {
+      "type": 0,
+      "value": "Känsligt innehåll"
+    }
+  ],
+  "bep9C3": [
+    {
+      "type": 0,
+      "value": "Publik nyckel"
+    }
+  ],
+  "bfvyfs": [
+    {
+      "type": 0,
+      "value": "Anon"
+    }
+  ],
+  "bxv59V": [
+    {
+      "type": 0,
+      "value": "Just nu"
+    }
+  ],
+  "c+1p0i": [
+    {
+      "type": 0,
+      "value": "Kind mute sets"
+    }
+  ],
+  "c+JYNI": [
+    {
+      "type": 0,
+      "value": "Nej tack"
+    }
+  ],
+  "c2T+1B": [
+    {
+      "type": 0,
+      "value": "Omdirigeringar"
+    }
+  ],
+  "c35bj2": [
+    {
+      "type": 0,
+      "value": "Om du har en förfrågan om din NIP-05 beställning, vänligen DM "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "c3LlRO": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "KiB"
+    }
+  ],
+  "c3g2hL": [
+    {
+      "type": 0,
+      "value": "Sänd igen"
+    }
+  ],
+  "cFbU1B": [
+    {
+      "type": 0,
+      "value": "Använder du Alby? Gå till "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " för att få din NWC konfiguration!"
+    }
+  ],
+  "cG/bKQ": [
+    {
+      "type": 0,
+      "value": "Native nostr plånboksanslutning"
+    }
+  ],
+  "cHCwbF": [
+    {
+      "type": 0,
+      "value": "Fotografi"
+    }
+  ],
+  "cKbMRX": [
+    {
+      "type": 0,
+      "value": "Direktmeddelande"
+    }
+  ],
+  "cPIKU2": [
+    {
+      "type": 0,
+      "value": "Följer"
+    }
+  ],
+  "cQfLWb": [
+    {
+      "type": 0,
+      "value": "URL.."
+    }
+  ],
+  "cVcgLJ": [
+    {
+      "type": 0,
+      "value": "Mediaservrar"
+    }
+  ],
+  "cWx9t8": [
+    {
+      "type": 0,
+      "value": "Tysta alla"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "Anslut plånbok"
+    }
+  ],
+  "cnwHgH": [
+    {
+      "type": 0,
+      "value": "Öppna tidsstämplar"
+    }
+  ],
+  "cuP16y": [
+    {
+      "type": 0,
+      "value": "Stöd för flera konton"
+    }
+  ],
+  "cuV2gK": [
+    {
+      "type": 0,
+      "value": "namnet är registrerat"
+    }
+  ],
+  "cw1Ftc": [
+    {
+      "type": 0,
+      "value": "Levande aktiviteter"
+    }
+  ],
+  "cyR7Kh": [
+    {
+      "type": 0,
+      "value": "Tillbaka"
+    }
+  ],
+  "d+6YsV": [
+    {
+      "type": 0,
+      "value": "Listor för att stänga av ljudet:"
+    }
+  ],
+  "d0qim7": [
+    {
+      "type": 0,
+      "value": "WoT-filter"
+    }
+  ],
+  "d2ebEu": [
+    {
+      "type": 0,
+      "value": "Prenumererar inte på Push"
+    }
+  ],
+  "d7d0/x": [
+    {
+      "type": 0,
+      "value": "LN Adress"
+    }
+  ],
+  "dK2CcV": [
+    {
+      "type": 0,
+      "value": "Den publika nyckeln är som ditt användarnamn, du kan dela den med vem som helst."
+    }
+  ],
+  "dOQCL8": [
+    {
+      "type": 0,
+      "value": "Visnings namn"
+    }
+  ],
+  "dZZIGe": [
+    {
+      "type": 0,
+      "value": "Modulär artikelrubrik"
+    }
+  ],
+  "ddd3JX": [
+    {
+      "type": 0,
+      "value": "Populära hashtags"
+    }
+  ],
+  "deEeEI": [
+    {
+      "type": 0,
+      "value": "Registrering"
+    }
+  ],
+  "djLctd": [
+    {
+      "type": 0,
+      "value": "Belopp i sats"
+    }
+  ],
+  "dmcsBA": [
+    {
+      "type": 0,
+      "value": "Klassificerad annonsering"
+    }
+  ],
+  "dmsiLv": [
+    {
+      "type": 0,
+      "value": "En standard Zap Pool split av "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " har konfigurerats för "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " utvecklare, du kan inaktivera den när som helst i "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "e5x8FT": [
+    {
+      "type": 0,
+      "value": "Typ"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "Kommer snart"
+    }
+  ],
+  "e7VmYP": [
+    {
+      "type": 0,
+      "value": "Ange pin för att låsa upp din privata nyckel"
+    }
+  ],
+  "e7qqly": [
+    {
+      "type": 0,
+      "value": "Markera alla som lästa"
+    }
+  ],
+  "eF0Re7": [
+    {
+      "type": 0,
+      "value": "Använd ett nostr signer-tillägg för att logga in"
+    }
+  ],
+  "eHAneD": [
+    {
+      "type": 0,
+      "value": "Reaktion emoji"
+    }
+  ],
+  "eJj8HD": [
+    {
+      "type": 0,
+      "value": "Bli Verifierad"
+    }
+  ],
+  "eSzf2G": [
+    {
+      "type": 0,
+      "value": "En enda zap med "
+    },
+    {
+      "type": 1,
+      "value": "nIn"
+    },
+    {
+      "type": 0,
+      "value": " sats kommer att fördela "
+    },
+    {
+      "type": 1,
+      "value": "nOut"
+    },
+    {
+      "type": 0,
+      "value": " sats till zappoolen."
+    }
+  ],
+  "eW/Bj9": [
+    {
+      "type": 0,
+      "value": "Foder"
+    }
+  ],
+  "eXT2QQ": [
+    {
+      "type": 0,
+      "value": "Gruppchatt"
+    }
+  ],
+  "eZtOxB": [
+    {
+      "type": 0,
+      "value": "window.nostr-funktion för webbläsare"
+    }
+  ],
+  "egib+2": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " andra"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " andras"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "ejEGdx": [
+    {
+      "type": 0,
+      "value": "Hem"
+    }
+  ],
+  "eoV49s": [
+    {
+      "type": 0,
+      "value": "Dålig"
+    }
+  ],
+  "f1OxTe": [
+    {
+      "type": 0,
+      "value": "Community leaders är personer som får nostrs ekosystem att växa genom att vara aktiva i sina lokala samhällen och hjälpa till att få in nya användare. Vem som helst kan bli community leader, men få har den nuvarande hederstiteln."
+    }
+  ],
+  "f2CAxA": [
+    {
+      "type": 0,
+      "value": "Dumpa"
+    }
+  ],
+  "fBI91o": [
+    {
+      "type": 0,
+      "value": "Zap"
+    }
+  ],
+  "fBlba3": [
+    {
+      "type": 0,
+      "value": "Tack för att du använder "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": ", vänligen överväg att donera om du kan."
+    }
+  ],
+  "fLIvbC": [
+    {
+      "type": 0,
+      "value": "Snort är ett open source-projekt som byggs av passionerade människor på deras fritid, dina donationer uppskattas mycket"
+    }
+  ],
+  "fOksnD": [
+    {
+      "type": 0,
+      "value": "Kan inte rösta eftersom LNURL-tjänsten inte stöder zaps"
+    }
+  ],
+  "fQN+tq": [
+    {
+      "type": 0,
+      "value": "Visa inlägg som har en varningstagg för innehåll"
+    }
+  ],
+  "fWZYP5": [
+    {
+      "type": 0,
+      "value": "Fastnålad"
+    }
+  ],
+  "fX5RYm": [
+    {
+      "type": 0,
+      "value": "Välj några ämnen av intresse"
+    }
+  ],
+  "filwqD": [
+    {
+      "type": 0,
+      "value": "Läs"
+    }
+  ],
+  "fjAcWo": [
+    {
+      "type": 0,
+      "value": "Gåvopaket"
+    }
+  ],
+  "flnGvv": [
+    {
+      "type": 0,
+      "value": "Vad tänker du på?"
+    }
+  ],
+  "fqwcJ1": [
+    {
+      "type": 0,
+      "value": "On-chain donation"
+    }
+  ],
+  "fr+XYA": [
+    {
+      "type": 0,
+      "value": "Blixt Pub RPC"
+    }
+  ],
+  "fsB/4p": [
+    {
+      "type": 0,
+      "value": "Sparad"
+    }
+  ],
+  "fucxlm": [
+    {
+      "type": 0,
+      "value": "Bifoga media"
+    }
+  ],
+  "furjvW": [
+    {
+      "type": 0,
+      "value": "Titta på Streamen"
+    }
+  ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "Om"
+    }
+  ],
+  "g985Wp": [
+    {
+      "type": 0,
+      "value": "Misslyckades att skicka röst"
+    }
+  ],
+  "gDzDRs": [
+    {
+      "type": 0,
+      "value": "Emoji att skicka när reagerar på en anteckning"
+    }
+  ],
+  "gXgY3+": [
+    {
+      "type": 0,
+      "value": "Alla klienter stöder inte detta ännu"
+    }
+  ],
+  "gczcC5": [
+    {
+      "type": 0,
+      "value": "Prenumerera"
+    }
+  ],
+  "geppt8": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count2"
+    },
+    {
+      "type": 0,
+      "value": " i minnet)"
+    }
+  ],
+  "gjBiyj": [
+    {
+      "type": 0,
+      "value": "Laddar..."
+    }
+  ],
+  "gkMmvC": [
+    {
+      "type": 0,
+      "value": "Android-signeringsapplikation"
+    }
+  ],
+  "gl1NeW": [
+    {
+      "type": 0,
+      "value": "Listor"
+    }
+  ],
+  "go2/QF": [
+    {
+      "type": 0,
+      "value": "Lista över användarservrar"
+    }
+  ],
+  "grQ+mI": [
+    {
+      "type": 0,
+      "value": "Proof of Work"
+    }
+  ],
+  "gtNjNP": [
+    {
+      "type": 0,
+      "value": "Beskrivning av grundläggande protokollflöde"
+    }
+  ],
+  "h7jvCs": [
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " är roligare tillsammans!"
+    }
+  ],
+  "h8XMJL": [
+    {
+      "type": 0,
+      "value": "Emblem"
+    }
+  ],
+  "h9M0rW": [
+    {
+      "type": 0,
+      "value": "Metadata för användare"
+    }
+  ],
+  "hF6IN2": [
+    {
+      "type": 0,
+      "value": "Rensa följelistan"
+    }
+  ],
+  "hMQmIw": [
+    {
+      "type": 0,
+      "value": "Synkronisera konto"
+    }
+  ],
+  "hMzcSq": [
+    {
+      "type": 0,
+      "value": "Meddelanden"
+    }
+  ],
+  "hRTfTR": [
+    {
+      "type": 0,
+      "value": "PRO"
+    }
+  ],
+  "hY4lzx": [
+    {
+      "type": 0,
+      "value": "Support"
+    }
+  ],
+  "hYOE+U": [
+    {
+      "type": 0,
+      "value": "Inbjudan"
+    }
+  ],
+  "hicxcO": [
+    {
+      "type": 0,
+      "value": "Visa svar"
+    }
+  ],
+  "hmZ3Bz": [
+    {
+      "type": 0,
+      "value": "Media"
+    }
+  ],
+  "hniz8Z": [
+    {
+      "type": 0,
+      "value": "här"
+    }
+  ],
+  "hv/eRj": [
+    {
+      "type": 0,
+      "value": "Lista över blockerade reläer"
+    }
+  ],
+  "hvFRBo": [
+    {
+      "type": 0,
+      "value": "Interaktion"
+    }
+  ],
+  "i/dBAR": [
+    {
+      "type": 0,
+      "value": "Zap Pool"
+    }
+  ],
+  "i5gBFz": [
+    {
+      "type": 0,
+      "value": "Dina skickade och mottagna betalningar kommer att visas här."
+    }
+  ],
+  "iCqGww": [
+    {
+      "type": 0,
+      "value": "Reaktioner ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "iEoXYx": [
+    {
+      "type": 0,
+      "value": "DeepL översättningar"
+    }
+  ],
+  "iGT1eE": [
+    {
+      "type": 0,
+      "value": "Förhindra falska konton från att imitera dig"
+    }
+  ],
+  "iHN12u": [
+    {
+      "type": 0,
+      "value": "Administratör"
+    }
+  ],
+  "iICVoL": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " följer ("
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " dubbletter)"
+    }
+  ],
+  "iNWbVV": [
+    {
+      "type": 0,
+      "value": "Namn"
+    }
+  ],
+  "iXPL0Z": [
+    {
+      "type": 0,
+      "value": "Kan inte logga in med privat nyckel på en osäker anslutning, använd ett tillägg för Nostr key manager istället"
+    }
+  ],
+  "iYc3Ld": [
+    {
+      "type": 0,
+      "value": "Betalningar"
+    }
+  ],
+  "icCxlA": [
+    {
+      "type": 0,
+      "value": "sida för nya användare"
+    }
+  ],
+  "ieGrWo": [
+    {
+      "type": 0,
+      "value": "Följ"
+    }
+  ],
+  "igUUst": [
+    {
+      "type": 0,
+      "value": "Gruppchatt Trådat svar"
+    }
+  ],
+  "ipHVx5": [
+    {
+      "type": 0,
+      "value": "Generera faktura"
+    }
+  ],
+  "itPgxd": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "izWS4J": [
+    {
+      "type": 0,
+      "value": "Sluta följ"
+    }
+  ],
+  "j9xbzF": [
+    {
+      "type": 0,
+      "value": "Redan säkerhetskopierad"
+    }
+  ],
+  "jA3OE/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sat"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sats"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "jAmfGl": [
+    {
+      "type": 0,
+      "value": "Ditt "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " abonnemang har löpt ut"
+    }
+  ],
+  "jHa/ko": [
+    {
+      "type": 0,
+      "value": "Städa upp i ditt flöde"
+    }
+  ],
+  "jMzO1S": [
+    {
+      "type": 0,
+      "value": "Internt fel: "
+    },
+    {
+      "type": 1,
+      "value": "msg"
+    }
+  ],
+  "jiAVXu": [
+    {
+      "type": 0,
+      "value": "Video Evenemang"
+    }
+  ],
+  "jvo0vs": [
+    {
+      "type": 0,
+      "value": "Spara"
+    }
+  ],
+  "jzgQ2z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Reaktioner"
+    }
+  ],
+  "k0kCJp": [
+    {
+      "type": 0,
+      "value": "Ansök nu"
+    }
+  ],
+  "k2veDA": [
+    {
+      "type": 0,
+      "value": "Skriv"
+    }
+  ],
+  "k7sKNy": [
+    {
+      "type": 0,
+      "value": "Vår alldeles egna NIP-05 verifieringstjänst, hjälpa till att stödja utvecklingen av denna webbplats och få ett glänsande speciellt märke på vår webbplats!"
+    }
+  ],
+  "k9SQm1": [
+    {
+      "type": 0,
+      "value": "Reläer som du har anslutit till tidigare och som verkar vara tillförlitliga."
+    }
+  ],
+  "kEZUR8": [
+    {
+      "type": 0,
+      "value": "Registrera ett användarnamn för Iris"
+    }
+  ],
+  "kJYo0u": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " delade"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " andra delade"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "kKC9ya": [
+    {
+      "type": 0,
+      "value": "Information om plånboken"
+    }
+  ],
+  "kNd2FL": [
+    {
+      "type": 0,
+      "value": "Tidal inloggning"
+    }
+  ],
+  "kQAf2d": [
+    {
+      "type": 0,
+      "value": "Välj"
+    }
+  ],
+  "kaaf1E": [
+    {
+      "type": 0,
+      "value": "nu"
+    }
+  ],
+  "kc79d3": [
+    {
+      "type": 0,
+      "value": "Ämnen"
+    }
+  ],
+  "klCm96": [
+    {
+      "type": 0,
+      "value": "Godkännande av gemenskapspost"
+    }
+  ],
+  "kqPQJD": [
+    {
+      "type": 0,
+      "value": "Konfigurera zap-pool"
+    }
+  ],
+  "kuPHYE": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " gillade"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " andra gillade"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "l+ikU1": [
+    {
+      "type": 0,
+      "value": "Allting i "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    }
+  ],
+  "l3H1EK": [
+    {
+      "type": 0,
+      "value": "Bjud in dina vänner"
+    }
+  ],
+  "l3nTjd": [
+    {
+      "type": 0,
+      "value": "Grundläggande nyckel härledning från mnemonisk fröfras"
+    }
+  ],
+  "lCILNz": [
+    {
+      "type": 0,
+      "value": "Köp Nu"
+    }
+  ],
+  "lD3+8a": [
+    {
+      "type": 0,
+      "value": "Betala"
+    }
+  ],
+  "lEnclp": [
+    {
+      "type": 0,
+      "value": "Mina händelser: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lPWASz": [
+    {
+      "type": 0,
+      "value": "Snort nostr adress"
+    }
+  ],
+  "lTbT3s": [
+    {
+      "type": 0,
+      "value": "Plånbokens lösenord"
+    }
+  ],
+  "lbr3Lq": [
+    {
+      "type": 0,
+      "value": "Kopiera länk"
+    }
+  ],
+  "lfOesV": [
+    {
+      "type": 0,
+      "value": "Non-Zap"
+    }
+  ],
+  "lgg1KN": [
+    {
+      "type": 0,
+      "value": "konto sida"
+    }
+  ],
+  "ll3xBp": [
+    {
+      "type": 0,
+      "value": "Bild proxy tjänst"
+    }
+  ],
+  "lnaT9F": [
+    {
+      "type": 0,
+      "value": "Följer "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lsNFM1": [
+    {
+      "type": 0,
+      "value": "Klicka för att ladda innehåll från "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "lvlPhZ": [
+    {
+      "type": 0,
+      "value": "Betala Faktura"
+    }
+  ],
+  "m/59y2": [
+    {
+      "type": 0,
+      "value": "Zap-förfrågan"
+    }
+  ],
+  "m6h2Eg": [
+    {
+      "type": 0,
+      "value": "Rekommendation för handläggare"
+    }
+  ],
+  "mCEKiZ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " noter har dämpats"
+    }
+  ],
+  "mErPop": [
+    {
+      "type": 0,
+      "value": "Det verkar som om du inte har någon, kolla "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " för att köpa en!"
+    }
+  ],
+  "mFtdYh": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " Arbetstagare Relä"
+    }
+  ],
+  "mKAr6h": [
+    {
+      "type": 0,
+      "value": "Följ alla"
+    }
+  ],
+  "mKh2HS": [
+    {
+      "type": 0,
+      "value": "Tjänst för filuppladdning"
+    }
+  ],
+  "mKhgP9": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "mOFG3K": [
+    {
+      "type": 0,
+      "value": "Start"
+    }
+  ],
+  "mfe8RW": [
+    {
+      "type": 0,
+      "value": "Alternativ: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "mmPSWH": [
+    {
+      "type": 0,
+      "value": "Endast läsning"
+    }
+  ],
+  "n1Whvj": [
+    {
+      "type": 0,
+      "value": "Växla"
+    }
+  ],
+  "n5l7tP": [
+    {
+      "type": 0,
+      "value": "Tidsbaserad kalenderhändelse"
+    }
+  ],
+  "n8k1SG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "MiB"
+    }
+  ],
+  "nD4frR": [
+    {
+      "type": 0,
+      "value": "Bekräftelse av bud"
+    }
+  ],
+  "nDejmx": [
+    {
+      "type": 0,
+      "value": "Avblockera"
+    }
+  ],
+  "nGBrvw": [
+    {
+      "type": 0,
+      "value": "Bokmärken"
+    }
+  ],
+  "nGGDsi": [
+    {
+      "type": 0,
+      "value": "Notiser tillåtna"
+    }
+  ],
+  "nIchMQ": [
+    {
+      "type": 0,
+      "value": "Söker efter kontoaktivitet ("
+    },
+    {
+      "type": 1,
+      "value": "progress"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "nPHrqp": [
+    {
+      "type": 0,
+      "value": "Coinjoin Pool"
+    }
+  ],
+  "nUT0Lv": [
+    {
+      "type": 0,
+      "value": "Verktyg"
+    }
+  ],
+  "nWQFic": [
+    {
+      "type": 0,
+      "value": "Förnya"
+    }
+  ],
+  "nihgfo": [
+    {
+      "type": 0,
+      "value": "Lyssna på denna artikel"
+    }
+  ],
+  "nwZXeh": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " blockerad"
+    }
+  ],
+  "o/gK53": [
+    {
+      "type": 0,
+      "value": "Deck"
+    }
+  ],
+  "o7e+nJ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " följare"
+    }
+  ],
+  "oJ+JJN": [
+    {
+      "type": 0,
+      "value": "Inget hittat :/"
+    }
+  ],
+  "odFwjL": [
+    {
+      "type": 0,
+      "value": "Följer endast"
+    }
+  ],
+  "ojzbwv": [
+    {
+      "type": 0,
+      "value": "Hej, det ser ut som du inte har en Nostr adress ännu, du bör skaffa en! Kolla in "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "ozZ2Cj": [
+    {
+      "type": 0,
+      "value": "Badge-utmärkelse"
+    }
+  ],
+  "p4N05H": [
+    {
+      "type": 0,
+      "value": "Ladda upp"
+    }
+  ],
+  "p9Ps2l": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " har reläer ("
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "pEEBFk": [
+    {
+      "type": 0,
+      "value": "Pålitliga reläer"
+    }
+  ],
+  "pI+77w": [
+    {
+      "type": 0,
+      "value": "Nedladdningsbara säkerhetskopior från Snort relä"
+    }
+  ],
+  "pRess9": [
+    {
+      "type": 0,
+      "value": "ZapPool"
+    }
+  ],
+  "plOM0t": [
+    {
+      "type": 0,
+      "value": "Anpassad emoji"
+    }
+  ],
+  "plg2Ua": [
+    {
+      "type": 0,
+      "value": "Kanal Mute Användare"
+    }
+  ],
+  "puLNUJ": [
+    {
+      "type": 0,
+      "value": "Fäst"
+    }
+  ],
+  "pyjJ5f": [
+    {
+      "type": 0,
+      "value": "Nostr Marketplace (för motståndskraftiga marknadsplatser)"
+    }
+  ],
+  "pzTOmv": [
+    {
+      "type": 0,
+      "value": "Följare"
+    }
+  ],
+  "q3OuMw": [
+    {
+      "type": 0,
+      "value": "Torrent Kommentar"
+    }
+  ],
+  "qAY40L": [
+    {
+      "type": 0,
+      "value": "Datumbaserad kalenderhändelse"
+    }
+  ],
+  "qBYNMb": [
+    {
+      "type": 0,
+      "value": "Svar på grupptråd"
+    }
+  ],
+  "qD9EUF": [
+    {
+      "type": 0,
+      "value": "E-post <> DM brygga för din Snort nostr adress"
+    }
+  ],
+  "qDwvZ4": [
+    {
+      "type": 0,
+      "value": "Okänt fel"
+    }
+  ],
+  "qFIVx4": [
+    {
+      "type": 0,
+      "value": "Profilmärken"
+    }
+  ],
+  "qMePPG": [
+    {
+      "type": 0,
+      "value": "Anteckning"
+    }
+  ],
+  "qMx1sA": [
+    {
+      "type": 0,
+      "value": "Förvalt Zap-belopp"
+    }
+  ],
+  "qUJTsT": [
+    {
+      "type": 0,
+      "value": "Blockerad"
+    }
+  ],
+  "qXCbgZ": [
+    {
+      "type": 0,
+      "value": "Lås upp"
+    }
+  ],
+  "qZsKBR": [
+    {
+      "type": 0,
+      "value": "Förnya "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    }
+  ],
+  "qcJFEJ": [
+    {
+      "type": 0,
+      "value": "API för notifieringar avaktiverat"
+    }
+  ],
+  "qdGuQo": [
+    {
+      "type": 0,
+      "value": "Din privata nyckel är (dela inte detta med någon)"
+    }
+  ],
+  "qfmMQh": [
+    {
+      "type": 0,
+      "value": "Den här anteckningen har tystats"
+    }
+  ],
+  "qkvYUb": [
+    {
+      "type": 0,
+      "value": "Lägg till i min profil"
+    }
+  ],
+  "qmJ8kD": [
+    {
+      "type": 0,
+      "value": "Översättning misslyckades"
+    }
+  ],
+  "qtWLmt": [
+    {
+      "type": 0,
+      "value": "Gilla"
+    }
+  ],
+  "qyJtWy": [
+    {
+      "type": 0,
+      "value": "Visa mindre"
+    }
+  ],
+  "qydxOd": [
+    {
+      "type": 0,
+      "value": "Vetenskap"
+    }
+  ],
+  "qz9fty": [
+    {
+      "type": 0,
+      "value": "Felaktig pin"
+    }
+  ],
+  "r3C4x/": [
+    {
+      "type": 0,
+      "value": "Mjukvara"
+    }
+  ],
+  "r5srDR": [
+    {
+      "type": 0,
+      "value": "Ange lösenord för plånboken"
+    }
+  ],
+  "rAQG0X": [
+    {
+      "type": 0,
+      "value": "Metadata för relälista"
+    }
+  ],
+  "rIsVe+": [
+    {
+      "type": 0,
+      "value": "Lista över offentliga chattar"
+    }
+  ],
+  "rMgF34": [
+    {
+      "type": 0,
+      "value": "Säkerhetskopiera nu"
+    }
+  ],
+  "rRRXtB": [
+    {
+      "type": 0,
+      "value": "Blixtnedslag"
+    }
+  ],
+  "rT14Ow": [
+    {
+      "type": 0,
+      "value": "Lägg till reläer"
+    }
+  ],
+  "reFEEC": [
+    {
+      "type": 0,
+      "value": "Rapportering"
+    }
+  ],
+  "rfuMjE": [
+    {
+      "type": 0,
+      "value": "(Standard)"
+    }
+  ],
+  "rkM7l8": [
+    {
+      "type": 0,
+      "value": "Krypterat direktmeddelande"
+    }
+  ],
+  "rmdsT4": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " dagar"
+    }
+  ],
+  "rn52n9": [
+    {
+      "type": 0,
+      "value": "Offentliga chattkanaler"
+    }
+  ],
+  "rx1i0i": [
+    {
+      "type": 0,
+      "value": "Kort länk"
+    }
+  ],
+  "sFUkSN": [
+    {
+      "type": 0,
+      "value": "Bokmärkesuppsättningar"
+    }
+  ],
+  "sKDn4e": [
+    {
+      "type": 0,
+      "value": "Visa emblem"
+    }
+  ],
+  "sUNhQE": [
+    {
+      "type": 0,
+      "value": "användare"
+    }
+  ],
+  "sZQzjQ": [
+    {
+      "type": 0,
+      "value": "Misslyckades att tolka zapsplit: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "saInmO": [
+    {
+      "type": 0,
+      "value": "Det relänamn som visas är inte detsamma som den fullständiga URL som angetts."
+    }
+  ],
+  "saorw+": [
+    {
+      "type": 0,
+      "value": "Begäran om radering av evenemang"
+    }
+  ],
+  "sfL/O+": [
+    {
+      "type": 0,
+      "value": "Tystade anteckningar kommer inte att visas"
+    }
+  ],
+  "t79a6U": [
+    {
+      "type": 0,
+      "value": "Framgångsrik anslutning:"
+    }
+  ],
+  "tDDiRL": [
+    {
+      "type": 0,
+      "value": "Intresseförteckning"
+    }
+  ],
+  "tFpT/O": [
+    {
+      "type": 0,
+      "value": "Släpp artefaktuppsättningar"
+    }
+  ],
+  "tO1oq9": [
+    {
+      "type": 0,
+      "value": "Videohändelser"
+    }
+  ],
+  "tOdNiY": [
+    {
+      "type": 0,
+      "value": "Mörkt"
+    }
+  ],
+  "tRGdV1": [
+    {
+      "type": 0,
+      "value": "Versionerad kryptering"
+    }
+  ],
+  "tU0ADf": [
+    {
+      "type": 0,
+      "value": "Okänd NIP-"
+    },
+    {
+      "type": 1,
+      "value": "x"
+    }
+  ],
+  "tVuVg9": [
+    {
+      "type": 0,
+      "value": "Video Visa händelse"
+    }
+  ],
+  "tf1lIh": [
+    {
+      "type": 0,
+      "value": "Gratis"
+    }
+  ],
+  "th5lxp": [
+    {
+      "type": 0,
+      "value": "Skicka anteckning till en delmängd av dina skrivreläer"
+    }
+  ],
+  "thnRpU": [
+    {
+      "type": 0,
+      "value": "Att få NIP-05 verifierat kan hjälpa:"
+    }
+  ],
+  "tj6kdX": [
+    {
+      "type": 1,
+      "value": "sign"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "tjpYlr": [
+    {
+      "type": 0,
+      "value": "Relä statistik"
+    }
+  ],
+  "ttxS0b": [
+    {
+      "type": 0,
+      "value": "Supporter Emblem"
+    }
+  ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "Status"
+    }
+  ],
+  "u/vOPu": [
+    {
+      "type": 0,
+      "value": "Betald"
+    }
+  ],
+  "u4I8q8": [
+    {
+      "type": 0,
+      "value": "Stiftlista"
+    }
+  ],
+  "u81G9+": [
+    {
+      "type": 0,
+      "value": "Drifttid"
+    }
+  ],
+  "u9NoC1": [
+    {
+      "type": 0,
+      "value": "Namnet måste vara mindre än "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " tecken"
+    }
+  ],
+  "uCk8r+": [
+    {
+      "type": 0,
+      "value": "Har du redan ett konto?"
+    }
+  ],
+  "uD7Els": [
+    {
+      "type": 0,
+      "value": "Externa identiteter i profiler"
+    }
+  ],
+  "uJaMkO": [
+    {
+      "type": 0,
+      "value": "Relay-lista för att ta emot DM"
+    }
+  ],
+  "uSV4Ti": [
+    {
+      "type": 0,
+      "value": "Dela vidare måste bekräftas manuellt"
+    }
+  ],
+  "uc0din": [
+    {
+      "type": 0,
+      "value": "Skicka sats-delningar till"
+    }
+  ],
+  "ufvXH1": [
+    {
+      "type": 0,
+      "value": "Hittade "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " händelser"
+    }
+  ],
+  "uhu5aG": [
+    {
+      "type": 0,
+      "value": "Allmänheten"
+    }
+  ],
+  "un1nGw": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " anteckningar"
+    }
+  ],
+  "usAvMr": [
+    {
+      "type": 0,
+      "value": "Redigera profil"
+    }
+  ],
+  "v8lolG": [
+    {
+      "type": 0,
+      "value": "Starta chatt"
+    }
+  ],
+  "vB3oQ/": [
+    {
+      "type": 0,
+      "value": "Måste vara en kontaktlista eller en pubkey lista"
+    }
+  ],
+  "vBsZhD": [
+    {
+      "type": 0,
+      "value": "Lista över samhällen"
+    }
+  ],
+  "vN5UH8": [
+    {
+      "type": 0,
+      "value": "Profilbild"
+    }
+  ],
+  "vU/Q5i": [
+    {
+      "type": 0,
+      "value": "Detta verktyg kommer att söka efter den senaste händelsen som publiceras av alla dina följande och ta bort dem som inte har postat i 6 månader"
+    }
+  ],
+  "vZ4quW": [
+    {
+      "type": 0,
+      "value": "NIP-05 är en DNS-baserad verifieringsspec som hjälper till att validera dig som en riktig användare."
+    }
+  ],
+  "vhlWFg": [
+    {
+      "type": 0,
+      "value": "Alternativ för omröstning"
+    }
+  ],
+  "vlbWtt": [
+    {
+      "type": 0,
+      "value": "Få en kostnadsfri"
+    }
+  ],
+  "voxBKC": [
+    {
+      "type": 0,
+      "value": "Följs av vänner"
+    }
+  ],
+  "vxwnbh": [
+    {
+      "type": 0,
+      "value": "Mängd arbete att tillämpas för alla publicerade händelser"
+    }
+  ],
+  "w1Fanr": [
+    {
+      "type": 0,
+      "value": "Företag"
+    }
+  ],
+  "w6qrwX": [
+    {
+      "type": 0,
+      "value": "NSFW"
+    }
+  ],
+  "wEQDC6": [
+    {
+      "type": 0,
+      "value": "Ändra"
+    }
+  ],
+  "wOyDTB": [
+    {
+      "type": 0,
+      "value": "Lista över server för fillagring"
+    }
+  ],
+  "wSZR47": [
+    {
+      "type": 0,
+      "value": "Skicka"
+    }
+  ],
+  "wc9st7": [
+    {
+      "type": 0,
+      "value": "Bilagor för media"
+    }
+  ],
+  "whSrs+": [
+    {
+      "type": 0,
+      "value": "Nostr Publik Chatt"
+    }
+  ],
+  "wih7iJ": [
+    {
+      "type": 0,
+      "value": "namnet är blockerat"
+    }
+  ],
+  "wlWMuh": [
+    {
+      "type": 0,
+      "value": "Plåster"
+    }
+  ],
+  "wofVHy": [
+    {
+      "type": 0,
+      "value": "Moderation"
+    }
+  ],
+  "wqyN/i": [
+    {
+      "type": 0,
+      "value": "Ta reda på mer om "
+    },
+    {
+      "type": 1,
+      "value": "service"
+    },
+    {
+      "type": 0,
+      "value": " på "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "wtLjP6": [
+    {
+      "type": 0,
+      "value": "Kopiera ID"
+    }
+  ],
+  "x+3fl6": [
+    {
+      "type": 0,
+      "value": "Mina reläer"
+    }
+  ],
+  "x/Fx2P": [
+    {
+      "type": 0,
+      "value": "Finansiera de tjänster som du använder genom att dela upp en del av alla dina zaps i en pool med pengar!"
+    }
+  ],
+  "x82IOl": [
+    {
+      "type": 0,
+      "value": "Tysta"
+    }
+  ],
+  "xEjBS7": [
+    {
+      "type": 0,
+      "value": "För dig"
+    }
+  ],
+  "xIcAOU": [
+    {
+      "type": 0,
+      "value": "Röster från "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    }
+  ],
+  "xIoGG9": [
+    {
+      "type": 0,
+      "value": "Gå till"
+    }
+  ],
+  "xPCyu+": [
+    {
+      "type": 0,
+      "value": "nostr: URI-schema"
+    }
+  ],
+  "xaj9Ba": [
+    {
+      "type": 0,
+      "value": "Leverantör"
+    }
+  ],
+  "xbVgIm": [
+    {
+      "type": 0,
+      "value": "Ladda media automatiskt"
+    }
+  ],
+  "xhQMeQ": [
+    {
+      "type": 0,
+      "value": "Löper ut"
+    }
+  ],
+  "xl4s/X": [
+    {
+      "type": 0,
+      "value": "Ytterligare villkor:"
+    }
+  ],
+  "xmcVZ0": [
+    {
+      "type": 0,
+      "value": "Sök"
+    }
+  ],
+  "xybOUv": [
+    {
+      "type": 0,
+      "value": "FAN"
+    }
+  ],
+  "y/bmsG": [
+    {
+      "type": 0,
+      "value": "Tillåt"
+    }
+  ],
+  "y1Z3or": [
+    {
+      "type": 0,
+      "value": "Språk"
+    }
+  ],
+  "yAztTU": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " eSats"
+    }
+  ],
+  "yCLnBC": [
+    {
+      "type": 0,
+      "value": "LNURL or Lightning Adress"
+    }
+  ],
+  "yLzgxH": [
+    {
+      "type": 0,
+      "value": "Populära reläer"
+    }
+  ],
+  "yeX8yA": [
+    {
+      "type": 0,
+      "value": "Nativ app"
+    }
+  ],
+  "z3UjXR": [
+    {
+      "type": 0,
+      "value": "Felsökning"
+    }
+  ],
+  "z3Ukvq": [
+    {
+      "type": 0,
+      "value": "Utarbeta innehåll i lång form"
+    }
+  ],
+  "zCb8fX": [
+    {
+      "type": 0,
+      "value": "Vikt"
+    }
+  ],
+  "zFegDD": [
+    {
+      "type": 0,
+      "value": "Kontakt"
+    }
+  ],
+  "zINlao": [
+    {
+      "type": 0,
+      "value": "Ägare"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "Alla"
+    }
+  ],
+  "zcaOTs": [
+    {
+      "type": 0,
+      "value": "Zap belopp i sats"
+    }
+  ],
+  "zi9MdS": [
+    {
+      "type": 0,
+      "value": "Schack (PGN)"
+    }
+  ],
+  "zm6qS1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " min att läsa"
+    }
+  ],
+  "zonsdq": [
+    {
+      "type": 0,
+      "value": "Det gick inte att ladda LNURL-tjänsten"
+    }
+  ],
+  "zvCDao": [
+    {
+      "type": 0,
+      "value": "Visa automatiskt de senaste anteckningarna"
+    }
+  ],
+  "zx0myy": [
+    {
+      "type": 0,
+      "value": "Deltagare"
+    }
+  ]
 }

@@ -1,446 +1,3334 @@
 {
-  "+D82kt": "Are you sure you want to repost: {id}",
-  "+PzQ9Y": "Payout Now",
-  "+Vxixo": "Secret Group Chat",
-  "+aZY2h": "Zap Type",
-  "+vA//S": "Logins",
-  "+vIQlC": "Please make sure to save the following password in order to manage your handle in the future",
-  "+vVZ/G": "Connect",
-  "+xliwN": "{name} reposted",
-  "/4tOwT": "Skip",
-  "/JE/X+": "Account Support",
-  "/PCavi": "Public",
-  "/RD0e2": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content.",
-  "/d6vEc": "Make your profile easier to find and share",
-  "/n5KSF": "{n} ms",
-  "00LcfG": "Load more",
-  "08zn6O": "Export Keys",
-  "0Azlrb": "Manage",
-  "0BUTMv": "Search...",
-  "0jOEtS": "Invalid LNURL",
-  "0mch2Y": "name has disallowed characters",
-  "0yO7wF": "{n} secs",
-  "1A7TZk": "What is Snort and how does it work?",
-  "1Mo59U": "Are you sure you want to remove this note from bookmarks?",
-  "1R43+L": "Enter Nostr Wallet Connect config",
-  "1c4YST": "Connected to: {node} 🎉",
-  "1iQ8GN": "Toggle Preview",
-  "1nYUGC": "{n} Following",
-  "1udzha": "Conversations",
-  "2/2yg+": "Add",
-  "25V4l1": "Banner",
-  "2IFGap": "Donate",
-  "2LbrkB": "Enter password",
-  "2a2YiP": "{n} Bookmarks",
-  "2k0Cv+": "Dislikes ({n})",
-  "2ukA4d": "{n} hours",
-  "3Rx6Qo": "Advanced",
-  "3cc4Ct": "Light",
-  "3gOsZq": "Translators",
-  "3qnJlS": "You are voting with {amount} sats",
-  "3t3kok": "{n,plural,=1{{n} new note} other{{n} new notes}}",
-  "3tVy+Z": "{n} Followers",
-  "3xCwbZ": "OR",
-  "3yk8fB": "Wallet",
-  "450Fty": "None",
-  "47FYwb": "Cancel",
-  "4IPzdn": "Primary Developers",
-  "4L2vUY": "Your new NIP-05 handle is:",
-  "4OB335": "Dislike",
-  "4Vmpt4": "Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices",
-  "4Z3t5i": "Use imgproxy to compress images",
-  "4rYCjn": "Note to Self",
-  "5BVs2e": "zap",
-  "5JcXdV": "Create Account",
-  "5oTnfy": "Buy Handle",
-  "5rOdPG": "Once you setup your key manager extension and generated a key, you can follow our new users flow to setup your profile and help you find some interesting people on Nostr to follow.",
-  "5u6iEc": "Transfer to Pubkey",
-  "5vMmmR": "Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration.",
-  "5ykRmX": "Send zap",
-  "65BmHb": "Failed to proxy image from {host}, click here to load directly",
-  "6Yfvvp": "Get an identifier",
-  "6ewQqw": "Likes ({n})",
-  "6uMqL1": "Unpaid",
-  "7+Domh": "Notes",
-  "7BX/yC": "Account Switcher",
-  "7hp70g": "NIP-05",
-  "7xzTiH": "{action} to {target}",
-  "8/vBbP": "Reposts ({n})",
-  "89q5wc": "Confirm Reposts",
-  "8QDesP": "Zap {n} sats",
-  "8g2vyB": "name too long",
-  "8v1NN+": "Pairing phrase",
-  "9+Ddtu": "Next",
-  "9HU8vw": "Reply",
-  "9SvQep": "Follows {n}",
-  "9WRlF4": "Send",
-  "9gqH2W": "Login",
-  "9pMqYs": "Nostr Address",
-  "9wO4wJ": "Lightning Invoice",
-  "ADmfQT": "Parent",
-  "AGNz71": "Zap All {n} sats",
-  "ASRK0S": "This author has been muted",
-  "Adk34V": "Setup your Profile",
-  "Ai8VHU": "Unlimited note retention on Snort relay",
-  "AkCxS/": "Reason",
-  "AnLrRC": "Non-Zap",
-  "AyGauy": "Login",
-  "B4C47Y": "name too short",
-  "B6+XJy": "zapped",
-  "B6H7eJ": "nsec, npub, nip-05, hex",
-  "BGCM48": "Write access to Snort relay, with 1 year of event retention",
-  "BOUMjw": "No nostr users found for {twitterUsername}",
-  "BOr9z/": "Snort is an open source project built by passionate people in their free time",
-  "BWpuKl": "Update",
-  "BcGMo+": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages.",
-  "C5xzTC": "Premium",
-  "C81/uG": "Logout",
-  "C8HhVE": "Suggested Follows",
-  "CHTbO3": "Failed to load invoice",
-  "CVWeJ6": "Trending People",
-  "CmZ9ls": "{n} Muted",
-  "CsCUYo": "{n} sats",
-  "Cu/K85": "Translated from {lang}",
-  "D+KzKd": "Automatically zap every note when loaded",
-  "D3idYv": "Settings",
-  "DKnriN": "Send sats",
-  "DZzCem": "Show latest {n} notes",
-  "DcL8P+": "Supporter",
-  "Dh3hbq": "Auto Zap",
-  "DtYelJ": "Transfer",
-  "E8a4yq": "Follow some popular accounts",
-  "ELbg9p": "Data Providers",
-  "EPYwm7": "Your private key is your password. If you lose this key, you will lose access to your account! Copy it and keep it in a safe place. There is no way to reset your private key.",
-  "EWyQH5": "Global",
-  "Ebl/B2": "Translate to {lang}",
-  "EcZF24": "Custom Relays",
-  "EcglP9": "Key",
-  "EnCOBJ": "Buy",
-  "Eqjl5K": "Only Snort and our integration partner identifier gives you a colorful domain name, but you are welcome to use other services too.",
-  "F+B3x1": "We have also partnered with nostrplebs.com to give you more options",
-  "F3l7xL": "Add Account",
-  "FDguSC": "{n} Zaps",
-  "FP+D3H": "LNURL to forward zaps to",
-  "FS3b54": "Done!",
-  "FSYL8G": "Trending Users",
-  "FdhSU2": "Claim Now",
-  "FfYsOb": "An error has occured!",
-  "FmXUJg": "follows you",
-  "G/yZLu": "Remove",
-  "G1BGCg": "Select Wallet",
-  "GFOoEE": "Salt",
-  "GL8aXW": "Bookmarks ({n})",
-  "GSye7T": "Lightning Address",
-  "GUlSVG": "Claim your included Snort nostr address",
-  "Gcn9NQ": "Magnet Link",
-  "GspYR7": "{n} Dislike",
-  "H+vHiz": "Hex Key..",
-  "H0JBH6": "Log Out",
-  "H6/kLh": "Order Paid!",
-  "HAlOn1": "Name",
-  "HF4YnO": "Watch Live!",
-  "HFls6j": "name will be available later",
-  "HOzFdo": "Muted",
-  "HWbkEK": "Clear cache and reload",
-  "HbefNb": "Open Wallet",
-  "IDjHJ6": "Thanks for using Snort, please consider donating if you can.",
-  "IEwZvs": "Are you sure you want to unpin this note?",
-  "IKKHqV": "Follows",
-  "INSqIz": "Twitter username...",
-  "IUZC+0": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you.",
-  "Ig9/a1": "Sent {n} sats to {name}",
-  "Ix8l+B": "Trending Notes",
-  "J+dIsA": "Subscriptions",
-  "JCIgkj": "Username",
-  "JHEHCk": "Zaps ({n})",
-  "JPFYIM": "No lightning address",
-  "JeoS4y": "Repost",
-  "JjGgXI": "Search users",
-  "JkLHGw": "Website",
-  "JymXbw": "Private Key",
-  "K3r6DQ": "Delete",
-  "K7AkdL": "Show",
-  "KAhAcM": "Enter LNDHub config",
-  "KLo3SP": "Reason: {reason}",
-  "KQvWvD": "Deleted",
-  "KWuDfz": "I have saved my keys, continue",
-  "KahimY": "Unknown event kind: {kind}",
-  "KoFlZg": "Enter mint URL",
-  "LF5kYT": "Other Connections",
-  "LXxsbk": "Anonymous",
-  "LgbKvU": "Comment",
-  "Lu5/Bj": "Open on Zapstr",
-  "Lw+I+J": "{n,plural,=0{{name} zapped} other{{name} & {n} others zapped}}",
-  "M3Oirc": "Debug Menus",
-  "MBAYRO": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message",
-  "MI2jkA": "Not available:",
-  "MP54GY": "Wallet password",
-  "MRp6Ly": "Twitter username",
-  "MWTx65": "Default Page",
-  "Mrpkot": "Pay for subscription",
-  "MuVeKe": "Buy nostr address",
-  "MzRYWH": "Buying {item}",
-  "N2IrpM": "Confirm",
-  "NAuFNH": "You already have a subscription of this type, please renew or pay",
-  "NNSu3d": "Import Twitter Follows",
-  "NdOYJJ": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!",
-  "NepkXH": "Can't vote with {amount} sats, please set a different default zap amount",
-  "NfNk2V": "Your private key",
-  "NndBJE": "New users page",
-  "O9GTIc": "Profile picture",
-  "OEW7yJ": "Zaps",
-  "OKhRC6": "Share",
-  "OLEm6z": "Unknown login error",
-  "OQXnew": "You subscription is still active, you can't renew yet",
-  "ORGv1Q": "Created",
-  "P04gQm": "All zaps sent to this note will be received by the following LNURL",
-  "P61BTu": "Copy Event JSON",
-  "P7FD0F": "System (Default)",
-  "P7nJT9": "Total today (UTC): {amount} sats",
-  "PCSt5T": "Preferences",
-  "PLSbmL": "Your mnemonic phrase",
-  "PamNxw": "Unknown file header: {name}",
-  "Pe0ogR": "Theme",
-  "PrsIg7": "Reactions will be shown on every page, if disabled no reactions will be shown",
-  "QDFTjG": "{n} Relays",
-  "QWhotP": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)",
-  "QawghE": "You can change your username at any point.",
-  "QxCuTo": "Art by {name}",
-  "Qxv0B2": "You currently have {number} sats in your zap pool.",
-  "R/6nsx": "Subscription",
-  "R1fEdZ": "Forward Zaps",
-  "R81upa": "People you follow",
-  "RDZVQL": "Check",
-  "RahCRH": "Expired",
-  "RfhLwC": "By: {author}",
-  "RhDAoS": "Are you sure you want to delete {id}",
-  "RjpoYG": "Recent",
-  "RoOyAh": "Relays",
-  "Rs4kCE": "Bookmark",
-  "RwFaYs": "Sort",
-  "SOqbe9": "Update Lightning Address",
-  "SP0+yi": "Buy Subscription",
-  "SX58hM": "Copy",
-  "SYQtZ7": "LN Address Proxy",
-  "ShdEie": "Mark all read",
-  "Sjo1P4": "Custom",
-  "Ss0sWu": "Pay Now",
-  "TDR5ge": "Media in notes will automatically be shown for selected people, otherwise only the link will show",
-  "TMfYfY": "Cashu token",
-  "TpgeGw": "Hex Salt..",
-  "Tpy00S": "People",
-  "UDYlxu": "Pending Subscriptions",
-  "ULotH9": "Amount: {amount} sats",
-  "UT7Nkj": "New Chat",
-  "UUPFlt": "Users must accept the content warning to show the content of your note.",
-  "Up5U7K": "Block",
-  "VBadwB": "Hmm, can't find a key manager extension.. try reloading the page.",
-  "VN0+Fz": "Balance: {amount} sats",
-  "VOjC1i": "Pick which upload service you want to upload attachments to",
-  "VR5eHw": "Public key (npub/nprofile)",
-  "VlJkSk": "{n} muted",
-  "VnXp8Z": "Avatar",
-  "VtPV/B": "Login with Extension (NIP-07)",
-  "VvaJst": "View Wallets",
-  "Vx7Zm2": "How do keys work?",
-  "W1yoZY": "It looks like you dont have any subscriptions, you can get one {link}",
-  "W2PiAr": "{n} Blocked",
-  "W9355R": "Unmute",
-  "WONP5O": "Find your twitter follows on nostr (Data provided by {provider})",
-  "WxthCV": "e.g. Jack",
-  "X7xU8J": "nsec, npub, nip-05, hex, mnemonic",
-  "XICsE8": "File hosts",
-  "XgWvGA": "Reactions",
-  "Xopqkl": "Your default zap amount is {number} sats, example values are calculated from this.",
-  "XrSk2j": "Redeem",
-  "XzF0aC": "Key manager extensions are more secure and allow you to easily login to any Nostr client, here are some well known extensions:",
-  "Y31HTH": "Help fund the development of Snort",
-  "YDURw6": "Service URL",
-  "YXA3AH": "Enable reactions",
-  "Z0FDj+": "Subscribe to Snort {plan} for {price} and receive the following rewards",
-  "Z4BMCZ": "Enter pairing phrase",
-  "ZKORll": "Activate Now",
-  "ZLmyG9": "Contributors",
-  "ZUZedV": "Lightning Donation:",
-  "Zr5TMx": "Setup profile",
-  "a5UPxh": "Fund developers and platforms providing NIP-05 verification services",
-  "a7TDNm": "Notes will stream in real time into global and notes tab",
-  "aWpBzj": "Show more",
-  "b12Goz": "Mnemonic",
-  "b5vAk0": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address",
-  "bQdA2k": "Sensitive Content",
-  "bep9C3": "Public Key",
-  "bfvyfs": "Anon",
-  "brAXSu": "Pick a username",
-  "bxv59V": "Just now",
-  "c+oiJe": "Install Extension",
-  "c35bj2": "If you have an enquiry about your NIP-05 order please DM {link}",
-  "c3g2hL": "Broadcast Again",
-  "cFbU1B": "Using Alby? Go to {link} to get your NWC config!",
-  "cPIKU2": "Following",
-  "cQfLWb": "URL..",
-  "cWx9t8": "Mute all",
-  "cg1VJ2": "Connect Wallet",
-  "cuP16y": "Multi account support",
-  "cuV2gK": "name is registered",
-  "cyR7Kh": "Back",
-  "d6CyG5": "History",
-  "d7d0/x": "LN Address",
-  "dOQCL8": "Display name",
-  "e61Jf3": "Coming soon",
-  "e7qqly": "Mark All Read",
-  "eHAneD": "Reaction emoji",
-  "eJj8HD": "Get Verified",
-  "eSzf2G": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool.",
-  "eXT2QQ": "Group Chat",
-  "fBI91o": "Zap",
-  "fOksnD": "Can't vote because LNURL service does not support zaps",
-  "fWZYP5": "Pinned",
-  "filwqD": "Read",
-  "flnGvv": "What's on your mind?",
-  "fsB/4p": "Saved",
-  "g5pX+a": "About",
-  "g985Wp": "Failed to send vote",
-  "gBdUXk": "Save your keys!",
-  "gDZkld": "Snort is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\".",
-  "gDzDRs": "Emoji to send when reactiong to a note",
-  "gXgY3+": "Not all clients support this yet",
-  "gczcC5": "Subscribe",
-  "gjBiyj": "Loading...",
-  "grQ+mI": "Proof of Work",
-  "h8XMJL": "Badges",
-  "hK5ZDk": "the world",
-  "hMzcSq": "Messages",
-  "hWSp+B": "Nostr Connect (NIP-46)",
-  "hY4lzx": "Supports",
-  "hicxcO": "Show replies",
-  "hniz8Z": "here",
-  "i/dBAR": "Zap Pool",
-  "iCqGww": "Reactions ({n})",
-  "iDGAbc": "Get a Snort identifier",
-  "iEoXYx": "DeepL translations",
-  "iGT1eE": "Prevent fake accounts from imitating you",
-  "iNWbVV": "Handle",
-  "iUsU2x": "Mint: {url}",
-  "iXPL0Z": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead",
-  "ieGrWo": "Follow",
-  "itPgxd": "Profile",
-  "izWS4J": "Unfollow",
-  "jA3OE/": "{n,plural,=1{{n} sat} other{{n} sats}}",
-  "jCA7Cw": "Preview on snort",
-  "jMzO1S": "Internal error: {msg}",
-  "jfV8Wr": "Back",
-  "juhqvW": "Improve login security with browser extensions",
-  "jvo0vs": "Save",
-  "jzgQ2z": "{n} Reactions",
-  "k2veDA": "Write",
-  "k7sKNy": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!",
-  "kJYo0u": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}",
-  "kaaf1E": "now",
-  "kuPHYE": "{n,plural,=0{{name} liked} other{{name} & {n} others liked}}",
-  "l+ikU1": "Everything in {plan}",
-  "lBboHo": "If you want to try out some others, check out {link} for more!",
-  "lCILNz": "Buy Now",
-  "lD3+8a": "Pay",
-  "lPWASz": "Snort nostr address",
-  "lTbT3s": "Wallet password",
-  "lgg1KN": "account page",
-  "ll3xBp": "Image proxy service",
-  "lnaT9F": "Following {n}",
-  "lsNFM1": "Click to load content from {link}",
-  "lvlPhZ": "Pay Invoice",
-  "mErPop": "It looks like you dont have any, check {link} to buy one!",
-  "mH91FY": "Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below",
-  "mKAr6h": "Follow all",
-  "mKh2HS": "File upload service",
-  "mKhgP9": "{n,plural,=0{} =1{zapped} other{zapped}}",
-  "mTJFgF": "Popular",
-  "mfe8RW": "Option: {n}",
-  "n1Whvj": "Switch",
-  "nDejmx": "Unblock",
-  "nGBrvw": "Bookmarks",
-  "nN9XTz": "Share your thoughts with {link}",
-  "nOaArs": "Setup Profile",
-  "nWQFic": "Renew",
-  "nn1qb3": "Your donations are greatly appreciated",
-  "nwZXeh": "{n} blocked",
-  "o6Uy3d": "Only the secret key can be used to publish (sign events), everything else logs you in read-only mode.",
-  "o7e+nJ": "{n} followers",
-  "oJ+JJN": "Nothing found :/",
-  "odFwjL": "Follows only",
-  "odhABf": "Login",
-  "ojzbwv": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}",
-  "osUr8O": "You can also use these extensions to login to most Nostr sites.",
-  "oxCa4R": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app.",
-  "p4N05H": "Upload",
-  "p85Uwy": "Active Subscriptions",
-  "pI+77w": "Downloadable backups from Snort relay",
-  "puLNUJ": "Pin",
-  "pzTOmv": "Followers",
-  "qD9EUF": "Email <> DM bridge for your Snort nostr address",
-  "qDwvZ4": "Unknown error",
-  "qMx1sA": "Default Zap amount",
-  "qUJTsT": "Blocked",
-  "qdGuQo": "Your Private Key Is (do not share this with anyone)",
-  "qkvYUb": "Add to Profile",
-  "qmJ8kD": "Translation failed",
-  "qtWLmt": "Like",
-  "r3C4x/": "Software",
-  "r5srDR": "Enter wallet password",
-  "rT14Ow": "Add Relays",
-  "reJ6SM": "It is recommended to use one of the following browser extensions if you are on a desktop computer to secure your key:",
-  "rfuMjE": "(Default)",
-  "rmdsT4": "{n} days",
-  "rrfdTe": "This is the same technology which is used by Bitcoin and has been proven to be extremely secure.",
-  "rudscU": "Failed to load follows, please try again later",
-  "sUNhQE": "user",
-  "sWnYKw": "Snort is designed to have a similar experience to Twitter.",
-  "svOoEH": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule.",
-  "tOdNiY": "Dark",
-  "th5lxp": "Send note to a subset of your write relays",
-  "thnRpU": "Getting NIP-05 verified can help:",
-  "ttxS0b": "Supporter Badge",
-  "u/vOPu": "Paid",
-  "u4bHcR": "Check out the code here: {link}",
-  "uD/N6c": "Zap {target} {n} sats",
-  "uSV4Ti": "Reposts need to be manually confirmed",
-  "usAvMr": "Edit Profile",
-  "ut+2Cd": "Get a partner identifier",
-  "v8lolG": "Start chat",
-  "vOKedj": "{n,plural,=1{& {n} other} other{& {n} others}}",
-  "vU71Ez": "Paying with {wallet}",
-  "vZ4quW": "NIP-05 is a DNS based verification spec which helps to validate you as a real user.",
-  "vhlWFg": "Poll Options",
-  "vlbWtt": "Get a free one",
-  "vrTOHJ": "{amount} sats",
-  "vxwnbh": "Amount of work to apply to all published events",
-  "wEQDC6": "Edit",
-  "wLtRCF": "Your key",
-  "wWLwvh": "Anon",
-  "wYSD2L": "Nostr Adddress",
-  "wih7iJ": "name is blocked",
-  "wqyN/i": "Find out more info about {service} at {link}",
-  "wtLjP6": "Copy ID",
-  "x/Fx2P": "Fund the services that you use by splitting a portion of all your zaps into a pool of funds!",
-  "x/q8d5": "This note has been marked as sensitive, click here to reveal",
-  "x82IOl": "Mute",
-  "xIcAOU": "Votes by {type}",
-  "xIoGG9": "Go to",
-  "xJ9n2N": "Your public key",
-  "xKflGN": "{username}''s Follows on Nostr",
-  "xQtL3v": "Unlock",
-  "xaj9Ba": "Provider",
-  "xbVgIm": "Automatically load media",
-  "xhQMeQ": "Expires",
-  "xmcVZ0": "Search",
-  "y1Z3or": "Language",
-  "yCLnBC": "LNURL or Lightning Address",
-  "yCmnnm": "Read global from",
-  "zFegDD": "Contact",
-  "zINlao": "Owner",
-  "zQvVDJ": "All",
-  "zcaOTs": "Zap amount in sats",
-  "zjJZBd": "You're ready!",
-  "zonsdq": "Failed to load LNURL service",
-  "zvCDao": "Automatically show latest notes"
+  "+D82kt": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to repost: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "+PzQ9Y": [
+    {
+      "type": 0,
+      "value": "Payout Now"
+    }
+  ],
+  "+Vxixo": [
+    {
+      "type": 0,
+      "value": "Secret Group Chat"
+    }
+  ],
+  "+aZY2h": [
+    {
+      "type": 0,
+      "value": "Zap Type"
+    }
+  ],
+  "+vA//S": [
+    {
+      "type": 0,
+      "value": "Logins"
+    }
+  ],
+  "+vIQlC": [
+    {
+      "type": 0,
+      "value": "Please make sure to save the following password in order to manage your handle in the future"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "Connect"
+    }
+  ],
+  "+xliwN": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " reposted"
+    }
+  ],
+  "/4tOwT": [
+    {
+      "type": 0,
+      "value": "Skip"
+    }
+  ],
+  "/JE/X+": [
+    {
+      "type": 0,
+      "value": "Account Support"
+    }
+  ],
+  "/PCavi": [
+    {
+      "type": 0,
+      "value": "Public"
+    }
+  ],
+  "/RD0e2": [
+    {
+      "type": 0,
+      "value": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content."
+    }
+  ],
+  "/d6vEc": [
+    {
+      "type": 0,
+      "value": "Make your profile easier to find and share"
+    }
+  ],
+  "/n5KSF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ms"
+    }
+  ],
+  "00LcfG": [
+    {
+      "type": 0,
+      "value": "Load more"
+    }
+  ],
+  "08zn6O": [
+    {
+      "type": 0,
+      "value": "Export Keys"
+    }
+  ],
+  "0Azlrb": [
+    {
+      "type": 0,
+      "value": "Manage"
+    }
+  ],
+  "0BUTMv": [
+    {
+      "type": 0,
+      "value": "Search..."
+    }
+  ],
+  "0jOEtS": [
+    {
+      "type": 0,
+      "value": "Invalid LNURL"
+    }
+  ],
+  "0mch2Y": [
+    {
+      "type": 0,
+      "value": "name has disallowed characters"
+    }
+  ],
+  "0yO7wF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " secs"
+    }
+  ],
+  "1A7TZk": [
+    {
+      "type": 0,
+      "value": "What is Snort and how does it work?"
+    }
+  ],
+  "1Mo59U": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to remove this note from bookmarks?"
+    }
+  ],
+  "1R43+L": [
+    {
+      "type": 0,
+      "value": "Enter Nostr Wallet Connect config"
+    }
+  ],
+  "1c4YST": [
+    {
+      "type": 0,
+      "value": "Connected to: "
+    },
+    {
+      "type": 1,
+      "value": "node"
+    },
+    {
+      "type": 0,
+      "value": " 🎉"
+    }
+  ],
+  "1iQ8GN": [
+    {
+      "type": 0,
+      "value": "Toggle Preview"
+    }
+  ],
+  "1nYUGC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Following"
+    }
+  ],
+  "1udzha": [
+    {
+      "type": 0,
+      "value": "Conversations"
+    }
+  ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "Add"
+    }
+  ],
+  "25V4l1": [
+    {
+      "type": 0,
+      "value": "Banner"
+    }
+  ],
+  "2IFGap": [
+    {
+      "type": 0,
+      "value": "Donate"
+    }
+  ],
+  "2LbrkB": [
+    {
+      "type": 0,
+      "value": "Enter password"
+    }
+  ],
+  "2a2YiP": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Bookmarks"
+    }
+  ],
+  "2k0Cv+": [
+    {
+      "type": 0,
+      "value": "Dislikes ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "2ukA4d": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " hours"
+    }
+  ],
+  "3Rx6Qo": [
+    {
+      "type": 0,
+      "value": "Advanced"
+    }
+  ],
+  "3cc4Ct": [
+    {
+      "type": 0,
+      "value": "Light"
+    }
+  ],
+  "3gOsZq": [
+    {
+      "type": 0,
+      "value": "Translators"
+    }
+  ],
+  "3qnJlS": [
+    {
+      "type": 0,
+      "value": "You are voting with "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "3t3kok": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " new note"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " new notes"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "3tVy+Z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Followers"
+    }
+  ],
+  "3xCwbZ": [
+    {
+      "type": 0,
+      "value": "OR"
+    }
+  ],
+  "3yk8fB": [
+    {
+      "type": 0,
+      "value": "Wallet"
+    }
+  ],
+  "450Fty": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "47FYwb": [
+    {
+      "type": 0,
+      "value": "Cancel"
+    }
+  ],
+  "4IPzdn": [
+    {
+      "type": 0,
+      "value": "Primary Developers"
+    }
+  ],
+  "4L2vUY": [
+    {
+      "type": 0,
+      "value": "Your new NIP-05 handle is:"
+    }
+  ],
+  "4OB335": [
+    {
+      "type": 0,
+      "value": "Dislike"
+    }
+  ],
+  "4Vmpt4": [
+    {
+      "type": 0,
+      "value": "Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices"
+    }
+  ],
+  "4Z3t5i": [
+    {
+      "type": 0,
+      "value": "Use imgproxy to compress images"
+    }
+  ],
+  "4rYCjn": [
+    {
+      "type": 0,
+      "value": "Note to Self"
+    }
+  ],
+  "5BVs2e": [
+    {
+      "type": 0,
+      "value": "zap"
+    }
+  ],
+  "5JcXdV": [
+    {
+      "type": 0,
+      "value": "Create Account"
+    }
+  ],
+  "5oTnfy": [
+    {
+      "type": 0,
+      "value": "Buy Handle"
+    }
+  ],
+  "5rOdPG": [
+    {
+      "type": 0,
+      "value": "Once you setup your key manager extension and generated a key, you can follow our new users flow to setup your profile and help you find some interesting people on Nostr to follow."
+    }
+  ],
+  "5u6iEc": [
+    {
+      "type": 0,
+      "value": "Transfer to Pubkey"
+    }
+  ],
+  "5vMmmR": [
+    {
+      "type": 0,
+      "value": "Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration."
+    }
+  ],
+  "5ykRmX": [
+    {
+      "type": 0,
+      "value": "Send zap"
+    }
+  ],
+  "65BmHb": [
+    {
+      "type": 0,
+      "value": "Failed to proxy image from "
+    },
+    {
+      "type": 1,
+      "value": "host"
+    },
+    {
+      "type": 0,
+      "value": ", click here to load directly"
+    }
+  ],
+  "6Yfvvp": [
+    {
+      "type": 0,
+      "value": "Get an identifier"
+    }
+  ],
+  "6ewQqw": [
+    {
+      "type": 0,
+      "value": "Likes ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "6uMqL1": [
+    {
+      "type": 0,
+      "value": "Unpaid"
+    }
+  ],
+  "7+Domh": [
+    {
+      "type": 0,
+      "value": "Notes"
+    }
+  ],
+  "7BX/yC": [
+    {
+      "type": 0,
+      "value": "Account Switcher"
+    }
+  ],
+  "7hp70g": [
+    {
+      "type": 0,
+      "value": "NIP-05"
+    }
+  ],
+  "7xzTiH": [
+    {
+      "type": 1,
+      "value": "action"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    }
+  ],
+  "8/vBbP": [
+    {
+      "type": 0,
+      "value": "Reposts ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "89q5wc": [
+    {
+      "type": 0,
+      "value": "Confirm Reposts"
+    }
+  ],
+  "8QDesP": [
+    {
+      "type": 0,
+      "value": "Zap "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "8g2vyB": [
+    {
+      "type": 0,
+      "value": "name too long"
+    }
+  ],
+  "8v1NN+": [
+    {
+      "type": 0,
+      "value": "Pairing phrase"
+    }
+  ],
+  "9+Ddtu": [
+    {
+      "type": 0,
+      "value": "Next"
+    }
+  ],
+  "9HU8vw": [
+    {
+      "type": 0,
+      "value": "Reply"
+    }
+  ],
+  "9SvQep": [
+    {
+      "type": 0,
+      "value": "Follows "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "9WRlF4": [
+    {
+      "type": 0,
+      "value": "Send"
+    }
+  ],
+  "9gqH2W": [
+    {
+      "type": 0,
+      "value": "Login"
+    }
+  ],
+  "9pMqYs": [
+    {
+      "type": 0,
+      "value": "Nostr Address"
+    }
+  ],
+  "9wO4wJ": [
+    {
+      "type": 0,
+      "value": "Lightning Invoice"
+    }
+  ],
+  "ADmfQT": [
+    {
+      "type": 0,
+      "value": "Parent"
+    }
+  ],
+  "AGNz71": [
+    {
+      "type": 0,
+      "value": "Zap All "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "ASRK0S": [
+    {
+      "type": 0,
+      "value": "This author has been muted"
+    }
+  ],
+  "Adk34V": [
+    {
+      "type": 0,
+      "value": "Setup your Profile"
+    }
+  ],
+  "Ai8VHU": [
+    {
+      "type": 0,
+      "value": "Unlimited note retention on Snort relay"
+    }
+  ],
+  "AkCxS/": [
+    {
+      "type": 0,
+      "value": "Reason"
+    }
+  ],
+  "AnLrRC": [
+    {
+      "type": 0,
+      "value": "Non-Zap"
+    }
+  ],
+  "AyGauy": [
+    {
+      "type": 0,
+      "value": "Login"
+    }
+  ],
+  "B4C47Y": [
+    {
+      "type": 0,
+      "value": "name too short"
+    }
+  ],
+  "B6+XJy": [
+    {
+      "type": 0,
+      "value": "zapped"
+    }
+  ],
+  "B6H7eJ": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex"
+    }
+  ],
+  "BGCM48": [
+    {
+      "type": 0,
+      "value": "Write access to Snort relay, with 1 year of event retention"
+    }
+  ],
+  "BOUMjw": [
+    {
+      "type": 0,
+      "value": "No nostr users found for "
+    },
+    {
+      "type": 1,
+      "value": "twitterUsername"
+    }
+  ],
+  "BOr9z/": [
+    {
+      "type": 0,
+      "value": "Snort is an open source project built by passionate people in their free time"
+    }
+  ],
+  "BWpuKl": [
+    {
+      "type": 0,
+      "value": "Update"
+    }
+  ],
+  "BcGMo+": [
+    {
+      "type": 0,
+      "value": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
+    }
+  ],
+  "C5xzTC": [
+    {
+      "type": 0,
+      "value": "Premium"
+    }
+  ],
+  "C81/uG": [
+    {
+      "type": 0,
+      "value": "Logout"
+    }
+  ],
+  "C8HhVE": [
+    {
+      "type": 0,
+      "value": "Suggested Follows"
+    }
+  ],
+  "CHTbO3": [
+    {
+      "type": 0,
+      "value": "Failed to load invoice"
+    }
+  ],
+  "CVWeJ6": [
+    {
+      "type": 0,
+      "value": "Trending People"
+    }
+  ],
+  "CmZ9ls": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Muted"
+    }
+  ],
+  "CsCUYo": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "Cu/K85": [
+    {
+      "type": 0,
+      "value": "Translated from "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "D+KzKd": [
+    {
+      "type": 0,
+      "value": "Automatically zap every note when loaded"
+    }
+  ],
+  "D3idYv": [
+    {
+      "type": 0,
+      "value": "Settings"
+    }
+  ],
+  "DKnriN": [
+    {
+      "type": 0,
+      "value": "Send sats"
+    }
+  ],
+  "DZzCem": [
+    {
+      "type": 0,
+      "value": "Show latest "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " notes"
+    }
+  ],
+  "DcL8P+": [
+    {
+      "type": 0,
+      "value": "Supporter"
+    }
+  ],
+  "Dh3hbq": [
+    {
+      "type": 0,
+      "value": "Auto Zap"
+    }
+  ],
+  "DtYelJ": [
+    {
+      "type": 0,
+      "value": "Transfer"
+    }
+  ],
+  "E8a4yq": [
+    {
+      "type": 0,
+      "value": "Follow some popular accounts"
+    }
+  ],
+  "ELbg9p": [
+    {
+      "type": 0,
+      "value": "Data Providers"
+    }
+  ],
+  "EPYwm7": [
+    {
+      "type": 0,
+      "value": "Your private key is your password. If you lose this key, you will lose access to your account! Copy it and keep it in a safe place. There is no way to reset your private key."
+    }
+  ],
+  "EWyQH5": [
+    {
+      "type": 0,
+      "value": "Global"
+    }
+  ],
+  "Ebl/B2": [
+    {
+      "type": 0,
+      "value": "Translate to "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "EcZF24": [
+    {
+      "type": 0,
+      "value": "Custom Relays"
+    }
+  ],
+  "EcglP9": [
+    {
+      "type": 0,
+      "value": "Key"
+    }
+  ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "Buy"
+    }
+  ],
+  "Eqjl5K": [
+    {
+      "type": 0,
+      "value": "Only Snort and our integration partner identifier gives you a colorful domain name, but you are welcome to use other services too."
+    }
+  ],
+  "F+B3x1": [
+    {
+      "type": 0,
+      "value": "We have also partnered with nostrplebs.com to give you more options"
+    }
+  ],
+  "F3l7xL": [
+    {
+      "type": 0,
+      "value": "Add Account"
+    }
+  ],
+  "FDguSC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Zaps"
+    }
+  ],
+  "FP+D3H": [
+    {
+      "type": 0,
+      "value": "LNURL to forward zaps to"
+    }
+  ],
+  "FS3b54": [
+    {
+      "type": 0,
+      "value": "Done!"
+    }
+  ],
+  "FSYL8G": [
+    {
+      "type": 0,
+      "value": "Trending Users"
+    }
+  ],
+  "FdhSU2": [
+    {
+      "type": 0,
+      "value": "Claim Now"
+    }
+  ],
+  "FfYsOb": [
+    {
+      "type": 0,
+      "value": "An error has occured!"
+    }
+  ],
+  "FmXUJg": [
+    {
+      "type": 0,
+      "value": "follows you"
+    }
+  ],
+  "G/yZLu": [
+    {
+      "type": 0,
+      "value": "Remove"
+    }
+  ],
+  "G1BGCg": [
+    {
+      "type": 0,
+      "value": "Select Wallet"
+    }
+  ],
+  "GFOoEE": [
+    {
+      "type": 0,
+      "value": "Salt"
+    }
+  ],
+  "GL8aXW": [
+    {
+      "type": 0,
+      "value": "Bookmarks ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "GSye7T": [
+    {
+      "type": 0,
+      "value": "Lightning Address"
+    }
+  ],
+  "GUlSVG": [
+    {
+      "type": 0,
+      "value": "Claim your included Snort nostr address"
+    }
+  ],
+  "Gcn9NQ": [
+    {
+      "type": 0,
+      "value": "Magnet Link"
+    }
+  ],
+  "GspYR7": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Dislike"
+    }
+  ],
+  "H+vHiz": [
+    {
+      "type": 0,
+      "value": "Hex Key.."
+    }
+  ],
+  "H0JBH6": [
+    {
+      "type": 0,
+      "value": "Log Out"
+    }
+  ],
+  "H6/kLh": [
+    {
+      "type": 0,
+      "value": "Order Paid!"
+    }
+  ],
+  "HAlOn1": [
+    {
+      "type": 0,
+      "value": "Name"
+    }
+  ],
+  "HF4YnO": [
+    {
+      "type": 0,
+      "value": "Watch Live!"
+    }
+  ],
+  "HFls6j": [
+    {
+      "type": 0,
+      "value": "name will be available later"
+    }
+  ],
+  "HOzFdo": [
+    {
+      "type": 0,
+      "value": "Muted"
+    }
+  ],
+  "HWbkEK": [
+    {
+      "type": 0,
+      "value": "Clear cache and reload"
+    }
+  ],
+  "HbefNb": [
+    {
+      "type": 0,
+      "value": "Open Wallet"
+    }
+  ],
+  "IDjHJ6": [
+    {
+      "type": 0,
+      "value": "Thanks for using Snort, please consider donating if you can."
+    }
+  ],
+  "IEwZvs": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to unpin this note?"
+    }
+  ],
+  "IKKHqV": [
+    {
+      "type": 0,
+      "value": "Follows"
+    }
+  ],
+  "INSqIz": [
+    {
+      "type": 0,
+      "value": "Twitter username..."
+    }
+  ],
+  "IUZC+0": [
+    {
+      "type": 0,
+      "value": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you."
+    }
+  ],
+  "Ig9/a1": [
+    {
+      "type": 0,
+      "value": "Sent "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Ix8l+B": [
+    {
+      "type": 0,
+      "value": "Trending Notes"
+    }
+  ],
+  "J+dIsA": [
+    {
+      "type": 0,
+      "value": "Subscriptions"
+    }
+  ],
+  "JCIgkj": [
+    {
+      "type": 0,
+      "value": "Username"
+    }
+  ],
+  "JHEHCk": [
+    {
+      "type": 0,
+      "value": "Zaps ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "JPFYIM": [
+    {
+      "type": 0,
+      "value": "No lightning address"
+    }
+  ],
+  "JeoS4y": [
+    {
+      "type": 0,
+      "value": "Repost"
+    }
+  ],
+  "JjGgXI": [
+    {
+      "type": 0,
+      "value": "Search users"
+    }
+  ],
+  "JkLHGw": [
+    {
+      "type": 0,
+      "value": "Website"
+    }
+  ],
+  "JymXbw": [
+    {
+      "type": 0,
+      "value": "Private Key"
+    }
+  ],
+  "K3r6DQ": [
+    {
+      "type": 0,
+      "value": "Delete"
+    }
+  ],
+  "K7AkdL": [
+    {
+      "type": 0,
+      "value": "Show"
+    }
+  ],
+  "KAhAcM": [
+    {
+      "type": 0,
+      "value": "Enter LNDHub config"
+    }
+  ],
+  "KLo3SP": [
+    {
+      "type": 0,
+      "value": "Reason: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    }
+  ],
+  "KQvWvD": [
+    {
+      "type": 0,
+      "value": "Deleted"
+    }
+  ],
+  "KWuDfz": [
+    {
+      "type": 0,
+      "value": "I have saved my keys, continue"
+    }
+  ],
+  "KahimY": [
+    {
+      "type": 0,
+      "value": "Unknown event kind: "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    }
+  ],
+  "KoFlZg": [
+    {
+      "type": 0,
+      "value": "Enter mint URL"
+    }
+  ],
+  "LF5kYT": [
+    {
+      "type": 0,
+      "value": "Other Connections"
+    }
+  ],
+  "LXxsbk": [
+    {
+      "type": 0,
+      "value": "Anonymous"
+    }
+  ],
+  "LgbKvU": [
+    {
+      "type": 0,
+      "value": "Comment"
+    }
+  ],
+  "Lu5/Bj": [
+    {
+      "type": 0,
+      "value": "Open on Zapstr"
+    }
+  ],
+  "Lw+I+J": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " zapped"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others zapped"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "M3Oirc": [
+    {
+      "type": 0,
+      "value": "Debug Menus"
+    }
+  ],
+  "MBAYRO": [
+    {
+      "type": 0,
+      "value": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message"
+    }
+  ],
+  "MI2jkA": [
+    {
+      "type": 0,
+      "value": "Not available:"
+    }
+  ],
+  "MP54GY": [
+    {
+      "type": 0,
+      "value": "Wallet password"
+    }
+  ],
+  "MRp6Ly": [
+    {
+      "type": 0,
+      "value": "Twitter username"
+    }
+  ],
+  "MWTx65": [
+    {
+      "type": 0,
+      "value": "Default Page"
+    }
+  ],
+  "Mrpkot": [
+    {
+      "type": 0,
+      "value": "Pay for subscription"
+    }
+  ],
+  "MuVeKe": [
+    {
+      "type": 0,
+      "value": "Buy nostr address"
+    }
+  ],
+  "MzRYWH": [
+    {
+      "type": 0,
+      "value": "Buying "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    }
+  ],
+  "N2IrpM": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
+  "NAuFNH": [
+    {
+      "type": 0,
+      "value": "You already have a subscription of this type, please renew or pay"
+    }
+  ],
+  "NNSu3d": [
+    {
+      "type": 0,
+      "value": "Import Twitter Follows"
+    }
+  ],
+  "NdOYJJ": [
+    {
+      "type": 0,
+      "value": "Hmm nothing here.. Checkout "
+    },
+    {
+      "type": 1,
+      "value": "newUsersPage"
+    },
+    {
+      "type": 0,
+      "value": " to follow some recommended nostrich's!"
+    }
+  ],
+  "NepkXH": [
+    {
+      "type": 0,
+      "value": "Can't vote with "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, please set a different default zap amount"
+    }
+  ],
+  "NfNk2V": [
+    {
+      "type": 0,
+      "value": "Your private key"
+    }
+  ],
+  "NndBJE": [
+    {
+      "type": 0,
+      "value": "New users page"
+    }
+  ],
+  "O9GTIc": [
+    {
+      "type": 0,
+      "value": "Profile picture"
+    }
+  ],
+  "OEW7yJ": [
+    {
+      "type": 0,
+      "value": "Zaps"
+    }
+  ],
+  "OKhRC6": [
+    {
+      "type": 0,
+      "value": "Share"
+    }
+  ],
+  "OLEm6z": [
+    {
+      "type": 0,
+      "value": "Unknown login error"
+    }
+  ],
+  "OQXnew": [
+    {
+      "type": 0,
+      "value": "You subscription is still active, you can't renew yet"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "Created"
+    }
+  ],
+  "P04gQm": [
+    {
+      "type": 0,
+      "value": "All zaps sent to this note will be received by the following LNURL"
+    }
+  ],
+  "P61BTu": [
+    {
+      "type": 0,
+      "value": "Copy Event JSON"
+    }
+  ],
+  "P7FD0F": [
+    {
+      "type": 0,
+      "value": "System (Default)"
+    }
+  ],
+  "P7nJT9": [
+    {
+      "type": 0,
+      "value": "Total today (UTC): "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "PCSt5T": [
+    {
+      "type": 0,
+      "value": "Preferences"
+    }
+  ],
+  "PLSbmL": [
+    {
+      "type": 0,
+      "value": "Your mnemonic phrase"
+    }
+  ],
+  "PamNxw": [
+    {
+      "type": 0,
+      "value": "Unknown file header: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Pe0ogR": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
+  "PrsIg7": [
+    {
+      "type": 0,
+      "value": "Reactions will be shown on every page, if disabled no reactions will be shown"
+    }
+  ],
+  "QDFTjG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Relays"
+    }
+  ],
+  "QWhotP": [
+    {
+      "type": 0,
+      "value": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)"
+    }
+  ],
+  "QawghE": [
+    {
+      "type": 0,
+      "value": "You can change your username at any point."
+    }
+  ],
+  "QxCuTo": [
+    {
+      "type": 0,
+      "value": "Art by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Qxv0B2": [
+    {
+      "type": 0,
+      "value": "You currently have "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats in your zap pool."
+    }
+  ],
+  "R/6nsx": [
+    {
+      "type": 0,
+      "value": "Subscription"
+    }
+  ],
+  "R1fEdZ": [
+    {
+      "type": 0,
+      "value": "Forward Zaps"
+    }
+  ],
+  "R81upa": [
+    {
+      "type": 0,
+      "value": "People you follow"
+    }
+  ],
+  "RDZVQL": [
+    {
+      "type": 0,
+      "value": "Check"
+    }
+  ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "Expired"
+    }
+  ],
+  "RfhLwC": [
+    {
+      "type": 0,
+      "value": "By: "
+    },
+    {
+      "type": 1,
+      "value": "author"
+    }
+  ],
+  "RhDAoS": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to delete "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "RjpoYG": [
+    {
+      "type": 0,
+      "value": "Recent"
+    }
+  ],
+  "RoOyAh": [
+    {
+      "type": 0,
+      "value": "Relays"
+    }
+  ],
+  "Rs4kCE": [
+    {
+      "type": 0,
+      "value": "Bookmark"
+    }
+  ],
+  "RwFaYs": [
+    {
+      "type": 0,
+      "value": "Sort"
+    }
+  ],
+  "SOqbe9": [
+    {
+      "type": 0,
+      "value": "Update Lightning Address"
+    }
+  ],
+  "SP0+yi": [
+    {
+      "type": 0,
+      "value": "Buy Subscription"
+    }
+  ],
+  "SX58hM": [
+    {
+      "type": 0,
+      "value": "Copy"
+    }
+  ],
+  "SYQtZ7": [
+    {
+      "type": 0,
+      "value": "LN Address Proxy"
+    }
+  ],
+  "ShdEie": [
+    {
+      "type": 0,
+      "value": "Mark all read"
+    }
+  ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "Custom"
+    }
+  ],
+  "Ss0sWu": [
+    {
+      "type": 0,
+      "value": "Pay Now"
+    }
+  ],
+  "TDR5ge": [
+    {
+      "type": 0,
+      "value": "Media in notes will automatically be shown for selected people, otherwise only the link will show"
+    }
+  ],
+  "TMfYfY": [
+    {
+      "type": 0,
+      "value": "Cashu token"
+    }
+  ],
+  "TpgeGw": [
+    {
+      "type": 0,
+      "value": "Hex Salt.."
+    }
+  ],
+  "Tpy00S": [
+    {
+      "type": 0,
+      "value": "People"
+    }
+  ],
+  "UDYlxu": [
+    {
+      "type": 0,
+      "value": "Pending Subscriptions"
+    }
+  ],
+  "ULotH9": [
+    {
+      "type": 0,
+      "value": "Amount: "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "UT7Nkj": [
+    {
+      "type": 0,
+      "value": "New Chat"
+    }
+  ],
+  "UUPFlt": [
+    {
+      "type": 0,
+      "value": "Users must accept the content warning to show the content of your note."
+    }
+  ],
+  "Up5U7K": [
+    {
+      "type": 0,
+      "value": "Block"
+    }
+  ],
+  "VBadwB": [
+    {
+      "type": 0,
+      "value": "Hmm, can't find a key manager extension.. try reloading the page."
+    }
+  ],
+  "VN0+Fz": [
+    {
+      "type": 0,
+      "value": "Balance: "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "VOjC1i": [
+    {
+      "type": 0,
+      "value": "Pick which upload service you want to upload attachments to"
+    }
+  ],
+  "VR5eHw": [
+    {
+      "type": 0,
+      "value": "Public key (npub/nprofile)"
+    }
+  ],
+  "VlJkSk": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " muted"
+    }
+  ],
+  "VnXp8Z": [
+    {
+      "type": 0,
+      "value": "Avatar"
+    }
+  ],
+  "VtPV/B": [
+    {
+      "type": 0,
+      "value": "Login with Extension (NIP-07)"
+    }
+  ],
+  "VvaJst": [
+    {
+      "type": 0,
+      "value": "View Wallets"
+    }
+  ],
+  "Vx7Zm2": [
+    {
+      "type": 0,
+      "value": "How do keys work?"
+    }
+  ],
+  "W1yoZY": [
+    {
+      "type": 0,
+      "value": "It looks like you dont have any subscriptions, you can get one "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "W2PiAr": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Blocked"
+    }
+  ],
+  "W9355R": [
+    {
+      "type": 0,
+      "value": "Unmute"
+    }
+  ],
+  "WONP5O": [
+    {
+      "type": 0,
+      "value": "Find your twitter follows on nostr (Data provided by "
+    },
+    {
+      "type": 1,
+      "value": "provider"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "WxthCV": [
+    {
+      "type": 0,
+      "value": "e.g. Jack"
+    }
+  ],
+  "X7xU8J": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex, mnemonic"
+    }
+  ],
+  "XICsE8": [
+    {
+      "type": 0,
+      "value": "File hosts"
+    }
+  ],
+  "XgWvGA": [
+    {
+      "type": 0,
+      "value": "Reactions"
+    }
+  ],
+  "Xopqkl": [
+    {
+      "type": 0,
+      "value": "Your default zap amount is "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats, example values are calculated from this."
+    }
+  ],
+  "XrSk2j": [
+    {
+      "type": 0,
+      "value": "Redeem"
+    }
+  ],
+  "XzF0aC": [
+    {
+      "type": 0,
+      "value": "Key manager extensions are more secure and allow you to easily login to any Nostr client, here are some well known extensions:"
+    }
+  ],
+  "Y31HTH": [
+    {
+      "type": 0,
+      "value": "Help fund the development of Snort"
+    }
+  ],
+  "YDURw6": [
+    {
+      "type": 0,
+      "value": "Service URL"
+    }
+  ],
+  "YXA3AH": [
+    {
+      "type": 0,
+      "value": "Enable reactions"
+    }
+  ],
+  "Z0FDj+": [
+    {
+      "type": 0,
+      "value": "Subscribe to Snort "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": " for "
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " and receive the following rewards"
+    }
+  ],
+  "Z4BMCZ": [
+    {
+      "type": 0,
+      "value": "Enter pairing phrase"
+    }
+  ],
+  "ZKORll": [
+    {
+      "type": 0,
+      "value": "Activate Now"
+    }
+  ],
+  "ZLmyG9": [
+    {
+      "type": 0,
+      "value": "Contributors"
+    }
+  ],
+  "ZUZedV": [
+    {
+      "type": 0,
+      "value": "Lightning Donation:"
+    }
+  ],
+  "Zr5TMx": [
+    {
+      "type": 0,
+      "value": "Setup profile"
+    }
+  ],
+  "a5UPxh": [
+    {
+      "type": 0,
+      "value": "Fund developers and platforms providing NIP-05 verification services"
+    }
+  ],
+  "a7TDNm": [
+    {
+      "type": 0,
+      "value": "Notes will stream in real time into global and notes tab"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "Show more"
+    }
+  ],
+  "b12Goz": [
+    {
+      "type": 0,
+      "value": "Mnemonic"
+    }
+  ],
+  "b5vAk0": [
+    {
+      "type": 0,
+      "value": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address"
+    }
+  ],
+  "bQdA2k": [
+    {
+      "type": 0,
+      "value": "Sensitive Content"
+    }
+  ],
+  "bep9C3": [
+    {
+      "type": 0,
+      "value": "Public Key"
+    }
+  ],
+  "bfvyfs": [
+    {
+      "type": 0,
+      "value": "Anon"
+    }
+  ],
+  "brAXSu": [
+    {
+      "type": 0,
+      "value": "Pick a username"
+    }
+  ],
+  "bxv59V": [
+    {
+      "type": 0,
+      "value": "Just now"
+    }
+  ],
+  "c+oiJe": [
+    {
+      "type": 0,
+      "value": "Install Extension"
+    }
+  ],
+  "c35bj2": [
+    {
+      "type": 0,
+      "value": "If you have an enquiry about your NIP-05 order please DM "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "c3g2hL": [
+    {
+      "type": 0,
+      "value": "Broadcast Again"
+    }
+  ],
+  "cFbU1B": [
+    {
+      "type": 0,
+      "value": "Using Alby? Go to "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " to get your NWC config!"
+    }
+  ],
+  "cPIKU2": [
+    {
+      "type": 0,
+      "value": "Following"
+    }
+  ],
+  "cQfLWb": [
+    {
+      "type": 0,
+      "value": "URL.."
+    }
+  ],
+  "cWx9t8": [
+    {
+      "type": 0,
+      "value": "Mute all"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "Connect Wallet"
+    }
+  ],
+  "cuP16y": [
+    {
+      "type": 0,
+      "value": "Multi account support"
+    }
+  ],
+  "cuV2gK": [
+    {
+      "type": 0,
+      "value": "name is registered"
+    }
+  ],
+  "cyR7Kh": [
+    {
+      "type": 0,
+      "value": "Back"
+    }
+  ],
+  "d6CyG5": [
+    {
+      "type": 0,
+      "value": "History"
+    }
+  ],
+  "d7d0/x": [
+    {
+      "type": 0,
+      "value": "LN Address"
+    }
+  ],
+  "dOQCL8": [
+    {
+      "type": 0,
+      "value": "Display name"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "Coming soon"
+    }
+  ],
+  "e7qqly": [
+    {
+      "type": 0,
+      "value": "Mark All Read"
+    }
+  ],
+  "eHAneD": [
+    {
+      "type": 0,
+      "value": "Reaction emoji"
+    }
+  ],
+  "eJj8HD": [
+    {
+      "type": 0,
+      "value": "Get Verified"
+    }
+  ],
+  "eSzf2G": [
+    {
+      "type": 0,
+      "value": "A single zap of "
+    },
+    {
+      "type": 1,
+      "value": "nIn"
+    },
+    {
+      "type": 0,
+      "value": " sats will allocate "
+    },
+    {
+      "type": 1,
+      "value": "nOut"
+    },
+    {
+      "type": 0,
+      "value": " sats to the zap pool."
+    }
+  ],
+  "eXT2QQ": [
+    {
+      "type": 0,
+      "value": "Group Chat"
+    }
+  ],
+  "fBI91o": [
+    {
+      "type": 0,
+      "value": "Zap"
+    }
+  ],
+  "fOksnD": [
+    {
+      "type": 0,
+      "value": "Can't vote because LNURL service does not support zaps"
+    }
+  ],
+  "fWZYP5": [
+    {
+      "type": 0,
+      "value": "Pinned"
+    }
+  ],
+  "filwqD": [
+    {
+      "type": 0,
+      "value": "Read"
+    }
+  ],
+  "flnGvv": [
+    {
+      "type": 0,
+      "value": "What's on your mind?"
+    }
+  ],
+  "fsB/4p": [
+    {
+      "type": 0,
+      "value": "Saved"
+    }
+  ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "About"
+    }
+  ],
+  "g985Wp": [
+    {
+      "type": 0,
+      "value": "Failed to send vote"
+    }
+  ],
+  "gBdUXk": [
+    {
+      "type": 0,
+      "value": "Save your keys!"
+    }
+  ],
+  "gDZkld": [
+    {
+      "type": 0,
+      "value": "Snort is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
+    }
+  ],
+  "gDzDRs": [
+    {
+      "type": 0,
+      "value": "Emoji to send when reactiong to a note"
+    }
+  ],
+  "gXgY3+": [
+    {
+      "type": 0,
+      "value": "Not all clients support this yet"
+    }
+  ],
+  "gczcC5": [
+    {
+      "type": 0,
+      "value": "Subscribe"
+    }
+  ],
+  "gjBiyj": [
+    {
+      "type": 0,
+      "value": "Loading..."
+    }
+  ],
+  "grQ+mI": [
+    {
+      "type": 0,
+      "value": "Proof of Work"
+    }
+  ],
+  "h8XMJL": [
+    {
+      "type": 0,
+      "value": "Badges"
+    }
+  ],
+  "hK5ZDk": [
+    {
+      "type": 0,
+      "value": "the world"
+    }
+  ],
+  "hMzcSq": [
+    {
+      "type": 0,
+      "value": "Messages"
+    }
+  ],
+  "hWSp+B": [
+    {
+      "type": 0,
+      "value": "Nostr Connect (NIP-46)"
+    }
+  ],
+  "hY4lzx": [
+    {
+      "type": 0,
+      "value": "Supports"
+    }
+  ],
+  "hicxcO": [
+    {
+      "type": 0,
+      "value": "Show replies"
+    }
+  ],
+  "hniz8Z": [
+    {
+      "type": 0,
+      "value": "here"
+    }
+  ],
+  "i/dBAR": [
+    {
+      "type": 0,
+      "value": "Zap Pool"
+    }
+  ],
+  "iCqGww": [
+    {
+      "type": 0,
+      "value": "Reactions ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "iDGAbc": [
+    {
+      "type": 0,
+      "value": "Get a Snort identifier"
+    }
+  ],
+  "iEoXYx": [
+    {
+      "type": 0,
+      "value": "DeepL translations"
+    }
+  ],
+  "iGT1eE": [
+    {
+      "type": 0,
+      "value": "Prevent fake accounts from imitating you"
+    }
+  ],
+  "iNWbVV": [
+    {
+      "type": 0,
+      "value": "Handle"
+    }
+  ],
+  "iUsU2x": [
+    {
+      "type": 0,
+      "value": "Mint: "
+    },
+    {
+      "type": 1,
+      "value": "url"
+    }
+  ],
+  "iXPL0Z": [
+    {
+      "type": 0,
+      "value": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead"
+    }
+  ],
+  "ieGrWo": [
+    {
+      "type": 0,
+      "value": "Follow"
+    }
+  ],
+  "itPgxd": [
+    {
+      "type": 0,
+      "value": "Profile"
+    }
+  ],
+  "izWS4J": [
+    {
+      "type": 0,
+      "value": "Unfollow"
+    }
+  ],
+  "jA3OE/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sat"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sats"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "jCA7Cw": [
+    {
+      "type": 0,
+      "value": "Preview on snort"
+    }
+  ],
+  "jMzO1S": [
+    {
+      "type": 0,
+      "value": "Internal error: "
+    },
+    {
+      "type": 1,
+      "value": "msg"
+    }
+  ],
+  "jfV8Wr": [
+    {
+      "type": 0,
+      "value": "Back"
+    }
+  ],
+  "juhqvW": [
+    {
+      "type": 0,
+      "value": "Improve login security with browser extensions"
+    }
+  ],
+  "jvo0vs": [
+    {
+      "type": 0,
+      "value": "Save"
+    }
+  ],
+  "jzgQ2z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Reactions"
+    }
+  ],
+  "k2veDA": [
+    {
+      "type": 0,
+      "value": "Write"
+    }
+  ],
+  "k7sKNy": [
+    {
+      "type": 0,
+      "value": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
+    }
+  ],
+  "kJYo0u": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " reposted"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others reposted"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "kaaf1E": [
+    {
+      "type": 0,
+      "value": "now"
+    }
+  ],
+  "kuPHYE": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " liked"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others liked"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "l+ikU1": [
+    {
+      "type": 0,
+      "value": "Everything in "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    }
+  ],
+  "lBboHo": [
+    {
+      "type": 0,
+      "value": "If you want to try out some others, check out "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " for more!"
+    }
+  ],
+  "lCILNz": [
+    {
+      "type": 0,
+      "value": "Buy Now"
+    }
+  ],
+  "lD3+8a": [
+    {
+      "type": 0,
+      "value": "Pay"
+    }
+  ],
+  "lPWASz": [
+    {
+      "type": 0,
+      "value": "Snort nostr address"
+    }
+  ],
+  "lTbT3s": [
+    {
+      "type": 0,
+      "value": "Wallet password"
+    }
+  ],
+  "lgg1KN": [
+    {
+      "type": 0,
+      "value": "account page"
+    }
+  ],
+  "ll3xBp": [
+    {
+      "type": 0,
+      "value": "Image proxy service"
+    }
+  ],
+  "lnaT9F": [
+    {
+      "type": 0,
+      "value": "Following "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lsNFM1": [
+    {
+      "type": 0,
+      "value": "Click to load content from "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "lvlPhZ": [
+    {
+      "type": 0,
+      "value": "Pay Invoice"
+    }
+  ],
+  "mErPop": [
+    {
+      "type": 0,
+      "value": "It looks like you dont have any, check "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " to buy one!"
+    }
+  ],
+  "mH91FY": [
+    {
+      "type": 0,
+      "value": "Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below"
+    }
+  ],
+  "mKAr6h": [
+    {
+      "type": 0,
+      "value": "Follow all"
+    }
+  ],
+  "mKh2HS": [
+    {
+      "type": 0,
+      "value": "File upload service"
+    }
+  ],
+  "mKhgP9": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "mTJFgF": [
+    {
+      "type": 0,
+      "value": "Popular"
+    }
+  ],
+  "mfe8RW": [
+    {
+      "type": 0,
+      "value": "Option: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "n1Whvj": [
+    {
+      "type": 0,
+      "value": "Switch"
+    }
+  ],
+  "nDejmx": [
+    {
+      "type": 0,
+      "value": "Unblock"
+    }
+  ],
+  "nGBrvw": [
+    {
+      "type": 0,
+      "value": "Bookmarks"
+    }
+  ],
+  "nN9XTz": [
+    {
+      "type": 0,
+      "value": "Share your thoughts with "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "nOaArs": [
+    {
+      "type": 0,
+      "value": "Setup Profile"
+    }
+  ],
+  "nWQFic": [
+    {
+      "type": 0,
+      "value": "Renew"
+    }
+  ],
+  "nn1qb3": [
+    {
+      "type": 0,
+      "value": "Your donations are greatly appreciated"
+    }
+  ],
+  "nwZXeh": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " blocked"
+    }
+  ],
+  "o6Uy3d": [
+    {
+      "type": 0,
+      "value": "Only the secret key can be used to publish (sign events), everything else logs you in read-only mode."
+    }
+  ],
+  "o7e+nJ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " followers"
+    }
+  ],
+  "oJ+JJN": [
+    {
+      "type": 0,
+      "value": "Nothing found :/"
+    }
+  ],
+  "odFwjL": [
+    {
+      "type": 0,
+      "value": "Follows only"
+    }
+  ],
+  "odhABf": [
+    {
+      "type": 0,
+      "value": "Login"
+    }
+  ],
+  "ojzbwv": [
+    {
+      "type": 0,
+      "value": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "osUr8O": [
+    {
+      "type": 0,
+      "value": "You can also use these extensions to login to most Nostr sites."
+    }
+  ],
+  "oxCa4R": [
+    {
+      "type": 0,
+      "value": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app."
+    }
+  ],
+  "p4N05H": [
+    {
+      "type": 0,
+      "value": "Upload"
+    }
+  ],
+  "p85Uwy": [
+    {
+      "type": 0,
+      "value": "Active Subscriptions"
+    }
+  ],
+  "pI+77w": [
+    {
+      "type": 0,
+      "value": "Downloadable backups from Snort relay"
+    }
+  ],
+  "puLNUJ": [
+    {
+      "type": 0,
+      "value": "Pin"
+    }
+  ],
+  "pzTOmv": [
+    {
+      "type": 0,
+      "value": "Followers"
+    }
+  ],
+  "qD9EUF": [
+    {
+      "type": 0,
+      "value": "Email <> DM bridge for your Snort nostr address"
+    }
+  ],
+  "qDwvZ4": [
+    {
+      "type": 0,
+      "value": "Unknown error"
+    }
+  ],
+  "qMx1sA": [
+    {
+      "type": 0,
+      "value": "Default Zap amount"
+    }
+  ],
+  "qUJTsT": [
+    {
+      "type": 0,
+      "value": "Blocked"
+    }
+  ],
+  "qdGuQo": [
+    {
+      "type": 0,
+      "value": "Your Private Key Is (do not share this with anyone)"
+    }
+  ],
+  "qkvYUb": [
+    {
+      "type": 0,
+      "value": "Add to Profile"
+    }
+  ],
+  "qmJ8kD": [
+    {
+      "type": 0,
+      "value": "Translation failed"
+    }
+  ],
+  "qtWLmt": [
+    {
+      "type": 0,
+      "value": "Like"
+    }
+  ],
+  "r3C4x/": [
+    {
+      "type": 0,
+      "value": "Software"
+    }
+  ],
+  "r5srDR": [
+    {
+      "type": 0,
+      "value": "Enter wallet password"
+    }
+  ],
+  "rT14Ow": [
+    {
+      "type": 0,
+      "value": "Add Relays"
+    }
+  ],
+  "reJ6SM": [
+    {
+      "type": 0,
+      "value": "It is recommended to use one of the following browser extensions if you are on a desktop computer to secure your key:"
+    }
+  ],
+  "rfuMjE": [
+    {
+      "type": 0,
+      "value": "(Default)"
+    }
+  ],
+  "rmdsT4": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " days"
+    }
+  ],
+  "rrfdTe": [
+    {
+      "type": 0,
+      "value": "This is the same technology which is used by Bitcoin and has been proven to be extremely secure."
+    }
+  ],
+  "rudscU": [
+    {
+      "type": 0,
+      "value": "Failed to load follows, please try again later"
+    }
+  ],
+  "sUNhQE": [
+    {
+      "type": 0,
+      "value": "user"
+    }
+  ],
+  "sWnYKw": [
+    {
+      "type": 0,
+      "value": "Snort is designed to have a similar experience to Twitter."
+    }
+  ],
+  "svOoEH": [
+    {
+      "type": 0,
+      "value": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule."
+    }
+  ],
+  "tOdNiY": [
+    {
+      "type": 0,
+      "value": "Dark"
+    }
+  ],
+  "th5lxp": [
+    {
+      "type": 0,
+      "value": "Send note to a subset of your write relays"
+    }
+  ],
+  "thnRpU": [
+    {
+      "type": 0,
+      "value": "Getting NIP-05 verified can help:"
+    }
+  ],
+  "ttxS0b": [
+    {
+      "type": 0,
+      "value": "Supporter Badge"
+    }
+  ],
+  "u/vOPu": [
+    {
+      "type": 0,
+      "value": "Paid"
+    }
+  ],
+  "u4bHcR": [
+    {
+      "type": 0,
+      "value": "Check out the code here: "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "uD/N6c": [
+    {
+      "type": 0,
+      "value": "Zap "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "uSV4Ti": [
+    {
+      "type": 0,
+      "value": "Reposts need to be manually confirmed"
+    }
+  ],
+  "usAvMr": [
+    {
+      "type": 0,
+      "value": "Edit Profile"
+    }
+  ],
+  "ut+2Cd": [
+    {
+      "type": 0,
+      "value": "Get a partner identifier"
+    }
+  ],
+  "v8lolG": [
+    {
+      "type": 0,
+      "value": "Start chat"
+    }
+  ],
+  "vOKedj": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " other"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "vU71Ez": [
+    {
+      "type": 0,
+      "value": "Paying with "
+    },
+    {
+      "type": 1,
+      "value": "wallet"
+    }
+  ],
+  "vZ4quW": [
+    {
+      "type": 0,
+      "value": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."
+    }
+  ],
+  "vhlWFg": [
+    {
+      "type": 0,
+      "value": "Poll Options"
+    }
+  ],
+  "vlbWtt": [
+    {
+      "type": 0,
+      "value": "Get a free one"
+    }
+  ],
+  "vrTOHJ": [
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "vxwnbh": [
+    {
+      "type": 0,
+      "value": "Amount of work to apply to all published events"
+    }
+  ],
+  "wEQDC6": [
+    {
+      "type": 0,
+      "value": "Edit"
+    }
+  ],
+  "wLtRCF": [
+    {
+      "type": 0,
+      "value": "Your key"
+    }
+  ],
+  "wWLwvh": [
+    {
+      "type": 0,
+      "value": "Anon"
+    }
+  ],
+  "wYSD2L": [
+    {
+      "type": 0,
+      "value": "Nostr Adddress"
+    }
+  ],
+  "wih7iJ": [
+    {
+      "type": 0,
+      "value": "name is blocked"
+    }
+  ],
+  "wqyN/i": [
+    {
+      "type": 0,
+      "value": "Find out more info about "
+    },
+    {
+      "type": 1,
+      "value": "service"
+    },
+    {
+      "type": 0,
+      "value": " at "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "wtLjP6": [
+    {
+      "type": 0,
+      "value": "Copy ID"
+    }
+  ],
+  "x/Fx2P": [
+    {
+      "type": 0,
+      "value": "Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"
+    }
+  ],
+  "x/q8d5": [
+    {
+      "type": 0,
+      "value": "This note has been marked as sensitive, click here to reveal"
+    }
+  ],
+  "x82IOl": [
+    {
+      "type": 0,
+      "value": "Mute"
+    }
+  ],
+  "xIcAOU": [
+    {
+      "type": 0,
+      "value": "Votes by "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    }
+  ],
+  "xIoGG9": [
+    {
+      "type": 0,
+      "value": "Go to"
+    }
+  ],
+  "xJ9n2N": [
+    {
+      "type": 0,
+      "value": "Your public key"
+    }
+  ],
+  "xKflGN": [
+    {
+      "type": 1,
+      "value": "username"
+    },
+    {
+      "type": 0,
+      "value": "'s Follows on Nostr"
+    }
+  ],
+  "xQtL3v": [
+    {
+      "type": 0,
+      "value": "Unlock"
+    }
+  ],
+  "xaj9Ba": [
+    {
+      "type": 0,
+      "value": "Provider"
+    }
+  ],
+  "xbVgIm": [
+    {
+      "type": 0,
+      "value": "Automatically load media"
+    }
+  ],
+  "xhQMeQ": [
+    {
+      "type": 0,
+      "value": "Expires"
+    }
+  ],
+  "xmcVZ0": [
+    {
+      "type": 0,
+      "value": "Search"
+    }
+  ],
+  "y1Z3or": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
+  "yCLnBC": [
+    {
+      "type": 0,
+      "value": "LNURL or Lightning Address"
+    }
+  ],
+  "yCmnnm": [
+    {
+      "type": 0,
+      "value": "Read global from"
+    }
+  ],
+  "zFegDD": [
+    {
+      "type": 0,
+      "value": "Contact"
+    }
+  ],
+  "zINlao": [
+    {
+      "type": 0,
+      "value": "Owner"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "All"
+    }
+  ],
+  "zcaOTs": [
+    {
+      "type": 0,
+      "value": "Zap amount in sats"
+    }
+  ],
+  "zjJZBd": [
+    {
+      "type": 0,
+      "value": "You're ready!"
+    }
+  ],
+  "zonsdq": [
+    {
+      "type": 0,
+      "value": "Failed to load LNURL service"
+    }
+  ],
+  "zvCDao": [
+    {
+      "type": 0,
+      "value": "Automatically show latest notes"
+    }
+  ]
 }

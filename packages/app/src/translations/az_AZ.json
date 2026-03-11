@@ -1,518 +1,3914 @@
 {
-  "+D82kt": "Yenidən dərc etmək istədiyinizə əminsiniz: {id}",
-  "+PzQ9Y": "İndi Ödəniş Edin",
-  "+Vxixo": "Gizli qrup söhbəti",
-  "+aZY2h": "Zap Növü",
-  "+tShPg": "following",
-  "+vA//S": "Girişlər",
-  "+vIQlC": "Gələcəkdə hesabınızı idarə etmək üçün aşağıdakı parolu yadda saxladığınızdan əmin olun",
-  "+vVZ/G": "Qoşul",
-  "+vj0U3": "edit",
-  "+xliwN": "{name} repost etdi",
-  "/B8zwF": "Your space the way you want it 😌",
-  "/GCoTA": "Clear",
-  "/JE/X+": "Hesab Dəstəyi",
-  "/PCavi": "İctimai",
-  "/Xf4UW": "Send anonymous usage metrics",
-  "/clOBU": "Weekly",
-  "/d6vEc": "Profilinizi tapmağı və paylaşmağı asanlaşdırın",
-  "/n5KSF": "{n} ms",
-  "00LcfG": "Daha çox",
-  "0Azlrb": "İdarə et",
-  "0BUTMv": "Axtar...",
-  "0HFX0T": "Use Exact Location",
-  "0jOEtS": "Yanlış LNURL",
-  "0mch2Y": "adda icazə verilməyən simvollar var",
-  "0siT4z": "Politics",
-  "0uoY11": "Show Status",
-  "0yO7wF": "{n} saniyə",
-  "1H4Keq": "{n} users",
-  "1Mo59U": "Bu qeydi əlfəcinlərdən silmək istədiyinizə əminsiniz?",
-  "1R43+L": "Nostr Wallet Connect konfiqurasiyasını daxil edin",
-  "1UWegE": "Be sure to back up your keys!",
-  "1c4YST": "Qoşuldu: {node} 🎉",
-  "1nYUGC": "{n} İzləyir",
-  "1o2BgB": "Check Signatures",
-  "1ozeyg": "Nature",
-  "1udzha": "Söhbətlər",
-  "2/2yg+": "Əlavə et",
-  "25V4l1": "Banner",
-  "25WwxF": "Don't have an account?",
-  "2IFGap": "İanə et",
-  "2LbrkB": "Şifrə daxil edin",
-  "2O2sfp": "Finish",
-  "2a2YiP": "{n} Əlfəcinlər",
-  "2k0Cv+": "Bəyənməyənlər ({n})",
-  "2mcwT8": "New Note",
-  "2ukA4d": "{n} saat",
-  "2zJXeA": "Profiles",
-  "39AHJm": "Sign Up",
-  "3KNMbJ": "Articles",
-  "3cc4Ct": "İşıq",
-  "3gOsZq": "Tərcüməçilər",
-  "3qnJlS": "Siz {amount} sats ilə səs verirsiniz",
-  "3t3kok": "{n,plural,=1{{n} new note} other{{n} new notes}}",
-  "3tVy+Z": "{n} İzləyicilər",
-  "450Fty": "Heç biri",
-  "47FYwb": "Ləğv et",
-  "4IPzdn": "Əsas Tərtibatçılar",
-  "4L2vUY": "Your new NIP-05 handle is:",
-  "4MBtMa": "Name must be between 1 and 32 characters",
-  "4MjsHk": "Life",
-  "4OB335": "Bəyənmə",
-  "4Vmpt4": "Nostr Plebs məkanda ilk NIP-05 provayderlərindən biridir və münasib qiymətlərlə yaxşı domen kolleksiyası təklif edir",
-  "4Z3t5i": "Şəkilləri sıxmaq üçün imgproxy istifadə edin",
-  "4rYCjn": "Özünə Qeyd",
-  "5BVs2e": "zap",
-  "5CB6zB": "Zap Splits",
-  "5oTnfy": "Buy Handle",
-  "5u6iEc": "Pubkey-ə köçürün",
-  "5vMmmR": "İstifadəçi adları Nostr-da unikal deyil. Nostr ünvanı qeydiyyatdan keçdiyiniz zaman sizin üçün unikal olan, insan tərəfindən oxuna bilən unikal ünvanınızdır.",
-  "5ykRmX": "Zap göndər",
-  "6/SF6e": "<h1>{n}</h1> Cashu sats",
-  "6/hB3S": "Watch Replay",
-  "62nsdy": "Retry",
-  "65BmHb": "{host} proksi şəklini yükləmək alınmadı, birbaşa yükləmək üçün bura klikləyin",
-  "6OSOXl": "Reason: <i>{reason}</i>",
-  "6TfgXX": "{site} is an open source project built by passionate people in their free time",
-  "6bgpn+": "Not all clients support this, you may still receive some zaps as if zap splits was not configured",
-  "6ewQqw": "Bəyənmələr ({n})",
-  "6k7xfM": "Trending notes",
-  "6mr8WU": "Followed by",
-  "6uMqL1": "Ödənilməmiş",
-  "7+Domh": "Qeydlər",
-  "712i26": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node",
-  "7UOvbT": "Offline",
-  "7hp70g": "NIP-05",
-  "8/vBbP": "Repostlar ({n})",
-  "89q5wc": "Repostları təsdiqlə",
-  "8ED/4u": "Reply To",
-  "8HJxXG": "Sign up",
-  "8QDesP": "Zap {n} sats",
-  "8Rkoyb": "Recipient",
-  "8Y6bZQ": "Invalid zap split: {input}",
-  "8g2vyB": "ad çox uzun",
-  "8v1NN+": "Pairing phrase",
-  "9+Ddtu": "Növbəti",
-  "9HU8vw": "Cavabla",
-  "9SvQep": "{n} izləyir",
-  "9WRlF4": "Göndər",
-  "9kSari": "Retry publishing",
-  "9pMqYs": "Nostr Ünvanı",
-  "9wO4wJ": "Lightning fakturası",
-  "ABAQyo": "Chats",
-  "ADmfQT": "Valideyn",
-  "AIgmDy": "Add up to 4 hashtags",
-  "AN0Z7Q": "Muted Words",
-  "ASRK0S": "This author has been muted",
-  "Ai8VHU": "Snort relayında limitsiz qeyd saxlama",
-  "AkCxS/": "Səbəb",
-  "Am8glJ": "Game",
-  "AnLrRC": "Non-Zap",
-  "AxDOiG": "Months",
-  "AyGauy": "Daxil ol",
-  "B4C47Y": "ad çox qısa",
-  "B6+XJy": "zapped",
-  "B6H7eJ": "nsec, npub, nip-05, hex",
-  "BGCM48": "Write access to Snort relay, with 1 year of event retention",
-  "BWpuKl": "Yenilə",
-  "BjNwZW": "Nostr address (nip05)",
-  "C1LjMx": "Lightning Donation",
-  "C7642/": "Quote Repost",
-  "C81/uG": "Çıxış",
-  "C8HhVE": "Suggested Follows",
-  "CHTbO3": "Failed to load invoice",
-  "CVWeJ6": "Trending People",
-  "CYkOCI": "and {count} others you follow",
-  "CmZ9ls": "{n} Muted",
-  "CsCUYo": "{n} sats",
-  "Cu/K85": "Translated from {lang}",
-  "CzHZoc": "Social Graph",
-  "D+KzKd": "Automatically zap every note when loaded",
-  "D3idYv": "Settings",
-  "DBiVK1": "Cache",
-  "DKnriN": "Send sats",
-  "DZzCem": "Show latest {n} notes",
-  "DcL8P+": "Supporter",
-  "Dh3hbq": "Auto Zap",
-  "Dn82AL": "Live",
-  "DtYelJ": "Transfer",
-  "Dx4ey3": "Toggle all",
-  "EJbFi7": "Search notes",
-  "ELbg9p": "Data Providers",
-  "EQKRE4": "Show badges on profile pages",
-  "EWyQH5": "Global",
-  "Ebl/B2": "Translate to {lang}",
-  "EcZF24": "Custom Relays",
-  "EcfIwB": "Username is available",
-  "EcglP9": "Key",
-  "EjFyoR": "On-chain Donation Address",
-  "EnCOBJ": "Buy",
-  "F3l7xL": "Add Account",
-  "FDguSC": "{n} Zaps",
-  "FMfjrl": "Show status messages on profile pages",
-  "FSYL8G": "Trending Users",
-  "FcNSft": "Redirect issues HTTP redirect to the supplied lightning address",
-  "FdhSU2": "Claim Now",
-  "FfYsOb": "An error has occured!",
-  "FmXUJg": "follows you",
-  "G/yZLu": "Remove",
-  "G1BGCg": "Select Wallet",
-  "GFOoEE": "Salt",
-  "GL8aXW": "Bookmarks ({n})",
-  "GQPtfk": "Join Stream",
-  "GSye7T": "Lightning Address",
-  "GUlSVG": "Claim your included Snort nostr address",
-  "Gcn9NQ": "Magnet Link",
-  "GspYR7": "{n} Dislike",
-  "Gxcr08": "Broadcast Event",
-  "H+vHiz": "Hex Key..",
-  "H0JBH6": "Log Out",
-  "H6/kLh": "Order Paid!",
-  "HAlOn1": "Name",
-  "HFls6j": "name will be available later",
-  "HOzFdo": "Muted",
-  "HWbkEK": "Clear cache and reload",
-  "HbefNb": "Open Wallet",
-  "HhcAVH": "You don't follow this person, click here to load media from <i>{link}</i>, or update <a><i>your preferences</i></a> to always load media from everybody.",
-  "IEwZvs": "Are you sure you want to unpin this note?",
-  "IKKHqV": "Follows",
-  "IVbtTS": "Zap all {n} sats",
-  "IWz1ta": "Auto Translate",
-  "Ig9/a1": "Sent {n} sats to {name}",
-  "IoQq+a": "Click here to load anyway",
-  "Ix8l+B": "Trending Notes",
-  "J+dIsA": "Subscriptions",
-  "J2HeQ+": "Use commas to separate words e.g. word1, word2, word3",
-  "JCIgkj": "Username",
-  "JGrt9q": "Send sats to {name}",
-  "JHEHCk": "Zaps ({n})",
-  "JIVWWA": "Sport",
-  "JPFYIM": "No lightning address",
-  "JSx7y9": "Subscribe to {site_name} {plan} for {price} and receive the following rewards",
-  "JeoS4y": "Repost",
-  "JjGgXI": "Search users",
-  "JkLHGw": "Website",
-  "JymXbw": "Private Key",
-  "K3r6DQ": "Delete",
-  "K7AkdL": "Show",
-  "KAhAcM": "Enter LNDHub config",
-  "KHK8B9": "Relay",
-  "KQvWvD": "Deleted",
-  "KahimY": "Unknown event kind: {kind}",
-  "KoFlZg": "Enter mint URL",
-  "KtsyO0": "Enter Pin",
-  "LF5kYT": "Other Connections",
-  "LR1XjT": "Pin too short",
-  "LXxsbk": "Anonymous",
-  "LgbKvU": "Comment",
-  "Lu5/Bj": "Open on Zapstr",
-  "Lw+I+J": "{n,plural,=0{{name} zapped} other{{name} & {n} others zapped}}",
-  "LwYmVi": "Zaps on this note will be split to the following users.",
-  "M3Oirc": "Debug Menus",
-  "MBAYRO": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message",
-  "MI2jkA": "Not available:",
-  "MP54GY": "Wallet password",
-  "MWTx65": "Default Page",
-  "MiMipu": "Set as primary Nostr address (nip05)",
-  "Mrpkot": "Pay for subscription",
-  "MuVeKe": "Buy nostr address",
-  "MzRYWH": "Buying {item}",
-  "Mzizei": "Iris.to account",
-  "N2IrpM": "Confirm",
-  "NAidKb": "Notifications",
-  "NAuFNH": "You already have a subscription of this type, please renew or pay",
-  "NdOYJJ": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!",
-  "NepkXH": "Can't vote with {amount} sats, please set a different default zap amount",
-  "NndBJE": "New users page",
-  "O8Z8t9": "Show More",
-  "OEW7yJ": "Zaps",
-  "OKhRC6": "Share",
-  "OLEm6z": "Unknown login error",
-  "OQSOJF": "Get a free nostr address",
-  "OQXnew": "You subscription is still active, you can't renew yet",
-  "ORGv1Q": "Created",
-  "P61BTu": "Copy Event JSON",
-  "P7FD0F": "System (Default)",
-  "P7nJT9": "Total today (UTC): {amount} sats",
-  "PCSt5T": "Preferences",
-  "PJeJFc": "Summary",
-  "PamNxw": "Unknown file header: {name}",
-  "Pe0ogR": "Theme",
-  "PrsIg7": "Reactions will be shown on every page, if disabled no reactions will be shown",
-  "QDFTjG": "{n} Relays",
-  "QWhotP": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)",
-  "Qxv0B2": "You currently have {number} sats in your zap pool.",
-  "R81upa": "People you follow",
-  "RSr2uB": "Username must only contain lowercase letters and numbers",
-  "RahCRH": "Expired",
-  "RfhLwC": "By: {author}",
-  "RhDAoS": "Are you sure you want to delete {id}",
-  "RjpoYG": "Recent",
-  "RoOyAh": "Relays",
-  "Rs4kCE": "Bookmark",
-  "RwFaYs": "Sort",
-  "SLZGPn": "Enter a pin to encrypt your private key, you must enter this pin every time you open {site}.",
-  "SMO+on": "Send zap to {name}",
-  "SOqbe9": "Update Lightning Address",
-  "SP0+yi": "Buy Subscription",
-  "SYQtZ7": "LN Address Proxy",
-  "ShdEie": "Mark all read",
-  "Sjo1P4": "Custom",
-  "SmuYUd": "What should we call you?",
-  "Ss0sWu": "Pay Now",
-  "StKzTE": "The author has marked this note as a <i>sensitive topic</i>",
-  "TDR5ge": "Media in notes will automatically be shown for selected people, otherwise only the link will show",
-  "TJo5E6": "Preview",
-  "TP/cMX": "Ended",
-  "TaeBqw": "Sign in with Nostr Extension",
-  "TdtZQ5": "Crypto",
-  "TpgeGw": "Hex Salt..",
-  "Tpy00S": "People",
-  "U1aPPi": "Stop listening",
-  "UDYlxu": "Pending Subscriptions",
-  "UJTWqI": "Remove from my relays",
-  "UNjfWJ": "Check all event signatures received from relays",
-  "UT7Nkj": "New Chat",
-  "UUPFlt": "Users must accept the content warning to show the content of your note.",
-  "Ub+AGc": "Sign In",
-  "Up5U7K": "Block",
-  "UrKTqQ": "You have an active iris.to account",
-  "VL900k": "Recommended Relays",
-  "VN0+Fz": "Balance: {amount} sats",
-  "VOjC1i": "Pick which upload service you want to upload attachments to",
-  "VR5eHw": "Public key (npub/nprofile)",
-  "VcwrfF": "Yes please",
-  "VfhYxG": "To see a full list of changes you can view the changelog {here}",
-  "VlJkSk": "{n} muted",
-  "VnXp8Z": "Avatar",
-  "VvaJst": "View Wallets",
-  "W1yoZY": "It looks like you dont have any subscriptions, you can get one {link}",
-  "W2PiAr": "{n} Blocked",
-  "W9355R": "Unmute",
-  "WmZhfL": "Automatically translate notes to your local language",
-  "WvGmZT": "npub / nprofile / nostr address",
-  "X6tipZ": "Sign in with key",
-  "X7xU8J": "nsec, npub, nip-05, hex, mnemonic",
-  "XECMfW": "Send usage metrics",
-  "XICsE8": "File hosts",
-  "XXm7jJ": "Trending Hashtags",
-  "XgWvGA": "Reactions",
-  "Xopqkl": "Your default zap amount is {number} sats, example values are calculated from this.",
-  "XrSk2j": "Redeem",
-  "YDURw6": "Service URL",
-  "YR2I9M": "No keys, no {app}, There is no way to reset it if you don't back up. It only takes a minute.",
-  "YXA3AH": "Enable reactions",
-  "Z4BMCZ": "Enter pairing phrase",
-  "ZKORll": "Activate Now",
-  "ZLmyG9": "Contributors",
-  "ZS+jRE": "Send zap splits to",
-  "Zff6lu": "Username iris.to/<b>{name}</b> is reserved for you!",
-  "a5UPxh": "Fund developers and platforms providing NIP-05 verification services",
-  "a7TDNm": "Notes will stream in real time into global and notes tab",
-  "aHje0o": "Name or nym",
-  "aMaLBK": "Supported Extensions",
-  "aWpBzj": "Show more",
-  "b12Goz": "Mnemonic",
-  "b5vAk0": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address",
-  "bLZL5a": "Get Address",
-  "bQdA2k": "Sensitive Content",
-  "bep9C3": "Public Key",
-  "bfvyfs": "Anon",
-  "bxv59V": "Just now",
-  "c+JYNI": "No thanks",
-  "c35bj2": "If you have an enquiry about your NIP-05 order please DM {link}",
-  "c3g2hL": "Broadcast Again",
-  "cFbU1B": "Using Alby? Go to {link} to get your NWC config!",
-  "cHCwbF": "Photography",
-  "cPIKU2": "Following",
-  "cQfLWb": "URL..",
-  "cWx9t8": "Mute all",
-  "cg1VJ2": "Connect Wallet",
-  "cuP16y": "Multi account support",
-  "cuV2gK": "name is registered",
-  "cyR7Kh": "Back",
-  "d+6YsV": "Lists to mute:",
-  "d6CyG5": "History",
-  "d7d0/x": "LN Address",
-  "d8gpCh": "Try to use less than 5 hashtags to stay on topic 🙏",
-  "dOQCL8": "Display name",
-  "ddd3JX": "Popular Hashtags",
-  "deEeEI": "Register",
-  "dmsiLv": "A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}",
-  "e61Jf3": "Coming soon",
-  "e7VmYP": "Enter pin to unlock your private key",
-  "e7qqly": "Mark All Read",
-  "eF0Re7": "Use a nostr signer extension to sign in",
-  "eHAneD": "Reaction emoji",
-  "eJj8HD": "Get Verified",
-  "eSzf2G": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool.",
-  "eXT2QQ": "Group Chat",
-  "egib+2": "{n,plural,=1{& {n} other} other{& {n} others}}",
-  "fBI91o": "Zap",
-  "fBlba3": "Thanks for using {site}, please consider donating if you can.",
-  "fOksnD": "Can't vote because LNURL service does not support zaps",
-  "fQN+tq": "Show posts that have a content warning tag",
-  "fWZYP5": "Pinned",
-  "fX5RYm": "Pick a few topics of interest",
-  "filwqD": "Read",
-  "fjAcWo": "Gift Wraps",
-  "flnGvv": "What's on your mind?",
-  "fqwcJ1": "On-chain Donation",
-  "fsB/4p": "Saved",
-  "g5pX+a": "About",
-  "g985Wp": "Failed to send vote",
-  "gDzDRs": "Emoji to send when reactiong to a note",
-  "gXgY3+": "Not all clients support this yet",
-  "gczcC5": "Subscribe",
-  "geppt8": "{count} ({count2} in memory)",
-  "gjBiyj": "Loading...",
-  "grQ+mI": "Proof of Work",
-  "h7jvCs": "{site} is more fun together!",
-  "h8XMJL": "Badges",
-  "hMzcSq": "Messages",
-  "hRTfTR": "PRO",
-  "hY4lzx": "Supports",
-  "ha8JKG": "Show graph",
-  "hicxcO": "Show replies",
-  "hmZ3Bz": "Media",
-  "hniz8Z": "here",
-  "i/dBAR": "Zap Pool",
-  "iCqGww": "Reactions ({n})",
-  "iEoXYx": "DeepL translations",
-  "iGT1eE": "Prevent fake accounts from imitating you",
-  "iNWbVV": "Handle",
-  "iXPL0Z": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead",
-  "iYc3Ld": "Payments",
-  "ieGrWo": "Follow",
-  "itPgxd": "Profile",
-  "izWS4J": "Unfollow",
-  "j9xbzF": "Already backed up",
-  "jA3OE/": "{n,plural,=1{{n} sat} other{{n} sats}}",
-  "jAmfGl": "Your {site_name} subscription is expired",
-  "jHa/ko": "Clean up your feed",
-  "jMzO1S": "Internal error: {msg}",
-  "jTrbGf": "{n} km - {location}",
-  "jfV8Wr": "Back",
-  "jvo0vs": "Save",
-  "jzgQ2z": "{n} Reactions",
-  "k2veDA": "Write",
-  "k7sKNy": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!",
-  "kEZUR8": "Register an Iris username",
-  "kJYo0u": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}",
-  "kaaf1E": "now",
-  "kc79d3": "Topics",
-  "kuPHYE": "{n,plural,=0{{name} liked} other{{name} & {n} others liked}}",
-  "l+ikU1": "Everything in {plan}",
-  "lCILNz": "Buy Now",
-  "lD3+8a": "Pay",
-  "lPWASz": "Snort nostr address",
-  "lTbT3s": "Wallet password",
-  "lgg1KN": "account page",
-  "ll3xBp": "Image proxy service",
-  "lnaT9F": "Following {n}",
-  "lsNFM1": "Click to load content from {link}",
-  "lvlPhZ": "Pay Invoice",
-  "mErPop": "It looks like you dont have any, check {link} to buy one!",
-  "mH91FY": "Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below",
-  "mKAr6h": "Follow all",
-  "mKh2HS": "File upload service",
-  "mKhgP9": "{n,plural,=0{} =1{zapped} other{zapped}}",
-  "mTJFgF": "Popular",
-  "mfe8RW": "Option: {n}",
-  "n1Whvj": "Switch",
-  "nDejmx": "Unblock",
-  "nGBrvw": "Bookmarks",
-  "nihgfo": "Listen to this article",
-  "nn1qb3": "Your donations are greatly appreciated",
-  "nwZXeh": "{n} blocked",
-  "o7e+nJ": "{n} i̇zləyicilər",
-  "oJ+JJN": "Heç nə tapılmadı :/",
-  "odFwjL": "Yalnız izləyicilər",
-  "ojzbwv": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}",
-  "p4N05H": "Yüklə",
-  "p85Uwy": "Aktiv Abunəliklər",
-  "pI+77w": "Snort relayindən endirilə bilən ehtiyat nüsxələri",
-  "puLNUJ": "Pin",
-  "pzTOmv": "İzləyicilər",
-  "qD9EUF": "Email <> DM bridge for your Snort nostr address",
-  "qDwvZ4": "Naməlum xəta",
-  "qMx1sA": "Default Zap amount",
-  "qUJTsT": "Bloklanıb",
-  "qZsKBR": "Renew {tier}",
-  "qdGuQo": "Your Private Key Is (do not share this with anyone)",
-  "qfmMQh": "This note has been muted",
-  "qkvYUb": "Add to Profile",
-  "qmJ8kD": "Translation failed",
-  "qtWLmt": "Like",
-  "qyJtWy": "Show less",
-  "qydxOd": "Science",
-  "qz9fty": "Incorrect pin",
-  "r3C4x/": "Software",
-  "r5srDR": "Enter wallet password",
-  "rMgF34": "Back up now",
-  "rT14Ow": "Add Relays",
-  "rbrahO": "Close",
-  "rfuMjE": "(Default)",
-  "rmdsT4": "{n} days",
-  "rx1i0i": "Short link",
-  "sKDn4e": "Show Badges",
-  "sUNhQE": "user",
-  "sZQzjQ": "Failed to parse zap split: {input}",
-  "tGXF0Q": "Relay Lists",
-  "tOdNiY": "Dark",
-  "th5lxp": "Send note to a subset of your write relays",
-  "thnRpU": "Getting NIP-05 verified can help:",
-  "tjpYlr": "Relay Metrics",
-  "ttxS0b": "Supporter Badge",
-  "u+LyXc": "Interactions",
-  "u/vOPu": "Paid",
-  "u4bHcR": "Check out the code here: {link}",
-  "uCk8r+": "Already have an account?",
-  "uKqSN+": "Follows Feed",
-  "uSV4Ti": "Reposts need to be manually confirmed",
-  "uc0din": "Send sats splits to",
-  "ugyJnE": "Sending notes and other stuff",
-  "un1nGw": "{n} notes",
-  "usAvMr": "Edit Profile",
-  "v8lolG": "Start chat",
-  "vB3oQ/": "Must be a contact list or pubkey list",
-  "vN5UH8": "Profile Image",
-  "vZ4quW": "NIP-05 is a DNS based verification spec which helps to validate you as a real user.",
-  "vhlWFg": "Poll Options",
-  "vlbWtt": "Get a free one",
-  "vrTOHJ": "{amount} sats",
-  "vxwnbh": "Amount of work to apply to all published events",
-  "w1Fanr": "Business",
-  "w6qrwX": "NSFW",
-  "wEQDC6": "Düzəliş et",
-  "wSZR47": "Submit",
-  "wWLwvh": "Anon",
-  "wih7iJ": "ad bloklanıb",
-  "wofVHy": "Moderation",
-  "wqyN/i": "{link} ünvanında {service} haqqında ətraflı məlumat əldə edin",
-  "wtLjP6": "ID-ni kopyala",
-  "x/Fx2P": "Bütün zaplarınızın bir hissəsini vəsait hovuzuna bölməklə istifadə etdiyiniz xidmətləri maliyyələşdirin!",
-  "x82IOl": "Səssiz",
-  "xIcAOU": "Votes by {type}",
-  "xIoGG9": "Get",
-  "xQtL3v": "Kilidi aç",
-  "xaj9Ba": "Provayder",
-  "xbVgIm": "Medianı avtomatik yükləyin",
-  "xhQMeQ": "Müddəti bitir",
-  "xl4s/X": "Additional Terms:",
-  "xmcVZ0": "Axtar",
-  "y1Z3or": "Dil",
-  "yCLnBC": "LNURL və ya Lightning Ünvanı",
-  "yNBPJp": "Help fund the development of {site}",
-  "zCb8fX": "Weight",
-  "zFegDD": "Əlaqə",
-  "zINlao": "Sahibi",
-  "zQvVDJ": "Hamısı",
-  "zcaOTs": "Sats'larda Zap məbləği",
-  "zm6qS1": "{n} mins to read",
-  "zonsdq": "LNURL xidmətini yükləmək alınmadı",
-  "zvCDao": "Ən son qeydləri avtomatik göstərin",
-  "zwb6LR": "<b>Mint:</b> {url}",
-  "zxvhnE": "Daily"
+  "+D82kt": [
+    {
+      "type": 0,
+      "value": "Yenidən dərc etmək istədiyinizə əminsiniz: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "+PzQ9Y": [
+    {
+      "type": 0,
+      "value": "İndi Ödəniş Edin"
+    }
+  ],
+  "+Vxixo": [
+    {
+      "type": 0,
+      "value": "Gizli qrup söhbəti"
+    }
+  ],
+  "+aZY2h": [
+    {
+      "type": 0,
+      "value": "Zap Növü"
+    }
+  ],
+  "+tShPg": [
+    {
+      "type": 0,
+      "value": "following"
+    }
+  ],
+  "+vA//S": [
+    {
+      "type": 0,
+      "value": "Girişlər"
+    }
+  ],
+  "+vIQlC": [
+    {
+      "type": 0,
+      "value": "Gələcəkdə hesabınızı idarə etmək üçün aşağıdakı parolu yadda saxladığınızdan əmin olun"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "Qoşul"
+    }
+  ],
+  "+vj0U3": [
+    {
+      "type": 0,
+      "value": "edit"
+    }
+  ],
+  "+xliwN": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " repost etdi"
+    }
+  ],
+  "/B8zwF": [
+    {
+      "type": 0,
+      "value": "Your space the way you want it 😌"
+    }
+  ],
+  "/GCoTA": [
+    {
+      "type": 0,
+      "value": "Clear"
+    }
+  ],
+  "/JE/X+": [
+    {
+      "type": 0,
+      "value": "Hesab Dəstəyi"
+    }
+  ],
+  "/PCavi": [
+    {
+      "type": 0,
+      "value": "İctimai"
+    }
+  ],
+  "/Xf4UW": [
+    {
+      "type": 0,
+      "value": "Send anonymous usage metrics"
+    }
+  ],
+  "/clOBU": [
+    {
+      "type": 0,
+      "value": "Weekly"
+    }
+  ],
+  "/d6vEc": [
+    {
+      "type": 0,
+      "value": "Profilinizi tapmağı və paylaşmağı asanlaşdırın"
+    }
+  ],
+  "/n5KSF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ms"
+    }
+  ],
+  "00LcfG": [
+    {
+      "type": 0,
+      "value": "Daha çox"
+    }
+  ],
+  "0Azlrb": [
+    {
+      "type": 0,
+      "value": "İdarə et"
+    }
+  ],
+  "0BUTMv": [
+    {
+      "type": 0,
+      "value": "Axtar..."
+    }
+  ],
+  "0HFX0T": [
+    {
+      "type": 0,
+      "value": "Use Exact Location"
+    }
+  ],
+  "0jOEtS": [
+    {
+      "type": 0,
+      "value": "Yanlış LNURL"
+    }
+  ],
+  "0mch2Y": [
+    {
+      "type": 0,
+      "value": "adda icazə verilməyən simvollar var"
+    }
+  ],
+  "0siT4z": [
+    {
+      "type": 0,
+      "value": "Politics"
+    }
+  ],
+  "0uoY11": [
+    {
+      "type": 0,
+      "value": "Show Status"
+    }
+  ],
+  "0yO7wF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " saniyə"
+    }
+  ],
+  "1H4Keq": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " users"
+    }
+  ],
+  "1Mo59U": [
+    {
+      "type": 0,
+      "value": "Bu qeydi əlfəcinlərdən silmək istədiyinizə əminsiniz?"
+    }
+  ],
+  "1R43+L": [
+    {
+      "type": 0,
+      "value": "Nostr Wallet Connect konfiqurasiyasını daxil edin"
+    }
+  ],
+  "1UWegE": [
+    {
+      "type": 0,
+      "value": "Be sure to back up your keys!"
+    }
+  ],
+  "1c4YST": [
+    {
+      "type": 0,
+      "value": "Qoşuldu: "
+    },
+    {
+      "type": 1,
+      "value": "node"
+    },
+    {
+      "type": 0,
+      "value": " 🎉"
+    }
+  ],
+  "1nYUGC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " İzləyir"
+    }
+  ],
+  "1o2BgB": [
+    {
+      "type": 0,
+      "value": "Check Signatures"
+    }
+  ],
+  "1ozeyg": [
+    {
+      "type": 0,
+      "value": "Nature"
+    }
+  ],
+  "1udzha": [
+    {
+      "type": 0,
+      "value": "Söhbətlər"
+    }
+  ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "Əlavə et"
+    }
+  ],
+  "25V4l1": [
+    {
+      "type": 0,
+      "value": "Banner"
+    }
+  ],
+  "25WwxF": [
+    {
+      "type": 0,
+      "value": "Don't have an account?"
+    }
+  ],
+  "2IFGap": [
+    {
+      "type": 0,
+      "value": "İanə et"
+    }
+  ],
+  "2LbrkB": [
+    {
+      "type": 0,
+      "value": "Şifrə daxil edin"
+    }
+  ],
+  "2O2sfp": [
+    {
+      "type": 0,
+      "value": "Finish"
+    }
+  ],
+  "2a2YiP": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Əlfəcinlər"
+    }
+  ],
+  "2k0Cv+": [
+    {
+      "type": 0,
+      "value": "Bəyənməyənlər ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "2mcwT8": [
+    {
+      "type": 0,
+      "value": "New Note"
+    }
+  ],
+  "2ukA4d": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " saat"
+    }
+  ],
+  "2zJXeA": [
+    {
+      "type": 0,
+      "value": "Profiles"
+    }
+  ],
+  "39AHJm": [
+    {
+      "type": 0,
+      "value": "Sign Up"
+    }
+  ],
+  "3KNMbJ": [
+    {
+      "type": 0,
+      "value": "Articles"
+    }
+  ],
+  "3cc4Ct": [
+    {
+      "type": 0,
+      "value": "İşıq"
+    }
+  ],
+  "3gOsZq": [
+    {
+      "type": 0,
+      "value": "Tərcüməçilər"
+    }
+  ],
+  "3qnJlS": [
+    {
+      "type": 0,
+      "value": "Siz "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats ilə səs verirsiniz"
+    }
+  ],
+  "3t3kok": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " new note"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " new notes"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "3tVy+Z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " İzləyicilər"
+    }
+  ],
+  "450Fty": [
+    {
+      "type": 0,
+      "value": "Heç biri"
+    }
+  ],
+  "47FYwb": [
+    {
+      "type": 0,
+      "value": "Ləğv et"
+    }
+  ],
+  "4IPzdn": [
+    {
+      "type": 0,
+      "value": "Əsas Tərtibatçılar"
+    }
+  ],
+  "4L2vUY": [
+    {
+      "type": 0,
+      "value": "Your new NIP-05 handle is:"
+    }
+  ],
+  "4MBtMa": [
+    {
+      "type": 0,
+      "value": "Name must be between 1 and 32 characters"
+    }
+  ],
+  "4MjsHk": [
+    {
+      "type": 0,
+      "value": "Life"
+    }
+  ],
+  "4OB335": [
+    {
+      "type": 0,
+      "value": "Bəyənmə"
+    }
+  ],
+  "4Vmpt4": [
+    {
+      "type": 0,
+      "value": "Nostr Plebs məkanda ilk NIP-05 provayderlərindən biridir və münasib qiymətlərlə yaxşı domen kolleksiyası təklif edir"
+    }
+  ],
+  "4Z3t5i": [
+    {
+      "type": 0,
+      "value": "Şəkilləri sıxmaq üçün imgproxy istifadə edin"
+    }
+  ],
+  "4rYCjn": [
+    {
+      "type": 0,
+      "value": "Özünə Qeyd"
+    }
+  ],
+  "5BVs2e": [
+    {
+      "type": 0,
+      "value": "zap"
+    }
+  ],
+  "5CB6zB": [
+    {
+      "type": 0,
+      "value": "Zap Splits"
+    }
+  ],
+  "5oTnfy": [
+    {
+      "type": 0,
+      "value": "Buy Handle"
+    }
+  ],
+  "5u6iEc": [
+    {
+      "type": 0,
+      "value": "Pubkey-ə köçürün"
+    }
+  ],
+  "5vMmmR": [
+    {
+      "type": 0,
+      "value": "İstifadəçi adları Nostr-da unikal deyil. Nostr ünvanı qeydiyyatdan keçdiyiniz zaman sizin üçün unikal olan, insan tərəfindən oxuna bilən unikal ünvanınızdır."
+    }
+  ],
+  "5ykRmX": [
+    {
+      "type": 0,
+      "value": "Zap göndər"
+    }
+  ],
+  "6/SF6e": [
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "n"
+        }
+      ],
+      "type": 8,
+      "value": "h1"
+    },
+    {
+      "type": 0,
+      "value": " Cashu sats"
+    }
+  ],
+  "6/hB3S": [
+    {
+      "type": 0,
+      "value": "Watch Replay"
+    }
+  ],
+  "62nsdy": [
+    {
+      "type": 0,
+      "value": "Retry"
+    }
+  ],
+  "65BmHb": [
+    {
+      "type": 1,
+      "value": "host"
+    },
+    {
+      "type": 0,
+      "value": " proksi şəklini yükləmək alınmadı, birbaşa yükləmək üçün bura klikləyin"
+    }
+  ],
+  "6OSOXl": [
+    {
+      "type": 0,
+      "value": "Reason: "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reason"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "6TfgXX": [
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " is an open source project built by passionate people in their free time"
+    }
+  ],
+  "6bgpn+": [
+    {
+      "type": 0,
+      "value": "Not all clients support this, you may still receive some zaps as if zap splits was not configured"
+    }
+  ],
+  "6ewQqw": [
+    {
+      "type": 0,
+      "value": "Bəyənmələr ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "6k7xfM": [
+    {
+      "type": 0,
+      "value": "Trending notes"
+    }
+  ],
+  "6mr8WU": [
+    {
+      "type": 0,
+      "value": "Followed by"
+    }
+  ],
+  "6uMqL1": [
+    {
+      "type": 0,
+      "value": "Ödənilməmiş"
+    }
+  ],
+  "7+Domh": [
+    {
+      "type": 0,
+      "value": "Qeydlər"
+    }
+  ],
+  "712i26": [
+    {
+      "type": 0,
+      "value": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node"
+    }
+  ],
+  "7UOvbT": [
+    {
+      "type": 0,
+      "value": "Offline"
+    }
+  ],
+  "7hp70g": [
+    {
+      "type": 0,
+      "value": "NIP-05"
+    }
+  ],
+  "8/vBbP": [
+    {
+      "type": 0,
+      "value": "Repostlar ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "89q5wc": [
+    {
+      "type": 0,
+      "value": "Repostları təsdiqlə"
+    }
+  ],
+  "8ED/4u": [
+    {
+      "type": 0,
+      "value": "Reply To"
+    }
+  ],
+  "8HJxXG": [
+    {
+      "type": 0,
+      "value": "Sign up"
+    }
+  ],
+  "8QDesP": [
+    {
+      "type": 0,
+      "value": "Zap "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "8Rkoyb": [
+    {
+      "type": 0,
+      "value": "Recipient"
+    }
+  ],
+  "8Y6bZQ": [
+    {
+      "type": 0,
+      "value": "Invalid zap split: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "8g2vyB": [
+    {
+      "type": 0,
+      "value": "ad çox uzun"
+    }
+  ],
+  "8v1NN+": [
+    {
+      "type": 0,
+      "value": "Pairing phrase"
+    }
+  ],
+  "9+Ddtu": [
+    {
+      "type": 0,
+      "value": "Növbəti"
+    }
+  ],
+  "9HU8vw": [
+    {
+      "type": 0,
+      "value": "Cavabla"
+    }
+  ],
+  "9SvQep": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " izləyir"
+    }
+  ],
+  "9WRlF4": [
+    {
+      "type": 0,
+      "value": "Göndər"
+    }
+  ],
+  "9kSari": [
+    {
+      "type": 0,
+      "value": "Retry publishing"
+    }
+  ],
+  "9pMqYs": [
+    {
+      "type": 0,
+      "value": "Nostr Ünvanı"
+    }
+  ],
+  "9wO4wJ": [
+    {
+      "type": 0,
+      "value": "Lightning fakturası"
+    }
+  ],
+  "ABAQyo": [
+    {
+      "type": 0,
+      "value": "Chats"
+    }
+  ],
+  "ADmfQT": [
+    {
+      "type": 0,
+      "value": "Valideyn"
+    }
+  ],
+  "AIgmDy": [
+    {
+      "type": 0,
+      "value": "Add up to 4 hashtags"
+    }
+  ],
+  "AN0Z7Q": [
+    {
+      "type": 0,
+      "value": "Muted Words"
+    }
+  ],
+  "ASRK0S": [
+    {
+      "type": 0,
+      "value": "This author has been muted"
+    }
+  ],
+  "Ai8VHU": [
+    {
+      "type": 0,
+      "value": "Snort relayında limitsiz qeyd saxlama"
+    }
+  ],
+  "AkCxS/": [
+    {
+      "type": 0,
+      "value": "Səbəb"
+    }
+  ],
+  "Am8glJ": [
+    {
+      "type": 0,
+      "value": "Game"
+    }
+  ],
+  "AnLrRC": [
+    {
+      "type": 0,
+      "value": "Non-Zap"
+    }
+  ],
+  "AxDOiG": [
+    {
+      "type": 0,
+      "value": "Months"
+    }
+  ],
+  "AyGauy": [
+    {
+      "type": 0,
+      "value": "Daxil ol"
+    }
+  ],
+  "B4C47Y": [
+    {
+      "type": 0,
+      "value": "ad çox qısa"
+    }
+  ],
+  "B6+XJy": [
+    {
+      "type": 0,
+      "value": "zapped"
+    }
+  ],
+  "B6H7eJ": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex"
+    }
+  ],
+  "BGCM48": [
+    {
+      "type": 0,
+      "value": "Write access to Snort relay, with 1 year of event retention"
+    }
+  ],
+  "BWpuKl": [
+    {
+      "type": 0,
+      "value": "Yenilə"
+    }
+  ],
+  "BjNwZW": [
+    {
+      "type": 0,
+      "value": "Nostr address (nip05)"
+    }
+  ],
+  "C1LjMx": [
+    {
+      "type": 0,
+      "value": "Lightning Donation"
+    }
+  ],
+  "C7642/": [
+    {
+      "type": 0,
+      "value": "Quote Repost"
+    }
+  ],
+  "C81/uG": [
+    {
+      "type": 0,
+      "value": "Çıxış"
+    }
+  ],
+  "C8HhVE": [
+    {
+      "type": 0,
+      "value": "Suggested Follows"
+    }
+  ],
+  "CHTbO3": [
+    {
+      "type": 0,
+      "value": "Failed to load invoice"
+    }
+  ],
+  "CVWeJ6": [
+    {
+      "type": 0,
+      "value": "Trending People"
+    }
+  ],
+  "CYkOCI": [
+    {
+      "type": 0,
+      "value": "and "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " others you follow"
+    }
+  ],
+  "CmZ9ls": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Muted"
+    }
+  ],
+  "CsCUYo": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "Cu/K85": [
+    {
+      "type": 0,
+      "value": "Translated from "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "CzHZoc": [
+    {
+      "type": 0,
+      "value": "Social Graph"
+    }
+  ],
+  "D+KzKd": [
+    {
+      "type": 0,
+      "value": "Automatically zap every note when loaded"
+    }
+  ],
+  "D3idYv": [
+    {
+      "type": 0,
+      "value": "Settings"
+    }
+  ],
+  "DBiVK1": [
+    {
+      "type": 0,
+      "value": "Cache"
+    }
+  ],
+  "DKnriN": [
+    {
+      "type": 0,
+      "value": "Send sats"
+    }
+  ],
+  "DZzCem": [
+    {
+      "type": 0,
+      "value": "Show latest "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " notes"
+    }
+  ],
+  "DcL8P+": [
+    {
+      "type": 0,
+      "value": "Supporter"
+    }
+  ],
+  "Dh3hbq": [
+    {
+      "type": 0,
+      "value": "Auto Zap"
+    }
+  ],
+  "Dn82AL": [
+    {
+      "type": 0,
+      "value": "Live"
+    }
+  ],
+  "DtYelJ": [
+    {
+      "type": 0,
+      "value": "Transfer"
+    }
+  ],
+  "Dx4ey3": [
+    {
+      "type": 0,
+      "value": "Toggle all"
+    }
+  ],
+  "EJbFi7": [
+    {
+      "type": 0,
+      "value": "Search notes"
+    }
+  ],
+  "ELbg9p": [
+    {
+      "type": 0,
+      "value": "Data Providers"
+    }
+  ],
+  "EQKRE4": [
+    {
+      "type": 0,
+      "value": "Show badges on profile pages"
+    }
+  ],
+  "EWyQH5": [
+    {
+      "type": 0,
+      "value": "Global"
+    }
+  ],
+  "Ebl/B2": [
+    {
+      "type": 0,
+      "value": "Translate to "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "EcZF24": [
+    {
+      "type": 0,
+      "value": "Custom Relays"
+    }
+  ],
+  "EcfIwB": [
+    {
+      "type": 0,
+      "value": "Username is available"
+    }
+  ],
+  "EcglP9": [
+    {
+      "type": 0,
+      "value": "Key"
+    }
+  ],
+  "EjFyoR": [
+    {
+      "type": 0,
+      "value": "On-chain Donation Address"
+    }
+  ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "Buy"
+    }
+  ],
+  "F3l7xL": [
+    {
+      "type": 0,
+      "value": "Add Account"
+    }
+  ],
+  "FDguSC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Zaps"
+    }
+  ],
+  "FMfjrl": [
+    {
+      "type": 0,
+      "value": "Show status messages on profile pages"
+    }
+  ],
+  "FSYL8G": [
+    {
+      "type": 0,
+      "value": "Trending Users"
+    }
+  ],
+  "FcNSft": [
+    {
+      "type": 0,
+      "value": "Redirect issues HTTP redirect to the supplied lightning address"
+    }
+  ],
+  "FdhSU2": [
+    {
+      "type": 0,
+      "value": "Claim Now"
+    }
+  ],
+  "FfYsOb": [
+    {
+      "type": 0,
+      "value": "An error has occured!"
+    }
+  ],
+  "FmXUJg": [
+    {
+      "type": 0,
+      "value": "follows you"
+    }
+  ],
+  "G/yZLu": [
+    {
+      "type": 0,
+      "value": "Remove"
+    }
+  ],
+  "G1BGCg": [
+    {
+      "type": 0,
+      "value": "Select Wallet"
+    }
+  ],
+  "GFOoEE": [
+    {
+      "type": 0,
+      "value": "Salt"
+    }
+  ],
+  "GL8aXW": [
+    {
+      "type": 0,
+      "value": "Bookmarks ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "GQPtfk": [
+    {
+      "type": 0,
+      "value": "Join Stream"
+    }
+  ],
+  "GSye7T": [
+    {
+      "type": 0,
+      "value": "Lightning Address"
+    }
+  ],
+  "GUlSVG": [
+    {
+      "type": 0,
+      "value": "Claim your included Snort nostr address"
+    }
+  ],
+  "Gcn9NQ": [
+    {
+      "type": 0,
+      "value": "Magnet Link"
+    }
+  ],
+  "GspYR7": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Dislike"
+    }
+  ],
+  "Gxcr08": [
+    {
+      "type": 0,
+      "value": "Broadcast Event"
+    }
+  ],
+  "H+vHiz": [
+    {
+      "type": 0,
+      "value": "Hex Key.."
+    }
+  ],
+  "H0JBH6": [
+    {
+      "type": 0,
+      "value": "Log Out"
+    }
+  ],
+  "H6/kLh": [
+    {
+      "type": 0,
+      "value": "Order Paid!"
+    }
+  ],
+  "HAlOn1": [
+    {
+      "type": 0,
+      "value": "Name"
+    }
+  ],
+  "HFls6j": [
+    {
+      "type": 0,
+      "value": "name will be available later"
+    }
+  ],
+  "HOzFdo": [
+    {
+      "type": 0,
+      "value": "Muted"
+    }
+  ],
+  "HWbkEK": [
+    {
+      "type": 0,
+      "value": "Clear cache and reload"
+    }
+  ],
+  "HbefNb": [
+    {
+      "type": 0,
+      "value": "Open Wallet"
+    }
+  ],
+  "HhcAVH": [
+    {
+      "type": 0,
+      "value": "You don't follow this person, click here to load media from "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "link"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": ", or update "
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "type": 0,
+              "value": "your preferences"
+            }
+          ],
+          "type": 8,
+          "value": "i"
+        }
+      ],
+      "type": 8,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": " to always load media from everybody."
+    }
+  ],
+  "IEwZvs": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to unpin this note?"
+    }
+  ],
+  "IKKHqV": [
+    {
+      "type": 0,
+      "value": "Follows"
+    }
+  ],
+  "IVbtTS": [
+    {
+      "type": 0,
+      "value": "Zap all "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "IWz1ta": [
+    {
+      "type": 0,
+      "value": "Auto Translate"
+    }
+  ],
+  "Ig9/a1": [
+    {
+      "type": 0,
+      "value": "Sent "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "IoQq+a": [
+    {
+      "type": 0,
+      "value": "Click here to load anyway"
+    }
+  ],
+  "Ix8l+B": [
+    {
+      "type": 0,
+      "value": "Trending Notes"
+    }
+  ],
+  "J+dIsA": [
+    {
+      "type": 0,
+      "value": "Subscriptions"
+    }
+  ],
+  "J2HeQ+": [
+    {
+      "type": 0,
+      "value": "Use commas to separate words e.g. word1, word2, word3"
+    }
+  ],
+  "JCIgkj": [
+    {
+      "type": 0,
+      "value": "Username"
+    }
+  ],
+  "JGrt9q": [
+    {
+      "type": 0,
+      "value": "Send sats to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "JHEHCk": [
+    {
+      "type": 0,
+      "value": "Zaps ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "JIVWWA": [
+    {
+      "type": 0,
+      "value": "Sport"
+    }
+  ],
+  "JPFYIM": [
+    {
+      "type": 0,
+      "value": "No lightning address"
+    }
+  ],
+  "JSx7y9": [
+    {
+      "type": 0,
+      "value": "Subscribe to "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": " for "
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " and receive the following rewards"
+    }
+  ],
+  "JeoS4y": [
+    {
+      "type": 0,
+      "value": "Repost"
+    }
+  ],
+  "JjGgXI": [
+    {
+      "type": 0,
+      "value": "Search users"
+    }
+  ],
+  "JkLHGw": [
+    {
+      "type": 0,
+      "value": "Website"
+    }
+  ],
+  "JymXbw": [
+    {
+      "type": 0,
+      "value": "Private Key"
+    }
+  ],
+  "K3r6DQ": [
+    {
+      "type": 0,
+      "value": "Delete"
+    }
+  ],
+  "K7AkdL": [
+    {
+      "type": 0,
+      "value": "Show"
+    }
+  ],
+  "KAhAcM": [
+    {
+      "type": 0,
+      "value": "Enter LNDHub config"
+    }
+  ],
+  "KHK8B9": [
+    {
+      "type": 0,
+      "value": "Relay"
+    }
+  ],
+  "KQvWvD": [
+    {
+      "type": 0,
+      "value": "Deleted"
+    }
+  ],
+  "KahimY": [
+    {
+      "type": 0,
+      "value": "Unknown event kind: "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    }
+  ],
+  "KoFlZg": [
+    {
+      "type": 0,
+      "value": "Enter mint URL"
+    }
+  ],
+  "KtsyO0": [
+    {
+      "type": 0,
+      "value": "Enter Pin"
+    }
+  ],
+  "LF5kYT": [
+    {
+      "type": 0,
+      "value": "Other Connections"
+    }
+  ],
+  "LR1XjT": [
+    {
+      "type": 0,
+      "value": "Pin too short"
+    }
+  ],
+  "LXxsbk": [
+    {
+      "type": 0,
+      "value": "Anonymous"
+    }
+  ],
+  "LgbKvU": [
+    {
+      "type": 0,
+      "value": "Comment"
+    }
+  ],
+  "Lu5/Bj": [
+    {
+      "type": 0,
+      "value": "Open on Zapstr"
+    }
+  ],
+  "Lw+I+J": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " zapped"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others zapped"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "LwYmVi": [
+    {
+      "type": 0,
+      "value": "Zaps on this note will be split to the following users."
+    }
+  ],
+  "M3Oirc": [
+    {
+      "type": 0,
+      "value": "Debug Menus"
+    }
+  ],
+  "MBAYRO": [
+    {
+      "type": 0,
+      "value": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message"
+    }
+  ],
+  "MI2jkA": [
+    {
+      "type": 0,
+      "value": "Not available:"
+    }
+  ],
+  "MP54GY": [
+    {
+      "type": 0,
+      "value": "Wallet password"
+    }
+  ],
+  "MWTx65": [
+    {
+      "type": 0,
+      "value": "Default Page"
+    }
+  ],
+  "MiMipu": [
+    {
+      "type": 0,
+      "value": "Set as primary Nostr address (nip05)"
+    }
+  ],
+  "Mrpkot": [
+    {
+      "type": 0,
+      "value": "Pay for subscription"
+    }
+  ],
+  "MuVeKe": [
+    {
+      "type": 0,
+      "value": "Buy nostr address"
+    }
+  ],
+  "MzRYWH": [
+    {
+      "type": 0,
+      "value": "Buying "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    }
+  ],
+  "Mzizei": [
+    {
+      "type": 0,
+      "value": "Iris.to account"
+    }
+  ],
+  "N2IrpM": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
+  "NAidKb": [
+    {
+      "type": 0,
+      "value": "Notifications"
+    }
+  ],
+  "NAuFNH": [
+    {
+      "type": 0,
+      "value": "You already have a subscription of this type, please renew or pay"
+    }
+  ],
+  "NdOYJJ": [
+    {
+      "type": 0,
+      "value": "Hmm nothing here.. Checkout "
+    },
+    {
+      "type": 1,
+      "value": "newUsersPage"
+    },
+    {
+      "type": 0,
+      "value": " to follow some recommended nostrich's!"
+    }
+  ],
+  "NepkXH": [
+    {
+      "type": 0,
+      "value": "Can't vote with "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, please set a different default zap amount"
+    }
+  ],
+  "NndBJE": [
+    {
+      "type": 0,
+      "value": "New users page"
+    }
+  ],
+  "O8Z8t9": [
+    {
+      "type": 0,
+      "value": "Show More"
+    }
+  ],
+  "OEW7yJ": [
+    {
+      "type": 0,
+      "value": "Zaps"
+    }
+  ],
+  "OKhRC6": [
+    {
+      "type": 0,
+      "value": "Share"
+    }
+  ],
+  "OLEm6z": [
+    {
+      "type": 0,
+      "value": "Unknown login error"
+    }
+  ],
+  "OQSOJF": [
+    {
+      "type": 0,
+      "value": "Get a free nostr address"
+    }
+  ],
+  "OQXnew": [
+    {
+      "type": 0,
+      "value": "You subscription is still active, you can't renew yet"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "Created"
+    }
+  ],
+  "P61BTu": [
+    {
+      "type": 0,
+      "value": "Copy Event JSON"
+    }
+  ],
+  "P7FD0F": [
+    {
+      "type": 0,
+      "value": "System (Default)"
+    }
+  ],
+  "P7nJT9": [
+    {
+      "type": 0,
+      "value": "Total today (UTC): "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "PCSt5T": [
+    {
+      "type": 0,
+      "value": "Preferences"
+    }
+  ],
+  "PJeJFc": [
+    {
+      "type": 0,
+      "value": "Summary"
+    }
+  ],
+  "PamNxw": [
+    {
+      "type": 0,
+      "value": "Unknown file header: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Pe0ogR": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
+  "PrsIg7": [
+    {
+      "type": 0,
+      "value": "Reactions will be shown on every page, if disabled no reactions will be shown"
+    }
+  ],
+  "QDFTjG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Relays"
+    }
+  ],
+  "QWhotP": [
+    {
+      "type": 0,
+      "value": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)"
+    }
+  ],
+  "Qxv0B2": [
+    {
+      "type": 0,
+      "value": "You currently have "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats in your zap pool."
+    }
+  ],
+  "R81upa": [
+    {
+      "type": 0,
+      "value": "People you follow"
+    }
+  ],
+  "RSr2uB": [
+    {
+      "type": 0,
+      "value": "Username must only contain lowercase letters and numbers"
+    }
+  ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "Expired"
+    }
+  ],
+  "RfhLwC": [
+    {
+      "type": 0,
+      "value": "By: "
+    },
+    {
+      "type": 1,
+      "value": "author"
+    }
+  ],
+  "RhDAoS": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to delete "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "RjpoYG": [
+    {
+      "type": 0,
+      "value": "Recent"
+    }
+  ],
+  "RoOyAh": [
+    {
+      "type": 0,
+      "value": "Relays"
+    }
+  ],
+  "Rs4kCE": [
+    {
+      "type": 0,
+      "value": "Bookmark"
+    }
+  ],
+  "RwFaYs": [
+    {
+      "type": 0,
+      "value": "Sort"
+    }
+  ],
+  "SLZGPn": [
+    {
+      "type": 0,
+      "value": "Enter a pin to encrypt your private key, you must enter this pin every time you open "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "SMO+on": [
+    {
+      "type": 0,
+      "value": "Send zap to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "SOqbe9": [
+    {
+      "type": 0,
+      "value": "Update Lightning Address"
+    }
+  ],
+  "SP0+yi": [
+    {
+      "type": 0,
+      "value": "Buy Subscription"
+    }
+  ],
+  "SYQtZ7": [
+    {
+      "type": 0,
+      "value": "LN Address Proxy"
+    }
+  ],
+  "ShdEie": [
+    {
+      "type": 0,
+      "value": "Mark all read"
+    }
+  ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "Custom"
+    }
+  ],
+  "SmuYUd": [
+    {
+      "type": 0,
+      "value": "What should we call you?"
+    }
+  ],
+  "Ss0sWu": [
+    {
+      "type": 0,
+      "value": "Pay Now"
+    }
+  ],
+  "StKzTE": [
+    {
+      "type": 0,
+      "value": "The author has marked this note as a "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "sensitive topic"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "TDR5ge": [
+    {
+      "type": 0,
+      "value": "Media in notes will automatically be shown for selected people, otherwise only the link will show"
+    }
+  ],
+  "TJo5E6": [
+    {
+      "type": 0,
+      "value": "Preview"
+    }
+  ],
+  "TP/cMX": [
+    {
+      "type": 0,
+      "value": "Ended"
+    }
+  ],
+  "TaeBqw": [
+    {
+      "type": 0,
+      "value": "Sign in with Nostr Extension"
+    }
+  ],
+  "TdtZQ5": [
+    {
+      "type": 0,
+      "value": "Crypto"
+    }
+  ],
+  "TpgeGw": [
+    {
+      "type": 0,
+      "value": "Hex Salt.."
+    }
+  ],
+  "Tpy00S": [
+    {
+      "type": 0,
+      "value": "People"
+    }
+  ],
+  "U1aPPi": [
+    {
+      "type": 0,
+      "value": "Stop listening"
+    }
+  ],
+  "UDYlxu": [
+    {
+      "type": 0,
+      "value": "Pending Subscriptions"
+    }
+  ],
+  "UJTWqI": [
+    {
+      "type": 0,
+      "value": "Remove from my relays"
+    }
+  ],
+  "UNjfWJ": [
+    {
+      "type": 0,
+      "value": "Check all event signatures received from relays"
+    }
+  ],
+  "UT7Nkj": [
+    {
+      "type": 0,
+      "value": "New Chat"
+    }
+  ],
+  "UUPFlt": [
+    {
+      "type": 0,
+      "value": "Users must accept the content warning to show the content of your note."
+    }
+  ],
+  "Ub+AGc": [
+    {
+      "type": 0,
+      "value": "Sign In"
+    }
+  ],
+  "Up5U7K": [
+    {
+      "type": 0,
+      "value": "Block"
+    }
+  ],
+  "UrKTqQ": [
+    {
+      "type": 0,
+      "value": "You have an active iris.to account"
+    }
+  ],
+  "VL900k": [
+    {
+      "type": 0,
+      "value": "Recommended Relays"
+    }
+  ],
+  "VN0+Fz": [
+    {
+      "type": 0,
+      "value": "Balance: "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "VOjC1i": [
+    {
+      "type": 0,
+      "value": "Pick which upload service you want to upload attachments to"
+    }
+  ],
+  "VR5eHw": [
+    {
+      "type": 0,
+      "value": "Public key (npub/nprofile)"
+    }
+  ],
+  "VcwrfF": [
+    {
+      "type": 0,
+      "value": "Yes please"
+    }
+  ],
+  "VfhYxG": [
+    {
+      "type": 0,
+      "value": "To see a full list of changes you can view the changelog "
+    },
+    {
+      "type": 1,
+      "value": "here"
+    }
+  ],
+  "VlJkSk": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " muted"
+    }
+  ],
+  "VnXp8Z": [
+    {
+      "type": 0,
+      "value": "Avatar"
+    }
+  ],
+  "VvaJst": [
+    {
+      "type": 0,
+      "value": "View Wallets"
+    }
+  ],
+  "W1yoZY": [
+    {
+      "type": 0,
+      "value": "It looks like you dont have any subscriptions, you can get one "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "W2PiAr": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Blocked"
+    }
+  ],
+  "W9355R": [
+    {
+      "type": 0,
+      "value": "Unmute"
+    }
+  ],
+  "WmZhfL": [
+    {
+      "type": 0,
+      "value": "Automatically translate notes to your local language"
+    }
+  ],
+  "WvGmZT": [
+    {
+      "type": 0,
+      "value": "npub / nprofile / nostr address"
+    }
+  ],
+  "X6tipZ": [
+    {
+      "type": 0,
+      "value": "Sign in with key"
+    }
+  ],
+  "X7xU8J": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex, mnemonic"
+    }
+  ],
+  "XECMfW": [
+    {
+      "type": 0,
+      "value": "Send usage metrics"
+    }
+  ],
+  "XICsE8": [
+    {
+      "type": 0,
+      "value": "File hosts"
+    }
+  ],
+  "XXm7jJ": [
+    {
+      "type": 0,
+      "value": "Trending Hashtags"
+    }
+  ],
+  "XgWvGA": [
+    {
+      "type": 0,
+      "value": "Reactions"
+    }
+  ],
+  "Xopqkl": [
+    {
+      "type": 0,
+      "value": "Your default zap amount is "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats, example values are calculated from this."
+    }
+  ],
+  "XrSk2j": [
+    {
+      "type": 0,
+      "value": "Redeem"
+    }
+  ],
+  "YDURw6": [
+    {
+      "type": 0,
+      "value": "Service URL"
+    }
+  ],
+  "YR2I9M": [
+    {
+      "type": 0,
+      "value": "No keys, no "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": ", There is no way to reset it if you don't back up. It only takes a minute."
+    }
+  ],
+  "YXA3AH": [
+    {
+      "type": 0,
+      "value": "Enable reactions"
+    }
+  ],
+  "Z4BMCZ": [
+    {
+      "type": 0,
+      "value": "Enter pairing phrase"
+    }
+  ],
+  "ZKORll": [
+    {
+      "type": 0,
+      "value": "Activate Now"
+    }
+  ],
+  "ZLmyG9": [
+    {
+      "type": 0,
+      "value": "Contributors"
+    }
+  ],
+  "ZS+jRE": [
+    {
+      "type": 0,
+      "value": "Send zap splits to"
+    }
+  ],
+  "Zff6lu": [
+    {
+      "type": 0,
+      "value": "Username iris.to/"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "name"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " is reserved for you!"
+    }
+  ],
+  "a5UPxh": [
+    {
+      "type": 0,
+      "value": "Fund developers and platforms providing NIP-05 verification services"
+    }
+  ],
+  "a7TDNm": [
+    {
+      "type": 0,
+      "value": "Notes will stream in real time into global and notes tab"
+    }
+  ],
+  "aHje0o": [
+    {
+      "type": 0,
+      "value": "Name or nym"
+    }
+  ],
+  "aMaLBK": [
+    {
+      "type": 0,
+      "value": "Supported Extensions"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "Show more"
+    }
+  ],
+  "b12Goz": [
+    {
+      "type": 0,
+      "value": "Mnemonic"
+    }
+  ],
+  "b5vAk0": [
+    {
+      "type": 0,
+      "value": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address"
+    }
+  ],
+  "bLZL5a": [
+    {
+      "type": 0,
+      "value": "Get Address"
+    }
+  ],
+  "bQdA2k": [
+    {
+      "type": 0,
+      "value": "Sensitive Content"
+    }
+  ],
+  "bep9C3": [
+    {
+      "type": 0,
+      "value": "Public Key"
+    }
+  ],
+  "bfvyfs": [
+    {
+      "type": 0,
+      "value": "Anon"
+    }
+  ],
+  "bxv59V": [
+    {
+      "type": 0,
+      "value": "Just now"
+    }
+  ],
+  "c+JYNI": [
+    {
+      "type": 0,
+      "value": "No thanks"
+    }
+  ],
+  "c35bj2": [
+    {
+      "type": 0,
+      "value": "If you have an enquiry about your NIP-05 order please DM "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "c3g2hL": [
+    {
+      "type": 0,
+      "value": "Broadcast Again"
+    }
+  ],
+  "cFbU1B": [
+    {
+      "type": 0,
+      "value": "Using Alby? Go to "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " to get your NWC config!"
+    }
+  ],
+  "cHCwbF": [
+    {
+      "type": 0,
+      "value": "Photography"
+    }
+  ],
+  "cPIKU2": [
+    {
+      "type": 0,
+      "value": "Following"
+    }
+  ],
+  "cQfLWb": [
+    {
+      "type": 0,
+      "value": "URL.."
+    }
+  ],
+  "cWx9t8": [
+    {
+      "type": 0,
+      "value": "Mute all"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "Connect Wallet"
+    }
+  ],
+  "cuP16y": [
+    {
+      "type": 0,
+      "value": "Multi account support"
+    }
+  ],
+  "cuV2gK": [
+    {
+      "type": 0,
+      "value": "name is registered"
+    }
+  ],
+  "cyR7Kh": [
+    {
+      "type": 0,
+      "value": "Back"
+    }
+  ],
+  "d+6YsV": [
+    {
+      "type": 0,
+      "value": "Lists to mute:"
+    }
+  ],
+  "d6CyG5": [
+    {
+      "type": 0,
+      "value": "History"
+    }
+  ],
+  "d7d0/x": [
+    {
+      "type": 0,
+      "value": "LN Address"
+    }
+  ],
+  "d8gpCh": [
+    {
+      "type": 0,
+      "value": "Try to use less than 5 hashtags to stay on topic 🙏"
+    }
+  ],
+  "dOQCL8": [
+    {
+      "type": 0,
+      "value": "Display name"
+    }
+  ],
+  "ddd3JX": [
+    {
+      "type": 0,
+      "value": "Popular Hashtags"
+    }
+  ],
+  "deEeEI": [
+    {
+      "type": 0,
+      "value": "Register"
+    }
+  ],
+  "dmsiLv": [
+    {
+      "type": 0,
+      "value": "A default Zap Pool split of "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " has been configured for "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " developers, you can disable it at any time in "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "Coming soon"
+    }
+  ],
+  "e7VmYP": [
+    {
+      "type": 0,
+      "value": "Enter pin to unlock your private key"
+    }
+  ],
+  "e7qqly": [
+    {
+      "type": 0,
+      "value": "Mark All Read"
+    }
+  ],
+  "eF0Re7": [
+    {
+      "type": 0,
+      "value": "Use a nostr signer extension to sign in"
+    }
+  ],
+  "eHAneD": [
+    {
+      "type": 0,
+      "value": "Reaction emoji"
+    }
+  ],
+  "eJj8HD": [
+    {
+      "type": 0,
+      "value": "Get Verified"
+    }
+  ],
+  "eSzf2G": [
+    {
+      "type": 0,
+      "value": "A single zap of "
+    },
+    {
+      "type": 1,
+      "value": "nIn"
+    },
+    {
+      "type": 0,
+      "value": " sats will allocate "
+    },
+    {
+      "type": 1,
+      "value": "nOut"
+    },
+    {
+      "type": 0,
+      "value": " sats to the zap pool."
+    }
+  ],
+  "eXT2QQ": [
+    {
+      "type": 0,
+      "value": "Group Chat"
+    }
+  ],
+  "egib+2": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " other"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "fBI91o": [
+    {
+      "type": 0,
+      "value": "Zap"
+    }
+  ],
+  "fBlba3": [
+    {
+      "type": 0,
+      "value": "Thanks for using "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": ", please consider donating if you can."
+    }
+  ],
+  "fOksnD": [
+    {
+      "type": 0,
+      "value": "Can't vote because LNURL service does not support zaps"
+    }
+  ],
+  "fQN+tq": [
+    {
+      "type": 0,
+      "value": "Show posts that have a content warning tag"
+    }
+  ],
+  "fWZYP5": [
+    {
+      "type": 0,
+      "value": "Pinned"
+    }
+  ],
+  "fX5RYm": [
+    {
+      "type": 0,
+      "value": "Pick a few topics of interest"
+    }
+  ],
+  "filwqD": [
+    {
+      "type": 0,
+      "value": "Read"
+    }
+  ],
+  "fjAcWo": [
+    {
+      "type": 0,
+      "value": "Gift Wraps"
+    }
+  ],
+  "flnGvv": [
+    {
+      "type": 0,
+      "value": "What's on your mind?"
+    }
+  ],
+  "fqwcJ1": [
+    {
+      "type": 0,
+      "value": "On-chain Donation"
+    }
+  ],
+  "fsB/4p": [
+    {
+      "type": 0,
+      "value": "Saved"
+    }
+  ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "About"
+    }
+  ],
+  "g985Wp": [
+    {
+      "type": 0,
+      "value": "Failed to send vote"
+    }
+  ],
+  "gDzDRs": [
+    {
+      "type": 0,
+      "value": "Emoji to send when reactiong to a note"
+    }
+  ],
+  "gXgY3+": [
+    {
+      "type": 0,
+      "value": "Not all clients support this yet"
+    }
+  ],
+  "gczcC5": [
+    {
+      "type": 0,
+      "value": "Subscribe"
+    }
+  ],
+  "geppt8": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count2"
+    },
+    {
+      "type": 0,
+      "value": " in memory)"
+    }
+  ],
+  "gjBiyj": [
+    {
+      "type": 0,
+      "value": "Loading..."
+    }
+  ],
+  "grQ+mI": [
+    {
+      "type": 0,
+      "value": "Proof of Work"
+    }
+  ],
+  "h7jvCs": [
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " is more fun together!"
+    }
+  ],
+  "h8XMJL": [
+    {
+      "type": 0,
+      "value": "Badges"
+    }
+  ],
+  "hMzcSq": [
+    {
+      "type": 0,
+      "value": "Messages"
+    }
+  ],
+  "hRTfTR": [
+    {
+      "type": 0,
+      "value": "PRO"
+    }
+  ],
+  "hY4lzx": [
+    {
+      "type": 0,
+      "value": "Supports"
+    }
+  ],
+  "ha8JKG": [
+    {
+      "type": 0,
+      "value": "Show graph"
+    }
+  ],
+  "hicxcO": [
+    {
+      "type": 0,
+      "value": "Show replies"
+    }
+  ],
+  "hmZ3Bz": [
+    {
+      "type": 0,
+      "value": "Media"
+    }
+  ],
+  "hniz8Z": [
+    {
+      "type": 0,
+      "value": "here"
+    }
+  ],
+  "i/dBAR": [
+    {
+      "type": 0,
+      "value": "Zap Pool"
+    }
+  ],
+  "iCqGww": [
+    {
+      "type": 0,
+      "value": "Reactions ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "iEoXYx": [
+    {
+      "type": 0,
+      "value": "DeepL translations"
+    }
+  ],
+  "iGT1eE": [
+    {
+      "type": 0,
+      "value": "Prevent fake accounts from imitating you"
+    }
+  ],
+  "iNWbVV": [
+    {
+      "type": 0,
+      "value": "Handle"
+    }
+  ],
+  "iXPL0Z": [
+    {
+      "type": 0,
+      "value": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead"
+    }
+  ],
+  "iYc3Ld": [
+    {
+      "type": 0,
+      "value": "Payments"
+    }
+  ],
+  "ieGrWo": [
+    {
+      "type": 0,
+      "value": "Follow"
+    }
+  ],
+  "itPgxd": [
+    {
+      "type": 0,
+      "value": "Profile"
+    }
+  ],
+  "izWS4J": [
+    {
+      "type": 0,
+      "value": "Unfollow"
+    }
+  ],
+  "j9xbzF": [
+    {
+      "type": 0,
+      "value": "Already backed up"
+    }
+  ],
+  "jA3OE/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sat"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sats"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "jAmfGl": [
+    {
+      "type": 0,
+      "value": "Your "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " subscription is expired"
+    }
+  ],
+  "jHa/ko": [
+    {
+      "type": 0,
+      "value": "Clean up your feed"
+    }
+  ],
+  "jMzO1S": [
+    {
+      "type": 0,
+      "value": "Internal error: "
+    },
+    {
+      "type": 1,
+      "value": "msg"
+    }
+  ],
+  "jTrbGf": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " km - "
+    },
+    {
+      "type": 1,
+      "value": "location"
+    }
+  ],
+  "jfV8Wr": [
+    {
+      "type": 0,
+      "value": "Back"
+    }
+  ],
+  "jvo0vs": [
+    {
+      "type": 0,
+      "value": "Save"
+    }
+  ],
+  "jzgQ2z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Reactions"
+    }
+  ],
+  "k2veDA": [
+    {
+      "type": 0,
+      "value": "Write"
+    }
+  ],
+  "k7sKNy": [
+    {
+      "type": 0,
+      "value": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
+    }
+  ],
+  "kEZUR8": [
+    {
+      "type": 0,
+      "value": "Register an Iris username"
+    }
+  ],
+  "kJYo0u": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " reposted"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others reposted"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "kaaf1E": [
+    {
+      "type": 0,
+      "value": "now"
+    }
+  ],
+  "kc79d3": [
+    {
+      "type": 0,
+      "value": "Topics"
+    }
+  ],
+  "kuPHYE": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " liked"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others liked"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "l+ikU1": [
+    {
+      "type": 0,
+      "value": "Everything in "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    }
+  ],
+  "lCILNz": [
+    {
+      "type": 0,
+      "value": "Buy Now"
+    }
+  ],
+  "lD3+8a": [
+    {
+      "type": 0,
+      "value": "Pay"
+    }
+  ],
+  "lPWASz": [
+    {
+      "type": 0,
+      "value": "Snort nostr address"
+    }
+  ],
+  "lTbT3s": [
+    {
+      "type": 0,
+      "value": "Wallet password"
+    }
+  ],
+  "lgg1KN": [
+    {
+      "type": 0,
+      "value": "account page"
+    }
+  ],
+  "ll3xBp": [
+    {
+      "type": 0,
+      "value": "Image proxy service"
+    }
+  ],
+  "lnaT9F": [
+    {
+      "type": 0,
+      "value": "Following "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lsNFM1": [
+    {
+      "type": 0,
+      "value": "Click to load content from "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "lvlPhZ": [
+    {
+      "type": 0,
+      "value": "Pay Invoice"
+    }
+  ],
+  "mErPop": [
+    {
+      "type": 0,
+      "value": "It looks like you dont have any, check "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " to buy one!"
+    }
+  ],
+  "mH91FY": [
+    {
+      "type": 0,
+      "value": "Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below"
+    }
+  ],
+  "mKAr6h": [
+    {
+      "type": 0,
+      "value": "Follow all"
+    }
+  ],
+  "mKh2HS": [
+    {
+      "type": 0,
+      "value": "File upload service"
+    }
+  ],
+  "mKhgP9": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "mTJFgF": [
+    {
+      "type": 0,
+      "value": "Popular"
+    }
+  ],
+  "mfe8RW": [
+    {
+      "type": 0,
+      "value": "Option: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "n1Whvj": [
+    {
+      "type": 0,
+      "value": "Switch"
+    }
+  ],
+  "nDejmx": [
+    {
+      "type": 0,
+      "value": "Unblock"
+    }
+  ],
+  "nGBrvw": [
+    {
+      "type": 0,
+      "value": "Bookmarks"
+    }
+  ],
+  "nihgfo": [
+    {
+      "type": 0,
+      "value": "Listen to this article"
+    }
+  ],
+  "nn1qb3": [
+    {
+      "type": 0,
+      "value": "Your donations are greatly appreciated"
+    }
+  ],
+  "nwZXeh": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " blocked"
+    }
+  ],
+  "o7e+nJ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " i̇zləyicilər"
+    }
+  ],
+  "oJ+JJN": [
+    {
+      "type": 0,
+      "value": "Heç nə tapılmadı :/"
+    }
+  ],
+  "odFwjL": [
+    {
+      "type": 0,
+      "value": "Yalnız izləyicilər"
+    }
+  ],
+  "ojzbwv": [
+    {
+      "type": 0,
+      "value": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "p4N05H": [
+    {
+      "type": 0,
+      "value": "Yüklə"
+    }
+  ],
+  "p85Uwy": [
+    {
+      "type": 0,
+      "value": "Aktiv Abunəliklər"
+    }
+  ],
+  "pI+77w": [
+    {
+      "type": 0,
+      "value": "Snort relayindən endirilə bilən ehtiyat nüsxələri"
+    }
+  ],
+  "puLNUJ": [
+    {
+      "type": 0,
+      "value": "Pin"
+    }
+  ],
+  "pzTOmv": [
+    {
+      "type": 0,
+      "value": "İzləyicilər"
+    }
+  ],
+  "qD9EUF": [
+    {
+      "type": 0,
+      "value": "Email <> DM bridge for your Snort nostr address"
+    }
+  ],
+  "qDwvZ4": [
+    {
+      "type": 0,
+      "value": "Naməlum xəta"
+    }
+  ],
+  "qMx1sA": [
+    {
+      "type": 0,
+      "value": "Default Zap amount"
+    }
+  ],
+  "qUJTsT": [
+    {
+      "type": 0,
+      "value": "Bloklanıb"
+    }
+  ],
+  "qZsKBR": [
+    {
+      "type": 0,
+      "value": "Renew "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    }
+  ],
+  "qdGuQo": [
+    {
+      "type": 0,
+      "value": "Your Private Key Is (do not share this with anyone)"
+    }
+  ],
+  "qfmMQh": [
+    {
+      "type": 0,
+      "value": "This note has been muted"
+    }
+  ],
+  "qkvYUb": [
+    {
+      "type": 0,
+      "value": "Add to Profile"
+    }
+  ],
+  "qmJ8kD": [
+    {
+      "type": 0,
+      "value": "Translation failed"
+    }
+  ],
+  "qtWLmt": [
+    {
+      "type": 0,
+      "value": "Like"
+    }
+  ],
+  "qyJtWy": [
+    {
+      "type": 0,
+      "value": "Show less"
+    }
+  ],
+  "qydxOd": [
+    {
+      "type": 0,
+      "value": "Science"
+    }
+  ],
+  "qz9fty": [
+    {
+      "type": 0,
+      "value": "Incorrect pin"
+    }
+  ],
+  "r3C4x/": [
+    {
+      "type": 0,
+      "value": "Software"
+    }
+  ],
+  "r5srDR": [
+    {
+      "type": 0,
+      "value": "Enter wallet password"
+    }
+  ],
+  "rMgF34": [
+    {
+      "type": 0,
+      "value": "Back up now"
+    }
+  ],
+  "rT14Ow": [
+    {
+      "type": 0,
+      "value": "Add Relays"
+    }
+  ],
+  "rbrahO": [
+    {
+      "type": 0,
+      "value": "Close"
+    }
+  ],
+  "rfuMjE": [
+    {
+      "type": 0,
+      "value": "(Default)"
+    }
+  ],
+  "rmdsT4": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " days"
+    }
+  ],
+  "rx1i0i": [
+    {
+      "type": 0,
+      "value": "Short link"
+    }
+  ],
+  "sKDn4e": [
+    {
+      "type": 0,
+      "value": "Show Badges"
+    }
+  ],
+  "sUNhQE": [
+    {
+      "type": 0,
+      "value": "user"
+    }
+  ],
+  "sZQzjQ": [
+    {
+      "type": 0,
+      "value": "Failed to parse zap split: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "tGXF0Q": [
+    {
+      "type": 0,
+      "value": "Relay Lists"
+    }
+  ],
+  "tOdNiY": [
+    {
+      "type": 0,
+      "value": "Dark"
+    }
+  ],
+  "th5lxp": [
+    {
+      "type": 0,
+      "value": "Send note to a subset of your write relays"
+    }
+  ],
+  "thnRpU": [
+    {
+      "type": 0,
+      "value": "Getting NIP-05 verified can help:"
+    }
+  ],
+  "tjpYlr": [
+    {
+      "type": 0,
+      "value": "Relay Metrics"
+    }
+  ],
+  "ttxS0b": [
+    {
+      "type": 0,
+      "value": "Supporter Badge"
+    }
+  ],
+  "u+LyXc": [
+    {
+      "type": 0,
+      "value": "Interactions"
+    }
+  ],
+  "u/vOPu": [
+    {
+      "type": 0,
+      "value": "Paid"
+    }
+  ],
+  "u4bHcR": [
+    {
+      "type": 0,
+      "value": "Check out the code here: "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "uCk8r+": [
+    {
+      "type": 0,
+      "value": "Already have an account?"
+    }
+  ],
+  "uKqSN+": [
+    {
+      "type": 0,
+      "value": "Follows Feed"
+    }
+  ],
+  "uSV4Ti": [
+    {
+      "type": 0,
+      "value": "Reposts need to be manually confirmed"
+    }
+  ],
+  "uc0din": [
+    {
+      "type": 0,
+      "value": "Send sats splits to"
+    }
+  ],
+  "ugyJnE": [
+    {
+      "type": 0,
+      "value": "Sending notes and other stuff"
+    }
+  ],
+  "un1nGw": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " notes"
+    }
+  ],
+  "usAvMr": [
+    {
+      "type": 0,
+      "value": "Edit Profile"
+    }
+  ],
+  "v8lolG": [
+    {
+      "type": 0,
+      "value": "Start chat"
+    }
+  ],
+  "vB3oQ/": [
+    {
+      "type": 0,
+      "value": "Must be a contact list or pubkey list"
+    }
+  ],
+  "vN5UH8": [
+    {
+      "type": 0,
+      "value": "Profile Image"
+    }
+  ],
+  "vZ4quW": [
+    {
+      "type": 0,
+      "value": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."
+    }
+  ],
+  "vhlWFg": [
+    {
+      "type": 0,
+      "value": "Poll Options"
+    }
+  ],
+  "vlbWtt": [
+    {
+      "type": 0,
+      "value": "Get a free one"
+    }
+  ],
+  "vrTOHJ": [
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "vxwnbh": [
+    {
+      "type": 0,
+      "value": "Amount of work to apply to all published events"
+    }
+  ],
+  "w1Fanr": [
+    {
+      "type": 0,
+      "value": "Business"
+    }
+  ],
+  "w6qrwX": [
+    {
+      "type": 0,
+      "value": "NSFW"
+    }
+  ],
+  "wEQDC6": [
+    {
+      "type": 0,
+      "value": "Düzəliş et"
+    }
+  ],
+  "wSZR47": [
+    {
+      "type": 0,
+      "value": "Submit"
+    }
+  ],
+  "wWLwvh": [
+    {
+      "type": 0,
+      "value": "Anon"
+    }
+  ],
+  "wih7iJ": [
+    {
+      "type": 0,
+      "value": "ad bloklanıb"
+    }
+  ],
+  "wofVHy": [
+    {
+      "type": 0,
+      "value": "Moderation"
+    }
+  ],
+  "wqyN/i": [
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " ünvanında "
+    },
+    {
+      "type": 1,
+      "value": "service"
+    },
+    {
+      "type": 0,
+      "value": " haqqında ətraflı məlumat əldə edin"
+    }
+  ],
+  "wtLjP6": [
+    {
+      "type": 0,
+      "value": "ID-ni kopyala"
+    }
+  ],
+  "x/Fx2P": [
+    {
+      "type": 0,
+      "value": "Bütün zaplarınızın bir hissəsini vəsait hovuzuna bölməklə istifadə etdiyiniz xidmətləri maliyyələşdirin!"
+    }
+  ],
+  "x82IOl": [
+    {
+      "type": 0,
+      "value": "Səssiz"
+    }
+  ],
+  "xIcAOU": [
+    {
+      "type": 0,
+      "value": "Votes by "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    }
+  ],
+  "xIoGG9": [
+    {
+      "type": 0,
+      "value": "Get"
+    }
+  ],
+  "xQtL3v": [
+    {
+      "type": 0,
+      "value": "Kilidi aç"
+    }
+  ],
+  "xaj9Ba": [
+    {
+      "type": 0,
+      "value": "Provayder"
+    }
+  ],
+  "xbVgIm": [
+    {
+      "type": 0,
+      "value": "Medianı avtomatik yükləyin"
+    }
+  ],
+  "xhQMeQ": [
+    {
+      "type": 0,
+      "value": "Müddəti bitir"
+    }
+  ],
+  "xl4s/X": [
+    {
+      "type": 0,
+      "value": "Additional Terms:"
+    }
+  ],
+  "xmcVZ0": [
+    {
+      "type": 0,
+      "value": "Axtar"
+    }
+  ],
+  "y1Z3or": [
+    {
+      "type": 0,
+      "value": "Dil"
+    }
+  ],
+  "yCLnBC": [
+    {
+      "type": 0,
+      "value": "LNURL və ya Lightning Ünvanı"
+    }
+  ],
+  "yNBPJp": [
+    {
+      "type": 0,
+      "value": "Help fund the development of "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    }
+  ],
+  "zCb8fX": [
+    {
+      "type": 0,
+      "value": "Weight"
+    }
+  ],
+  "zFegDD": [
+    {
+      "type": 0,
+      "value": "Əlaqə"
+    }
+  ],
+  "zINlao": [
+    {
+      "type": 0,
+      "value": "Sahibi"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "Hamısı"
+    }
+  ],
+  "zcaOTs": [
+    {
+      "type": 0,
+      "value": "Sats'larda Zap məbləği"
+    }
+  ],
+  "zm6qS1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " mins to read"
+    }
+  ],
+  "zonsdq": [
+    {
+      "type": 0,
+      "value": "LNURL xidmətini yükləmək alınmadı"
+    }
+  ],
+  "zvCDao": [
+    {
+      "type": 0,
+      "value": "Ən son qeydləri avtomatik göstərin"
+    }
+  ],
+  "zwb6LR": [
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "Mint:"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "url"
+    }
+  ],
+  "zxvhnE": [
+    {
+      "type": 0,
+      "value": "Daily"
+    }
+  ]
 }

@@ -1,812 +1,5868 @@
 {
-  "+D82kt": "Yakin ingin memposting ulang: {id}",
-  "+PzQ9Y": "Bayar Sekarang",
-  "+QM0PJ": "Menyinkronkan semua peristiwa untuk profil Anda ke dalam cache lokal",
-  "+QMdsy": "Statistik Relai",
-  "+UjDmN": "Masuk dengan akses tulis",
-  "+Vxixo": "Obrolan Grup Rahasia",
-  "+aZY2h": "Tipe Zap",
-  "+tShPg": "berikut ini",
-  "+vA//S": "Masuk",
-  "+vIQlC": "Harap pastikan untuk menyimpan kata sandi berikut untuk mengelola pegangan Anda di masa mendatang",
-  "+vVZ/G": "Menghubungkan",
-  "+vj0U3": "sunting",
-  "+xliwN": "{name} diposting ulang",
-  "/B8zwF": "Ruang Anda seperti yang Anda inginkan 😌",
-  "/GCoTA": "Jelas",
-  "/JE/X+": "Dukungan Akun",
-  "/T7HId": "Integrasi Penyimpanan File HTTP",
-  "/Xf4UW": "Kirim metrik penggunaan anonim",
-  "/b1IHW": "Pesan Obrolan Grup",
-  "/d6vEc": "Jadikan profil Anda lebih mudah untuk ditemukan dan dibagikan",
-  "/ioUrF": "Dari File",
-  "/n5KSF": "{n} ms",
-  "00LcfG": "Memuat lebih banyak",
-  "01iNut": "Alamat yang tidak sesuai dengan Anda",
-  "08zn6O": "Kunci Ekspor",
-  "0Azlrb": "Mengelola",
-  "0BUTMv": "Cari...",
-  "0MndVW": "Dompet LNDHub umum (BTCPayServer / Alby / LNBits)",
-  "0jOEtS": "LNURL Tidak valid",
-  "0kOBMu": "Menangani Penyebutan",
-  "0mch2Y": "nama memiliki karakter yang tidak diizinkan",
-  "0siT4z": "Politik",
-  "0uoY11": "Tampilkan Status",
-  "0yO7wF": "{n} detik",
-  "0zASjL": "Pergi.",
-  "1/BFEj": "barang git",
-  "1Mo59U": "Apa Anda yakin Anda ingin memindahkan catatan ini dari penanda buku?",
-  "1R43+L": "Masukkan konfigurasi Nostr Wallet Connect",
-  "1UWegE": "Pastikan untuk mencadangkan kunci Anda!",
-  "1c4YST": "Terhubung ke: {node} 🎉",
-  "1nYUGC": "{n} Mengikuti",
-  "1o2BgB": "Periksa Tanda Tangan",
-  "1ozeyg": "Alam",
-  "1udzha": "Percakapan",
-  "2/2yg+": "Tambahkan",
-  "25V4l1": "Spanduk",
-  "25WwxF": "Belum memiliki akun?",
-  "28oKbu": "Komunitas yang Dimoderasi",
-  "29sHFE": "Dompet Terhubung",
-  "2BBGxX": "Tag subjek dalam peristiwa teks",
-  "2HIqeO": "Daftar emoji pengguna",
-  "2IFGap": "Sumbangkan",
-  "2LbrkB": "Masukkan kata sandi",
-  "2O2sfp": "Selesai",
-  "2Qsf9/": "Daftar generik",
-  "2a2YiP": "{n} Penanda Buku",
-  "2k0Cv+": "Tidak disukai ({n})",
-  "2mcwT8": "Catatan Baru",
-  "2oCF7O": "Diikuti oleh teman dari teman",
-  "2raFAu": "Data khusus aplikasi",
-  "2ukA4d": "{n} jam",
-  "2z7Kky": "Artikel Terbaru",
-  "3/onCd": "Balasan",
-  "39AHJm": "Daftar",
-  "3GWu6/": "Status Pengguna",
-  "3KNMbJ": "Artikel",
-  "3MKdAw": "Gumpalan yang disimpan di server media",
-  "3QwfJR": "~{amount}",
-  "3adEeb": "{n} pemirsa",
-  "3cc4Ct": "Cahaya",
-  "3gOsZq": "Penerjemah",
-  "3kbIhS": "Tanpa judul",
-  "3qnJlS": "Anda memberikan suara dengan {amount} sats",
-  "3t3kok": "{n,plural,=1{{n} catatan baru} other{{n} catatan-catatan baru}}",
-  "3tVy+Z": "{n} Pengikut",
-  "3yk8fB": "Dompet",
-  "40VR6s": "Nostr Connect",
-  "41BSaT": "Total Acara:",
-  "450Fty": "Tidak ada",
-  "47E53q": "Wiki",
-  "47FYwb": "Membatalkan",
-  "48zn4v": "Penawaran",
-  "4IPzdn": "Pengembang Utama",
-  "4L2vUY": "Nama NIP-05 baru Anda adalah:",
-  "4MjsHk": "Kehidupan",
-  "4OB335": "Tidak disukai",
-  "4P/kKm": "Enkripsi Kunci Pribadi",
-  "4Vmpt4": "Nostr Plebs adalah salah satu penyedia NIP-05 pertama di ruang ini dan menawarkan koleksi domain yang bagus dengan harga terjangkau",
-  "4Z3t5i": "Gunakan imgproxy untuk mengkompresi gambar",
-  "4emo2p": "Relai yang Hilang",
-  "4rYCjn": "Catatan untuk diri sendiri",
-  "4wgYpI": "Penangan Aplikasi yang Direkomendasikan",
-  "5BVs2e": "zap",
-  "5CB6zB": "Zap Splits",
-  "5PRWs7": "API Pemberitahuan Diaktifkan",
-  "5dfmvv": "Zap Goal",
-  "5oTnfy": "Beli Pegangan",
-  "5qEWCr": "Metadata File",
-  "5u6iEc": "Transfer ke Pubkey",
-  "5vMmmR": "Nama pengguna tidak unik di Nostr. Alamat Nostr adalah alamat unik Anda yang dapat dibaca manusia yang unik untuk Anda pada saat pendaftaran.",
-  "5ykRmX": "Kirim zap",
-  "6/hB3S": "Menonton Pemutaran Ulang",
-  "60kEE3": "Daftar bisu",
-  "62nsdy": "Coba lagi.",
-  "634VVz": "Koneksi Gagal:",
-  "6559gb": "Panjang daftar ikuti baru {length}",
-  "65BmHb": "Gagal memproxy gambar dari {host}, klik di sini untuk memuat secara langsung",
-  "6D4Hhn": "Merekomendasikan Relay",
-  "6KGebm": "Segel",
-  "6OSOXl": "Alasan: <i>{reason}</i>",
-  "6WWD34": "Mencari: {noteId}",
-  "6bgpn+": "Tidak semua klien mendukung ini, Anda mungkin masih menerima beberapa zap seolah-olah zap splits tidak dikonfigurasi",
-  "6ewQqw": "Suka ({n})",
-  "6mr8WU": "Diikuti oleh",
-  "6pdxsi": "Bidang dan tag metadata tambahan",
-  "6uMqL1": "Belum dibayar",
-  "6xNr8c": "Pindah akun",
-  "6xap9L": "Bagus.",
-  "7+Domh": "Catatan",
-  "712i26": "Proxy menggunakan faktur HODL untuk meneruskan pembayaran, yang menyembunyikan pubkey dari node Anda",
-  "753yX5": "Label",
-  "769A8p": "Artikel wiki",
-  "77nkEO": "Dokumen Informasi Relay",
-  "7LFU8U": "Kemampuan Pencarian",
-  "7UOvbT": "Offline",
-  "7YkSA2": "Tokoh Masyarakat",
-  "7gMmSL": "Reaksi",
-  "7hp70g": "NIP-05",
-  "7jfPsW": "Konten Artikel Modular",
-  "7nAz/z": "Membisukan catatan dari orang yang berada di luar jaringan kepercayaan Anda",
-  "7pFGAQ": "Tutup Relai",
-  "8/vBbP": "Posting ulang ({n})",
-  "89q5wc": "Konfirmasi Posting Ulang",
-  "8BDFvJ": "Konvensi untuk penggunaan tag e dan p oleh klien dalam acara teks",
-  "8ED/4u": "Membalas ke",
-  "8HJxXG": "Daftar",
-  "8QDesP": "Zap {n} sat",
-  "8Rkoyb": "Penerima",
-  "8Y6bZQ": "Zap split tidak valid: {input}",
-  "8ZGqWl": "Utas Grup",
-  "8g2vyB": "nama terlalu panjang",
-  "8jmwT8": "entitas yang dikodekan bech32",
-  "8v1NN+": "Frasa pasangan",
-  "8xdDLn": "Ikuti set",
-  "8za9Pq": "Draf Daftar Rahasia",
-  "9+Ddtu": "Berikutnya",
-  "9HU8vw": "Membalas",
-  "9SvQep": "Mengikuti {n}",
-  "9V0wg3": "Acara Kalender RSVP Acara",
-  "9WRlF4": "Mengirim",
-  "9kO0VQ": "Menyembunyikan nada yang dibisukan",
-  "9kSari": "Mencoba menerbitkan ulang",
-  "9pMqYs": "Alamat No.",
-  "9wO4wJ": "Faktur Lightning",
-  "A86fJ+": "Repost Generik",
-  "ADmfQT": "Orang Tua",
-  "ALdW69": "Catatan oleh {name}",
-  "AN0Z7Q": "Kata-kata yang dibisukan",
-  "ASRK0S": "Penulis ini telah dibisukan",
-  "AedFVZ": "Membuat atau memperbarui produk",
-  "Ai8VHU": "Penyimpanan catatan tak terbatas pada relai Snort",
-  "AkCxS/": "Alasan",
-  "AktAk2": "Bagus.",
-  "Am8glJ": "Permainan",
-  "AqGfF4": "Pembuatan Saluran",
-  "Aujn2T": "Menghitung",
-  "Awq32I": "Pemberitahuan push",
-  "AxDOiG": "Bulan",
-  "AyGauy": "Masuk",
-  "B4C47Y": "nama terlalu pendek",
-  "B6+XJy": "telah di-zap",
-  "B6H7eJ": "nsec, npub, nip-05, hex",
-  "B7wvUM": "Anda dapat menambahkan satu atau beberapa relay, satu per baris.",
-  "BGCM48": "Akses tulis ke relai Snort, dengan retensi kejadian selama 1 tahun",
-  "BGGacK": "Penyematan AI / Daftar vektor",
-  "BQW4gi": "Grup Berbasis Relai",
-  "BWpuKl": "Memperbarui",
-  "BfuAQ5": "UI/UX Pasar",
-  "BjNwZW": "Alamat lengkap (nip05)",
-  "Blxcdx": "Relay",
-  "Bo+O//": "HTTP Auth",
-  "C1LjMx": "Donasi Petir",
-  "C6Lhhp": "Acara Langsung",
-  "C7642/": "Kutip Ulang",
-  "C81/uG": "Keluar",
-  "C8FsOr": "Server Populer",
-  "C8HhVE": "Berikut yang Disarankan",
-  "CA1efg": "Set video",
-  "CHTbO3": "Gagal memuat faktur",
-  "CJx5Nd": "Profil Zaps",
-  "CM+Cfj": "Daftar Ikuti",
-  "CM0k0d": "Pangkas daftar pengikut",
-  "CVWeJ6": "Orang-orang yang sedang tren",
-  "CYkOCI": "dan {count} orang lain yang Anda ikuti",
-  "Cdxwi0": "Pengumuman repositori",
-  "CmZ9ls": "{n} Dibisukan",
-  "Coy6SH": "Kalender",
-  "CsCUYo": "{n} sats",
-  "Cu/K85": "Diterjemahkan dari {lang}",
-  "CzHZoc": "Grafik Sosial",
-  "D++Njw": "Catatan Teks Referensi",
-  "D+KzKd": "Secara otomatis membunyikan setiap nada saat dimuat",
-  "D09wbg": "Definisi Lencana",
-  "D3idYv": "Pengaturan",
-  "D9xTLE": "Saluran Sembunyikan Pesan",
-  "DBiVK1": "Cache",
-  "DKnriN": "Kirim sat",
-  "DZzCem": "Tampilkan catatan {n} terbaru",
-  "Dh3hbq": "Auto Zap",
-  "Dn82AL": "Langsung",
-  "DqUmXt": "Produk yang dijual sebagai lelang",
-  "DrZqav": "Tentang harus kurang dari {limit} karakter",
-  "DtYelJ": "Transfer",
-  "Dx4ey3": "Alihkan semua",
-  "E3oB+t": "Browser",
-  "E5ZIPD": "<big>{amount}</big> <small>sats</small>",
-  "EHqHsu": "Faktur / Alamat Kilat",
-  "EJbFi7": "Catatan pencarian",
-  "ELbg9p": "Penyedia Data",
-  "EQKRE4": "Menampilkan lencana di halaman profil",
-  "EWeVrH": "Reaksi terhadap situs web",
-  "EWyQH5": "Global",
-  "Ebl/B2": "Terjemahkan ke {lang}",
-  "Ec+xLY": "Set kurasi",
-  "EcZF24": "Relai Khusus",
-  "EcfIwB": "Nama pengguna tersedia",
-  "EcglP9": "Kunci",
-  "EjFyoR": "Alamat Donasi On-chain",
-  "EnCOBJ": "Membeli",
-  "EsHX35": "Maaf, kami tidak memahami jenis acara ini ({name}), silakan coba salah satu dari aplikasi berikut ini sebagai gantinya!",
-  "F/6VqP": "Server",
-  "F3l7xL": "Tambah Akun",
-  "F4eJ/3": "Daftar yang diklasifikasikan",
-  "FDguSC": "{n} Zap",
-  "FHWpHC": "Tanggapan Dompet",
-  "FHvSk3": "Otentikasi klien ke relai",
-  "FMfjrl": "Menampilkan pesan status di halaman profil",
-  "FSYL8G": "Pengguna yang sedang tren",
-  "FWJR1B": "Kelompok pengguna",
-  "FcNSft": "Masalah pengalihan masalah pengalihan HTTP ke alamat petir yang disediakan",
-  "FdhSU2": "Klaim Sekarang",
-  "FfYsOb": "Terjadi kesalahan!",
-  "FmXUJg": "mengikutimu",
-  "FvanT6": "Akun",
-  "FzbSGg": "Anda tidak memiliki server media, coba tambahkan beberapa.",
-  "G/yZLu": "Hapus",
-  "G1BGCg": "Pilih Dompet",
-  "G3A56c": "Berlangganan Push",
-  "GFOoEE": "Garam",
-  "GIqktu": "NIP yang didukung",
-  "GL8aXW": "Penanda buku ({n})",
-  "GSye7T": "Alamat Petir",
-  "GUlSVG": "Klaim alamat nostr Snort Anda yang disertakan",
-  "Gcn9NQ": "Tautan Magnet",
-  "GpkNYn": "Torrent",
-  "GqQeu/": "Alamat Petir Tidak Valid",
-  "GspYR7": "{n} Tidak suka",
-  "Gxcr08": "Acara Siaran",
-  "H+vHiz": "Kunci Hex..",
-  "H/oroO": "Berurusan dengan Peristiwa yang Tidak Diketahui",
-  "H0JBH6": "Keluar",
-  "H0OG3T": "Info Pemimpin",
-  "H1GTaC": "Daftar penanda",
-  "H6/kLh": "Pesanan Dibayar!",
-  "HAlOn1": "Nama",
-  "HFls6j": "nama akan tersedia nanti",
-  "HOzFdo": "Dibisukan",
-  "HWbkEK": "Hapus cache dan muat ulang",
-  "HbefNb": "Buka Dompet",
-  "HhcAVH": "Anda tidak mengikuti orang ini, klik di sini untuk memuat media dari <i>{link}</i>, atau perbarui <a><i>preferensi Anda</i></a> untuk selalu memuat media dari semua orang.",
-  "HpAmQZ": "Ulasan Relay",
-  "HqRNN8": "Dukungan",
-  "HzSFeV": "Stempel Waktu Kedaluwarsa",
-  "I0tYZf": "Membuat atau memperbarui kios",
-  "I1AoOu": "Posting terakhir {time}",
-  "IEwZvs": "Apakah Anda yakin Anda ingin menghilangkan sematan catatan ini?",
-  "IIOul1": "Data Akun",
-  "IKKHqV": "Mengikuti",
-  "IOu4Xh": "Anda harus menjadi pelanggan {tier} untuk mengakses {app} dek",
-  "IVbtTS": "Zap semua {n} sats",
-  "IWz1ta": "Terjemahan Otomatis",
-  "IcHcWj": "Terakhir terlihat:",
-  "Ig9/a1": "Dikirim {n} sats ke {name}",
-  "IgsWFG": "Tidak diikuti oleh siapa pun yang Anda ikuti",
-  "IoQq+a": "Klik di sini untuk tetap memuat",
-  "IvjoDS": "Terhubung",
-  "Ix8l+B": "Catatan Tren",
-  "J+dIsA": "Langganan",
-  "J1iLmb": "Pemberitahuan Tidak Diizinkan",
-  "J2HeQ+": "Gunakan koma untuk memisahkan kata, misalnya kata1, kata2, kata3",
-  "J2Q92B": "Set emoji",
-  "J6N9xl": "Sign in with Android signer",
-  "JCIgkj": "Nama pengguna",
-  "JGrt9q": "Kirim foto ke {name}",
-  "JHEHCk": "Zap ({n})",
-  "JIVWWA": "Olahraga",
-  "JPFYIM": "Tidak ada alamat petir",
-  "JSx7y9": "Berlangganan ke {site_name} {plan} untuk mendapatkan {price} dan dapatkan hadiah berikut",
-  "JeoS4y": "Repost",
-  "Jh5zKH": "Cari daftar relai",
-  "JjGgXI": "Cari pengguna",
-  "JkLHGw": "Situs web",
-  "JmcxzF": "Relay adalah server yang Anda sambungkan untuk mengirim dan menerima peristiwa. Usahakan untuk menggunakan 4-8 relay.",
-  "JymXbw": "Kunci Pribadi",
-  "K1wl1/": "Latensi rata-rata:",
-  "K3r6DQ": "Hapus",
-  "K7AkdL": "Tampilkan",
-  "K9zklU": "ID Konten Eksternal",
-  "KAhAcM": "Masukkan konfigurasi LNDHub",
-  "KGmQjH": "Sorotan",
-  "KJryGq": "Pesan Obrolan Langsung",
-  "KQvWvD": "Dihapus",
-  "KT9nox": "Acara yang Dilindungi",
-  "KahimY": "Jenis acara tidak diketahui: {kind}",
-  "KipVeG": "Memetakan kunci Nostr ke pengenal internet berbasis DNS",
-  "KtsyO0": "Masukkan Pin",
-  "KyRp/q": "Permintaan Dompet",
-  "LBAnc7": "Lihat sebagai pengguna?",
-  "LEmxc8": "Zap Goals",
-  "LKw/ue": "Lihat kode {link}",
-  "LR1XjT": "Pin terlalu pendek",
-  "LXxsbk": "Anonim",
-  "LgbKvU": "Komentar",
-  "LhLvRx": "Nama harus terdiri dari 8 hingga 15 karakter",
-  "LmdPXO": "Tidak dapat memverifikasi Alamat Nostr",
-  "Lu5/Bj": "Buka di Zapstr",
-  "LuDBLj": "Torrents",
-  "Lw+I+J": "{n,plural,=0{{name} disetrum} other{{name} & {n} yang lain disetrum}}",
-  "LwYmVi": "Zaps pada catatan ini akan dibagi ke pengguna berikut.",
-  "M3Oirc": "Debug Menu",
-  "M6C/px": "Menjadi seorang pemimpin",
-  "MBAYRO": "Menampilkan \"Salin ID\" dan \"Salin Event JSON\" di menu konteks pada setiap pesan",
-  "MI2jkA": "Tidak tersedia:",
-  "MKDHEa": "Ruang Bergabung",
-  "MP54GY": "Kata sandi dompet",
-  "MWTx65": "Halaman Bawaan",
-  "MYBYdJ": "Catatan Teks Pendek",
-  "MYUBaG": "Otentikasi Klien",
-  "MiMipu": "Tetapkan sebagai alamat Nostr utama (nip05)",
-  "MkQ4FX": "Tag Proksi",
-  "Ml7+RS": "Kirim tautan ini ke teman Anda dan bagikan keajaiban nostr.",
-  "Mrpkot": "Bayar untuk berlangganan",
-  "MuVeKe": "Beli alamat nostr",
-  "Muhna4": "Menghitung hasil",
-  "MzRYWH": "Membeli {item}",
-  "Mzizei": "Akun Iris.to",
-  "N2IrpM": "Konfirmasi",
-  "NAidKb": "Pemberitahuan",
-  "NAuFNH": "Anda sudah memiliki langganan jenis ini, silakan perbarui atau bayar",
-  "NDTFsp": "Umpan Balik Pekerjaan",
-  "NepkXH": "Tidak dapat memilih dengan {amount} sats, harap tetapkan jumlah zap default yang berbeda",
-  "NndBJE": "Halaman pengguna baru",
-  "Nr9Yyx": "Repost",
-  "NxzeNU": "Mati",
-  "O3Jz4E": "Gunakan kode undangan Anda untuk mendapatkan sats!",
-  "OEW7yJ": "Zap-zap",
-  "OIqnZN": "Pengesahan OpenTimestamps untuk Acara",
-  "OJHKIL": "Bungkus kado",
-  "OKhRC6": "Bagikan",
-  "OLEm6z": "Kesalahan login tidak dikenal",
-  "OQSOJF": "Dapatkan alamat nostr gratis",
-  "OQXnew": "Langganan Anda masih aktif, Anda belum dapat memperbarui",
-  "ORGv1Q": "Dibuat",
-  "ORa81+": "Gabungkan Permintaan",
-  "OoZgbB": "Gagal memperbarui, coba lagi",
-  "OuProE": "Konten bentuk panjang",
-  "OxPdQ0": "Memindai {date}",
-  "P2o+ZZ": "Alamat Tidak Valid",
-  "P61BTu": "Salin Event JSON",
-  "P7FD0F": "Sistem (Bawaan)",
-  "P7nJT9": "Total hari ini (UTC): {amount} sat",
-  "P8JC58": "Jarak",
-  "PCSt5T": "Preferensi",
-  "PXQ0z0": "Menerima ke <b>{wallet}</b>",
-  "PamNxw": "Header file tidak dikenal: {name}",
-  "Pe0ogR": "Tema",
-  "PrsIg7": "Reaksi akan ditampilkan di setiap halaman, jika dinonaktifkan, tidak ada reaksi yang akan ditampilkan",
-  "QDFTjG": "{n} Relai",
-  "QJfhKt": "Kunci pribadi seperti kata sandi, tetapi tidak dapat diatur ulang. Jaga baik-baik dan jangan pernah menunjukkannya kepada siapa pun. Setelah seseorang memiliki kunci pribadi Anda, mereka akan memiliki akses ke akun Anda selamanya.",
-  "QWhotP": "Zap Pool hanya berfungsi jika Anda menggunakan salah satu koneksi dompet yang didukung (WebLN, LNC, LNDHub, atau Nostr Wallet Connect)",
-  "QpaLA3": "Pesan Saluran",
-  "Qxv0B2": "Saat ini Anda memiliki {number} sat di zap pool Anda.",
-  "Qy6/Ft": "Pesan Langsung Pribadi",
-  "R/6nsx": "Berlangganan",
-  "R81upa": "Orang yang Anda ikuti",
-  "RDha9y": "Pekerja Layanan Tidak Berjalan",
-  "RRz1cA": "Pengumuman status repositori",
-  "RSr2uB": "Nama pengguna hanya boleh terdiri dari huruf kecil dan angka",
-  "RahCRH": "Kedaluwarsa",
-  "RefZpK": "Acara Video Potret Bentuk Pendek",
-  "RfhLwC": "Oleh: {author}",
-  "RhDAoS": "Anda yakin ingin menghapus {id}",
-  "RmxSZo": "Mesin Penjual Data",
-  "RoOyAh": "Relai-relai",
-  "Rs4kCE": "Penanda buku",
-  "S/NV2G": "Catatan pemuatan: {id}",
-  "SFuk1v": "Izin",
-  "SLZGPn": "Masukkan pin untuk mengenkripsi kunci pribadi Anda, Anda harus memasukkan pin ini setiap kali Anda membuka {site}.",
-  "SMO+on": "Kirim zap ke {name}",
-  "SOqbe9": "Perbarui Alamat Petir",
-  "SP0+yi": "Beli Langganan",
-  "SW3TFA": "Relay populer yang digunakan oleh orang yang Anda ikuti.",
-  "SYQtZ7": "Proksi Alamat LN",
-  "Sd0PKc": "Set relai",
-  "SfwSIm": "Pelacak Masalah",
-  "ShdEie": "Tandai semua sudah dibaca",
-  "Sjo1P4": "Kustomisasi",
-  "SmuYUd": "Kami harus memanggilmu dengan sebutan apa?",
-  "Ss0sWu": "Bayar Sekarang",
-  "SsUQnC": "Data Khusus Aplikasi",
-  "StKzTE": "Penulis telah menandai catatan ini sebagai topik sensitif <i></i>",
-  "T83nqf": "Relai yang dekat dengan lokasi geografis Anda.",
-  "TDR5ge": "Media di catatan akan secara otomatis ditampilkan untuk orang yang dipilih, jika tidak, hanya tautan yang akan ditampilkan",
-  "TGc5nI": "Informasi penanganannya",
-  "TH1fFo": "Telegram",
-  "TJo5E6": "Pratinjau",
-  "TOG64f": "Gunakan Relai Lokal",
-  "TP/cMX": "Berakhir",
-  "TaeBqw": "Masuk dengan Nostr Extension",
-  "TdTXXf": "Pelajari lebih lanjut",
-  "TdtZQ5": "Kripto",
-  "Tdv6NY": "Set bunga",
-  "TgDKhI": "Acara Kalender",
-  "TpgeGw": "Garam Hex..",
-  "Tpy00S": "Orang",
-  "TvKqBp": "menyukai",
-  "TwyMau": "Akun",
-  "U1aPPi": "Berhenti mendengarkan",
-  "U30H69": "Definisi Komunitas",
-  "UJTWqI": "Hapus dari relai saya",
-  "ULXFfP": "Menerima",
-  "UNjfWJ": "Periksa semua tanda tangan peristiwa yang diterima dari relay",
-  "UT7Nkj": "Obrolan Baru",
-  "UUPFlt": "Pengguna harus menerima peringatan konten untuk menampilkan konten catatan Anda.",
-  "UaCh1c": "Tambahkan Server",
-  "Ub+AGc": "Masuk",
-  "Up5U7K": "Blokir",
-  "Ups2/p": "Permohonan Anda sedang menunggu keputusan",
-  "UrKTqQ": "Anda memiliki akun iris.to yang aktif",
-  "UsCzPc": "Bagikan undangan yang dipersonalisasi dengan teman-teman!",
-  "UxgyeY": "Kode referral Anda adalah {code}",
-  "V20Og0": "Pelabelan",
-  "VOjC1i": "Pilih layanan unggah mana yang ingin Anda unggahkan lampirannya",
-  "VR5eHw": "Kunci publik (npub/nprofile)",
-  "VcwrfF": "Ya, silakan.",
-  "VfhYxG": "Untuk melihat daftar lengkap perubahan, Anda dapat melihat changelog {here}",
-  "VlJkSk": "{n} dibisukan",
-  "VnXp8Z": "Avatar",
-  "W1yoZY": "Sepertinya Anda tidak memiliki langganan, Anda bisa mendapatkannya {link}",
-  "W2PiAr": "{n} Diblokir",
-  "W4SaxY": "Lokal",
-  "W9355R": "Berhenti membisukan",
-  "WeLEuL": "Dari Server",
-  "Wj5TbN": "Masalah",
-  "WmZhfL": "Menerjemahkan catatan secara otomatis ke bahasa lokal Anda",
-  "WvGmZT": "alamat npub / nprofile / nostr",
-  "X6tipZ": "Masuk dengan kunci",
-  "X7xU8J": "nsec, npub, nip-05, hex, mnemonic",
-  "XECMfW": "Kirim metrik penggunaan",
-  "XICsE8": "Host file",
-  "XPB8VV": "Koneksi dompet Alby",
-  "XQiFEl": "Mengikuti Kesehatan Relai",
-  "XSdWHA": "Tebus",
-  "XXm7jJ": "Tagar yang Sedang Tren",
-  "XgWvGA": "Reaksi",
-  "Xnimz0": "Mengirim dari <b>{wallet}</b>",
-  "Xopqkl": "Jumlah zap default Anda adalah {number} sats, nilai contoh dihitung dari ini.",
-  "YDMrKK": "Pengguna",
-  "YDURw6": "URL layanan",
-  "YH2RKk": "Server media populer.",
-  "YQZY/S": "Sepertinya Anda tidak mengikuti cukup banyak orang, lihatlah {newUsersPage} untuk menemukan orang yang bisa diikuti!",
-  "YR2I9M": "Tidak ada kunci, tidak ada {app}, Tidak ada cara untuk mengatur ulang jika Anda tidak mencadangkannya. Hanya butuh waktu satu menit.",
-  "YU7ZYp": "Obrolan Publik",
-  "YXA3AH": "Aktifkan reaksi",
-  "Yf3DwC": "Hubungkan dompet untuk mengirim pembayaran instan",
-  "YuoEb9": "Coba relai lain",
-  "Z48UEo": "Metadata Saluran",
-  "Z4BMCZ": "Masukkan frasa pasangan",
-  "Z7kkeJ": "Penandatanganan Acara yang Didelegasikan",
-  "ZFe9tl": "Membuat catatan",
-  "ZKORll": "Aktifkan Sekarang",
-  "ZLmyG9": "Kontributor",
-  "ZS+jRE": "Kirim zap split ke",
-  "Zff6lu": "Nama pengguna iris.to/<b>{name}</b> disediakan untuk Anda!",
-  "ZlIh4/": "Pesan Langsung Terenkripsi",
-  "ZlmK/p": "{name} mengundang Anda ke {app}",
-  "a1x4gD": "Server media menyimpan media yang dapat Anda bagikan dalam catatan sebagai gambar dan video",
-  "a5UPxh": "Danai pengembang-pengembang dan platform-platform yang menyediakan layanan verifikasi NIP-05",
-  "a7TDNm": "Catatan akan mengalir secara real time ke tab global dan catatan",
-  "aHje0o": "Nama atau nym",
-  "aMaLBK": "Ekstensi yang Didukung",
-  "aRex7h": "Berbayar {amount} sats, gratis {fee} sats",
-  "aSGz4J": "Sambungkan ke node LND Anda sendiri dengan Lightning Node Connect",
-  "aWpBzj": "Tampilkan lebih banyak",
-  "abbGKq": "{n} km",
-  "ak3MTf": "Undang Teman",
-  "b12Goz": "Mnemonic",
-  "b5vAk0": "Pegangan Anda akan bertindak seperti alamat kilat dan akan mengarahkan ke LNURL atau alamat Lightning yang Anda pilih",
-  "bF1MYT": "Anda adalah pemimpin komunitas dan mendapatkan <b>{percent}</b> dari langganan pengguna yang direferensikan!",
-  "bG00/W": "Pekerja Layanan Menjalankan",
-  "bJ+wrA": "Menghitung daftar pangkas",
-  "bLZL5a": "Dapatkan Alamat",
-  "bMphls": "Masuk dengan akses hanya-baca",
-  "bQdA2k": "Konten Sensitif",
-  "bep9C3": "Kunci Publik",
-  "bfvyfs": "Anon",
-  "bxv59V": "Baru saja",
-  "c+1p0i": "Set bisu yang baik",
-  "c+JYNI": "Tidak, terima kasih.",
-  "c2T+1B": "Pengalihan",
-  "c35bj2": "Jika Anda memiliki pertanyaan tentang pesanan NIP-05 Anda, silakan DM {link}",
-  "c3LlRO": "{n}KiB",
-  "c3g2hL": "Menyiarkan Lagi",
-  "cFbU1B": "Menggunakan Alby? Kunjungi {link} untuk mendapatkan konfigurasi NWC Anda!",
-  "cG/bKQ": "Koneksi dompet nostr asli",
-  "cHCwbF": "Fotografi",
-  "cKbMRX": "Pesan Langsung",
-  "cPIKU2": "Yang diikuti",
-  "cQfLWb": "URL..",
-  "cVcgLJ": "Server Media",
-  "cWx9t8": "Bisukan semua",
-  "cg1VJ2": "Hubungkan Dompet",
-  "cnwHgH": "Stempel Waktu Terbuka",
-  "cuP16y": "Dukungan multi akun",
-  "cuV2gK": "nama terdaftar",
-  "cw1Ftc": "Kegiatan Langsung",
-  "cyR7Kh": "Kembali",
-  "d+6YsV": "Daftar yang akan dibisukan:",
-  "d0qim7": "Filter WoT",
-  "d2ebEu": "Tidak Berlangganan Push",
-  "d7d0/x": "Alamat LN",
-  "dK2CcV": "Kunci publik seperti nama pengguna Anda, Anda dapat membaginya dengan siapa pun.",
-  "dOQCL8": "Nama tampilan",
-  "dZZIGe": "Tajuk Artikel Modular",
-  "ddd3JX": "Tagar Populer",
-  "deEeEI": "Daftar",
-  "djLctd": "Jumlah dalam sat",
-  "dmcsBA": "Daftar yang diklasifikasikan",
-  "dmsiLv": "Pemisahan Zap Pool default {n} telah dikonfigurasi untuk pengembang {site} , Anda dapat menonaktifkannya kapan saja di {link}",
-  "e5x8FT": "Baik",
-  "e61Jf3": "Segera hadir",
-  "e7VmYP": "Masukkan pin untuk membuka kunci pribadi Anda",
-  "e7qqly": "Tandai Semua Telah Dibaca",
-  "eF0Re7": "Gunakan ekstensi penanda tangan nostr untuk masuk",
-  "eHAneD": "Emoji reaksi",
-  "eJj8HD": "Dapatkan Verifikasi",
-  "eSzf2G": "Satu zap dari {nIn} sats akan mengalokasikan {nOut} sats ke zap pool.",
-  "eW/Bj9": "Pakan",
-  "eXT2QQ": "Obrolan Grup",
-  "eZtOxB": "kemampuan window.nostr untuk browser web",
-  "egib+2": "{n,plural,=1{& {n} lainnya} other{& {n} lainnya}}",
-  "ejEGdx": "Beranda",
-  "eoV49s": "Miskin",
-  "f1OxTe": "Pemimpin komunitas adalah individu yang mengembangkan ekosistem Nostr dengan aktif di komunitas lokal mereka dan membantu pengguna baru. Siapa pun dapat menjadi pemimpin komunitas, tetapi hanya sedikit yang memegang gelar kehormatan saat ini.",
-  "f2CAxA": "Dump",
-  "fBI91o": "Zap",
-  "fBlba3": "Terima kasih telah menggunakan {site}, mohon pertimbangkan untuk berdonasi jika Anda bisa.",
-  "fLIvbC": "Snort adalah proyek sumber terbuka yang dibangun oleh orang-orang yang bersemangat di waktu luang mereka, donasi Anda sangat dihargai",
-  "fOksnD": "Tidak dapat memberikan suara karena layanan LNURL tidak mendukung zaps",
-  "fQN+tq": "Menampilkan postingan yang memiliki tag peringatan konten",
-  "fWZYP5": "Disematkan",
-  "fX5RYm": "Pilih beberapa topik yang menarik",
-  "filwqD": "Baca",
-  "fjAcWo": "Bungkus Kado",
-  "flnGvv": "Apa yang sedang kamu pikirkan?",
-  "fqwcJ1": "Donasi On-chain",
-  "fr+XYA": "Lightning Pub RPC",
-  "fsB/4p": "Disimpan",
-  "fucxlm": "Lampirkan Media",
-  "furjvW": "Menonton Streaming",
-  "g5pX+a": "Tentang",
-  "g985Wp": "Gagal mengirim suara",
-  "gDzDRs": "Emoji untuk dikirim saat bereaksi terhadap sebuah catatan",
-  "gXgY3+": "Belum semua klien mendukung hal ini",
-  "gczcC5": "Berlangganan",
-  "geppt8": "{count} ({count2} dalam memori)",
-  "gjBiyj": "Memuat...",
-  "gkMmvC": "Aplikasi Penandatangan Android",
-  "gl1NeW": "Daftar",
-  "go2/QF": "Daftar server pengguna",
-  "grQ+mI": "Bukti Pekerjaan",
-  "gtNjNP": "Deskripsi aliran protokol dasar",
-  "h7jvCs": "{site} lebih menyenangkan jika dilakukan bersama-sama!",
-  "h8XMJL": "Lencana",
-  "h9M0rW": "Metadata Pengguna",
-  "hF6IN2": "Pangkas Daftar Pengikut",
-  "hMQmIw": "Sinkronisasi Akun",
-  "hMzcSq": "Pesan-pesan",
-  "hRTfTR": "PRO",
-  "hY4lzx": "Dukungan",
-  "hYOE+U": "Mengundang",
-  "hicxcO": "Tampilkan balasan-balasan",
-  "hmZ3Bz": "Media",
-  "hniz8Z": "di sini",
-  "hv/eRj": "Daftar relai yang diblokir",
-  "hvFRBo": "Interaksi",
-  "i/dBAR": "Zap Pool",
-  "i5gBFz": "Pembayaran yang Anda kirim dan terima akan muncul di sini.",
-  "iCqGww": "Reaksi-reaksi ({n})",
-  "iEoXYx": "DeepL terjemahan",
-  "iGT1eE": "Cegah akun palsu meniru Anda",
-  "iHN12u": "Admin",
-  "iICVoL": "{x} berikut ({y} duplikat)",
-  "iNWbVV": "Menangani",
-  "iXPL0Z": "Tidak dapat masuk dengan kunci pribadi pada koneksi yang tidak aman, gunakan ekstensi pengelola kunci Nostr sebagai gantinya",
-  "iYc3Ld": "Pembayaran",
-  "icCxlA": "halaman pengguna baru",
-  "ieGrWo": "Ikuti",
-  "igUUst": "Balasan Beralur Obrolan Grup",
-  "ipHVx5": "Hasilkan Faktur",
-  "itPgxd": "Profil",
-  "izWS4J": "Berhenti mengikuti",
-  "j9xbzF": "Sudah dicadangkan",
-  "jA3OE/": "{n,plural,=1{{n} sat} other{{n} sat}}",
-  "jAmfGl": "Langganan {site_name} Anda telah kedaluwarsa",
-  "jHa/ko": "Bersihkan feed Anda",
-  "jMzO1S": "Kesalahan internal: {msg}",
-  "jiAVXu": "Acara Video",
-  "jvo0vs": "Simpan",
-  "jzgQ2z": "{n} Reaksi",
-  "k0kCJp": "Daftar Sekarang",
-  "k2veDA": "Tulis",
-  "k7sKNy": "Layanan verifikasi NIP-05 kami sendiri, bantu dukung pengembangan situs ini dan dapatkan lencana khusus yang mengkilap di situs kami!",
-  "k9SQm1": "Relai yang telah Anda sambungkan sebelumnya dan tampaknya dapat diandalkan.",
-  "kEZUR8": "Mendaftarkan nama pengguna Iris",
-  "kJYo0u": "{n,plural,=0{{name} diposkan ulang} other{{name} & {n} yang lain diposting ulang}}",
-  "kKC9ya": "Info Dompet",
-  "kNd2FL": "Masuk pasang surut",
-  "kQAf2d": "Pilih",
-  "kaaf1E": "sekarang",
-  "kc79d3": "Topik",
-  "klCm96": "Persetujuan Pos Komunitas",
-  "kqPQJD": "Mengkonfigurasi zap pool",
-  "kuPHYE": "{n,plural,=0{{name} menyukai} other{{name} & {n} yang lain menyukai}}",
-  "l+ikU1": "Semuanya di {plan}",
-  "l3H1EK": "Undang teman Anda",
-  "l3nTjd": "Derivasi kunci dasar dari frasa benih mnemonik",
-  "lCILNz": "Beli Sekarang",
-  "lD3+8a": "Bayar",
-  "lEnclp": "Acara saya: {n}",
-  "lPWASz": "Alamat hidung mendengus",
-  "lTbT3s": "Kata sandi dompet",
-  "lbr3Lq": "Salin tautan",
-  "lfOesV": "Non-Zap",
-  "lgg1KN": "halaman akun",
-  "ll3xBp": "Layanan proxy gambar",
-  "lnaT9F": "Mengikuti {n}",
-  "lsNFM1": "Klik untuk memuat konten dari {link}",
-  "lvlPhZ": "Bayar Faktur",
-  "m/59y2": "Permintaan Zap",
-  "m6h2Eg": "Rekomendasi penanganannya",
-  "mCEKiZ": "{n} catatan telah dibisukan",
-  "mErPop": "Sepertinya Anda belum memilikinya, kunjungi {link} untuk membelinya!",
-  "mFtdYh": "{type} Relai Pekerja",
-  "mKAr6h": "Ikuti semua",
-  "mKh2HS": "Layanan unggah berkas",
-  "mKhgP9": "{n,plural,=0{} =1{di-zap} other{di-zap}}",
-  "mOFG3K": "Mulai",
-  "mfe8RW": "Opsi: {n}",
-  "mmPSWH": "Hanya Baca",
-  "n1Whvj": "Beralih",
-  "n5l7tP": "Acara Kalender Berbasis Waktu",
-  "n8k1SG": "{n}MiB",
-  "nD4frR": "Konfirmasi penawaran",
-  "nDejmx": "Buka blokir",
-  "nGBrvw": "Penanda-penanda buku",
-  "nGGDsi": "Pemberitahuan Diizinkan",
-  "nIchMQ": "Mencari aktivitas akun ({progress})",
-  "nPHrqp": "Kolam Renang Coinjoin",
-  "nUT0Lv": "Peralatan",
-  "nWQFic": "Memperbaharui",
-  "nihgfo": "Dengarkan artikel ini",
-  "nwZXeh": "{n} diblokir",
-  "o/gK53": "Dek",
-  "o7e+nJ": "{n} pengikut",
-  "oJ+JJN": "Tidak ada yang ditemukan :/",
-  "odFwjL": "Hanya yang diikuti",
-  "ojzbwv": "Hei, sepertinya Anda belum memiliki Nostr Address, Anda harus mendapatkannya! Lihat {link}",
-  "ozZ2Cj": "Penghargaan Lencana",
-  "p4N05H": "Unggah",
-  "p9Ps2l": "{x}/{y} memiliki relay ({percent})",
-  "pEEBFk": "Relai yang Andal",
-  "pI+77w": "Cadangan yang dapat diunduh dari relai Snort",
-  "pRess9": "ZapPool",
-  "plOM0t": "Emoji Khusus",
-  "plg2Ua": "Pengguna Bisu Saluran",
-  "puLNUJ": "Sematkan",
-  "pyjJ5f": "Nostr Marketplace (untuk pasar yang tangguh)",
-  "pzTOmv": "Pengikut",
-  "q3OuMw": "Komentar Torrent",
-  "qAY40L": "Acara Kalender Berbasis Tanggal",
-  "qBYNMb": "Balasan Utas Grup",
-  "qD9EUF": "Email <> Jembatan DM untuk alamat nostr Snort Anda",
-  "qDwvZ4": "Kesalahan yang tidak diketahui",
-  "qFIVx4": "Lencana Profil",
-  "qMePPG": "Catatan",
-  "qMx1sA": "Jumlah Zap bawaan",
-  "qUJTsT": "Diblokir",
-  "qXCbgZ": "Membuka kunci",
-  "qZsKBR": "Perbarui {tier}",
-  "qcJFEJ": "API Pemberitahuan Dinonaktifkan",
-  "qdGuQo": "Kunci Pribadi Anda Adalah (jangan bagikan ini dengan siapa pun)",
-  "qfmMQh": "Catatan ini telah dibisukan",
-  "qkvYUb": "Tambahkan ke Profil",
-  "qmJ8kD": "Terjemahan gagal",
-  "qtWLmt": "Seperti",
-  "qyJtWy": "Tampilkan lebih sedikit",
-  "qydxOd": "Sains",
-  "qz9fty": "Pin salah",
-  "r3C4x/": "Perangkat lunak",
-  "r5srDR": "Masukkan kata sandi dompet",
-  "rAQG0X": "Metadata Daftar Relai",
-  "rIsVe+": "Daftar obrolan publik",
-  "rMgF34": "Back up sekarang",
-  "rRRXtB": "Lightning Zaps",
-  "rT14Ow": "Tambahkan Relay",
-  "reFEEC": "Pelaporan",
-  "rfuMjE": "(Bawaan)",
-  "rkM7l8": "Pesan Langsung Terenkripsi",
-  "rmdsT4": "{n} hari",
-  "rn52n9": "Saluran Obrolan Publik",
-  "rx1i0i": "Tautan pendek",
-  "sFUkSN": "Set penanda",
-  "sKDn4e": "Tampilkan Lencana",
-  "sUNhQE": "pengguna",
-  "sZQzjQ": "Gagal mengurai zap split: {input}",
-  "saInmO": "Nama relai yang ditampilkan tidak sama dengan URL lengkap yang dimasukkan.",
-  "saorw+": "Permintaan Penghapusan Acara",
-  "sfL/O+": "Nada yang dibisukan tidak akan ditampilkan",
-  "t79a6U": "Koneksi Berhasil:",
-  "tDDiRL": "Daftar minat",
-  "tFpT/O": "Melepaskan set artefak",
-  "tO1oq9": "Acara Video",
-  "tOdNiY": "Gelap",
-  "tRGdV1": "Enkripsi Berversi",
-  "tU0ADf": "NIP tidak diketahui-{x}",
-  "tVuVg9": "Acara Tampilan Video",
-  "tf1lIh": "Gratis",
-  "th5lxp": "Mengirim catatan ke subset dari relai tulis Anda",
-  "thnRpU": "Mendapatkan verifikasi NIP-05 dapat membantu:",
-  "tj6kdX": "{sign} {amount} sats",
-  "tjpYlr": "Metrik Relai",
-  "ttxS0b": "Lencana Pendukung",
-  "tzMNF3": "Status",
-  "u/vOPu": "Sudah dibayar",
-  "u4I8q8": "Daftar pin",
-  "u81G9+": "Waktu kerja",
-  "u9NoC1": "Nama harus kurang dari {limit} karakter",
-  "uCk8r+": "Sudah memiliki akun?",
-  "uD7Els": "Identitas Eksternal dalam Profil",
-  "uJaMkO": "Daftar relai untuk menerima DM",
-  "uSV4Ti": "Posting ulang perlu dikonfirmasi secara manual",
-  "uc0din": "Mengirimkan split sat ke",
-  "ufvXH1": "Ditemukan {n} acara",
-  "uhu5aG": "Publik",
-  "un1nGw": "{n} catatan",
-  "usAvMr": "Sunting profil",
-  "v8lolG": "Mulai obrolan",
-  "vB3oQ/": "Harus berupa daftar kontak atau daftar pubkey",
-  "vBsZhD": "Daftar komunitas",
-  "vN5UH8": "Gambar Profil",
-  "vU/Q5i": "Alat ini akan mencari acara terakhir yang dipublikasikan oleh semua pengikut Anda dan menghapus mereka yang belum memposting dalam 6 bulan",
-  "vZ4quW": "NIP-05 adalah spesifikasi verifikasi berbasis DNS yang membantu memvalidasi Anda sebagai pengguna nyata.",
-  "vhlWFg": "Opsi Jajak Pendapat",
-  "vlbWtt": "Dapatkan yang gratis",
-  "voxBKC": "Diikuti oleh teman-teman",
-  "vxwnbh": "Jumlah pekerjaan yang harus diterapkan pada semua acara yang dipublikasikan",
-  "w1Fanr": "Bisnis",
-  "w6qrwX": "NSFW",
-  "wEQDC6": "Sunting",
-  "wOyDTB": "Daftar server penyimpanan file",
-  "wSZR47": "Kirim",
-  "wc9st7": "Lampiran Media",
-  "whSrs+": "Obrolan Publik Nostr",
-  "wih7iJ": "nama diblokir",
-  "wlWMuh": "Tambalan",
-  "wofVHy": "Moderasi",
-  "wqyN/i": "Cari tahu info selengkapnya tentang {service} di {link}",
-  "wtLjP6": "Salin ID",
-  "x+3fl6": "Relai Saya",
-  "x/Fx2P": "Danai layanan yang Anda gunakan dengan membagi sebagian dari semua zap Anda ke dalam kumpulan dana!",
-  "x82IOl": "Bisukan",
-  "xEjBS7": "Untukmu",
-  "xIcAOU": "Voting oleh {type}",
-  "xIoGG9": "Pergi ke",
-  "xPCyu+": "nostr: Skema URI",
-  "xaj9Ba": "Penyedia",
-  "xbVgIm": "Memuat media secara otomatis",
-  "xhQMeQ": "Kedaluwarsa",
-  "xl4s/X": "Ketentuan Tambahan:",
-  "xmcVZ0": "Cari",
-  "xybOUv": "KIPAS",
-  "y/bmsG": "Izinkan",
-  "y1Z3or": "Bahasa",
-  "yAztTU": "{n} eSats",
-  "yCLnBC": "LNURL atau Alamat Kilat",
-  "yLzgxH": "Relai Populer",
-  "yeX8yA": "Aplikasi Asli",
-  "z3UjXR": "Debug",
-  "z3Ukvq": "Draf Konten Bentuk Panjang",
-  "zCb8fX": "Berat",
-  "zFegDD": "Kontak",
-  "zINlao": "Pemilik",
-  "zQvVDJ": "Semua",
-  "zcaOTs": "Jumlah zap dalam sat",
-  "zi9MdS": "Catur (PGN)",
-  "zm6qS1": "{n} menit untuk membaca",
-  "zonsdq": "Gagal memuat layanan LNURL",
-  "zvCDao": "Tampilkan catatan terbaru secara otomatis",
-  "zx0myy": "Peserta"
+  "+D82kt": [
+    {
+      "type": 0,
+      "value": "Yakin ingin memposting ulang: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "+PzQ9Y": [
+    {
+      "type": 0,
+      "value": "Bayar Sekarang"
+    }
+  ],
+  "+QM0PJ": [
+    {
+      "type": 0,
+      "value": "Menyinkronkan semua peristiwa untuk profil Anda ke dalam cache lokal"
+    }
+  ],
+  "+QMdsy": [
+    {
+      "type": 0,
+      "value": "Statistik Relai"
+    }
+  ],
+  "+UjDmN": [
+    {
+      "type": 0,
+      "value": "Masuk dengan akses tulis"
+    }
+  ],
+  "+Vxixo": [
+    {
+      "type": 0,
+      "value": "Obrolan Grup Rahasia"
+    }
+  ],
+  "+aZY2h": [
+    {
+      "type": 0,
+      "value": "Tipe Zap"
+    }
+  ],
+  "+tShPg": [
+    {
+      "type": 0,
+      "value": "berikut ini"
+    }
+  ],
+  "+vA//S": [
+    {
+      "type": 0,
+      "value": "Masuk"
+    }
+  ],
+  "+vIQlC": [
+    {
+      "type": 0,
+      "value": "Harap pastikan untuk menyimpan kata sandi berikut untuk mengelola pegangan Anda di masa mendatang"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "Menghubungkan"
+    }
+  ],
+  "+vj0U3": [
+    {
+      "type": 0,
+      "value": "sunting"
+    }
+  ],
+  "+xliwN": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " diposting ulang"
+    }
+  ],
+  "/B8zwF": [
+    {
+      "type": 0,
+      "value": "Ruang Anda seperti yang Anda inginkan 😌"
+    }
+  ],
+  "/GCoTA": [
+    {
+      "type": 0,
+      "value": "Jelas"
+    }
+  ],
+  "/JE/X+": [
+    {
+      "type": 0,
+      "value": "Dukungan Akun"
+    }
+  ],
+  "/T7HId": [
+    {
+      "type": 0,
+      "value": "Integrasi Penyimpanan File HTTP"
+    }
+  ],
+  "/Xf4UW": [
+    {
+      "type": 0,
+      "value": "Kirim metrik penggunaan anonim"
+    }
+  ],
+  "/b1IHW": [
+    {
+      "type": 0,
+      "value": "Pesan Obrolan Grup"
+    }
+  ],
+  "/d6vEc": [
+    {
+      "type": 0,
+      "value": "Jadikan profil Anda lebih mudah untuk ditemukan dan dibagikan"
+    }
+  ],
+  "/ioUrF": [
+    {
+      "type": 0,
+      "value": "Dari File"
+    }
+  ],
+  "/n5KSF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ms"
+    }
+  ],
+  "00LcfG": [
+    {
+      "type": 0,
+      "value": "Memuat lebih banyak"
+    }
+  ],
+  "01iNut": [
+    {
+      "type": 0,
+      "value": "Alamat yang tidak sesuai dengan Anda"
+    }
+  ],
+  "08zn6O": [
+    {
+      "type": 0,
+      "value": "Kunci Ekspor"
+    }
+  ],
+  "0Azlrb": [
+    {
+      "type": 0,
+      "value": "Mengelola"
+    }
+  ],
+  "0BUTMv": [
+    {
+      "type": 0,
+      "value": "Cari..."
+    }
+  ],
+  "0MndVW": [
+    {
+      "type": 0,
+      "value": "Dompet LNDHub umum (BTCPayServer / Alby / LNBits)"
+    }
+  ],
+  "0jOEtS": [
+    {
+      "type": 0,
+      "value": "LNURL Tidak valid"
+    }
+  ],
+  "0kOBMu": [
+    {
+      "type": 0,
+      "value": "Menangani Penyebutan"
+    }
+  ],
+  "0mch2Y": [
+    {
+      "type": 0,
+      "value": "nama memiliki karakter yang tidak diizinkan"
+    }
+  ],
+  "0siT4z": [
+    {
+      "type": 0,
+      "value": "Politik"
+    }
+  ],
+  "0uoY11": [
+    {
+      "type": 0,
+      "value": "Tampilkan Status"
+    }
+  ],
+  "0yO7wF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " detik"
+    }
+  ],
+  "0zASjL": [
+    {
+      "type": 0,
+      "value": "Pergi."
+    }
+  ],
+  "1/BFEj": [
+    {
+      "type": 0,
+      "value": "barang git"
+    }
+  ],
+  "1Mo59U": [
+    {
+      "type": 0,
+      "value": "Apa Anda yakin Anda ingin memindahkan catatan ini dari penanda buku?"
+    }
+  ],
+  "1R43+L": [
+    {
+      "type": 0,
+      "value": "Masukkan konfigurasi Nostr Wallet Connect"
+    }
+  ],
+  "1UWegE": [
+    {
+      "type": 0,
+      "value": "Pastikan untuk mencadangkan kunci Anda!"
+    }
+  ],
+  "1c4YST": [
+    {
+      "type": 0,
+      "value": "Terhubung ke: "
+    },
+    {
+      "type": 1,
+      "value": "node"
+    },
+    {
+      "type": 0,
+      "value": " 🎉"
+    }
+  ],
+  "1nYUGC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Mengikuti"
+    }
+  ],
+  "1o2BgB": [
+    {
+      "type": 0,
+      "value": "Periksa Tanda Tangan"
+    }
+  ],
+  "1ozeyg": [
+    {
+      "type": 0,
+      "value": "Alam"
+    }
+  ],
+  "1udzha": [
+    {
+      "type": 0,
+      "value": "Percakapan"
+    }
+  ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "Tambahkan"
+    }
+  ],
+  "25V4l1": [
+    {
+      "type": 0,
+      "value": "Spanduk"
+    }
+  ],
+  "25WwxF": [
+    {
+      "type": 0,
+      "value": "Belum memiliki akun?"
+    }
+  ],
+  "28oKbu": [
+    {
+      "type": 0,
+      "value": "Komunitas yang Dimoderasi"
+    }
+  ],
+  "29sHFE": [
+    {
+      "type": 0,
+      "value": "Dompet Terhubung"
+    }
+  ],
+  "2BBGxX": [
+    {
+      "type": 0,
+      "value": "Tag subjek dalam peristiwa teks"
+    }
+  ],
+  "2HIqeO": [
+    {
+      "type": 0,
+      "value": "Daftar emoji pengguna"
+    }
+  ],
+  "2IFGap": [
+    {
+      "type": 0,
+      "value": "Sumbangkan"
+    }
+  ],
+  "2LbrkB": [
+    {
+      "type": 0,
+      "value": "Masukkan kata sandi"
+    }
+  ],
+  "2O2sfp": [
+    {
+      "type": 0,
+      "value": "Selesai"
+    }
+  ],
+  "2Qsf9/": [
+    {
+      "type": 0,
+      "value": "Daftar generik"
+    }
+  ],
+  "2a2YiP": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Penanda Buku"
+    }
+  ],
+  "2k0Cv+": [
+    {
+      "type": 0,
+      "value": "Tidak disukai ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "2mcwT8": [
+    {
+      "type": 0,
+      "value": "Catatan Baru"
+    }
+  ],
+  "2oCF7O": [
+    {
+      "type": 0,
+      "value": "Diikuti oleh teman dari teman"
+    }
+  ],
+  "2raFAu": [
+    {
+      "type": 0,
+      "value": "Data khusus aplikasi"
+    }
+  ],
+  "2ukA4d": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " jam"
+    }
+  ],
+  "2z7Kky": [
+    {
+      "type": 0,
+      "value": "Artikel Terbaru"
+    }
+  ],
+  "3/onCd": [
+    {
+      "type": 0,
+      "value": "Balasan"
+    }
+  ],
+  "39AHJm": [
+    {
+      "type": 0,
+      "value": "Daftar"
+    }
+  ],
+  "3GWu6/": [
+    {
+      "type": 0,
+      "value": "Status Pengguna"
+    }
+  ],
+  "3KNMbJ": [
+    {
+      "type": 0,
+      "value": "Artikel"
+    }
+  ],
+  "3MKdAw": [
+    {
+      "type": 0,
+      "value": "Gumpalan yang disimpan di server media"
+    }
+  ],
+  "3QwfJR": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    }
+  ],
+  "3adEeb": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " pemirsa"
+    }
+  ],
+  "3cc4Ct": [
+    {
+      "type": 0,
+      "value": "Cahaya"
+    }
+  ],
+  "3gOsZq": [
+    {
+      "type": 0,
+      "value": "Penerjemah"
+    }
+  ],
+  "3kbIhS": [
+    {
+      "type": 0,
+      "value": "Tanpa judul"
+    }
+  ],
+  "3qnJlS": [
+    {
+      "type": 0,
+      "value": "Anda memberikan suara dengan "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "3t3kok": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " catatan baru"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " catatan-catatan baru"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "3tVy+Z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Pengikut"
+    }
+  ],
+  "3yk8fB": [
+    {
+      "type": 0,
+      "value": "Dompet"
+    }
+  ],
+  "40VR6s": [
+    {
+      "type": 0,
+      "value": "Nostr Connect"
+    }
+  ],
+  "41BSaT": [
+    {
+      "type": 0,
+      "value": "Total Acara:"
+    }
+  ],
+  "450Fty": [
+    {
+      "type": 0,
+      "value": "Tidak ada"
+    }
+  ],
+  "47E53q": [
+    {
+      "type": 0,
+      "value": "Wiki"
+    }
+  ],
+  "47FYwb": [
+    {
+      "type": 0,
+      "value": "Membatalkan"
+    }
+  ],
+  "48zn4v": [
+    {
+      "type": 0,
+      "value": "Penawaran"
+    }
+  ],
+  "4IPzdn": [
+    {
+      "type": 0,
+      "value": "Pengembang Utama"
+    }
+  ],
+  "4L2vUY": [
+    {
+      "type": 0,
+      "value": "Nama NIP-05 baru Anda adalah:"
+    }
+  ],
+  "4MjsHk": [
+    {
+      "type": 0,
+      "value": "Kehidupan"
+    }
+  ],
+  "4OB335": [
+    {
+      "type": 0,
+      "value": "Tidak disukai"
+    }
+  ],
+  "4P/kKm": [
+    {
+      "type": 0,
+      "value": "Enkripsi Kunci Pribadi"
+    }
+  ],
+  "4Vmpt4": [
+    {
+      "type": 0,
+      "value": "Nostr Plebs adalah salah satu penyedia NIP-05 pertama di ruang ini dan menawarkan koleksi domain yang bagus dengan harga terjangkau"
+    }
+  ],
+  "4Z3t5i": [
+    {
+      "type": 0,
+      "value": "Gunakan imgproxy untuk mengkompresi gambar"
+    }
+  ],
+  "4emo2p": [
+    {
+      "type": 0,
+      "value": "Relai yang Hilang"
+    }
+  ],
+  "4rYCjn": [
+    {
+      "type": 0,
+      "value": "Catatan untuk diri sendiri"
+    }
+  ],
+  "4wgYpI": [
+    {
+      "type": 0,
+      "value": "Penangan Aplikasi yang Direkomendasikan"
+    }
+  ],
+  "5BVs2e": [
+    {
+      "type": 0,
+      "value": "zap"
+    }
+  ],
+  "5CB6zB": [
+    {
+      "type": 0,
+      "value": "Zap Splits"
+    }
+  ],
+  "5PRWs7": [
+    {
+      "type": 0,
+      "value": "API Pemberitahuan Diaktifkan"
+    }
+  ],
+  "5dfmvv": [
+    {
+      "type": 0,
+      "value": "Zap Goal"
+    }
+  ],
+  "5oTnfy": [
+    {
+      "type": 0,
+      "value": "Beli Pegangan"
+    }
+  ],
+  "5qEWCr": [
+    {
+      "type": 0,
+      "value": "Metadata File"
+    }
+  ],
+  "5u6iEc": [
+    {
+      "type": 0,
+      "value": "Transfer ke Pubkey"
+    }
+  ],
+  "5vMmmR": [
+    {
+      "type": 0,
+      "value": "Nama pengguna tidak unik di Nostr. Alamat Nostr adalah alamat unik Anda yang dapat dibaca manusia yang unik untuk Anda pada saat pendaftaran."
+    }
+  ],
+  "5ykRmX": [
+    {
+      "type": 0,
+      "value": "Kirim zap"
+    }
+  ],
+  "6/hB3S": [
+    {
+      "type": 0,
+      "value": "Menonton Pemutaran Ulang"
+    }
+  ],
+  "60kEE3": [
+    {
+      "type": 0,
+      "value": "Daftar bisu"
+    }
+  ],
+  "62nsdy": [
+    {
+      "type": 0,
+      "value": "Coba lagi."
+    }
+  ],
+  "634VVz": [
+    {
+      "type": 0,
+      "value": "Koneksi Gagal:"
+    }
+  ],
+  "6559gb": [
+    {
+      "type": 0,
+      "value": "Panjang daftar ikuti baru "
+    },
+    {
+      "type": 1,
+      "value": "length"
+    }
+  ],
+  "65BmHb": [
+    {
+      "type": 0,
+      "value": "Gagal memproxy gambar dari "
+    },
+    {
+      "type": 1,
+      "value": "host"
+    },
+    {
+      "type": 0,
+      "value": ", klik di sini untuk memuat secara langsung"
+    }
+  ],
+  "6D4Hhn": [
+    {
+      "type": 0,
+      "value": "Merekomendasikan Relay"
+    }
+  ],
+  "6KGebm": [
+    {
+      "type": 0,
+      "value": "Segel"
+    }
+  ],
+  "6OSOXl": [
+    {
+      "type": 0,
+      "value": "Alasan: "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reason"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "6WWD34": [
+    {
+      "type": 0,
+      "value": "Mencari: "
+    },
+    {
+      "type": 1,
+      "value": "noteId"
+    }
+  ],
+  "6bgpn+": [
+    {
+      "type": 0,
+      "value": "Tidak semua klien mendukung ini, Anda mungkin masih menerima beberapa zap seolah-olah zap splits tidak dikonfigurasi"
+    }
+  ],
+  "6ewQqw": [
+    {
+      "type": 0,
+      "value": "Suka ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "6mr8WU": [
+    {
+      "type": 0,
+      "value": "Diikuti oleh"
+    }
+  ],
+  "6pdxsi": [
+    {
+      "type": 0,
+      "value": "Bidang dan tag metadata tambahan"
+    }
+  ],
+  "6uMqL1": [
+    {
+      "type": 0,
+      "value": "Belum dibayar"
+    }
+  ],
+  "6xNr8c": [
+    {
+      "type": 0,
+      "value": "Pindah akun"
+    }
+  ],
+  "6xap9L": [
+    {
+      "type": 0,
+      "value": "Bagus."
+    }
+  ],
+  "7+Domh": [
+    {
+      "type": 0,
+      "value": "Catatan"
+    }
+  ],
+  "712i26": [
+    {
+      "type": 0,
+      "value": "Proxy menggunakan faktur HODL untuk meneruskan pembayaran, yang menyembunyikan pubkey dari node Anda"
+    }
+  ],
+  "753yX5": [
+    {
+      "type": 0,
+      "value": "Label"
+    }
+  ],
+  "769A8p": [
+    {
+      "type": 0,
+      "value": "Artikel wiki"
+    }
+  ],
+  "77nkEO": [
+    {
+      "type": 0,
+      "value": "Dokumen Informasi Relay"
+    }
+  ],
+  "7LFU8U": [
+    {
+      "type": 0,
+      "value": "Kemampuan Pencarian"
+    }
+  ],
+  "7UOvbT": [
+    {
+      "type": 0,
+      "value": "Offline"
+    }
+  ],
+  "7YkSA2": [
+    {
+      "type": 0,
+      "value": "Tokoh Masyarakat"
+    }
+  ],
+  "7gMmSL": [
+    {
+      "type": 0,
+      "value": "Reaksi"
+    }
+  ],
+  "7hp70g": [
+    {
+      "type": 0,
+      "value": "NIP-05"
+    }
+  ],
+  "7jfPsW": [
+    {
+      "type": 0,
+      "value": "Konten Artikel Modular"
+    }
+  ],
+  "7nAz/z": [
+    {
+      "type": 0,
+      "value": "Membisukan catatan dari orang yang berada di luar jaringan kepercayaan Anda"
+    }
+  ],
+  "7pFGAQ": [
+    {
+      "type": 0,
+      "value": "Tutup Relai"
+    }
+  ],
+  "8/vBbP": [
+    {
+      "type": 0,
+      "value": "Posting ulang ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "89q5wc": [
+    {
+      "type": 0,
+      "value": "Konfirmasi Posting Ulang"
+    }
+  ],
+  "8BDFvJ": [
+    {
+      "type": 0,
+      "value": "Konvensi untuk penggunaan tag e dan p oleh klien dalam acara teks"
+    }
+  ],
+  "8ED/4u": [
+    {
+      "type": 0,
+      "value": "Membalas ke"
+    }
+  ],
+  "8HJxXG": [
+    {
+      "type": 0,
+      "value": "Daftar"
+    }
+  ],
+  "8QDesP": [
+    {
+      "type": 0,
+      "value": "Zap "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sat"
+    }
+  ],
+  "8Rkoyb": [
+    {
+      "type": 0,
+      "value": "Penerima"
+    }
+  ],
+  "8Y6bZQ": [
+    {
+      "type": 0,
+      "value": "Zap split tidak valid: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "8ZGqWl": [
+    {
+      "type": 0,
+      "value": "Utas Grup"
+    }
+  ],
+  "8g2vyB": [
+    {
+      "type": 0,
+      "value": "nama terlalu panjang"
+    }
+  ],
+  "8jmwT8": [
+    {
+      "type": 0,
+      "value": "entitas yang dikodekan bech32"
+    }
+  ],
+  "8v1NN+": [
+    {
+      "type": 0,
+      "value": "Frasa pasangan"
+    }
+  ],
+  "8xdDLn": [
+    {
+      "type": 0,
+      "value": "Ikuti set"
+    }
+  ],
+  "8za9Pq": [
+    {
+      "type": 0,
+      "value": "Draf Daftar Rahasia"
+    }
+  ],
+  "9+Ddtu": [
+    {
+      "type": 0,
+      "value": "Berikutnya"
+    }
+  ],
+  "9HU8vw": [
+    {
+      "type": 0,
+      "value": "Membalas"
+    }
+  ],
+  "9SvQep": [
+    {
+      "type": 0,
+      "value": "Mengikuti "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "9V0wg3": [
+    {
+      "type": 0,
+      "value": "Acara Kalender RSVP Acara"
+    }
+  ],
+  "9WRlF4": [
+    {
+      "type": 0,
+      "value": "Mengirim"
+    }
+  ],
+  "9kO0VQ": [
+    {
+      "type": 0,
+      "value": "Menyembunyikan nada yang dibisukan"
+    }
+  ],
+  "9kSari": [
+    {
+      "type": 0,
+      "value": "Mencoba menerbitkan ulang"
+    }
+  ],
+  "9pMqYs": [
+    {
+      "type": 0,
+      "value": "Alamat No."
+    }
+  ],
+  "9wO4wJ": [
+    {
+      "type": 0,
+      "value": "Faktur Lightning"
+    }
+  ],
+  "A86fJ+": [
+    {
+      "type": 0,
+      "value": "Repost Generik"
+    }
+  ],
+  "ADmfQT": [
+    {
+      "type": 0,
+      "value": "Orang Tua"
+    }
+  ],
+  "ALdW69": [
+    {
+      "type": 0,
+      "value": "Catatan oleh "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "AN0Z7Q": [
+    {
+      "type": 0,
+      "value": "Kata-kata yang dibisukan"
+    }
+  ],
+  "ASRK0S": [
+    {
+      "type": 0,
+      "value": "Penulis ini telah dibisukan"
+    }
+  ],
+  "AedFVZ": [
+    {
+      "type": 0,
+      "value": "Membuat atau memperbarui produk"
+    }
+  ],
+  "Ai8VHU": [
+    {
+      "type": 0,
+      "value": "Penyimpanan catatan tak terbatas pada relai Snort"
+    }
+  ],
+  "AkCxS/": [
+    {
+      "type": 0,
+      "value": "Alasan"
+    }
+  ],
+  "AktAk2": [
+    {
+      "type": 0,
+      "value": "Bagus."
+    }
+  ],
+  "Am8glJ": [
+    {
+      "type": 0,
+      "value": "Permainan"
+    }
+  ],
+  "AqGfF4": [
+    {
+      "type": 0,
+      "value": "Pembuatan Saluran"
+    }
+  ],
+  "Aujn2T": [
+    {
+      "type": 0,
+      "value": "Menghitung"
+    }
+  ],
+  "Awq32I": [
+    {
+      "type": 0,
+      "value": "Pemberitahuan push"
+    }
+  ],
+  "AxDOiG": [
+    {
+      "type": 0,
+      "value": "Bulan"
+    }
+  ],
+  "AyGauy": [
+    {
+      "type": 0,
+      "value": "Masuk"
+    }
+  ],
+  "B4C47Y": [
+    {
+      "type": 0,
+      "value": "nama terlalu pendek"
+    }
+  ],
+  "B6+XJy": [
+    {
+      "type": 0,
+      "value": "telah di-zap"
+    }
+  ],
+  "B6H7eJ": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex"
+    }
+  ],
+  "B7wvUM": [
+    {
+      "type": 0,
+      "value": "Anda dapat menambahkan satu atau beberapa relay, satu per baris."
+    }
+  ],
+  "BGCM48": [
+    {
+      "type": 0,
+      "value": "Akses tulis ke relai Snort, dengan retensi kejadian selama 1 tahun"
+    }
+  ],
+  "BGGacK": [
+    {
+      "type": 0,
+      "value": "Penyematan AI / Daftar vektor"
+    }
+  ],
+  "BQW4gi": [
+    {
+      "type": 0,
+      "value": "Grup Berbasis Relai"
+    }
+  ],
+  "BWpuKl": [
+    {
+      "type": 0,
+      "value": "Memperbarui"
+    }
+  ],
+  "BfuAQ5": [
+    {
+      "type": 0,
+      "value": "UI/UX Pasar"
+    }
+  ],
+  "BjNwZW": [
+    {
+      "type": 0,
+      "value": "Alamat lengkap (nip05)"
+    }
+  ],
+  "Blxcdx": [
+    {
+      "type": 0,
+      "value": "Relay"
+    }
+  ],
+  "Bo+O//": [
+    {
+      "type": 0,
+      "value": "HTTP Auth"
+    }
+  ],
+  "C1LjMx": [
+    {
+      "type": 0,
+      "value": "Donasi Petir"
+    }
+  ],
+  "C6Lhhp": [
+    {
+      "type": 0,
+      "value": "Acara Langsung"
+    }
+  ],
+  "C7642/": [
+    {
+      "type": 0,
+      "value": "Kutip Ulang"
+    }
+  ],
+  "C81/uG": [
+    {
+      "type": 0,
+      "value": "Keluar"
+    }
+  ],
+  "C8FsOr": [
+    {
+      "type": 0,
+      "value": "Server Populer"
+    }
+  ],
+  "C8HhVE": [
+    {
+      "type": 0,
+      "value": "Berikut yang Disarankan"
+    }
+  ],
+  "CA1efg": [
+    {
+      "type": 0,
+      "value": "Set video"
+    }
+  ],
+  "CHTbO3": [
+    {
+      "type": 0,
+      "value": "Gagal memuat faktur"
+    }
+  ],
+  "CJx5Nd": [
+    {
+      "type": 0,
+      "value": "Profil Zaps"
+    }
+  ],
+  "CM+Cfj": [
+    {
+      "type": 0,
+      "value": "Daftar Ikuti"
+    }
+  ],
+  "CM0k0d": [
+    {
+      "type": 0,
+      "value": "Pangkas daftar pengikut"
+    }
+  ],
+  "CVWeJ6": [
+    {
+      "type": 0,
+      "value": "Orang-orang yang sedang tren"
+    }
+  ],
+  "CYkOCI": [
+    {
+      "type": 0,
+      "value": "dan "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " orang lain yang Anda ikuti"
+    }
+  ],
+  "Cdxwi0": [
+    {
+      "type": 0,
+      "value": "Pengumuman repositori"
+    }
+  ],
+  "CmZ9ls": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Dibisukan"
+    }
+  ],
+  "Coy6SH": [
+    {
+      "type": 0,
+      "value": "Kalender"
+    }
+  ],
+  "CsCUYo": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "Cu/K85": [
+    {
+      "type": 0,
+      "value": "Diterjemahkan dari "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "CzHZoc": [
+    {
+      "type": 0,
+      "value": "Grafik Sosial"
+    }
+  ],
+  "D++Njw": [
+    {
+      "type": 0,
+      "value": "Catatan Teks Referensi"
+    }
+  ],
+  "D+KzKd": [
+    {
+      "type": 0,
+      "value": "Secara otomatis membunyikan setiap nada saat dimuat"
+    }
+  ],
+  "D09wbg": [
+    {
+      "type": 0,
+      "value": "Definisi Lencana"
+    }
+  ],
+  "D3idYv": [
+    {
+      "type": 0,
+      "value": "Pengaturan"
+    }
+  ],
+  "D9xTLE": [
+    {
+      "type": 0,
+      "value": "Saluran Sembunyikan Pesan"
+    }
+  ],
+  "DBiVK1": [
+    {
+      "type": 0,
+      "value": "Cache"
+    }
+  ],
+  "DKnriN": [
+    {
+      "type": 0,
+      "value": "Kirim sat"
+    }
+  ],
+  "DZzCem": [
+    {
+      "type": 0,
+      "value": "Tampilkan catatan "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " terbaru"
+    }
+  ],
+  "Dh3hbq": [
+    {
+      "type": 0,
+      "value": "Auto Zap"
+    }
+  ],
+  "Dn82AL": [
+    {
+      "type": 0,
+      "value": "Langsung"
+    }
+  ],
+  "DqUmXt": [
+    {
+      "type": 0,
+      "value": "Produk yang dijual sebagai lelang"
+    }
+  ],
+  "DrZqav": [
+    {
+      "type": 0,
+      "value": "Tentang harus kurang dari "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " karakter"
+    }
+  ],
+  "DtYelJ": [
+    {
+      "type": 0,
+      "value": "Transfer"
+    }
+  ],
+  "Dx4ey3": [
+    {
+      "type": 0,
+      "value": "Alihkan semua"
+    }
+  ],
+  "E3oB+t": [
+    {
+      "type": 0,
+      "value": "Browser"
+    }
+  ],
+  "E5ZIPD": [
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "amount"
+        }
+      ],
+      "type": 8,
+      "value": "big"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "sats"
+        }
+      ],
+      "type": 8,
+      "value": "small"
+    }
+  ],
+  "EHqHsu": [
+    {
+      "type": 0,
+      "value": "Faktur / Alamat Kilat"
+    }
+  ],
+  "EJbFi7": [
+    {
+      "type": 0,
+      "value": "Catatan pencarian"
+    }
+  ],
+  "ELbg9p": [
+    {
+      "type": 0,
+      "value": "Penyedia Data"
+    }
+  ],
+  "EQKRE4": [
+    {
+      "type": 0,
+      "value": "Menampilkan lencana di halaman profil"
+    }
+  ],
+  "EWeVrH": [
+    {
+      "type": 0,
+      "value": "Reaksi terhadap situs web"
+    }
+  ],
+  "EWyQH5": [
+    {
+      "type": 0,
+      "value": "Global"
+    }
+  ],
+  "Ebl/B2": [
+    {
+      "type": 0,
+      "value": "Terjemahkan ke "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "Ec+xLY": [
+    {
+      "type": 0,
+      "value": "Set kurasi"
+    }
+  ],
+  "EcZF24": [
+    {
+      "type": 0,
+      "value": "Relai Khusus"
+    }
+  ],
+  "EcfIwB": [
+    {
+      "type": 0,
+      "value": "Nama pengguna tersedia"
+    }
+  ],
+  "EcglP9": [
+    {
+      "type": 0,
+      "value": "Kunci"
+    }
+  ],
+  "EjFyoR": [
+    {
+      "type": 0,
+      "value": "Alamat Donasi On-chain"
+    }
+  ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "Membeli"
+    }
+  ],
+  "EsHX35": [
+    {
+      "type": 0,
+      "value": "Maaf, kami tidak memahami jenis acara ini ("
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "), silakan coba salah satu dari aplikasi berikut ini sebagai gantinya!"
+    }
+  ],
+  "F/6VqP": [
+    {
+      "type": 0,
+      "value": "Server"
+    }
+  ],
+  "F3l7xL": [
+    {
+      "type": 0,
+      "value": "Tambah Akun"
+    }
+  ],
+  "F4eJ/3": [
+    {
+      "type": 0,
+      "value": "Daftar yang diklasifikasikan"
+    }
+  ],
+  "FDguSC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Zap"
+    }
+  ],
+  "FHWpHC": [
+    {
+      "type": 0,
+      "value": "Tanggapan Dompet"
+    }
+  ],
+  "FHvSk3": [
+    {
+      "type": 0,
+      "value": "Otentikasi klien ke relai"
+    }
+  ],
+  "FMfjrl": [
+    {
+      "type": 0,
+      "value": "Menampilkan pesan status di halaman profil"
+    }
+  ],
+  "FSYL8G": [
+    {
+      "type": 0,
+      "value": "Pengguna yang sedang tren"
+    }
+  ],
+  "FWJR1B": [
+    {
+      "type": 0,
+      "value": "Kelompok pengguna"
+    }
+  ],
+  "FcNSft": [
+    {
+      "type": 0,
+      "value": "Masalah pengalihan masalah pengalihan HTTP ke alamat petir yang disediakan"
+    }
+  ],
+  "FdhSU2": [
+    {
+      "type": 0,
+      "value": "Klaim Sekarang"
+    }
+  ],
+  "FfYsOb": [
+    {
+      "type": 0,
+      "value": "Terjadi kesalahan!"
+    }
+  ],
+  "FmXUJg": [
+    {
+      "type": 0,
+      "value": "mengikutimu"
+    }
+  ],
+  "FvanT6": [
+    {
+      "type": 0,
+      "value": "Akun"
+    }
+  ],
+  "FzbSGg": [
+    {
+      "type": 0,
+      "value": "Anda tidak memiliki server media, coba tambahkan beberapa."
+    }
+  ],
+  "G/yZLu": [
+    {
+      "type": 0,
+      "value": "Hapus"
+    }
+  ],
+  "G1BGCg": [
+    {
+      "type": 0,
+      "value": "Pilih Dompet"
+    }
+  ],
+  "G3A56c": [
+    {
+      "type": 0,
+      "value": "Berlangganan Push"
+    }
+  ],
+  "GFOoEE": [
+    {
+      "type": 0,
+      "value": "Garam"
+    }
+  ],
+  "GIqktu": [
+    {
+      "type": 0,
+      "value": "NIP yang didukung"
+    }
+  ],
+  "GL8aXW": [
+    {
+      "type": 0,
+      "value": "Penanda buku ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "GSye7T": [
+    {
+      "type": 0,
+      "value": "Alamat Petir"
+    }
+  ],
+  "GUlSVG": [
+    {
+      "type": 0,
+      "value": "Klaim alamat nostr Snort Anda yang disertakan"
+    }
+  ],
+  "Gcn9NQ": [
+    {
+      "type": 0,
+      "value": "Tautan Magnet"
+    }
+  ],
+  "GpkNYn": [
+    {
+      "type": 0,
+      "value": "Torrent"
+    }
+  ],
+  "GqQeu/": [
+    {
+      "type": 0,
+      "value": "Alamat Petir Tidak Valid"
+    }
+  ],
+  "GspYR7": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Tidak suka"
+    }
+  ],
+  "Gxcr08": [
+    {
+      "type": 0,
+      "value": "Acara Siaran"
+    }
+  ],
+  "H+vHiz": [
+    {
+      "type": 0,
+      "value": "Kunci Hex.."
+    }
+  ],
+  "H/oroO": [
+    {
+      "type": 0,
+      "value": "Berurusan dengan Peristiwa yang Tidak Diketahui"
+    }
+  ],
+  "H0JBH6": [
+    {
+      "type": 0,
+      "value": "Keluar"
+    }
+  ],
+  "H0OG3T": [
+    {
+      "type": 0,
+      "value": "Info Pemimpin"
+    }
+  ],
+  "H1GTaC": [
+    {
+      "type": 0,
+      "value": "Daftar penanda"
+    }
+  ],
+  "H6/kLh": [
+    {
+      "type": 0,
+      "value": "Pesanan Dibayar!"
+    }
+  ],
+  "HAlOn1": [
+    {
+      "type": 0,
+      "value": "Nama"
+    }
+  ],
+  "HFls6j": [
+    {
+      "type": 0,
+      "value": "nama akan tersedia nanti"
+    }
+  ],
+  "HOzFdo": [
+    {
+      "type": 0,
+      "value": "Dibisukan"
+    }
+  ],
+  "HWbkEK": [
+    {
+      "type": 0,
+      "value": "Hapus cache dan muat ulang"
+    }
+  ],
+  "HbefNb": [
+    {
+      "type": 0,
+      "value": "Buka Dompet"
+    }
+  ],
+  "HhcAVH": [
+    {
+      "type": 0,
+      "value": "Anda tidak mengikuti orang ini, klik di sini untuk memuat media dari "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "link"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": ", atau perbarui "
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "type": 0,
+              "value": "preferensi Anda"
+            }
+          ],
+          "type": 8,
+          "value": "i"
+        }
+      ],
+      "type": 8,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": " untuk selalu memuat media dari semua orang."
+    }
+  ],
+  "HpAmQZ": [
+    {
+      "type": 0,
+      "value": "Ulasan Relay"
+    }
+  ],
+  "HqRNN8": [
+    {
+      "type": 0,
+      "value": "Dukungan"
+    }
+  ],
+  "HzSFeV": [
+    {
+      "type": 0,
+      "value": "Stempel Waktu Kedaluwarsa"
+    }
+  ],
+  "I0tYZf": [
+    {
+      "type": 0,
+      "value": "Membuat atau memperbarui kios"
+    }
+  ],
+  "I1AoOu": [
+    {
+      "type": 0,
+      "value": "Posting terakhir "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    }
+  ],
+  "IEwZvs": [
+    {
+      "type": 0,
+      "value": "Apakah Anda yakin Anda ingin menghilangkan sematan catatan ini?"
+    }
+  ],
+  "IIOul1": [
+    {
+      "type": 0,
+      "value": "Data Akun"
+    }
+  ],
+  "IKKHqV": [
+    {
+      "type": 0,
+      "value": "Mengikuti"
+    }
+  ],
+  "IOu4Xh": [
+    {
+      "type": 0,
+      "value": "Anda harus menjadi pelanggan "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    },
+    {
+      "type": 0,
+      "value": " untuk mengakses "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": " dek"
+    }
+  ],
+  "IVbtTS": [
+    {
+      "type": 0,
+      "value": "Zap semua "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "IWz1ta": [
+    {
+      "type": 0,
+      "value": "Terjemahan Otomatis"
+    }
+  ],
+  "IcHcWj": [
+    {
+      "type": 0,
+      "value": "Terakhir terlihat:"
+    }
+  ],
+  "Ig9/a1": [
+    {
+      "type": 0,
+      "value": "Dikirim "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats ke "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "IgsWFG": [
+    {
+      "type": 0,
+      "value": "Tidak diikuti oleh siapa pun yang Anda ikuti"
+    }
+  ],
+  "IoQq+a": [
+    {
+      "type": 0,
+      "value": "Klik di sini untuk tetap memuat"
+    }
+  ],
+  "IvjoDS": [
+    {
+      "type": 0,
+      "value": "Terhubung"
+    }
+  ],
+  "Ix8l+B": [
+    {
+      "type": 0,
+      "value": "Catatan Tren"
+    }
+  ],
+  "J+dIsA": [
+    {
+      "type": 0,
+      "value": "Langganan"
+    }
+  ],
+  "J1iLmb": [
+    {
+      "type": 0,
+      "value": "Pemberitahuan Tidak Diizinkan"
+    }
+  ],
+  "J2HeQ+": [
+    {
+      "type": 0,
+      "value": "Gunakan koma untuk memisahkan kata, misalnya kata1, kata2, kata3"
+    }
+  ],
+  "J2Q92B": [
+    {
+      "type": 0,
+      "value": "Set emoji"
+    }
+  ],
+  "J6N9xl": [
+    {
+      "type": 0,
+      "value": "Sign in with Android signer"
+    }
+  ],
+  "JCIgkj": [
+    {
+      "type": 0,
+      "value": "Nama pengguna"
+    }
+  ],
+  "JGrt9q": [
+    {
+      "type": 0,
+      "value": "Kirim foto ke "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "JHEHCk": [
+    {
+      "type": 0,
+      "value": "Zap ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "JIVWWA": [
+    {
+      "type": 0,
+      "value": "Olahraga"
+    }
+  ],
+  "JPFYIM": [
+    {
+      "type": 0,
+      "value": "Tidak ada alamat petir"
+    }
+  ],
+  "JSx7y9": [
+    {
+      "type": 0,
+      "value": "Berlangganan ke "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": " untuk mendapatkan "
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " dan dapatkan hadiah berikut"
+    }
+  ],
+  "JeoS4y": [
+    {
+      "type": 0,
+      "value": "Repost"
+    }
+  ],
+  "Jh5zKH": [
+    {
+      "type": 0,
+      "value": "Cari daftar relai"
+    }
+  ],
+  "JjGgXI": [
+    {
+      "type": 0,
+      "value": "Cari pengguna"
+    }
+  ],
+  "JkLHGw": [
+    {
+      "type": 0,
+      "value": "Situs web"
+    }
+  ],
+  "JmcxzF": [
+    {
+      "type": 0,
+      "value": "Relay adalah server yang Anda sambungkan untuk mengirim dan menerima peristiwa. Usahakan untuk menggunakan 4-8 relay."
+    }
+  ],
+  "JymXbw": [
+    {
+      "type": 0,
+      "value": "Kunci Pribadi"
+    }
+  ],
+  "K1wl1/": [
+    {
+      "type": 0,
+      "value": "Latensi rata-rata:"
+    }
+  ],
+  "K3r6DQ": [
+    {
+      "type": 0,
+      "value": "Hapus"
+    }
+  ],
+  "K7AkdL": [
+    {
+      "type": 0,
+      "value": "Tampilkan"
+    }
+  ],
+  "K9zklU": [
+    {
+      "type": 0,
+      "value": "ID Konten Eksternal"
+    }
+  ],
+  "KAhAcM": [
+    {
+      "type": 0,
+      "value": "Masukkan konfigurasi LNDHub"
+    }
+  ],
+  "KGmQjH": [
+    {
+      "type": 0,
+      "value": "Sorotan"
+    }
+  ],
+  "KJryGq": [
+    {
+      "type": 0,
+      "value": "Pesan Obrolan Langsung"
+    }
+  ],
+  "KQvWvD": [
+    {
+      "type": 0,
+      "value": "Dihapus"
+    }
+  ],
+  "KT9nox": [
+    {
+      "type": 0,
+      "value": "Acara yang Dilindungi"
+    }
+  ],
+  "KahimY": [
+    {
+      "type": 0,
+      "value": "Jenis acara tidak diketahui: "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    }
+  ],
+  "KipVeG": [
+    {
+      "type": 0,
+      "value": "Memetakan kunci Nostr ke pengenal internet berbasis DNS"
+    }
+  ],
+  "KtsyO0": [
+    {
+      "type": 0,
+      "value": "Masukkan Pin"
+    }
+  ],
+  "KyRp/q": [
+    {
+      "type": 0,
+      "value": "Permintaan Dompet"
+    }
+  ],
+  "LBAnc7": [
+    {
+      "type": 0,
+      "value": "Lihat sebagai pengguna?"
+    }
+  ],
+  "LEmxc8": [
+    {
+      "type": 0,
+      "value": "Zap Goals"
+    }
+  ],
+  "LKw/ue": [
+    {
+      "type": 0,
+      "value": "Lihat kode "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "LR1XjT": [
+    {
+      "type": 0,
+      "value": "Pin terlalu pendek"
+    }
+  ],
+  "LXxsbk": [
+    {
+      "type": 0,
+      "value": "Anonim"
+    }
+  ],
+  "LgbKvU": [
+    {
+      "type": 0,
+      "value": "Komentar"
+    }
+  ],
+  "LhLvRx": [
+    {
+      "type": 0,
+      "value": "Nama harus terdiri dari 8 hingga 15 karakter"
+    }
+  ],
+  "LmdPXO": [
+    {
+      "type": 0,
+      "value": "Tidak dapat memverifikasi Alamat Nostr"
+    }
+  ],
+  "Lu5/Bj": [
+    {
+      "type": 0,
+      "value": "Buka di Zapstr"
+    }
+  ],
+  "LuDBLj": [
+    {
+      "type": 0,
+      "value": "Torrents"
+    }
+  ],
+  "Lw+I+J": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " disetrum"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " yang lain disetrum"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "LwYmVi": [
+    {
+      "type": 0,
+      "value": "Zaps pada catatan ini akan dibagi ke pengguna berikut."
+    }
+  ],
+  "M3Oirc": [
+    {
+      "type": 0,
+      "value": "Debug Menu"
+    }
+  ],
+  "M6C/px": [
+    {
+      "type": 0,
+      "value": "Menjadi seorang pemimpin"
+    }
+  ],
+  "MBAYRO": [
+    {
+      "type": 0,
+      "value": "Menampilkan \"Salin ID\" dan \"Salin Event JSON\" di menu konteks pada setiap pesan"
+    }
+  ],
+  "MI2jkA": [
+    {
+      "type": 0,
+      "value": "Tidak tersedia:"
+    }
+  ],
+  "MKDHEa": [
+    {
+      "type": 0,
+      "value": "Ruang Bergabung"
+    }
+  ],
+  "MP54GY": [
+    {
+      "type": 0,
+      "value": "Kata sandi dompet"
+    }
+  ],
+  "MWTx65": [
+    {
+      "type": 0,
+      "value": "Halaman Bawaan"
+    }
+  ],
+  "MYBYdJ": [
+    {
+      "type": 0,
+      "value": "Catatan Teks Pendek"
+    }
+  ],
+  "MYUBaG": [
+    {
+      "type": 0,
+      "value": "Otentikasi Klien"
+    }
+  ],
+  "MiMipu": [
+    {
+      "type": 0,
+      "value": "Tetapkan sebagai alamat Nostr utama (nip05)"
+    }
+  ],
+  "MkQ4FX": [
+    {
+      "type": 0,
+      "value": "Tag Proksi"
+    }
+  ],
+  "Ml7+RS": [
+    {
+      "type": 0,
+      "value": "Kirim tautan ini ke teman Anda dan bagikan keajaiban nostr."
+    }
+  ],
+  "Mrpkot": [
+    {
+      "type": 0,
+      "value": "Bayar untuk berlangganan"
+    }
+  ],
+  "MuVeKe": [
+    {
+      "type": 0,
+      "value": "Beli alamat nostr"
+    }
+  ],
+  "Muhna4": [
+    {
+      "type": 0,
+      "value": "Menghitung hasil"
+    }
+  ],
+  "MzRYWH": [
+    {
+      "type": 0,
+      "value": "Membeli "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    }
+  ],
+  "Mzizei": [
+    {
+      "type": 0,
+      "value": "Akun Iris.to"
+    }
+  ],
+  "N2IrpM": [
+    {
+      "type": 0,
+      "value": "Konfirmasi"
+    }
+  ],
+  "NAidKb": [
+    {
+      "type": 0,
+      "value": "Pemberitahuan"
+    }
+  ],
+  "NAuFNH": [
+    {
+      "type": 0,
+      "value": "Anda sudah memiliki langganan jenis ini, silakan perbarui atau bayar"
+    }
+  ],
+  "NDTFsp": [
+    {
+      "type": 0,
+      "value": "Umpan Balik Pekerjaan"
+    }
+  ],
+  "NepkXH": [
+    {
+      "type": 0,
+      "value": "Tidak dapat memilih dengan "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, harap tetapkan jumlah zap default yang berbeda"
+    }
+  ],
+  "NndBJE": [
+    {
+      "type": 0,
+      "value": "Halaman pengguna baru"
+    }
+  ],
+  "Nr9Yyx": [
+    {
+      "type": 0,
+      "value": "Repost"
+    }
+  ],
+  "NxzeNU": [
+    {
+      "type": 0,
+      "value": "Mati"
+    }
+  ],
+  "O3Jz4E": [
+    {
+      "type": 0,
+      "value": "Gunakan kode undangan Anda untuk mendapatkan sats!"
+    }
+  ],
+  "OEW7yJ": [
+    {
+      "type": 0,
+      "value": "Zap-zap"
+    }
+  ],
+  "OIqnZN": [
+    {
+      "type": 0,
+      "value": "Pengesahan OpenTimestamps untuk Acara"
+    }
+  ],
+  "OJHKIL": [
+    {
+      "type": 0,
+      "value": "Bungkus kado"
+    }
+  ],
+  "OKhRC6": [
+    {
+      "type": 0,
+      "value": "Bagikan"
+    }
+  ],
+  "OLEm6z": [
+    {
+      "type": 0,
+      "value": "Kesalahan login tidak dikenal"
+    }
+  ],
+  "OQSOJF": [
+    {
+      "type": 0,
+      "value": "Dapatkan alamat nostr gratis"
+    }
+  ],
+  "OQXnew": [
+    {
+      "type": 0,
+      "value": "Langganan Anda masih aktif, Anda belum dapat memperbarui"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "Dibuat"
+    }
+  ],
+  "ORa81+": [
+    {
+      "type": 0,
+      "value": "Gabungkan Permintaan"
+    }
+  ],
+  "OoZgbB": [
+    {
+      "type": 0,
+      "value": "Gagal memperbarui, coba lagi"
+    }
+  ],
+  "OuProE": [
+    {
+      "type": 0,
+      "value": "Konten bentuk panjang"
+    }
+  ],
+  "OxPdQ0": [
+    {
+      "type": 0,
+      "value": "Memindai "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "P2o+ZZ": [
+    {
+      "type": 0,
+      "value": "Alamat Tidak Valid"
+    }
+  ],
+  "P61BTu": [
+    {
+      "type": 0,
+      "value": "Salin Event JSON"
+    }
+  ],
+  "P7FD0F": [
+    {
+      "type": 0,
+      "value": "Sistem (Bawaan)"
+    }
+  ],
+  "P7nJT9": [
+    {
+      "type": 0,
+      "value": "Total hari ini (UTC): "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sat"
+    }
+  ],
+  "P8JC58": [
+    {
+      "type": 0,
+      "value": "Jarak"
+    }
+  ],
+  "PCSt5T": [
+    {
+      "type": 0,
+      "value": "Preferensi"
+    }
+  ],
+  "PXQ0z0": [
+    {
+      "type": 0,
+      "value": "Menerima ke "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "PamNxw": [
+    {
+      "type": 0,
+      "value": "Header file tidak dikenal: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Pe0ogR": [
+    {
+      "type": 0,
+      "value": "Tema"
+    }
+  ],
+  "PrsIg7": [
+    {
+      "type": 0,
+      "value": "Reaksi akan ditampilkan di setiap halaman, jika dinonaktifkan, tidak ada reaksi yang akan ditampilkan"
+    }
+  ],
+  "QDFTjG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Relai"
+    }
+  ],
+  "QJfhKt": [
+    {
+      "type": 0,
+      "value": "Kunci pribadi seperti kata sandi, tetapi tidak dapat diatur ulang. Jaga baik-baik dan jangan pernah menunjukkannya kepada siapa pun. Setelah seseorang memiliki kunci pribadi Anda, mereka akan memiliki akses ke akun Anda selamanya."
+    }
+  ],
+  "QWhotP": [
+    {
+      "type": 0,
+      "value": "Zap Pool hanya berfungsi jika Anda menggunakan salah satu koneksi dompet yang didukung (WebLN, LNC, LNDHub, atau Nostr Wallet Connect)"
+    }
+  ],
+  "QpaLA3": [
+    {
+      "type": 0,
+      "value": "Pesan Saluran"
+    }
+  ],
+  "Qxv0B2": [
+    {
+      "type": 0,
+      "value": "Saat ini Anda memiliki "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sat di zap pool Anda."
+    }
+  ],
+  "Qy6/Ft": [
+    {
+      "type": 0,
+      "value": "Pesan Langsung Pribadi"
+    }
+  ],
+  "R/6nsx": [
+    {
+      "type": 0,
+      "value": "Berlangganan"
+    }
+  ],
+  "R81upa": [
+    {
+      "type": 0,
+      "value": "Orang yang Anda ikuti"
+    }
+  ],
+  "RDha9y": [
+    {
+      "type": 0,
+      "value": "Pekerja Layanan Tidak Berjalan"
+    }
+  ],
+  "RRz1cA": [
+    {
+      "type": 0,
+      "value": "Pengumuman status repositori"
+    }
+  ],
+  "RSr2uB": [
+    {
+      "type": 0,
+      "value": "Nama pengguna hanya boleh terdiri dari huruf kecil dan angka"
+    }
+  ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "Kedaluwarsa"
+    }
+  ],
+  "RefZpK": [
+    {
+      "type": 0,
+      "value": "Acara Video Potret Bentuk Pendek"
+    }
+  ],
+  "RfhLwC": [
+    {
+      "type": 0,
+      "value": "Oleh: "
+    },
+    {
+      "type": 1,
+      "value": "author"
+    }
+  ],
+  "RhDAoS": [
+    {
+      "type": 0,
+      "value": "Anda yakin ingin menghapus "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "RmxSZo": [
+    {
+      "type": 0,
+      "value": "Mesin Penjual Data"
+    }
+  ],
+  "RoOyAh": [
+    {
+      "type": 0,
+      "value": "Relai-relai"
+    }
+  ],
+  "Rs4kCE": [
+    {
+      "type": 0,
+      "value": "Penanda buku"
+    }
+  ],
+  "S/NV2G": [
+    {
+      "type": 0,
+      "value": "Catatan pemuatan: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "SFuk1v": [
+    {
+      "type": 0,
+      "value": "Izin"
+    }
+  ],
+  "SLZGPn": [
+    {
+      "type": 0,
+      "value": "Masukkan pin untuk mengenkripsi kunci pribadi Anda, Anda harus memasukkan pin ini setiap kali Anda membuka "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "SMO+on": [
+    {
+      "type": 0,
+      "value": "Kirim zap ke "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "SOqbe9": [
+    {
+      "type": 0,
+      "value": "Perbarui Alamat Petir"
+    }
+  ],
+  "SP0+yi": [
+    {
+      "type": 0,
+      "value": "Beli Langganan"
+    }
+  ],
+  "SW3TFA": [
+    {
+      "type": 0,
+      "value": "Relay populer yang digunakan oleh orang yang Anda ikuti."
+    }
+  ],
+  "SYQtZ7": [
+    {
+      "type": 0,
+      "value": "Proksi Alamat LN"
+    }
+  ],
+  "Sd0PKc": [
+    {
+      "type": 0,
+      "value": "Set relai"
+    }
+  ],
+  "SfwSIm": [
+    {
+      "type": 0,
+      "value": "Pelacak Masalah"
+    }
+  ],
+  "ShdEie": [
+    {
+      "type": 0,
+      "value": "Tandai semua sudah dibaca"
+    }
+  ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "Kustomisasi"
+    }
+  ],
+  "SmuYUd": [
+    {
+      "type": 0,
+      "value": "Kami harus memanggilmu dengan sebutan apa?"
+    }
+  ],
+  "Ss0sWu": [
+    {
+      "type": 0,
+      "value": "Bayar Sekarang"
+    }
+  ],
+  "SsUQnC": [
+    {
+      "type": 0,
+      "value": "Data Khusus Aplikasi"
+    }
+  ],
+  "StKzTE": [
+    {
+      "type": 0,
+      "value": "Penulis telah menandai catatan ini sebagai topik sensitif "
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "T83nqf": [
+    {
+      "type": 0,
+      "value": "Relai yang dekat dengan lokasi geografis Anda."
+    }
+  ],
+  "TDR5ge": [
+    {
+      "type": 0,
+      "value": "Media di catatan akan secara otomatis ditampilkan untuk orang yang dipilih, jika tidak, hanya tautan yang akan ditampilkan"
+    }
+  ],
+  "TGc5nI": [
+    {
+      "type": 0,
+      "value": "Informasi penanganannya"
+    }
+  ],
+  "TH1fFo": [
+    {
+      "type": 0,
+      "value": "Telegram"
+    }
+  ],
+  "TJo5E6": [
+    {
+      "type": 0,
+      "value": "Pratinjau"
+    }
+  ],
+  "TOG64f": [
+    {
+      "type": 0,
+      "value": "Gunakan Relai Lokal"
+    }
+  ],
+  "TP/cMX": [
+    {
+      "type": 0,
+      "value": "Berakhir"
+    }
+  ],
+  "TaeBqw": [
+    {
+      "type": 0,
+      "value": "Masuk dengan Nostr Extension"
+    }
+  ],
+  "TdTXXf": [
+    {
+      "type": 0,
+      "value": "Pelajari lebih lanjut"
+    }
+  ],
+  "TdtZQ5": [
+    {
+      "type": 0,
+      "value": "Kripto"
+    }
+  ],
+  "Tdv6NY": [
+    {
+      "type": 0,
+      "value": "Set bunga"
+    }
+  ],
+  "TgDKhI": [
+    {
+      "type": 0,
+      "value": "Acara Kalender"
+    }
+  ],
+  "TpgeGw": [
+    {
+      "type": 0,
+      "value": "Garam Hex.."
+    }
+  ],
+  "Tpy00S": [
+    {
+      "type": 0,
+      "value": "Orang"
+    }
+  ],
+  "TvKqBp": [
+    {
+      "type": 0,
+      "value": "menyukai"
+    }
+  ],
+  "TwyMau": [
+    {
+      "type": 0,
+      "value": "Akun"
+    }
+  ],
+  "U1aPPi": [
+    {
+      "type": 0,
+      "value": "Berhenti mendengarkan"
+    }
+  ],
+  "U30H69": [
+    {
+      "type": 0,
+      "value": "Definisi Komunitas"
+    }
+  ],
+  "UJTWqI": [
+    {
+      "type": 0,
+      "value": "Hapus dari relai saya"
+    }
+  ],
+  "ULXFfP": [
+    {
+      "type": 0,
+      "value": "Menerima"
+    }
+  ],
+  "UNjfWJ": [
+    {
+      "type": 0,
+      "value": "Periksa semua tanda tangan peristiwa yang diterima dari relay"
+    }
+  ],
+  "UT7Nkj": [
+    {
+      "type": 0,
+      "value": "Obrolan Baru"
+    }
+  ],
+  "UUPFlt": [
+    {
+      "type": 0,
+      "value": "Pengguna harus menerima peringatan konten untuk menampilkan konten catatan Anda."
+    }
+  ],
+  "UaCh1c": [
+    {
+      "type": 0,
+      "value": "Tambahkan Server"
+    }
+  ],
+  "Ub+AGc": [
+    {
+      "type": 0,
+      "value": "Masuk"
+    }
+  ],
+  "Up5U7K": [
+    {
+      "type": 0,
+      "value": "Blokir"
+    }
+  ],
+  "Ups2/p": [
+    {
+      "type": 0,
+      "value": "Permohonan Anda sedang menunggu keputusan"
+    }
+  ],
+  "UrKTqQ": [
+    {
+      "type": 0,
+      "value": "Anda memiliki akun iris.to yang aktif"
+    }
+  ],
+  "UsCzPc": [
+    {
+      "type": 0,
+      "value": "Bagikan undangan yang dipersonalisasi dengan teman-teman!"
+    }
+  ],
+  "UxgyeY": [
+    {
+      "type": 0,
+      "value": "Kode referral Anda adalah "
+    },
+    {
+      "type": 1,
+      "value": "code"
+    }
+  ],
+  "V20Og0": [
+    {
+      "type": 0,
+      "value": "Pelabelan"
+    }
+  ],
+  "VOjC1i": [
+    {
+      "type": 0,
+      "value": "Pilih layanan unggah mana yang ingin Anda unggahkan lampirannya"
+    }
+  ],
+  "VR5eHw": [
+    {
+      "type": 0,
+      "value": "Kunci publik (npub/nprofile)"
+    }
+  ],
+  "VcwrfF": [
+    {
+      "type": 0,
+      "value": "Ya, silakan."
+    }
+  ],
+  "VfhYxG": [
+    {
+      "type": 0,
+      "value": "Untuk melihat daftar lengkap perubahan, Anda dapat melihat changelog "
+    },
+    {
+      "type": 1,
+      "value": "here"
+    }
+  ],
+  "VlJkSk": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " dibisukan"
+    }
+  ],
+  "VnXp8Z": [
+    {
+      "type": 0,
+      "value": "Avatar"
+    }
+  ],
+  "W1yoZY": [
+    {
+      "type": 0,
+      "value": "Sepertinya Anda tidak memiliki langganan, Anda bisa mendapatkannya "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "W2PiAr": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Diblokir"
+    }
+  ],
+  "W4SaxY": [
+    {
+      "type": 0,
+      "value": "Lokal"
+    }
+  ],
+  "W9355R": [
+    {
+      "type": 0,
+      "value": "Berhenti membisukan"
+    }
+  ],
+  "WeLEuL": [
+    {
+      "type": 0,
+      "value": "Dari Server"
+    }
+  ],
+  "Wj5TbN": [
+    {
+      "type": 0,
+      "value": "Masalah"
+    }
+  ],
+  "WmZhfL": [
+    {
+      "type": 0,
+      "value": "Menerjemahkan catatan secara otomatis ke bahasa lokal Anda"
+    }
+  ],
+  "WvGmZT": [
+    {
+      "type": 0,
+      "value": "alamat npub / nprofile / nostr"
+    }
+  ],
+  "X6tipZ": [
+    {
+      "type": 0,
+      "value": "Masuk dengan kunci"
+    }
+  ],
+  "X7xU8J": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex, mnemonic"
+    }
+  ],
+  "XECMfW": [
+    {
+      "type": 0,
+      "value": "Kirim metrik penggunaan"
+    }
+  ],
+  "XICsE8": [
+    {
+      "type": 0,
+      "value": "Host file"
+    }
+  ],
+  "XPB8VV": [
+    {
+      "type": 0,
+      "value": "Koneksi dompet Alby"
+    }
+  ],
+  "XQiFEl": [
+    {
+      "type": 0,
+      "value": "Mengikuti Kesehatan Relai"
+    }
+  ],
+  "XSdWHA": [
+    {
+      "type": 0,
+      "value": "Tebus"
+    }
+  ],
+  "XXm7jJ": [
+    {
+      "type": 0,
+      "value": "Tagar yang Sedang Tren"
+    }
+  ],
+  "XgWvGA": [
+    {
+      "type": 0,
+      "value": "Reaksi"
+    }
+  ],
+  "Xnimz0": [
+    {
+      "type": 0,
+      "value": "Mengirim dari "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "Xopqkl": [
+    {
+      "type": 0,
+      "value": "Jumlah zap default Anda adalah "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats, nilai contoh dihitung dari ini."
+    }
+  ],
+  "YDMrKK": [
+    {
+      "type": 0,
+      "value": "Pengguna"
+    }
+  ],
+  "YDURw6": [
+    {
+      "type": 0,
+      "value": "URL layanan"
+    }
+  ],
+  "YH2RKk": [
+    {
+      "type": 0,
+      "value": "Server media populer."
+    }
+  ],
+  "YQZY/S": [
+    {
+      "type": 0,
+      "value": "Sepertinya Anda tidak mengikuti cukup banyak orang, lihatlah "
+    },
+    {
+      "type": 1,
+      "value": "newUsersPage"
+    },
+    {
+      "type": 0,
+      "value": " untuk menemukan orang yang bisa diikuti!"
+    }
+  ],
+  "YR2I9M": [
+    {
+      "type": 0,
+      "value": "Tidak ada kunci, tidak ada "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": ", Tidak ada cara untuk mengatur ulang jika Anda tidak mencadangkannya. Hanya butuh waktu satu menit."
+    }
+  ],
+  "YU7ZYp": [
+    {
+      "type": 0,
+      "value": "Obrolan Publik"
+    }
+  ],
+  "YXA3AH": [
+    {
+      "type": 0,
+      "value": "Aktifkan reaksi"
+    }
+  ],
+  "Yf3DwC": [
+    {
+      "type": 0,
+      "value": "Hubungkan dompet untuk mengirim pembayaran instan"
+    }
+  ],
+  "YuoEb9": [
+    {
+      "type": 0,
+      "value": "Coba relai lain"
+    }
+  ],
+  "Z48UEo": [
+    {
+      "type": 0,
+      "value": "Metadata Saluran"
+    }
+  ],
+  "Z4BMCZ": [
+    {
+      "type": 0,
+      "value": "Masukkan frasa pasangan"
+    }
+  ],
+  "Z7kkeJ": [
+    {
+      "type": 0,
+      "value": "Penandatanganan Acara yang Didelegasikan"
+    }
+  ],
+  "ZFe9tl": [
+    {
+      "type": 0,
+      "value": "Membuat catatan"
+    }
+  ],
+  "ZKORll": [
+    {
+      "type": 0,
+      "value": "Aktifkan Sekarang"
+    }
+  ],
+  "ZLmyG9": [
+    {
+      "type": 0,
+      "value": "Kontributor"
+    }
+  ],
+  "ZS+jRE": [
+    {
+      "type": 0,
+      "value": "Kirim zap split ke"
+    }
+  ],
+  "Zff6lu": [
+    {
+      "type": 0,
+      "value": "Nama pengguna iris.to/"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "name"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " disediakan untuk Anda!"
+    }
+  ],
+  "ZlIh4/": [
+    {
+      "type": 0,
+      "value": "Pesan Langsung Terenkripsi"
+    }
+  ],
+  "ZlmK/p": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " mengundang Anda ke "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    }
+  ],
+  "a1x4gD": [
+    {
+      "type": 0,
+      "value": "Server media menyimpan media yang dapat Anda bagikan dalam catatan sebagai gambar dan video"
+    }
+  ],
+  "a5UPxh": [
+    {
+      "type": 0,
+      "value": "Danai pengembang-pengembang dan platform-platform yang menyediakan layanan verifikasi NIP-05"
+    }
+  ],
+  "a7TDNm": [
+    {
+      "type": 0,
+      "value": "Catatan akan mengalir secara real time ke tab global dan catatan"
+    }
+  ],
+  "aHje0o": [
+    {
+      "type": 0,
+      "value": "Nama atau nym"
+    }
+  ],
+  "aMaLBK": [
+    {
+      "type": 0,
+      "value": "Ekstensi yang Didukung"
+    }
+  ],
+  "aRex7h": [
+    {
+      "type": 0,
+      "value": "Berbayar "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, gratis "
+    },
+    {
+      "type": 1,
+      "value": "fee"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "aSGz4J": [
+    {
+      "type": 0,
+      "value": "Sambungkan ke node LND Anda sendiri dengan Lightning Node Connect"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "Tampilkan lebih banyak"
+    }
+  ],
+  "abbGKq": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " km"
+    }
+  ],
+  "ak3MTf": [
+    {
+      "type": 0,
+      "value": "Undang Teman"
+    }
+  ],
+  "b12Goz": [
+    {
+      "type": 0,
+      "value": "Mnemonic"
+    }
+  ],
+  "b5vAk0": [
+    {
+      "type": 0,
+      "value": "Pegangan Anda akan bertindak seperti alamat kilat dan akan mengarahkan ke LNURL atau alamat Lightning yang Anda pilih"
+    }
+  ],
+  "bF1MYT": [
+    {
+      "type": 0,
+      "value": "Anda adalah pemimpin komunitas dan mendapatkan "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "percent"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " dari langganan pengguna yang direferensikan!"
+    }
+  ],
+  "bG00/W": [
+    {
+      "type": 0,
+      "value": "Pekerja Layanan Menjalankan"
+    }
+  ],
+  "bJ+wrA": [
+    {
+      "type": 0,
+      "value": "Menghitung daftar pangkas"
+    }
+  ],
+  "bLZL5a": [
+    {
+      "type": 0,
+      "value": "Dapatkan Alamat"
+    }
+  ],
+  "bMphls": [
+    {
+      "type": 0,
+      "value": "Masuk dengan akses hanya-baca"
+    }
+  ],
+  "bQdA2k": [
+    {
+      "type": 0,
+      "value": "Konten Sensitif"
+    }
+  ],
+  "bep9C3": [
+    {
+      "type": 0,
+      "value": "Kunci Publik"
+    }
+  ],
+  "bfvyfs": [
+    {
+      "type": 0,
+      "value": "Anon"
+    }
+  ],
+  "bxv59V": [
+    {
+      "type": 0,
+      "value": "Baru saja"
+    }
+  ],
+  "c+1p0i": [
+    {
+      "type": 0,
+      "value": "Set bisu yang baik"
+    }
+  ],
+  "c+JYNI": [
+    {
+      "type": 0,
+      "value": "Tidak, terima kasih."
+    }
+  ],
+  "c2T+1B": [
+    {
+      "type": 0,
+      "value": "Pengalihan"
+    }
+  ],
+  "c35bj2": [
+    {
+      "type": 0,
+      "value": "Jika Anda memiliki pertanyaan tentang pesanan NIP-05 Anda, silakan DM "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "c3LlRO": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "KiB"
+    }
+  ],
+  "c3g2hL": [
+    {
+      "type": 0,
+      "value": "Menyiarkan Lagi"
+    }
+  ],
+  "cFbU1B": [
+    {
+      "type": 0,
+      "value": "Menggunakan Alby? Kunjungi "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " untuk mendapatkan konfigurasi NWC Anda!"
+    }
+  ],
+  "cG/bKQ": [
+    {
+      "type": 0,
+      "value": "Koneksi dompet nostr asli"
+    }
+  ],
+  "cHCwbF": [
+    {
+      "type": 0,
+      "value": "Fotografi"
+    }
+  ],
+  "cKbMRX": [
+    {
+      "type": 0,
+      "value": "Pesan Langsung"
+    }
+  ],
+  "cPIKU2": [
+    {
+      "type": 0,
+      "value": "Yang diikuti"
+    }
+  ],
+  "cQfLWb": [
+    {
+      "type": 0,
+      "value": "URL.."
+    }
+  ],
+  "cVcgLJ": [
+    {
+      "type": 0,
+      "value": "Server Media"
+    }
+  ],
+  "cWx9t8": [
+    {
+      "type": 0,
+      "value": "Bisukan semua"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "Hubungkan Dompet"
+    }
+  ],
+  "cnwHgH": [
+    {
+      "type": 0,
+      "value": "Stempel Waktu Terbuka"
+    }
+  ],
+  "cuP16y": [
+    {
+      "type": 0,
+      "value": "Dukungan multi akun"
+    }
+  ],
+  "cuV2gK": [
+    {
+      "type": 0,
+      "value": "nama terdaftar"
+    }
+  ],
+  "cw1Ftc": [
+    {
+      "type": 0,
+      "value": "Kegiatan Langsung"
+    }
+  ],
+  "cyR7Kh": [
+    {
+      "type": 0,
+      "value": "Kembali"
+    }
+  ],
+  "d+6YsV": [
+    {
+      "type": 0,
+      "value": "Daftar yang akan dibisukan:"
+    }
+  ],
+  "d0qim7": [
+    {
+      "type": 0,
+      "value": "Filter WoT"
+    }
+  ],
+  "d2ebEu": [
+    {
+      "type": 0,
+      "value": "Tidak Berlangganan Push"
+    }
+  ],
+  "d7d0/x": [
+    {
+      "type": 0,
+      "value": "Alamat LN"
+    }
+  ],
+  "dK2CcV": [
+    {
+      "type": 0,
+      "value": "Kunci publik seperti nama pengguna Anda, Anda dapat membaginya dengan siapa pun."
+    }
+  ],
+  "dOQCL8": [
+    {
+      "type": 0,
+      "value": "Nama tampilan"
+    }
+  ],
+  "dZZIGe": [
+    {
+      "type": 0,
+      "value": "Tajuk Artikel Modular"
+    }
+  ],
+  "ddd3JX": [
+    {
+      "type": 0,
+      "value": "Tagar Populer"
+    }
+  ],
+  "deEeEI": [
+    {
+      "type": 0,
+      "value": "Daftar"
+    }
+  ],
+  "djLctd": [
+    {
+      "type": 0,
+      "value": "Jumlah dalam sat"
+    }
+  ],
+  "dmcsBA": [
+    {
+      "type": 0,
+      "value": "Daftar yang diklasifikasikan"
+    }
+  ],
+  "dmsiLv": [
+    {
+      "type": 0,
+      "value": "Pemisahan Zap Pool default "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " telah dikonfigurasi untuk pengembang "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " , Anda dapat menonaktifkannya kapan saja di "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "e5x8FT": [
+    {
+      "type": 0,
+      "value": "Baik"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "Segera hadir"
+    }
+  ],
+  "e7VmYP": [
+    {
+      "type": 0,
+      "value": "Masukkan pin untuk membuka kunci pribadi Anda"
+    }
+  ],
+  "e7qqly": [
+    {
+      "type": 0,
+      "value": "Tandai Semua Telah Dibaca"
+    }
+  ],
+  "eF0Re7": [
+    {
+      "type": 0,
+      "value": "Gunakan ekstensi penanda tangan nostr untuk masuk"
+    }
+  ],
+  "eHAneD": [
+    {
+      "type": 0,
+      "value": "Emoji reaksi"
+    }
+  ],
+  "eJj8HD": [
+    {
+      "type": 0,
+      "value": "Dapatkan Verifikasi"
+    }
+  ],
+  "eSzf2G": [
+    {
+      "type": 0,
+      "value": "Satu zap dari "
+    },
+    {
+      "type": 1,
+      "value": "nIn"
+    },
+    {
+      "type": 0,
+      "value": " sats akan mengalokasikan "
+    },
+    {
+      "type": 1,
+      "value": "nOut"
+    },
+    {
+      "type": 0,
+      "value": " sats ke zap pool."
+    }
+  ],
+  "eW/Bj9": [
+    {
+      "type": 0,
+      "value": "Pakan"
+    }
+  ],
+  "eXT2QQ": [
+    {
+      "type": 0,
+      "value": "Obrolan Grup"
+    }
+  ],
+  "eZtOxB": [
+    {
+      "type": 0,
+      "value": "kemampuan window.nostr untuk browser web"
+    }
+  ],
+  "egib+2": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " lainnya"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " lainnya"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "ejEGdx": [
+    {
+      "type": 0,
+      "value": "Beranda"
+    }
+  ],
+  "eoV49s": [
+    {
+      "type": 0,
+      "value": "Miskin"
+    }
+  ],
+  "f1OxTe": [
+    {
+      "type": 0,
+      "value": "Pemimpin komunitas adalah individu yang mengembangkan ekosistem Nostr dengan aktif di komunitas lokal mereka dan membantu pengguna baru. Siapa pun dapat menjadi pemimpin komunitas, tetapi hanya sedikit yang memegang gelar kehormatan saat ini."
+    }
+  ],
+  "f2CAxA": [
+    {
+      "type": 0,
+      "value": "Dump"
+    }
+  ],
+  "fBI91o": [
+    {
+      "type": 0,
+      "value": "Zap"
+    }
+  ],
+  "fBlba3": [
+    {
+      "type": 0,
+      "value": "Terima kasih telah menggunakan "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": ", mohon pertimbangkan untuk berdonasi jika Anda bisa."
+    }
+  ],
+  "fLIvbC": [
+    {
+      "type": 0,
+      "value": "Snort adalah proyek sumber terbuka yang dibangun oleh orang-orang yang bersemangat di waktu luang mereka, donasi Anda sangat dihargai"
+    }
+  ],
+  "fOksnD": [
+    {
+      "type": 0,
+      "value": "Tidak dapat memberikan suara karena layanan LNURL tidak mendukung zaps"
+    }
+  ],
+  "fQN+tq": [
+    {
+      "type": 0,
+      "value": "Menampilkan postingan yang memiliki tag peringatan konten"
+    }
+  ],
+  "fWZYP5": [
+    {
+      "type": 0,
+      "value": "Disematkan"
+    }
+  ],
+  "fX5RYm": [
+    {
+      "type": 0,
+      "value": "Pilih beberapa topik yang menarik"
+    }
+  ],
+  "filwqD": [
+    {
+      "type": 0,
+      "value": "Baca"
+    }
+  ],
+  "fjAcWo": [
+    {
+      "type": 0,
+      "value": "Bungkus Kado"
+    }
+  ],
+  "flnGvv": [
+    {
+      "type": 0,
+      "value": "Apa yang sedang kamu pikirkan?"
+    }
+  ],
+  "fqwcJ1": [
+    {
+      "type": 0,
+      "value": "Donasi On-chain"
+    }
+  ],
+  "fr+XYA": [
+    {
+      "type": 0,
+      "value": "Lightning Pub RPC"
+    }
+  ],
+  "fsB/4p": [
+    {
+      "type": 0,
+      "value": "Disimpan"
+    }
+  ],
+  "fucxlm": [
+    {
+      "type": 0,
+      "value": "Lampirkan Media"
+    }
+  ],
+  "furjvW": [
+    {
+      "type": 0,
+      "value": "Menonton Streaming"
+    }
+  ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "Tentang"
+    }
+  ],
+  "g985Wp": [
+    {
+      "type": 0,
+      "value": "Gagal mengirim suara"
+    }
+  ],
+  "gDzDRs": [
+    {
+      "type": 0,
+      "value": "Emoji untuk dikirim saat bereaksi terhadap sebuah catatan"
+    }
+  ],
+  "gXgY3+": [
+    {
+      "type": 0,
+      "value": "Belum semua klien mendukung hal ini"
+    }
+  ],
+  "gczcC5": [
+    {
+      "type": 0,
+      "value": "Berlangganan"
+    }
+  ],
+  "geppt8": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count2"
+    },
+    {
+      "type": 0,
+      "value": " dalam memori)"
+    }
+  ],
+  "gjBiyj": [
+    {
+      "type": 0,
+      "value": "Memuat..."
+    }
+  ],
+  "gkMmvC": [
+    {
+      "type": 0,
+      "value": "Aplikasi Penandatangan Android"
+    }
+  ],
+  "gl1NeW": [
+    {
+      "type": 0,
+      "value": "Daftar"
+    }
+  ],
+  "go2/QF": [
+    {
+      "type": 0,
+      "value": "Daftar server pengguna"
+    }
+  ],
+  "grQ+mI": [
+    {
+      "type": 0,
+      "value": "Bukti Pekerjaan"
+    }
+  ],
+  "gtNjNP": [
+    {
+      "type": 0,
+      "value": "Deskripsi aliran protokol dasar"
+    }
+  ],
+  "h7jvCs": [
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " lebih menyenangkan jika dilakukan bersama-sama!"
+    }
+  ],
+  "h8XMJL": [
+    {
+      "type": 0,
+      "value": "Lencana"
+    }
+  ],
+  "h9M0rW": [
+    {
+      "type": 0,
+      "value": "Metadata Pengguna"
+    }
+  ],
+  "hF6IN2": [
+    {
+      "type": 0,
+      "value": "Pangkas Daftar Pengikut"
+    }
+  ],
+  "hMQmIw": [
+    {
+      "type": 0,
+      "value": "Sinkronisasi Akun"
+    }
+  ],
+  "hMzcSq": [
+    {
+      "type": 0,
+      "value": "Pesan-pesan"
+    }
+  ],
+  "hRTfTR": [
+    {
+      "type": 0,
+      "value": "PRO"
+    }
+  ],
+  "hY4lzx": [
+    {
+      "type": 0,
+      "value": "Dukungan"
+    }
+  ],
+  "hYOE+U": [
+    {
+      "type": 0,
+      "value": "Mengundang"
+    }
+  ],
+  "hicxcO": [
+    {
+      "type": 0,
+      "value": "Tampilkan balasan-balasan"
+    }
+  ],
+  "hmZ3Bz": [
+    {
+      "type": 0,
+      "value": "Media"
+    }
+  ],
+  "hniz8Z": [
+    {
+      "type": 0,
+      "value": "di sini"
+    }
+  ],
+  "hv/eRj": [
+    {
+      "type": 0,
+      "value": "Daftar relai yang diblokir"
+    }
+  ],
+  "hvFRBo": [
+    {
+      "type": 0,
+      "value": "Interaksi"
+    }
+  ],
+  "i/dBAR": [
+    {
+      "type": 0,
+      "value": "Zap Pool"
+    }
+  ],
+  "i5gBFz": [
+    {
+      "type": 0,
+      "value": "Pembayaran yang Anda kirim dan terima akan muncul di sini."
+    }
+  ],
+  "iCqGww": [
+    {
+      "type": 0,
+      "value": "Reaksi-reaksi ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "iEoXYx": [
+    {
+      "type": 0,
+      "value": "DeepL terjemahan"
+    }
+  ],
+  "iGT1eE": [
+    {
+      "type": 0,
+      "value": "Cegah akun palsu meniru Anda"
+    }
+  ],
+  "iHN12u": [
+    {
+      "type": 0,
+      "value": "Admin"
+    }
+  ],
+  "iICVoL": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " berikut ("
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " duplikat)"
+    }
+  ],
+  "iNWbVV": [
+    {
+      "type": 0,
+      "value": "Menangani"
+    }
+  ],
+  "iXPL0Z": [
+    {
+      "type": 0,
+      "value": "Tidak dapat masuk dengan kunci pribadi pada koneksi yang tidak aman, gunakan ekstensi pengelola kunci Nostr sebagai gantinya"
+    }
+  ],
+  "iYc3Ld": [
+    {
+      "type": 0,
+      "value": "Pembayaran"
+    }
+  ],
+  "icCxlA": [
+    {
+      "type": 0,
+      "value": "halaman pengguna baru"
+    }
+  ],
+  "ieGrWo": [
+    {
+      "type": 0,
+      "value": "Ikuti"
+    }
+  ],
+  "igUUst": [
+    {
+      "type": 0,
+      "value": "Balasan Beralur Obrolan Grup"
+    }
+  ],
+  "ipHVx5": [
+    {
+      "type": 0,
+      "value": "Hasilkan Faktur"
+    }
+  ],
+  "itPgxd": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "izWS4J": [
+    {
+      "type": 0,
+      "value": "Berhenti mengikuti"
+    }
+  ],
+  "j9xbzF": [
+    {
+      "type": 0,
+      "value": "Sudah dicadangkan"
+    }
+  ],
+  "jA3OE/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sat"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sat"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "jAmfGl": [
+    {
+      "type": 0,
+      "value": "Langganan "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " Anda telah kedaluwarsa"
+    }
+  ],
+  "jHa/ko": [
+    {
+      "type": 0,
+      "value": "Bersihkan feed Anda"
+    }
+  ],
+  "jMzO1S": [
+    {
+      "type": 0,
+      "value": "Kesalahan internal: "
+    },
+    {
+      "type": 1,
+      "value": "msg"
+    }
+  ],
+  "jiAVXu": [
+    {
+      "type": 0,
+      "value": "Acara Video"
+    }
+  ],
+  "jvo0vs": [
+    {
+      "type": 0,
+      "value": "Simpan"
+    }
+  ],
+  "jzgQ2z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Reaksi"
+    }
+  ],
+  "k0kCJp": [
+    {
+      "type": 0,
+      "value": "Daftar Sekarang"
+    }
+  ],
+  "k2veDA": [
+    {
+      "type": 0,
+      "value": "Tulis"
+    }
+  ],
+  "k7sKNy": [
+    {
+      "type": 0,
+      "value": "Layanan verifikasi NIP-05 kami sendiri, bantu dukung pengembangan situs ini dan dapatkan lencana khusus yang mengkilap di situs kami!"
+    }
+  ],
+  "k9SQm1": [
+    {
+      "type": 0,
+      "value": "Relai yang telah Anda sambungkan sebelumnya dan tampaknya dapat diandalkan."
+    }
+  ],
+  "kEZUR8": [
+    {
+      "type": 0,
+      "value": "Mendaftarkan nama pengguna Iris"
+    }
+  ],
+  "kJYo0u": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " diposkan ulang"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " yang lain diposting ulang"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "kKC9ya": [
+    {
+      "type": 0,
+      "value": "Info Dompet"
+    }
+  ],
+  "kNd2FL": [
+    {
+      "type": 0,
+      "value": "Masuk pasang surut"
+    }
+  ],
+  "kQAf2d": [
+    {
+      "type": 0,
+      "value": "Pilih"
+    }
+  ],
+  "kaaf1E": [
+    {
+      "type": 0,
+      "value": "sekarang"
+    }
+  ],
+  "kc79d3": [
+    {
+      "type": 0,
+      "value": "Topik"
+    }
+  ],
+  "klCm96": [
+    {
+      "type": 0,
+      "value": "Persetujuan Pos Komunitas"
+    }
+  ],
+  "kqPQJD": [
+    {
+      "type": 0,
+      "value": "Mengkonfigurasi zap pool"
+    }
+  ],
+  "kuPHYE": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " menyukai"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " yang lain menyukai"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "l+ikU1": [
+    {
+      "type": 0,
+      "value": "Semuanya di "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    }
+  ],
+  "l3H1EK": [
+    {
+      "type": 0,
+      "value": "Undang teman Anda"
+    }
+  ],
+  "l3nTjd": [
+    {
+      "type": 0,
+      "value": "Derivasi kunci dasar dari frasa benih mnemonik"
+    }
+  ],
+  "lCILNz": [
+    {
+      "type": 0,
+      "value": "Beli Sekarang"
+    }
+  ],
+  "lD3+8a": [
+    {
+      "type": 0,
+      "value": "Bayar"
+    }
+  ],
+  "lEnclp": [
+    {
+      "type": 0,
+      "value": "Acara saya: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lPWASz": [
+    {
+      "type": 0,
+      "value": "Alamat hidung mendengus"
+    }
+  ],
+  "lTbT3s": [
+    {
+      "type": 0,
+      "value": "Kata sandi dompet"
+    }
+  ],
+  "lbr3Lq": [
+    {
+      "type": 0,
+      "value": "Salin tautan"
+    }
+  ],
+  "lfOesV": [
+    {
+      "type": 0,
+      "value": "Non-Zap"
+    }
+  ],
+  "lgg1KN": [
+    {
+      "type": 0,
+      "value": "halaman akun"
+    }
+  ],
+  "ll3xBp": [
+    {
+      "type": 0,
+      "value": "Layanan proxy gambar"
+    }
+  ],
+  "lnaT9F": [
+    {
+      "type": 0,
+      "value": "Mengikuti "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lsNFM1": [
+    {
+      "type": 0,
+      "value": "Klik untuk memuat konten dari "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "lvlPhZ": [
+    {
+      "type": 0,
+      "value": "Bayar Faktur"
+    }
+  ],
+  "m/59y2": [
+    {
+      "type": 0,
+      "value": "Permintaan Zap"
+    }
+  ],
+  "m6h2Eg": [
+    {
+      "type": 0,
+      "value": "Rekomendasi penanganannya"
+    }
+  ],
+  "mCEKiZ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " catatan telah dibisukan"
+    }
+  ],
+  "mErPop": [
+    {
+      "type": 0,
+      "value": "Sepertinya Anda belum memilikinya, kunjungi "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " untuk membelinya!"
+    }
+  ],
+  "mFtdYh": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " Relai Pekerja"
+    }
+  ],
+  "mKAr6h": [
+    {
+      "type": 0,
+      "value": "Ikuti semua"
+    }
+  ],
+  "mKh2HS": [
+    {
+      "type": 0,
+      "value": "Layanan unggah berkas"
+    }
+  ],
+  "mKhgP9": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "di-zap"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "di-zap"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "mOFG3K": [
+    {
+      "type": 0,
+      "value": "Mulai"
+    }
+  ],
+  "mfe8RW": [
+    {
+      "type": 0,
+      "value": "Opsi: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "mmPSWH": [
+    {
+      "type": 0,
+      "value": "Hanya Baca"
+    }
+  ],
+  "n1Whvj": [
+    {
+      "type": 0,
+      "value": "Beralih"
+    }
+  ],
+  "n5l7tP": [
+    {
+      "type": 0,
+      "value": "Acara Kalender Berbasis Waktu"
+    }
+  ],
+  "n8k1SG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "MiB"
+    }
+  ],
+  "nD4frR": [
+    {
+      "type": 0,
+      "value": "Konfirmasi penawaran"
+    }
+  ],
+  "nDejmx": [
+    {
+      "type": 0,
+      "value": "Buka blokir"
+    }
+  ],
+  "nGBrvw": [
+    {
+      "type": 0,
+      "value": "Penanda-penanda buku"
+    }
+  ],
+  "nGGDsi": [
+    {
+      "type": 0,
+      "value": "Pemberitahuan Diizinkan"
+    }
+  ],
+  "nIchMQ": [
+    {
+      "type": 0,
+      "value": "Mencari aktivitas akun ("
+    },
+    {
+      "type": 1,
+      "value": "progress"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "nPHrqp": [
+    {
+      "type": 0,
+      "value": "Kolam Renang Coinjoin"
+    }
+  ],
+  "nUT0Lv": [
+    {
+      "type": 0,
+      "value": "Peralatan"
+    }
+  ],
+  "nWQFic": [
+    {
+      "type": 0,
+      "value": "Memperbaharui"
+    }
+  ],
+  "nihgfo": [
+    {
+      "type": 0,
+      "value": "Dengarkan artikel ini"
+    }
+  ],
+  "nwZXeh": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " diblokir"
+    }
+  ],
+  "o/gK53": [
+    {
+      "type": 0,
+      "value": "Dek"
+    }
+  ],
+  "o7e+nJ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " pengikut"
+    }
+  ],
+  "oJ+JJN": [
+    {
+      "type": 0,
+      "value": "Tidak ada yang ditemukan :/"
+    }
+  ],
+  "odFwjL": [
+    {
+      "type": 0,
+      "value": "Hanya yang diikuti"
+    }
+  ],
+  "ojzbwv": [
+    {
+      "type": 0,
+      "value": "Hei, sepertinya Anda belum memiliki Nostr Address, Anda harus mendapatkannya! Lihat "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "ozZ2Cj": [
+    {
+      "type": 0,
+      "value": "Penghargaan Lencana"
+    }
+  ],
+  "p4N05H": [
+    {
+      "type": 0,
+      "value": "Unggah"
+    }
+  ],
+  "p9Ps2l": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " memiliki relay ("
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "pEEBFk": [
+    {
+      "type": 0,
+      "value": "Relai yang Andal"
+    }
+  ],
+  "pI+77w": [
+    {
+      "type": 0,
+      "value": "Cadangan yang dapat diunduh dari relai Snort"
+    }
+  ],
+  "pRess9": [
+    {
+      "type": 0,
+      "value": "ZapPool"
+    }
+  ],
+  "plOM0t": [
+    {
+      "type": 0,
+      "value": "Emoji Khusus"
+    }
+  ],
+  "plg2Ua": [
+    {
+      "type": 0,
+      "value": "Pengguna Bisu Saluran"
+    }
+  ],
+  "puLNUJ": [
+    {
+      "type": 0,
+      "value": "Sematkan"
+    }
+  ],
+  "pyjJ5f": [
+    {
+      "type": 0,
+      "value": "Nostr Marketplace (untuk pasar yang tangguh)"
+    }
+  ],
+  "pzTOmv": [
+    {
+      "type": 0,
+      "value": "Pengikut"
+    }
+  ],
+  "q3OuMw": [
+    {
+      "type": 0,
+      "value": "Komentar Torrent"
+    }
+  ],
+  "qAY40L": [
+    {
+      "type": 0,
+      "value": "Acara Kalender Berbasis Tanggal"
+    }
+  ],
+  "qBYNMb": [
+    {
+      "type": 0,
+      "value": "Balasan Utas Grup"
+    }
+  ],
+  "qD9EUF": [
+    {
+      "type": 0,
+      "value": "Email <> Jembatan DM untuk alamat nostr Snort Anda"
+    }
+  ],
+  "qDwvZ4": [
+    {
+      "type": 0,
+      "value": "Kesalahan yang tidak diketahui"
+    }
+  ],
+  "qFIVx4": [
+    {
+      "type": 0,
+      "value": "Lencana Profil"
+    }
+  ],
+  "qMePPG": [
+    {
+      "type": 0,
+      "value": "Catatan"
+    }
+  ],
+  "qMx1sA": [
+    {
+      "type": 0,
+      "value": "Jumlah Zap bawaan"
+    }
+  ],
+  "qUJTsT": [
+    {
+      "type": 0,
+      "value": "Diblokir"
+    }
+  ],
+  "qXCbgZ": [
+    {
+      "type": 0,
+      "value": "Membuka kunci"
+    }
+  ],
+  "qZsKBR": [
+    {
+      "type": 0,
+      "value": "Perbarui "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    }
+  ],
+  "qcJFEJ": [
+    {
+      "type": 0,
+      "value": "API Pemberitahuan Dinonaktifkan"
+    }
+  ],
+  "qdGuQo": [
+    {
+      "type": 0,
+      "value": "Kunci Pribadi Anda Adalah (jangan bagikan ini dengan siapa pun)"
+    }
+  ],
+  "qfmMQh": [
+    {
+      "type": 0,
+      "value": "Catatan ini telah dibisukan"
+    }
+  ],
+  "qkvYUb": [
+    {
+      "type": 0,
+      "value": "Tambahkan ke Profil"
+    }
+  ],
+  "qmJ8kD": [
+    {
+      "type": 0,
+      "value": "Terjemahan gagal"
+    }
+  ],
+  "qtWLmt": [
+    {
+      "type": 0,
+      "value": "Seperti"
+    }
+  ],
+  "qyJtWy": [
+    {
+      "type": 0,
+      "value": "Tampilkan lebih sedikit"
+    }
+  ],
+  "qydxOd": [
+    {
+      "type": 0,
+      "value": "Sains"
+    }
+  ],
+  "qz9fty": [
+    {
+      "type": 0,
+      "value": "Pin salah"
+    }
+  ],
+  "r3C4x/": [
+    {
+      "type": 0,
+      "value": "Perangkat lunak"
+    }
+  ],
+  "r5srDR": [
+    {
+      "type": 0,
+      "value": "Masukkan kata sandi dompet"
+    }
+  ],
+  "rAQG0X": [
+    {
+      "type": 0,
+      "value": "Metadata Daftar Relai"
+    }
+  ],
+  "rIsVe+": [
+    {
+      "type": 0,
+      "value": "Daftar obrolan publik"
+    }
+  ],
+  "rMgF34": [
+    {
+      "type": 0,
+      "value": "Back up sekarang"
+    }
+  ],
+  "rRRXtB": [
+    {
+      "type": 0,
+      "value": "Lightning Zaps"
+    }
+  ],
+  "rT14Ow": [
+    {
+      "type": 0,
+      "value": "Tambahkan Relay"
+    }
+  ],
+  "reFEEC": [
+    {
+      "type": 0,
+      "value": "Pelaporan"
+    }
+  ],
+  "rfuMjE": [
+    {
+      "type": 0,
+      "value": "(Bawaan)"
+    }
+  ],
+  "rkM7l8": [
+    {
+      "type": 0,
+      "value": "Pesan Langsung Terenkripsi"
+    }
+  ],
+  "rmdsT4": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " hari"
+    }
+  ],
+  "rn52n9": [
+    {
+      "type": 0,
+      "value": "Saluran Obrolan Publik"
+    }
+  ],
+  "rx1i0i": [
+    {
+      "type": 0,
+      "value": "Tautan pendek"
+    }
+  ],
+  "sFUkSN": [
+    {
+      "type": 0,
+      "value": "Set penanda"
+    }
+  ],
+  "sKDn4e": [
+    {
+      "type": 0,
+      "value": "Tampilkan Lencana"
+    }
+  ],
+  "sUNhQE": [
+    {
+      "type": 0,
+      "value": "pengguna"
+    }
+  ],
+  "sZQzjQ": [
+    {
+      "type": 0,
+      "value": "Gagal mengurai zap split: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "saInmO": [
+    {
+      "type": 0,
+      "value": "Nama relai yang ditampilkan tidak sama dengan URL lengkap yang dimasukkan."
+    }
+  ],
+  "saorw+": [
+    {
+      "type": 0,
+      "value": "Permintaan Penghapusan Acara"
+    }
+  ],
+  "sfL/O+": [
+    {
+      "type": 0,
+      "value": "Nada yang dibisukan tidak akan ditampilkan"
+    }
+  ],
+  "t79a6U": [
+    {
+      "type": 0,
+      "value": "Koneksi Berhasil:"
+    }
+  ],
+  "tDDiRL": [
+    {
+      "type": 0,
+      "value": "Daftar minat"
+    }
+  ],
+  "tFpT/O": [
+    {
+      "type": 0,
+      "value": "Melepaskan set artefak"
+    }
+  ],
+  "tO1oq9": [
+    {
+      "type": 0,
+      "value": "Acara Video"
+    }
+  ],
+  "tOdNiY": [
+    {
+      "type": 0,
+      "value": "Gelap"
+    }
+  ],
+  "tRGdV1": [
+    {
+      "type": 0,
+      "value": "Enkripsi Berversi"
+    }
+  ],
+  "tU0ADf": [
+    {
+      "type": 0,
+      "value": "NIP tidak diketahui-"
+    },
+    {
+      "type": 1,
+      "value": "x"
+    }
+  ],
+  "tVuVg9": [
+    {
+      "type": 0,
+      "value": "Acara Tampilan Video"
+    }
+  ],
+  "tf1lIh": [
+    {
+      "type": 0,
+      "value": "Gratis"
+    }
+  ],
+  "th5lxp": [
+    {
+      "type": 0,
+      "value": "Mengirim catatan ke subset dari relai tulis Anda"
+    }
+  ],
+  "thnRpU": [
+    {
+      "type": 0,
+      "value": "Mendapatkan verifikasi NIP-05 dapat membantu:"
+    }
+  ],
+  "tj6kdX": [
+    {
+      "type": 1,
+      "value": "sign"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "tjpYlr": [
+    {
+      "type": 0,
+      "value": "Metrik Relai"
+    }
+  ],
+  "ttxS0b": [
+    {
+      "type": 0,
+      "value": "Lencana Pendukung"
+    }
+  ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "Status"
+    }
+  ],
+  "u/vOPu": [
+    {
+      "type": 0,
+      "value": "Sudah dibayar"
+    }
+  ],
+  "u4I8q8": [
+    {
+      "type": 0,
+      "value": "Daftar pin"
+    }
+  ],
+  "u81G9+": [
+    {
+      "type": 0,
+      "value": "Waktu kerja"
+    }
+  ],
+  "u9NoC1": [
+    {
+      "type": 0,
+      "value": "Nama harus kurang dari "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " karakter"
+    }
+  ],
+  "uCk8r+": [
+    {
+      "type": 0,
+      "value": "Sudah memiliki akun?"
+    }
+  ],
+  "uD7Els": [
+    {
+      "type": 0,
+      "value": "Identitas Eksternal dalam Profil"
+    }
+  ],
+  "uJaMkO": [
+    {
+      "type": 0,
+      "value": "Daftar relai untuk menerima DM"
+    }
+  ],
+  "uSV4Ti": [
+    {
+      "type": 0,
+      "value": "Posting ulang perlu dikonfirmasi secara manual"
+    }
+  ],
+  "uc0din": [
+    {
+      "type": 0,
+      "value": "Mengirimkan split sat ke"
+    }
+  ],
+  "ufvXH1": [
+    {
+      "type": 0,
+      "value": "Ditemukan "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " acara"
+    }
+  ],
+  "uhu5aG": [
+    {
+      "type": 0,
+      "value": "Publik"
+    }
+  ],
+  "un1nGw": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " catatan"
+    }
+  ],
+  "usAvMr": [
+    {
+      "type": 0,
+      "value": "Sunting profil"
+    }
+  ],
+  "v8lolG": [
+    {
+      "type": 0,
+      "value": "Mulai obrolan"
+    }
+  ],
+  "vB3oQ/": [
+    {
+      "type": 0,
+      "value": "Harus berupa daftar kontak atau daftar pubkey"
+    }
+  ],
+  "vBsZhD": [
+    {
+      "type": 0,
+      "value": "Daftar komunitas"
+    }
+  ],
+  "vN5UH8": [
+    {
+      "type": 0,
+      "value": "Gambar Profil"
+    }
+  ],
+  "vU/Q5i": [
+    {
+      "type": 0,
+      "value": "Alat ini akan mencari acara terakhir yang dipublikasikan oleh semua pengikut Anda dan menghapus mereka yang belum memposting dalam 6 bulan"
+    }
+  ],
+  "vZ4quW": [
+    {
+      "type": 0,
+      "value": "NIP-05 adalah spesifikasi verifikasi berbasis DNS yang membantu memvalidasi Anda sebagai pengguna nyata."
+    }
+  ],
+  "vhlWFg": [
+    {
+      "type": 0,
+      "value": "Opsi Jajak Pendapat"
+    }
+  ],
+  "vlbWtt": [
+    {
+      "type": 0,
+      "value": "Dapatkan yang gratis"
+    }
+  ],
+  "voxBKC": [
+    {
+      "type": 0,
+      "value": "Diikuti oleh teman-teman"
+    }
+  ],
+  "vxwnbh": [
+    {
+      "type": 0,
+      "value": "Jumlah pekerjaan yang harus diterapkan pada semua acara yang dipublikasikan"
+    }
+  ],
+  "w1Fanr": [
+    {
+      "type": 0,
+      "value": "Bisnis"
+    }
+  ],
+  "w6qrwX": [
+    {
+      "type": 0,
+      "value": "NSFW"
+    }
+  ],
+  "wEQDC6": [
+    {
+      "type": 0,
+      "value": "Sunting"
+    }
+  ],
+  "wOyDTB": [
+    {
+      "type": 0,
+      "value": "Daftar server penyimpanan file"
+    }
+  ],
+  "wSZR47": [
+    {
+      "type": 0,
+      "value": "Kirim"
+    }
+  ],
+  "wc9st7": [
+    {
+      "type": 0,
+      "value": "Lampiran Media"
+    }
+  ],
+  "whSrs+": [
+    {
+      "type": 0,
+      "value": "Obrolan Publik Nostr"
+    }
+  ],
+  "wih7iJ": [
+    {
+      "type": 0,
+      "value": "nama diblokir"
+    }
+  ],
+  "wlWMuh": [
+    {
+      "type": 0,
+      "value": "Tambalan"
+    }
+  ],
+  "wofVHy": [
+    {
+      "type": 0,
+      "value": "Moderasi"
+    }
+  ],
+  "wqyN/i": [
+    {
+      "type": 0,
+      "value": "Cari tahu info selengkapnya tentang "
+    },
+    {
+      "type": 1,
+      "value": "service"
+    },
+    {
+      "type": 0,
+      "value": " di "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "wtLjP6": [
+    {
+      "type": 0,
+      "value": "Salin ID"
+    }
+  ],
+  "x+3fl6": [
+    {
+      "type": 0,
+      "value": "Relai Saya"
+    }
+  ],
+  "x/Fx2P": [
+    {
+      "type": 0,
+      "value": "Danai layanan yang Anda gunakan dengan membagi sebagian dari semua zap Anda ke dalam kumpulan dana!"
+    }
+  ],
+  "x82IOl": [
+    {
+      "type": 0,
+      "value": "Bisukan"
+    }
+  ],
+  "xEjBS7": [
+    {
+      "type": 0,
+      "value": "Untukmu"
+    }
+  ],
+  "xIcAOU": [
+    {
+      "type": 0,
+      "value": "Voting oleh "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    }
+  ],
+  "xIoGG9": [
+    {
+      "type": 0,
+      "value": "Pergi ke"
+    }
+  ],
+  "xPCyu+": [
+    {
+      "type": 0,
+      "value": "nostr: Skema URI"
+    }
+  ],
+  "xaj9Ba": [
+    {
+      "type": 0,
+      "value": "Penyedia"
+    }
+  ],
+  "xbVgIm": [
+    {
+      "type": 0,
+      "value": "Memuat media secara otomatis"
+    }
+  ],
+  "xhQMeQ": [
+    {
+      "type": 0,
+      "value": "Kedaluwarsa"
+    }
+  ],
+  "xl4s/X": [
+    {
+      "type": 0,
+      "value": "Ketentuan Tambahan:"
+    }
+  ],
+  "xmcVZ0": [
+    {
+      "type": 0,
+      "value": "Cari"
+    }
+  ],
+  "xybOUv": [
+    {
+      "type": 0,
+      "value": "KIPAS"
+    }
+  ],
+  "y/bmsG": [
+    {
+      "type": 0,
+      "value": "Izinkan"
+    }
+  ],
+  "y1Z3or": [
+    {
+      "type": 0,
+      "value": "Bahasa"
+    }
+  ],
+  "yAztTU": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " eSats"
+    }
+  ],
+  "yCLnBC": [
+    {
+      "type": 0,
+      "value": "LNURL atau Alamat Kilat"
+    }
+  ],
+  "yLzgxH": [
+    {
+      "type": 0,
+      "value": "Relai Populer"
+    }
+  ],
+  "yeX8yA": [
+    {
+      "type": 0,
+      "value": "Aplikasi Asli"
+    }
+  ],
+  "z3UjXR": [
+    {
+      "type": 0,
+      "value": "Debug"
+    }
+  ],
+  "z3Ukvq": [
+    {
+      "type": 0,
+      "value": "Draf Konten Bentuk Panjang"
+    }
+  ],
+  "zCb8fX": [
+    {
+      "type": 0,
+      "value": "Berat"
+    }
+  ],
+  "zFegDD": [
+    {
+      "type": 0,
+      "value": "Kontak"
+    }
+  ],
+  "zINlao": [
+    {
+      "type": 0,
+      "value": "Pemilik"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "Semua"
+    }
+  ],
+  "zcaOTs": [
+    {
+      "type": 0,
+      "value": "Jumlah zap dalam sat"
+    }
+  ],
+  "zi9MdS": [
+    {
+      "type": 0,
+      "value": "Catur (PGN)"
+    }
+  ],
+  "zm6qS1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " menit untuk membaca"
+    }
+  ],
+  "zonsdq": [
+    {
+      "type": 0,
+      "value": "Gagal memuat layanan LNURL"
+    }
+  ],
+  "zvCDao": [
+    {
+      "type": 0,
+      "value": "Tampilkan catatan terbaru secara otomatis"
+    }
+  ],
+  "zx0myy": [
+    {
+      "type": 0,
+      "value": "Peserta"
+    }
+  ]
 }

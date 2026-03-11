@@ -1,812 +1,5876 @@
 {
-  "+D82kt": "Are you sure you want to repost: {id}",
-  "+PzQ9Y": "Payout Now",
-  "+QM0PJ": "Sync all events for your profile into local cache",
-  "+QMdsy": "Relay Stats",
-  "+UjDmN": "Logged in with write access",
-  "+Vxixo": "Secret Group Chat",
-  "+aZY2h": "Zap Type",
-  "+tShPg": "following",
-  "+vA//S": "Logins",
-  "+vIQlC": "Please make sure to save the following password in order to manage your handle in the future",
-  "+vVZ/G": "Connect",
-  "+vj0U3": "edit",
-  "+xliwN": "{name} reposted",
-  "/B8zwF": "Ruang Anda seperti yang Anda inginkan 😌",
-  "/GCoTA": "Clear",
-  "/JE/X+": "Account Support",
-  "/T7HId": "HTTP File Storage Integration",
-  "/Xf4UW": "Send anonymous usage metrics",
-  "/b1IHW": "Group Chat Message",
-  "/d6vEc": "Make your profile easier to find and share",
-  "/ioUrF": "From File",
-  "/n5KSF": "{n} ms",
-  "00LcfG": "Minta Lebih",
-  "01iNut": "Nostr address does not belong to you",
-  "08zn6O": "Export Keys",
-  "0Azlrb": "Manage",
-  "0BUTMv": "Cari...",
-  "0MndVW": "Generic LNDHub wallet (BTCPayServer / Alby / LNBits)",
-  "0jOEtS": "Invalid LNURL",
-  "0kOBMu": "Handling Mentions",
-  "0mch2Y": "name has disallowed characters",
-  "0siT4z": "Politics",
-  "0uoY11": "Show Status",
-  "0yO7wF": "{n} secs",
-  "0zASjL": "Go",
-  "1/BFEj": "git stuff",
-  "1Mo59U": "Are you sure you want to remove this note from bookmarks?",
-  "1R43+L": "Enter Nostr Wallet Connect config",
-  "1UWegE": "Be sure to back up your keys!",
-  "1c4YST": "Connected to: {node} 🎉",
-  "1nYUGC": "{n} Following",
-  "1o2BgB": "Periksa JSON",
-  "1ozeyg": "Alam Dunya",
-  "1udzha": "Conversations",
-  "2/2yg+": "Add",
-  "25V4l1": "Banner",
-  "25WwxF": "Tiada profil?",
-  "28oKbu": "Moderated Communities",
-  "29sHFE": "Wallet Connect",
-  "2BBGxX": "Subject tag in text events",
-  "2HIqeO": "User emoji list",
-  "2IFGap": "Dana",
-  "2LbrkB": "Sila taip pwd anda",
-  "2O2sfp": "Selesai",
-  "2Qsf9/": "Generic lists",
-  "2a2YiP": "{n} Bookmarks",
-  "2k0Cv+": "Booo ({n})",
-  "2mcwT8": "New Note",
-  "2oCF7O": "Followed by friends of friends",
-  "2raFAu": "Application-specific data",
-  "2ukA4d": "{n} jam",
-  "2z7Kky": "Latest Articles",
-  "3/onCd": "Replies",
-  "39AHJm": "Sign Up",
-  "3GWu6/": "User Statuses",
-  "3KNMbJ": "Articles",
-  "3MKdAw": "Blobs stored on mediaservers",
-  "3QwfJR": "~{amount}",
-  "3adEeb": "{n} viewers",
-  "3cc4Ct": "Pagi",
-  "3gOsZq": "Penerjemah",
-  "3kbIhS": "Untitled",
-  "3qnJlS": "You are voting with {amount} sats",
-  "3t3kok": "{n,plural,=1{{n} new note} other{{n} new notes}}",
-  "3tVy+Z": "{n} Followers",
-  "3yk8fB": "Wallet",
-  "40VR6s": "Nostr Connect",
-  "41BSaT": "Total Events:",
-  "450Fty": "Kosong",
-  "47E53q": "Wiki",
-  "47FYwb": "Tolak",
-  "48zn4v": "Bid",
-  "4IPzdn": "Pelooper Utama",
-  "4L2vUY": "Nama NIP-05 baru anda adalah:",
-  "4MjsHk": "Kehidupan",
-  "4OB335": "Bpp",
-  "4P/kKm": "Private Key Encryption",
-  "4Vmpt4": "Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices",
-  "4Z3t5i": "Use imgproxy to compress images",
-  "4emo2p": "Missing Relays",
-  "4rYCjn": "Nota tersendiri",
-  "4wgYpI": "Recommended Application Handlers",
-  "5BVs2e": "zap",
-  "5CB6zB": "Zap Splits",
-  "5PRWs7": "Notifications API Enabled",
-  "5dfmvv": "Zap Goal",
-  "5oTnfy": "Buy Handle",
-  "5qEWCr": "File Metadata",
-  "5u6iEc": "Transfer to Pubkey",
-  "5vMmmR": "Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration.",
-  "5ykRmX": "Kirim zap",
-  "6/hB3S": "Watch Replay",
-  "60kEE3": "Mute list",
-  "62nsdy": "Cuba lagi.",
-  "634VVz": "Connection Failed:",
-  "6559gb": "New follow list length {length}",
-  "65BmHb": "Failed to proxy image from {host}, click here to load directly",
-  "6D4Hhn": "Recommend Relay",
-  "6KGebm": "Seal",
-  "6OSOXl": "Alasan: <i>{reason}</i>",
-  "6WWD34": "Looking for: {noteId}",
-  "6bgpn+": "Not all clients support this, you may still receive some zaps as if zap splits was not configured",
-  "6ewQqw": "ThumbsUp ({n})",
-  "6mr8WU": "Followed by",
-  "6pdxsi": "Extra metadata fields and tags",
-  "6uMqL1": "Unpaid",
-  "6xNr8c": "Switch accounts",
-  "6xap9L": "Good",
-  "7+Domh": "Nota",
-  "712i26": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node",
-  "753yX5": "Label",
-  "769A8p": "Wiki article",
-  "77nkEO": "Relay Information Document",
-  "7LFU8U": "Search Capability",
-  "7UOvbT": "Offline",
-  "7YkSA2": "Community Leader",
-  "7gMmSL": "Reaction",
-  "7hp70g": "NIP-05",
-  "7jfPsW": "Modular Article Content",
-  "7nAz/z": "Mute notes from people who are outside your web of trust",
-  "7pFGAQ": "Close Relays",
-  "8/vBbP": "Reposts ({n})",
-  "89q5wc": "Confirm Reposts",
-  "8BDFvJ": "Conventions for clients' use of e and p tags in text events",
-  "8ED/4u": "Reply To",
-  "8HJxXG": "Sign up",
-  "8QDesP": "Zap {n} sat",
-  "8Rkoyb": "Penerima",
-  "8Y6bZQ": "Invalid zap split: {input}",
-  "8ZGqWl": "Group Thread",
-  "8g2vyB": "nama terlalu panjang",
-  "8jmwT8": "bech32-encoded entities",
-  "8v1NN+": "Pairing phrase",
-  "8xdDLn": "Follow sets",
-  "8za9Pq": "Draft Classified Listing",
-  "9+Ddtu": "Selanjut-nya",
-  "9HU8vw": "Membalas",
-  "9SvQep": "Mengintip {n}",
-  "9V0wg3": "Calendar Event RSVP",
-  "9WRlF4": "Mengirim",
-  "9kO0VQ": "Hide muted notes",
-  "9kSari": "Retry publishing",
-  "9pMqYs": "Nostr Alamat",
-  "9wO4wJ": "Lightning Invoice",
-  "A86fJ+": "Generic Repost",
-  "ADmfQT": "Tua",
-  "ALdW69": "Note by {name}",
-  "AN0Z7Q": "Kata-kata yang dibisukan",
-  "ASRK0S": "Penulis ini telah dibisukan",
-  "AedFVZ": "Create or update a product",
-  "Ai8VHU": "Unlimited note retention on Snort relay",
-  "AkCxS/": "Alasan",
-  "AktAk2": "Great",
-  "Am8glJ": "Game",
-  "AqGfF4": "Channel Creation",
-  "Aujn2T": "Count",
-  "Awq32I": "Push notifications",
-  "AxDOiG": "Bulan",
-  "AyGauy": "Login",
-  "B4C47Y": "nama terlalu pendek",
-  "B6+XJy": "telah di-zap",
-  "B6H7eJ": "nsec, npub, nip-05, hex",
-  "B7wvUM": "You can add a single or multiple relays, one per line.",
-  "BGCM48": "Write access to Snort relay, with 1 year of event retention",
-  "BGGacK": "AI Embeddings / Vector lists",
-  "BQW4gi": "Relay-based Groups",
-  "BWpuKl": "Update",
-  "BfuAQ5": "Marketplace UI/UX",
-  "BjNwZW": "Alamat Nostr (nip05)",
-  "Blxcdx": "Relay",
-  "Bo+O//": "HTTP Auth",
-  "C1LjMx": "Lightning Donation",
-  "C6Lhhp": "Live Event",
-  "C7642/": "Quote Repost",
-  "C81/uG": "Logout",
-  "C8FsOr": "Popular Servers",
-  "C8HhVE": "Suggested Follows",
-  "CA1efg": "Video sets",
-  "CHTbO3": "Failed to load invoice",
-  "CJx5Nd": "Profile Zaps",
-  "CM+Cfj": "Follow List",
-  "CM0k0d": "Prune follow list",
-  "CVWeJ6": "Trending People",
-  "CYkOCI": "and {count} others you follow",
-  "Cdxwi0": "Repository announcements",
-  "CmZ9ls": "{n} Dibisukan",
-  "Coy6SH": "Calendar",
-  "CsCUYo": "{n} sats",
-  "Cu/K85": "Translated from {lang}",
-  "CzHZoc": "Social Graph",
-  "D++Njw": "Text Note References",
-  "D+KzKd": "Automatically zap every note when loaded",
-  "D09wbg": "Badge Definition",
-  "D3idYv": "Settings",
-  "D9xTLE": "Channel Hide Message",
-  "DBiVK1": "Cache",
-  "DKnriN": "Kirim sat",
-  "DZzCem": "Tampilkan nota2 {n} terbaru",
-  "Dh3hbq": "Auto Zap",
-  "Dn82AL": "Live",
-  "DqUmXt": "Product sold as an auction",
-  "DrZqav": "About must be less than {limit} characters",
-  "DtYelJ": "Transfer",
-  "Dx4ey3": "Toggle semua-nya",
-  "E3oB+t": "Browser",
-  "E5ZIPD": "<big>{amount}</big> <small>sats</small>",
-  "EHqHsu": "Invoice / Lightning Address",
-  "EJbFi7": "Search notes",
-  "ELbg9p": "Data Providers",
-  "EQKRE4": "Show badges on profile pages",
-  "EWeVrH": "Reaction to a website",
-  "EWyQH5": "Seluruh Alam",
-  "Ebl/B2": "Terjemahkan ke {lang}",
-  "Ec+xLY": "Curation sets",
-  "EcZF24": "Custom Relays",
-  "EcfIwB": "Nama tersedia",
-  "EcglP9": "Kunci",
-  "EjFyoR": "On-chain Donation Address",
-  "EnCOBJ": "Beli",
-  "EsHX35": "Sorry, we dont understand this event kind ({name}), please try one of the following apps instead!",
-  "F/6VqP": "Server",
-  "F3l7xL": "Add Account",
-  "F4eJ/3": "Classified Listings",
-  "FDguSC": "{n} Zap",
-  "FHWpHC": "Wallet Response",
-  "FHvSk3": "Authentication of clients to relays",
-  "FMfjrl": "Show status messages on profile pages",
-  "FSYL8G": "Trending Users",
-  "FWJR1B": "User groups",
-  "FcNSft": "Redirect issues HTTP redirect to the supplied lightning address",
-  "FdhSU2": "Claim Now",
-  "FfYsOb": "Terjumpa error!",
-  "FmXUJg": "mengintip kamu",
-  "FvanT6": "Accounts",
-  "FzbSGg": "You dont have any media servers, try adding some.",
-  "G/yZLu": "Hapus",
-  "G1BGCg": "Select Wallet",
-  "G3A56c": "Subscribed to Push",
-  "GFOoEE": "Garam",
-  "GIqktu": "Supported NIPs",
-  "GL8aXW": "Link-nota ({n})",
-  "GSye7T": "Alamat Lightning",
-  "GUlSVG": "Claim your included Snort nostr address",
-  "Gcn9NQ": "Link Magnet",
-  "GpkNYn": "Torrent",
-  "GqQeu/": "Invalid Lightning Address",
-  "GspYR7": "{n} Booo",
-  "Gxcr08": "Broadcast Event",
-  "H+vHiz": "Hex Key..",
-  "H/oroO": "Dealing with Unknown Events",
-  "H0JBH6": "Log Out",
-  "H0OG3T": "Leader Info",
-  "H1GTaC": "Bookmark list",
-  "H6/kLh": "Order Paid!",
-  "HAlOn1": "Nama",
-  "HFls6j": "nama akan tersedia nanti",
-  "HOzFdo": "Dibisukan",
-  "HWbkEK": "Hapus cache dan reload",
-  "HbefNb": "Open Wallet",
-  "HhcAVH": "You don't follow this person, click here to load media from <i>{link}</i>, or update <a><i>your preferences</i></a> to always load media from everybody.",
-  "HpAmQZ": "Relay reviews",
-  "HqRNN8": "Support",
-  "HzSFeV": "Expiration Timestamp",
-  "I0tYZf": "Create or update a stall",
-  "I1AoOu": "Last post {time}",
-  "IEwZvs": "Are you sure you want to unpin this note?",
-  "IIOul1": "Account Data",
-  "IKKHqV": "Pengintip",
-  "IOu4Xh": "You must be a {tier} subscriber to access {app} deck",
-  "IVbtTS": "Zap semua {n} sats",
-  "IWz1ta": "Auto Translate",
-  "IcHcWj": "Last Seen:",
-  "Ig9/a1": "Telah kirim {n} sats ke {name}",
-  "IgsWFG": "Not followed by anyone you follow",
-  "IoQq+a": "Click here to load anyway",
-  "IvjoDS": "Connected",
-  "Ix8l+B": "Trending Notes",
-  "J+dIsA": "Subscriptions",
-  "J1iLmb": "Notifications Not Allowed",
-  "J2HeQ+": "Use commas to separate words e.g. word1, word2, word3",
-  "J2Q92B": "Emoji sets",
-  "J6N9xl": "Sign in with Android signer",
-  "JCIgkj": "Nama",
-  "JGrt9q": "Kirim sats ke {name}",
-  "JHEHCk": "Zaps ({n})",
-  "JIVWWA": "Sport",
-  "JPFYIM": "Tidak ada alamat Lightning",
-  "JSx7y9": "Subscribe to {site_name} {plan} for {price} and receive the following rewards",
-  "JeoS4y": "Repost",
-  "Jh5zKH": "Search relays list",
-  "JjGgXI": "Search ulama",
-  "JkLHGw": "Situs web",
-  "JmcxzF": "Relays are servers you connect to for sending and receiving events. Aim for 4-8 relays.",
-  "JymXbw": "Kunci 'Private'",
-  "K1wl1/": "Average Latency:",
-  "K3r6DQ": "Padam",
-  "K7AkdL": "Show",
-  "K9zklU": "External Content IDs",
-  "KAhAcM": "Enter LNDHub config",
-  "KGmQjH": "Highlights",
-  "KJryGq": "Live Chat Message",
-  "KQvWvD": "Dipadam",
-  "KT9nox": "Protected Events",
-  "KahimY": "Jenis 'event' tidak diketahui: {kind}",
-  "KipVeG": "Mapping Nostr keys to DNS-based internet identifiers",
-  "KtsyO0": "Masukkan Pin",
-  "KyRp/q": "Wallet Request",
-  "LBAnc7": "View as user?",
-  "LEmxc8": "Zap Goals",
-  "LKw/ue": "Check out the code {link}",
-  "LR1XjT": "PIN terlalu pendek",
-  "LXxsbk": "Anonim",
-  "LgbKvU": "Comment",
-  "LhLvRx": "Name must be between 8 and 15 characters",
-  "LmdPXO": "Cannot verify Nostr Address",
-  "Lu5/Bj": "Buka di Zapstr",
-  "LuDBLj": "Torrents",
-  "Lw+I+J": "{n,plural,=0{{name} zapped} other{{name} & {n} others zapped}}",
-  "LwYmVi": "Zaps on this note will be split to the following users.",
-  "M3Oirc": "Menu Debug",
-  "M6C/px": "Become a leader",
-  "MBAYRO": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message",
-  "MI2jkA": "Tidak tersedia:",
-  "MKDHEa": "Join Room",
-  "MP54GY": "pwd dompet",
-  "MWTx65": "Default Page",
-  "MYBYdJ": "Short Text Note",
-  "MYUBaG": "Client Authentication",
-  "MiMipu": "Tetapkan sebagai alamat Nostr utama (nip05)",
-  "MkQ4FX": "Proxy Tags",
-  "Ml7+RS": "Send this link to your friends and share the magic of the nostr.",
-  "Mrpkot": "Pay for subscription",
-  "MuVeKe": "Beli alamat nostr",
-  "Muhna4": "Counting results",
-  "MzRYWH": "item{item}",
-  "Mzizei": "Akun Iris.to",
-  "N2IrpM": "Confirm",
-  "NAidKb": "Notifications",
-  "NAuFNH": "You already have a subscription of this type, please renew or pay",
-  "NDTFsp": "Job Feedback",
-  "NepkXH": "Can't vote with {amount} sats, please set a different default zap amount",
-  "NndBJE": "Halaman 'users' baru",
-  "Nr9Yyx": "Reposts",
-  "NxzeNU": "Dead",
-  "O3Jz4E": "Use your invite code to earn sats!",
-  "OEW7yJ": "Zap-zap",
-  "OIqnZN": "OpenTimestamps Attestations for Events",
-  "OJHKIL": "Gift Wrap",
-  "OKhRC6": "Share",
-  "OLEm6z": "Kesalahan login tidak dikenal",
-  "OQSOJF": "Dapatkan alamat nostr gratis",
-  "OQXnew": "Langganan anda masih aktif, anda belum dapat memperbarui-nya",
-  "ORGv1Q": "Dilahir",
-  "ORa81+": "Merge Requests",
-  "OoZgbB": "Failed to update, please try again",
-  "OuProE": "Long-form Content",
-  "OxPdQ0": "Scanning {date}",
-  "P2o+ZZ": "Invalid Nostr Address",
-  "P61BTu": "Salin 'Event' JSON",
-  "P7FD0F": "Sistem (Default)",
-  "P7nJT9": "Total hari ini (UTC): {amount} sats",
-  "P8JC58": "Distance",
-  "PCSt5T": "Prefs",
-  "PXQ0z0": "Receiving to <b>{wallet}</b>",
-  "PamNxw": "Header file tidak dikenal: {name}",
-  "Pe0ogR": "Tema",
-  "PrsIg7": "Reactions will be shown on every page, if disabled no reactions will be shown",
-  "QDFTjG": "{n} Relays",
-  "QJfhKt": "The private key is like a password, but it cannot be reset. Guard it carefully and never show it to anyone. Once someone has your private key, they will have access to your account forever.",
-  "QWhotP": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)",
-  "QpaLA3": "Channel Message",
-  "Qxv0B2": "Saat ini Anda memiliki {number} sat di zap pool Anda.",
-  "Qy6/Ft": "Private Direct Messages",
-  "R/6nsx": "Subscription",
-  "R81upa": "Orang yang Anda mengintip",
-  "RDha9y": "Service Worker Not Running",
-  "RRz1cA": "Repository state announcements",
-  "RSr2uB": "Nama hanya boleh diterima jika ia huruf kecilan dan ber-angka",
-  "RahCRH": "Kedaluwarsa",
-  "RefZpK": "Short-form Portrait Video Event",
-  "RfhLwC": "Oleh: {author}",
-  "RhDAoS": "Anda yakin ingin memadam {id} ke?",
-  "RmxSZo": "Data Vending Machines",
-  "RoOyAh": "relay-relay",
-  "Rs4kCE": "Penanda",
-  "S/NV2G": "Loading note: {id}",
-  "SFuk1v": "Permissions",
-  "SLZGPn": "Enter a pin to encrypt your private key, you must enter this pin every time you open {site}.",
-  "SMO+on": "Kirim zap ke {name}",
-  "SOqbe9": "Perbarui Alamat 'Lightning'",
-  "SP0+yi": "Beli Langganan",
-  "SW3TFA": "Popular relays used by people you follow.",
-  "SYQtZ7": "Proxy Alamat LN",
-  "Sd0PKc": "Relay sets",
-  "SfwSIm": "Problem Tracker",
-  "ShdEie": "Tandai semua sudah dibaca",
-  "Sjo1P4": "Custom",
-  "SmuYUd": "Kami memanggilmu dengan nama apa?",
-  "Ss0sWu": "Bayar Sekarang",
-  "SsUQnC": "Application-specific Data",
-  "StKzTE": "The author has marked this note as a <i>sensitive topic</i>",
-  "T83nqf": "Relays close to your geographic location.",
-  "TDR5ge": "Media in notes will automatically be shown for selected people, otherwise only the link will show",
-  "TGc5nI": "Handler information",
-  "TH1fFo": "Telegram",
-  "TJo5E6": "Preview",
-  "TOG64f": "Use Local Relay",
-  "TP/cMX": "Telah Tamat",
-  "TaeBqw": "Masuk dengan Extension Nostr",
-  "TdTXXf": "Learn more",
-  "TdtZQ5": "Kripto",
-  "Tdv6NY": "Interest sets",
-  "TgDKhI": "Calendar Events",
-  "TpgeGw": "Garam Hex..",
-  "Tpy00S": "Ummah",
-  "TvKqBp": "liked",
-  "TwyMau": "Account",
-  "U1aPPi": "Stop listening",
-  "U30H69": "Community Definition",
-  "UJTWqI": "Hapus dari `relay` saya",
-  "ULXFfP": "Receive",
-  "UNjfWJ": "Check all event signatures received from relays",
-  "UT7Nkj": "Chat Baru",
-  "UUPFlt": "Users must accept the content warning to show the content of your note.",
-  "UaCh1c": "Add Server",
-  "Ub+AGc": "Masuk",
-  "Up5U7K": "Blok",
-  "Ups2/p": "Your application is pending",
-  "UrKTqQ": "anda memiliki akun iris.to yang aktif",
-  "UsCzPc": "Share a personalized invitation with friends!",
-  "UxgyeY": "Your referral code is {code}",
-  "V20Og0": "Labeling",
-  "VOjC1i": "Pick which upload service you want to upload attachments to",
-  "VR5eHw": "Kunci pub (npub/nprofile)",
-  "VcwrfF": "Ya, silakan.",
-  "VfhYxG": "To see a full list of changes you can view the changelog {here}",
-  "VlJkSk": "{n}n",
-  "VnXp8Z": "Avatar",
-  "W1yoZY": "It looks like you dont have any subscriptions, you can get one {link}",
-  "W2PiAr": "{n} Diblok",
-  "W4SaxY": "Local",
-  "W9355R": "Berhenti bisu-kan",
-  "WeLEuL": "From Server",
-  "Wj5TbN": "Issues",
-  "WmZhfL": "Automatically translate notes to your local language",
-  "WvGmZT": "alamat npub / nprofile / nostr",
-  "X6tipZ": "Masuk dengan kunci",
-  "X7xU8J": "nsec, npub, nip-05, hex, mnemo",
-  "XECMfW": "Kirim metrik penggunaan",
-  "XICsE8": "Host fail",
-  "XPB8VV": "Alby wallet connection",
-  "XQiFEl": "Follows Relay Health",
-  "XSdWHA": "Redeem",
-  "XXm7jJ": "Trending Hashtags",
-  "XgWvGA": "Emojis",
-  "Xnimz0": "Sending from <b>{wallet}</b>",
-  "Xopqkl": "Your default zap amount is {number} sats, example values are calculated from this.",
-  "YDMrKK": "Users",
-  "YDURw6": "URL app layanan",
-  "YH2RKk": "Popular media servers.",
-  "YQZY/S": "It looks like you dont follow enough people, take a look at {newUsersPage} to discover people to follow!",
-  "YR2I9M": "No keys, no {app}, There is no way to reset it if you don't back up. It only takes a minute.",
-  "YU7ZYp": "Public Chat",
-  "YXA3AH": "Aktifkan kiriman Emojis",
-  "Yf3DwC": "Connect a wallet to send instant payments",
-  "YuoEb9": "Try another relay",
-  "Z48UEo": "Channel Metadata",
-  "Z4BMCZ": "Enter pairing phrase",
-  "Z7kkeJ": "Delegated Event Signing",
-  "ZFe9tl": "Compose a note",
-  "ZKORll": "Activate Now",
-  "ZLmyG9": "Contributors",
-  "ZS+jRE": "Kirim zap split ke",
-  "Zff6lu": "Nama iris.to/<b>{name}</b> telah disediakan untuk Anda!",
-  "ZlIh4/": "Encrypted Direct Messages",
-  "ZlmK/p": "{name} invited you to {app}",
-  "a1x4gD": "Media servers store media which you can share in notes as images and videos",
-  "a5UPxh": "Fund developers and platforms providing NIP-05 verification services",
-  "a7TDNm": "Notes will stream in real time into global and notes tab",
-  "aHje0o": "Nama atau nym",
-  "aMaLBK": "'Extension' yang Didukung",
-  "aRex7h": "Paid {amount} sats, fee {fee} sats",
-  "aSGz4J": "Connect to your own LND node with Lightning Node Connect",
-  "aWpBzj": "Minta Lebih",
-  "abbGKq": "{n} km",
-  "ak3MTf": "Invite Friends",
-  "b12Goz": "Mnemo",
-  "b5vAk0": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address",
-  "bF1MYT": "You are a community leader and are earning <b>{percent}</b> of referred users subscriptions!",
-  "bG00/W": "Service Worker Running",
-  "bJ+wrA": "Compute prune list",
-  "bLZL5a": "Dapatkan Alamat",
-  "bMphls": "Logged in with read-only access",
-  "bQdA2k": "Sensitive Content",
-  "bep9C3": "Kunci Pub",
-  "bfvyfs": "Anon",
-  "bxv59V": "Baru saja",
-  "c+1p0i": "Kind mute sets",
-  "c+JYNI": "Tidak, terima kasih.",
-  "c2T+1B": "Redirects",
-  "c35bj2": "If you have an enquiry about your NIP-05 order please DM {link}",
-  "c3LlRO": "{n}KiB",
-  "c3g2hL": "Menyiarkan Lagi",
-  "cFbU1B": "Using Alby? Go to {link} to get your NWC config!",
-  "cG/bKQ": "Native nostr wallet connection",
-  "cHCwbF": "Photography",
-  "cKbMRX": "Direct Message",
-  "cPIKU2": "Mengintipi",
-  "cQfLWb": "URL..",
-  "cVcgLJ": "Media Servers",
-  "cWx9t8": "Bisukan semua",
-  "cg1VJ2": "Connect Wallet",
-  "cnwHgH": "OpenTimestamps",
-  "cuP16y": "Multi account support",
-  "cuV2gK": "nama terdaftar",
-  "cw1Ftc": "Live Activities",
-  "cyR7Kh": "Pulang",
-  "d+6YsV": "Lists to mute:",
-  "d0qim7": "WoT Filter",
-  "d2ebEu": "Not Subscribed to Push",
-  "d7d0/x": "Alamat LN",
-  "dK2CcV": "The public key is like your username, you can share it with anyone.",
-  "dOQCL8": "Nama tampilan",
-  "dZZIGe": "Modular Article Header",
-  "ddd3JX": "Popular Hashtags",
-  "deEeEI": "Daftar",
-  "djLctd": "Amount in sats",
-  "dmcsBA": "Classified Listing",
-  "dmsiLv": "A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}",
-  "e5x8FT": "Kind",
-  "e61Jf3": "Coming soon",
-  "e7VmYP": "Enter pin to unlock your private key",
-  "e7qqly": "Mark All Read",
-  "eF0Re7": "Gunakan 'extension' penanda mecha nostr untuk masuk",
-  "eHAneD": "Reaction emoji",
-  "eJj8HD": "Get Verified",
-  "eSzf2G": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool.",
-  "eW/Bj9": "Feed",
-  "eXT2QQ": "Chat Kumpulan",
-  "eZtOxB": "window.nostr capability for web browsers",
-  "egib+2": "{n,plural,=1{& {n} other} other{& {n} others}}",
-  "ejEGdx": "Home",
-  "eoV49s": "Poor",
-  "f1OxTe": "Community leaders are individuals who grow the nostr ecosystem by being active in their local communities and helping onboard new users. Anyone can become a community leader, but few hold the current honorary title.",
-  "f2CAxA": "Dump",
-  "fBI91o": "Zap",
-  "fBlba3": "Kumpulan kami amat menghargai masa anda bersama {site}, mohon sumbangan titis pulah anda jika anda mampu.",
-  "fLIvbC": "Snort is an open source project built by passionate people in their free time, your donations are greatly appreciated",
-  "fOksnD": "Can't vote because LNURL service does not support zaps",
-  "fQN+tq": "Show posts that have a content warning tag",
-  "fWZYP5": "Disematkan",
-  "fX5RYm": "Pilih beberapa topik yang menarik",
-  "filwqD": "Baca",
-  "fjAcWo": "Gift Wraps",
-  "flnGvv": "Apa yang sedang kamu pikirkan?",
-  "fqwcJ1": "On-chain Donation",
-  "fr+XYA": "Lightning Pub RPC",
-  "fsB/4p": "ye Simpan!",
-  "fucxlm": "Attach Media",
-  "furjvW": "Watch Stream",
-  "g5pX+a": "Tentang",
-  "g985Wp": "Failed to send vote",
-  "gDzDRs": "Emoji to send when reactiong to a note",
-  "gXgY3+": "Not all clients support this yet",
-  "gczcC5": "sub-to",
-  "geppt8": "{count} ({count2} in memory)",
-  "gjBiyj": "Loading...",
-  "gkMmvC": "Android Signer Application",
-  "gl1NeW": "Lists",
-  "go2/QF": "User server list",
-  "grQ+mI": "Proof-of-Work",
-  "gtNjNP": "Basic protocol flow description",
-  "h7jvCs": "{site} lebih seronok jikalau bersama!",
-  "h8XMJL": "Lencana",
-  "h9M0rW": "User Metadata",
-  "hF6IN2": "Prune Follow List",
-  "hMQmIw": "Sync Account",
-  "hMzcSq": "Msg2",
-  "hRTfTR": "PRO",
-  "hY4lzx": "Supports",
-  "hYOE+U": "Invite",
-  "hicxcO": "Tampilkan balasan",
-  "hmZ3Bz": "Media",
-  "hniz8Z": "di sini",
-  "hv/eRj": "Blocked relays list",
-  "hvFRBo": "Interaction",
-  "i/dBAR": "Zap Pool",
-  "i5gBFz": "Your sent and received payments will show up here.",
-  "iCqGww": "Reactions ({n})",
-  "iEoXYx": "terjemahan DeepL",
-  "iGT1eE": "Cegah akaun palsu meniru Anda",
-  "iHN12u": "Admin",
-  "iICVoL": "{x} follows ({y} duplicates)",
-  "iNWbVV": "Handle",
-  "iXPL0Z": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead",
-  "iYc3Ld": "Payments",
-  "icCxlA": "new users page",
-  "ieGrWo": "Follow",
-  "igUUst": "Group Chat Threaded Reply",
-  "ipHVx5": "Generate Invoice",
-  "itPgxd": "Profil",
-  "izWS4J": "Unfollow",
-  "j9xbzF": "Already backed up",
-  "jA3OE/": "{n,plural,=1{{n} sat} other{{n} sats}}",
-  "jAmfGl": "Langganan {site_name} Anda telah kedaluwarsa",
-  "jHa/ko": "Clean up your feed",
-  "jMzO1S": "Internal error: {msg}",
-  "jiAVXu": "Video Event",
-  "jvo0vs": "Save",
-  "jzgQ2z": "{n} Reactions",
-  "k0kCJp": "Apply Now",
-  "k2veDA": "Write",
-  "k7sKNy": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!",
-  "k9SQm1": "Relays which you have connected to before and appear to be reliable.",
-  "kEZUR8": "Register an Iris username",
-  "kJYo0u": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}",
-  "kKC9ya": "Wallet Info",
-  "kNd2FL": "Tidal login",
-  "kQAf2d": "Select",
-  "kaaf1E": "sekarang",
-  "kc79d3": "Topiks",
-  "klCm96": "Community Post Approval",
-  "kqPQJD": "Configure zap pool",
-  "kuPHYE": "{n,plural,=0{{name} liked} other{{name} & {n} others liked}}",
-  "l+ikU1": "Semuanya dlm {plan}",
-  "l3H1EK": "Invite your friends",
-  "l3nTjd": "Basic key derivation from mnemonic seed phrase",
-  "lCILNz": "Beli Sekarang",
-  "lD3+8a": "Bayar",
-  "lEnclp": "My events: {n}",
-  "lPWASz": "Snort nostr address",
-  "lTbT3s": "Wallet password",
-  "lbr3Lq": "Copy link",
-  "lfOesV": "Non-Zap",
-  "lgg1KN": "halaman akun",
-  "ll3xBp": "Image proxy service",
-  "lnaT9F": "Following {n}",
-  "lsNFM1": "Click to load content from {link}",
-  "lvlPhZ": "Pay Invoice",
-  "m/59y2": "Zap Request",
-  "m6h2Eg": "Handler recommendation",
-  "mCEKiZ": "{n} notes have been muted",
-  "mErPop": "It looks like you dont have any, check {link} to buy one!",
-  "mFtdYh": "{type} Worker Relay",
-  "mKAr6h": "Follow all",
-  "mKh2HS": "File upload service",
-  "mKhgP9": "{n,plural,=0{} =1{zapped} other{zapped}}",
-  "mOFG3K": "Start",
-  "mfe8RW": "Option: {n}",
-  "mmPSWH": "Read Only",
-  "n1Whvj": "Beralih",
-  "n5l7tP": "Time-Based Calendar Event",
-  "n8k1SG": "{n}MiB",
-  "nD4frR": "Bid confirmation",
-  "nDejmx": "Unblock",
-  "nGBrvw": "Penanda2 buku",
-  "nGGDsi": "Notifications Allowed",
-  "nIchMQ": "Searching for account activity ({progress})",
-  "nPHrqp": "Coinjoin Pool",
-  "nUT0Lv": "Tools",
-  "nWQFic": "Renew",
-  "nihgfo": "Dengar audio artikel ini",
-  "nwZXeh": "{n} di-blok",
-  "o/gK53": "Deck",
-  "o7e+nJ": "{n} followers",
-  "oJ+JJN": "Tidak ada yang ditemukan :/",
-  "odFwjL": "Follows only",
-  "ojzbwv": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}",
-  "ozZ2Cj": "Badge Award",
-  "p4N05H": "Upload",
-  "p9Ps2l": "{x}/{y} have relays ({percent})",
-  "pEEBFk": "Reliable Relays",
-  "pI+77w": "Downloadable backups from Snort relay",
-  "pRess9": "ZapPool",
-  "plOM0t": "Custom Emoji",
-  "plg2Ua": "Channel Mute User",
-  "puLNUJ": "Sematkan",
-  "pyjJ5f": "Nostr Marketplace (for resilient marketplaces)",
-  "pzTOmv": "Followers",
-  "q3OuMw": "Torrent Comment",
-  "qAY40L": "Date-Based Calendar Event",
-  "qBYNMb": "Group Thread Reply",
-  "qD9EUF": "Email <> DM bridge for your Snort nostr address",
-  "qDwvZ4": "'Error' yang tidak diketahui",
-  "qFIVx4": "Profile Badges",
-  "qMePPG": "Note",
-  "qMx1sA": "Default Zap amount",
-  "qUJTsT": "Di-blok",
-  "qXCbgZ": "Unlock",
-  "qZsKBR": "Perbarui {tier}",
-  "qcJFEJ": "Notifications API Disabled",
-  "qdGuQo": "Kunci Pribadi Anda Adalah (jangan bagi-kan ini dgn sesiapa pun ye!)",
-  "qfmMQh": "Catatan ini telah dibisukan",
-  "qkvYUb": "Tambahkan ke Profil",
-  "qmJ8kD": "Terjemahan gagal",
-  "qtWLmt": "Like",
-  "qyJtWy": "Minta kurang",
-  "qydxOd": "Science",
-  "qz9fty": "salah PIN",
-  "r3C4x/": "Software",
-  "r5srDR": "Enter wallet password",
-  "rAQG0X": "Relay List Metadata",
-  "rIsVe+": "Public chats list",
-  "rMgF34": "Back up now",
-  "rRRXtB": "Lightning Zaps",
-  "rT14Ow": "Tambah-kan Relay",
-  "reFEEC": "Reporting",
-  "rfuMjE": "(Default)",
-  "rkM7l8": "Encrypted Direct Message",
-  "rmdsT4": "{n} hari",
-  "rn52n9": "Public Chat Channels",
-  "rx1i0i": "Link pendek",
-  "sFUkSN": "Bookmark sets",
-  "sKDn4e": "Show Badges",
-  "sUNhQE": "insa",
-  "sZQzjQ": "Failed to parse zap split: {input}",
-  "saInmO": "The relay name shown is not the same as the full URL entered.",
-  "saorw+": "Event Deletion Request",
-  "sfL/O+": "Muted notes will not be shown",
-  "t79a6U": "Connection Success:",
-  "tDDiRL": "Interests list",
-  "tFpT/O": "Release artifact sets",
-  "tO1oq9": "Video Events",
-  "tOdNiY": "Malam",
-  "tRGdV1": "Versioned Encryption",
-  "tU0ADf": "Unknown NIP-{x}",
-  "tVuVg9": "Video View Event",
-  "tf1lIh": "Free",
-  "th5lxp": "Mengirim catatan ke subset dari relay tulis Anda",
-  "thnRpU": "Getting NIP-05 verified can help:",
-  "tj6kdX": "{sign} {amount} sats",
-  "tjpYlr": "Metrik Relay",
-  "ttxS0b": "Lencana Pendukung",
-  "tzMNF3": "Status",
-  "u/vOPu": "Sudah dibayar",
-  "u4I8q8": "Pin list",
-  "u81G9+": "Uptime",
-  "u9NoC1": "Name must be less than {limit} characters",
-  "uCk8r+": "Sudah memiliki akun?",
-  "uD7Els": "External Identities in Profiles",
-  "uJaMkO": "Relay list to receive DMs",
-  "uSV4Ti": "Reposts need to be manually confirmed",
-  "uc0din": "Mengirimkan 'sats split' ke",
-  "ufvXH1": "Found {n} events",
-  "uhu5aG": "Public",
-  "un1nGw": "{n} notes",
-  "usAvMr": "Edit Profile",
-  "v8lolG": "Mulai chat",
-  "vB3oQ/": "Must be a contact list or pubkey list",
-  "vBsZhD": "Communities list",
-  "vN5UH8": "Gambar Profil",
-  "vU/Q5i": "This tool will search for the last event published by all of your follows and remove those who have not posted in 6 months",
-  "vZ4quW": "NIP-05 is a DNS based verification spec which helps to validate you as a real user.",
-  "vhlWFg": "Poll Options",
-  "vlbWtt": "Dapatkan yang gratis",
-  "voxBKC": "Followed by friends",
-  "vxwnbh": "Amount of work to apply to all published events",
-  "w1Fanr": "Perniagaan",
-  "w6qrwX": "NSFW",
-  "wEQDC6": "Edit",
-  "wOyDTB": "File storage server list",
-  "wSZR47": "Kirim",
-  "wc9st7": "Media Attachments",
-  "whSrs+": "Nostr Public Chat",
-  "wih7iJ": "nama tlh di-blok",
-  "wlWMuh": "Patches",
-  "wofVHy": "Moderation",
-  "wqyN/i": "Find out more info about {service} at {link}",
-  "wtLjP6": "Salin ID",
-  "x+3fl6": "My Relays",
-  "x/Fx2P": "Fund the services that you use by splitting a portion of all your zaps into a pool of funds!",
-  "x82IOl": "Bisukan",
-  "xEjBS7": "For you",
-  "xIcAOU": "Votes by {type}",
-  "xIoGG9": "Pergi ke",
-  "xPCyu+": "nostr: URI scheme",
-  "xaj9Ba": "Penyedia",
-  "xbVgIm": "Automatically load media",
-  "xhQMeQ": "Expires",
-  "xl4s/X": "Additional Terms:",
-  "xmcVZ0": "Search",
-  "xybOUv": "FAN",
-  "y/bmsG": "Allow",
-  "y1Z3or": "Language",
-  "yAztTU": "{n} eSats",
-  "yCLnBC": "LNURL or Lightning Address",
-  "yLzgxH": "Popular Relays",
-  "yeX8yA": "Native App",
-  "z3UjXR": "Debug",
-  "z3Ukvq": "Draft Long-form Content",
-  "zCb8fX": "Weight",
-  "zFegDD": "Contact",
-  "zINlao": "Owner",
-  "zQvVDJ": "All",
-  "zcaOTs": "Zap amount in sats",
-  "zi9MdS": "Chess (PGN)",
-  "zm6qS1": "{n} mins to read",
-  "zonsdq": "Failed to load LNURL service",
-  "zvCDao": "Automatically show latest notes",
-  "zx0myy": "Participants"
+  "+D82kt": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to repost: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "+PzQ9Y": [
+    {
+      "type": 0,
+      "value": "Payout Now"
+    }
+  ],
+  "+QM0PJ": [
+    {
+      "type": 0,
+      "value": "Sync all events for your profile into local cache"
+    }
+  ],
+  "+QMdsy": [
+    {
+      "type": 0,
+      "value": "Relay Stats"
+    }
+  ],
+  "+UjDmN": [
+    {
+      "type": 0,
+      "value": "Logged in with write access"
+    }
+  ],
+  "+Vxixo": [
+    {
+      "type": 0,
+      "value": "Secret Group Chat"
+    }
+  ],
+  "+aZY2h": [
+    {
+      "type": 0,
+      "value": "Zap Type"
+    }
+  ],
+  "+tShPg": [
+    {
+      "type": 0,
+      "value": "following"
+    }
+  ],
+  "+vA//S": [
+    {
+      "type": 0,
+      "value": "Logins"
+    }
+  ],
+  "+vIQlC": [
+    {
+      "type": 0,
+      "value": "Please make sure to save the following password in order to manage your handle in the future"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "Connect"
+    }
+  ],
+  "+vj0U3": [
+    {
+      "type": 0,
+      "value": "edit"
+    }
+  ],
+  "+xliwN": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " reposted"
+    }
+  ],
+  "/B8zwF": [
+    {
+      "type": 0,
+      "value": "Ruang Anda seperti yang Anda inginkan 😌"
+    }
+  ],
+  "/GCoTA": [
+    {
+      "type": 0,
+      "value": "Clear"
+    }
+  ],
+  "/JE/X+": [
+    {
+      "type": 0,
+      "value": "Account Support"
+    }
+  ],
+  "/T7HId": [
+    {
+      "type": 0,
+      "value": "HTTP File Storage Integration"
+    }
+  ],
+  "/Xf4UW": [
+    {
+      "type": 0,
+      "value": "Send anonymous usage metrics"
+    }
+  ],
+  "/b1IHW": [
+    {
+      "type": 0,
+      "value": "Group Chat Message"
+    }
+  ],
+  "/d6vEc": [
+    {
+      "type": 0,
+      "value": "Make your profile easier to find and share"
+    }
+  ],
+  "/ioUrF": [
+    {
+      "type": 0,
+      "value": "From File"
+    }
+  ],
+  "/n5KSF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ms"
+    }
+  ],
+  "00LcfG": [
+    {
+      "type": 0,
+      "value": "Minta Lebih"
+    }
+  ],
+  "01iNut": [
+    {
+      "type": 0,
+      "value": "Nostr address does not belong to you"
+    }
+  ],
+  "08zn6O": [
+    {
+      "type": 0,
+      "value": "Export Keys"
+    }
+  ],
+  "0Azlrb": [
+    {
+      "type": 0,
+      "value": "Manage"
+    }
+  ],
+  "0BUTMv": [
+    {
+      "type": 0,
+      "value": "Cari..."
+    }
+  ],
+  "0MndVW": [
+    {
+      "type": 0,
+      "value": "Generic LNDHub wallet (BTCPayServer / Alby / LNBits)"
+    }
+  ],
+  "0jOEtS": [
+    {
+      "type": 0,
+      "value": "Invalid LNURL"
+    }
+  ],
+  "0kOBMu": [
+    {
+      "type": 0,
+      "value": "Handling Mentions"
+    }
+  ],
+  "0mch2Y": [
+    {
+      "type": 0,
+      "value": "name has disallowed characters"
+    }
+  ],
+  "0siT4z": [
+    {
+      "type": 0,
+      "value": "Politics"
+    }
+  ],
+  "0uoY11": [
+    {
+      "type": 0,
+      "value": "Show Status"
+    }
+  ],
+  "0yO7wF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " secs"
+    }
+  ],
+  "0zASjL": [
+    {
+      "type": 0,
+      "value": "Go"
+    }
+  ],
+  "1/BFEj": [
+    {
+      "type": 0,
+      "value": "git stuff"
+    }
+  ],
+  "1Mo59U": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to remove this note from bookmarks?"
+    }
+  ],
+  "1R43+L": [
+    {
+      "type": 0,
+      "value": "Enter Nostr Wallet Connect config"
+    }
+  ],
+  "1UWegE": [
+    {
+      "type": 0,
+      "value": "Be sure to back up your keys!"
+    }
+  ],
+  "1c4YST": [
+    {
+      "type": 0,
+      "value": "Connected to: "
+    },
+    {
+      "type": 1,
+      "value": "node"
+    },
+    {
+      "type": 0,
+      "value": " 🎉"
+    }
+  ],
+  "1nYUGC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Following"
+    }
+  ],
+  "1o2BgB": [
+    {
+      "type": 0,
+      "value": "Periksa JSON"
+    }
+  ],
+  "1ozeyg": [
+    {
+      "type": 0,
+      "value": "Alam Dunya"
+    }
+  ],
+  "1udzha": [
+    {
+      "type": 0,
+      "value": "Conversations"
+    }
+  ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "Add"
+    }
+  ],
+  "25V4l1": [
+    {
+      "type": 0,
+      "value": "Banner"
+    }
+  ],
+  "25WwxF": [
+    {
+      "type": 0,
+      "value": "Tiada profil?"
+    }
+  ],
+  "28oKbu": [
+    {
+      "type": 0,
+      "value": "Moderated Communities"
+    }
+  ],
+  "29sHFE": [
+    {
+      "type": 0,
+      "value": "Wallet Connect"
+    }
+  ],
+  "2BBGxX": [
+    {
+      "type": 0,
+      "value": "Subject tag in text events"
+    }
+  ],
+  "2HIqeO": [
+    {
+      "type": 0,
+      "value": "User emoji list"
+    }
+  ],
+  "2IFGap": [
+    {
+      "type": 0,
+      "value": "Dana"
+    }
+  ],
+  "2LbrkB": [
+    {
+      "type": 0,
+      "value": "Sila taip pwd anda"
+    }
+  ],
+  "2O2sfp": [
+    {
+      "type": 0,
+      "value": "Selesai"
+    }
+  ],
+  "2Qsf9/": [
+    {
+      "type": 0,
+      "value": "Generic lists"
+    }
+  ],
+  "2a2YiP": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Bookmarks"
+    }
+  ],
+  "2k0Cv+": [
+    {
+      "type": 0,
+      "value": "Booo ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "2mcwT8": [
+    {
+      "type": 0,
+      "value": "New Note"
+    }
+  ],
+  "2oCF7O": [
+    {
+      "type": 0,
+      "value": "Followed by friends of friends"
+    }
+  ],
+  "2raFAu": [
+    {
+      "type": 0,
+      "value": "Application-specific data"
+    }
+  ],
+  "2ukA4d": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " jam"
+    }
+  ],
+  "2z7Kky": [
+    {
+      "type": 0,
+      "value": "Latest Articles"
+    }
+  ],
+  "3/onCd": [
+    {
+      "type": 0,
+      "value": "Replies"
+    }
+  ],
+  "39AHJm": [
+    {
+      "type": 0,
+      "value": "Sign Up"
+    }
+  ],
+  "3GWu6/": [
+    {
+      "type": 0,
+      "value": "User Statuses"
+    }
+  ],
+  "3KNMbJ": [
+    {
+      "type": 0,
+      "value": "Articles"
+    }
+  ],
+  "3MKdAw": [
+    {
+      "type": 0,
+      "value": "Blobs stored on mediaservers"
+    }
+  ],
+  "3QwfJR": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    }
+  ],
+  "3adEeb": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " viewers"
+    }
+  ],
+  "3cc4Ct": [
+    {
+      "type": 0,
+      "value": "Pagi"
+    }
+  ],
+  "3gOsZq": [
+    {
+      "type": 0,
+      "value": "Penerjemah"
+    }
+  ],
+  "3kbIhS": [
+    {
+      "type": 0,
+      "value": "Untitled"
+    }
+  ],
+  "3qnJlS": [
+    {
+      "type": 0,
+      "value": "You are voting with "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "3t3kok": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " new note"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " new notes"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "3tVy+Z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Followers"
+    }
+  ],
+  "3yk8fB": [
+    {
+      "type": 0,
+      "value": "Wallet"
+    }
+  ],
+  "40VR6s": [
+    {
+      "type": 0,
+      "value": "Nostr Connect"
+    }
+  ],
+  "41BSaT": [
+    {
+      "type": 0,
+      "value": "Total Events:"
+    }
+  ],
+  "450Fty": [
+    {
+      "type": 0,
+      "value": "Kosong"
+    }
+  ],
+  "47E53q": [
+    {
+      "type": 0,
+      "value": "Wiki"
+    }
+  ],
+  "47FYwb": [
+    {
+      "type": 0,
+      "value": "Tolak"
+    }
+  ],
+  "48zn4v": [
+    {
+      "type": 0,
+      "value": "Bid"
+    }
+  ],
+  "4IPzdn": [
+    {
+      "type": 0,
+      "value": "Pelooper Utama"
+    }
+  ],
+  "4L2vUY": [
+    {
+      "type": 0,
+      "value": "Nama NIP-05 baru anda adalah:"
+    }
+  ],
+  "4MjsHk": [
+    {
+      "type": 0,
+      "value": "Kehidupan"
+    }
+  ],
+  "4OB335": [
+    {
+      "type": 0,
+      "value": "Bpp"
+    }
+  ],
+  "4P/kKm": [
+    {
+      "type": 0,
+      "value": "Private Key Encryption"
+    }
+  ],
+  "4Vmpt4": [
+    {
+      "type": 0,
+      "value": "Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices"
+    }
+  ],
+  "4Z3t5i": [
+    {
+      "type": 0,
+      "value": "Use imgproxy to compress images"
+    }
+  ],
+  "4emo2p": [
+    {
+      "type": 0,
+      "value": "Missing Relays"
+    }
+  ],
+  "4rYCjn": [
+    {
+      "type": 0,
+      "value": "Nota tersendiri"
+    }
+  ],
+  "4wgYpI": [
+    {
+      "type": 0,
+      "value": "Recommended Application Handlers"
+    }
+  ],
+  "5BVs2e": [
+    {
+      "type": 0,
+      "value": "zap"
+    }
+  ],
+  "5CB6zB": [
+    {
+      "type": 0,
+      "value": "Zap Splits"
+    }
+  ],
+  "5PRWs7": [
+    {
+      "type": 0,
+      "value": "Notifications API Enabled"
+    }
+  ],
+  "5dfmvv": [
+    {
+      "type": 0,
+      "value": "Zap Goal"
+    }
+  ],
+  "5oTnfy": [
+    {
+      "type": 0,
+      "value": "Buy Handle"
+    }
+  ],
+  "5qEWCr": [
+    {
+      "type": 0,
+      "value": "File Metadata"
+    }
+  ],
+  "5u6iEc": [
+    {
+      "type": 0,
+      "value": "Transfer to Pubkey"
+    }
+  ],
+  "5vMmmR": [
+    {
+      "type": 0,
+      "value": "Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration."
+    }
+  ],
+  "5ykRmX": [
+    {
+      "type": 0,
+      "value": "Kirim zap"
+    }
+  ],
+  "6/hB3S": [
+    {
+      "type": 0,
+      "value": "Watch Replay"
+    }
+  ],
+  "60kEE3": [
+    {
+      "type": 0,
+      "value": "Mute list"
+    }
+  ],
+  "62nsdy": [
+    {
+      "type": 0,
+      "value": "Cuba lagi."
+    }
+  ],
+  "634VVz": [
+    {
+      "type": 0,
+      "value": "Connection Failed:"
+    }
+  ],
+  "6559gb": [
+    {
+      "type": 0,
+      "value": "New follow list length "
+    },
+    {
+      "type": 1,
+      "value": "length"
+    }
+  ],
+  "65BmHb": [
+    {
+      "type": 0,
+      "value": "Failed to proxy image from "
+    },
+    {
+      "type": 1,
+      "value": "host"
+    },
+    {
+      "type": 0,
+      "value": ", click here to load directly"
+    }
+  ],
+  "6D4Hhn": [
+    {
+      "type": 0,
+      "value": "Recommend Relay"
+    }
+  ],
+  "6KGebm": [
+    {
+      "type": 0,
+      "value": "Seal"
+    }
+  ],
+  "6OSOXl": [
+    {
+      "type": 0,
+      "value": "Alasan: "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reason"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "6WWD34": [
+    {
+      "type": 0,
+      "value": "Looking for: "
+    },
+    {
+      "type": 1,
+      "value": "noteId"
+    }
+  ],
+  "6bgpn+": [
+    {
+      "type": 0,
+      "value": "Not all clients support this, you may still receive some zaps as if zap splits was not configured"
+    }
+  ],
+  "6ewQqw": [
+    {
+      "type": 0,
+      "value": "ThumbsUp ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "6mr8WU": [
+    {
+      "type": 0,
+      "value": "Followed by"
+    }
+  ],
+  "6pdxsi": [
+    {
+      "type": 0,
+      "value": "Extra metadata fields and tags"
+    }
+  ],
+  "6uMqL1": [
+    {
+      "type": 0,
+      "value": "Unpaid"
+    }
+  ],
+  "6xNr8c": [
+    {
+      "type": 0,
+      "value": "Switch accounts"
+    }
+  ],
+  "6xap9L": [
+    {
+      "type": 0,
+      "value": "Good"
+    }
+  ],
+  "7+Domh": [
+    {
+      "type": 0,
+      "value": "Nota"
+    }
+  ],
+  "712i26": [
+    {
+      "type": 0,
+      "value": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node"
+    }
+  ],
+  "753yX5": [
+    {
+      "type": 0,
+      "value": "Label"
+    }
+  ],
+  "769A8p": [
+    {
+      "type": 0,
+      "value": "Wiki article"
+    }
+  ],
+  "77nkEO": [
+    {
+      "type": 0,
+      "value": "Relay Information Document"
+    }
+  ],
+  "7LFU8U": [
+    {
+      "type": 0,
+      "value": "Search Capability"
+    }
+  ],
+  "7UOvbT": [
+    {
+      "type": 0,
+      "value": "Offline"
+    }
+  ],
+  "7YkSA2": [
+    {
+      "type": 0,
+      "value": "Community Leader"
+    }
+  ],
+  "7gMmSL": [
+    {
+      "type": 0,
+      "value": "Reaction"
+    }
+  ],
+  "7hp70g": [
+    {
+      "type": 0,
+      "value": "NIP-05"
+    }
+  ],
+  "7jfPsW": [
+    {
+      "type": 0,
+      "value": "Modular Article Content"
+    }
+  ],
+  "7nAz/z": [
+    {
+      "type": 0,
+      "value": "Mute notes from people who are outside your web of trust"
+    }
+  ],
+  "7pFGAQ": [
+    {
+      "type": 0,
+      "value": "Close Relays"
+    }
+  ],
+  "8/vBbP": [
+    {
+      "type": 0,
+      "value": "Reposts ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "89q5wc": [
+    {
+      "type": 0,
+      "value": "Confirm Reposts"
+    }
+  ],
+  "8BDFvJ": [
+    {
+      "type": 0,
+      "value": "Conventions for clients' use of e and p tags in text events"
+    }
+  ],
+  "8ED/4u": [
+    {
+      "type": 0,
+      "value": "Reply To"
+    }
+  ],
+  "8HJxXG": [
+    {
+      "type": 0,
+      "value": "Sign up"
+    }
+  ],
+  "8QDesP": [
+    {
+      "type": 0,
+      "value": "Zap "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sat"
+    }
+  ],
+  "8Rkoyb": [
+    {
+      "type": 0,
+      "value": "Penerima"
+    }
+  ],
+  "8Y6bZQ": [
+    {
+      "type": 0,
+      "value": "Invalid zap split: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "8ZGqWl": [
+    {
+      "type": 0,
+      "value": "Group Thread"
+    }
+  ],
+  "8g2vyB": [
+    {
+      "type": 0,
+      "value": "nama terlalu panjang"
+    }
+  ],
+  "8jmwT8": [
+    {
+      "type": 0,
+      "value": "bech32-encoded entities"
+    }
+  ],
+  "8v1NN+": [
+    {
+      "type": 0,
+      "value": "Pairing phrase"
+    }
+  ],
+  "8xdDLn": [
+    {
+      "type": 0,
+      "value": "Follow sets"
+    }
+  ],
+  "8za9Pq": [
+    {
+      "type": 0,
+      "value": "Draft Classified Listing"
+    }
+  ],
+  "9+Ddtu": [
+    {
+      "type": 0,
+      "value": "Selanjut-nya"
+    }
+  ],
+  "9HU8vw": [
+    {
+      "type": 0,
+      "value": "Membalas"
+    }
+  ],
+  "9SvQep": [
+    {
+      "type": 0,
+      "value": "Mengintip "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "9V0wg3": [
+    {
+      "type": 0,
+      "value": "Calendar Event RSVP"
+    }
+  ],
+  "9WRlF4": [
+    {
+      "type": 0,
+      "value": "Mengirim"
+    }
+  ],
+  "9kO0VQ": [
+    {
+      "type": 0,
+      "value": "Hide muted notes"
+    }
+  ],
+  "9kSari": [
+    {
+      "type": 0,
+      "value": "Retry publishing"
+    }
+  ],
+  "9pMqYs": [
+    {
+      "type": 0,
+      "value": "Nostr Alamat"
+    }
+  ],
+  "9wO4wJ": [
+    {
+      "type": 0,
+      "value": "Lightning Invoice"
+    }
+  ],
+  "A86fJ+": [
+    {
+      "type": 0,
+      "value": "Generic Repost"
+    }
+  ],
+  "ADmfQT": [
+    {
+      "type": 0,
+      "value": "Tua"
+    }
+  ],
+  "ALdW69": [
+    {
+      "type": 0,
+      "value": "Note by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "AN0Z7Q": [
+    {
+      "type": 0,
+      "value": "Kata-kata yang dibisukan"
+    }
+  ],
+  "ASRK0S": [
+    {
+      "type": 0,
+      "value": "Penulis ini telah dibisukan"
+    }
+  ],
+  "AedFVZ": [
+    {
+      "type": 0,
+      "value": "Create or update a product"
+    }
+  ],
+  "Ai8VHU": [
+    {
+      "type": 0,
+      "value": "Unlimited note retention on Snort relay"
+    }
+  ],
+  "AkCxS/": [
+    {
+      "type": 0,
+      "value": "Alasan"
+    }
+  ],
+  "AktAk2": [
+    {
+      "type": 0,
+      "value": "Great"
+    }
+  ],
+  "Am8glJ": [
+    {
+      "type": 0,
+      "value": "Game"
+    }
+  ],
+  "AqGfF4": [
+    {
+      "type": 0,
+      "value": "Channel Creation"
+    }
+  ],
+  "Aujn2T": [
+    {
+      "type": 0,
+      "value": "Count"
+    }
+  ],
+  "Awq32I": [
+    {
+      "type": 0,
+      "value": "Push notifications"
+    }
+  ],
+  "AxDOiG": [
+    {
+      "type": 0,
+      "value": "Bulan"
+    }
+  ],
+  "AyGauy": [
+    {
+      "type": 0,
+      "value": "Login"
+    }
+  ],
+  "B4C47Y": [
+    {
+      "type": 0,
+      "value": "nama terlalu pendek"
+    }
+  ],
+  "B6+XJy": [
+    {
+      "type": 0,
+      "value": "telah di-zap"
+    }
+  ],
+  "B6H7eJ": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex"
+    }
+  ],
+  "B7wvUM": [
+    {
+      "type": 0,
+      "value": "You can add a single or multiple relays, one per line."
+    }
+  ],
+  "BGCM48": [
+    {
+      "type": 0,
+      "value": "Write access to Snort relay, with 1 year of event retention"
+    }
+  ],
+  "BGGacK": [
+    {
+      "type": 0,
+      "value": "AI Embeddings / Vector lists"
+    }
+  ],
+  "BQW4gi": [
+    {
+      "type": 0,
+      "value": "Relay-based Groups"
+    }
+  ],
+  "BWpuKl": [
+    {
+      "type": 0,
+      "value": "Update"
+    }
+  ],
+  "BfuAQ5": [
+    {
+      "type": 0,
+      "value": "Marketplace UI/UX"
+    }
+  ],
+  "BjNwZW": [
+    {
+      "type": 0,
+      "value": "Alamat Nostr (nip05)"
+    }
+  ],
+  "Blxcdx": [
+    {
+      "type": 0,
+      "value": "Relay"
+    }
+  ],
+  "Bo+O//": [
+    {
+      "type": 0,
+      "value": "HTTP Auth"
+    }
+  ],
+  "C1LjMx": [
+    {
+      "type": 0,
+      "value": "Lightning Donation"
+    }
+  ],
+  "C6Lhhp": [
+    {
+      "type": 0,
+      "value": "Live Event"
+    }
+  ],
+  "C7642/": [
+    {
+      "type": 0,
+      "value": "Quote Repost"
+    }
+  ],
+  "C81/uG": [
+    {
+      "type": 0,
+      "value": "Logout"
+    }
+  ],
+  "C8FsOr": [
+    {
+      "type": 0,
+      "value": "Popular Servers"
+    }
+  ],
+  "C8HhVE": [
+    {
+      "type": 0,
+      "value": "Suggested Follows"
+    }
+  ],
+  "CA1efg": [
+    {
+      "type": 0,
+      "value": "Video sets"
+    }
+  ],
+  "CHTbO3": [
+    {
+      "type": 0,
+      "value": "Failed to load invoice"
+    }
+  ],
+  "CJx5Nd": [
+    {
+      "type": 0,
+      "value": "Profile Zaps"
+    }
+  ],
+  "CM+Cfj": [
+    {
+      "type": 0,
+      "value": "Follow List"
+    }
+  ],
+  "CM0k0d": [
+    {
+      "type": 0,
+      "value": "Prune follow list"
+    }
+  ],
+  "CVWeJ6": [
+    {
+      "type": 0,
+      "value": "Trending People"
+    }
+  ],
+  "CYkOCI": [
+    {
+      "type": 0,
+      "value": "and "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " others you follow"
+    }
+  ],
+  "Cdxwi0": [
+    {
+      "type": 0,
+      "value": "Repository announcements"
+    }
+  ],
+  "CmZ9ls": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Dibisukan"
+    }
+  ],
+  "Coy6SH": [
+    {
+      "type": 0,
+      "value": "Calendar"
+    }
+  ],
+  "CsCUYo": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "Cu/K85": [
+    {
+      "type": 0,
+      "value": "Translated from "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "CzHZoc": [
+    {
+      "type": 0,
+      "value": "Social Graph"
+    }
+  ],
+  "D++Njw": [
+    {
+      "type": 0,
+      "value": "Text Note References"
+    }
+  ],
+  "D+KzKd": [
+    {
+      "type": 0,
+      "value": "Automatically zap every note when loaded"
+    }
+  ],
+  "D09wbg": [
+    {
+      "type": 0,
+      "value": "Badge Definition"
+    }
+  ],
+  "D3idYv": [
+    {
+      "type": 0,
+      "value": "Settings"
+    }
+  ],
+  "D9xTLE": [
+    {
+      "type": 0,
+      "value": "Channel Hide Message"
+    }
+  ],
+  "DBiVK1": [
+    {
+      "type": 0,
+      "value": "Cache"
+    }
+  ],
+  "DKnriN": [
+    {
+      "type": 0,
+      "value": "Kirim sat"
+    }
+  ],
+  "DZzCem": [
+    {
+      "type": 0,
+      "value": "Tampilkan nota2 "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " terbaru"
+    }
+  ],
+  "Dh3hbq": [
+    {
+      "type": 0,
+      "value": "Auto Zap"
+    }
+  ],
+  "Dn82AL": [
+    {
+      "type": 0,
+      "value": "Live"
+    }
+  ],
+  "DqUmXt": [
+    {
+      "type": 0,
+      "value": "Product sold as an auction"
+    }
+  ],
+  "DrZqav": [
+    {
+      "type": 0,
+      "value": "About must be less than "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " characters"
+    }
+  ],
+  "DtYelJ": [
+    {
+      "type": 0,
+      "value": "Transfer"
+    }
+  ],
+  "Dx4ey3": [
+    {
+      "type": 0,
+      "value": "Toggle semua-nya"
+    }
+  ],
+  "E3oB+t": [
+    {
+      "type": 0,
+      "value": "Browser"
+    }
+  ],
+  "E5ZIPD": [
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "amount"
+        }
+      ],
+      "type": 8,
+      "value": "big"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "sats"
+        }
+      ],
+      "type": 8,
+      "value": "small"
+    }
+  ],
+  "EHqHsu": [
+    {
+      "type": 0,
+      "value": "Invoice / Lightning Address"
+    }
+  ],
+  "EJbFi7": [
+    {
+      "type": 0,
+      "value": "Search notes"
+    }
+  ],
+  "ELbg9p": [
+    {
+      "type": 0,
+      "value": "Data Providers"
+    }
+  ],
+  "EQKRE4": [
+    {
+      "type": 0,
+      "value": "Show badges on profile pages"
+    }
+  ],
+  "EWeVrH": [
+    {
+      "type": 0,
+      "value": "Reaction to a website"
+    }
+  ],
+  "EWyQH5": [
+    {
+      "type": 0,
+      "value": "Seluruh Alam"
+    }
+  ],
+  "Ebl/B2": [
+    {
+      "type": 0,
+      "value": "Terjemahkan ke "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "Ec+xLY": [
+    {
+      "type": 0,
+      "value": "Curation sets"
+    }
+  ],
+  "EcZF24": [
+    {
+      "type": 0,
+      "value": "Custom Relays"
+    }
+  ],
+  "EcfIwB": [
+    {
+      "type": 0,
+      "value": "Nama tersedia"
+    }
+  ],
+  "EcglP9": [
+    {
+      "type": 0,
+      "value": "Kunci"
+    }
+  ],
+  "EjFyoR": [
+    {
+      "type": 0,
+      "value": "On-chain Donation Address"
+    }
+  ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "Beli"
+    }
+  ],
+  "EsHX35": [
+    {
+      "type": 0,
+      "value": "Sorry, we dont understand this event kind ("
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "), please try one of the following apps instead!"
+    }
+  ],
+  "F/6VqP": [
+    {
+      "type": 0,
+      "value": "Server"
+    }
+  ],
+  "F3l7xL": [
+    {
+      "type": 0,
+      "value": "Add Account"
+    }
+  ],
+  "F4eJ/3": [
+    {
+      "type": 0,
+      "value": "Classified Listings"
+    }
+  ],
+  "FDguSC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Zap"
+    }
+  ],
+  "FHWpHC": [
+    {
+      "type": 0,
+      "value": "Wallet Response"
+    }
+  ],
+  "FHvSk3": [
+    {
+      "type": 0,
+      "value": "Authentication of clients to relays"
+    }
+  ],
+  "FMfjrl": [
+    {
+      "type": 0,
+      "value": "Show status messages on profile pages"
+    }
+  ],
+  "FSYL8G": [
+    {
+      "type": 0,
+      "value": "Trending Users"
+    }
+  ],
+  "FWJR1B": [
+    {
+      "type": 0,
+      "value": "User groups"
+    }
+  ],
+  "FcNSft": [
+    {
+      "type": 0,
+      "value": "Redirect issues HTTP redirect to the supplied lightning address"
+    }
+  ],
+  "FdhSU2": [
+    {
+      "type": 0,
+      "value": "Claim Now"
+    }
+  ],
+  "FfYsOb": [
+    {
+      "type": 0,
+      "value": "Terjumpa error!"
+    }
+  ],
+  "FmXUJg": [
+    {
+      "type": 0,
+      "value": "mengintip kamu"
+    }
+  ],
+  "FvanT6": [
+    {
+      "type": 0,
+      "value": "Accounts"
+    }
+  ],
+  "FzbSGg": [
+    {
+      "type": 0,
+      "value": "You dont have any media servers, try adding some."
+    }
+  ],
+  "G/yZLu": [
+    {
+      "type": 0,
+      "value": "Hapus"
+    }
+  ],
+  "G1BGCg": [
+    {
+      "type": 0,
+      "value": "Select Wallet"
+    }
+  ],
+  "G3A56c": [
+    {
+      "type": 0,
+      "value": "Subscribed to Push"
+    }
+  ],
+  "GFOoEE": [
+    {
+      "type": 0,
+      "value": "Garam"
+    }
+  ],
+  "GIqktu": [
+    {
+      "type": 0,
+      "value": "Supported NIPs"
+    }
+  ],
+  "GL8aXW": [
+    {
+      "type": 0,
+      "value": "Link-nota ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "GSye7T": [
+    {
+      "type": 0,
+      "value": "Alamat Lightning"
+    }
+  ],
+  "GUlSVG": [
+    {
+      "type": 0,
+      "value": "Claim your included Snort nostr address"
+    }
+  ],
+  "Gcn9NQ": [
+    {
+      "type": 0,
+      "value": "Link Magnet"
+    }
+  ],
+  "GpkNYn": [
+    {
+      "type": 0,
+      "value": "Torrent"
+    }
+  ],
+  "GqQeu/": [
+    {
+      "type": 0,
+      "value": "Invalid Lightning Address"
+    }
+  ],
+  "GspYR7": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Booo"
+    }
+  ],
+  "Gxcr08": [
+    {
+      "type": 0,
+      "value": "Broadcast Event"
+    }
+  ],
+  "H+vHiz": [
+    {
+      "type": 0,
+      "value": "Hex Key.."
+    }
+  ],
+  "H/oroO": [
+    {
+      "type": 0,
+      "value": "Dealing with Unknown Events"
+    }
+  ],
+  "H0JBH6": [
+    {
+      "type": 0,
+      "value": "Log Out"
+    }
+  ],
+  "H0OG3T": [
+    {
+      "type": 0,
+      "value": "Leader Info"
+    }
+  ],
+  "H1GTaC": [
+    {
+      "type": 0,
+      "value": "Bookmark list"
+    }
+  ],
+  "H6/kLh": [
+    {
+      "type": 0,
+      "value": "Order Paid!"
+    }
+  ],
+  "HAlOn1": [
+    {
+      "type": 0,
+      "value": "Nama"
+    }
+  ],
+  "HFls6j": [
+    {
+      "type": 0,
+      "value": "nama akan tersedia nanti"
+    }
+  ],
+  "HOzFdo": [
+    {
+      "type": 0,
+      "value": "Dibisukan"
+    }
+  ],
+  "HWbkEK": [
+    {
+      "type": 0,
+      "value": "Hapus cache dan reload"
+    }
+  ],
+  "HbefNb": [
+    {
+      "type": 0,
+      "value": "Open Wallet"
+    }
+  ],
+  "HhcAVH": [
+    {
+      "type": 0,
+      "value": "You don't follow this person, click here to load media from "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "link"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": ", or update "
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "type": 0,
+              "value": "your preferences"
+            }
+          ],
+          "type": 8,
+          "value": "i"
+        }
+      ],
+      "type": 8,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": " to always load media from everybody."
+    }
+  ],
+  "HpAmQZ": [
+    {
+      "type": 0,
+      "value": "Relay reviews"
+    }
+  ],
+  "HqRNN8": [
+    {
+      "type": 0,
+      "value": "Support"
+    }
+  ],
+  "HzSFeV": [
+    {
+      "type": 0,
+      "value": "Expiration Timestamp"
+    }
+  ],
+  "I0tYZf": [
+    {
+      "type": 0,
+      "value": "Create or update a stall"
+    }
+  ],
+  "I1AoOu": [
+    {
+      "type": 0,
+      "value": "Last post "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    }
+  ],
+  "IEwZvs": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to unpin this note?"
+    }
+  ],
+  "IIOul1": [
+    {
+      "type": 0,
+      "value": "Account Data"
+    }
+  ],
+  "IKKHqV": [
+    {
+      "type": 0,
+      "value": "Pengintip"
+    }
+  ],
+  "IOu4Xh": [
+    {
+      "type": 0,
+      "value": "You must be a "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    },
+    {
+      "type": 0,
+      "value": " subscriber to access "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": " deck"
+    }
+  ],
+  "IVbtTS": [
+    {
+      "type": 0,
+      "value": "Zap semua "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "IWz1ta": [
+    {
+      "type": 0,
+      "value": "Auto Translate"
+    }
+  ],
+  "IcHcWj": [
+    {
+      "type": 0,
+      "value": "Last Seen:"
+    }
+  ],
+  "Ig9/a1": [
+    {
+      "type": 0,
+      "value": "Telah kirim "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats ke "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "IgsWFG": [
+    {
+      "type": 0,
+      "value": "Not followed by anyone you follow"
+    }
+  ],
+  "IoQq+a": [
+    {
+      "type": 0,
+      "value": "Click here to load anyway"
+    }
+  ],
+  "IvjoDS": [
+    {
+      "type": 0,
+      "value": "Connected"
+    }
+  ],
+  "Ix8l+B": [
+    {
+      "type": 0,
+      "value": "Trending Notes"
+    }
+  ],
+  "J+dIsA": [
+    {
+      "type": 0,
+      "value": "Subscriptions"
+    }
+  ],
+  "J1iLmb": [
+    {
+      "type": 0,
+      "value": "Notifications Not Allowed"
+    }
+  ],
+  "J2HeQ+": [
+    {
+      "type": 0,
+      "value": "Use commas to separate words e.g. word1, word2, word3"
+    }
+  ],
+  "J2Q92B": [
+    {
+      "type": 0,
+      "value": "Emoji sets"
+    }
+  ],
+  "J6N9xl": [
+    {
+      "type": 0,
+      "value": "Sign in with Android signer"
+    }
+  ],
+  "JCIgkj": [
+    {
+      "type": 0,
+      "value": "Nama"
+    }
+  ],
+  "JGrt9q": [
+    {
+      "type": 0,
+      "value": "Kirim sats ke "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "JHEHCk": [
+    {
+      "type": 0,
+      "value": "Zaps ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "JIVWWA": [
+    {
+      "type": 0,
+      "value": "Sport"
+    }
+  ],
+  "JPFYIM": [
+    {
+      "type": 0,
+      "value": "Tidak ada alamat Lightning"
+    }
+  ],
+  "JSx7y9": [
+    {
+      "type": 0,
+      "value": "Subscribe to "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": " for "
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " and receive the following rewards"
+    }
+  ],
+  "JeoS4y": [
+    {
+      "type": 0,
+      "value": "Repost"
+    }
+  ],
+  "Jh5zKH": [
+    {
+      "type": 0,
+      "value": "Search relays list"
+    }
+  ],
+  "JjGgXI": [
+    {
+      "type": 0,
+      "value": "Search ulama"
+    }
+  ],
+  "JkLHGw": [
+    {
+      "type": 0,
+      "value": "Situs web"
+    }
+  ],
+  "JmcxzF": [
+    {
+      "type": 0,
+      "value": "Relays are servers you connect to for sending and receiving events. Aim for 4-8 relays."
+    }
+  ],
+  "JymXbw": [
+    {
+      "type": 0,
+      "value": "Kunci 'Private'"
+    }
+  ],
+  "K1wl1/": [
+    {
+      "type": 0,
+      "value": "Average Latency:"
+    }
+  ],
+  "K3r6DQ": [
+    {
+      "type": 0,
+      "value": "Padam"
+    }
+  ],
+  "K7AkdL": [
+    {
+      "type": 0,
+      "value": "Show"
+    }
+  ],
+  "K9zklU": [
+    {
+      "type": 0,
+      "value": "External Content IDs"
+    }
+  ],
+  "KAhAcM": [
+    {
+      "type": 0,
+      "value": "Enter LNDHub config"
+    }
+  ],
+  "KGmQjH": [
+    {
+      "type": 0,
+      "value": "Highlights"
+    }
+  ],
+  "KJryGq": [
+    {
+      "type": 0,
+      "value": "Live Chat Message"
+    }
+  ],
+  "KQvWvD": [
+    {
+      "type": 0,
+      "value": "Dipadam"
+    }
+  ],
+  "KT9nox": [
+    {
+      "type": 0,
+      "value": "Protected Events"
+    }
+  ],
+  "KahimY": [
+    {
+      "type": 0,
+      "value": "Jenis 'event' tidak diketahui: "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    }
+  ],
+  "KipVeG": [
+    {
+      "type": 0,
+      "value": "Mapping Nostr keys to DNS-based internet identifiers"
+    }
+  ],
+  "KtsyO0": [
+    {
+      "type": 0,
+      "value": "Masukkan Pin"
+    }
+  ],
+  "KyRp/q": [
+    {
+      "type": 0,
+      "value": "Wallet Request"
+    }
+  ],
+  "LBAnc7": [
+    {
+      "type": 0,
+      "value": "View as user?"
+    }
+  ],
+  "LEmxc8": [
+    {
+      "type": 0,
+      "value": "Zap Goals"
+    }
+  ],
+  "LKw/ue": [
+    {
+      "type": 0,
+      "value": "Check out the code "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "LR1XjT": [
+    {
+      "type": 0,
+      "value": "PIN terlalu pendek"
+    }
+  ],
+  "LXxsbk": [
+    {
+      "type": 0,
+      "value": "Anonim"
+    }
+  ],
+  "LgbKvU": [
+    {
+      "type": 0,
+      "value": "Comment"
+    }
+  ],
+  "LhLvRx": [
+    {
+      "type": 0,
+      "value": "Name must be between 8 and 15 characters"
+    }
+  ],
+  "LmdPXO": [
+    {
+      "type": 0,
+      "value": "Cannot verify Nostr Address"
+    }
+  ],
+  "Lu5/Bj": [
+    {
+      "type": 0,
+      "value": "Buka di Zapstr"
+    }
+  ],
+  "LuDBLj": [
+    {
+      "type": 0,
+      "value": "Torrents"
+    }
+  ],
+  "Lw+I+J": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " zapped"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others zapped"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "LwYmVi": [
+    {
+      "type": 0,
+      "value": "Zaps on this note will be split to the following users."
+    }
+  ],
+  "M3Oirc": [
+    {
+      "type": 0,
+      "value": "Menu Debug"
+    }
+  ],
+  "M6C/px": [
+    {
+      "type": 0,
+      "value": "Become a leader"
+    }
+  ],
+  "MBAYRO": [
+    {
+      "type": 0,
+      "value": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message"
+    }
+  ],
+  "MI2jkA": [
+    {
+      "type": 0,
+      "value": "Tidak tersedia:"
+    }
+  ],
+  "MKDHEa": [
+    {
+      "type": 0,
+      "value": "Join Room"
+    }
+  ],
+  "MP54GY": [
+    {
+      "type": 0,
+      "value": "pwd dompet"
+    }
+  ],
+  "MWTx65": [
+    {
+      "type": 0,
+      "value": "Default Page"
+    }
+  ],
+  "MYBYdJ": [
+    {
+      "type": 0,
+      "value": "Short Text Note"
+    }
+  ],
+  "MYUBaG": [
+    {
+      "type": 0,
+      "value": "Client Authentication"
+    }
+  ],
+  "MiMipu": [
+    {
+      "type": 0,
+      "value": "Tetapkan sebagai alamat Nostr utama (nip05)"
+    }
+  ],
+  "MkQ4FX": [
+    {
+      "type": 0,
+      "value": "Proxy Tags"
+    }
+  ],
+  "Ml7+RS": [
+    {
+      "type": 0,
+      "value": "Send this link to your friends and share the magic of the nostr."
+    }
+  ],
+  "Mrpkot": [
+    {
+      "type": 0,
+      "value": "Pay for subscription"
+    }
+  ],
+  "MuVeKe": [
+    {
+      "type": 0,
+      "value": "Beli alamat nostr"
+    }
+  ],
+  "Muhna4": [
+    {
+      "type": 0,
+      "value": "Counting results"
+    }
+  ],
+  "MzRYWH": [
+    {
+      "type": 0,
+      "value": "item"
+    },
+    {
+      "type": 1,
+      "value": "item"
+    }
+  ],
+  "Mzizei": [
+    {
+      "type": 0,
+      "value": "Akun Iris.to"
+    }
+  ],
+  "N2IrpM": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
+  "NAidKb": [
+    {
+      "type": 0,
+      "value": "Notifications"
+    }
+  ],
+  "NAuFNH": [
+    {
+      "type": 0,
+      "value": "You already have a subscription of this type, please renew or pay"
+    }
+  ],
+  "NDTFsp": [
+    {
+      "type": 0,
+      "value": "Job Feedback"
+    }
+  ],
+  "NepkXH": [
+    {
+      "type": 0,
+      "value": "Can't vote with "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, please set a different default zap amount"
+    }
+  ],
+  "NndBJE": [
+    {
+      "type": 0,
+      "value": "Halaman 'users' baru"
+    }
+  ],
+  "Nr9Yyx": [
+    {
+      "type": 0,
+      "value": "Reposts"
+    }
+  ],
+  "NxzeNU": [
+    {
+      "type": 0,
+      "value": "Dead"
+    }
+  ],
+  "O3Jz4E": [
+    {
+      "type": 0,
+      "value": "Use your invite code to earn sats!"
+    }
+  ],
+  "OEW7yJ": [
+    {
+      "type": 0,
+      "value": "Zap-zap"
+    }
+  ],
+  "OIqnZN": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps Attestations for Events"
+    }
+  ],
+  "OJHKIL": [
+    {
+      "type": 0,
+      "value": "Gift Wrap"
+    }
+  ],
+  "OKhRC6": [
+    {
+      "type": 0,
+      "value": "Share"
+    }
+  ],
+  "OLEm6z": [
+    {
+      "type": 0,
+      "value": "Kesalahan login tidak dikenal"
+    }
+  ],
+  "OQSOJF": [
+    {
+      "type": 0,
+      "value": "Dapatkan alamat nostr gratis"
+    }
+  ],
+  "OQXnew": [
+    {
+      "type": 0,
+      "value": "Langganan anda masih aktif, anda belum dapat memperbarui-nya"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "Dilahir"
+    }
+  ],
+  "ORa81+": [
+    {
+      "type": 0,
+      "value": "Merge Requests"
+    }
+  ],
+  "OoZgbB": [
+    {
+      "type": 0,
+      "value": "Failed to update, please try again"
+    }
+  ],
+  "OuProE": [
+    {
+      "type": 0,
+      "value": "Long-form Content"
+    }
+  ],
+  "OxPdQ0": [
+    {
+      "type": 0,
+      "value": "Scanning "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "P2o+ZZ": [
+    {
+      "type": 0,
+      "value": "Invalid Nostr Address"
+    }
+  ],
+  "P61BTu": [
+    {
+      "type": 0,
+      "value": "Salin 'Event' JSON"
+    }
+  ],
+  "P7FD0F": [
+    {
+      "type": 0,
+      "value": "Sistem (Default)"
+    }
+  ],
+  "P7nJT9": [
+    {
+      "type": 0,
+      "value": "Total hari ini (UTC): "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "P8JC58": [
+    {
+      "type": 0,
+      "value": "Distance"
+    }
+  ],
+  "PCSt5T": [
+    {
+      "type": 0,
+      "value": "Prefs"
+    }
+  ],
+  "PXQ0z0": [
+    {
+      "type": 0,
+      "value": "Receiving to "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "PamNxw": [
+    {
+      "type": 0,
+      "value": "Header file tidak dikenal: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Pe0ogR": [
+    {
+      "type": 0,
+      "value": "Tema"
+    }
+  ],
+  "PrsIg7": [
+    {
+      "type": 0,
+      "value": "Reactions will be shown on every page, if disabled no reactions will be shown"
+    }
+  ],
+  "QDFTjG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Relays"
+    }
+  ],
+  "QJfhKt": [
+    {
+      "type": 0,
+      "value": "The private key is like a password, but it cannot be reset. Guard it carefully and never show it to anyone. Once someone has your private key, they will have access to your account forever."
+    }
+  ],
+  "QWhotP": [
+    {
+      "type": 0,
+      "value": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)"
+    }
+  ],
+  "QpaLA3": [
+    {
+      "type": 0,
+      "value": "Channel Message"
+    }
+  ],
+  "Qxv0B2": [
+    {
+      "type": 0,
+      "value": "Saat ini Anda memiliki "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sat di zap pool Anda."
+    }
+  ],
+  "Qy6/Ft": [
+    {
+      "type": 0,
+      "value": "Private Direct Messages"
+    }
+  ],
+  "R/6nsx": [
+    {
+      "type": 0,
+      "value": "Subscription"
+    }
+  ],
+  "R81upa": [
+    {
+      "type": 0,
+      "value": "Orang yang Anda mengintip"
+    }
+  ],
+  "RDha9y": [
+    {
+      "type": 0,
+      "value": "Service Worker Not Running"
+    }
+  ],
+  "RRz1cA": [
+    {
+      "type": 0,
+      "value": "Repository state announcements"
+    }
+  ],
+  "RSr2uB": [
+    {
+      "type": 0,
+      "value": "Nama hanya boleh diterima jika ia huruf kecilan dan ber-angka"
+    }
+  ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "Kedaluwarsa"
+    }
+  ],
+  "RefZpK": [
+    {
+      "type": 0,
+      "value": "Short-form Portrait Video Event"
+    }
+  ],
+  "RfhLwC": [
+    {
+      "type": 0,
+      "value": "Oleh: "
+    },
+    {
+      "type": 1,
+      "value": "author"
+    }
+  ],
+  "RhDAoS": [
+    {
+      "type": 0,
+      "value": "Anda yakin ingin memadam "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    },
+    {
+      "type": 0,
+      "value": " ke?"
+    }
+  ],
+  "RmxSZo": [
+    {
+      "type": 0,
+      "value": "Data Vending Machines"
+    }
+  ],
+  "RoOyAh": [
+    {
+      "type": 0,
+      "value": "relay-relay"
+    }
+  ],
+  "Rs4kCE": [
+    {
+      "type": 0,
+      "value": "Penanda"
+    }
+  ],
+  "S/NV2G": [
+    {
+      "type": 0,
+      "value": "Loading note: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "SFuk1v": [
+    {
+      "type": 0,
+      "value": "Permissions"
+    }
+  ],
+  "SLZGPn": [
+    {
+      "type": 0,
+      "value": "Enter a pin to encrypt your private key, you must enter this pin every time you open "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "SMO+on": [
+    {
+      "type": 0,
+      "value": "Kirim zap ke "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "SOqbe9": [
+    {
+      "type": 0,
+      "value": "Perbarui Alamat 'Lightning'"
+    }
+  ],
+  "SP0+yi": [
+    {
+      "type": 0,
+      "value": "Beli Langganan"
+    }
+  ],
+  "SW3TFA": [
+    {
+      "type": 0,
+      "value": "Popular relays used by people you follow."
+    }
+  ],
+  "SYQtZ7": [
+    {
+      "type": 0,
+      "value": "Proxy Alamat LN"
+    }
+  ],
+  "Sd0PKc": [
+    {
+      "type": 0,
+      "value": "Relay sets"
+    }
+  ],
+  "SfwSIm": [
+    {
+      "type": 0,
+      "value": "Problem Tracker"
+    }
+  ],
+  "ShdEie": [
+    {
+      "type": 0,
+      "value": "Tandai semua sudah dibaca"
+    }
+  ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "Custom"
+    }
+  ],
+  "SmuYUd": [
+    {
+      "type": 0,
+      "value": "Kami memanggilmu dengan nama apa?"
+    }
+  ],
+  "Ss0sWu": [
+    {
+      "type": 0,
+      "value": "Bayar Sekarang"
+    }
+  ],
+  "SsUQnC": [
+    {
+      "type": 0,
+      "value": "Application-specific Data"
+    }
+  ],
+  "StKzTE": [
+    {
+      "type": 0,
+      "value": "The author has marked this note as a "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "sensitive topic"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "T83nqf": [
+    {
+      "type": 0,
+      "value": "Relays close to your geographic location."
+    }
+  ],
+  "TDR5ge": [
+    {
+      "type": 0,
+      "value": "Media in notes will automatically be shown for selected people, otherwise only the link will show"
+    }
+  ],
+  "TGc5nI": [
+    {
+      "type": 0,
+      "value": "Handler information"
+    }
+  ],
+  "TH1fFo": [
+    {
+      "type": 0,
+      "value": "Telegram"
+    }
+  ],
+  "TJo5E6": [
+    {
+      "type": 0,
+      "value": "Preview"
+    }
+  ],
+  "TOG64f": [
+    {
+      "type": 0,
+      "value": "Use Local Relay"
+    }
+  ],
+  "TP/cMX": [
+    {
+      "type": 0,
+      "value": "Telah Tamat"
+    }
+  ],
+  "TaeBqw": [
+    {
+      "type": 0,
+      "value": "Masuk dengan Extension Nostr"
+    }
+  ],
+  "TdTXXf": [
+    {
+      "type": 0,
+      "value": "Learn more"
+    }
+  ],
+  "TdtZQ5": [
+    {
+      "type": 0,
+      "value": "Kripto"
+    }
+  ],
+  "Tdv6NY": [
+    {
+      "type": 0,
+      "value": "Interest sets"
+    }
+  ],
+  "TgDKhI": [
+    {
+      "type": 0,
+      "value": "Calendar Events"
+    }
+  ],
+  "TpgeGw": [
+    {
+      "type": 0,
+      "value": "Garam Hex.."
+    }
+  ],
+  "Tpy00S": [
+    {
+      "type": 0,
+      "value": "Ummah"
+    }
+  ],
+  "TvKqBp": [
+    {
+      "type": 0,
+      "value": "liked"
+    }
+  ],
+  "TwyMau": [
+    {
+      "type": 0,
+      "value": "Account"
+    }
+  ],
+  "U1aPPi": [
+    {
+      "type": 0,
+      "value": "Stop listening"
+    }
+  ],
+  "U30H69": [
+    {
+      "type": 0,
+      "value": "Community Definition"
+    }
+  ],
+  "UJTWqI": [
+    {
+      "type": 0,
+      "value": "Hapus dari `relay` saya"
+    }
+  ],
+  "ULXFfP": [
+    {
+      "type": 0,
+      "value": "Receive"
+    }
+  ],
+  "UNjfWJ": [
+    {
+      "type": 0,
+      "value": "Check all event signatures received from relays"
+    }
+  ],
+  "UT7Nkj": [
+    {
+      "type": 0,
+      "value": "Chat Baru"
+    }
+  ],
+  "UUPFlt": [
+    {
+      "type": 0,
+      "value": "Users must accept the content warning to show the content of your note."
+    }
+  ],
+  "UaCh1c": [
+    {
+      "type": 0,
+      "value": "Add Server"
+    }
+  ],
+  "Ub+AGc": [
+    {
+      "type": 0,
+      "value": "Masuk"
+    }
+  ],
+  "Up5U7K": [
+    {
+      "type": 0,
+      "value": "Blok"
+    }
+  ],
+  "Ups2/p": [
+    {
+      "type": 0,
+      "value": "Your application is pending"
+    }
+  ],
+  "UrKTqQ": [
+    {
+      "type": 0,
+      "value": "anda memiliki akun iris.to yang aktif"
+    }
+  ],
+  "UsCzPc": [
+    {
+      "type": 0,
+      "value": "Share a personalized invitation with friends!"
+    }
+  ],
+  "UxgyeY": [
+    {
+      "type": 0,
+      "value": "Your referral code is "
+    },
+    {
+      "type": 1,
+      "value": "code"
+    }
+  ],
+  "V20Og0": [
+    {
+      "type": 0,
+      "value": "Labeling"
+    }
+  ],
+  "VOjC1i": [
+    {
+      "type": 0,
+      "value": "Pick which upload service you want to upload attachments to"
+    }
+  ],
+  "VR5eHw": [
+    {
+      "type": 0,
+      "value": "Kunci pub (npub/nprofile)"
+    }
+  ],
+  "VcwrfF": [
+    {
+      "type": 0,
+      "value": "Ya, silakan."
+    }
+  ],
+  "VfhYxG": [
+    {
+      "type": 0,
+      "value": "To see a full list of changes you can view the changelog "
+    },
+    {
+      "type": 1,
+      "value": "here"
+    }
+  ],
+  "VlJkSk": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "n"
+    }
+  ],
+  "VnXp8Z": [
+    {
+      "type": 0,
+      "value": "Avatar"
+    }
+  ],
+  "W1yoZY": [
+    {
+      "type": 0,
+      "value": "It looks like you dont have any subscriptions, you can get one "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "W2PiAr": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Diblok"
+    }
+  ],
+  "W4SaxY": [
+    {
+      "type": 0,
+      "value": "Local"
+    }
+  ],
+  "W9355R": [
+    {
+      "type": 0,
+      "value": "Berhenti bisu-kan"
+    }
+  ],
+  "WeLEuL": [
+    {
+      "type": 0,
+      "value": "From Server"
+    }
+  ],
+  "Wj5TbN": [
+    {
+      "type": 0,
+      "value": "Issues"
+    }
+  ],
+  "WmZhfL": [
+    {
+      "type": 0,
+      "value": "Automatically translate notes to your local language"
+    }
+  ],
+  "WvGmZT": [
+    {
+      "type": 0,
+      "value": "alamat npub / nprofile / nostr"
+    }
+  ],
+  "X6tipZ": [
+    {
+      "type": 0,
+      "value": "Masuk dengan kunci"
+    }
+  ],
+  "X7xU8J": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex, mnemo"
+    }
+  ],
+  "XECMfW": [
+    {
+      "type": 0,
+      "value": "Kirim metrik penggunaan"
+    }
+  ],
+  "XICsE8": [
+    {
+      "type": 0,
+      "value": "Host fail"
+    }
+  ],
+  "XPB8VV": [
+    {
+      "type": 0,
+      "value": "Alby wallet connection"
+    }
+  ],
+  "XQiFEl": [
+    {
+      "type": 0,
+      "value": "Follows Relay Health"
+    }
+  ],
+  "XSdWHA": [
+    {
+      "type": 0,
+      "value": "Redeem"
+    }
+  ],
+  "XXm7jJ": [
+    {
+      "type": 0,
+      "value": "Trending Hashtags"
+    }
+  ],
+  "XgWvGA": [
+    {
+      "type": 0,
+      "value": "Emojis"
+    }
+  ],
+  "Xnimz0": [
+    {
+      "type": 0,
+      "value": "Sending from "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "Xopqkl": [
+    {
+      "type": 0,
+      "value": "Your default zap amount is "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats, example values are calculated from this."
+    }
+  ],
+  "YDMrKK": [
+    {
+      "type": 0,
+      "value": "Users"
+    }
+  ],
+  "YDURw6": [
+    {
+      "type": 0,
+      "value": "URL app layanan"
+    }
+  ],
+  "YH2RKk": [
+    {
+      "type": 0,
+      "value": "Popular media servers."
+    }
+  ],
+  "YQZY/S": [
+    {
+      "type": 0,
+      "value": "It looks like you dont follow enough people, take a look at "
+    },
+    {
+      "type": 1,
+      "value": "newUsersPage"
+    },
+    {
+      "type": 0,
+      "value": " to discover people to follow!"
+    }
+  ],
+  "YR2I9M": [
+    {
+      "type": 0,
+      "value": "No keys, no "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": ", There is no way to reset it if you don't back up. It only takes a minute."
+    }
+  ],
+  "YU7ZYp": [
+    {
+      "type": 0,
+      "value": "Public Chat"
+    }
+  ],
+  "YXA3AH": [
+    {
+      "type": 0,
+      "value": "Aktifkan kiriman Emojis"
+    }
+  ],
+  "Yf3DwC": [
+    {
+      "type": 0,
+      "value": "Connect a wallet to send instant payments"
+    }
+  ],
+  "YuoEb9": [
+    {
+      "type": 0,
+      "value": "Try another relay"
+    }
+  ],
+  "Z48UEo": [
+    {
+      "type": 0,
+      "value": "Channel Metadata"
+    }
+  ],
+  "Z4BMCZ": [
+    {
+      "type": 0,
+      "value": "Enter pairing phrase"
+    }
+  ],
+  "Z7kkeJ": [
+    {
+      "type": 0,
+      "value": "Delegated Event Signing"
+    }
+  ],
+  "ZFe9tl": [
+    {
+      "type": 0,
+      "value": "Compose a note"
+    }
+  ],
+  "ZKORll": [
+    {
+      "type": 0,
+      "value": "Activate Now"
+    }
+  ],
+  "ZLmyG9": [
+    {
+      "type": 0,
+      "value": "Contributors"
+    }
+  ],
+  "ZS+jRE": [
+    {
+      "type": 0,
+      "value": "Kirim zap split ke"
+    }
+  ],
+  "Zff6lu": [
+    {
+      "type": 0,
+      "value": "Nama iris.to/"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "name"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " telah disediakan untuk Anda!"
+    }
+  ],
+  "ZlIh4/": [
+    {
+      "type": 0,
+      "value": "Encrypted Direct Messages"
+    }
+  ],
+  "ZlmK/p": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " invited you to "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    }
+  ],
+  "a1x4gD": [
+    {
+      "type": 0,
+      "value": "Media servers store media which you can share in notes as images and videos"
+    }
+  ],
+  "a5UPxh": [
+    {
+      "type": 0,
+      "value": "Fund developers and platforms providing NIP-05 verification services"
+    }
+  ],
+  "a7TDNm": [
+    {
+      "type": 0,
+      "value": "Notes will stream in real time into global and notes tab"
+    }
+  ],
+  "aHje0o": [
+    {
+      "type": 0,
+      "value": "Nama atau nym"
+    }
+  ],
+  "aMaLBK": [
+    {
+      "type": 0,
+      "value": "'Extension' yang Didukung"
+    }
+  ],
+  "aRex7h": [
+    {
+      "type": 0,
+      "value": "Paid "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, fee "
+    },
+    {
+      "type": 1,
+      "value": "fee"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "aSGz4J": [
+    {
+      "type": 0,
+      "value": "Connect to your own LND node with Lightning Node Connect"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "Minta Lebih"
+    }
+  ],
+  "abbGKq": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " km"
+    }
+  ],
+  "ak3MTf": [
+    {
+      "type": 0,
+      "value": "Invite Friends"
+    }
+  ],
+  "b12Goz": [
+    {
+      "type": 0,
+      "value": "Mnemo"
+    }
+  ],
+  "b5vAk0": [
+    {
+      "type": 0,
+      "value": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address"
+    }
+  ],
+  "bF1MYT": [
+    {
+      "type": 0,
+      "value": "You are a community leader and are earning "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "percent"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " of referred users subscriptions!"
+    }
+  ],
+  "bG00/W": [
+    {
+      "type": 0,
+      "value": "Service Worker Running"
+    }
+  ],
+  "bJ+wrA": [
+    {
+      "type": 0,
+      "value": "Compute prune list"
+    }
+  ],
+  "bLZL5a": [
+    {
+      "type": 0,
+      "value": "Dapatkan Alamat"
+    }
+  ],
+  "bMphls": [
+    {
+      "type": 0,
+      "value": "Logged in with read-only access"
+    }
+  ],
+  "bQdA2k": [
+    {
+      "type": 0,
+      "value": "Sensitive Content"
+    }
+  ],
+  "bep9C3": [
+    {
+      "type": 0,
+      "value": "Kunci Pub"
+    }
+  ],
+  "bfvyfs": [
+    {
+      "type": 0,
+      "value": "Anon"
+    }
+  ],
+  "bxv59V": [
+    {
+      "type": 0,
+      "value": "Baru saja"
+    }
+  ],
+  "c+1p0i": [
+    {
+      "type": 0,
+      "value": "Kind mute sets"
+    }
+  ],
+  "c+JYNI": [
+    {
+      "type": 0,
+      "value": "Tidak, terima kasih."
+    }
+  ],
+  "c2T+1B": [
+    {
+      "type": 0,
+      "value": "Redirects"
+    }
+  ],
+  "c35bj2": [
+    {
+      "type": 0,
+      "value": "If you have an enquiry about your NIP-05 order please DM "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "c3LlRO": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "KiB"
+    }
+  ],
+  "c3g2hL": [
+    {
+      "type": 0,
+      "value": "Menyiarkan Lagi"
+    }
+  ],
+  "cFbU1B": [
+    {
+      "type": 0,
+      "value": "Using Alby? Go to "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " to get your NWC config!"
+    }
+  ],
+  "cG/bKQ": [
+    {
+      "type": 0,
+      "value": "Native nostr wallet connection"
+    }
+  ],
+  "cHCwbF": [
+    {
+      "type": 0,
+      "value": "Photography"
+    }
+  ],
+  "cKbMRX": [
+    {
+      "type": 0,
+      "value": "Direct Message"
+    }
+  ],
+  "cPIKU2": [
+    {
+      "type": 0,
+      "value": "Mengintipi"
+    }
+  ],
+  "cQfLWb": [
+    {
+      "type": 0,
+      "value": "URL.."
+    }
+  ],
+  "cVcgLJ": [
+    {
+      "type": 0,
+      "value": "Media Servers"
+    }
+  ],
+  "cWx9t8": [
+    {
+      "type": 0,
+      "value": "Bisukan semua"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "Connect Wallet"
+    }
+  ],
+  "cnwHgH": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps"
+    }
+  ],
+  "cuP16y": [
+    {
+      "type": 0,
+      "value": "Multi account support"
+    }
+  ],
+  "cuV2gK": [
+    {
+      "type": 0,
+      "value": "nama terdaftar"
+    }
+  ],
+  "cw1Ftc": [
+    {
+      "type": 0,
+      "value": "Live Activities"
+    }
+  ],
+  "cyR7Kh": [
+    {
+      "type": 0,
+      "value": "Pulang"
+    }
+  ],
+  "d+6YsV": [
+    {
+      "type": 0,
+      "value": "Lists to mute:"
+    }
+  ],
+  "d0qim7": [
+    {
+      "type": 0,
+      "value": "WoT Filter"
+    }
+  ],
+  "d2ebEu": [
+    {
+      "type": 0,
+      "value": "Not Subscribed to Push"
+    }
+  ],
+  "d7d0/x": [
+    {
+      "type": 0,
+      "value": "Alamat LN"
+    }
+  ],
+  "dK2CcV": [
+    {
+      "type": 0,
+      "value": "The public key is like your username, you can share it with anyone."
+    }
+  ],
+  "dOQCL8": [
+    {
+      "type": 0,
+      "value": "Nama tampilan"
+    }
+  ],
+  "dZZIGe": [
+    {
+      "type": 0,
+      "value": "Modular Article Header"
+    }
+  ],
+  "ddd3JX": [
+    {
+      "type": 0,
+      "value": "Popular Hashtags"
+    }
+  ],
+  "deEeEI": [
+    {
+      "type": 0,
+      "value": "Daftar"
+    }
+  ],
+  "djLctd": [
+    {
+      "type": 0,
+      "value": "Amount in sats"
+    }
+  ],
+  "dmcsBA": [
+    {
+      "type": 0,
+      "value": "Classified Listing"
+    }
+  ],
+  "dmsiLv": [
+    {
+      "type": 0,
+      "value": "A default Zap Pool split of "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " has been configured for "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " developers, you can disable it at any time in "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "e5x8FT": [
+    {
+      "type": 0,
+      "value": "Kind"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "Coming soon"
+    }
+  ],
+  "e7VmYP": [
+    {
+      "type": 0,
+      "value": "Enter pin to unlock your private key"
+    }
+  ],
+  "e7qqly": [
+    {
+      "type": 0,
+      "value": "Mark All Read"
+    }
+  ],
+  "eF0Re7": [
+    {
+      "type": 0,
+      "value": "Gunakan 'extension' penanda mecha nostr untuk masuk"
+    }
+  ],
+  "eHAneD": [
+    {
+      "type": 0,
+      "value": "Reaction emoji"
+    }
+  ],
+  "eJj8HD": [
+    {
+      "type": 0,
+      "value": "Get Verified"
+    }
+  ],
+  "eSzf2G": [
+    {
+      "type": 0,
+      "value": "A single zap of "
+    },
+    {
+      "type": 1,
+      "value": "nIn"
+    },
+    {
+      "type": 0,
+      "value": " sats will allocate "
+    },
+    {
+      "type": 1,
+      "value": "nOut"
+    },
+    {
+      "type": 0,
+      "value": " sats to the zap pool."
+    }
+  ],
+  "eW/Bj9": [
+    {
+      "type": 0,
+      "value": "Feed"
+    }
+  ],
+  "eXT2QQ": [
+    {
+      "type": 0,
+      "value": "Chat Kumpulan"
+    }
+  ],
+  "eZtOxB": [
+    {
+      "type": 0,
+      "value": "window.nostr capability for web browsers"
+    }
+  ],
+  "egib+2": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " other"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "ejEGdx": [
+    {
+      "type": 0,
+      "value": "Home"
+    }
+  ],
+  "eoV49s": [
+    {
+      "type": 0,
+      "value": "Poor"
+    }
+  ],
+  "f1OxTe": [
+    {
+      "type": 0,
+      "value": "Community leaders are individuals who grow the nostr ecosystem by being active in their local communities and helping onboard new users. Anyone can become a community leader, but few hold the current honorary title."
+    }
+  ],
+  "f2CAxA": [
+    {
+      "type": 0,
+      "value": "Dump"
+    }
+  ],
+  "fBI91o": [
+    {
+      "type": 0,
+      "value": "Zap"
+    }
+  ],
+  "fBlba3": [
+    {
+      "type": 0,
+      "value": "Kumpulan kami amat menghargai masa anda bersama "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": ", mohon sumbangan titis pulah anda jika anda mampu."
+    }
+  ],
+  "fLIvbC": [
+    {
+      "type": 0,
+      "value": "Snort is an open source project built by passionate people in their free time, your donations are greatly appreciated"
+    }
+  ],
+  "fOksnD": [
+    {
+      "type": 0,
+      "value": "Can't vote because LNURL service does not support zaps"
+    }
+  ],
+  "fQN+tq": [
+    {
+      "type": 0,
+      "value": "Show posts that have a content warning tag"
+    }
+  ],
+  "fWZYP5": [
+    {
+      "type": 0,
+      "value": "Disematkan"
+    }
+  ],
+  "fX5RYm": [
+    {
+      "type": 0,
+      "value": "Pilih beberapa topik yang menarik"
+    }
+  ],
+  "filwqD": [
+    {
+      "type": 0,
+      "value": "Baca"
+    }
+  ],
+  "fjAcWo": [
+    {
+      "type": 0,
+      "value": "Gift Wraps"
+    }
+  ],
+  "flnGvv": [
+    {
+      "type": 0,
+      "value": "Apa yang sedang kamu pikirkan?"
+    }
+  ],
+  "fqwcJ1": [
+    {
+      "type": 0,
+      "value": "On-chain Donation"
+    }
+  ],
+  "fr+XYA": [
+    {
+      "type": 0,
+      "value": "Lightning Pub RPC"
+    }
+  ],
+  "fsB/4p": [
+    {
+      "type": 0,
+      "value": "ye Simpan!"
+    }
+  ],
+  "fucxlm": [
+    {
+      "type": 0,
+      "value": "Attach Media"
+    }
+  ],
+  "furjvW": [
+    {
+      "type": 0,
+      "value": "Watch Stream"
+    }
+  ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "Tentang"
+    }
+  ],
+  "g985Wp": [
+    {
+      "type": 0,
+      "value": "Failed to send vote"
+    }
+  ],
+  "gDzDRs": [
+    {
+      "type": 0,
+      "value": "Emoji to send when reactiong to a note"
+    }
+  ],
+  "gXgY3+": [
+    {
+      "type": 0,
+      "value": "Not all clients support this yet"
+    }
+  ],
+  "gczcC5": [
+    {
+      "type": 0,
+      "value": "sub-to"
+    }
+  ],
+  "geppt8": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count2"
+    },
+    {
+      "type": 0,
+      "value": " in memory)"
+    }
+  ],
+  "gjBiyj": [
+    {
+      "type": 0,
+      "value": "Loading..."
+    }
+  ],
+  "gkMmvC": [
+    {
+      "type": 0,
+      "value": "Android Signer Application"
+    }
+  ],
+  "gl1NeW": [
+    {
+      "type": 0,
+      "value": "Lists"
+    }
+  ],
+  "go2/QF": [
+    {
+      "type": 0,
+      "value": "User server list"
+    }
+  ],
+  "grQ+mI": [
+    {
+      "type": 0,
+      "value": "Proof-of-Work"
+    }
+  ],
+  "gtNjNP": [
+    {
+      "type": 0,
+      "value": "Basic protocol flow description"
+    }
+  ],
+  "h7jvCs": [
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " lebih seronok jikalau bersama!"
+    }
+  ],
+  "h8XMJL": [
+    {
+      "type": 0,
+      "value": "Lencana"
+    }
+  ],
+  "h9M0rW": [
+    {
+      "type": 0,
+      "value": "User Metadata"
+    }
+  ],
+  "hF6IN2": [
+    {
+      "type": 0,
+      "value": "Prune Follow List"
+    }
+  ],
+  "hMQmIw": [
+    {
+      "type": 0,
+      "value": "Sync Account"
+    }
+  ],
+  "hMzcSq": [
+    {
+      "type": 0,
+      "value": "Msg2"
+    }
+  ],
+  "hRTfTR": [
+    {
+      "type": 0,
+      "value": "PRO"
+    }
+  ],
+  "hY4lzx": [
+    {
+      "type": 0,
+      "value": "Supports"
+    }
+  ],
+  "hYOE+U": [
+    {
+      "type": 0,
+      "value": "Invite"
+    }
+  ],
+  "hicxcO": [
+    {
+      "type": 0,
+      "value": "Tampilkan balasan"
+    }
+  ],
+  "hmZ3Bz": [
+    {
+      "type": 0,
+      "value": "Media"
+    }
+  ],
+  "hniz8Z": [
+    {
+      "type": 0,
+      "value": "di sini"
+    }
+  ],
+  "hv/eRj": [
+    {
+      "type": 0,
+      "value": "Blocked relays list"
+    }
+  ],
+  "hvFRBo": [
+    {
+      "type": 0,
+      "value": "Interaction"
+    }
+  ],
+  "i/dBAR": [
+    {
+      "type": 0,
+      "value": "Zap Pool"
+    }
+  ],
+  "i5gBFz": [
+    {
+      "type": 0,
+      "value": "Your sent and received payments will show up here."
+    }
+  ],
+  "iCqGww": [
+    {
+      "type": 0,
+      "value": "Reactions ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "iEoXYx": [
+    {
+      "type": 0,
+      "value": "terjemahan DeepL"
+    }
+  ],
+  "iGT1eE": [
+    {
+      "type": 0,
+      "value": "Cegah akaun palsu meniru Anda"
+    }
+  ],
+  "iHN12u": [
+    {
+      "type": 0,
+      "value": "Admin"
+    }
+  ],
+  "iICVoL": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " follows ("
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " duplicates)"
+    }
+  ],
+  "iNWbVV": [
+    {
+      "type": 0,
+      "value": "Handle"
+    }
+  ],
+  "iXPL0Z": [
+    {
+      "type": 0,
+      "value": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead"
+    }
+  ],
+  "iYc3Ld": [
+    {
+      "type": 0,
+      "value": "Payments"
+    }
+  ],
+  "icCxlA": [
+    {
+      "type": 0,
+      "value": "new users page"
+    }
+  ],
+  "ieGrWo": [
+    {
+      "type": 0,
+      "value": "Follow"
+    }
+  ],
+  "igUUst": [
+    {
+      "type": 0,
+      "value": "Group Chat Threaded Reply"
+    }
+  ],
+  "ipHVx5": [
+    {
+      "type": 0,
+      "value": "Generate Invoice"
+    }
+  ],
+  "itPgxd": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "izWS4J": [
+    {
+      "type": 0,
+      "value": "Unfollow"
+    }
+  ],
+  "j9xbzF": [
+    {
+      "type": 0,
+      "value": "Already backed up"
+    }
+  ],
+  "jA3OE/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sat"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sats"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "jAmfGl": [
+    {
+      "type": 0,
+      "value": "Langganan "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " Anda telah kedaluwarsa"
+    }
+  ],
+  "jHa/ko": [
+    {
+      "type": 0,
+      "value": "Clean up your feed"
+    }
+  ],
+  "jMzO1S": [
+    {
+      "type": 0,
+      "value": "Internal error: "
+    },
+    {
+      "type": 1,
+      "value": "msg"
+    }
+  ],
+  "jiAVXu": [
+    {
+      "type": 0,
+      "value": "Video Event"
+    }
+  ],
+  "jvo0vs": [
+    {
+      "type": 0,
+      "value": "Save"
+    }
+  ],
+  "jzgQ2z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Reactions"
+    }
+  ],
+  "k0kCJp": [
+    {
+      "type": 0,
+      "value": "Apply Now"
+    }
+  ],
+  "k2veDA": [
+    {
+      "type": 0,
+      "value": "Write"
+    }
+  ],
+  "k7sKNy": [
+    {
+      "type": 0,
+      "value": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
+    }
+  ],
+  "k9SQm1": [
+    {
+      "type": 0,
+      "value": "Relays which you have connected to before and appear to be reliable."
+    }
+  ],
+  "kEZUR8": [
+    {
+      "type": 0,
+      "value": "Register an Iris username"
+    }
+  ],
+  "kJYo0u": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " reposted"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others reposted"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "kKC9ya": [
+    {
+      "type": 0,
+      "value": "Wallet Info"
+    }
+  ],
+  "kNd2FL": [
+    {
+      "type": 0,
+      "value": "Tidal login"
+    }
+  ],
+  "kQAf2d": [
+    {
+      "type": 0,
+      "value": "Select"
+    }
+  ],
+  "kaaf1E": [
+    {
+      "type": 0,
+      "value": "sekarang"
+    }
+  ],
+  "kc79d3": [
+    {
+      "type": 0,
+      "value": "Topiks"
+    }
+  ],
+  "klCm96": [
+    {
+      "type": 0,
+      "value": "Community Post Approval"
+    }
+  ],
+  "kqPQJD": [
+    {
+      "type": 0,
+      "value": "Configure zap pool"
+    }
+  ],
+  "kuPHYE": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " liked"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others liked"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "l+ikU1": [
+    {
+      "type": 0,
+      "value": "Semuanya dlm "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    }
+  ],
+  "l3H1EK": [
+    {
+      "type": 0,
+      "value": "Invite your friends"
+    }
+  ],
+  "l3nTjd": [
+    {
+      "type": 0,
+      "value": "Basic key derivation from mnemonic seed phrase"
+    }
+  ],
+  "lCILNz": [
+    {
+      "type": 0,
+      "value": "Beli Sekarang"
+    }
+  ],
+  "lD3+8a": [
+    {
+      "type": 0,
+      "value": "Bayar"
+    }
+  ],
+  "lEnclp": [
+    {
+      "type": 0,
+      "value": "My events: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lPWASz": [
+    {
+      "type": 0,
+      "value": "Snort nostr address"
+    }
+  ],
+  "lTbT3s": [
+    {
+      "type": 0,
+      "value": "Wallet password"
+    }
+  ],
+  "lbr3Lq": [
+    {
+      "type": 0,
+      "value": "Copy link"
+    }
+  ],
+  "lfOesV": [
+    {
+      "type": 0,
+      "value": "Non-Zap"
+    }
+  ],
+  "lgg1KN": [
+    {
+      "type": 0,
+      "value": "halaman akun"
+    }
+  ],
+  "ll3xBp": [
+    {
+      "type": 0,
+      "value": "Image proxy service"
+    }
+  ],
+  "lnaT9F": [
+    {
+      "type": 0,
+      "value": "Following "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lsNFM1": [
+    {
+      "type": 0,
+      "value": "Click to load content from "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "lvlPhZ": [
+    {
+      "type": 0,
+      "value": "Pay Invoice"
+    }
+  ],
+  "m/59y2": [
+    {
+      "type": 0,
+      "value": "Zap Request"
+    }
+  ],
+  "m6h2Eg": [
+    {
+      "type": 0,
+      "value": "Handler recommendation"
+    }
+  ],
+  "mCEKiZ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " notes have been muted"
+    }
+  ],
+  "mErPop": [
+    {
+      "type": 0,
+      "value": "It looks like you dont have any, check "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " to buy one!"
+    }
+  ],
+  "mFtdYh": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " Worker Relay"
+    }
+  ],
+  "mKAr6h": [
+    {
+      "type": 0,
+      "value": "Follow all"
+    }
+  ],
+  "mKh2HS": [
+    {
+      "type": 0,
+      "value": "File upload service"
+    }
+  ],
+  "mKhgP9": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "mOFG3K": [
+    {
+      "type": 0,
+      "value": "Start"
+    }
+  ],
+  "mfe8RW": [
+    {
+      "type": 0,
+      "value": "Option: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "mmPSWH": [
+    {
+      "type": 0,
+      "value": "Read Only"
+    }
+  ],
+  "n1Whvj": [
+    {
+      "type": 0,
+      "value": "Beralih"
+    }
+  ],
+  "n5l7tP": [
+    {
+      "type": 0,
+      "value": "Time-Based Calendar Event"
+    }
+  ],
+  "n8k1SG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "MiB"
+    }
+  ],
+  "nD4frR": [
+    {
+      "type": 0,
+      "value": "Bid confirmation"
+    }
+  ],
+  "nDejmx": [
+    {
+      "type": 0,
+      "value": "Unblock"
+    }
+  ],
+  "nGBrvw": [
+    {
+      "type": 0,
+      "value": "Penanda2 buku"
+    }
+  ],
+  "nGGDsi": [
+    {
+      "type": 0,
+      "value": "Notifications Allowed"
+    }
+  ],
+  "nIchMQ": [
+    {
+      "type": 0,
+      "value": "Searching for account activity ("
+    },
+    {
+      "type": 1,
+      "value": "progress"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "nPHrqp": [
+    {
+      "type": 0,
+      "value": "Coinjoin Pool"
+    }
+  ],
+  "nUT0Lv": [
+    {
+      "type": 0,
+      "value": "Tools"
+    }
+  ],
+  "nWQFic": [
+    {
+      "type": 0,
+      "value": "Renew"
+    }
+  ],
+  "nihgfo": [
+    {
+      "type": 0,
+      "value": "Dengar audio artikel ini"
+    }
+  ],
+  "nwZXeh": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " di-blok"
+    }
+  ],
+  "o/gK53": [
+    {
+      "type": 0,
+      "value": "Deck"
+    }
+  ],
+  "o7e+nJ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " followers"
+    }
+  ],
+  "oJ+JJN": [
+    {
+      "type": 0,
+      "value": "Tidak ada yang ditemukan :/"
+    }
+  ],
+  "odFwjL": [
+    {
+      "type": 0,
+      "value": "Follows only"
+    }
+  ],
+  "ojzbwv": [
+    {
+      "type": 0,
+      "value": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "ozZ2Cj": [
+    {
+      "type": 0,
+      "value": "Badge Award"
+    }
+  ],
+  "p4N05H": [
+    {
+      "type": 0,
+      "value": "Upload"
+    }
+  ],
+  "p9Ps2l": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " have relays ("
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "pEEBFk": [
+    {
+      "type": 0,
+      "value": "Reliable Relays"
+    }
+  ],
+  "pI+77w": [
+    {
+      "type": 0,
+      "value": "Downloadable backups from Snort relay"
+    }
+  ],
+  "pRess9": [
+    {
+      "type": 0,
+      "value": "ZapPool"
+    }
+  ],
+  "plOM0t": [
+    {
+      "type": 0,
+      "value": "Custom Emoji"
+    }
+  ],
+  "plg2Ua": [
+    {
+      "type": 0,
+      "value": "Channel Mute User"
+    }
+  ],
+  "puLNUJ": [
+    {
+      "type": 0,
+      "value": "Sematkan"
+    }
+  ],
+  "pyjJ5f": [
+    {
+      "type": 0,
+      "value": "Nostr Marketplace (for resilient marketplaces)"
+    }
+  ],
+  "pzTOmv": [
+    {
+      "type": 0,
+      "value": "Followers"
+    }
+  ],
+  "q3OuMw": [
+    {
+      "type": 0,
+      "value": "Torrent Comment"
+    }
+  ],
+  "qAY40L": [
+    {
+      "type": 0,
+      "value": "Date-Based Calendar Event"
+    }
+  ],
+  "qBYNMb": [
+    {
+      "type": 0,
+      "value": "Group Thread Reply"
+    }
+  ],
+  "qD9EUF": [
+    {
+      "type": 0,
+      "value": "Email <> DM bridge for your Snort nostr address"
+    }
+  ],
+  "qDwvZ4": [
+    {
+      "type": 0,
+      "value": "'Error' yang tidak diketahui"
+    }
+  ],
+  "qFIVx4": [
+    {
+      "type": 0,
+      "value": "Profile Badges"
+    }
+  ],
+  "qMePPG": [
+    {
+      "type": 0,
+      "value": "Note"
+    }
+  ],
+  "qMx1sA": [
+    {
+      "type": 0,
+      "value": "Default Zap amount"
+    }
+  ],
+  "qUJTsT": [
+    {
+      "type": 0,
+      "value": "Di-blok"
+    }
+  ],
+  "qXCbgZ": [
+    {
+      "type": 0,
+      "value": "Unlock"
+    }
+  ],
+  "qZsKBR": [
+    {
+      "type": 0,
+      "value": "Perbarui "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    }
+  ],
+  "qcJFEJ": [
+    {
+      "type": 0,
+      "value": "Notifications API Disabled"
+    }
+  ],
+  "qdGuQo": [
+    {
+      "type": 0,
+      "value": "Kunci Pribadi Anda Adalah (jangan bagi-kan ini dgn sesiapa pun ye!)"
+    }
+  ],
+  "qfmMQh": [
+    {
+      "type": 0,
+      "value": "Catatan ini telah dibisukan"
+    }
+  ],
+  "qkvYUb": [
+    {
+      "type": 0,
+      "value": "Tambahkan ke Profil"
+    }
+  ],
+  "qmJ8kD": [
+    {
+      "type": 0,
+      "value": "Terjemahan gagal"
+    }
+  ],
+  "qtWLmt": [
+    {
+      "type": 0,
+      "value": "Like"
+    }
+  ],
+  "qyJtWy": [
+    {
+      "type": 0,
+      "value": "Minta kurang"
+    }
+  ],
+  "qydxOd": [
+    {
+      "type": 0,
+      "value": "Science"
+    }
+  ],
+  "qz9fty": [
+    {
+      "type": 0,
+      "value": "salah PIN"
+    }
+  ],
+  "r3C4x/": [
+    {
+      "type": 0,
+      "value": "Software"
+    }
+  ],
+  "r5srDR": [
+    {
+      "type": 0,
+      "value": "Enter wallet password"
+    }
+  ],
+  "rAQG0X": [
+    {
+      "type": 0,
+      "value": "Relay List Metadata"
+    }
+  ],
+  "rIsVe+": [
+    {
+      "type": 0,
+      "value": "Public chats list"
+    }
+  ],
+  "rMgF34": [
+    {
+      "type": 0,
+      "value": "Back up now"
+    }
+  ],
+  "rRRXtB": [
+    {
+      "type": 0,
+      "value": "Lightning Zaps"
+    }
+  ],
+  "rT14Ow": [
+    {
+      "type": 0,
+      "value": "Tambah-kan Relay"
+    }
+  ],
+  "reFEEC": [
+    {
+      "type": 0,
+      "value": "Reporting"
+    }
+  ],
+  "rfuMjE": [
+    {
+      "type": 0,
+      "value": "(Default)"
+    }
+  ],
+  "rkM7l8": [
+    {
+      "type": 0,
+      "value": "Encrypted Direct Message"
+    }
+  ],
+  "rmdsT4": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " hari"
+    }
+  ],
+  "rn52n9": [
+    {
+      "type": 0,
+      "value": "Public Chat Channels"
+    }
+  ],
+  "rx1i0i": [
+    {
+      "type": 0,
+      "value": "Link pendek"
+    }
+  ],
+  "sFUkSN": [
+    {
+      "type": 0,
+      "value": "Bookmark sets"
+    }
+  ],
+  "sKDn4e": [
+    {
+      "type": 0,
+      "value": "Show Badges"
+    }
+  ],
+  "sUNhQE": [
+    {
+      "type": 0,
+      "value": "insa"
+    }
+  ],
+  "sZQzjQ": [
+    {
+      "type": 0,
+      "value": "Failed to parse zap split: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "saInmO": [
+    {
+      "type": 0,
+      "value": "The relay name shown is not the same as the full URL entered."
+    }
+  ],
+  "saorw+": [
+    {
+      "type": 0,
+      "value": "Event Deletion Request"
+    }
+  ],
+  "sfL/O+": [
+    {
+      "type": 0,
+      "value": "Muted notes will not be shown"
+    }
+  ],
+  "t79a6U": [
+    {
+      "type": 0,
+      "value": "Connection Success:"
+    }
+  ],
+  "tDDiRL": [
+    {
+      "type": 0,
+      "value": "Interests list"
+    }
+  ],
+  "tFpT/O": [
+    {
+      "type": 0,
+      "value": "Release artifact sets"
+    }
+  ],
+  "tO1oq9": [
+    {
+      "type": 0,
+      "value": "Video Events"
+    }
+  ],
+  "tOdNiY": [
+    {
+      "type": 0,
+      "value": "Malam"
+    }
+  ],
+  "tRGdV1": [
+    {
+      "type": 0,
+      "value": "Versioned Encryption"
+    }
+  ],
+  "tU0ADf": [
+    {
+      "type": 0,
+      "value": "Unknown NIP-"
+    },
+    {
+      "type": 1,
+      "value": "x"
+    }
+  ],
+  "tVuVg9": [
+    {
+      "type": 0,
+      "value": "Video View Event"
+    }
+  ],
+  "tf1lIh": [
+    {
+      "type": 0,
+      "value": "Free"
+    }
+  ],
+  "th5lxp": [
+    {
+      "type": 0,
+      "value": "Mengirim catatan ke subset dari relay tulis Anda"
+    }
+  ],
+  "thnRpU": [
+    {
+      "type": 0,
+      "value": "Getting NIP-05 verified can help:"
+    }
+  ],
+  "tj6kdX": [
+    {
+      "type": 1,
+      "value": "sign"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "tjpYlr": [
+    {
+      "type": 0,
+      "value": "Metrik Relay"
+    }
+  ],
+  "ttxS0b": [
+    {
+      "type": 0,
+      "value": "Lencana Pendukung"
+    }
+  ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "Status"
+    }
+  ],
+  "u/vOPu": [
+    {
+      "type": 0,
+      "value": "Sudah dibayar"
+    }
+  ],
+  "u4I8q8": [
+    {
+      "type": 0,
+      "value": "Pin list"
+    }
+  ],
+  "u81G9+": [
+    {
+      "type": 0,
+      "value": "Uptime"
+    }
+  ],
+  "u9NoC1": [
+    {
+      "type": 0,
+      "value": "Name must be less than "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " characters"
+    }
+  ],
+  "uCk8r+": [
+    {
+      "type": 0,
+      "value": "Sudah memiliki akun?"
+    }
+  ],
+  "uD7Els": [
+    {
+      "type": 0,
+      "value": "External Identities in Profiles"
+    }
+  ],
+  "uJaMkO": [
+    {
+      "type": 0,
+      "value": "Relay list to receive DMs"
+    }
+  ],
+  "uSV4Ti": [
+    {
+      "type": 0,
+      "value": "Reposts need to be manually confirmed"
+    }
+  ],
+  "uc0din": [
+    {
+      "type": 0,
+      "value": "Mengirimkan 'sats split' ke"
+    }
+  ],
+  "ufvXH1": [
+    {
+      "type": 0,
+      "value": "Found "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " events"
+    }
+  ],
+  "uhu5aG": [
+    {
+      "type": 0,
+      "value": "Public"
+    }
+  ],
+  "un1nGw": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " notes"
+    }
+  ],
+  "usAvMr": [
+    {
+      "type": 0,
+      "value": "Edit Profile"
+    }
+  ],
+  "v8lolG": [
+    {
+      "type": 0,
+      "value": "Mulai chat"
+    }
+  ],
+  "vB3oQ/": [
+    {
+      "type": 0,
+      "value": "Must be a contact list or pubkey list"
+    }
+  ],
+  "vBsZhD": [
+    {
+      "type": 0,
+      "value": "Communities list"
+    }
+  ],
+  "vN5UH8": [
+    {
+      "type": 0,
+      "value": "Gambar Profil"
+    }
+  ],
+  "vU/Q5i": [
+    {
+      "type": 0,
+      "value": "This tool will search for the last event published by all of your follows and remove those who have not posted in 6 months"
+    }
+  ],
+  "vZ4quW": [
+    {
+      "type": 0,
+      "value": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."
+    }
+  ],
+  "vhlWFg": [
+    {
+      "type": 0,
+      "value": "Poll Options"
+    }
+  ],
+  "vlbWtt": [
+    {
+      "type": 0,
+      "value": "Dapatkan yang gratis"
+    }
+  ],
+  "voxBKC": [
+    {
+      "type": 0,
+      "value": "Followed by friends"
+    }
+  ],
+  "vxwnbh": [
+    {
+      "type": 0,
+      "value": "Amount of work to apply to all published events"
+    }
+  ],
+  "w1Fanr": [
+    {
+      "type": 0,
+      "value": "Perniagaan"
+    }
+  ],
+  "w6qrwX": [
+    {
+      "type": 0,
+      "value": "NSFW"
+    }
+  ],
+  "wEQDC6": [
+    {
+      "type": 0,
+      "value": "Edit"
+    }
+  ],
+  "wOyDTB": [
+    {
+      "type": 0,
+      "value": "File storage server list"
+    }
+  ],
+  "wSZR47": [
+    {
+      "type": 0,
+      "value": "Kirim"
+    }
+  ],
+  "wc9st7": [
+    {
+      "type": 0,
+      "value": "Media Attachments"
+    }
+  ],
+  "whSrs+": [
+    {
+      "type": 0,
+      "value": "Nostr Public Chat"
+    }
+  ],
+  "wih7iJ": [
+    {
+      "type": 0,
+      "value": "nama tlh di-blok"
+    }
+  ],
+  "wlWMuh": [
+    {
+      "type": 0,
+      "value": "Patches"
+    }
+  ],
+  "wofVHy": [
+    {
+      "type": 0,
+      "value": "Moderation"
+    }
+  ],
+  "wqyN/i": [
+    {
+      "type": 0,
+      "value": "Find out more info about "
+    },
+    {
+      "type": 1,
+      "value": "service"
+    },
+    {
+      "type": 0,
+      "value": " at "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "wtLjP6": [
+    {
+      "type": 0,
+      "value": "Salin ID"
+    }
+  ],
+  "x+3fl6": [
+    {
+      "type": 0,
+      "value": "My Relays"
+    }
+  ],
+  "x/Fx2P": [
+    {
+      "type": 0,
+      "value": "Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"
+    }
+  ],
+  "x82IOl": [
+    {
+      "type": 0,
+      "value": "Bisukan"
+    }
+  ],
+  "xEjBS7": [
+    {
+      "type": 0,
+      "value": "For you"
+    }
+  ],
+  "xIcAOU": [
+    {
+      "type": 0,
+      "value": "Votes by "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    }
+  ],
+  "xIoGG9": [
+    {
+      "type": 0,
+      "value": "Pergi ke"
+    }
+  ],
+  "xPCyu+": [
+    {
+      "type": 0,
+      "value": "nostr: URI scheme"
+    }
+  ],
+  "xaj9Ba": [
+    {
+      "type": 0,
+      "value": "Penyedia"
+    }
+  ],
+  "xbVgIm": [
+    {
+      "type": 0,
+      "value": "Automatically load media"
+    }
+  ],
+  "xhQMeQ": [
+    {
+      "type": 0,
+      "value": "Expires"
+    }
+  ],
+  "xl4s/X": [
+    {
+      "type": 0,
+      "value": "Additional Terms:"
+    }
+  ],
+  "xmcVZ0": [
+    {
+      "type": 0,
+      "value": "Search"
+    }
+  ],
+  "xybOUv": [
+    {
+      "type": 0,
+      "value": "FAN"
+    }
+  ],
+  "y/bmsG": [
+    {
+      "type": 0,
+      "value": "Allow"
+    }
+  ],
+  "y1Z3or": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
+  "yAztTU": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " eSats"
+    }
+  ],
+  "yCLnBC": [
+    {
+      "type": 0,
+      "value": "LNURL or Lightning Address"
+    }
+  ],
+  "yLzgxH": [
+    {
+      "type": 0,
+      "value": "Popular Relays"
+    }
+  ],
+  "yeX8yA": [
+    {
+      "type": 0,
+      "value": "Native App"
+    }
+  ],
+  "z3UjXR": [
+    {
+      "type": 0,
+      "value": "Debug"
+    }
+  ],
+  "z3Ukvq": [
+    {
+      "type": 0,
+      "value": "Draft Long-form Content"
+    }
+  ],
+  "zCb8fX": [
+    {
+      "type": 0,
+      "value": "Weight"
+    }
+  ],
+  "zFegDD": [
+    {
+      "type": 0,
+      "value": "Contact"
+    }
+  ],
+  "zINlao": [
+    {
+      "type": 0,
+      "value": "Owner"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "All"
+    }
+  ],
+  "zcaOTs": [
+    {
+      "type": 0,
+      "value": "Zap amount in sats"
+    }
+  ],
+  "zi9MdS": [
+    {
+      "type": 0,
+      "value": "Chess (PGN)"
+    }
+  ],
+  "zm6qS1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " mins to read"
+    }
+  ],
+  "zonsdq": [
+    {
+      "type": 0,
+      "value": "Failed to load LNURL service"
+    }
+  ],
+  "zvCDao": [
+    {
+      "type": 0,
+      "value": "Automatically show latest notes"
+    }
+  ],
+  "zx0myy": [
+    {
+      "type": 0,
+      "value": "Participants"
+    }
+  ]
 }

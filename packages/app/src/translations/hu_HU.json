@@ -1,812 +1,5880 @@
 {
-  "+D82kt": "Biztos, hogy újra közzéteszi: {id}",
-  "+PzQ9Y": "Fizetés most",
-  "+QM0PJ": "A profil összes eseményének szinkronizálása a helyi gyorsítótárba",
-  "+QMdsy": "Átjátszó-statisztikák",
-  "+UjDmN": "Bejelentkezve írási hozzáféréssel",
-  "+Vxixo": "Titkos csoportos csevegés",
-  "+aZY2h": "Zap-típus",
-  "+tShPg": "követettek",
-  "+vA//S": "Bejelentkezések",
-  "+vIQlC": "A jövőbeni fogantyúkezelés érdekében győződjön meg arról, hogy elmentette a következő jelszót",
-  "+vVZ/G": "Kapcsolódás",
-  "+vj0U3": "szerkesztés",
-  "+xliwN": "{name} újra közzétette",
-  "/B8zwF": "Az Ön tere, ahogyan Ön szeretné 😌",
-  "/GCoTA": "Kiürítés",
-  "/JE/X+": "Fióktámogatás",
-  "/T7HId": "HTTP fájltárolási integráció",
-  "/Xf4UW": "Anonimizált használati metrikák küldése",
-  "/b1IHW": "Csoportos csevegési üzenet",
-  "/d6vEc": "Tegye a profilját könnyebben megtalálhatóvá és -megoszthatóbbá",
-  "/ioUrF": "Fájlból",
-  "/n5KSF": "{n} mmp",
-  "00LcfG": "Továbbiak betöltése",
-  "01iNut": "A Nostr-cím nem az Öné",
-  "08zn6O": "Kulcsok exportálása",
-  "0Azlrb": "Kezelés",
-  "0BUTMv": "Keresés…",
-  "0MndVW": "Általános LNDHub pénztárca (BTCPayServer / Alby / LNBits)",
-  "0jOEtS": "Érvénytelen LN-webcím",
-  "0kOBMu": "Említések kezelése",
-  "0mch2Y": "a név nem engedélyezett karaktereket tartalmaz",
-  "0siT4z": "Politika",
-  "0uoY11": "Állapot megjelenítése",
-  "0yO7wF": "{n} mp",
-  "0zASjL": "Mehet",
-  "1/BFEj": "git cuccok",
-  "1Mo59U": "Biztosan eltávolítja a könyvjelzőkből ezt a bejegyzést?",
-  "1R43+L": "Adja meg a Nostr Wallet Connect konfigurációt",
-  "1UWegE": "A kulcsairól, mindenképpen készítsen biztonsági másolatot!",
-  "1c4YST": "Kapcsolódva ehhez: {node} 🎉",
-  "1nYUGC": "{n} Követett",
-  "1o2BgB": "Aláírások ellenőrzése",
-  "1ozeyg": "Természet",
-  "1udzha": "Beszélgetések",
-  "2/2yg+": "Hozzáadás",
-  "25V4l1": "Profilplakát",
-  "25WwxF": "Még nincs fiókja?",
-  "28oKbu": "Moderált közösségek",
-  "29sHFE": "Wallet Connect",
-  "2BBGxX": "Tárgycímke szöveges eseményekben",
-  "2HIqeO": "Felhasználói hangulatjelek listája",
-  "2IFGap": "Adományozás",
-  "2LbrkB": "Adja meg a jelszavát",
-  "2O2sfp": "Befejezés",
-  "2Qsf9/": "Általános listák",
-  "2a2YiP": "{n} Könyvjelző",
-  "2k0Cv+": "({n}) embernek nem tetszik",
-  "2mcwT8": "Új bejegyzés",
-  "2oCF7O": "Barátok barátai által követve",
-  "2raFAu": "Alkalmazásspecifikus adatok",
-  "2ukA4d": "{n} ó",
-  "2z7Kky": "Legutóbbi cikkek",
-  "3/onCd": "Válaszok",
-  "39AHJm": "Regisztráció",
-  "3GWu6/": "Felhasználói állapotok",
-  "3KNMbJ": "Cikkek",
-  "3MKdAw": "Média-kiszolgálókon tárolt csomók",
-  "3QwfJR": "~{amount}",
-  "3adEeb": "{n} néző",
-  "3cc4Ct": "Világos",
-  "3gOsZq": "Fordítók",
-  "3kbIhS": "Cím nélkül",
-  "3qnJlS": "Ön {amount} satoshival szavaz",
-  "3t3kok": "{n,plural,one {}=1{{n} új bejegyzés} other{{n} új bejegyzés}}",
-  "3tVy+Z": "{n} Követő",
-  "3yk8fB": "Pénztárca",
-  "40VR6s": "Nostr Connect",
-  "41BSaT": "Összes esemény:",
-  "450Fty": "Nincs",
-  "47E53q": "Wiki",
-  "47FYwb": "Mégse",
-  "48zn4v": "Ajánlat",
-  "4IPzdn": "Elsődleges fejlesztők",
-  "4L2vUY": "Az Ön új NIP-05 fogantyúja a következő:",
-  "4MjsHk": "Élet",
-  "4OB335": "Nem tetszik",
-  "4P/kKm": "Privát kulcs-titkosítás",
-  "4Vmpt4": "A Nostr Plebs az egyik legelső NIP-05 szolgáltató a térben, és jó domain-kollekciót kínál elfogadható áron.",
-  "4Z3t5i": "Az imgproxy használata a képek tömörítéséhez",
-  "4emo2p": "Hiányzó átjátszók",
-  "4rYCjn": "Bejegyzés magamnak",
-  "4wgYpI": "Ajánlott alkalmazás-fogantyúk",
-  "5BVs2e": "Zap",
-  "5CB6zB": "Zap-megosztások",
-  "5PRWs7": "Értesítési API engedélyezve",
-  "5dfmvv": "Zap-cél",
-  "5oTnfy": "Fogantyú vásárlása",
-  "5qEWCr": "Fájlmetaadatok",
-  "5u6iEc": "Átvitel a nyilvános kulcsra",
-  "5vMmmR": "A Nostron a felhasználónevek nem egyediek. A nostr-cím az Ön egyedi, ember által olvasható címe, amely a regisztrációjától kezdődően egyedi.",
-  "5ykRmX": "Zap küldése",
-  "6/hB3S": "Visszajátszás megtekintése",
-  "60kEE3": "Lista némítása",
-  "62nsdy": "Újra",
-  "634VVz": "Nem sikerült kapcsolódni:",
-  "6559gb": "Új követési lista hossza {length}",
-  "65BmHb": "Nem sikerült a proxyképet a(z) {host} kiszolgálóról betölteni. Kattintson ide a közvetlen betöltéshez",
-  "6D4Hhn": "Átjátszó ajánlása",
-  "6KGebm": "Bélyeg",
-  "6OSOXl": "Indoklás: <i>{reason}</i>",
-  "6WWD34": "A következő keresése: {noteId}",
-  "6bgpn+": "Nem minden kliens támogatja ezt, ezért előfordulhat, hogy továbbra is úgy kapja a Zap-eket, mintha a Zap-megosztás nem lett volna konfigurálva",
-  "6ewQqw": "Tetszik neki(k): ({n})",
-  "6mr8WU": "Általa követve:",
-  "6pdxsi": "Extra metaadatmezők és címkék",
-  "6uMqL1": "Fizetetlen",
-  "6xNr8c": "Fiókváltás",
-  "6xap9L": "Jó",
-  "7+Domh": "Bejegyzések",
-  "712i26": "A proxy HODL-számlákat használ a fizetés továbbítására, ami elrejti az Ön csomópontjának pubkey-jét.",
-  "753yX5": "Felirat",
-  "769A8p": "Wiki-cikk",
-  "77nkEO": "Átjátszó információs dokumentuma",
-  "7LFU8U": "Keresési képesség",
-  "7UOvbT": "Offline",
-  "7YkSA2": "Közösségi vezető",
-  "7gMmSL": "Reakció",
-  "7hp70g": "NIP-05",
-  "7jfPsW": "Moduláris cikktartalom",
-  "7nAz/z": "Némítsa el a bizalmi hálózatán kívül álló személyek bejegyzéseit.",
-  "7pFGAQ": "Közeli átjátszók",
-  "8/vBbP": "({n}) alkalommal lett közzétéve",
-  "89q5wc": "Közzétevés megerősítése",
-  "8BDFvJ": "Az „e” és „p” címkék szöveges eseményekben való használatára vonatkozó konvenciók a kliensek számára",
-  "8ED/4u": "Válasz erre:",
-  "8HJxXG": "Regisztráció",
-  "8QDesP": "Zap {n} satoshi",
-  "8Rkoyb": "Kedvezményezett",
-  "8Y6bZQ": "Érvénytelen Zap-megosztás: {input}",
-  "8ZGqWl": "Csoportszál",
-  "8g2vyB": "túl hosszú név",
-  "8jmwT8": "bech32-kódolt egységek",
-  "8v1NN+": "Párosító kifejezés",
-  "8xdDLn": "Készletek követése",
-  "8za9Pq": "Apróhirdetés-piszkozat",
-  "9+Ddtu": "Következő",
-  "9HU8vw": "Válasz",
-  "9SvQep": "{n} Követett",
-  "9V0wg3": "Naptár Esemény RSVP",
-  "9WRlF4": "Küldés",
-  "9kO0VQ": "Némított bejegyzések elrejtése",
-  "9kSari": "Közzététel újrapróbálása",
-  "9pMqYs": "Nostr-cím",
-  "9wO4wJ": "Lightning-számla",
-  "A86fJ+": "Általános közzétevés",
-  "ADmfQT": "Szülő",
-  "ALdW69": "{name} bejegyzése",
-  "AN0Z7Q": "Némított szavak",
-  "ASRK0S": "Ez a felhasználó némítva van",
-  "AedFVZ": "Termék létrehozása vagy frissítése",
-  "Ai8VHU": "Korlátlan bejegyzésmegőrzés a Snort-átjátszókon",
-  "AkCxS/": "Indoklás",
-  "AktAk2": "Nagyszerű",
-  "Am8glJ": "Játék",
-  "AqGfF4": "Csatorna-létrehozás",
-  "Aujn2T": "Szám",
-  "Awq32I": "Push-értesítések",
-  "AxDOiG": "Hó",
-  "AyGauy": "Bejelentkezés",
-  "B4C47Y": "túl rövid név",
-  "B6+XJy": "Zap-elt",
-  "B6H7eJ": "nsec, npub, nip-05, hex",
-  "B7wvUM": "Hozzáadhat egy vagy több átjátszót, soronként egyet-egyet.",
-  "BGCM48": "Írási jog a Snort átjátszóhoz, 1 év eseménymegőrzéssel",
-  "BGGacK": "AI beágyazások / vektorlisták",
-  "BQW4gi": "Átjátszó-alapú csoportok",
-  "BWpuKl": "Frissítés",
-  "BfuAQ5": "Piactér UI/UX",
-  "BjNwZW": "Nostr-cím (nip05)",
-  "Blxcdx": "Átjátszó",
-  "Bo+O//": "HTTP-hitelesítés",
-  "C1LjMx": "Lightning-adomány",
-  "C6Lhhp": "Élő esemény",
-  "C7642/": "Közzétevés idézettként",
-  "C81/uG": "Kijelentkezés",
-  "C8FsOr": "Népszerű kiszolgálók",
-  "C8HhVE": "Javasolt követendő személyek",
-  "CA1efg": "Videókészletek",
-  "CHTbO3": "Nem sikerült betölteni a számlát ",
-  "CJx5Nd": "Profil-Zap-ek",
-  "CM+Cfj": "Követőlista",
-  "CM0k0d": "Követőlista tisztítása",
-  "CVWeJ6": "Felkapott emberek",
-  "CYkOCI": "és {count} további ember, akiket Ön követ",
-  "Cdxwi0": "Tárolójelentések",
-  "CmZ9ls": "{n} Némított",
-  "Coy6SH": "Naptár",
-  "CsCUYo": "{n} satoshi",
-  "Cu/K85": "A következő nyelvről fordítva: {lang}",
-  "CzHZoc": "Közösségi grafikon",
-  "D++Njw": "Szöveges bejegyzés-hivatkozások",
-  "D+KzKd": "Betöltéskor automatikusan Zap-eljen minden bejegyzést",
-  "D09wbg": "Kitűző meghatározása",
-  "D3idYv": "Beállítások",
-  "D9xTLE": "Csatornaelrejtési üzenet",
-  "DBiVK1": "Gyorsítótár",
-  "DKnriN": "Satoshi küldése",
-  "DZzCem": "A legutóbbi {n} bejegyzés megjelenítése",
-  "Dh3hbq": "Automatikus Zap-elés",
-  "Dn82AL": "Élő",
-  "DqUmXt": "Aukción értékesített termék",
-  "DrZqav": "A névjegy szövegének kevesebbnek kell lennie, mint {limit} karakter",
-  "DtYelJ": "Átvitel",
-  "Dx4ey3": "Összes átkapcsolása",
-  "E3oB+t": "Böngésző",
-  "E5ZIPD": "<big>{amount}</big> <small>satoshi</small>",
-  "EHqHsu": "Számla / Lightning-cím",
-  "EJbFi7": "Bejegyzések keresése",
-  "ELbg9p": "Adatszolgáltatók",
-  "EQKRE4": "Kitűzők megjelenítése a profiloldalakon",
-  "EWeVrH": "Reakció egy weboldalra",
-  "EWyQH5": "Globális",
-  "Ebl/B2": "Fordítás a következő nyelvre: {lang}",
-  "Ec+xLY": "Kurátori készletek",
-  "EcZF24": "Egyéni átjátszók",
-  "EcfIwB": "A felhasználónév elérhető",
-  "EcglP9": "Kulcs",
-  "EjFyoR": "On-chain adomány-cím",
-  "EnCOBJ": "Vásárlás",
-  "EsHX35": "Ismeretlen esemény: ({name}), próbálja helyette az alábbi alkalmazások egyikét!",
-  "F/6VqP": "Kiszolgáló",
-  "F3l7xL": "Fiók hozzáadása",
-  "F4eJ/3": "Apróhirdetések",
-  "FDguSC": "{n} Zap",
-  "FHWpHC": "Pénztárcaválasz",
-  "FHvSk3": "A kliensek hitelesítése az átjátszók felé",
-  "FMfjrl": "Állapotüzenetek megjelenítése a profiloldalakon",
-  "FSYL8G": "Felkapott felhasználók",
-  "FWJR1B": "Felhasználói csoportok",
-  "FcNSft": "Hibajegyek átirányítása HTTP-átirányítással a tárolt lightning-címre",
-  "FdhSU2": "Beszerzés most",
-  "FfYsOb": "Hiba történt!",
-  "FmXUJg": "követi Önt",
-  "FvanT6": "Fiókok",
-  "FzbSGg": "Önnek nincs médiakiszolgálója, próbáljon meg néhányat hozzáadni.",
-  "G/yZLu": "Eltávolítás",
-  "G1BGCg": "Pénztárca kiválasztása",
-  "G3A56c": "Előfizetett a Push-szolgáltatásra",
-  "GFOoEE": "Salt",
-  "GIqktu": "Támogatott NIP-ek",
-  "GL8aXW": "({n}) Könyvjelző",
-  "GSye7T": "Lightning-cím",
-  "GUlSVG": "Szerezze be a hozzá tartozó Snort nostr-címet",
-  "Gcn9NQ": "Mágnes-hivatkozás",
-  "GpkNYn": "Torrent",
-  "GqQeu/": "Érvénytelen Lightning-cím",
-  "GspYR7": "{n} embernek nem tetszik",
-  "Gxcr08": "Esemény közvetítése",
-  "H+vHiz": "Hex kulcs…",
-  "H/oroO": "Ismeretlen események feldolgozása",
-  "H0JBH6": "Kijelentkezés",
-  "H0OG3T": "Vezetői információk",
-  "H1GTaC": "Könyvjelzőlista",
-  "H6/kLh": "Rendelés fizetve!",
-  "HAlOn1": "Név",
-  "HFls6j": "a név később elérhető lesz",
-  "HOzFdo": "Némított",
-  "HWbkEK": "Ürítse ki a gyorsítótárat és töltse be újra",
-  "HbefNb": "Pénztárca megnyitása",
-  "HhcAVH": "Ön nem követi ezt a személyt, kattintson a következő hivatkozásra a média betöltéséhez a webhelyről: <i>{link}</i>, vagy frissítse <a><i>beállításait</i></a>, hogy a média-tartalmakat mindig mindenkitől betöltse.",
-  "HpAmQZ": "Vélemények az átjátszóról",
-  "HqRNN8": "Támogatás",
-  "HzSFeV": "Lejárati időbélyeg",
-  "I0tYZf": "Állomás létrehozása vagy frissítése",
-  "I1AoOu": "Legutóbbi hozzászólás ekkor: {time}",
-  "IEwZvs": "Biztosan megszünteti ennek a bejegyzésnek a kitűzését?",
-  "IIOul1": "Fiókadatok",
-  "IKKHqV": "Követettek",
-  "IOu4Xh": "{tier} előfizetőnek kell lennie ahhoz, hogy hozzáférjen a(z) {app}-fedélzethez",
-  "IVbtTS": "Az összes Zap-elése {n} satoshival",
-  "IWz1ta": "Automatikus fordítás",
-  "IcHcWj": "Utoljára látta:",
-  "Ig9/a1": "{n} satoshi elküldve neki: {name}",
-  "IgsWFG": "Nem követi senki azok közül, akiket Ön követ",
-  "IoQq+a": "Kattintson ide a betöltéshez",
-  "IvjoDS": "Kapcsolódott",
-  "Ix8l+B": "Felkapott bejegyzések",
-  "J+dIsA": "Előfizetések",
-  "J1iLmb": "Az értesítések nincsenek engedélyezve",
-  "J2HeQ+": "Szavak vesszővel elválasztva, például: 1. szó, 2. szó, 3. szó",
-  "J2Q92B": "Hangulatjel-készletek",
-  "J6N9xl": "Bejelentkezés Android aláíró segítségével",
-  "JCIgkj": "Felhasználónév",
-  "JGrt9q": "Satoshi küldése neki: {name}",
-  "JHEHCk": "({n}) Zap",
-  "JIVWWA": "Sport",
-  "JPFYIM": "Nincs Lightning-cím",
-  "JSx7y9": "Fizessen elő a(z) {site_name} {plan} webhelyre {price} áron, és megkapja a következő jutalmakat",
-  "JeoS4y": "Újra közzétevés",
-  "Jh5zKH": "Átjátszólista keresése",
-  "JjGgXI": "Felhasználók keresése",
-  "JkLHGw": "Weboldal",
-  "JmcxzF": "Az átjátszók olyan kiszolgálók, amelyekhez az események küldésekor és fogadásakor kapcsolódik. Törekedjen 4-8 átjátszóval való kapcsolatra.",
-  "JymXbw": "Nyilvános kulcs",
-  "K1wl1/": "Átlagos várakozási idő:",
-  "K3r6DQ": "Törlés",
-  "K7AkdL": "Megjelenítés",
-  "K9zklU": "Külső tartalom-azonosítók",
-  "KAhAcM": "Adja meg az LNDHub konfigurációt",
-  "KGmQjH": "Kiemelések",
-  "KJryGq": "Élő csevegési üzenet",
-  "KQvWvD": "Törölve",
-  "KT9nox": "Védett események",
-  "KahimY": "Ismeretlen eseménytípus: {kind}",
-  "KipVeG": "A Nostr kulcsok leképezése DNS-alapú internetes azonosítókra",
-  "KtsyO0": "Adja meg a Pin-kódot",
-  "KyRp/q": "Pénztárca-kérés",
-  "LBAnc7": "Megtekintés felhasználóként?",
-  "LEmxc8": "Zap-célok",
-  "LKw/ue": "Ellenőrizze a forráskódot {link}",
-  "LR1XjT": "A Pin-kód túl rövid",
-  "LXxsbk": "Névtelen",
-  "LgbKvU": "Hozzászólás",
-  "LhLvRx": "A névnek 8 és 15 karakter között kell lennie",
-  "LmdPXO": "A Nostr-címet nem lehet hitelesíteni",
-  "Lu5/Bj": "Megnyitás itt: Zapstr",
-  "LuDBLj": "Torrentek",
-  "Lw+I+J": "{n,plural,=0{{name} Zap-elt} other{{name} és további {n} ember Zap-elt}}",
-  "LwYmVi": "Ezen a bejegyzésen lévő Zap-ek a következő felhasználók között lesznek megosztva.",
-  "M3Oirc": "Hibaelhárító menü",
-  "M6C/px": "Váljon vezetővé",
-  "MBAYRO": "Megjeleníti az „Azonosító másolása a vágólapra” és az „Esemény másolása a vágólapra JSON-ként” opciót az egyes üzenetek kontextusmenüjében.",
-  "MI2jkA": "Nem érhető el:",
-  "MKDHEa": "Csatlakozás a szobához",
-  "MP54GY": "Pénztárca jelszava",
-  "MWTx65": "Alapértelmezett oldal",
-  "MYBYdJ": "Rövid szöveges bejegyzés",
-  "MYUBaG": "Kliens hitelesítése",
-  "MiMipu": "Beállítás mint elsődleges Nostr-cím (nip05)",
-  "MkQ4FX": "Proxy-címkék",
-  "Ml7+RS": "Küldje el a barátainak ezt a hivatkozást, és ossza meg velük a nostr varázsát.",
-  "Mrpkot": "Előfizetés kifizetése",
-  "MuVeKe": "Nostr-cím vásárlása",
-  "Muhna4": "Eredmények számlálása",
-  "MzRYWH": "{item} vásárlása",
-  "Mzizei": "Iris.to fiók",
-  "N2IrpM": "Megerősítés",
-  "NAidKb": "Értesítések",
-  "NAuFNH": "Már van egy ilyen típusú előfizetése, újítsa meg vagy fizesse ki",
-  "NDTFsp": " Feladat-visszajelzés",
-  "NepkXH": "Nem lehetséges {amount} satoshival szavazni, állítson be alapértelmezettnek más Zap-összeget",
-  "NndBJE": "Új felhasználók oldala",
-  "Nr9Yyx": "Újra közzétevések",
-  "NxzeNU": "Halott",
-  "O3Jz4E": "Használja a meghívókódját, hogy satoshit keressen!",
-  "OEW7yJ": "Zap",
-  "OIqnZN": "OpenTimestamps tanúsítványok az eseményekhez",
-  "OJHKIL": "Ajándékcsomagolás",
-  "OKhRC6": "Megosztás",
-  "OLEm6z": "Ismeretlen bejelentkezési hiba",
-  "OQSOJF": "Szerezzen be egy ingyenes Nostr-címet",
-  "OQXnew": "Az Ön előfizetése még aktív, így nem tudja megújítani",
-  "ORGv1Q": "Létrehozva",
-  "ORa81+": "Beolvasztási kérelmek",
-  "OoZgbB": "Nem sikerült frissíteni, próbálja meg újra",
-  "OuProE": "Hosszú formátumú tartalom",
-  "OxPdQ0": "Beolvasás {date}",
-  "P2o+ZZ": "Érvénytelen Nostr-cím",
-  "P61BTu": "Esemény másolása a vágólapra JSON-ként",
-  "P7FD0F": "Rendszer (Alapértelmezett)",
-  "P7nJT9": "Ma összesen (UTC): {amount} satoshi",
-  "P8JC58": "Távolság",
-  "PCSt5T": "Beállítások",
-  "PXQ0z0": "Fogadás a következő pénztárcába: <b>{wallet}</b>",
-  "PamNxw": "Ismeretlen fájlfejléc: {name}",
-  "Pe0ogR": "Téma",
-  "PrsIg7": "A reakciók minden oldalon megjelennek, de ha letiltja őket nem jelennek meg",
-  "QDFTjG": "{n} átjátszó",
-  "QJfhKt": "A privát kulcs olyan, mint egy jelszó, de nem lehet visszaállítani. Vigyázzon rá gondosan, és soha ne mutassa meg senkinek. Ha valaki a privát kulcsát egyszer megszerzi, örökre hozzáférhet az Ön fiókjához.",
-  "QWhotP": "A Zap-gyűjtő csak akkor működik, ha a támogatott pénztárcakapcsolatok egyikét használja (WebLN, LNC, LNDHub vagy Nostr Wallet Connect)",
-  "QpaLA3": "Csatornaüzenet",
-  "Qxv0B2": "Jelenleg a Zap-gyüjtőben {number} satoshi van.",
-  "Qy6/Ft": "Privát közvetlen üzenetek",
-  "R/6nsx": "Előfizetés",
-  "R81upa": "Emberek, akiket Ön követ",
-  "RDha9y": "A szolgáltatás-feldolgozó nem fut",
-  "RRz1cA": "A tároló állapotjelentései",
-  "RSr2uB": "A felhasználónév csak kisbetűket és számokat tartalmazhat",
-  "RahCRH": "Lejárt",
-  "RefZpK": "Rövid formátumú portrévideó-esemény",
-  "RfhLwC": "Általa: {author}",
-  "RhDAoS": "Biztosan törölni akarja a következőt?: {id}",
-  "RmxSZo": "Adatértékesítő-gépek",
-  "RoOyAh": "Átjátszók",
-  "Rs4kCE": "Könyvjelző",
-  "S/NV2G": "A következő bejegyzés betöltése: {id}",
-  "SFuk1v": "Engedélyek",
-  "SLZGPn": "A privát kulcs titkosításához adjon meg egy PIN-kódot. Ezt a PIN-kódot minden alkalommal meg kell adnia, amikor a következő oldalt megnyitja: {site}.",
-  "SMO+on": "Zap küldése neki: {name}",
-  "SOqbe9": "Lightning-cím frissítése",
-  "SP0+yi": "Előfizetés vásárlása",
-  "SW3TFA": "Az Ön által követett emberek által használt népszerű átjátszók.",
-  "SYQtZ7": "LN-címproxy",
-  "Sd0PKc": "Átjátszókészletek",
-  "SfwSIm": "Problémakövető",
-  "ShdEie": "Összes megjelölése olvasottként",
-  "Sjo1P4": "Egyéni",
-  "SmuYUd": "Hogyan hívhatjuk Önt?",
-  "Ss0sWu": "Fizetés most",
-  "SsUQnC": "Alkalmazásspecifikus adatok",
-  "StKzTE": "A bejegyzés szerzője <i>kényes témaként</i> jelölte meg ezt a bejegyzést",
-  "T83nqf": "Az Ön földrajzi elhelyezkedéséhez közeli átjátszók.",
-  "TDR5ge": "A bejegyzésekben található média bizonyos emberek számára automatikusan megjelenik, másoknak pedig egy hivatkozás lesz helyette",
-  "TGc5nI": "Fogantyú-információk",
-  "TH1fFo": "Telegram",
-  "TJo5E6": "Előnézet",
-  "TOG64f": "Helyi átjátszó használata",
-  "TP/cMX": "Véget ért",
-  "TaeBqw": "Bejelentkezés Nostr kiterjesztéssel",
-  "TdTXXf": "Tudjon meg többet",
-  "TdtZQ5": "Crypto",
-  "Tdv6NY": "Érdeklődési készletek",
-  "TgDKhI": "Naptári események",
-  "TpgeGw": "Hex Salt…",
-  "Tpy00S": "Emberek",
-  "TvKqBp": "Tetszett",
-  "TwyMau": "Fiók",
-  "U1aPPi": "Hallgatás leállítása",
-  "U30H69": "Közösségi meghatározás",
-  "UJTWqI": "Eltávolítás az átjátszók közül",
-  "ULXFfP": "Fogadás",
-  "UNjfWJ": "Ellenőrizze az átjátszókról kapott összes esemény aláírását",
-  "UT7Nkj": "Új csevegés",
-  "UUPFlt": "A felhasználóknak el kell fogadniuk a tartalmi figyelmeztetést ahhoz, hogy megjelenjen az Ön bejegyzésének tartalma.",
-  "UaCh1c": "Kiszolgáló hozzáadása",
-  "Ub+AGc": "Bejelentkezés",
-  "Up5U7K": "Letiltás",
-  "Ups2/p": "Az Ön jelentkezése folyamatban van",
-  "UrKTqQ": "Önnek már van egy aktív iris.to fiókja",
-  "UsCzPc": "Ossza meg a személyes meghívóját a barátaival!",
-  "UxgyeY": "Az Ön ajánló kódja a következő: {code}",
-  "V20Og0": "Feliratozás",
-  "VOjC1i": "Válassza ki, hogy melyik feltöltési szolgáltatásba szeretné feltölteni a mellékleteket",
-  "VR5eHw": "Nyilvános kulcs (npub/nprofile)",
-  "VcwrfF": "Igen",
-  "VfhYxG": "A változások teljes listája {here} tekinthető meg",
-  "VlJkSk": "{n} némított",
-  "VnXp8Z": "Profilkép",
-  "W1yoZY": "Úgy tűnik, nincs előfizetése, a következő hivatkozáson keresztül szerezhet egyet: {link}",
-  "W2PiAr": "{n} Tiltott",
-  "W4SaxY": "Helyi",
-  "W9355R": "Némítás visszavonása",
-  "WeLEuL": "A kiszolgálóról",
-  "Wj5TbN": "Hibajegyek",
-  "WmZhfL": "Automatikusan lefordítja a bejegyzéseket az Ön helyi nyelvére",
-  "WvGmZT": "npub / nprofil / nostr-cím",
-  "X6tipZ": "Bejelentkezés kulccsal",
-  "X7xU8J": "nsec, npub, nip-05, hex, helyreállító-magmondat",
-  "XECMfW": "Használati metrikák küldése",
-  "XICsE8": "Fájlkiszolgálók",
-  "XPB8VV": "Alby pénztárca-kapcsolat",
-  "XQiFEl": "Követett emberek által használt kiszolgálók állapota",
-  "XSdWHA": "Beváltás",
-  "XXm7jJ": "Felkapott hashtagek",
-  "XgWvGA": "Reakciók",
-  "Xnimz0": "Küldés ebből a következő pénztárcából: <b>{wallet}</b>",
-  "Xopqkl": "Az alapértelmezett Zap-összeg {number} satoshi, a példaértékek kiszámítása ebből történik.",
-  "YDMrKK": "Felhasználók",
-  "YDURw6": "Szolgáltatás webcíme",
-  "YH2RKk": "Népszerű médiakiszolgálók.",
-  "YQZY/S": "Úgy tűnik, hogy nem követ elég embert, nézzen szét a következő helyen: {newUsersPage}, hogy felfedezzen olyan embereket, akiket követhet!",
-  "YR2I9M": "Nincsenek kulcsok, nincs {app}, Nincs mód a visszaállításra, ha nem készít biztonsági mentést. Csak egy percet vesz igénybe.",
-  "YU7ZYp": "Nyilvános csevegés",
-  "YXA3AH": "Reakciók engedélyezése",
-  "Yf3DwC": "Adjon meg egy pénztárcát az azonnali fizetések küldéséhez",
-  "YuoEb9": "Próbáljon ki egy másik átjátszót",
-  "Z48UEo": "Csatorna-metaadatok",
-  "Z4BMCZ": "Párosító kifejezés megadása",
-  "Z7kkeJ": "Átruházásos esemény-aláírás",
-  "ZFe9tl": "Bejegyzés készítése",
-  "ZKORll": "Aktiválás most",
-  "ZLmyG9": "Közreműködők",
-  "ZS+jRE": "Zap-megosztások küldése ide:",
-  "Zff6lu": "A felhasználónév iris.to/<b>{name}</b> Önnek van fenntartva!",
-  "ZlIh4/": "Titkosított közvetlen üzenetek",
-  "ZlmK/p": "{name} meghívta Önt ide: {app}",
-  "a1x4gD": "A médiakiszolgálók olyan médiát tárolnak, amelyet a bejegyzésekben megoszthat képként és videóként.",
-  "a5UPxh": "Finanszírozza a NIP-05 hitelesítési szolgáltatásokat nyújtó fejlesztőket és platformokat",
-  "a7TDNm": "A bejegyzések a globális- és a bejegyzések fülek alatt valós időben jelennek meg",
-  "aHje0o": "Név vagy becenév",
-  "aMaLBK": "Támogatott kiterjesztések",
-  "aRex7h": "{amount} satoshi kifizetve, amelynek díja {fee} satoshi",
-  "aSGz4J": "Kapcsolódás a saját LND csomópontjához a Lightning Node Connect segítségével",
-  "aWpBzj": "Továbbiak megjelenítése",
-  "abbGKq": "{n} km",
-  "ak3MTf": "Barátok meghívása",
-  "b12Goz": "Helyreállító-magmondat",
-  "b5vAk0": "Az Ön fogantyúja lightning-címként fog működni, és átirányítja a kiválasztott LN-webcímet vagy Lightning-címet.",
-  "bF1MYT": "Ön egy közösségi vezető, és <b>{percent}</b>-ot kap az ajánlott felhasználók előfizetéseiből!",
-  "bG00/W": "A szolgáltatás-feldolgozó fut",
-  "bJ+wrA": "Lista tisztításának kiszámítása",
-  "bLZL5a": "Cím beszerzése",
-  "bMphls": "Bejelentkezve csak olvasási hozzáféréssel",
-  "bQdA2k": "Érzékeny tartalom",
-  "bep9C3": "Nyilvános kulcs",
-  "bfvyfs": "Névtelen",
-  "bxv59V": "Csak most",
-  "c+1p0i": "Kedves némító-készletek",
-  "c+JYNI": "Nem",
-  "c2T+1B": "Átirányítások",
-  "c35bj2": "Ha kérdése van a NIP-05 rendelésével kapcsolatban, írjon közvetlen üzenetet ide: {link}",
-  "c3LlRO": "{n}KiB",
-  "c3g2hL": "Újraközvetítés",
-  "cFbU1B": "Albyt használ? Nyissa meg a következő hivatkozást az NWC konfigurációjának lekéréséhez: {link}!",
-  "cG/bKQ": "Beépített nostr-pénztárca kapcsolat",
-  "cHCwbF": "Fényképezés",
-  "cKbMRX": "Közvetlen üzenet",
-  "cPIKU2": "Követettek",
-  "cQfLWb": "Webcím…",
-  "cVcgLJ": "Médiakiszolgálók",
-  "cWx9t8": "Összes némítása",
-  "cg1VJ2": "Kapcsolódás pénztárcához",
-  "cnwHgH": "OpenTimestamps",
-  "cuP16y": "Több fiók támogatása",
-  "cuV2gK": "a név már regisztrálva van",
-  "cw1Ftc": "Élő tevékenységek",
-  "cyR7Kh": "Vissza",
-  "d+6YsV": "Listák a némításhoz:",
-  "d0qim7": "WoT szűrő",
-  "d2ebEu": "A Push-szolgáltatásra Ön nincs előfizetve",
-  "d7d0/x": "LN-cím",
-  "dK2CcV": "A nyilvános kulcs olyan, mint a felhasználónév, bárkivel megoszthatja.",
-  "dOQCL8": "Megjelenítendő név",
-  "dZZIGe": "Moduláris cikkfejléc",
-  "ddd3JX": "Népszerű hashtagek",
-  "deEeEI": "Regisztráció",
-  "djLctd": "Összeg satoshiban",
-  "dmcsBA": "Apróhirdetések",
-  "dmsiLv": "A(z) {n}-os alapértelmezett Zap-gyűjtő megosztása a(z) {site} fejlesztői számára lett beállítva, ezt bármikor letilthatja a(z) {link} oldalon.",
-  "e5x8FT": "Fajta",
-  "e61Jf3": "Hamarosan",
-  "e7VmYP": "A privát kulcs feloldásához írja be a PIN-kódot",
-  "e7qqly": "Az összes megjelölése olvasottként",
-  "eF0Re7": "Használjon Nostr-aláíró-kiterjesztést a bejelentkezéshez",
-  "eHAneD": "Reakció-hangulatjel",
-  "eJj8HD": "Hitelesítés beszerzése",
-  "eSzf2G": "Egyetlen {nIn} satoshis Zap a Zap-gyűjtőben {nOut} satoshit foglal le.",
-  "eW/Bj9": "Hírfolyam",
-  "eXT2QQ": "Csoportos csevegés",
-  "eZtOxB": "window.nostr képesség webböngészők számára",
-  "egib+2": "{n,plural,=1{és további {n}} other{és további {n}}}",
-  "ejEGdx": "Kezdőlap",
-  "eoV49s": "Gyenge",
-  "f1OxTe": "A közösségi vezetők olyan személyek, akik a nostr ökoszisztémát növelik azáltal, hogy aktívak a helyi közösségükben, és segítenek az új felhasználók felvételében. Bárki lehet közösségi vezető, de jelenleg csak kevesen viselik ezt a megtisztelő címet.",
-  "f2CAxA": "Kidobás",
-  "fBI91o": "Zap",
-  "fBlba3": "Köszönjük, hogy a(z) {site} oldalt használja, ha teheti fontolja meg az adományozást.",
-  "fLIvbC": "A Snort egy nyílt forráskódú projekt, amelyet szenvedélyes emberek építenek szabadidejükben, adományait nagyra értékeljük.",
-  "fOksnD": "Nem szavazhat, mert az LN-webcím szolgáltatója nem támogatja a Zap-elést",
-  "fQN+tq": "Tartalmi figyelmeztetés-címkével ellátott bejegyzések megjelenítése",
-  "fWZYP5": "Kitűzött",
-  "fX5RYm": "Válasszon ki néhány érdekes témát",
-  "filwqD": "Olvasás",
-  "fjAcWo": "Ajándékcsomagolások",
-  "flnGvv": "Mire gondol?",
-  "fqwcJ1": "On-chain adomány",
-  "fr+XYA": "Lightning Pub RPC",
-  "fsB/4p": "Mentve",
-  "fucxlm": "Média csatolása",
-  "furjvW": "Közvetítés megtekintése",
-  "g5pX+a": "Névjegy",
-  "g985Wp": "Nem sikerült elküldeni a szavazatot",
-  "gDzDRs": "Hangulatjel küldése, amikor egy bejegyzésre reagál",
-  "gXgY3+": "Nem minden kliens támogatja",
-  "gczcC5": "Előfizetés",
-  "geppt8": "{count} ({count2} a memóriában)",
-  "gjBiyj": "Betöltés…",
-  "gkMmvC": "Androidos aláíró-alkalmazás",
-  "gl1NeW": "Listák",
-  "go2/QF": "Felhasználói kiszolgálólista",
-  "grQ+mI": "Munka-bizonyítás (PoW)",
-  "gtNjNP": "Alapvető protokollfolyam-leírás",
-  "h7jvCs": "{site} együtt sokkal szórakoztatóbb!",
-  "h8XMJL": "Kitűzők",
-  "h9M0rW": "Felhasználói metaadatok",
-  "hF6IN2": "Követőlista tisztítása",
-  "hMQmIw": "Fiók szinkronizálása",
-  "hMzcSq": "Üzenetek",
-  "hRTfTR": "PRO",
-  "hY4lzx": "Támogatások",
-  "hYOE+U": "Meghívás",
-  "hicxcO": "Válaszok megjelenítése",
-  "hmZ3Bz": "Média",
-  "hniz8Z": "itt",
-  "hv/eRj": "Letiltott átjátszók listája",
-  "hvFRBo": "Interakció",
-  "i/dBAR": "Zap-gyűjtő",
-  "i5gBFz": "Itt jelennek meg az Ön által küldött és fogadott fizetések.",
-  "iCqGww": "({n}) reakció",
-  "iEoXYx": "DeepL fordító",
-  "iGT1eE": "Megakadályozza, hogy hamis fiókok utánozzák Önt",
-  "iHN12u": "Adminisztrátor",
-  "iICVoL": "{x} követett ({y} másolat)",
-  "iNWbVV": "Fogantyú",
-  "iXPL0Z": "Nem lehet bejelentkezni a privát kulccsal egy nem biztonságos kapcsolaton keresztül, használjon helyette egy Nostr-kulcskezelő-bővítményt",
-  "iYc3Ld": "Fizetések",
-  "icCxlA": "új felhasználók oldala",
-  "ieGrWo": "Követés",
-  "igUUst": "Csoportos csevegés-szálas válasz",
-  "ipHVx5": "Számla előállítása",
-  "itPgxd": "Profil",
-  "izWS4J": "Követés megszüntetése",
-  "j9xbzF": "Már van biztonsági mentésem",
-  "jA3OE/": "{n,plural,one {}=1{{n} satoshi} other{{n} satoshi}}",
-  "jAmfGl": "Az Ön {site_name}-előfizetése lejárt",
-  "jHa/ko": "Tisztítsa meg a hírfolyamát",
-  "jMzO1S": "Belső hiba: {msg}",
-  "jiAVXu": "Videóesemény",
-  "jvo0vs": "Mentés",
-  "jzgQ2z": "{n} Reakció",
-  "k0kCJp": "Elfogadás most",
-  "k2veDA": "Írás",
-  "k7sKNy": "A saját NIP-05 hitelesítési szolgáltatásunk, amelynek a használatával ennek az oldalnak a fejlesztését segítheti és ezzel egy speciális kitűzőt is szerezhet!",
-  "k9SQm1": "Olyan átjátszók, amelyekhez már korábban is csatlakozott, és megbízhatónak tűnnek.",
-  "kEZUR8": "Regisztráljon egy Iris felhasználónevet",
-  "kJYo0u": "{n,plural,one {}=0{{name} közzétette} other{{name} és további {n} ember közzétette}}",
-  "kKC9ya": "Pénztárca információ",
-  "kNd2FL": "Bejelentkezés Tidalba",
-  "kQAf2d": "Kiválasztás",
-  "kaaf1E": "most",
-  "kc79d3": "Témák",
-  "klCm96": "Közösségi bejegyzés jóváhagyása",
-  "kqPQJD": "Zap-gyűjtő konfigurálása",
-  "kuPHYE": "{n,plural,=0{{name} kedvelte} other{{name} és további {n} ember kedvelte}}",
-  "l+ikU1": "Minden ebben: {plan}",
-  "l3H1EK": "Barátok meghívása",
-  "l3nTjd": "Alapvető kulcs származtatása a helyreállító-magmondatból",
-  "lCILNz": "Vásárlás most",
-  "lD3+8a": "Kifizetés",
-  "lEnclp": "Saját események: {n}",
-  "lPWASz": "Snort nostr-cím",
-  "lTbT3s": "Pénztárca jelszava",
-  "lbr3Lq": "Hivatkozás másolása",
-  "lfOesV": "Nem Zap",
-  "lgg1KN": "fiókoldal",
-  "ll3xBp": "Kép-proxy szolgáltató",
-  "lnaT9F": "{n} követett",
-  "lsNFM1": "Kattintson a tartalom betöltéséhez innen: {link}",
-  "lvlPhZ": "Számla kifizetése",
-  "m/59y2": "Zap-kérés",
-  "m6h2Eg": "Fogantyú-ajánlás",
-  "mCEKiZ": "{n} bejegyzés elnémítva",
-  "mErPop": "Úgy tűnik, hogy Önnek még nincs, a következő hivatkozáson keresztül tud vásárolni egyet: {link}!",
-  "mFtdYh": "{type} dolgozó-átjátszó",
-  "mKAr6h": "Összes követése",
-  "mKh2HS": "Fájlfeltöltő-szolgáltatás",
-  "mKhgP9": "{n,plural,=0{} =1{Zap-elt} other{Zap-elt}}",
-  "mOFG3K": "Indítás",
-  "mfe8RW": "Lehetőség: {n}",
-  "mmPSWH": "Csak olvasható",
-  "n1Whvj": "Váltás",
-  "n5l7tP": "Időalapú naptáresemény",
-  "n8k1SG": "{n}MiB",
-  "nD4frR": "Az ajánlat megerősítése",
-  "nDejmx": "Letiltás megszüntetése",
-  "nGBrvw": "Könyvjelzők",
-  "nGGDsi": "Értesítések engedélyezve",
-  "nIchMQ": "Fióktevékenység keresése ({progress})",
-  "nPHrqp": "Coinjoin-gyűjtő",
-  "nUT0Lv": "Eszközök",
-  "nWQFic": "Megújítás",
-  "nihgfo": "Hallgassa meg ezt a cikket",
-  "nwZXeh": "{n} letiltott",
-  "o/gK53": "Fedélzet",
-  "o7e+nJ": "{n} követő",
-  "oJ+JJN": "Nincs találat :/",
-  "odFwjL": "Csak a követettek",
-  "ojzbwv": "Úgy tűnik, hogy Ön még nem rendelkezik Nostr-címmel, érdemes lenne beszereznie egyet! Tekintse meg a következőt: {link}",
-  "ozZ2Cj": "Kitűzőnyeremény",
-  "p4N05H": "Feltöltés",
-  "p9Ps2l": "{x}/{y} átjátszóval rendelkezik ({percent})",
-  "pEEBFk": "Megbízható kiszolgálók",
-  "pI+77w": "Letölthető biztonsági mentések a Snort-átjátszóról",
-  "pRess9": "Zap-gyűjtő",
-  "plOM0t": "Egyéni hangulatjel",
-  "plg2Ua": "Csatorna-felhasználó némítása",
-  "puLNUJ": "Kitűzés",
-  "pyjJ5f": "Nostr-piactér (a rugalmas piacterekhez)",
-  "pzTOmv": "Követők",
-  "q3OuMw": "Torrent-megjegyzés",
-  "qAY40L": "Dátum-alapú naptáresemény",
-  "qBYNMb": "Csoportszálas válasz",
-  "qD9EUF": "E-mail <> közvetlen üzenet-híd a Snort nostr-címhez",
-  "qDwvZ4": "Ismeretlen hiba",
-  "qFIVx4": "Profil-kitűzők",
-  "qMePPG": "Bejegyzés",
-  "qMx1sA": "Alapértelmezett Zap-összeg",
-  "qUJTsT": "Letiltva",
-  "qXCbgZ": "Feloldás",
-  "qZsKBR": "{tier} megújítása",
-  "qcJFEJ": "Értesítési API letiltva",
-  "qdGuQo": "Az Ön privát kulcsa (ne ossza meg senkivel)",
-  "qfmMQh": "Ez a bejegyzés némítva lett",
-  "qkvYUb": "Hozzáadás a profilhoz",
-  "qmJ8kD": " Nem sikerült lefordítani",
-  "qtWLmt": "Tetszik",
-  "qyJtWy": "Kevesebb megjelenítése",
-  "qydxOd": "Tudomány",
-  "qz9fty": "Helytelen Pin-kód",
-  "r3C4x/": "Szoftver",
-  "r5srDR": "Adja meg a pénztárca jelszavát",
-  "rAQG0X": "Átjátszólista-metaadat",
-  "rIsVe+": "Nyilvános csevegések listája",
-  "rMgF34": "Biztonsági mentés most",
-  "rRRXtB": "Lightning-Zap-ek",
-  "rT14Ow": "Átjátszó hozzáadása",
-  "reFEEC": "Bejelentés",
-  "rfuMjE": "(Alapértelmezett)",
-  "rkM7l8": "Titkosított közvetlen üzenet",
-  "rmdsT4": "{n} nap",
-  "rn52n9": "Nyilvános csevegőcsatornák",
-  "rx1i0i": "Rövid hivatkozás",
-  "sFUkSN": "Könyvjelző-készletek",
-  "sKDn4e": "Kitűzők megjelenítése",
-  "sUNhQE": "felhasználó",
-  "sZQzjQ": "Nem sikerült feldolgozni a Zap-megosztást: {input}",
-  "saInmO": "A megjelenített átjátszó neve nem egyezik a megadott teljes webcímmel.",
-  "saorw+": "Eseménytörlési kérelem",
-  "sfL/O+": "A némított bejegyzések nem fognak megjelenni",
-  "t79a6U": "Sikeres kapcsolat:",
-  "tDDiRL": "Érdeklődések listája",
-  "tFpT/O": "Tárgykészletek kiadása",
-  "tO1oq9": "Videóesemények",
-  "tOdNiY": "Sötét",
-  "tRGdV1": "Verzióval ellátott titkosítás",
-  "tU0ADf": "Ismeretlen NIP-{x}",
-  "tVuVg9": "Videómegtekintési esemény",
-  "tf1lIh": "Ingyenes",
-  "th5lxp": "Bejegyzés küldése az írási átjátszók egy részhalmazának",
-  "thnRpU": "A NIP-05 hitelesítése segíthet:",
-  "tj6kdX": "{sign} {amount} satoshi",
-  "tjpYlr": "Átjátszómetrikák",
-  "ttxS0b": "Támogatói kitűző",
-  "tzMNF3": "Állapot",
-  "u/vOPu": "Fizetve",
-  "u4I8q8": "Kitűzési lista",
-  "u81G9+": "Üzemidő",
-  "u9NoC1": "A névnek kevesebb karakterből kell állnia, mint {limit} karakter",
-  "uCk8r+": "Már van fiókja?",
-  "uD7Els": "Külső identitások a profilokban",
-  "uJaMkO": "Átjátszólista a közvetlen üzenetek fogadásához",
-  "uSV4Ti": "Az újra közzétevésekhez kézi megerősítés szükséges",
-  "uc0din": "Satoshi-megosztások küldése ide:",
-  "ufvXH1": "{n} esemény megtalálva",
-  "uhu5aG": "Nyilvános",
-  "un1nGw": "{n} bejegyzés",
-  "usAvMr": "Profil szerkesztése",
-  "v8lolG": "Csevegés indítása",
-  "vB3oQ/": "Egy névjegylistának vagy egy nyilvános kulcslistának kell lennie",
-  "vBsZhD": "Közösségek listája",
-  "vN5UH8": "Profilkép",
-  "vU/Q5i": "Ez az eszköz megkeresi az Ön összes követettje által utoljára közzétett eseményt, és eltávolítja azokat, akik 6 hónapja nem tettek közzé semmit.",
-  "vZ4quW": "A NIP-05 egy DNS alapú azonosítási specifikáció, ami segít az Ön valós személyének bizonyításában.",
-  "vhlWFg": "Szavazási beállítások",
-  "vlbWtt": "Szerezzen be ingyen egyet",
-  "voxBKC": "Barátok által követve",
-  "vxwnbh": "Az összes közzétett eseményre alkalmazandó munka mennyisége",
-  "w1Fanr": "Üzleti",
-  "w6qrwX": "Felnőtt tartalom",
-  "wEQDC6": "Szerkesztés",
-  "wOyDTB": "Fájltárolási kiszolgáló lista",
-  "wSZR47": "Beküldés",
-  "wc9st7": "Média-mellékletek",
-  "whSrs+": "Nostr nyilvános csevegés",
-  "wih7iJ": "a név le van tiltva",
-  "wlWMuh": "Foltok",
-  "wofVHy": "Moderáció",
-  "wqyN/i": "További információ a következőről: {service} a következő hivatkozáson keresztül érhető el: {link}",
-  "wtLjP6": "Azonosító másolása",
-  "x+3fl6": "Saját átjátszók",
-  "x/Fx2P": "Finanszírozza az Ön által használt szolgáltatásokat úgy, hogy az összes Zap egy részét egy támogatói gyűjtőből osztja meg!",
-  "x82IOl": "Némítás",
-  "xEjBS7": "Önnek",
-  "xIcAOU": "Szavazatok {type} szerint",
-  "xIoGG9": "Ugrás ide",
-  "xPCyu+": "nostr: URI-séma",
-  "xaj9Ba": "Szolgáltató",
-  "xbVgIm": "Média automatikus betöltése",
-  "xhQMeQ": "Lejár",
-  "xl4s/X": "További feltételek:",
-  "xmcVZ0": "Keresés",
-  "xybOUv": "RAJONGÓ",
-  "y/bmsG": "Engedélyezés",
-  "y1Z3or": "Nyelv",
-  "yAztTU": "{n} eSatoshi",
-  "yCLnBC": "LN-webcím vagy Lightning-cím",
-  "yLzgxH": "Népszerű átjátszók",
-  "yeX8yA": "Beépített alkalmazás",
-  "z3UjXR": "Hibakeresés",
-  "z3Ukvq": "Hosszú formátumú tartalom piszkozata",
-  "zCb8fX": "Súly",
-  "zFegDD": "Ismerős",
-  "zINlao": "Tulajdonos",
-  "zQvVDJ": "Összes",
-  "zcaOTs": "Zap-összeg satoshiban",
-  "zi9MdS": "Sakk (PGN)",
-  "zm6qS1": "olvasási idő: {n} perc",
-  "zonsdq": "Nem sikerült betölteni az LN-webcím-szolgáltatást",
-  "zvCDao": "Automatikusan jelenítse meg a legutóbbi bejegyzéseket",
-  "zx0myy": "Résztvevők"
+  "+D82kt": [
+    {
+      "type": 0,
+      "value": "Biztos, hogy újra közzéteszi: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "+PzQ9Y": [
+    {
+      "type": 0,
+      "value": "Fizetés most"
+    }
+  ],
+  "+QM0PJ": [
+    {
+      "type": 0,
+      "value": "A profil összes eseményének szinkronizálása a helyi gyorsítótárba"
+    }
+  ],
+  "+QMdsy": [
+    {
+      "type": 0,
+      "value": "Átjátszó-statisztikák"
+    }
+  ],
+  "+UjDmN": [
+    {
+      "type": 0,
+      "value": "Bejelentkezve írási hozzáféréssel"
+    }
+  ],
+  "+Vxixo": [
+    {
+      "type": 0,
+      "value": "Titkos csoportos csevegés"
+    }
+  ],
+  "+aZY2h": [
+    {
+      "type": 0,
+      "value": "Zap-típus"
+    }
+  ],
+  "+tShPg": [
+    {
+      "type": 0,
+      "value": "követettek"
+    }
+  ],
+  "+vA//S": [
+    {
+      "type": 0,
+      "value": "Bejelentkezések"
+    }
+  ],
+  "+vIQlC": [
+    {
+      "type": 0,
+      "value": "A jövőbeni fogantyúkezelés érdekében győződjön meg arról, hogy elmentette a következő jelszót"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "Kapcsolódás"
+    }
+  ],
+  "+vj0U3": [
+    {
+      "type": 0,
+      "value": "szerkesztés"
+    }
+  ],
+  "+xliwN": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " újra közzétette"
+    }
+  ],
+  "/B8zwF": [
+    {
+      "type": 0,
+      "value": "Az Ön tere, ahogyan Ön szeretné 😌"
+    }
+  ],
+  "/GCoTA": [
+    {
+      "type": 0,
+      "value": "Kiürítés"
+    }
+  ],
+  "/JE/X+": [
+    {
+      "type": 0,
+      "value": "Fióktámogatás"
+    }
+  ],
+  "/T7HId": [
+    {
+      "type": 0,
+      "value": "HTTP fájltárolási integráció"
+    }
+  ],
+  "/Xf4UW": [
+    {
+      "type": 0,
+      "value": "Anonimizált használati metrikák küldése"
+    }
+  ],
+  "/b1IHW": [
+    {
+      "type": 0,
+      "value": "Csoportos csevegési üzenet"
+    }
+  ],
+  "/d6vEc": [
+    {
+      "type": 0,
+      "value": "Tegye a profilját könnyebben megtalálhatóvá és -megoszthatóbbá"
+    }
+  ],
+  "/ioUrF": [
+    {
+      "type": 0,
+      "value": "Fájlból"
+    }
+  ],
+  "/n5KSF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " mmp"
+    }
+  ],
+  "00LcfG": [
+    {
+      "type": 0,
+      "value": "Továbbiak betöltése"
+    }
+  ],
+  "01iNut": [
+    {
+      "type": 0,
+      "value": "A Nostr-cím nem az Öné"
+    }
+  ],
+  "08zn6O": [
+    {
+      "type": 0,
+      "value": "Kulcsok exportálása"
+    }
+  ],
+  "0Azlrb": [
+    {
+      "type": 0,
+      "value": "Kezelés"
+    }
+  ],
+  "0BUTMv": [
+    {
+      "type": 0,
+      "value": "Keresés…"
+    }
+  ],
+  "0MndVW": [
+    {
+      "type": 0,
+      "value": "Általános LNDHub pénztárca (BTCPayServer / Alby / LNBits)"
+    }
+  ],
+  "0jOEtS": [
+    {
+      "type": 0,
+      "value": "Érvénytelen LN-webcím"
+    }
+  ],
+  "0kOBMu": [
+    {
+      "type": 0,
+      "value": "Említések kezelése"
+    }
+  ],
+  "0mch2Y": [
+    {
+      "type": 0,
+      "value": "a név nem engedélyezett karaktereket tartalmaz"
+    }
+  ],
+  "0siT4z": [
+    {
+      "type": 0,
+      "value": "Politika"
+    }
+  ],
+  "0uoY11": [
+    {
+      "type": 0,
+      "value": "Állapot megjelenítése"
+    }
+  ],
+  "0yO7wF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " mp"
+    }
+  ],
+  "0zASjL": [
+    {
+      "type": 0,
+      "value": "Mehet"
+    }
+  ],
+  "1/BFEj": [
+    {
+      "type": 0,
+      "value": "git cuccok"
+    }
+  ],
+  "1Mo59U": [
+    {
+      "type": 0,
+      "value": "Biztosan eltávolítja a könyvjelzőkből ezt a bejegyzést?"
+    }
+  ],
+  "1R43+L": [
+    {
+      "type": 0,
+      "value": "Adja meg a Nostr Wallet Connect konfigurációt"
+    }
+  ],
+  "1UWegE": [
+    {
+      "type": 0,
+      "value": "A kulcsairól, mindenképpen készítsen biztonsági másolatot!"
+    }
+  ],
+  "1c4YST": [
+    {
+      "type": 0,
+      "value": "Kapcsolódva ehhez: "
+    },
+    {
+      "type": 1,
+      "value": "node"
+    },
+    {
+      "type": 0,
+      "value": " 🎉"
+    }
+  ],
+  "1nYUGC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Követett"
+    }
+  ],
+  "1o2BgB": [
+    {
+      "type": 0,
+      "value": "Aláírások ellenőrzése"
+    }
+  ],
+  "1ozeyg": [
+    {
+      "type": 0,
+      "value": "Természet"
+    }
+  ],
+  "1udzha": [
+    {
+      "type": 0,
+      "value": "Beszélgetések"
+    }
+  ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "Hozzáadás"
+    }
+  ],
+  "25V4l1": [
+    {
+      "type": 0,
+      "value": "Profilplakát"
+    }
+  ],
+  "25WwxF": [
+    {
+      "type": 0,
+      "value": "Még nincs fiókja?"
+    }
+  ],
+  "28oKbu": [
+    {
+      "type": 0,
+      "value": "Moderált közösségek"
+    }
+  ],
+  "29sHFE": [
+    {
+      "type": 0,
+      "value": "Wallet Connect"
+    }
+  ],
+  "2BBGxX": [
+    {
+      "type": 0,
+      "value": "Tárgycímke szöveges eseményekben"
+    }
+  ],
+  "2HIqeO": [
+    {
+      "type": 0,
+      "value": "Felhasználói hangulatjelek listája"
+    }
+  ],
+  "2IFGap": [
+    {
+      "type": 0,
+      "value": "Adományozás"
+    }
+  ],
+  "2LbrkB": [
+    {
+      "type": 0,
+      "value": "Adja meg a jelszavát"
+    }
+  ],
+  "2O2sfp": [
+    {
+      "type": 0,
+      "value": "Befejezés"
+    }
+  ],
+  "2Qsf9/": [
+    {
+      "type": 0,
+      "value": "Általános listák"
+    }
+  ],
+  "2a2YiP": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Könyvjelző"
+    }
+  ],
+  "2k0Cv+": [
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ") embernek nem tetszik"
+    }
+  ],
+  "2mcwT8": [
+    {
+      "type": 0,
+      "value": "Új bejegyzés"
+    }
+  ],
+  "2oCF7O": [
+    {
+      "type": 0,
+      "value": "Barátok barátai által követve"
+    }
+  ],
+  "2raFAu": [
+    {
+      "type": 0,
+      "value": "Alkalmazásspecifikus adatok"
+    }
+  ],
+  "2ukA4d": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ó"
+    }
+  ],
+  "2z7Kky": [
+    {
+      "type": 0,
+      "value": "Legutóbbi cikkek"
+    }
+  ],
+  "3/onCd": [
+    {
+      "type": 0,
+      "value": "Válaszok"
+    }
+  ],
+  "39AHJm": [
+    {
+      "type": 0,
+      "value": "Regisztráció"
+    }
+  ],
+  "3GWu6/": [
+    {
+      "type": 0,
+      "value": "Felhasználói állapotok"
+    }
+  ],
+  "3KNMbJ": [
+    {
+      "type": 0,
+      "value": "Cikkek"
+    }
+  ],
+  "3MKdAw": [
+    {
+      "type": 0,
+      "value": "Média-kiszolgálókon tárolt csomók"
+    }
+  ],
+  "3QwfJR": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    }
+  ],
+  "3adEeb": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " néző"
+    }
+  ],
+  "3cc4Ct": [
+    {
+      "type": 0,
+      "value": "Világos"
+    }
+  ],
+  "3gOsZq": [
+    {
+      "type": 0,
+      "value": "Fordítók"
+    }
+  ],
+  "3kbIhS": [
+    {
+      "type": 0,
+      "value": "Cím nélkül"
+    }
+  ],
+  "3qnJlS": [
+    {
+      "type": 0,
+      "value": "Ön "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " satoshival szavaz"
+    }
+  ],
+  "3t3kok": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " új bejegyzés"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " új bejegyzés"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "3tVy+Z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Követő"
+    }
+  ],
+  "3yk8fB": [
+    {
+      "type": 0,
+      "value": "Pénztárca"
+    }
+  ],
+  "40VR6s": [
+    {
+      "type": 0,
+      "value": "Nostr Connect"
+    }
+  ],
+  "41BSaT": [
+    {
+      "type": 0,
+      "value": "Összes esemény:"
+    }
+  ],
+  "450Fty": [
+    {
+      "type": 0,
+      "value": "Nincs"
+    }
+  ],
+  "47E53q": [
+    {
+      "type": 0,
+      "value": "Wiki"
+    }
+  ],
+  "47FYwb": [
+    {
+      "type": 0,
+      "value": "Mégse"
+    }
+  ],
+  "48zn4v": [
+    {
+      "type": 0,
+      "value": "Ajánlat"
+    }
+  ],
+  "4IPzdn": [
+    {
+      "type": 0,
+      "value": "Elsődleges fejlesztők"
+    }
+  ],
+  "4L2vUY": [
+    {
+      "type": 0,
+      "value": "Az Ön új NIP-05 fogantyúja a következő:"
+    }
+  ],
+  "4MjsHk": [
+    {
+      "type": 0,
+      "value": "Élet"
+    }
+  ],
+  "4OB335": [
+    {
+      "type": 0,
+      "value": "Nem tetszik"
+    }
+  ],
+  "4P/kKm": [
+    {
+      "type": 0,
+      "value": "Privát kulcs-titkosítás"
+    }
+  ],
+  "4Vmpt4": [
+    {
+      "type": 0,
+      "value": "A Nostr Plebs az egyik legelső NIP-05 szolgáltató a térben, és jó domain-kollekciót kínál elfogadható áron."
+    }
+  ],
+  "4Z3t5i": [
+    {
+      "type": 0,
+      "value": "Az imgproxy használata a képek tömörítéséhez"
+    }
+  ],
+  "4emo2p": [
+    {
+      "type": 0,
+      "value": "Hiányzó átjátszók"
+    }
+  ],
+  "4rYCjn": [
+    {
+      "type": 0,
+      "value": "Bejegyzés magamnak"
+    }
+  ],
+  "4wgYpI": [
+    {
+      "type": 0,
+      "value": "Ajánlott alkalmazás-fogantyúk"
+    }
+  ],
+  "5BVs2e": [
+    {
+      "type": 0,
+      "value": "Zap"
+    }
+  ],
+  "5CB6zB": [
+    {
+      "type": 0,
+      "value": "Zap-megosztások"
+    }
+  ],
+  "5PRWs7": [
+    {
+      "type": 0,
+      "value": "Értesítési API engedélyezve"
+    }
+  ],
+  "5dfmvv": [
+    {
+      "type": 0,
+      "value": "Zap-cél"
+    }
+  ],
+  "5oTnfy": [
+    {
+      "type": 0,
+      "value": "Fogantyú vásárlása"
+    }
+  ],
+  "5qEWCr": [
+    {
+      "type": 0,
+      "value": "Fájlmetaadatok"
+    }
+  ],
+  "5u6iEc": [
+    {
+      "type": 0,
+      "value": "Átvitel a nyilvános kulcsra"
+    }
+  ],
+  "5vMmmR": [
+    {
+      "type": 0,
+      "value": "A Nostron a felhasználónevek nem egyediek. A nostr-cím az Ön egyedi, ember által olvasható címe, amely a regisztrációjától kezdődően egyedi."
+    }
+  ],
+  "5ykRmX": [
+    {
+      "type": 0,
+      "value": "Zap küldése"
+    }
+  ],
+  "6/hB3S": [
+    {
+      "type": 0,
+      "value": "Visszajátszás megtekintése"
+    }
+  ],
+  "60kEE3": [
+    {
+      "type": 0,
+      "value": "Lista némítása"
+    }
+  ],
+  "62nsdy": [
+    {
+      "type": 0,
+      "value": "Újra"
+    }
+  ],
+  "634VVz": [
+    {
+      "type": 0,
+      "value": "Nem sikerült kapcsolódni:"
+    }
+  ],
+  "6559gb": [
+    {
+      "type": 0,
+      "value": "Új követési lista hossza "
+    },
+    {
+      "type": 1,
+      "value": "length"
+    }
+  ],
+  "65BmHb": [
+    {
+      "type": 0,
+      "value": "Nem sikerült a proxyképet a(z) "
+    },
+    {
+      "type": 1,
+      "value": "host"
+    },
+    {
+      "type": 0,
+      "value": " kiszolgálóról betölteni. Kattintson ide a közvetlen betöltéshez"
+    }
+  ],
+  "6D4Hhn": [
+    {
+      "type": 0,
+      "value": "Átjátszó ajánlása"
+    }
+  ],
+  "6KGebm": [
+    {
+      "type": 0,
+      "value": "Bélyeg"
+    }
+  ],
+  "6OSOXl": [
+    {
+      "type": 0,
+      "value": "Indoklás: "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reason"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "6WWD34": [
+    {
+      "type": 0,
+      "value": "A következő keresése: "
+    },
+    {
+      "type": 1,
+      "value": "noteId"
+    }
+  ],
+  "6bgpn+": [
+    {
+      "type": 0,
+      "value": "Nem minden kliens támogatja ezt, ezért előfordulhat, hogy továbbra is úgy kapja a Zap-eket, mintha a Zap-megosztás nem lett volna konfigurálva"
+    }
+  ],
+  "6ewQqw": [
+    {
+      "type": 0,
+      "value": "Tetszik neki(k): ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "6mr8WU": [
+    {
+      "type": 0,
+      "value": "Általa követve:"
+    }
+  ],
+  "6pdxsi": [
+    {
+      "type": 0,
+      "value": "Extra metaadatmezők és címkék"
+    }
+  ],
+  "6uMqL1": [
+    {
+      "type": 0,
+      "value": "Fizetetlen"
+    }
+  ],
+  "6xNr8c": [
+    {
+      "type": 0,
+      "value": "Fiókváltás"
+    }
+  ],
+  "6xap9L": [
+    {
+      "type": 0,
+      "value": "Jó"
+    }
+  ],
+  "7+Domh": [
+    {
+      "type": 0,
+      "value": "Bejegyzések"
+    }
+  ],
+  "712i26": [
+    {
+      "type": 0,
+      "value": "A proxy HODL-számlákat használ a fizetés továbbítására, ami elrejti az Ön csomópontjának pubkey-jét."
+    }
+  ],
+  "753yX5": [
+    {
+      "type": 0,
+      "value": "Felirat"
+    }
+  ],
+  "769A8p": [
+    {
+      "type": 0,
+      "value": "Wiki-cikk"
+    }
+  ],
+  "77nkEO": [
+    {
+      "type": 0,
+      "value": "Átjátszó információs dokumentuma"
+    }
+  ],
+  "7LFU8U": [
+    {
+      "type": 0,
+      "value": "Keresési képesség"
+    }
+  ],
+  "7UOvbT": [
+    {
+      "type": 0,
+      "value": "Offline"
+    }
+  ],
+  "7YkSA2": [
+    {
+      "type": 0,
+      "value": "Közösségi vezető"
+    }
+  ],
+  "7gMmSL": [
+    {
+      "type": 0,
+      "value": "Reakció"
+    }
+  ],
+  "7hp70g": [
+    {
+      "type": 0,
+      "value": "NIP-05"
+    }
+  ],
+  "7jfPsW": [
+    {
+      "type": 0,
+      "value": "Moduláris cikktartalom"
+    }
+  ],
+  "7nAz/z": [
+    {
+      "type": 0,
+      "value": "Némítsa el a bizalmi hálózatán kívül álló személyek bejegyzéseit."
+    }
+  ],
+  "7pFGAQ": [
+    {
+      "type": 0,
+      "value": "Közeli átjátszók"
+    }
+  ],
+  "8/vBbP": [
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ") alkalommal lett közzétéve"
+    }
+  ],
+  "89q5wc": [
+    {
+      "type": 0,
+      "value": "Közzétevés megerősítése"
+    }
+  ],
+  "8BDFvJ": [
+    {
+      "type": 0,
+      "value": "Az „e” és „p” címkék szöveges eseményekben való használatára vonatkozó konvenciók a kliensek számára"
+    }
+  ],
+  "8ED/4u": [
+    {
+      "type": 0,
+      "value": "Válasz erre:"
+    }
+  ],
+  "8HJxXG": [
+    {
+      "type": 0,
+      "value": "Regisztráció"
+    }
+  ],
+  "8QDesP": [
+    {
+      "type": 0,
+      "value": "Zap "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " satoshi"
+    }
+  ],
+  "8Rkoyb": [
+    {
+      "type": 0,
+      "value": "Kedvezményezett"
+    }
+  ],
+  "8Y6bZQ": [
+    {
+      "type": 0,
+      "value": "Érvénytelen Zap-megosztás: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "8ZGqWl": [
+    {
+      "type": 0,
+      "value": "Csoportszál"
+    }
+  ],
+  "8g2vyB": [
+    {
+      "type": 0,
+      "value": "túl hosszú név"
+    }
+  ],
+  "8jmwT8": [
+    {
+      "type": 0,
+      "value": "bech32-kódolt egységek"
+    }
+  ],
+  "8v1NN+": [
+    {
+      "type": 0,
+      "value": "Párosító kifejezés"
+    }
+  ],
+  "8xdDLn": [
+    {
+      "type": 0,
+      "value": "Készletek követése"
+    }
+  ],
+  "8za9Pq": [
+    {
+      "type": 0,
+      "value": "Apróhirdetés-piszkozat"
+    }
+  ],
+  "9+Ddtu": [
+    {
+      "type": 0,
+      "value": "Következő"
+    }
+  ],
+  "9HU8vw": [
+    {
+      "type": 0,
+      "value": "Válasz"
+    }
+  ],
+  "9SvQep": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Követett"
+    }
+  ],
+  "9V0wg3": [
+    {
+      "type": 0,
+      "value": "Naptár Esemény RSVP"
+    }
+  ],
+  "9WRlF4": [
+    {
+      "type": 0,
+      "value": "Küldés"
+    }
+  ],
+  "9kO0VQ": [
+    {
+      "type": 0,
+      "value": "Némított bejegyzések elrejtése"
+    }
+  ],
+  "9kSari": [
+    {
+      "type": 0,
+      "value": "Közzététel újrapróbálása"
+    }
+  ],
+  "9pMqYs": [
+    {
+      "type": 0,
+      "value": "Nostr-cím"
+    }
+  ],
+  "9wO4wJ": [
+    {
+      "type": 0,
+      "value": "Lightning-számla"
+    }
+  ],
+  "A86fJ+": [
+    {
+      "type": 0,
+      "value": "Általános közzétevés"
+    }
+  ],
+  "ADmfQT": [
+    {
+      "type": 0,
+      "value": "Szülő"
+    }
+  ],
+  "ALdW69": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " bejegyzése"
+    }
+  ],
+  "AN0Z7Q": [
+    {
+      "type": 0,
+      "value": "Némított szavak"
+    }
+  ],
+  "ASRK0S": [
+    {
+      "type": 0,
+      "value": "Ez a felhasználó némítva van"
+    }
+  ],
+  "AedFVZ": [
+    {
+      "type": 0,
+      "value": "Termék létrehozása vagy frissítése"
+    }
+  ],
+  "Ai8VHU": [
+    {
+      "type": 0,
+      "value": "Korlátlan bejegyzésmegőrzés a Snort-átjátszókon"
+    }
+  ],
+  "AkCxS/": [
+    {
+      "type": 0,
+      "value": "Indoklás"
+    }
+  ],
+  "AktAk2": [
+    {
+      "type": 0,
+      "value": "Nagyszerű"
+    }
+  ],
+  "Am8glJ": [
+    {
+      "type": 0,
+      "value": "Játék"
+    }
+  ],
+  "AqGfF4": [
+    {
+      "type": 0,
+      "value": "Csatorna-létrehozás"
+    }
+  ],
+  "Aujn2T": [
+    {
+      "type": 0,
+      "value": "Szám"
+    }
+  ],
+  "Awq32I": [
+    {
+      "type": 0,
+      "value": "Push-értesítések"
+    }
+  ],
+  "AxDOiG": [
+    {
+      "type": 0,
+      "value": "Hó"
+    }
+  ],
+  "AyGauy": [
+    {
+      "type": 0,
+      "value": "Bejelentkezés"
+    }
+  ],
+  "B4C47Y": [
+    {
+      "type": 0,
+      "value": "túl rövid név"
+    }
+  ],
+  "B6+XJy": [
+    {
+      "type": 0,
+      "value": "Zap-elt"
+    }
+  ],
+  "B6H7eJ": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex"
+    }
+  ],
+  "B7wvUM": [
+    {
+      "type": 0,
+      "value": "Hozzáadhat egy vagy több átjátszót, soronként egyet-egyet."
+    }
+  ],
+  "BGCM48": [
+    {
+      "type": 0,
+      "value": "Írási jog a Snort átjátszóhoz, 1 év eseménymegőrzéssel"
+    }
+  ],
+  "BGGacK": [
+    {
+      "type": 0,
+      "value": "AI beágyazások / vektorlisták"
+    }
+  ],
+  "BQW4gi": [
+    {
+      "type": 0,
+      "value": "Átjátszó-alapú csoportok"
+    }
+  ],
+  "BWpuKl": [
+    {
+      "type": 0,
+      "value": "Frissítés"
+    }
+  ],
+  "BfuAQ5": [
+    {
+      "type": 0,
+      "value": "Piactér UI/UX"
+    }
+  ],
+  "BjNwZW": [
+    {
+      "type": 0,
+      "value": "Nostr-cím (nip05)"
+    }
+  ],
+  "Blxcdx": [
+    {
+      "type": 0,
+      "value": "Átjátszó"
+    }
+  ],
+  "Bo+O//": [
+    {
+      "type": 0,
+      "value": "HTTP-hitelesítés"
+    }
+  ],
+  "C1LjMx": [
+    {
+      "type": 0,
+      "value": "Lightning-adomány"
+    }
+  ],
+  "C6Lhhp": [
+    {
+      "type": 0,
+      "value": "Élő esemény"
+    }
+  ],
+  "C7642/": [
+    {
+      "type": 0,
+      "value": "Közzétevés idézettként"
+    }
+  ],
+  "C81/uG": [
+    {
+      "type": 0,
+      "value": "Kijelentkezés"
+    }
+  ],
+  "C8FsOr": [
+    {
+      "type": 0,
+      "value": "Népszerű kiszolgálók"
+    }
+  ],
+  "C8HhVE": [
+    {
+      "type": 0,
+      "value": "Javasolt követendő személyek"
+    }
+  ],
+  "CA1efg": [
+    {
+      "type": 0,
+      "value": "Videókészletek"
+    }
+  ],
+  "CHTbO3": [
+    {
+      "type": 0,
+      "value": "Nem sikerült betölteni a számlát "
+    }
+  ],
+  "CJx5Nd": [
+    {
+      "type": 0,
+      "value": "Profil-Zap-ek"
+    }
+  ],
+  "CM+Cfj": [
+    {
+      "type": 0,
+      "value": "Követőlista"
+    }
+  ],
+  "CM0k0d": [
+    {
+      "type": 0,
+      "value": "Követőlista tisztítása"
+    }
+  ],
+  "CVWeJ6": [
+    {
+      "type": 0,
+      "value": "Felkapott emberek"
+    }
+  ],
+  "CYkOCI": [
+    {
+      "type": 0,
+      "value": "és "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " további ember, akiket Ön követ"
+    }
+  ],
+  "Cdxwi0": [
+    {
+      "type": 0,
+      "value": "Tárolójelentések"
+    }
+  ],
+  "CmZ9ls": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Némított"
+    }
+  ],
+  "Coy6SH": [
+    {
+      "type": 0,
+      "value": "Naptár"
+    }
+  ],
+  "CsCUYo": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " satoshi"
+    }
+  ],
+  "Cu/K85": [
+    {
+      "type": 0,
+      "value": "A következő nyelvről fordítva: "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "CzHZoc": [
+    {
+      "type": 0,
+      "value": "Közösségi grafikon"
+    }
+  ],
+  "D++Njw": [
+    {
+      "type": 0,
+      "value": "Szöveges bejegyzés-hivatkozások"
+    }
+  ],
+  "D+KzKd": [
+    {
+      "type": 0,
+      "value": "Betöltéskor automatikusan Zap-eljen minden bejegyzést"
+    }
+  ],
+  "D09wbg": [
+    {
+      "type": 0,
+      "value": "Kitűző meghatározása"
+    }
+  ],
+  "D3idYv": [
+    {
+      "type": 0,
+      "value": "Beállítások"
+    }
+  ],
+  "D9xTLE": [
+    {
+      "type": 0,
+      "value": "Csatornaelrejtési üzenet"
+    }
+  ],
+  "DBiVK1": [
+    {
+      "type": 0,
+      "value": "Gyorsítótár"
+    }
+  ],
+  "DKnriN": [
+    {
+      "type": 0,
+      "value": "Satoshi küldése"
+    }
+  ],
+  "DZzCem": [
+    {
+      "type": 0,
+      "value": "A legutóbbi "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " bejegyzés megjelenítése"
+    }
+  ],
+  "Dh3hbq": [
+    {
+      "type": 0,
+      "value": "Automatikus Zap-elés"
+    }
+  ],
+  "Dn82AL": [
+    {
+      "type": 0,
+      "value": "Élő"
+    }
+  ],
+  "DqUmXt": [
+    {
+      "type": 0,
+      "value": "Aukción értékesített termék"
+    }
+  ],
+  "DrZqav": [
+    {
+      "type": 0,
+      "value": "A névjegy szövegének kevesebbnek kell lennie, mint "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " karakter"
+    }
+  ],
+  "DtYelJ": [
+    {
+      "type": 0,
+      "value": "Átvitel"
+    }
+  ],
+  "Dx4ey3": [
+    {
+      "type": 0,
+      "value": "Összes átkapcsolása"
+    }
+  ],
+  "E3oB+t": [
+    {
+      "type": 0,
+      "value": "Böngésző"
+    }
+  ],
+  "E5ZIPD": [
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "amount"
+        }
+      ],
+      "type": 8,
+      "value": "big"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "satoshi"
+        }
+      ],
+      "type": 8,
+      "value": "small"
+    }
+  ],
+  "EHqHsu": [
+    {
+      "type": 0,
+      "value": "Számla / Lightning-cím"
+    }
+  ],
+  "EJbFi7": [
+    {
+      "type": 0,
+      "value": "Bejegyzések keresése"
+    }
+  ],
+  "ELbg9p": [
+    {
+      "type": 0,
+      "value": "Adatszolgáltatók"
+    }
+  ],
+  "EQKRE4": [
+    {
+      "type": 0,
+      "value": "Kitűzők megjelenítése a profiloldalakon"
+    }
+  ],
+  "EWeVrH": [
+    {
+      "type": 0,
+      "value": "Reakció egy weboldalra"
+    }
+  ],
+  "EWyQH5": [
+    {
+      "type": 0,
+      "value": "Globális"
+    }
+  ],
+  "Ebl/B2": [
+    {
+      "type": 0,
+      "value": "Fordítás a következő nyelvre: "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "Ec+xLY": [
+    {
+      "type": 0,
+      "value": "Kurátori készletek"
+    }
+  ],
+  "EcZF24": [
+    {
+      "type": 0,
+      "value": "Egyéni átjátszók"
+    }
+  ],
+  "EcfIwB": [
+    {
+      "type": 0,
+      "value": "A felhasználónév elérhető"
+    }
+  ],
+  "EcglP9": [
+    {
+      "type": 0,
+      "value": "Kulcs"
+    }
+  ],
+  "EjFyoR": [
+    {
+      "type": 0,
+      "value": "On-chain adomány-cím"
+    }
+  ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "Vásárlás"
+    }
+  ],
+  "EsHX35": [
+    {
+      "type": 0,
+      "value": "Ismeretlen esemény: ("
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "), próbálja helyette az alábbi alkalmazások egyikét!"
+    }
+  ],
+  "F/6VqP": [
+    {
+      "type": 0,
+      "value": "Kiszolgáló"
+    }
+  ],
+  "F3l7xL": [
+    {
+      "type": 0,
+      "value": "Fiók hozzáadása"
+    }
+  ],
+  "F4eJ/3": [
+    {
+      "type": 0,
+      "value": "Apróhirdetések"
+    }
+  ],
+  "FDguSC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Zap"
+    }
+  ],
+  "FHWpHC": [
+    {
+      "type": 0,
+      "value": "Pénztárcaválasz"
+    }
+  ],
+  "FHvSk3": [
+    {
+      "type": 0,
+      "value": "A kliensek hitelesítése az átjátszók felé"
+    }
+  ],
+  "FMfjrl": [
+    {
+      "type": 0,
+      "value": "Állapotüzenetek megjelenítése a profiloldalakon"
+    }
+  ],
+  "FSYL8G": [
+    {
+      "type": 0,
+      "value": "Felkapott felhasználók"
+    }
+  ],
+  "FWJR1B": [
+    {
+      "type": 0,
+      "value": "Felhasználói csoportok"
+    }
+  ],
+  "FcNSft": [
+    {
+      "type": 0,
+      "value": "Hibajegyek átirányítása HTTP-átirányítással a tárolt lightning-címre"
+    }
+  ],
+  "FdhSU2": [
+    {
+      "type": 0,
+      "value": "Beszerzés most"
+    }
+  ],
+  "FfYsOb": [
+    {
+      "type": 0,
+      "value": "Hiba történt!"
+    }
+  ],
+  "FmXUJg": [
+    {
+      "type": 0,
+      "value": "követi Önt"
+    }
+  ],
+  "FvanT6": [
+    {
+      "type": 0,
+      "value": "Fiókok"
+    }
+  ],
+  "FzbSGg": [
+    {
+      "type": 0,
+      "value": "Önnek nincs médiakiszolgálója, próbáljon meg néhányat hozzáadni."
+    }
+  ],
+  "G/yZLu": [
+    {
+      "type": 0,
+      "value": "Eltávolítás"
+    }
+  ],
+  "G1BGCg": [
+    {
+      "type": 0,
+      "value": "Pénztárca kiválasztása"
+    }
+  ],
+  "G3A56c": [
+    {
+      "type": 0,
+      "value": "Előfizetett a Push-szolgáltatásra"
+    }
+  ],
+  "GFOoEE": [
+    {
+      "type": 0,
+      "value": "Salt"
+    }
+  ],
+  "GIqktu": [
+    {
+      "type": 0,
+      "value": "Támogatott NIP-ek"
+    }
+  ],
+  "GL8aXW": [
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ") Könyvjelző"
+    }
+  ],
+  "GSye7T": [
+    {
+      "type": 0,
+      "value": "Lightning-cím"
+    }
+  ],
+  "GUlSVG": [
+    {
+      "type": 0,
+      "value": "Szerezze be a hozzá tartozó Snort nostr-címet"
+    }
+  ],
+  "Gcn9NQ": [
+    {
+      "type": 0,
+      "value": "Mágnes-hivatkozás"
+    }
+  ],
+  "GpkNYn": [
+    {
+      "type": 0,
+      "value": "Torrent"
+    }
+  ],
+  "GqQeu/": [
+    {
+      "type": 0,
+      "value": "Érvénytelen Lightning-cím"
+    }
+  ],
+  "GspYR7": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " embernek nem tetszik"
+    }
+  ],
+  "Gxcr08": [
+    {
+      "type": 0,
+      "value": "Esemény közvetítése"
+    }
+  ],
+  "H+vHiz": [
+    {
+      "type": 0,
+      "value": "Hex kulcs…"
+    }
+  ],
+  "H/oroO": [
+    {
+      "type": 0,
+      "value": "Ismeretlen események feldolgozása"
+    }
+  ],
+  "H0JBH6": [
+    {
+      "type": 0,
+      "value": "Kijelentkezés"
+    }
+  ],
+  "H0OG3T": [
+    {
+      "type": 0,
+      "value": "Vezetői információk"
+    }
+  ],
+  "H1GTaC": [
+    {
+      "type": 0,
+      "value": "Könyvjelzőlista"
+    }
+  ],
+  "H6/kLh": [
+    {
+      "type": 0,
+      "value": "Rendelés fizetve!"
+    }
+  ],
+  "HAlOn1": [
+    {
+      "type": 0,
+      "value": "Név"
+    }
+  ],
+  "HFls6j": [
+    {
+      "type": 0,
+      "value": "a név később elérhető lesz"
+    }
+  ],
+  "HOzFdo": [
+    {
+      "type": 0,
+      "value": "Némított"
+    }
+  ],
+  "HWbkEK": [
+    {
+      "type": 0,
+      "value": "Ürítse ki a gyorsítótárat és töltse be újra"
+    }
+  ],
+  "HbefNb": [
+    {
+      "type": 0,
+      "value": "Pénztárca megnyitása"
+    }
+  ],
+  "HhcAVH": [
+    {
+      "type": 0,
+      "value": "Ön nem követi ezt a személyt, kattintson a következő hivatkozásra a média betöltéséhez a webhelyről: "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "link"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": ", vagy frissítse "
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "type": 0,
+              "value": "beállításait"
+            }
+          ],
+          "type": 8,
+          "value": "i"
+        }
+      ],
+      "type": 8,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": ", hogy a média-tartalmakat mindig mindenkitől betöltse."
+    }
+  ],
+  "HpAmQZ": [
+    {
+      "type": 0,
+      "value": "Vélemények az átjátszóról"
+    }
+  ],
+  "HqRNN8": [
+    {
+      "type": 0,
+      "value": "Támogatás"
+    }
+  ],
+  "HzSFeV": [
+    {
+      "type": 0,
+      "value": "Lejárati időbélyeg"
+    }
+  ],
+  "I0tYZf": [
+    {
+      "type": 0,
+      "value": "Állomás létrehozása vagy frissítése"
+    }
+  ],
+  "I1AoOu": [
+    {
+      "type": 0,
+      "value": "Legutóbbi hozzászólás ekkor: "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    }
+  ],
+  "IEwZvs": [
+    {
+      "type": 0,
+      "value": "Biztosan megszünteti ennek a bejegyzésnek a kitűzését?"
+    }
+  ],
+  "IIOul1": [
+    {
+      "type": 0,
+      "value": "Fiókadatok"
+    }
+  ],
+  "IKKHqV": [
+    {
+      "type": 0,
+      "value": "Követettek"
+    }
+  ],
+  "IOu4Xh": [
+    {
+      "type": 1,
+      "value": "tier"
+    },
+    {
+      "type": 0,
+      "value": " előfizetőnek kell lennie ahhoz, hogy hozzáférjen a(z) "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": "-fedélzethez"
+    }
+  ],
+  "IVbtTS": [
+    {
+      "type": 0,
+      "value": "Az összes Zap-elése "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " satoshival"
+    }
+  ],
+  "IWz1ta": [
+    {
+      "type": 0,
+      "value": "Automatikus fordítás"
+    }
+  ],
+  "IcHcWj": [
+    {
+      "type": 0,
+      "value": "Utoljára látta:"
+    }
+  ],
+  "Ig9/a1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " satoshi elküldve neki: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "IgsWFG": [
+    {
+      "type": 0,
+      "value": "Nem követi senki azok közül, akiket Ön követ"
+    }
+  ],
+  "IoQq+a": [
+    {
+      "type": 0,
+      "value": "Kattintson ide a betöltéshez"
+    }
+  ],
+  "IvjoDS": [
+    {
+      "type": 0,
+      "value": "Kapcsolódott"
+    }
+  ],
+  "Ix8l+B": [
+    {
+      "type": 0,
+      "value": "Felkapott bejegyzések"
+    }
+  ],
+  "J+dIsA": [
+    {
+      "type": 0,
+      "value": "Előfizetések"
+    }
+  ],
+  "J1iLmb": [
+    {
+      "type": 0,
+      "value": "Az értesítések nincsenek engedélyezve"
+    }
+  ],
+  "J2HeQ+": [
+    {
+      "type": 0,
+      "value": "Szavak vesszővel elválasztva, például: 1. szó, 2. szó, 3. szó"
+    }
+  ],
+  "J2Q92B": [
+    {
+      "type": 0,
+      "value": "Hangulatjel-készletek"
+    }
+  ],
+  "J6N9xl": [
+    {
+      "type": 0,
+      "value": "Bejelentkezés Android aláíró segítségével"
+    }
+  ],
+  "JCIgkj": [
+    {
+      "type": 0,
+      "value": "Felhasználónév"
+    }
+  ],
+  "JGrt9q": [
+    {
+      "type": 0,
+      "value": "Satoshi küldése neki: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "JHEHCk": [
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ") Zap"
+    }
+  ],
+  "JIVWWA": [
+    {
+      "type": 0,
+      "value": "Sport"
+    }
+  ],
+  "JPFYIM": [
+    {
+      "type": 0,
+      "value": "Nincs Lightning-cím"
+    }
+  ],
+  "JSx7y9": [
+    {
+      "type": 0,
+      "value": "Fizessen elő a(z) "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": " webhelyre "
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " áron, és megkapja a következő jutalmakat"
+    }
+  ],
+  "JeoS4y": [
+    {
+      "type": 0,
+      "value": "Újra közzétevés"
+    }
+  ],
+  "Jh5zKH": [
+    {
+      "type": 0,
+      "value": "Átjátszólista keresése"
+    }
+  ],
+  "JjGgXI": [
+    {
+      "type": 0,
+      "value": "Felhasználók keresése"
+    }
+  ],
+  "JkLHGw": [
+    {
+      "type": 0,
+      "value": "Weboldal"
+    }
+  ],
+  "JmcxzF": [
+    {
+      "type": 0,
+      "value": "Az átjátszók olyan kiszolgálók, amelyekhez az események küldésekor és fogadásakor kapcsolódik. Törekedjen 4-8 átjátszóval való kapcsolatra."
+    }
+  ],
+  "JymXbw": [
+    {
+      "type": 0,
+      "value": "Nyilvános kulcs"
+    }
+  ],
+  "K1wl1/": [
+    {
+      "type": 0,
+      "value": "Átlagos várakozási idő:"
+    }
+  ],
+  "K3r6DQ": [
+    {
+      "type": 0,
+      "value": "Törlés"
+    }
+  ],
+  "K7AkdL": [
+    {
+      "type": 0,
+      "value": "Megjelenítés"
+    }
+  ],
+  "K9zklU": [
+    {
+      "type": 0,
+      "value": "Külső tartalom-azonosítók"
+    }
+  ],
+  "KAhAcM": [
+    {
+      "type": 0,
+      "value": "Adja meg az LNDHub konfigurációt"
+    }
+  ],
+  "KGmQjH": [
+    {
+      "type": 0,
+      "value": "Kiemelések"
+    }
+  ],
+  "KJryGq": [
+    {
+      "type": 0,
+      "value": "Élő csevegési üzenet"
+    }
+  ],
+  "KQvWvD": [
+    {
+      "type": 0,
+      "value": "Törölve"
+    }
+  ],
+  "KT9nox": [
+    {
+      "type": 0,
+      "value": "Védett események"
+    }
+  ],
+  "KahimY": [
+    {
+      "type": 0,
+      "value": "Ismeretlen eseménytípus: "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    }
+  ],
+  "KipVeG": [
+    {
+      "type": 0,
+      "value": "A Nostr kulcsok leképezése DNS-alapú internetes azonosítókra"
+    }
+  ],
+  "KtsyO0": [
+    {
+      "type": 0,
+      "value": "Adja meg a Pin-kódot"
+    }
+  ],
+  "KyRp/q": [
+    {
+      "type": 0,
+      "value": "Pénztárca-kérés"
+    }
+  ],
+  "LBAnc7": [
+    {
+      "type": 0,
+      "value": "Megtekintés felhasználóként?"
+    }
+  ],
+  "LEmxc8": [
+    {
+      "type": 0,
+      "value": "Zap-célok"
+    }
+  ],
+  "LKw/ue": [
+    {
+      "type": 0,
+      "value": "Ellenőrizze a forráskódot "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "LR1XjT": [
+    {
+      "type": 0,
+      "value": "A Pin-kód túl rövid"
+    }
+  ],
+  "LXxsbk": [
+    {
+      "type": 0,
+      "value": "Névtelen"
+    }
+  ],
+  "LgbKvU": [
+    {
+      "type": 0,
+      "value": "Hozzászólás"
+    }
+  ],
+  "LhLvRx": [
+    {
+      "type": 0,
+      "value": "A névnek 8 és 15 karakter között kell lennie"
+    }
+  ],
+  "LmdPXO": [
+    {
+      "type": 0,
+      "value": "A Nostr-címet nem lehet hitelesíteni"
+    }
+  ],
+  "Lu5/Bj": [
+    {
+      "type": 0,
+      "value": "Megnyitás itt: Zapstr"
+    }
+  ],
+  "LuDBLj": [
+    {
+      "type": 0,
+      "value": "Torrentek"
+    }
+  ],
+  "Lw+I+J": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " Zap-elt"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " és további "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " ember Zap-elt"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "LwYmVi": [
+    {
+      "type": 0,
+      "value": "Ezen a bejegyzésen lévő Zap-ek a következő felhasználók között lesznek megosztva."
+    }
+  ],
+  "M3Oirc": [
+    {
+      "type": 0,
+      "value": "Hibaelhárító menü"
+    }
+  ],
+  "M6C/px": [
+    {
+      "type": 0,
+      "value": "Váljon vezetővé"
+    }
+  ],
+  "MBAYRO": [
+    {
+      "type": 0,
+      "value": "Megjeleníti az „Azonosító másolása a vágólapra” és az „Esemény másolása a vágólapra JSON-ként” opciót az egyes üzenetek kontextusmenüjében."
+    }
+  ],
+  "MI2jkA": [
+    {
+      "type": 0,
+      "value": "Nem érhető el:"
+    }
+  ],
+  "MKDHEa": [
+    {
+      "type": 0,
+      "value": "Csatlakozás a szobához"
+    }
+  ],
+  "MP54GY": [
+    {
+      "type": 0,
+      "value": "Pénztárca jelszava"
+    }
+  ],
+  "MWTx65": [
+    {
+      "type": 0,
+      "value": "Alapértelmezett oldal"
+    }
+  ],
+  "MYBYdJ": [
+    {
+      "type": 0,
+      "value": "Rövid szöveges bejegyzés"
+    }
+  ],
+  "MYUBaG": [
+    {
+      "type": 0,
+      "value": "Kliens hitelesítése"
+    }
+  ],
+  "MiMipu": [
+    {
+      "type": 0,
+      "value": "Beállítás mint elsődleges Nostr-cím (nip05)"
+    }
+  ],
+  "MkQ4FX": [
+    {
+      "type": 0,
+      "value": "Proxy-címkék"
+    }
+  ],
+  "Ml7+RS": [
+    {
+      "type": 0,
+      "value": "Küldje el a barátainak ezt a hivatkozást, és ossza meg velük a nostr varázsát."
+    }
+  ],
+  "Mrpkot": [
+    {
+      "type": 0,
+      "value": "Előfizetés kifizetése"
+    }
+  ],
+  "MuVeKe": [
+    {
+      "type": 0,
+      "value": "Nostr-cím vásárlása"
+    }
+  ],
+  "Muhna4": [
+    {
+      "type": 0,
+      "value": "Eredmények számlálása"
+    }
+  ],
+  "MzRYWH": [
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " vásárlása"
+    }
+  ],
+  "Mzizei": [
+    {
+      "type": 0,
+      "value": "Iris.to fiók"
+    }
+  ],
+  "N2IrpM": [
+    {
+      "type": 0,
+      "value": "Megerősítés"
+    }
+  ],
+  "NAidKb": [
+    {
+      "type": 0,
+      "value": "Értesítések"
+    }
+  ],
+  "NAuFNH": [
+    {
+      "type": 0,
+      "value": "Már van egy ilyen típusú előfizetése, újítsa meg vagy fizesse ki"
+    }
+  ],
+  "NDTFsp": [
+    {
+      "type": 0,
+      "value": " Feladat-visszajelzés"
+    }
+  ],
+  "NepkXH": [
+    {
+      "type": 0,
+      "value": "Nem lehetséges "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " satoshival szavazni, állítson be alapértelmezettnek más Zap-összeget"
+    }
+  ],
+  "NndBJE": [
+    {
+      "type": 0,
+      "value": "Új felhasználók oldala"
+    }
+  ],
+  "Nr9Yyx": [
+    {
+      "type": 0,
+      "value": "Újra közzétevések"
+    }
+  ],
+  "NxzeNU": [
+    {
+      "type": 0,
+      "value": "Halott"
+    }
+  ],
+  "O3Jz4E": [
+    {
+      "type": 0,
+      "value": "Használja a meghívókódját, hogy satoshit keressen!"
+    }
+  ],
+  "OEW7yJ": [
+    {
+      "type": 0,
+      "value": "Zap"
+    }
+  ],
+  "OIqnZN": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps tanúsítványok az eseményekhez"
+    }
+  ],
+  "OJHKIL": [
+    {
+      "type": 0,
+      "value": "Ajándékcsomagolás"
+    }
+  ],
+  "OKhRC6": [
+    {
+      "type": 0,
+      "value": "Megosztás"
+    }
+  ],
+  "OLEm6z": [
+    {
+      "type": 0,
+      "value": "Ismeretlen bejelentkezési hiba"
+    }
+  ],
+  "OQSOJF": [
+    {
+      "type": 0,
+      "value": "Szerezzen be egy ingyenes Nostr-címet"
+    }
+  ],
+  "OQXnew": [
+    {
+      "type": 0,
+      "value": "Az Ön előfizetése még aktív, így nem tudja megújítani"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "Létrehozva"
+    }
+  ],
+  "ORa81+": [
+    {
+      "type": 0,
+      "value": "Beolvasztási kérelmek"
+    }
+  ],
+  "OoZgbB": [
+    {
+      "type": 0,
+      "value": "Nem sikerült frissíteni, próbálja meg újra"
+    }
+  ],
+  "OuProE": [
+    {
+      "type": 0,
+      "value": "Hosszú formátumú tartalom"
+    }
+  ],
+  "OxPdQ0": [
+    {
+      "type": 0,
+      "value": "Beolvasás "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "P2o+ZZ": [
+    {
+      "type": 0,
+      "value": "Érvénytelen Nostr-cím"
+    }
+  ],
+  "P61BTu": [
+    {
+      "type": 0,
+      "value": "Esemény másolása a vágólapra JSON-ként"
+    }
+  ],
+  "P7FD0F": [
+    {
+      "type": 0,
+      "value": "Rendszer (Alapértelmezett)"
+    }
+  ],
+  "P7nJT9": [
+    {
+      "type": 0,
+      "value": "Ma összesen (UTC): "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " satoshi"
+    }
+  ],
+  "P8JC58": [
+    {
+      "type": 0,
+      "value": "Távolság"
+    }
+  ],
+  "PCSt5T": [
+    {
+      "type": 0,
+      "value": "Beállítások"
+    }
+  ],
+  "PXQ0z0": [
+    {
+      "type": 0,
+      "value": "Fogadás a következő pénztárcába: "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "PamNxw": [
+    {
+      "type": 0,
+      "value": "Ismeretlen fájlfejléc: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Pe0ogR": [
+    {
+      "type": 0,
+      "value": "Téma"
+    }
+  ],
+  "PrsIg7": [
+    {
+      "type": 0,
+      "value": "A reakciók minden oldalon megjelennek, de ha letiltja őket nem jelennek meg"
+    }
+  ],
+  "QDFTjG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " átjátszó"
+    }
+  ],
+  "QJfhKt": [
+    {
+      "type": 0,
+      "value": "A privát kulcs olyan, mint egy jelszó, de nem lehet visszaállítani. Vigyázzon rá gondosan, és soha ne mutassa meg senkinek. Ha valaki a privát kulcsát egyszer megszerzi, örökre hozzáférhet az Ön fiókjához."
+    }
+  ],
+  "QWhotP": [
+    {
+      "type": 0,
+      "value": "A Zap-gyűjtő csak akkor működik, ha a támogatott pénztárcakapcsolatok egyikét használja (WebLN, LNC, LNDHub vagy Nostr Wallet Connect)"
+    }
+  ],
+  "QpaLA3": [
+    {
+      "type": 0,
+      "value": "Csatornaüzenet"
+    }
+  ],
+  "Qxv0B2": [
+    {
+      "type": 0,
+      "value": "Jelenleg a Zap-gyüjtőben "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " satoshi van."
+    }
+  ],
+  "Qy6/Ft": [
+    {
+      "type": 0,
+      "value": "Privát közvetlen üzenetek"
+    }
+  ],
+  "R/6nsx": [
+    {
+      "type": 0,
+      "value": "Előfizetés"
+    }
+  ],
+  "R81upa": [
+    {
+      "type": 0,
+      "value": "Emberek, akiket Ön követ"
+    }
+  ],
+  "RDha9y": [
+    {
+      "type": 0,
+      "value": "A szolgáltatás-feldolgozó nem fut"
+    }
+  ],
+  "RRz1cA": [
+    {
+      "type": 0,
+      "value": "A tároló állapotjelentései"
+    }
+  ],
+  "RSr2uB": [
+    {
+      "type": 0,
+      "value": "A felhasználónév csak kisbetűket és számokat tartalmazhat"
+    }
+  ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "Lejárt"
+    }
+  ],
+  "RefZpK": [
+    {
+      "type": 0,
+      "value": "Rövid formátumú portrévideó-esemény"
+    }
+  ],
+  "RfhLwC": [
+    {
+      "type": 0,
+      "value": "Általa: "
+    },
+    {
+      "type": 1,
+      "value": "author"
+    }
+  ],
+  "RhDAoS": [
+    {
+      "type": 0,
+      "value": "Biztosan törölni akarja a következőt?: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "RmxSZo": [
+    {
+      "type": 0,
+      "value": "Adatértékesítő-gépek"
+    }
+  ],
+  "RoOyAh": [
+    {
+      "type": 0,
+      "value": "Átjátszók"
+    }
+  ],
+  "Rs4kCE": [
+    {
+      "type": 0,
+      "value": "Könyvjelző"
+    }
+  ],
+  "S/NV2G": [
+    {
+      "type": 0,
+      "value": "A következő bejegyzés betöltése: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "SFuk1v": [
+    {
+      "type": 0,
+      "value": "Engedélyek"
+    }
+  ],
+  "SLZGPn": [
+    {
+      "type": 0,
+      "value": "A privát kulcs titkosításához adjon meg egy PIN-kódot. Ezt a PIN-kódot minden alkalommal meg kell adnia, amikor a következő oldalt megnyitja: "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "SMO+on": [
+    {
+      "type": 0,
+      "value": "Zap küldése neki: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "SOqbe9": [
+    {
+      "type": 0,
+      "value": "Lightning-cím frissítése"
+    }
+  ],
+  "SP0+yi": [
+    {
+      "type": 0,
+      "value": "Előfizetés vásárlása"
+    }
+  ],
+  "SW3TFA": [
+    {
+      "type": 0,
+      "value": "Az Ön által követett emberek által használt népszerű átjátszók."
+    }
+  ],
+  "SYQtZ7": [
+    {
+      "type": 0,
+      "value": "LN-címproxy"
+    }
+  ],
+  "Sd0PKc": [
+    {
+      "type": 0,
+      "value": "Átjátszókészletek"
+    }
+  ],
+  "SfwSIm": [
+    {
+      "type": 0,
+      "value": "Problémakövető"
+    }
+  ],
+  "ShdEie": [
+    {
+      "type": 0,
+      "value": "Összes megjelölése olvasottként"
+    }
+  ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "Egyéni"
+    }
+  ],
+  "SmuYUd": [
+    {
+      "type": 0,
+      "value": "Hogyan hívhatjuk Önt?"
+    }
+  ],
+  "Ss0sWu": [
+    {
+      "type": 0,
+      "value": "Fizetés most"
+    }
+  ],
+  "SsUQnC": [
+    {
+      "type": 0,
+      "value": "Alkalmazásspecifikus adatok"
+    }
+  ],
+  "StKzTE": [
+    {
+      "type": 0,
+      "value": "A bejegyzés szerzője "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "kényes témaként"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": " jelölte meg ezt a bejegyzést"
+    }
+  ],
+  "T83nqf": [
+    {
+      "type": 0,
+      "value": "Az Ön földrajzi elhelyezkedéséhez közeli átjátszók."
+    }
+  ],
+  "TDR5ge": [
+    {
+      "type": 0,
+      "value": "A bejegyzésekben található média bizonyos emberek számára automatikusan megjelenik, másoknak pedig egy hivatkozás lesz helyette"
+    }
+  ],
+  "TGc5nI": [
+    {
+      "type": 0,
+      "value": "Fogantyú-információk"
+    }
+  ],
+  "TH1fFo": [
+    {
+      "type": 0,
+      "value": "Telegram"
+    }
+  ],
+  "TJo5E6": [
+    {
+      "type": 0,
+      "value": "Előnézet"
+    }
+  ],
+  "TOG64f": [
+    {
+      "type": 0,
+      "value": "Helyi átjátszó használata"
+    }
+  ],
+  "TP/cMX": [
+    {
+      "type": 0,
+      "value": "Véget ért"
+    }
+  ],
+  "TaeBqw": [
+    {
+      "type": 0,
+      "value": "Bejelentkezés Nostr kiterjesztéssel"
+    }
+  ],
+  "TdTXXf": [
+    {
+      "type": 0,
+      "value": "Tudjon meg többet"
+    }
+  ],
+  "TdtZQ5": [
+    {
+      "type": 0,
+      "value": "Crypto"
+    }
+  ],
+  "Tdv6NY": [
+    {
+      "type": 0,
+      "value": "Érdeklődési készletek"
+    }
+  ],
+  "TgDKhI": [
+    {
+      "type": 0,
+      "value": "Naptári események"
+    }
+  ],
+  "TpgeGw": [
+    {
+      "type": 0,
+      "value": "Hex Salt…"
+    }
+  ],
+  "Tpy00S": [
+    {
+      "type": 0,
+      "value": "Emberek"
+    }
+  ],
+  "TvKqBp": [
+    {
+      "type": 0,
+      "value": "Tetszett"
+    }
+  ],
+  "TwyMau": [
+    {
+      "type": 0,
+      "value": "Fiók"
+    }
+  ],
+  "U1aPPi": [
+    {
+      "type": 0,
+      "value": "Hallgatás leállítása"
+    }
+  ],
+  "U30H69": [
+    {
+      "type": 0,
+      "value": "Közösségi meghatározás"
+    }
+  ],
+  "UJTWqI": [
+    {
+      "type": 0,
+      "value": "Eltávolítás az átjátszók közül"
+    }
+  ],
+  "ULXFfP": [
+    {
+      "type": 0,
+      "value": "Fogadás"
+    }
+  ],
+  "UNjfWJ": [
+    {
+      "type": 0,
+      "value": "Ellenőrizze az átjátszókról kapott összes esemény aláírását"
+    }
+  ],
+  "UT7Nkj": [
+    {
+      "type": 0,
+      "value": "Új csevegés"
+    }
+  ],
+  "UUPFlt": [
+    {
+      "type": 0,
+      "value": "A felhasználóknak el kell fogadniuk a tartalmi figyelmeztetést ahhoz, hogy megjelenjen az Ön bejegyzésének tartalma."
+    }
+  ],
+  "UaCh1c": [
+    {
+      "type": 0,
+      "value": "Kiszolgáló hozzáadása"
+    }
+  ],
+  "Ub+AGc": [
+    {
+      "type": 0,
+      "value": "Bejelentkezés"
+    }
+  ],
+  "Up5U7K": [
+    {
+      "type": 0,
+      "value": "Letiltás"
+    }
+  ],
+  "Ups2/p": [
+    {
+      "type": 0,
+      "value": "Az Ön jelentkezése folyamatban van"
+    }
+  ],
+  "UrKTqQ": [
+    {
+      "type": 0,
+      "value": "Önnek már van egy aktív iris.to fiókja"
+    }
+  ],
+  "UsCzPc": [
+    {
+      "type": 0,
+      "value": "Ossza meg a személyes meghívóját a barátaival!"
+    }
+  ],
+  "UxgyeY": [
+    {
+      "type": 0,
+      "value": "Az Ön ajánló kódja a következő: "
+    },
+    {
+      "type": 1,
+      "value": "code"
+    }
+  ],
+  "V20Og0": [
+    {
+      "type": 0,
+      "value": "Feliratozás"
+    }
+  ],
+  "VOjC1i": [
+    {
+      "type": 0,
+      "value": "Válassza ki, hogy melyik feltöltési szolgáltatásba szeretné feltölteni a mellékleteket"
+    }
+  ],
+  "VR5eHw": [
+    {
+      "type": 0,
+      "value": "Nyilvános kulcs (npub/nprofile)"
+    }
+  ],
+  "VcwrfF": [
+    {
+      "type": 0,
+      "value": "Igen"
+    }
+  ],
+  "VfhYxG": [
+    {
+      "type": 0,
+      "value": "A változások teljes listája "
+    },
+    {
+      "type": 1,
+      "value": "here"
+    },
+    {
+      "type": 0,
+      "value": " tekinthető meg"
+    }
+  ],
+  "VlJkSk": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " némított"
+    }
+  ],
+  "VnXp8Z": [
+    {
+      "type": 0,
+      "value": "Profilkép"
+    }
+  ],
+  "W1yoZY": [
+    {
+      "type": 0,
+      "value": "Úgy tűnik, nincs előfizetése, a következő hivatkozáson keresztül szerezhet egyet: "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "W2PiAr": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Tiltott"
+    }
+  ],
+  "W4SaxY": [
+    {
+      "type": 0,
+      "value": "Helyi"
+    }
+  ],
+  "W9355R": [
+    {
+      "type": 0,
+      "value": "Némítás visszavonása"
+    }
+  ],
+  "WeLEuL": [
+    {
+      "type": 0,
+      "value": "A kiszolgálóról"
+    }
+  ],
+  "Wj5TbN": [
+    {
+      "type": 0,
+      "value": "Hibajegyek"
+    }
+  ],
+  "WmZhfL": [
+    {
+      "type": 0,
+      "value": "Automatikusan lefordítja a bejegyzéseket az Ön helyi nyelvére"
+    }
+  ],
+  "WvGmZT": [
+    {
+      "type": 0,
+      "value": "npub / nprofil / nostr-cím"
+    }
+  ],
+  "X6tipZ": [
+    {
+      "type": 0,
+      "value": "Bejelentkezés kulccsal"
+    }
+  ],
+  "X7xU8J": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex, helyreállító-magmondat"
+    }
+  ],
+  "XECMfW": [
+    {
+      "type": 0,
+      "value": "Használati metrikák küldése"
+    }
+  ],
+  "XICsE8": [
+    {
+      "type": 0,
+      "value": "Fájlkiszolgálók"
+    }
+  ],
+  "XPB8VV": [
+    {
+      "type": 0,
+      "value": "Alby pénztárca-kapcsolat"
+    }
+  ],
+  "XQiFEl": [
+    {
+      "type": 0,
+      "value": "Követett emberek által használt kiszolgálók állapota"
+    }
+  ],
+  "XSdWHA": [
+    {
+      "type": 0,
+      "value": "Beváltás"
+    }
+  ],
+  "XXm7jJ": [
+    {
+      "type": 0,
+      "value": "Felkapott hashtagek"
+    }
+  ],
+  "XgWvGA": [
+    {
+      "type": 0,
+      "value": "Reakciók"
+    }
+  ],
+  "Xnimz0": [
+    {
+      "type": 0,
+      "value": "Küldés ebből a következő pénztárcából: "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "Xopqkl": [
+    {
+      "type": 0,
+      "value": "Az alapértelmezett Zap-összeg "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " satoshi, a példaértékek kiszámítása ebből történik."
+    }
+  ],
+  "YDMrKK": [
+    {
+      "type": 0,
+      "value": "Felhasználók"
+    }
+  ],
+  "YDURw6": [
+    {
+      "type": 0,
+      "value": "Szolgáltatás webcíme"
+    }
+  ],
+  "YH2RKk": [
+    {
+      "type": 0,
+      "value": "Népszerű médiakiszolgálók."
+    }
+  ],
+  "YQZY/S": [
+    {
+      "type": 0,
+      "value": "Úgy tűnik, hogy nem követ elég embert, nézzen szét a következő helyen: "
+    },
+    {
+      "type": 1,
+      "value": "newUsersPage"
+    },
+    {
+      "type": 0,
+      "value": ", hogy felfedezzen olyan embereket, akiket követhet!"
+    }
+  ],
+  "YR2I9M": [
+    {
+      "type": 0,
+      "value": "Nincsenek kulcsok, nincs "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": ", Nincs mód a visszaállításra, ha nem készít biztonsági mentést. Csak egy percet vesz igénybe."
+    }
+  ],
+  "YU7ZYp": [
+    {
+      "type": 0,
+      "value": "Nyilvános csevegés"
+    }
+  ],
+  "YXA3AH": [
+    {
+      "type": 0,
+      "value": "Reakciók engedélyezése"
+    }
+  ],
+  "Yf3DwC": [
+    {
+      "type": 0,
+      "value": "Adjon meg egy pénztárcát az azonnali fizetések küldéséhez"
+    }
+  ],
+  "YuoEb9": [
+    {
+      "type": 0,
+      "value": "Próbáljon ki egy másik átjátszót"
+    }
+  ],
+  "Z48UEo": [
+    {
+      "type": 0,
+      "value": "Csatorna-metaadatok"
+    }
+  ],
+  "Z4BMCZ": [
+    {
+      "type": 0,
+      "value": "Párosító kifejezés megadása"
+    }
+  ],
+  "Z7kkeJ": [
+    {
+      "type": 0,
+      "value": "Átruházásos esemény-aláírás"
+    }
+  ],
+  "ZFe9tl": [
+    {
+      "type": 0,
+      "value": "Bejegyzés készítése"
+    }
+  ],
+  "ZKORll": [
+    {
+      "type": 0,
+      "value": "Aktiválás most"
+    }
+  ],
+  "ZLmyG9": [
+    {
+      "type": 0,
+      "value": "Közreműködők"
+    }
+  ],
+  "ZS+jRE": [
+    {
+      "type": 0,
+      "value": "Zap-megosztások küldése ide:"
+    }
+  ],
+  "Zff6lu": [
+    {
+      "type": 0,
+      "value": "A felhasználónév iris.to/"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "name"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " Önnek van fenntartva!"
+    }
+  ],
+  "ZlIh4/": [
+    {
+      "type": 0,
+      "value": "Titkosított közvetlen üzenetek"
+    }
+  ],
+  "ZlmK/p": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " meghívta Önt ide: "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    }
+  ],
+  "a1x4gD": [
+    {
+      "type": 0,
+      "value": "A médiakiszolgálók olyan médiát tárolnak, amelyet a bejegyzésekben megoszthat képként és videóként."
+    }
+  ],
+  "a5UPxh": [
+    {
+      "type": 0,
+      "value": "Finanszírozza a NIP-05 hitelesítési szolgáltatásokat nyújtó fejlesztőket és platformokat"
+    }
+  ],
+  "a7TDNm": [
+    {
+      "type": 0,
+      "value": "A bejegyzések a globális- és a bejegyzések fülek alatt valós időben jelennek meg"
+    }
+  ],
+  "aHje0o": [
+    {
+      "type": 0,
+      "value": "Név vagy becenév"
+    }
+  ],
+  "aMaLBK": [
+    {
+      "type": 0,
+      "value": "Támogatott kiterjesztések"
+    }
+  ],
+  "aRex7h": [
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " satoshi kifizetve, amelynek díja "
+    },
+    {
+      "type": 1,
+      "value": "fee"
+    },
+    {
+      "type": 0,
+      "value": " satoshi"
+    }
+  ],
+  "aSGz4J": [
+    {
+      "type": 0,
+      "value": "Kapcsolódás a saját LND csomópontjához a Lightning Node Connect segítségével"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "Továbbiak megjelenítése"
+    }
+  ],
+  "abbGKq": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " km"
+    }
+  ],
+  "ak3MTf": [
+    {
+      "type": 0,
+      "value": "Barátok meghívása"
+    }
+  ],
+  "b12Goz": [
+    {
+      "type": 0,
+      "value": "Helyreállító-magmondat"
+    }
+  ],
+  "b5vAk0": [
+    {
+      "type": 0,
+      "value": "Az Ön fogantyúja lightning-címként fog működni, és átirányítja a kiválasztott LN-webcímet vagy Lightning-címet."
+    }
+  ],
+  "bF1MYT": [
+    {
+      "type": 0,
+      "value": "Ön egy közösségi vezető, és "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "percent"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": "-ot kap az ajánlott felhasználók előfizetéseiből!"
+    }
+  ],
+  "bG00/W": [
+    {
+      "type": 0,
+      "value": "A szolgáltatás-feldolgozó fut"
+    }
+  ],
+  "bJ+wrA": [
+    {
+      "type": 0,
+      "value": "Lista tisztításának kiszámítása"
+    }
+  ],
+  "bLZL5a": [
+    {
+      "type": 0,
+      "value": "Cím beszerzése"
+    }
+  ],
+  "bMphls": [
+    {
+      "type": 0,
+      "value": "Bejelentkezve csak olvasási hozzáféréssel"
+    }
+  ],
+  "bQdA2k": [
+    {
+      "type": 0,
+      "value": "Érzékeny tartalom"
+    }
+  ],
+  "bep9C3": [
+    {
+      "type": 0,
+      "value": "Nyilvános kulcs"
+    }
+  ],
+  "bfvyfs": [
+    {
+      "type": 0,
+      "value": "Névtelen"
+    }
+  ],
+  "bxv59V": [
+    {
+      "type": 0,
+      "value": "Csak most"
+    }
+  ],
+  "c+1p0i": [
+    {
+      "type": 0,
+      "value": "Kedves némító-készletek"
+    }
+  ],
+  "c+JYNI": [
+    {
+      "type": 0,
+      "value": "Nem"
+    }
+  ],
+  "c2T+1B": [
+    {
+      "type": 0,
+      "value": "Átirányítások"
+    }
+  ],
+  "c35bj2": [
+    {
+      "type": 0,
+      "value": "Ha kérdése van a NIP-05 rendelésével kapcsolatban, írjon közvetlen üzenetet ide: "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "c3LlRO": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "KiB"
+    }
+  ],
+  "c3g2hL": [
+    {
+      "type": 0,
+      "value": "Újraközvetítés"
+    }
+  ],
+  "cFbU1B": [
+    {
+      "type": 0,
+      "value": "Albyt használ? Nyissa meg a következő hivatkozást az NWC konfigurációjának lekéréséhez: "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": "!"
+    }
+  ],
+  "cG/bKQ": [
+    {
+      "type": 0,
+      "value": "Beépített nostr-pénztárca kapcsolat"
+    }
+  ],
+  "cHCwbF": [
+    {
+      "type": 0,
+      "value": "Fényképezés"
+    }
+  ],
+  "cKbMRX": [
+    {
+      "type": 0,
+      "value": "Közvetlen üzenet"
+    }
+  ],
+  "cPIKU2": [
+    {
+      "type": 0,
+      "value": "Követettek"
+    }
+  ],
+  "cQfLWb": [
+    {
+      "type": 0,
+      "value": "Webcím…"
+    }
+  ],
+  "cVcgLJ": [
+    {
+      "type": 0,
+      "value": "Médiakiszolgálók"
+    }
+  ],
+  "cWx9t8": [
+    {
+      "type": 0,
+      "value": "Összes némítása"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "Kapcsolódás pénztárcához"
+    }
+  ],
+  "cnwHgH": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps"
+    }
+  ],
+  "cuP16y": [
+    {
+      "type": 0,
+      "value": "Több fiók támogatása"
+    }
+  ],
+  "cuV2gK": [
+    {
+      "type": 0,
+      "value": "a név már regisztrálva van"
+    }
+  ],
+  "cw1Ftc": [
+    {
+      "type": 0,
+      "value": "Élő tevékenységek"
+    }
+  ],
+  "cyR7Kh": [
+    {
+      "type": 0,
+      "value": "Vissza"
+    }
+  ],
+  "d+6YsV": [
+    {
+      "type": 0,
+      "value": "Listák a némításhoz:"
+    }
+  ],
+  "d0qim7": [
+    {
+      "type": 0,
+      "value": "WoT szűrő"
+    }
+  ],
+  "d2ebEu": [
+    {
+      "type": 0,
+      "value": "A Push-szolgáltatásra Ön nincs előfizetve"
+    }
+  ],
+  "d7d0/x": [
+    {
+      "type": 0,
+      "value": "LN-cím"
+    }
+  ],
+  "dK2CcV": [
+    {
+      "type": 0,
+      "value": "A nyilvános kulcs olyan, mint a felhasználónév, bárkivel megoszthatja."
+    }
+  ],
+  "dOQCL8": [
+    {
+      "type": 0,
+      "value": "Megjelenítendő név"
+    }
+  ],
+  "dZZIGe": [
+    {
+      "type": 0,
+      "value": "Moduláris cikkfejléc"
+    }
+  ],
+  "ddd3JX": [
+    {
+      "type": 0,
+      "value": "Népszerű hashtagek"
+    }
+  ],
+  "deEeEI": [
+    {
+      "type": 0,
+      "value": "Regisztráció"
+    }
+  ],
+  "djLctd": [
+    {
+      "type": 0,
+      "value": "Összeg satoshiban"
+    }
+  ],
+  "dmcsBA": [
+    {
+      "type": 0,
+      "value": "Apróhirdetések"
+    }
+  ],
+  "dmsiLv": [
+    {
+      "type": 0,
+      "value": "A(z) "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "-os alapértelmezett Zap-gyűjtő megosztása a(z) "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " fejlesztői számára lett beállítva, ezt bármikor letilthatja a(z) "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " oldalon."
+    }
+  ],
+  "e5x8FT": [
+    {
+      "type": 0,
+      "value": "Fajta"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "Hamarosan"
+    }
+  ],
+  "e7VmYP": [
+    {
+      "type": 0,
+      "value": "A privát kulcs feloldásához írja be a PIN-kódot"
+    }
+  ],
+  "e7qqly": [
+    {
+      "type": 0,
+      "value": "Az összes megjelölése olvasottként"
+    }
+  ],
+  "eF0Re7": [
+    {
+      "type": 0,
+      "value": "Használjon Nostr-aláíró-kiterjesztést a bejelentkezéshez"
+    }
+  ],
+  "eHAneD": [
+    {
+      "type": 0,
+      "value": "Reakció-hangulatjel"
+    }
+  ],
+  "eJj8HD": [
+    {
+      "type": 0,
+      "value": "Hitelesítés beszerzése"
+    }
+  ],
+  "eSzf2G": [
+    {
+      "type": 0,
+      "value": "Egyetlen "
+    },
+    {
+      "type": 1,
+      "value": "nIn"
+    },
+    {
+      "type": 0,
+      "value": " satoshis Zap a Zap-gyűjtőben "
+    },
+    {
+      "type": 1,
+      "value": "nOut"
+    },
+    {
+      "type": 0,
+      "value": " satoshit foglal le."
+    }
+  ],
+  "eW/Bj9": [
+    {
+      "type": 0,
+      "value": "Hírfolyam"
+    }
+  ],
+  "eXT2QQ": [
+    {
+      "type": 0,
+      "value": "Csoportos csevegés"
+    }
+  ],
+  "eZtOxB": [
+    {
+      "type": 0,
+      "value": "window.nostr képesség webböngészők számára"
+    }
+  ],
+  "egib+2": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "és további "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "és további "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "ejEGdx": [
+    {
+      "type": 0,
+      "value": "Kezdőlap"
+    }
+  ],
+  "eoV49s": [
+    {
+      "type": 0,
+      "value": "Gyenge"
+    }
+  ],
+  "f1OxTe": [
+    {
+      "type": 0,
+      "value": "A közösségi vezetők olyan személyek, akik a nostr ökoszisztémát növelik azáltal, hogy aktívak a helyi közösségükben, és segítenek az új felhasználók felvételében. Bárki lehet közösségi vezető, de jelenleg csak kevesen viselik ezt a megtisztelő címet."
+    }
+  ],
+  "f2CAxA": [
+    {
+      "type": 0,
+      "value": "Kidobás"
+    }
+  ],
+  "fBI91o": [
+    {
+      "type": 0,
+      "value": "Zap"
+    }
+  ],
+  "fBlba3": [
+    {
+      "type": 0,
+      "value": "Köszönjük, hogy a(z) "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " oldalt használja, ha teheti fontolja meg az adományozást."
+    }
+  ],
+  "fLIvbC": [
+    {
+      "type": 0,
+      "value": "A Snort egy nyílt forráskódú projekt, amelyet szenvedélyes emberek építenek szabadidejükben, adományait nagyra értékeljük."
+    }
+  ],
+  "fOksnD": [
+    {
+      "type": 0,
+      "value": "Nem szavazhat, mert az LN-webcím szolgáltatója nem támogatja a Zap-elést"
+    }
+  ],
+  "fQN+tq": [
+    {
+      "type": 0,
+      "value": "Tartalmi figyelmeztetés-címkével ellátott bejegyzések megjelenítése"
+    }
+  ],
+  "fWZYP5": [
+    {
+      "type": 0,
+      "value": "Kitűzött"
+    }
+  ],
+  "fX5RYm": [
+    {
+      "type": 0,
+      "value": "Válasszon ki néhány érdekes témát"
+    }
+  ],
+  "filwqD": [
+    {
+      "type": 0,
+      "value": "Olvasás"
+    }
+  ],
+  "fjAcWo": [
+    {
+      "type": 0,
+      "value": "Ajándékcsomagolások"
+    }
+  ],
+  "flnGvv": [
+    {
+      "type": 0,
+      "value": "Mire gondol?"
+    }
+  ],
+  "fqwcJ1": [
+    {
+      "type": 0,
+      "value": "On-chain adomány"
+    }
+  ],
+  "fr+XYA": [
+    {
+      "type": 0,
+      "value": "Lightning Pub RPC"
+    }
+  ],
+  "fsB/4p": [
+    {
+      "type": 0,
+      "value": "Mentve"
+    }
+  ],
+  "fucxlm": [
+    {
+      "type": 0,
+      "value": "Média csatolása"
+    }
+  ],
+  "furjvW": [
+    {
+      "type": 0,
+      "value": "Közvetítés megtekintése"
+    }
+  ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "Névjegy"
+    }
+  ],
+  "g985Wp": [
+    {
+      "type": 0,
+      "value": "Nem sikerült elküldeni a szavazatot"
+    }
+  ],
+  "gDzDRs": [
+    {
+      "type": 0,
+      "value": "Hangulatjel küldése, amikor egy bejegyzésre reagál"
+    }
+  ],
+  "gXgY3+": [
+    {
+      "type": 0,
+      "value": "Nem minden kliens támogatja"
+    }
+  ],
+  "gczcC5": [
+    {
+      "type": 0,
+      "value": "Előfizetés"
+    }
+  ],
+  "geppt8": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count2"
+    },
+    {
+      "type": 0,
+      "value": " a memóriában)"
+    }
+  ],
+  "gjBiyj": [
+    {
+      "type": 0,
+      "value": "Betöltés…"
+    }
+  ],
+  "gkMmvC": [
+    {
+      "type": 0,
+      "value": "Androidos aláíró-alkalmazás"
+    }
+  ],
+  "gl1NeW": [
+    {
+      "type": 0,
+      "value": "Listák"
+    }
+  ],
+  "go2/QF": [
+    {
+      "type": 0,
+      "value": "Felhasználói kiszolgálólista"
+    }
+  ],
+  "grQ+mI": [
+    {
+      "type": 0,
+      "value": "Munka-bizonyítás (PoW)"
+    }
+  ],
+  "gtNjNP": [
+    {
+      "type": 0,
+      "value": "Alapvető protokollfolyam-leírás"
+    }
+  ],
+  "h7jvCs": [
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " együtt sokkal szórakoztatóbb!"
+    }
+  ],
+  "h8XMJL": [
+    {
+      "type": 0,
+      "value": "Kitűzők"
+    }
+  ],
+  "h9M0rW": [
+    {
+      "type": 0,
+      "value": "Felhasználói metaadatok"
+    }
+  ],
+  "hF6IN2": [
+    {
+      "type": 0,
+      "value": "Követőlista tisztítása"
+    }
+  ],
+  "hMQmIw": [
+    {
+      "type": 0,
+      "value": "Fiók szinkronizálása"
+    }
+  ],
+  "hMzcSq": [
+    {
+      "type": 0,
+      "value": "Üzenetek"
+    }
+  ],
+  "hRTfTR": [
+    {
+      "type": 0,
+      "value": "PRO"
+    }
+  ],
+  "hY4lzx": [
+    {
+      "type": 0,
+      "value": "Támogatások"
+    }
+  ],
+  "hYOE+U": [
+    {
+      "type": 0,
+      "value": "Meghívás"
+    }
+  ],
+  "hicxcO": [
+    {
+      "type": 0,
+      "value": "Válaszok megjelenítése"
+    }
+  ],
+  "hmZ3Bz": [
+    {
+      "type": 0,
+      "value": "Média"
+    }
+  ],
+  "hniz8Z": [
+    {
+      "type": 0,
+      "value": "itt"
+    }
+  ],
+  "hv/eRj": [
+    {
+      "type": 0,
+      "value": "Letiltott átjátszók listája"
+    }
+  ],
+  "hvFRBo": [
+    {
+      "type": 0,
+      "value": "Interakció"
+    }
+  ],
+  "i/dBAR": [
+    {
+      "type": 0,
+      "value": "Zap-gyűjtő"
+    }
+  ],
+  "i5gBFz": [
+    {
+      "type": 0,
+      "value": "Itt jelennek meg az Ön által küldött és fogadott fizetések."
+    }
+  ],
+  "iCqGww": [
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ") reakció"
+    }
+  ],
+  "iEoXYx": [
+    {
+      "type": 0,
+      "value": "DeepL fordító"
+    }
+  ],
+  "iGT1eE": [
+    {
+      "type": 0,
+      "value": "Megakadályozza, hogy hamis fiókok utánozzák Önt"
+    }
+  ],
+  "iHN12u": [
+    {
+      "type": 0,
+      "value": "Adminisztrátor"
+    }
+  ],
+  "iICVoL": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " követett ("
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " másolat)"
+    }
+  ],
+  "iNWbVV": [
+    {
+      "type": 0,
+      "value": "Fogantyú"
+    }
+  ],
+  "iXPL0Z": [
+    {
+      "type": 0,
+      "value": "Nem lehet bejelentkezni a privát kulccsal egy nem biztonságos kapcsolaton keresztül, használjon helyette egy Nostr-kulcskezelő-bővítményt"
+    }
+  ],
+  "iYc3Ld": [
+    {
+      "type": 0,
+      "value": "Fizetések"
+    }
+  ],
+  "icCxlA": [
+    {
+      "type": 0,
+      "value": "új felhasználók oldala"
+    }
+  ],
+  "ieGrWo": [
+    {
+      "type": 0,
+      "value": "Követés"
+    }
+  ],
+  "igUUst": [
+    {
+      "type": 0,
+      "value": "Csoportos csevegés-szálas válasz"
+    }
+  ],
+  "ipHVx5": [
+    {
+      "type": 0,
+      "value": "Számla előállítása"
+    }
+  ],
+  "itPgxd": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "izWS4J": [
+    {
+      "type": 0,
+      "value": "Követés megszüntetése"
+    }
+  ],
+  "j9xbzF": [
+    {
+      "type": 0,
+      "value": "Már van biztonsági mentésem"
+    }
+  ],
+  "jA3OE/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " satoshi"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " satoshi"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "jAmfGl": [
+    {
+      "type": 0,
+      "value": "Az Ön "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": "-előfizetése lejárt"
+    }
+  ],
+  "jHa/ko": [
+    {
+      "type": 0,
+      "value": "Tisztítsa meg a hírfolyamát"
+    }
+  ],
+  "jMzO1S": [
+    {
+      "type": 0,
+      "value": "Belső hiba: "
+    },
+    {
+      "type": 1,
+      "value": "msg"
+    }
+  ],
+  "jiAVXu": [
+    {
+      "type": 0,
+      "value": "Videóesemény"
+    }
+  ],
+  "jvo0vs": [
+    {
+      "type": 0,
+      "value": "Mentés"
+    }
+  ],
+  "jzgQ2z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Reakció"
+    }
+  ],
+  "k0kCJp": [
+    {
+      "type": 0,
+      "value": "Elfogadás most"
+    }
+  ],
+  "k2veDA": [
+    {
+      "type": 0,
+      "value": "Írás"
+    }
+  ],
+  "k7sKNy": [
+    {
+      "type": 0,
+      "value": "A saját NIP-05 hitelesítési szolgáltatásunk, amelynek a használatával ennek az oldalnak a fejlesztését segítheti és ezzel egy speciális kitűzőt is szerezhet!"
+    }
+  ],
+  "k9SQm1": [
+    {
+      "type": 0,
+      "value": "Olyan átjátszók, amelyekhez már korábban is csatlakozott, és megbízhatónak tűnnek."
+    }
+  ],
+  "kEZUR8": [
+    {
+      "type": 0,
+      "value": "Regisztráljon egy Iris felhasználónevet"
+    }
+  ],
+  "kJYo0u": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " közzétette"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " és további "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " ember közzétette"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "kKC9ya": [
+    {
+      "type": 0,
+      "value": "Pénztárca információ"
+    }
+  ],
+  "kNd2FL": [
+    {
+      "type": 0,
+      "value": "Bejelentkezés Tidalba"
+    }
+  ],
+  "kQAf2d": [
+    {
+      "type": 0,
+      "value": "Kiválasztás"
+    }
+  ],
+  "kaaf1E": [
+    {
+      "type": 0,
+      "value": "most"
+    }
+  ],
+  "kc79d3": [
+    {
+      "type": 0,
+      "value": "Témák"
+    }
+  ],
+  "klCm96": [
+    {
+      "type": 0,
+      "value": "Közösségi bejegyzés jóváhagyása"
+    }
+  ],
+  "kqPQJD": [
+    {
+      "type": 0,
+      "value": "Zap-gyűjtő konfigurálása"
+    }
+  ],
+  "kuPHYE": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " kedvelte"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " és további "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " ember kedvelte"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "l+ikU1": [
+    {
+      "type": 0,
+      "value": "Minden ebben: "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    }
+  ],
+  "l3H1EK": [
+    {
+      "type": 0,
+      "value": "Barátok meghívása"
+    }
+  ],
+  "l3nTjd": [
+    {
+      "type": 0,
+      "value": "Alapvető kulcs származtatása a helyreállító-magmondatból"
+    }
+  ],
+  "lCILNz": [
+    {
+      "type": 0,
+      "value": "Vásárlás most"
+    }
+  ],
+  "lD3+8a": [
+    {
+      "type": 0,
+      "value": "Kifizetés"
+    }
+  ],
+  "lEnclp": [
+    {
+      "type": 0,
+      "value": "Saját események: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lPWASz": [
+    {
+      "type": 0,
+      "value": "Snort nostr-cím"
+    }
+  ],
+  "lTbT3s": [
+    {
+      "type": 0,
+      "value": "Pénztárca jelszava"
+    }
+  ],
+  "lbr3Lq": [
+    {
+      "type": 0,
+      "value": "Hivatkozás másolása"
+    }
+  ],
+  "lfOesV": [
+    {
+      "type": 0,
+      "value": "Nem Zap"
+    }
+  ],
+  "lgg1KN": [
+    {
+      "type": 0,
+      "value": "fiókoldal"
+    }
+  ],
+  "ll3xBp": [
+    {
+      "type": 0,
+      "value": "Kép-proxy szolgáltató"
+    }
+  ],
+  "lnaT9F": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " követett"
+    }
+  ],
+  "lsNFM1": [
+    {
+      "type": 0,
+      "value": "Kattintson a tartalom betöltéséhez innen: "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "lvlPhZ": [
+    {
+      "type": 0,
+      "value": "Számla kifizetése"
+    }
+  ],
+  "m/59y2": [
+    {
+      "type": 0,
+      "value": "Zap-kérés"
+    }
+  ],
+  "m6h2Eg": [
+    {
+      "type": 0,
+      "value": "Fogantyú-ajánlás"
+    }
+  ],
+  "mCEKiZ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " bejegyzés elnémítva"
+    }
+  ],
+  "mErPop": [
+    {
+      "type": 0,
+      "value": "Úgy tűnik, hogy Önnek még nincs, a következő hivatkozáson keresztül tud vásárolni egyet: "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": "!"
+    }
+  ],
+  "mFtdYh": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " dolgozó-átjátszó"
+    }
+  ],
+  "mKAr6h": [
+    {
+      "type": 0,
+      "value": "Összes követése"
+    }
+  ],
+  "mKh2HS": [
+    {
+      "type": 0,
+      "value": "Fájlfeltöltő-szolgáltatás"
+    }
+  ],
+  "mKhgP9": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Zap-elt"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Zap-elt"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "mOFG3K": [
+    {
+      "type": 0,
+      "value": "Indítás"
+    }
+  ],
+  "mfe8RW": [
+    {
+      "type": 0,
+      "value": "Lehetőség: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "mmPSWH": [
+    {
+      "type": 0,
+      "value": "Csak olvasható"
+    }
+  ],
+  "n1Whvj": [
+    {
+      "type": 0,
+      "value": "Váltás"
+    }
+  ],
+  "n5l7tP": [
+    {
+      "type": 0,
+      "value": "Időalapú naptáresemény"
+    }
+  ],
+  "n8k1SG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "MiB"
+    }
+  ],
+  "nD4frR": [
+    {
+      "type": 0,
+      "value": "Az ajánlat megerősítése"
+    }
+  ],
+  "nDejmx": [
+    {
+      "type": 0,
+      "value": "Letiltás megszüntetése"
+    }
+  ],
+  "nGBrvw": [
+    {
+      "type": 0,
+      "value": "Könyvjelzők"
+    }
+  ],
+  "nGGDsi": [
+    {
+      "type": 0,
+      "value": "Értesítések engedélyezve"
+    }
+  ],
+  "nIchMQ": [
+    {
+      "type": 0,
+      "value": "Fióktevékenység keresése ("
+    },
+    {
+      "type": 1,
+      "value": "progress"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "nPHrqp": [
+    {
+      "type": 0,
+      "value": "Coinjoin-gyűjtő"
+    }
+  ],
+  "nUT0Lv": [
+    {
+      "type": 0,
+      "value": "Eszközök"
+    }
+  ],
+  "nWQFic": [
+    {
+      "type": 0,
+      "value": "Megújítás"
+    }
+  ],
+  "nihgfo": [
+    {
+      "type": 0,
+      "value": "Hallgassa meg ezt a cikket"
+    }
+  ],
+  "nwZXeh": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " letiltott"
+    }
+  ],
+  "o/gK53": [
+    {
+      "type": 0,
+      "value": "Fedélzet"
+    }
+  ],
+  "o7e+nJ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " követő"
+    }
+  ],
+  "oJ+JJN": [
+    {
+      "type": 0,
+      "value": "Nincs találat :/"
+    }
+  ],
+  "odFwjL": [
+    {
+      "type": 0,
+      "value": "Csak a követettek"
+    }
+  ],
+  "ojzbwv": [
+    {
+      "type": 0,
+      "value": "Úgy tűnik, hogy Ön még nem rendelkezik Nostr-címmel, érdemes lenne beszereznie egyet! Tekintse meg a következőt: "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "ozZ2Cj": [
+    {
+      "type": 0,
+      "value": "Kitűzőnyeremény"
+    }
+  ],
+  "p4N05H": [
+    {
+      "type": 0,
+      "value": "Feltöltés"
+    }
+  ],
+  "p9Ps2l": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " átjátszóval rendelkezik ("
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "pEEBFk": [
+    {
+      "type": 0,
+      "value": "Megbízható kiszolgálók"
+    }
+  ],
+  "pI+77w": [
+    {
+      "type": 0,
+      "value": "Letölthető biztonsági mentések a Snort-átjátszóról"
+    }
+  ],
+  "pRess9": [
+    {
+      "type": 0,
+      "value": "Zap-gyűjtő"
+    }
+  ],
+  "plOM0t": [
+    {
+      "type": 0,
+      "value": "Egyéni hangulatjel"
+    }
+  ],
+  "plg2Ua": [
+    {
+      "type": 0,
+      "value": "Csatorna-felhasználó némítása"
+    }
+  ],
+  "puLNUJ": [
+    {
+      "type": 0,
+      "value": "Kitűzés"
+    }
+  ],
+  "pyjJ5f": [
+    {
+      "type": 0,
+      "value": "Nostr-piactér (a rugalmas piacterekhez)"
+    }
+  ],
+  "pzTOmv": [
+    {
+      "type": 0,
+      "value": "Követők"
+    }
+  ],
+  "q3OuMw": [
+    {
+      "type": 0,
+      "value": "Torrent-megjegyzés"
+    }
+  ],
+  "qAY40L": [
+    {
+      "type": 0,
+      "value": "Dátum-alapú naptáresemény"
+    }
+  ],
+  "qBYNMb": [
+    {
+      "type": 0,
+      "value": "Csoportszálas válasz"
+    }
+  ],
+  "qD9EUF": [
+    {
+      "type": 0,
+      "value": "E-mail <> közvetlen üzenet-híd a Snort nostr-címhez"
+    }
+  ],
+  "qDwvZ4": [
+    {
+      "type": 0,
+      "value": "Ismeretlen hiba"
+    }
+  ],
+  "qFIVx4": [
+    {
+      "type": 0,
+      "value": "Profil-kitűzők"
+    }
+  ],
+  "qMePPG": [
+    {
+      "type": 0,
+      "value": "Bejegyzés"
+    }
+  ],
+  "qMx1sA": [
+    {
+      "type": 0,
+      "value": "Alapértelmezett Zap-összeg"
+    }
+  ],
+  "qUJTsT": [
+    {
+      "type": 0,
+      "value": "Letiltva"
+    }
+  ],
+  "qXCbgZ": [
+    {
+      "type": 0,
+      "value": "Feloldás"
+    }
+  ],
+  "qZsKBR": [
+    {
+      "type": 1,
+      "value": "tier"
+    },
+    {
+      "type": 0,
+      "value": " megújítása"
+    }
+  ],
+  "qcJFEJ": [
+    {
+      "type": 0,
+      "value": "Értesítési API letiltva"
+    }
+  ],
+  "qdGuQo": [
+    {
+      "type": 0,
+      "value": "Az Ön privát kulcsa (ne ossza meg senkivel)"
+    }
+  ],
+  "qfmMQh": [
+    {
+      "type": 0,
+      "value": "Ez a bejegyzés némítva lett"
+    }
+  ],
+  "qkvYUb": [
+    {
+      "type": 0,
+      "value": "Hozzáadás a profilhoz"
+    }
+  ],
+  "qmJ8kD": [
+    {
+      "type": 0,
+      "value": " Nem sikerült lefordítani"
+    }
+  ],
+  "qtWLmt": [
+    {
+      "type": 0,
+      "value": "Tetszik"
+    }
+  ],
+  "qyJtWy": [
+    {
+      "type": 0,
+      "value": "Kevesebb megjelenítése"
+    }
+  ],
+  "qydxOd": [
+    {
+      "type": 0,
+      "value": "Tudomány"
+    }
+  ],
+  "qz9fty": [
+    {
+      "type": 0,
+      "value": "Helytelen Pin-kód"
+    }
+  ],
+  "r3C4x/": [
+    {
+      "type": 0,
+      "value": "Szoftver"
+    }
+  ],
+  "r5srDR": [
+    {
+      "type": 0,
+      "value": "Adja meg a pénztárca jelszavát"
+    }
+  ],
+  "rAQG0X": [
+    {
+      "type": 0,
+      "value": "Átjátszólista-metaadat"
+    }
+  ],
+  "rIsVe+": [
+    {
+      "type": 0,
+      "value": "Nyilvános csevegések listája"
+    }
+  ],
+  "rMgF34": [
+    {
+      "type": 0,
+      "value": "Biztonsági mentés most"
+    }
+  ],
+  "rRRXtB": [
+    {
+      "type": 0,
+      "value": "Lightning-Zap-ek"
+    }
+  ],
+  "rT14Ow": [
+    {
+      "type": 0,
+      "value": "Átjátszó hozzáadása"
+    }
+  ],
+  "reFEEC": [
+    {
+      "type": 0,
+      "value": "Bejelentés"
+    }
+  ],
+  "rfuMjE": [
+    {
+      "type": 0,
+      "value": "(Alapértelmezett)"
+    }
+  ],
+  "rkM7l8": [
+    {
+      "type": 0,
+      "value": "Titkosított közvetlen üzenet"
+    }
+  ],
+  "rmdsT4": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " nap"
+    }
+  ],
+  "rn52n9": [
+    {
+      "type": 0,
+      "value": "Nyilvános csevegőcsatornák"
+    }
+  ],
+  "rx1i0i": [
+    {
+      "type": 0,
+      "value": "Rövid hivatkozás"
+    }
+  ],
+  "sFUkSN": [
+    {
+      "type": 0,
+      "value": "Könyvjelző-készletek"
+    }
+  ],
+  "sKDn4e": [
+    {
+      "type": 0,
+      "value": "Kitűzők megjelenítése"
+    }
+  ],
+  "sUNhQE": [
+    {
+      "type": 0,
+      "value": "felhasználó"
+    }
+  ],
+  "sZQzjQ": [
+    {
+      "type": 0,
+      "value": "Nem sikerült feldolgozni a Zap-megosztást: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "saInmO": [
+    {
+      "type": 0,
+      "value": "A megjelenített átjátszó neve nem egyezik a megadott teljes webcímmel."
+    }
+  ],
+  "saorw+": [
+    {
+      "type": 0,
+      "value": "Eseménytörlési kérelem"
+    }
+  ],
+  "sfL/O+": [
+    {
+      "type": 0,
+      "value": "A némított bejegyzések nem fognak megjelenni"
+    }
+  ],
+  "t79a6U": [
+    {
+      "type": 0,
+      "value": "Sikeres kapcsolat:"
+    }
+  ],
+  "tDDiRL": [
+    {
+      "type": 0,
+      "value": "Érdeklődések listája"
+    }
+  ],
+  "tFpT/O": [
+    {
+      "type": 0,
+      "value": "Tárgykészletek kiadása"
+    }
+  ],
+  "tO1oq9": [
+    {
+      "type": 0,
+      "value": "Videóesemények"
+    }
+  ],
+  "tOdNiY": [
+    {
+      "type": 0,
+      "value": "Sötét"
+    }
+  ],
+  "tRGdV1": [
+    {
+      "type": 0,
+      "value": "Verzióval ellátott titkosítás"
+    }
+  ],
+  "tU0ADf": [
+    {
+      "type": 0,
+      "value": "Ismeretlen NIP-"
+    },
+    {
+      "type": 1,
+      "value": "x"
+    }
+  ],
+  "tVuVg9": [
+    {
+      "type": 0,
+      "value": "Videómegtekintési esemény"
+    }
+  ],
+  "tf1lIh": [
+    {
+      "type": 0,
+      "value": "Ingyenes"
+    }
+  ],
+  "th5lxp": [
+    {
+      "type": 0,
+      "value": "Bejegyzés küldése az írási átjátszók egy részhalmazának"
+    }
+  ],
+  "thnRpU": [
+    {
+      "type": 0,
+      "value": "A NIP-05 hitelesítése segíthet:"
+    }
+  ],
+  "tj6kdX": [
+    {
+      "type": 1,
+      "value": "sign"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " satoshi"
+    }
+  ],
+  "tjpYlr": [
+    {
+      "type": 0,
+      "value": "Átjátszómetrikák"
+    }
+  ],
+  "ttxS0b": [
+    {
+      "type": 0,
+      "value": "Támogatói kitűző"
+    }
+  ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "Állapot"
+    }
+  ],
+  "u/vOPu": [
+    {
+      "type": 0,
+      "value": "Fizetve"
+    }
+  ],
+  "u4I8q8": [
+    {
+      "type": 0,
+      "value": "Kitűzési lista"
+    }
+  ],
+  "u81G9+": [
+    {
+      "type": 0,
+      "value": "Üzemidő"
+    }
+  ],
+  "u9NoC1": [
+    {
+      "type": 0,
+      "value": "A névnek kevesebb karakterből kell állnia, mint "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " karakter"
+    }
+  ],
+  "uCk8r+": [
+    {
+      "type": 0,
+      "value": "Már van fiókja?"
+    }
+  ],
+  "uD7Els": [
+    {
+      "type": 0,
+      "value": "Külső identitások a profilokban"
+    }
+  ],
+  "uJaMkO": [
+    {
+      "type": 0,
+      "value": "Átjátszólista a közvetlen üzenetek fogadásához"
+    }
+  ],
+  "uSV4Ti": [
+    {
+      "type": 0,
+      "value": "Az újra közzétevésekhez kézi megerősítés szükséges"
+    }
+  ],
+  "uc0din": [
+    {
+      "type": 0,
+      "value": "Satoshi-megosztások küldése ide:"
+    }
+  ],
+  "ufvXH1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " esemény megtalálva"
+    }
+  ],
+  "uhu5aG": [
+    {
+      "type": 0,
+      "value": "Nyilvános"
+    }
+  ],
+  "un1nGw": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " bejegyzés"
+    }
+  ],
+  "usAvMr": [
+    {
+      "type": 0,
+      "value": "Profil szerkesztése"
+    }
+  ],
+  "v8lolG": [
+    {
+      "type": 0,
+      "value": "Csevegés indítása"
+    }
+  ],
+  "vB3oQ/": [
+    {
+      "type": 0,
+      "value": "Egy névjegylistának vagy egy nyilvános kulcslistának kell lennie"
+    }
+  ],
+  "vBsZhD": [
+    {
+      "type": 0,
+      "value": "Közösségek listája"
+    }
+  ],
+  "vN5UH8": [
+    {
+      "type": 0,
+      "value": "Profilkép"
+    }
+  ],
+  "vU/Q5i": [
+    {
+      "type": 0,
+      "value": "Ez az eszköz megkeresi az Ön összes követettje által utoljára közzétett eseményt, és eltávolítja azokat, akik 6 hónapja nem tettek közzé semmit."
+    }
+  ],
+  "vZ4quW": [
+    {
+      "type": 0,
+      "value": "A NIP-05 egy DNS alapú azonosítási specifikáció, ami segít az Ön valós személyének bizonyításában."
+    }
+  ],
+  "vhlWFg": [
+    {
+      "type": 0,
+      "value": "Szavazási beállítások"
+    }
+  ],
+  "vlbWtt": [
+    {
+      "type": 0,
+      "value": "Szerezzen be ingyen egyet"
+    }
+  ],
+  "voxBKC": [
+    {
+      "type": 0,
+      "value": "Barátok által követve"
+    }
+  ],
+  "vxwnbh": [
+    {
+      "type": 0,
+      "value": "Az összes közzétett eseményre alkalmazandó munka mennyisége"
+    }
+  ],
+  "w1Fanr": [
+    {
+      "type": 0,
+      "value": "Üzleti"
+    }
+  ],
+  "w6qrwX": [
+    {
+      "type": 0,
+      "value": "Felnőtt tartalom"
+    }
+  ],
+  "wEQDC6": [
+    {
+      "type": 0,
+      "value": "Szerkesztés"
+    }
+  ],
+  "wOyDTB": [
+    {
+      "type": 0,
+      "value": "Fájltárolási kiszolgáló lista"
+    }
+  ],
+  "wSZR47": [
+    {
+      "type": 0,
+      "value": "Beküldés"
+    }
+  ],
+  "wc9st7": [
+    {
+      "type": 0,
+      "value": "Média-mellékletek"
+    }
+  ],
+  "whSrs+": [
+    {
+      "type": 0,
+      "value": "Nostr nyilvános csevegés"
+    }
+  ],
+  "wih7iJ": [
+    {
+      "type": 0,
+      "value": "a név le van tiltva"
+    }
+  ],
+  "wlWMuh": [
+    {
+      "type": 0,
+      "value": "Foltok"
+    }
+  ],
+  "wofVHy": [
+    {
+      "type": 0,
+      "value": "Moderáció"
+    }
+  ],
+  "wqyN/i": [
+    {
+      "type": 0,
+      "value": "További információ a következőről: "
+    },
+    {
+      "type": 1,
+      "value": "service"
+    },
+    {
+      "type": 0,
+      "value": " a következő hivatkozáson keresztül érhető el: "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "wtLjP6": [
+    {
+      "type": 0,
+      "value": "Azonosító másolása"
+    }
+  ],
+  "x+3fl6": [
+    {
+      "type": 0,
+      "value": "Saját átjátszók"
+    }
+  ],
+  "x/Fx2P": [
+    {
+      "type": 0,
+      "value": "Finanszírozza az Ön által használt szolgáltatásokat úgy, hogy az összes Zap egy részét egy támogatói gyűjtőből osztja meg!"
+    }
+  ],
+  "x82IOl": [
+    {
+      "type": 0,
+      "value": "Némítás"
+    }
+  ],
+  "xEjBS7": [
+    {
+      "type": 0,
+      "value": "Önnek"
+    }
+  ],
+  "xIcAOU": [
+    {
+      "type": 0,
+      "value": "Szavazatok "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " szerint"
+    }
+  ],
+  "xIoGG9": [
+    {
+      "type": 0,
+      "value": "Ugrás ide"
+    }
+  ],
+  "xPCyu+": [
+    {
+      "type": 0,
+      "value": "nostr: URI-séma"
+    }
+  ],
+  "xaj9Ba": [
+    {
+      "type": 0,
+      "value": "Szolgáltató"
+    }
+  ],
+  "xbVgIm": [
+    {
+      "type": 0,
+      "value": "Média automatikus betöltése"
+    }
+  ],
+  "xhQMeQ": [
+    {
+      "type": 0,
+      "value": "Lejár"
+    }
+  ],
+  "xl4s/X": [
+    {
+      "type": 0,
+      "value": "További feltételek:"
+    }
+  ],
+  "xmcVZ0": [
+    {
+      "type": 0,
+      "value": "Keresés"
+    }
+  ],
+  "xybOUv": [
+    {
+      "type": 0,
+      "value": "RAJONGÓ"
+    }
+  ],
+  "y/bmsG": [
+    {
+      "type": 0,
+      "value": "Engedélyezés"
+    }
+  ],
+  "y1Z3or": [
+    {
+      "type": 0,
+      "value": "Nyelv"
+    }
+  ],
+  "yAztTU": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " eSatoshi"
+    }
+  ],
+  "yCLnBC": [
+    {
+      "type": 0,
+      "value": "LN-webcím vagy Lightning-cím"
+    }
+  ],
+  "yLzgxH": [
+    {
+      "type": 0,
+      "value": "Népszerű átjátszók"
+    }
+  ],
+  "yeX8yA": [
+    {
+      "type": 0,
+      "value": "Beépített alkalmazás"
+    }
+  ],
+  "z3UjXR": [
+    {
+      "type": 0,
+      "value": "Hibakeresés"
+    }
+  ],
+  "z3Ukvq": [
+    {
+      "type": 0,
+      "value": "Hosszú formátumú tartalom piszkozata"
+    }
+  ],
+  "zCb8fX": [
+    {
+      "type": 0,
+      "value": "Súly"
+    }
+  ],
+  "zFegDD": [
+    {
+      "type": 0,
+      "value": "Ismerős"
+    }
+  ],
+  "zINlao": [
+    {
+      "type": 0,
+      "value": "Tulajdonos"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "Összes"
+    }
+  ],
+  "zcaOTs": [
+    {
+      "type": 0,
+      "value": "Zap-összeg satoshiban"
+    }
+  ],
+  "zi9MdS": [
+    {
+      "type": 0,
+      "value": "Sakk (PGN)"
+    }
+  ],
+  "zm6qS1": [
+    {
+      "type": 0,
+      "value": "olvasási idő: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " perc"
+    }
+  ],
+  "zonsdq": [
+    {
+      "type": 0,
+      "value": "Nem sikerült betölteni az LN-webcím-szolgáltatást"
+    }
+  ],
+  "zvCDao": [
+    {
+      "type": 0,
+      "value": "Automatikusan jelenítse meg a legutóbbi bejegyzéseket"
+    }
+  ],
+  "zx0myy": [
+    {
+      "type": 0,
+      "value": "Résztvevők"
+    }
+  ]
 }

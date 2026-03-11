@@ -1,812 +1,5908 @@
 {
-  "+D82kt": "Weet je het zeker dat je dit wil herplaatsen: {id}",
-  "+PzQ9Y": "Nu uitbetalen",
-  "+QM0PJ": "Synchroniseer alle gebeurtenissen voor je profiel naar de lokale cache",
-  "+QMdsy": "Estafette statistieken",
-  "+UjDmN": "Aangemeld met schrijftoegang",
-  "+Vxixo": "Geheime Groep Chat",
-  "+aZY2h": "Zap Type",
-  "+tShPg": "volgend op",
-  "+vA//S": "Aanmeldingen",
-  "+vIQlC": "Zorg ervoor dat u het volgende wachtwoord opslaat om uw account in de toekomst te beheren",
-  "+vVZ/G": "Verbind",
-  "+vj0U3": "bewerken",
-  "+xliwN": "{name} Heeft herplaatst",
-  "/B8zwF": "Jouw ruimte zoals jij die wilt 😌",
-  "/GCoTA": "Duidelijk",
-  "/JE/X+": "Account hulp",
-  "/T7HId": "Integratie HTTP bestandsopslag",
-  "/Xf4UW": "Anoniem gebruiksgegevens verzenden",
-  "/b1IHW": "Bericht groeps-chat",
-  "/d6vEc": "Maak je profiel gemakkelijker om te vinden en te delen",
-  "/ioUrF": "Uit bestand",
-  "/n5KSF": "{n} ms",
-  "00LcfG": "Meer laden",
-  "01iNut": "Nostr-adres is niet van jou",
-  "08zn6O": "Sleutels exporteren",
-  "0Azlrb": "Beheren",
-  "0BUTMv": "Zoeken naar...",
-  "0MndVW": "Generieke LNDHub portemonnee (BTCPayServer / Alby / LNBits)",
-  "0jOEtS": "Ongeldig LNURL",
-  "0kOBMu": "Omgaan met vermeldingen",
-  "0mch2Y": "naam heeft verboden tekens",
-  "0siT4z": "Politiek",
-  "0uoY11": "Toon status",
-  "0yO7wF": "{n} seconden",
-  "0zASjL": "Ga naar",
-  "1/BFEj": "Git dingen",
-  "1Mo59U": "Weet u zeker dat u deze notitie uit bladwijzers wilt verwijderen?",
-  "1R43+L": "Voer Nostr Wallet Connect configuratie in",
-  "1UWegE": "Maak een back-up van je sleutels!",
-  "1c4YST": "Verbonden met: {node}🎉",
-  "1nYUGC": "{n} Volgend",
-  "1o2BgB": "Handtekeningen controleren",
-  "1ozeyg": "Natuur",
-  "1udzha": "Gesprekken",
-  "2/2yg+": "Toevoegen",
-  "25V4l1": "Omslagfoto",
-  "25WwxF": "Heb je geen account?",
-  "28oKbu": "Gemodereerde gemeenschappen",
-  "29sHFE": "Portemonnee aansluiten",
-  "2BBGxX": "Onderwerp-tag in tekstgebeurtenissen",
-  "2HIqeO": "Emoji-lijst gebruiker",
-  "2IFGap": "Doneer",
-  "2LbrkB": "Wachtwoord invoeren",
-  "2O2sfp": "Afwerking",
-  "2Qsf9/": "Algemene lijsten",
-  "2a2YiP": "{n} Bladwijzers",
-  "2k0Cv+": "Niet leuk ({n})",
-  "2mcwT8": "Nieuwe opmerking",
-  "2oCF7O": "Gevolgd door vrienden van vrienden",
-  "2raFAu": "Toepassingsspecifieke gegevens",
-  "2ukA4d": "{n} uur geleden",
-  "2z7Kky": "Laatste artikelen",
-  "3/onCd": "Antwoorden",
-  "39AHJm": "Aanmelden",
-  "3GWu6/": "Gebruikersstatussen",
-  "3KNMbJ": "Artikelen",
-  "3MKdAw": "Blobs opgeslagen op mediaservers",
-  "3QwfJR": "~{amount}",
-  "3adEeb": "{n} kijkers",
-  "3cc4Ct": "Licht",
-  "3gOsZq": "Vertalers",
-  "3kbIhS": "Zonder titel",
-  "3qnJlS": "Je stemt met {amount} sats",
-  "3t3kok": "{n,plural,one {}=1{{n} nieuwe note} other{{n} nieuwe notes}}",
-  "3tVy+Z": "{n} Volgers",
-  "3yk8fB": "Portemonnee",
-  "40VR6s": "Nostr aansluiten",
-  "41BSaT": "Totaal aantal evenementen:",
-  "450Fty": "Geen",
-  "47E53q": "Wiki",
-  "47FYwb": "Annuleer",
-  "48zn4v": "Bod",
-  "4IPzdn": "Primaire ontwikkelaars",
-  "4L2vUY": "Uw nieuwe NIP-05 handvat is:",
-  "4MjsHk": "Leven",
-  "4OB335": "Vind-ik-niet-leuks",
-  "4P/kKm": "Encryptie met privé-sleutel",
-  "4Vmpt4": "NostrPlebs is een van de eerste Nostr NIP-05 providers en biedt een goede verzameling domeinen aan tegen redelijke prijzen",
-  "4Z3t5i": "Gebruik imgproxy om foto's te comprimeren",
-  "4emo2p": "Ontbrekende relais",
-  "4rYCjn": "Notitie aan mijzelf",
-  "4wgYpI": "Aanbevolen applicatieverwerkers",
-  "5BVs2e": "zappen",
-  "5CB6zB": "Zap Splitsingen",
-  "5PRWs7": "Meldingen API ingeschakeld",
-  "5dfmvv": "Zap Doel",
-  "5oTnfy": "Koop Account-Naam",
-  "5qEWCr": "Metagegevens bestand",
-  "5u6iEc": "Overzetten naar Pubkey",
-  "5vMmmR": "Gebruikersnamen zijn niet uniek op Nostr. Het Nostr adres(!) is uw unieke account label (e.g. name@nostrplebs.com).",
-  "5ykRmX": "Zend zap",
-  "6/hB3S": "Bekijk herhaling",
-  "60kEE3": "Lijst dempen",
-  "62nsdy": "Opnieuw proberen",
-  "634VVz": "Verbinding mislukt:",
-  "6559gb": "Nieuwe volglijst lengte {length}",
-  "65BmHb": "Proxy afbeelding laden van {host} is mislukt, klik hier om direct te laden",
-  "6D4Hhn": "Relais aanbevelen",
-  "6KGebm": "Afdichting",
-  "6OSOXl": "Reden: <i>{reason}</i>",
-  "6WWD34": "Op zoek naar: {noteId}",
-  "6bgpn+": "Niet alle clients ondersteunen dit, het kan zijn dat je nog steeds zaps ontvangt alsof zap-splitsingen niet is geconfigureerd.",
-  "6ewQqw": "Likes ({n})",
-  "6mr8WU": "Gevolgd door",
-  "6pdxsi": "Extra metagegevensvelden en tags",
-  "6uMqL1": "Niet betaald",
-  "6xNr8c": "Accounts wisselen",
-  "6xap9L": "Goed",
-  "7+Domh": "Notes",
-  "712i26": "Proxy gebruikt HODL facturen om de betaling door te sturen, wat de pubkey van je knooppunt verbergt",
-  "753yX5": "Label",
-  "769A8p": "Wiki artikel",
-  "77nkEO": "Document met informatie over relais",
-  "7LFU8U": "Zoeken",
-  "7UOvbT": "Offline",
-  "7YkSA2": "Leider Gemeenschap",
-  "7gMmSL": "Reactie",
-  "7hp70g": "NIP-05",
-  "7jfPsW": "Modulaire artikelinhoud",
-  "7nAz/z": "Demp notities van mensen die buiten je web van vertrouwen vallen",
-  "7pFGAQ": "Relais sluiten",
-  "8/vBbP": "Reposts ({n})",
-  "89q5wc": "Bevestig Reposts",
-  "8BDFvJ": "Conventies voor het gebruik door klanten van e en p tags in tekstgebeurtenissen",
-  "8ED/4u": "Antwoord op",
-  "8HJxXG": "Aanmelden",
-  "8QDesP": "Zap {n} sats",
-  "8Rkoyb": "Ontvanger",
-  "8Y6bZQ": "Ongeldige zap-splitsing: {input}",
-  "8ZGqWl": "Groepsdraad",
-  "8g2vyB": "naam is te lang",
-  "8jmwT8": "bech32-gecodeerde entiteiten",
-  "8v1NN+": "Paring-zin",
-  "8xdDLn": "Sets volgen",
-  "8za9Pq": "Ontwerpclassificatie",
-  "9+Ddtu": "Volgende",
-  "9HU8vw": "Reageren",
-  "9SvQep": "Volgend {n}",
-  "9V0wg3": "Kalender Evenement RSVP",
-  "9WRlF4": "Verzend",
-  "9kO0VQ": "Verberg gedempte noten",
-  "9kSari": "Opnieuw publiceren",
-  "9pMqYs": "Nostr Adres",
-  "9wO4wJ": "Lightning Invoice",
-  "A86fJ+": "Generieke repost",
-  "ADmfQT": "Parent",
-  "ALdW69": "Opmerking door {name}",
-  "AN0Z7Q": "Gedempte woorden",
-  "ASRK0S": "Deze auteur is gedempt",
-  "AedFVZ": "Een product maken of bijwerken",
-  "Ai8VHU": "Onbeperkt note-behoud op Snort relay",
-  "AkCxS/": "Reden",
-  "AktAk2": "Geweldig",
-  "Am8glJ": "Spel",
-  "AqGfF4": "Kanaal Creatie",
-  "Aujn2T": "Graaf",
-  "Awq32I": "Pushmeldingen",
-  "AxDOiG": "Maanden",
-  "AyGauy": "Inloggen",
-  "B4C47Y": "naam is te kort",
-  "B6+XJy": "zapped",
-  "B6H7eJ": "nsec, npub, nip-05, hex",
-  "B7wvUM": "Je kunt één of meerdere relais toevoegen, één per lijn.",
-  "BGCM48": "Schrijf toegang tot Snort relays en 1 jaar note-opslag",
-  "BGGacK": "AI inbeddingen / vectorlijsten",
-  "BQW4gi": "Relaisgroepen",
-  "BWpuKl": "Updaten",
-  "BfuAQ5": "Marktplaats UI/UX",
-  "BjNwZW": "Nostr-adres (nip05)",
-  "Blxcdx": "Relais",
-  "Bo+O//": "HTTP-autorisatie",
-  "C1LjMx": "Bliksem donatie",
-  "C6Lhhp": "Live evenement",
-  "C7642/": "Citaat Repost",
-  "C81/uG": "Uitloggen",
-  "C8FsOr": "Populaire servers",
-  "C8HhVE": "Voorgestelde Accounts",
-  "CA1efg": "Videosets",
-  "CHTbO3": "Invoice laden mislukt",
-  "CJx5Nd": "Profiel Zaps",
-  "CM+Cfj": "Volg lijst",
-  "CM0k0d": "Volglijst snoeien",
-  "CVWeJ6": "Trending Accounts",
-  "CYkOCI": "en {count} anderen die je volgt",
-  "Cdxwi0": "Repository aankondigingen",
-  "CmZ9ls": "{n} Gedempt",
-  "Coy6SH": "Kalender",
-  "CsCUYo": "{n} sats",
-  "Cu/K85": "Vertaald vanuit {lang}",
-  "CzHZoc": "Sociale grafiek",
-  "D++Njw": "Tekst Opmerking Referenties",
-  "D+KzKd": "Zap elke note automatisch wanneer geladen",
-  "D09wbg": "Badge Definitie",
-  "D3idYv": "Instellingen",
-  "D9xTLE": "Kanaal verbergen Bericht",
-  "DBiVK1": "Cache",
-  "DKnriN": "Sats verzenden",
-  "DZzCem": "Toon laatste {n} notes",
-  "Dh3hbq": "Auto Zap",
-  "Dn82AL": "Live",
-  "DqUmXt": "Product verkocht als veiling",
-  "DrZqav": "Over moet minder dan {limit} tekens bevatten",
-  "DtYelJ": "Transfer",
-  "Dx4ey3": "Alles Toggeren",
-  "E3oB+t": "Browser",
-  "E5ZIPD": "<big>{amount}</big> <small>sats</small>",
-  "EHqHsu": "Factuur / Bliksemadres",
-  "EJbFi7": "Opmerkingen zoeken",
-  "ELbg9p": "Data aanbieders",
-  "EQKRE4": "Badges tonen op profielpagina's",
-  "EWeVrH": "Reactie op een website",
-  "EWyQH5": "Global",
-  "Ebl/B2": "Vertalen naar {lang}",
-  "Ec+xLY": "Curation sets",
-  "EcZF24": "Custom Relays",
-  "EcfIwB": "Gebruikersnaam is beschikbaar",
-  "EcglP9": "Sleutel",
-  "EjFyoR": "Adres voor on-chain donatie",
-  "EnCOBJ": "Kopen",
-  "EsHX35": "Sorry, we begrijpen dit soort evenementen niet ({name}), probeer in plaats daarvan een van de volgende apps!",
-  "F/6VqP": "Server",
-  "F3l7xL": "Account toevoegen",
-  "F4eJ/3": "Advertenties",
-  "FDguSC": "{n} Zaps",
-  "FHWpHC": "Reactie op portemonnee",
-  "FHvSk3": "Authenticatie van clients naar relais",
-  "FMfjrl": "Statusberichten tonen op profielpagina's",
-  "FSYL8G": "Trending Accounts",
-  "FWJR1B": "Gebruikersgroepen",
-  "FcNSft": "Redirect geeft HTTP-omleiding naar het opgegeven bliksemadres",
-  "FdhSU2": "Claim nu",
-  "FfYsOb": "Er is een fout opgetreden!",
-  "FmXUJg": "volgt u",
-  "FvanT6": "Rekeningen",
-  "FzbSGg": "Je hebt geen mediaservers, probeer er een paar toe te voegen.",
-  "G/yZLu": "Verwijderen",
-  "G1BGCg": "Selecteer Wallet",
-  "G3A56c": "Geabonneerd op Push",
-  "GFOoEE": "Zout",
-  "GIqktu": "Ondersteunde NIP's",
-  "GL8aXW": "Bladwijzers ({n})",
-  "GSye7T": "Lightning adres",
-  "GUlSVG": "Claim je inbegrepen Snort Nostr adres",
-  "Gcn9NQ": "Magnet Link",
-  "GpkNYn": "Torrent",
-  "GqQeu/": "Ongeldig bliksemadres",
-  "GspYR7": "{n} Dislike",
-  "Gxcr08": "Uitzendingsevenement",
-  "H+vHiz": "Hex Key..",
-  "H/oroO": "Omgaan met onbekende gebeurtenissen",
-  "H0JBH6": "Uitloggen",
-  "H0OG3T": "Leider Info",
-  "H1GTaC": "Bladwijzerlijst",
-  "H6/kLh": "Bestelling betaald!",
-  "HAlOn1": "Naam",
-  "HFls6j": "naam zal later beschikbaar zijn",
-  "HOzFdo": "Gedempt",
-  "HWbkEK": "Cache wissen en herladen",
-  "HbefNb": "Open wallet",
-  "HhcAVH": "Je volgt deze persoon niet, klik hier om media te laden van <i>{link}</i>, of update <a><i>je voorkeuren</i></a> om altijd media van iedereen te laden.",
-  "HpAmQZ": "Relais beoordelingen",
-  "HqRNN8": "Ondersteuning",
-  "HzSFeV": "Vervaldatum",
-  "I0tYZf": "Een kraam maken of bijwerken",
-  "I1AoOu": "Laatste bericht {time}",
-  "IEwZvs": "Weet u zeker dat u deze note wilt losmaken?",
-  "IIOul1": "Accountgegevens",
-  "IKKHqV": "Volgers",
-  "IOu4Xh": "Je moet een {tier} abonnee zijn om toegang te krijgen tot {app} deck",
-  "IVbtTS": "Zap alle {n} sats",
-  "IWz1ta": "Automatisch vertalen",
-  "IcHcWj": "Laatst gezien:",
-  "Ig9/a1": "{n} sats verzonden naar {name}",
-  "IgsWFG": "Niet gevolgd door iemand die je volgt",
-  "IoQq+a": "Klik hier om toch te laden",
-  "IvjoDS": "Aangesloten",
-  "Ix8l+B": "Trending Notes",
-  "J+dIsA": "Abonnementen",
-  "J1iLmb": "Meldingen Niet toegestaan",
-  "J2HeQ+": "Gebruik komma's om woorden te scheiden, bijv. woord1, woord2, woord3",
-  "J2Q92B": "Emoji sets",
-  "J6N9xl": "Sign in with Android signer",
-  "JCIgkj": "Gebruikersnaam",
-  "JGrt9q": "Stuur sats naar {name}",
-  "JHEHCk": "Zaps ({n})",
-  "JIVWWA": "Sport",
-  "JPFYIM": "Geen lightning adres",
-  "JSx7y9": "Abonneer je op {site_name} {plan} voor {price} en ontvang de volgende beloningen",
-  "JeoS4y": "Repost",
-  "Jh5zKH": "Lijst met relais zoeken",
-  "JjGgXI": "Zoek Account",
-  "JkLHGw": "Website",
-  "JmcxzF": "Relais zijn servers waarmee je verbinding maakt voor het verzenden en ontvangen van gebeurtenissen. Streef naar 4-8 relais.",
-  "JymXbw": "Privésleutel",
-  "K1wl1/": "Gemiddelde wachttijd:",
-  "K3r6DQ": "Wis",
-  "K7AkdL": "Weergeven",
-  "K9zklU": "Externe inhoud-ID's",
-  "KAhAcM": "Voer LNDHub config in",
-  "KGmQjH": "Hoogtepunten",
-  "KJryGq": "Live chatbericht",
-  "KQvWvD": "Verwijderd",
-  "KT9nox": "Beschermde gebeurtenissen",
-  "KahimY": "Onbekende event soort: {kind}",
-  "KipVeG": "Nostr-sleutels in kaart brengen naar DNS-gebaseerde internetidentifiers",
-  "KtsyO0": "Pin invoeren",
-  "KyRp/q": "Portemonnee Aanvraag",
-  "LBAnc7": "Bekijken als gebruiker?",
-  "LEmxc8": "Zap Doelen",
-  "LKw/ue": "Bekijk de code {link}",
-  "LR1XjT": "Pin te kort",
-  "LXxsbk": "Anoniem",
-  "LgbKvU": "Opmerking",
-  "LhLvRx": "De naam moet tussen 8 en 15 tekens lang zijn",
-  "LmdPXO": "Kan Nostr-adres niet verifiëren",
-  "Lu5/Bj": "Open op Zapstr",
-  "LuDBLj": "Torrents",
-  "Lw+I+J": "{n,plural,one {}=0{{name} gezapped} other{{name} & {n} anderen}}",
-  "LwYmVi": "Zaps op deze notitie worden opgesplitst naar de volgende gebruikers.",
-  "M3Oirc": "Debug-menu",
-  "M6C/px": "Een leider worden",
-  "MBAYRO": "Toont \"Kopieer ID\" en \"Kopieer Event JSON\" in het context menu bij elk bericht",
-  "MI2jkA": "Niet beschikbaar:",
-  "MKDHEa": "Kamer",
-  "MP54GY": "Wachtwoord Wallet",
-  "MWTx65": "Standaardpagina",
-  "MYBYdJ": "Korte tekst",
-  "MYUBaG": "Klantverificatie",
-  "MiMipu": "Instellen als primair Nostr-adres (nip05)",
-  "MkQ4FX": "Proxy-tags",
-  "Ml7+RS": "Stuur deze link naar je vrienden en deel de magie van de nostr.",
-  "Mrpkot": "Betaal abonnement",
-  "MuVeKe": "Koop Nostr adres",
-  "Muhna4": "Resultaten tellen",
-  "MzRYWH": "{item} kopen",
-  "Mzizei": "Iris.naar rekening",
-  "N2IrpM": "Bevestig",
-  "NAidKb": "Meldingen",
-  "NAuFNH": "U heeft al een abonnement van dit type, gelieve te vernieuwen of te betalen",
-  "NDTFsp": "Feedback",
-  "NepkXH": "Kan niet stemmen met {amount} sats, stel een ander standaard zap bedrag in",
-  "NndBJE": "Nieuwe gebruikerspagina",
-  "Nr9Yyx": "Reposts",
-  "NxzeNU": "Dood",
-  "O3Jz4E": "Gebruik je uitnodigingscode om sats te verdienen!",
-  "OEW7yJ": "Zaps",
-  "OIqnZN": "OpenTimestamps Attestaties voor gebeurtenissen",
-  "OJHKIL": "Cadeauverpakking",
-  "OKhRC6": "Deel",
-  "OLEm6z": "Onbekende inlogfout",
-  "OQSOJF": "Ontvang een gratis nostr adres",
-  "OQXnew": "Uw abonnement is nog actief, u kunt nog niet vernieuwen",
-  "ORGv1Q": "Aangemaakt",
-  "ORa81+": "Verzoeken samenvoegen",
-  "OoZgbB": "Bijwerken mislukt, probeer het opnieuw",
-  "OuProE": "Inhoud in lange vorm",
-  "OxPdQ0": "Scannen {date}",
-  "P2o+ZZ": "Ongeldig Nostr-adres",
-  "P61BTu": "Kopieer JSON event",
-  "P7FD0F": "Systeem (Standaard)",
-  "P7nJT9": "Totaal vandaag (UTC): {amount} sats",
-  "P8JC58": "Afstand",
-  "PCSt5T": "Voorkeuren",
-  "PXQ0z0": "Ontvangen naar <b>{wallet}</b>",
-  "PamNxw": "Onbekende bestandsheader: {name}",
-  "Pe0ogR": "Thema",
-  "PrsIg7": "Reacties worden op elke pagina getoond, indien uitgeschakeld worden er geen reacties getoond",
-  "QDFTjG": "{n} Relays",
-  "QJfhKt": "De privésleutel is als een wachtwoord, maar kan niet gereset worden. Bewaak het zorgvuldig en laat het nooit aan iemand zien. Zodra iemand je privésleutel heeft, heeft hij of zij voor altijd toegang tot je account.",
-  "QWhotP": "Zap Pool werkt alleen als u een van de ondersteunde wallet connecties gebruikt (WebLN, LNDHub of Nostr Wallet Connect)",
-  "QpaLA3": "Kanaalbericht",
-  "Qxv0B2": "Op dit moment heb je {number} sats in je Zap-Pool.",
-  "Qy6/Ft": "Directe privéberichten",
-  "R/6nsx": "Abonnement",
-  "R81upa": "Mensen die je volgt",
-  "RDha9y": "Service Worker wordt niet uitgevoerd",
-  "RRz1cA": "Repository statusmeldingen",
-  "RSr2uB": "Gebruikersnaam mag alleen kleine letters en cijfers bevatten",
-  "RahCRH": "Verlopen",
-  "RefZpK": "Kort Portret Video Evenement",
-  "RfhLwC": "Door: {author}",
-  "RhDAoS": "Weet u zeker dat u dit wilt verwijderen {id}",
-  "RmxSZo": "Gegevensautomaten",
-  "RoOyAh": "Relays",
-  "Rs4kCE": "Bladwijzers",
-  "S/NV2G": "Belading: {id}",
-  "SFuk1v": "Rechten",
-  "SLZGPn": "Voer een pincode in om je privésleutel te coderen. Je moet deze pincode elke keer invoeren als je {site}opent.",
-  "SMO+on": "Stuur zap naar {name}",
-  "SOqbe9": "Update Lightning Adres",
-  "SP0+yi": "Abonnement kopen",
-  "SW3TFA": "Populaire relais die worden gebruikt door mensen die je volgt.",
-  "SYQtZ7": "LN adres Proxy",
-  "Sd0PKc": "Relais sets",
-  "SfwSIm": "Probleemzoeker",
-  "ShdEie": "Markeer alle als gelezen",
-  "Sjo1P4": "Custom",
-  "SmuYUd": "Hoe moeten we je noemen?",
-  "Ss0sWu": "Nu betalen",
-  "SsUQnC": "Toepassingsspecifieke gegevens",
-  "StKzTE": "De auteur heeft deze opmerking gemarkeerd als een <i>gevoelig onderwerp</i>",
-  "T83nqf": "Relais in de buurt van je geografische locatie.",
-  "TDR5ge": "Media in notities wordt automatisch getoond voor de geselecteerde personen, anders wordt alleen de link getoond",
-  "TGc5nI": "Informatie over behandelaar",
-  "TH1fFo": "Telegram",
-  "TJo5E6": "Voorbeeld",
-  "TOG64f": "Lokaal relais gebruiken",
-  "TP/cMX": "Beëindigd",
-  "TaeBqw": "Aanmelden met Nostr Extensie",
-  "TdTXXf": "Meer informatie",
-  "TdtZQ5": "Crypto",
-  "Tdv6NY": "Interessesets",
-  "TgDKhI": "Kalender Evenementen",
-  "TpgeGw": "Hex Salt..",
-  "Tpy00S": "Personen",
-  "TvKqBp": "ik vond  leuk",
-  "TwyMau": "Account",
-  "U1aPPi": "Stop met luisteren",
-  "U30H69": "Communautaire definitie",
-  "UJTWqI": "Verwijderen uit mijn relais",
-  "ULXFfP": "Ontvang",
-  "UNjfWJ": "Controleer alle ontvangen evenementhandtekeningen van estafettes",
-  "UT7Nkj": "Nieuwe Chat",
-  "UUPFlt": "Gebruikers moeten akkoord gaan met de waarschuwing van de inhoud om de inhoud van uw notitie te tonen.",
-  "UaCh1c": "Server toevoegen",
-  "Ub+AGc": "Aanmelden",
-  "Up5U7K": "Blokkeren",
-  "Ups2/p": "Uw aanvraag is in behandeling",
-  "UrKTqQ": "Je hebt een actieve iris.to account",
-  "UsCzPc": "Deel een persoonlijke uitnodiging met vrienden!",
-  "UxgyeY": "Je verwijzingscode is {code}",
-  "V20Og0": "Label",
-  "VOjC1i": "Kies naar welke service u bijlagen wilt uploaden",
-  "VR5eHw": "Publieke sleutel (npub/nprofile)",
-  "VcwrfF": "Ja graag",
-  "VfhYxG": "Voor een volledige lijst met wijzigingen kun je de changelog {here}bekijken.",
-  "VlJkSk": "{n} gedempt",
-  "VnXp8Z": "Profielfoto",
-  "W1yoZY": "Het lijkt erop dat je geen abonnement hebt, je kan er één {link} krijgen",
-  "W2PiAr": "{n} Geblokkeerd",
-  "W4SaxY": "Lokaal",
-  "W9355R": "Niet langer negeren",
-  "WeLEuL": "Van server",
-  "Wj5TbN": "Problemen",
-  "WmZhfL": "Vertaal notities automatisch naar je eigen taal",
-  "WvGmZT": "npub / nprofile / nostr adres",
-  "X6tipZ": "Aanmelden met sleutel",
-  "X7xU8J": "nsec, npub, nip-05, hex, mnemonic",
-  "XECMfW": "Gebruiksgegevens verzenden",
-  "XICsE8": "File hosts",
-  "XPB8VV": "Alby portemonnee aansluiting",
-  "XQiFEl": "Volgt Estafette Gezondheid",
-  "XSdWHA": "Inwisselen",
-  "XXm7jJ": "Trending Hashtags",
-  "XgWvGA": "Reacties",
-  "Xnimz0": "Verzenden van <b>{wallet}</b>",
-  "Xopqkl": "Uw standaard zap bedrag is {number} sats, voorbeeldwaarden worden hiermee berekend.",
-  "YDMrKK": "Gebruikers",
-  "YDURw6": "Service-URL",
-  "YH2RKk": "Populaire mediaservers.",
-  "YQZY/S": "Het lijkt erop dat je niet genoeg mensen volgt, kijk eens op {newUsersPage} om mensen te ontdekken die je kunt volgen!",
-  "YR2I9M": "Geen sleutels, geen {app}, Er is geen manier om het te resetten als je geen back-up maakt. Het duurt maar een minuut.",
-  "YU7ZYp": "Openbare chat",
-  "YXA3AH": "Reacties inschakelen",
-  "Yf3DwC": "Sluit een portemonnee aan om directe betalingen te versturen",
-  "YuoEb9": "Probeer een ander relais",
-  "Z48UEo": "Kanaal metagegevens",
-  "Z4BMCZ": "Voer koppelingszin in",
-  "Z7kkeJ": "Gedelegeerde ondertekening",
-  "ZFe9tl": "Een notitie samenstellen",
-  "ZKORll": "Activeer Nu",
-  "ZLmyG9": "Bijdragers",
-  "ZS+jRE": "Zap-splitsingen verzenden naar",
-  "Zff6lu": "Gebruikersnaam iris.to/<b>{name}</b> is voor jou gereserveerd!",
-  "ZlIh4/": "Versleutelde rechtstreekse berichten",
-  "ZlmK/p": "{name} uitgenodigd op {app}",
-  "a1x4gD": "Mediaservers slaan media op die je kunt delen in notities als afbeeldingen en video's",
-  "a5UPxh": "Support ontwikkelaars en platforms die NIP-05 identificatie-diensten aanbieden",
-  "a7TDNm": "Notes zullen in real-time worden gestreamt naar het Global en Notes tabblad",
-  "aHje0o": "Naam of nym",
-  "aMaLBK": "Ondersteunde extensies",
-  "aRex7h": "Betaald {amount} sats, vergoeding {fee} sats",
-  "aSGz4J": "Maak verbinding met je eigen LND-knooppunt met Lightning Node Connect",
-  "aWpBzj": "Toon meer",
-  "abbGKq": "{n} km",
-  "ak3MTf": "Vrienden uitnodigen",
-  "b12Goz": "Mnemonic",
-  "b5vAk0": "Uw Nostr adres gedraagt zich als een Lightning adres en stuurt zaps door naar uw gekozen LNURL/Lightning adres",
-  "bF1MYT": "Je bent een gemeenschapsleider en verdient <b>{percent}</b> van doorverwezen gebruikersabonnementen!",
-  "bG00/W": "Service Werker Loopt",
-  "bJ+wrA": "Snellijst berekenen",
-  "bLZL5a": "Adres krijgen",
-  "bMphls": "Aangemeld met alleen-lezen toegang",
-  "bQdA2k": "Gevoelige inhoud",
-  "bep9C3": "Publieke sleutel",
-  "bfvyfs": "Anon",
-  "bxv59V": "Zojuist",
-  "c+1p0i": "Stomme sets",
-  "c+JYNI": "Geen dank",
-  "c2T+1B": "Omleidingen",
-  "c35bj2": "Voor vragen over je NIP-05 bestelling stuur een DM: {link}",
-  "c3LlRO": "{n}KiB",
-  "c3g2hL": "Opnieuw uitzenden",
-  "cFbU1B": "Gebruik je Alby? Ga naar {link} om je Nostr Wallet Connect in te stellen!",
-  "cG/bKQ": "Inheemse nostr-portemonneeverbinding",
-  "cHCwbF": "Fotografie",
-  "cKbMRX": "Direct bericht",
-  "cPIKU2": "Volgt",
-  "cQfLWb": "URL..",
-  "cVcgLJ": "Media Servers",
-  "cWx9t8": "Demp allen",
-  "cg1VJ2": "Wallet verbinden",
-  "cnwHgH": "OpenTimestamps",
-  "cuP16y": "Ondersteuning voor meerdere accounts",
-  "cuV2gK": "naam is geregistreerd",
-  "cw1Ftc": "Live activiteiten",
-  "cyR7Kh": "Terug",
-  "d+6YsV": "Lijsten om te dempen:",
-  "d0qim7": "WoT-filter",
-  "d2ebEu": "Niet geabonneerd op Push",
-  "d7d0/x": "LN Address",
-  "dK2CcV": "De publieke sleutel is net als je gebruikersnaam, je kunt deze met iedereen delen.",
-  "dOQCL8": "Weergavenaam",
-  "dZZIGe": "Modulaire artikelkop",
-  "ddd3JX": "Populaire hashtags",
-  "deEeEI": "Registreer",
-  "djLctd": "Bedrag in sats",
-  "dmcsBA": "Geclassificeerde lijst",
-  "dmsiLv": "Een standaard Zap Pool-splitsing van {n} is geconfigureerd voor {site} ontwikkelaars, je kunt dit op elk moment uitschakelen in {link}.",
-  "e5x8FT": "Vriendelijk",
-  "e61Jf3": "Binnenkort beschikbaar",
-  "e7VmYP": "Pin invoeren om je privésleutel te ontgrendelen",
-  "e7qqly": "Alles markeren als gelezen",
-  "eF0Re7": "Gebruik een nostr signer-extensie om aan te melden",
-  "eHAneD": "Emoji reactie",
-  "eJj8HD": "Word geverifieerd",
-  "eSzf2G": "Een enkele zap van {nIn} sats zal {nOut} sats toewijzen aan de zap pool.",
-  "eW/Bj9": "Voer",
-  "eXT2QQ": "Groepschat",
-  "eZtOxB": "window.nostr mogelijkheid voor webbrowsers",
-  "egib+2": "{n,plural,=1{& {n} andere} other{& {n} andere}}",
-  "ejEGdx": "Home",
-  "eoV49s": "Slecht",
-  "f1OxTe": "Community leaders zijn personen die het nostr ecosysteem laten groeien door actief te zijn in hun lokale gemeenschappen en nieuwe gebruikers te helpen. Iedereen kan een gemeenschapsleider worden, maar slechts weinigen dragen de huidige eretitel.",
-  "f2CAxA": "Dump",
-  "fBI91o": "Zap",
-  "fBlba3": "Bedankt voor het gebruik van {site}, overweeg alsjeblieft om te doneren als je kunt.",
-  "fLIvbC": "Snort is een open source project dat wordt gebouwd door gepassioneerde mensen in hun vrije tijd. Uw donaties worden zeer gewaardeerd.",
-  "fOksnD": "Kan niet stemmen omdat LNURL-service geen zaps ondersteunt",
-  "fQN+tq": "Berichten tonen met een waarschuwingslabel",
-  "fWZYP5": "Vastgezet",
-  "fX5RYm": "Kies een paar interessante onderwerpen",
-  "filwqD": "Lezen",
-  "fjAcWo": "Cadeauverpakkingen",
-  "flnGvv": "Waar denk je aan?",
-  "fqwcJ1": "Ketting Donatie",
-  "fr+XYA": "Bliksem Pub RPC",
-  "fsB/4p": "Opgeslagen",
-  "fucxlm": "Media bijvoegen",
-  "furjvW": "Stream bekijken",
-  "g5pX+a": "Over ons",
-  "g985Wp": "Kan code niet verzenden",
-  "gDzDRs": "Emoji die wordt verstuurd wanneer u reageert op een note",
-  "gXgY3+": "Nog niet alle Nostr Apps ondersteunen dit",
-  "gczcC5": "Abonneer",
-  "geppt8": "{count} ({count2} in geheugen)",
-  "gjBiyj": "Laden...",
-  "gkMmvC": "Android ondertekenapplicatie",
-  "gl1NeW": "Lijsten",
-  "go2/QF": "Gebruikersserverlijst",
-  "grQ+mI": "Proof of Work",
-  "gtNjNP": "Beschrijving basisprotocolstroom",
-  "h7jvCs": "{site} is samen leuker!",
-  "h8XMJL": "Badges",
-  "h9M0rW": "Metagegevens gebruiker",
-  "hF6IN2": "Snoeien Volglijst",
-  "hMQmIw": "Synchroniseer account",
-  "hMzcSq": "Berichten",
-  "hRTfTR": "PRO",
-  "hY4lzx": "Ondersteuningen",
-  "hYOE+U": "Uitnodigen",
-  "hicxcO": "Reacties tonen",
-  "hmZ3Bz": "Media",
-  "hniz8Z": "hier",
-  "hv/eRj": "Geblokkeerde relaislijst",
-  "hvFRBo": "Interactie",
-  "i/dBAR": "Zap Pool",
-  "i5gBFz": "Je verzonden en ontvangen betalingen worden hier weergegeven.",
-  "iCqGww": "Reacties ({n})",
-  "iEoXYx": "DeepL vertalingen",
-  "iGT1eE": "Voorkom dat nepaccounts je imiteren",
-  "iHN12u": "Admin",
-  "iICVoL": "{x} volgt ({y} duplicaten)",
-  "iNWbVV": "Hendel",
-  "iXPL0Z": "Kan niet inloggen met een privésleutel in een onbeveiligde omgeving, gebruik in plaats daarvan een Nostr key manager extensie",
-  "iYc3Ld": "Betalingen",
-  "icCxlA": "pagina voor nieuwe gebruikers",
-  "ieGrWo": "Volgen",
-  "igUUst": "Groepschat Antwoord met draad",
-  "ipHVx5": "Factuur genereren",
-  "itPgxd": "Profiel",
-  "izWS4J": "Ontvolgen",
-  "j9xbzF": "Al een back-up gemaakt",
-  "jA3OE/": "{n,plural,one {}=1{{n} sat} other{{n} sats}}",
-  "jAmfGl": "Uw {site_name} abonnement is verlopen",
-  "jHa/ko": "Ruim je feed op",
-  "jMzO1S": "Interne fout: {msg}",
-  "jiAVXu": "Video-evenement",
-  "jvo0vs": "Opslaan",
-  "jzgQ2z": "{n} Reacties",
-  "k0kCJp": "Nu solliciteren",
-  "k2veDA": "Schrijven",
-  "k7sKNy": "Onze eigen NIP-05 verificatieservice ondersteunt de ontwikkeling van deze site en geeft u een speciale badge op onze site!",
-  "k9SQm1": "Relais waarop je eerder hebt aangesloten en die betrouwbaar lijken te zijn.",
-  "kEZUR8": "Registreer een Iris-gebruikersnaam",
-  "kJYo0u": "{n,plural,one {}=0{{name} gerepost} other{{name} & {n} anderen gerepost}}",
-  "kKC9ya": "Portemonnee-info",
-  "kNd2FL": "Inloggen voor getijden",
-  "kQAf2d": "Selecteer",
-  "kaaf1E": "nu",
-  "kc79d3": "Onderwerpen",
-  "klCm96": "Goedkeuring communautaire post",
-  "kqPQJD": "Zap-pool configureren",
-  "kuPHYE": "{n,plural,one {}=0{{name} geliked} other{{name} & {n} anderen geliked}}",
-  "l+ikU1": "Alles in {plan}",
-  "l3H1EK": "Nodig je vrienden uit",
-  "l3nTjd": "Basissleutel afleiden uit mnemonische zaadzin",
-  "lCILNz": "Koop nu",
-  "lD3+8a": "Betaal",
-  "lEnclp": "Mijn evenementen: {n}",
-  "lPWASz": "Koop Nostr adres",
-  "lTbT3s": "Wachtwoord Wallet",
-  "lbr3Lq": "Link kopiëren",
-  "lfOesV": "Niet-Zap",
-  "lgg1KN": "accountoverzicht",
-  "ll3xBp": "Proxyservice voor afbeeldingen",
-  "lnaT9F": "Volgend {n}",
-  "lsNFM1": "Klik om inhoud van {link} te laden",
-  "lvlPhZ": "Betaal invoice",
-  "m/59y2": "Zap verzoek",
-  "m6h2Eg": "Aanbeveling voor behandelaar",
-  "mCEKiZ": "{n} noten zijn gedempt",
-  "mErPop": "Het lijkt erop dat je er geen hebt, check {link} om er een te kopen!",
-  "mFtdYh": "{type} Relais voor werknemer",
-  "mKAr6h": "Volg allen",
-  "mKh2HS": "File Upload service",
-  "mKhgP9": "{n,plural,one {}=0{} =1{zapped} other{zapped}}",
-  "mOFG3K": "Start",
-  "mfe8RW": "Optie: {n}",
-  "mmPSWH": "Alleen lezen",
-  "n1Whvj": "Wissel",
-  "n5l7tP": "Tijdgebonden kalendergebeurtenis",
-  "n8k1SG": "{n}MiB",
-  "nD4frR": "Bevestiging bod",
-  "nDejmx": "Deblokkeer",
-  "nGBrvw": "Bladwijzers",
-  "nGGDsi": "Meldingen toegestaan",
-  "nIchMQ": "Zoeken naar accountactiviteit ({progress})",
-  "nPHrqp": "Cojoin Pool",
-  "nUT0Lv": "Gereedschap",
-  "nWQFic": "Vernieuw",
-  "nihgfo": "Luister naar dit artikel",
-  "nwZXeh": "{n} geblokkeerd",
-  "o/gK53": "Dek",
-  "o7e+nJ": "{n} volgers",
-  "oJ+JJN": "Niets gevonden :/",
-  "odFwjL": "Alleen volgend",
-  "ojzbwv": "Hey, het lijkt erop dat je nog geen Nostr Adres hebt. Overweeg om er een te nemen! Bekijk {link}",
-  "ozZ2Cj": "Badge",
-  "p4N05H": "Uploaden",
-  "p9Ps2l": "{x}/{y} hebben relais ({percent})",
-  "pEEBFk": "Betrouwbare relais",
-  "pI+77w": "Downloadbare back-ups van Snort relay",
-  "pRess9": "ZapPool",
-  "plOM0t": "Aangepaste emoji",
-  "plg2Ua": "Kanaal dempen Gebruiker",
-  "puLNUJ": "Vastmaken aan profielpagina",
-  "pyjJ5f": "Nostr Marktplaats (voor veerkrachtige marktplaatsen)",
-  "pzTOmv": "Volgers",
-  "q3OuMw": "Torrent Commentaar",
-  "qAY40L": "Op datum gebaseerd kalendergebeuren",
-  "qBYNMb": "Groepsdraad beantwoorden",
-  "qD9EUF": "E-mail <> DM bridge voor je Snort Nostr adres",
-  "qDwvZ4": "Onbekende fout",
-  "qFIVx4": "Profiel badges",
-  "qMePPG": "Opmerking",
-  "qMx1sA": "Standaard Zap-bedrag",
-  "qUJTsT": "Geblokkeerd",
-  "qXCbgZ": "Ontgrendel",
-  "qZsKBR": "Vernieuw {tier}",
-  "qcJFEJ": "Meldingen API uitgeschakeld",
-  "qdGuQo": "Uw privésleutel is (deel dit met niemand)",
-  "qfmMQh": "Deze opmerking is gedempt",
-  "qkvYUb": "Toevoegen aan Profiel",
-  "qmJ8kD": "Vertaling mislukt",
-  "qtWLmt": "Vind ik leuk",
-  "qyJtWy": "Minder tonen",
-  "qydxOd": "Wetenschap",
-  "qz9fty": "Verkeerde pin",
-  "r3C4x/": "Software",
-  "r5srDR": "Voer wallet wachtwoord in",
-  "rAQG0X": "Metagegevens relaallijst",
-  "rIsVe+": "Openbare chatlijst",
-  "rMgF34": "Nu terug naar boven",
-  "rRRXtB": "Bliksemschichten",
-  "rT14Ow": "Relays toevoegen",
-  "reFEEC": "Rapportage",
-  "rfuMjE": "(Standaard)",
-  "rkM7l8": "Versleuteld rechtstreeks bericht",
-  "rmdsT4": "{n} dagen",
-  "rn52n9": "Openbare chatkanalen",
-  "rx1i0i": "Korte link",
-  "sFUkSN": "Bladwijzersets",
-  "sKDn4e": "Badges tonen",
-  "sUNhQE": "gebruiker",
-  "sZQzjQ": "Mislukt bij het parsen van zap-splitsing: {input}",
-  "saInmO": "De getoonde relaisenaam is niet hetzelfde als de volledige URL die is ingevoerd.",
-  "saorw+": "Aanvraag voor verwijderen evenement",
-  "sfL/O+": "Gedempte noten worden niet weergegeven",
-  "t79a6U": "Succesvolle verbinding:",
-  "tDDiRL": "Belangenlijst",
-  "tFpT/O": "Artefactsets vrijgeven",
-  "tO1oq9": "Video-evenementen",
-  "tOdNiY": "Donker thema",
-  "tRGdV1": "Versiescryptie",
-  "tU0ADf": "Onbekend NIP-{x}",
-  "tVuVg9": "Video bekijken evenement",
-  "tf1lIh": "Gratis",
-  "th5lxp": "Stuur notitie naar een subset van schrijfrelays",
-  "thnRpU": "NIP-05 geverifieerd worden kan helpen:",
-  "tj6kdX": "{sign} {amount} sats",
-  "tjpYlr": "Relaisgegevens",
-  "ttxS0b": "Supporter Badge",
-  "tzMNF3": "Status",
-  "u/vOPu": "Betaald",
-  "u4I8q8": "Speldenlijst",
-  "u81G9+": "Uptime",
-  "u9NoC1": "De naam moet uit minder dan {limit} tekens bestaan.",
-  "uCk8r+": "Heb je al een account?",
-  "uD7Els": "Externe identiteiten in profielen",
-  "uJaMkO": "Relay-lijst om DM's te ontvangen",
-  "uSV4Ti": "Reposts moeten handmatig worden bevestigd",
-  "uc0din": "Stuur satsplitsingen naar",
-  "ufvXH1": "Gevonden {n} evenementen",
-  "uhu5aG": "Openbaar",
-  "un1nGw": "{n} Opmerkingen",
-  "usAvMr": "Bewerk Profiel",
-  "v8lolG": "Start chat",
-  "vB3oQ/": "Moet een contactlijst of pubkey-lijst zijn",
-  "vBsZhD": "Gemeenschappen lijst",
-  "vN5UH8": "Profiel afbeelding",
-  "vU/Q5i": "Deze tool zoekt naar het laatste evenement dat door al je volgers is gepubliceerd en verwijdert degenen die al 6 maanden niets hebben gepost.",
-  "vZ4quW": "NIP-05 is een DNS-gebaseerde identificatie die helpt u te valideren als een bepaalde gebruiker.",
-  "vhlWFg": "Poll Opties",
-  "vlbWtt": "Verkrijg er één gratis",
-  "voxBKC": "Gevolgd door vrienden",
-  "vxwnbh": "Hoeveelheid werk van toepassing op alle gepubliceerde events",
-  "w1Fanr": "Bedrijf",
-  "w6qrwX": "NSFW",
-  "wEQDC6": "Bewerk",
-  "wOyDTB": "Lijst met bestandsopslagservers",
-  "wSZR47": "Stuur  in",
-  "wc9st7": "Media Bijlagen",
-  "whSrs+": "Nostr Openbare Chat",
-  "wih7iJ": "naam is geblokkeerd",
-  "wlWMuh": "Patches",
-  "wofVHy": "Moderatie",
-  "wqyN/i": "Meer informatie over {service} bij {link}",
-  "wtLjP6": "Kopieer ID",
-  "x+3fl6": "Mijn relais",
-  "x/Fx2P": "Ondersteun diensten die je gebruikt door een deel van je zaps in een pot geld te splitsen!",
-  "x82IOl": "Dempen",
-  "xEjBS7": "Voor jou",
-  "xIcAOU": "Stemmen via {type}",
-  "xIoGG9": "Ga naar",
-  "xPCyu+": "nostr: URI-schema",
-  "xaj9Ba": "Aanbieder",
-  "xbVgIm": "Automatisch video's laden",
-  "xhQMeQ": "Verloopt op",
-  "xl4s/X": "Aanvullende voorwaarden:",
-  "xmcVZ0": "Zoeken",
-  "xybOUv": "VENTILATOR",
-  "y/bmsG": "Sta  toe.",
-  "y1Z3or": "Taal",
-  "yAztTU": "{n} eSats",
-  "yCLnBC": "LNURL of Lightning Address",
-  "yLzgxH": "Populaire relais",
-  "yeX8yA": "Inheemse app",
-  "z3UjXR": "Debug",
-  "z3Ukvq": "Opstellen van long-form content",
-  "zCb8fX": "Gewicht",
-  "zFegDD": "Contact",
-  "zINlao": "Eigenaar",
-  "zQvVDJ": "Alle",
-  "zcaOTs": "Zap hoeveelheid in sats",
-  "zi9MdS": "Schaken (PGN)",
-  "zm6qS1": "{n} mins om te lezen",
-  "zonsdq": "Laden van LNURL service mislukt",
-  "zvCDao": "Recente notities automatisch weergeven",
-  "zx0myy": "Deelnemers"
+  "+D82kt": [
+    {
+      "type": 0,
+      "value": "Weet je het zeker dat je dit wil herplaatsen: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "+PzQ9Y": [
+    {
+      "type": 0,
+      "value": "Nu uitbetalen"
+    }
+  ],
+  "+QM0PJ": [
+    {
+      "type": 0,
+      "value": "Synchroniseer alle gebeurtenissen voor je profiel naar de lokale cache"
+    }
+  ],
+  "+QMdsy": [
+    {
+      "type": 0,
+      "value": "Estafette statistieken"
+    }
+  ],
+  "+UjDmN": [
+    {
+      "type": 0,
+      "value": "Aangemeld met schrijftoegang"
+    }
+  ],
+  "+Vxixo": [
+    {
+      "type": 0,
+      "value": "Geheime Groep Chat"
+    }
+  ],
+  "+aZY2h": [
+    {
+      "type": 0,
+      "value": "Zap Type"
+    }
+  ],
+  "+tShPg": [
+    {
+      "type": 0,
+      "value": "volgend op"
+    }
+  ],
+  "+vA//S": [
+    {
+      "type": 0,
+      "value": "Aanmeldingen"
+    }
+  ],
+  "+vIQlC": [
+    {
+      "type": 0,
+      "value": "Zorg ervoor dat u het volgende wachtwoord opslaat om uw account in de toekomst te beheren"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "Verbind"
+    }
+  ],
+  "+vj0U3": [
+    {
+      "type": 0,
+      "value": "bewerken"
+    }
+  ],
+  "+xliwN": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " Heeft herplaatst"
+    }
+  ],
+  "/B8zwF": [
+    {
+      "type": 0,
+      "value": "Jouw ruimte zoals jij die wilt 😌"
+    }
+  ],
+  "/GCoTA": [
+    {
+      "type": 0,
+      "value": "Duidelijk"
+    }
+  ],
+  "/JE/X+": [
+    {
+      "type": 0,
+      "value": "Account hulp"
+    }
+  ],
+  "/T7HId": [
+    {
+      "type": 0,
+      "value": "Integratie HTTP bestandsopslag"
+    }
+  ],
+  "/Xf4UW": [
+    {
+      "type": 0,
+      "value": "Anoniem gebruiksgegevens verzenden"
+    }
+  ],
+  "/b1IHW": [
+    {
+      "type": 0,
+      "value": "Bericht groeps-chat"
+    }
+  ],
+  "/d6vEc": [
+    {
+      "type": 0,
+      "value": "Maak je profiel gemakkelijker om te vinden en te delen"
+    }
+  ],
+  "/ioUrF": [
+    {
+      "type": 0,
+      "value": "Uit bestand"
+    }
+  ],
+  "/n5KSF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ms"
+    }
+  ],
+  "00LcfG": [
+    {
+      "type": 0,
+      "value": "Meer laden"
+    }
+  ],
+  "01iNut": [
+    {
+      "type": 0,
+      "value": "Nostr-adres is niet van jou"
+    }
+  ],
+  "08zn6O": [
+    {
+      "type": 0,
+      "value": "Sleutels exporteren"
+    }
+  ],
+  "0Azlrb": [
+    {
+      "type": 0,
+      "value": "Beheren"
+    }
+  ],
+  "0BUTMv": [
+    {
+      "type": 0,
+      "value": "Zoeken naar..."
+    }
+  ],
+  "0MndVW": [
+    {
+      "type": 0,
+      "value": "Generieke LNDHub portemonnee (BTCPayServer / Alby / LNBits)"
+    }
+  ],
+  "0jOEtS": [
+    {
+      "type": 0,
+      "value": "Ongeldig LNURL"
+    }
+  ],
+  "0kOBMu": [
+    {
+      "type": 0,
+      "value": "Omgaan met vermeldingen"
+    }
+  ],
+  "0mch2Y": [
+    {
+      "type": 0,
+      "value": "naam heeft verboden tekens"
+    }
+  ],
+  "0siT4z": [
+    {
+      "type": 0,
+      "value": "Politiek"
+    }
+  ],
+  "0uoY11": [
+    {
+      "type": 0,
+      "value": "Toon status"
+    }
+  ],
+  "0yO7wF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " seconden"
+    }
+  ],
+  "0zASjL": [
+    {
+      "type": 0,
+      "value": "Ga naar"
+    }
+  ],
+  "1/BFEj": [
+    {
+      "type": 0,
+      "value": "Git dingen"
+    }
+  ],
+  "1Mo59U": [
+    {
+      "type": 0,
+      "value": "Weet u zeker dat u deze notitie uit bladwijzers wilt verwijderen?"
+    }
+  ],
+  "1R43+L": [
+    {
+      "type": 0,
+      "value": "Voer Nostr Wallet Connect configuratie in"
+    }
+  ],
+  "1UWegE": [
+    {
+      "type": 0,
+      "value": "Maak een back-up van je sleutels!"
+    }
+  ],
+  "1c4YST": [
+    {
+      "type": 0,
+      "value": "Verbonden met: "
+    },
+    {
+      "type": 1,
+      "value": "node"
+    },
+    {
+      "type": 0,
+      "value": "🎉"
+    }
+  ],
+  "1nYUGC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Volgend"
+    }
+  ],
+  "1o2BgB": [
+    {
+      "type": 0,
+      "value": "Handtekeningen controleren"
+    }
+  ],
+  "1ozeyg": [
+    {
+      "type": 0,
+      "value": "Natuur"
+    }
+  ],
+  "1udzha": [
+    {
+      "type": 0,
+      "value": "Gesprekken"
+    }
+  ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "Toevoegen"
+    }
+  ],
+  "25V4l1": [
+    {
+      "type": 0,
+      "value": "Omslagfoto"
+    }
+  ],
+  "25WwxF": [
+    {
+      "type": 0,
+      "value": "Heb je geen account?"
+    }
+  ],
+  "28oKbu": [
+    {
+      "type": 0,
+      "value": "Gemodereerde gemeenschappen"
+    }
+  ],
+  "29sHFE": [
+    {
+      "type": 0,
+      "value": "Portemonnee aansluiten"
+    }
+  ],
+  "2BBGxX": [
+    {
+      "type": 0,
+      "value": "Onderwerp-tag in tekstgebeurtenissen"
+    }
+  ],
+  "2HIqeO": [
+    {
+      "type": 0,
+      "value": "Emoji-lijst gebruiker"
+    }
+  ],
+  "2IFGap": [
+    {
+      "type": 0,
+      "value": "Doneer"
+    }
+  ],
+  "2LbrkB": [
+    {
+      "type": 0,
+      "value": "Wachtwoord invoeren"
+    }
+  ],
+  "2O2sfp": [
+    {
+      "type": 0,
+      "value": "Afwerking"
+    }
+  ],
+  "2Qsf9/": [
+    {
+      "type": 0,
+      "value": "Algemene lijsten"
+    }
+  ],
+  "2a2YiP": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Bladwijzers"
+    }
+  ],
+  "2k0Cv+": [
+    {
+      "type": 0,
+      "value": "Niet leuk ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "2mcwT8": [
+    {
+      "type": 0,
+      "value": "Nieuwe opmerking"
+    }
+  ],
+  "2oCF7O": [
+    {
+      "type": 0,
+      "value": "Gevolgd door vrienden van vrienden"
+    }
+  ],
+  "2raFAu": [
+    {
+      "type": 0,
+      "value": "Toepassingsspecifieke gegevens"
+    }
+  ],
+  "2ukA4d": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " uur geleden"
+    }
+  ],
+  "2z7Kky": [
+    {
+      "type": 0,
+      "value": "Laatste artikelen"
+    }
+  ],
+  "3/onCd": [
+    {
+      "type": 0,
+      "value": "Antwoorden"
+    }
+  ],
+  "39AHJm": [
+    {
+      "type": 0,
+      "value": "Aanmelden"
+    }
+  ],
+  "3GWu6/": [
+    {
+      "type": 0,
+      "value": "Gebruikersstatussen"
+    }
+  ],
+  "3KNMbJ": [
+    {
+      "type": 0,
+      "value": "Artikelen"
+    }
+  ],
+  "3MKdAw": [
+    {
+      "type": 0,
+      "value": "Blobs opgeslagen op mediaservers"
+    }
+  ],
+  "3QwfJR": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    }
+  ],
+  "3adEeb": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " kijkers"
+    }
+  ],
+  "3cc4Ct": [
+    {
+      "type": 0,
+      "value": "Licht"
+    }
+  ],
+  "3gOsZq": [
+    {
+      "type": 0,
+      "value": "Vertalers"
+    }
+  ],
+  "3kbIhS": [
+    {
+      "type": 0,
+      "value": "Zonder titel"
+    }
+  ],
+  "3qnJlS": [
+    {
+      "type": 0,
+      "value": "Je stemt met "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "3t3kok": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " nieuwe note"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " nieuwe notes"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "3tVy+Z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Volgers"
+    }
+  ],
+  "3yk8fB": [
+    {
+      "type": 0,
+      "value": "Portemonnee"
+    }
+  ],
+  "40VR6s": [
+    {
+      "type": 0,
+      "value": "Nostr aansluiten"
+    }
+  ],
+  "41BSaT": [
+    {
+      "type": 0,
+      "value": "Totaal aantal evenementen:"
+    }
+  ],
+  "450Fty": [
+    {
+      "type": 0,
+      "value": "Geen"
+    }
+  ],
+  "47E53q": [
+    {
+      "type": 0,
+      "value": "Wiki"
+    }
+  ],
+  "47FYwb": [
+    {
+      "type": 0,
+      "value": "Annuleer"
+    }
+  ],
+  "48zn4v": [
+    {
+      "type": 0,
+      "value": "Bod"
+    }
+  ],
+  "4IPzdn": [
+    {
+      "type": 0,
+      "value": "Primaire ontwikkelaars"
+    }
+  ],
+  "4L2vUY": [
+    {
+      "type": 0,
+      "value": "Uw nieuwe NIP-05 handvat is:"
+    }
+  ],
+  "4MjsHk": [
+    {
+      "type": 0,
+      "value": "Leven"
+    }
+  ],
+  "4OB335": [
+    {
+      "type": 0,
+      "value": "Vind-ik-niet-leuks"
+    }
+  ],
+  "4P/kKm": [
+    {
+      "type": 0,
+      "value": "Encryptie met privé-sleutel"
+    }
+  ],
+  "4Vmpt4": [
+    {
+      "type": 0,
+      "value": "NostrPlebs is een van de eerste Nostr NIP-05 providers en biedt een goede verzameling domeinen aan tegen redelijke prijzen"
+    }
+  ],
+  "4Z3t5i": [
+    {
+      "type": 0,
+      "value": "Gebruik imgproxy om foto's te comprimeren"
+    }
+  ],
+  "4emo2p": [
+    {
+      "type": 0,
+      "value": "Ontbrekende relais"
+    }
+  ],
+  "4rYCjn": [
+    {
+      "type": 0,
+      "value": "Notitie aan mijzelf"
+    }
+  ],
+  "4wgYpI": [
+    {
+      "type": 0,
+      "value": "Aanbevolen applicatieverwerkers"
+    }
+  ],
+  "5BVs2e": [
+    {
+      "type": 0,
+      "value": "zappen"
+    }
+  ],
+  "5CB6zB": [
+    {
+      "type": 0,
+      "value": "Zap Splitsingen"
+    }
+  ],
+  "5PRWs7": [
+    {
+      "type": 0,
+      "value": "Meldingen API ingeschakeld"
+    }
+  ],
+  "5dfmvv": [
+    {
+      "type": 0,
+      "value": "Zap Doel"
+    }
+  ],
+  "5oTnfy": [
+    {
+      "type": 0,
+      "value": "Koop Account-Naam"
+    }
+  ],
+  "5qEWCr": [
+    {
+      "type": 0,
+      "value": "Metagegevens bestand"
+    }
+  ],
+  "5u6iEc": [
+    {
+      "type": 0,
+      "value": "Overzetten naar Pubkey"
+    }
+  ],
+  "5vMmmR": [
+    {
+      "type": 0,
+      "value": "Gebruikersnamen zijn niet uniek op Nostr. Het Nostr adres(!) is uw unieke account label (e.g. name@nostrplebs.com)."
+    }
+  ],
+  "5ykRmX": [
+    {
+      "type": 0,
+      "value": "Zend zap"
+    }
+  ],
+  "6/hB3S": [
+    {
+      "type": 0,
+      "value": "Bekijk herhaling"
+    }
+  ],
+  "60kEE3": [
+    {
+      "type": 0,
+      "value": "Lijst dempen"
+    }
+  ],
+  "62nsdy": [
+    {
+      "type": 0,
+      "value": "Opnieuw proberen"
+    }
+  ],
+  "634VVz": [
+    {
+      "type": 0,
+      "value": "Verbinding mislukt:"
+    }
+  ],
+  "6559gb": [
+    {
+      "type": 0,
+      "value": "Nieuwe volglijst lengte "
+    },
+    {
+      "type": 1,
+      "value": "length"
+    }
+  ],
+  "65BmHb": [
+    {
+      "type": 0,
+      "value": "Proxy afbeelding laden van "
+    },
+    {
+      "type": 1,
+      "value": "host"
+    },
+    {
+      "type": 0,
+      "value": " is mislukt, klik hier om direct te laden"
+    }
+  ],
+  "6D4Hhn": [
+    {
+      "type": 0,
+      "value": "Relais aanbevelen"
+    }
+  ],
+  "6KGebm": [
+    {
+      "type": 0,
+      "value": "Afdichting"
+    }
+  ],
+  "6OSOXl": [
+    {
+      "type": 0,
+      "value": "Reden: "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reason"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "6WWD34": [
+    {
+      "type": 0,
+      "value": "Op zoek naar: "
+    },
+    {
+      "type": 1,
+      "value": "noteId"
+    }
+  ],
+  "6bgpn+": [
+    {
+      "type": 0,
+      "value": "Niet alle clients ondersteunen dit, het kan zijn dat je nog steeds zaps ontvangt alsof zap-splitsingen niet is geconfigureerd."
+    }
+  ],
+  "6ewQqw": [
+    {
+      "type": 0,
+      "value": "Likes ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "6mr8WU": [
+    {
+      "type": 0,
+      "value": "Gevolgd door"
+    }
+  ],
+  "6pdxsi": [
+    {
+      "type": 0,
+      "value": "Extra metagegevensvelden en tags"
+    }
+  ],
+  "6uMqL1": [
+    {
+      "type": 0,
+      "value": "Niet betaald"
+    }
+  ],
+  "6xNr8c": [
+    {
+      "type": 0,
+      "value": "Accounts wisselen"
+    }
+  ],
+  "6xap9L": [
+    {
+      "type": 0,
+      "value": "Goed"
+    }
+  ],
+  "7+Domh": [
+    {
+      "type": 0,
+      "value": "Notes"
+    }
+  ],
+  "712i26": [
+    {
+      "type": 0,
+      "value": "Proxy gebruikt HODL facturen om de betaling door te sturen, wat de pubkey van je knooppunt verbergt"
+    }
+  ],
+  "753yX5": [
+    {
+      "type": 0,
+      "value": "Label"
+    }
+  ],
+  "769A8p": [
+    {
+      "type": 0,
+      "value": "Wiki artikel"
+    }
+  ],
+  "77nkEO": [
+    {
+      "type": 0,
+      "value": "Document met informatie over relais"
+    }
+  ],
+  "7LFU8U": [
+    {
+      "type": 0,
+      "value": "Zoeken"
+    }
+  ],
+  "7UOvbT": [
+    {
+      "type": 0,
+      "value": "Offline"
+    }
+  ],
+  "7YkSA2": [
+    {
+      "type": 0,
+      "value": "Leider Gemeenschap"
+    }
+  ],
+  "7gMmSL": [
+    {
+      "type": 0,
+      "value": "Reactie"
+    }
+  ],
+  "7hp70g": [
+    {
+      "type": 0,
+      "value": "NIP-05"
+    }
+  ],
+  "7jfPsW": [
+    {
+      "type": 0,
+      "value": "Modulaire artikelinhoud"
+    }
+  ],
+  "7nAz/z": [
+    {
+      "type": 0,
+      "value": "Demp notities van mensen die buiten je web van vertrouwen vallen"
+    }
+  ],
+  "7pFGAQ": [
+    {
+      "type": 0,
+      "value": "Relais sluiten"
+    }
+  ],
+  "8/vBbP": [
+    {
+      "type": 0,
+      "value": "Reposts ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "89q5wc": [
+    {
+      "type": 0,
+      "value": "Bevestig Reposts"
+    }
+  ],
+  "8BDFvJ": [
+    {
+      "type": 0,
+      "value": "Conventies voor het gebruik door klanten van e en p tags in tekstgebeurtenissen"
+    }
+  ],
+  "8ED/4u": [
+    {
+      "type": 0,
+      "value": "Antwoord op"
+    }
+  ],
+  "8HJxXG": [
+    {
+      "type": 0,
+      "value": "Aanmelden"
+    }
+  ],
+  "8QDesP": [
+    {
+      "type": 0,
+      "value": "Zap "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "8Rkoyb": [
+    {
+      "type": 0,
+      "value": "Ontvanger"
+    }
+  ],
+  "8Y6bZQ": [
+    {
+      "type": 0,
+      "value": "Ongeldige zap-splitsing: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "8ZGqWl": [
+    {
+      "type": 0,
+      "value": "Groepsdraad"
+    }
+  ],
+  "8g2vyB": [
+    {
+      "type": 0,
+      "value": "naam is te lang"
+    }
+  ],
+  "8jmwT8": [
+    {
+      "type": 0,
+      "value": "bech32-gecodeerde entiteiten"
+    }
+  ],
+  "8v1NN+": [
+    {
+      "type": 0,
+      "value": "Paring-zin"
+    }
+  ],
+  "8xdDLn": [
+    {
+      "type": 0,
+      "value": "Sets volgen"
+    }
+  ],
+  "8za9Pq": [
+    {
+      "type": 0,
+      "value": "Ontwerpclassificatie"
+    }
+  ],
+  "9+Ddtu": [
+    {
+      "type": 0,
+      "value": "Volgende"
+    }
+  ],
+  "9HU8vw": [
+    {
+      "type": 0,
+      "value": "Reageren"
+    }
+  ],
+  "9SvQep": [
+    {
+      "type": 0,
+      "value": "Volgend "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "9V0wg3": [
+    {
+      "type": 0,
+      "value": "Kalender Evenement RSVP"
+    }
+  ],
+  "9WRlF4": [
+    {
+      "type": 0,
+      "value": "Verzend"
+    }
+  ],
+  "9kO0VQ": [
+    {
+      "type": 0,
+      "value": "Verberg gedempte noten"
+    }
+  ],
+  "9kSari": [
+    {
+      "type": 0,
+      "value": "Opnieuw publiceren"
+    }
+  ],
+  "9pMqYs": [
+    {
+      "type": 0,
+      "value": "Nostr Adres"
+    }
+  ],
+  "9wO4wJ": [
+    {
+      "type": 0,
+      "value": "Lightning Invoice"
+    }
+  ],
+  "A86fJ+": [
+    {
+      "type": 0,
+      "value": "Generieke repost"
+    }
+  ],
+  "ADmfQT": [
+    {
+      "type": 0,
+      "value": "Parent"
+    }
+  ],
+  "ALdW69": [
+    {
+      "type": 0,
+      "value": "Opmerking door "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "AN0Z7Q": [
+    {
+      "type": 0,
+      "value": "Gedempte woorden"
+    }
+  ],
+  "ASRK0S": [
+    {
+      "type": 0,
+      "value": "Deze auteur is gedempt"
+    }
+  ],
+  "AedFVZ": [
+    {
+      "type": 0,
+      "value": "Een product maken of bijwerken"
+    }
+  ],
+  "Ai8VHU": [
+    {
+      "type": 0,
+      "value": "Onbeperkt note-behoud op Snort relay"
+    }
+  ],
+  "AkCxS/": [
+    {
+      "type": 0,
+      "value": "Reden"
+    }
+  ],
+  "AktAk2": [
+    {
+      "type": 0,
+      "value": "Geweldig"
+    }
+  ],
+  "Am8glJ": [
+    {
+      "type": 0,
+      "value": "Spel"
+    }
+  ],
+  "AqGfF4": [
+    {
+      "type": 0,
+      "value": "Kanaal Creatie"
+    }
+  ],
+  "Aujn2T": [
+    {
+      "type": 0,
+      "value": "Graaf"
+    }
+  ],
+  "Awq32I": [
+    {
+      "type": 0,
+      "value": "Pushmeldingen"
+    }
+  ],
+  "AxDOiG": [
+    {
+      "type": 0,
+      "value": "Maanden"
+    }
+  ],
+  "AyGauy": [
+    {
+      "type": 0,
+      "value": "Inloggen"
+    }
+  ],
+  "B4C47Y": [
+    {
+      "type": 0,
+      "value": "naam is te kort"
+    }
+  ],
+  "B6+XJy": [
+    {
+      "type": 0,
+      "value": "zapped"
+    }
+  ],
+  "B6H7eJ": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex"
+    }
+  ],
+  "B7wvUM": [
+    {
+      "type": 0,
+      "value": "Je kunt één of meerdere relais toevoegen, één per lijn."
+    }
+  ],
+  "BGCM48": [
+    {
+      "type": 0,
+      "value": "Schrijf toegang tot Snort relays en 1 jaar note-opslag"
+    }
+  ],
+  "BGGacK": [
+    {
+      "type": 0,
+      "value": "AI inbeddingen / vectorlijsten"
+    }
+  ],
+  "BQW4gi": [
+    {
+      "type": 0,
+      "value": "Relaisgroepen"
+    }
+  ],
+  "BWpuKl": [
+    {
+      "type": 0,
+      "value": "Updaten"
+    }
+  ],
+  "BfuAQ5": [
+    {
+      "type": 0,
+      "value": "Marktplaats UI/UX"
+    }
+  ],
+  "BjNwZW": [
+    {
+      "type": 0,
+      "value": "Nostr-adres (nip05)"
+    }
+  ],
+  "Blxcdx": [
+    {
+      "type": 0,
+      "value": "Relais"
+    }
+  ],
+  "Bo+O//": [
+    {
+      "type": 0,
+      "value": "HTTP-autorisatie"
+    }
+  ],
+  "C1LjMx": [
+    {
+      "type": 0,
+      "value": "Bliksem donatie"
+    }
+  ],
+  "C6Lhhp": [
+    {
+      "type": 0,
+      "value": "Live evenement"
+    }
+  ],
+  "C7642/": [
+    {
+      "type": 0,
+      "value": "Citaat Repost"
+    }
+  ],
+  "C81/uG": [
+    {
+      "type": 0,
+      "value": "Uitloggen"
+    }
+  ],
+  "C8FsOr": [
+    {
+      "type": 0,
+      "value": "Populaire servers"
+    }
+  ],
+  "C8HhVE": [
+    {
+      "type": 0,
+      "value": "Voorgestelde Accounts"
+    }
+  ],
+  "CA1efg": [
+    {
+      "type": 0,
+      "value": "Videosets"
+    }
+  ],
+  "CHTbO3": [
+    {
+      "type": 0,
+      "value": "Invoice laden mislukt"
+    }
+  ],
+  "CJx5Nd": [
+    {
+      "type": 0,
+      "value": "Profiel Zaps"
+    }
+  ],
+  "CM+Cfj": [
+    {
+      "type": 0,
+      "value": "Volg lijst"
+    }
+  ],
+  "CM0k0d": [
+    {
+      "type": 0,
+      "value": "Volglijst snoeien"
+    }
+  ],
+  "CVWeJ6": [
+    {
+      "type": 0,
+      "value": "Trending Accounts"
+    }
+  ],
+  "CYkOCI": [
+    {
+      "type": 0,
+      "value": "en "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " anderen die je volgt"
+    }
+  ],
+  "Cdxwi0": [
+    {
+      "type": 0,
+      "value": "Repository aankondigingen"
+    }
+  ],
+  "CmZ9ls": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Gedempt"
+    }
+  ],
+  "Coy6SH": [
+    {
+      "type": 0,
+      "value": "Kalender"
+    }
+  ],
+  "CsCUYo": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "Cu/K85": [
+    {
+      "type": 0,
+      "value": "Vertaald vanuit "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "CzHZoc": [
+    {
+      "type": 0,
+      "value": "Sociale grafiek"
+    }
+  ],
+  "D++Njw": [
+    {
+      "type": 0,
+      "value": "Tekst Opmerking Referenties"
+    }
+  ],
+  "D+KzKd": [
+    {
+      "type": 0,
+      "value": "Zap elke note automatisch wanneer geladen"
+    }
+  ],
+  "D09wbg": [
+    {
+      "type": 0,
+      "value": "Badge Definitie"
+    }
+  ],
+  "D3idYv": [
+    {
+      "type": 0,
+      "value": "Instellingen"
+    }
+  ],
+  "D9xTLE": [
+    {
+      "type": 0,
+      "value": "Kanaal verbergen Bericht"
+    }
+  ],
+  "DBiVK1": [
+    {
+      "type": 0,
+      "value": "Cache"
+    }
+  ],
+  "DKnriN": [
+    {
+      "type": 0,
+      "value": "Sats verzenden"
+    }
+  ],
+  "DZzCem": [
+    {
+      "type": 0,
+      "value": "Toon laatste "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " notes"
+    }
+  ],
+  "Dh3hbq": [
+    {
+      "type": 0,
+      "value": "Auto Zap"
+    }
+  ],
+  "Dn82AL": [
+    {
+      "type": 0,
+      "value": "Live"
+    }
+  ],
+  "DqUmXt": [
+    {
+      "type": 0,
+      "value": "Product verkocht als veiling"
+    }
+  ],
+  "DrZqav": [
+    {
+      "type": 0,
+      "value": "Over moet minder dan "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " tekens bevatten"
+    }
+  ],
+  "DtYelJ": [
+    {
+      "type": 0,
+      "value": "Transfer"
+    }
+  ],
+  "Dx4ey3": [
+    {
+      "type": 0,
+      "value": "Alles Toggeren"
+    }
+  ],
+  "E3oB+t": [
+    {
+      "type": 0,
+      "value": "Browser"
+    }
+  ],
+  "E5ZIPD": [
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "amount"
+        }
+      ],
+      "type": 8,
+      "value": "big"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "sats"
+        }
+      ],
+      "type": 8,
+      "value": "small"
+    }
+  ],
+  "EHqHsu": [
+    {
+      "type": 0,
+      "value": "Factuur / Bliksemadres"
+    }
+  ],
+  "EJbFi7": [
+    {
+      "type": 0,
+      "value": "Opmerkingen zoeken"
+    }
+  ],
+  "ELbg9p": [
+    {
+      "type": 0,
+      "value": "Data aanbieders"
+    }
+  ],
+  "EQKRE4": [
+    {
+      "type": 0,
+      "value": "Badges tonen op profielpagina's"
+    }
+  ],
+  "EWeVrH": [
+    {
+      "type": 0,
+      "value": "Reactie op een website"
+    }
+  ],
+  "EWyQH5": [
+    {
+      "type": 0,
+      "value": "Global"
+    }
+  ],
+  "Ebl/B2": [
+    {
+      "type": 0,
+      "value": "Vertalen naar "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "Ec+xLY": [
+    {
+      "type": 0,
+      "value": "Curation sets"
+    }
+  ],
+  "EcZF24": [
+    {
+      "type": 0,
+      "value": "Custom Relays"
+    }
+  ],
+  "EcfIwB": [
+    {
+      "type": 0,
+      "value": "Gebruikersnaam is beschikbaar"
+    }
+  ],
+  "EcglP9": [
+    {
+      "type": 0,
+      "value": "Sleutel"
+    }
+  ],
+  "EjFyoR": [
+    {
+      "type": 0,
+      "value": "Adres voor on-chain donatie"
+    }
+  ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "Kopen"
+    }
+  ],
+  "EsHX35": [
+    {
+      "type": 0,
+      "value": "Sorry, we begrijpen dit soort evenementen niet ("
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "), probeer in plaats daarvan een van de volgende apps!"
+    }
+  ],
+  "F/6VqP": [
+    {
+      "type": 0,
+      "value": "Server"
+    }
+  ],
+  "F3l7xL": [
+    {
+      "type": 0,
+      "value": "Account toevoegen"
+    }
+  ],
+  "F4eJ/3": [
+    {
+      "type": 0,
+      "value": "Advertenties"
+    }
+  ],
+  "FDguSC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Zaps"
+    }
+  ],
+  "FHWpHC": [
+    {
+      "type": 0,
+      "value": "Reactie op portemonnee"
+    }
+  ],
+  "FHvSk3": [
+    {
+      "type": 0,
+      "value": "Authenticatie van clients naar relais"
+    }
+  ],
+  "FMfjrl": [
+    {
+      "type": 0,
+      "value": "Statusberichten tonen op profielpagina's"
+    }
+  ],
+  "FSYL8G": [
+    {
+      "type": 0,
+      "value": "Trending Accounts"
+    }
+  ],
+  "FWJR1B": [
+    {
+      "type": 0,
+      "value": "Gebruikersgroepen"
+    }
+  ],
+  "FcNSft": [
+    {
+      "type": 0,
+      "value": "Redirect geeft HTTP-omleiding naar het opgegeven bliksemadres"
+    }
+  ],
+  "FdhSU2": [
+    {
+      "type": 0,
+      "value": "Claim nu"
+    }
+  ],
+  "FfYsOb": [
+    {
+      "type": 0,
+      "value": "Er is een fout opgetreden!"
+    }
+  ],
+  "FmXUJg": [
+    {
+      "type": 0,
+      "value": "volgt u"
+    }
+  ],
+  "FvanT6": [
+    {
+      "type": 0,
+      "value": "Rekeningen"
+    }
+  ],
+  "FzbSGg": [
+    {
+      "type": 0,
+      "value": "Je hebt geen mediaservers, probeer er een paar toe te voegen."
+    }
+  ],
+  "G/yZLu": [
+    {
+      "type": 0,
+      "value": "Verwijderen"
+    }
+  ],
+  "G1BGCg": [
+    {
+      "type": 0,
+      "value": "Selecteer Wallet"
+    }
+  ],
+  "G3A56c": [
+    {
+      "type": 0,
+      "value": "Geabonneerd op Push"
+    }
+  ],
+  "GFOoEE": [
+    {
+      "type": 0,
+      "value": "Zout"
+    }
+  ],
+  "GIqktu": [
+    {
+      "type": 0,
+      "value": "Ondersteunde NIP's"
+    }
+  ],
+  "GL8aXW": [
+    {
+      "type": 0,
+      "value": "Bladwijzers ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "GSye7T": [
+    {
+      "type": 0,
+      "value": "Lightning adres"
+    }
+  ],
+  "GUlSVG": [
+    {
+      "type": 0,
+      "value": "Claim je inbegrepen Snort Nostr adres"
+    }
+  ],
+  "Gcn9NQ": [
+    {
+      "type": 0,
+      "value": "Magnet Link"
+    }
+  ],
+  "GpkNYn": [
+    {
+      "type": 0,
+      "value": "Torrent"
+    }
+  ],
+  "GqQeu/": [
+    {
+      "type": 0,
+      "value": "Ongeldig bliksemadres"
+    }
+  ],
+  "GspYR7": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Dislike"
+    }
+  ],
+  "Gxcr08": [
+    {
+      "type": 0,
+      "value": "Uitzendingsevenement"
+    }
+  ],
+  "H+vHiz": [
+    {
+      "type": 0,
+      "value": "Hex Key.."
+    }
+  ],
+  "H/oroO": [
+    {
+      "type": 0,
+      "value": "Omgaan met onbekende gebeurtenissen"
+    }
+  ],
+  "H0JBH6": [
+    {
+      "type": 0,
+      "value": "Uitloggen"
+    }
+  ],
+  "H0OG3T": [
+    {
+      "type": 0,
+      "value": "Leider Info"
+    }
+  ],
+  "H1GTaC": [
+    {
+      "type": 0,
+      "value": "Bladwijzerlijst"
+    }
+  ],
+  "H6/kLh": [
+    {
+      "type": 0,
+      "value": "Bestelling betaald!"
+    }
+  ],
+  "HAlOn1": [
+    {
+      "type": 0,
+      "value": "Naam"
+    }
+  ],
+  "HFls6j": [
+    {
+      "type": 0,
+      "value": "naam zal later beschikbaar zijn"
+    }
+  ],
+  "HOzFdo": [
+    {
+      "type": 0,
+      "value": "Gedempt"
+    }
+  ],
+  "HWbkEK": [
+    {
+      "type": 0,
+      "value": "Cache wissen en herladen"
+    }
+  ],
+  "HbefNb": [
+    {
+      "type": 0,
+      "value": "Open wallet"
+    }
+  ],
+  "HhcAVH": [
+    {
+      "type": 0,
+      "value": "Je volgt deze persoon niet, klik hier om media te laden van "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "link"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": ", of update "
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "type": 0,
+              "value": "je voorkeuren"
+            }
+          ],
+          "type": 8,
+          "value": "i"
+        }
+      ],
+      "type": 8,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": " om altijd media van iedereen te laden."
+    }
+  ],
+  "HpAmQZ": [
+    {
+      "type": 0,
+      "value": "Relais beoordelingen"
+    }
+  ],
+  "HqRNN8": [
+    {
+      "type": 0,
+      "value": "Ondersteuning"
+    }
+  ],
+  "HzSFeV": [
+    {
+      "type": 0,
+      "value": "Vervaldatum"
+    }
+  ],
+  "I0tYZf": [
+    {
+      "type": 0,
+      "value": "Een kraam maken of bijwerken"
+    }
+  ],
+  "I1AoOu": [
+    {
+      "type": 0,
+      "value": "Laatste bericht "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    }
+  ],
+  "IEwZvs": [
+    {
+      "type": 0,
+      "value": "Weet u zeker dat u deze note wilt losmaken?"
+    }
+  ],
+  "IIOul1": [
+    {
+      "type": 0,
+      "value": "Accountgegevens"
+    }
+  ],
+  "IKKHqV": [
+    {
+      "type": 0,
+      "value": "Volgers"
+    }
+  ],
+  "IOu4Xh": [
+    {
+      "type": 0,
+      "value": "Je moet een "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    },
+    {
+      "type": 0,
+      "value": " abonnee zijn om toegang te krijgen tot "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": " deck"
+    }
+  ],
+  "IVbtTS": [
+    {
+      "type": 0,
+      "value": "Zap alle "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "IWz1ta": [
+    {
+      "type": 0,
+      "value": "Automatisch vertalen"
+    }
+  ],
+  "IcHcWj": [
+    {
+      "type": 0,
+      "value": "Laatst gezien:"
+    }
+  ],
+  "Ig9/a1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats verzonden naar "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "IgsWFG": [
+    {
+      "type": 0,
+      "value": "Niet gevolgd door iemand die je volgt"
+    }
+  ],
+  "IoQq+a": [
+    {
+      "type": 0,
+      "value": "Klik hier om toch te laden"
+    }
+  ],
+  "IvjoDS": [
+    {
+      "type": 0,
+      "value": "Aangesloten"
+    }
+  ],
+  "Ix8l+B": [
+    {
+      "type": 0,
+      "value": "Trending Notes"
+    }
+  ],
+  "J+dIsA": [
+    {
+      "type": 0,
+      "value": "Abonnementen"
+    }
+  ],
+  "J1iLmb": [
+    {
+      "type": 0,
+      "value": "Meldingen Niet toegestaan"
+    }
+  ],
+  "J2HeQ+": [
+    {
+      "type": 0,
+      "value": "Gebruik komma's om woorden te scheiden, bijv. woord1, woord2, woord3"
+    }
+  ],
+  "J2Q92B": [
+    {
+      "type": 0,
+      "value": "Emoji sets"
+    }
+  ],
+  "J6N9xl": [
+    {
+      "type": 0,
+      "value": "Sign in with Android signer"
+    }
+  ],
+  "JCIgkj": [
+    {
+      "type": 0,
+      "value": "Gebruikersnaam"
+    }
+  ],
+  "JGrt9q": [
+    {
+      "type": 0,
+      "value": "Stuur sats naar "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "JHEHCk": [
+    {
+      "type": 0,
+      "value": "Zaps ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "JIVWWA": [
+    {
+      "type": 0,
+      "value": "Sport"
+    }
+  ],
+  "JPFYIM": [
+    {
+      "type": 0,
+      "value": "Geen lightning adres"
+    }
+  ],
+  "JSx7y9": [
+    {
+      "type": 0,
+      "value": "Abonneer je op "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": " voor "
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " en ontvang de volgende beloningen"
+    }
+  ],
+  "JeoS4y": [
+    {
+      "type": 0,
+      "value": "Repost"
+    }
+  ],
+  "Jh5zKH": [
+    {
+      "type": 0,
+      "value": "Lijst met relais zoeken"
+    }
+  ],
+  "JjGgXI": [
+    {
+      "type": 0,
+      "value": "Zoek Account"
+    }
+  ],
+  "JkLHGw": [
+    {
+      "type": 0,
+      "value": "Website"
+    }
+  ],
+  "JmcxzF": [
+    {
+      "type": 0,
+      "value": "Relais zijn servers waarmee je verbinding maakt voor het verzenden en ontvangen van gebeurtenissen. Streef naar 4-8 relais."
+    }
+  ],
+  "JymXbw": [
+    {
+      "type": 0,
+      "value": "Privésleutel"
+    }
+  ],
+  "K1wl1/": [
+    {
+      "type": 0,
+      "value": "Gemiddelde wachttijd:"
+    }
+  ],
+  "K3r6DQ": [
+    {
+      "type": 0,
+      "value": "Wis"
+    }
+  ],
+  "K7AkdL": [
+    {
+      "type": 0,
+      "value": "Weergeven"
+    }
+  ],
+  "K9zklU": [
+    {
+      "type": 0,
+      "value": "Externe inhoud-ID's"
+    }
+  ],
+  "KAhAcM": [
+    {
+      "type": 0,
+      "value": "Voer LNDHub config in"
+    }
+  ],
+  "KGmQjH": [
+    {
+      "type": 0,
+      "value": "Hoogtepunten"
+    }
+  ],
+  "KJryGq": [
+    {
+      "type": 0,
+      "value": "Live chatbericht"
+    }
+  ],
+  "KQvWvD": [
+    {
+      "type": 0,
+      "value": "Verwijderd"
+    }
+  ],
+  "KT9nox": [
+    {
+      "type": 0,
+      "value": "Beschermde gebeurtenissen"
+    }
+  ],
+  "KahimY": [
+    {
+      "type": 0,
+      "value": "Onbekende event soort: "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    }
+  ],
+  "KipVeG": [
+    {
+      "type": 0,
+      "value": "Nostr-sleutels in kaart brengen naar DNS-gebaseerde internetidentifiers"
+    }
+  ],
+  "KtsyO0": [
+    {
+      "type": 0,
+      "value": "Pin invoeren"
+    }
+  ],
+  "KyRp/q": [
+    {
+      "type": 0,
+      "value": "Portemonnee Aanvraag"
+    }
+  ],
+  "LBAnc7": [
+    {
+      "type": 0,
+      "value": "Bekijken als gebruiker?"
+    }
+  ],
+  "LEmxc8": [
+    {
+      "type": 0,
+      "value": "Zap Doelen"
+    }
+  ],
+  "LKw/ue": [
+    {
+      "type": 0,
+      "value": "Bekijk de code "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "LR1XjT": [
+    {
+      "type": 0,
+      "value": "Pin te kort"
+    }
+  ],
+  "LXxsbk": [
+    {
+      "type": 0,
+      "value": "Anoniem"
+    }
+  ],
+  "LgbKvU": [
+    {
+      "type": 0,
+      "value": "Opmerking"
+    }
+  ],
+  "LhLvRx": [
+    {
+      "type": 0,
+      "value": "De naam moet tussen 8 en 15 tekens lang zijn"
+    }
+  ],
+  "LmdPXO": [
+    {
+      "type": 0,
+      "value": "Kan Nostr-adres niet verifiëren"
+    }
+  ],
+  "Lu5/Bj": [
+    {
+      "type": 0,
+      "value": "Open op Zapstr"
+    }
+  ],
+  "LuDBLj": [
+    {
+      "type": 0,
+      "value": "Torrents"
+    }
+  ],
+  "Lw+I+J": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " gezapped"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " anderen"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "LwYmVi": [
+    {
+      "type": 0,
+      "value": "Zaps op deze notitie worden opgesplitst naar de volgende gebruikers."
+    }
+  ],
+  "M3Oirc": [
+    {
+      "type": 0,
+      "value": "Debug-menu"
+    }
+  ],
+  "M6C/px": [
+    {
+      "type": 0,
+      "value": "Een leider worden"
+    }
+  ],
+  "MBAYRO": [
+    {
+      "type": 0,
+      "value": "Toont \"Kopieer ID\" en \"Kopieer Event JSON\" in het context menu bij elk bericht"
+    }
+  ],
+  "MI2jkA": [
+    {
+      "type": 0,
+      "value": "Niet beschikbaar:"
+    }
+  ],
+  "MKDHEa": [
+    {
+      "type": 0,
+      "value": "Kamer"
+    }
+  ],
+  "MP54GY": [
+    {
+      "type": 0,
+      "value": "Wachtwoord Wallet"
+    }
+  ],
+  "MWTx65": [
+    {
+      "type": 0,
+      "value": "Standaardpagina"
+    }
+  ],
+  "MYBYdJ": [
+    {
+      "type": 0,
+      "value": "Korte tekst"
+    }
+  ],
+  "MYUBaG": [
+    {
+      "type": 0,
+      "value": "Klantverificatie"
+    }
+  ],
+  "MiMipu": [
+    {
+      "type": 0,
+      "value": "Instellen als primair Nostr-adres (nip05)"
+    }
+  ],
+  "MkQ4FX": [
+    {
+      "type": 0,
+      "value": "Proxy-tags"
+    }
+  ],
+  "Ml7+RS": [
+    {
+      "type": 0,
+      "value": "Stuur deze link naar je vrienden en deel de magie van de nostr."
+    }
+  ],
+  "Mrpkot": [
+    {
+      "type": 0,
+      "value": "Betaal abonnement"
+    }
+  ],
+  "MuVeKe": [
+    {
+      "type": 0,
+      "value": "Koop Nostr adres"
+    }
+  ],
+  "Muhna4": [
+    {
+      "type": 0,
+      "value": "Resultaten tellen"
+    }
+  ],
+  "MzRYWH": [
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " kopen"
+    }
+  ],
+  "Mzizei": [
+    {
+      "type": 0,
+      "value": "Iris.naar rekening"
+    }
+  ],
+  "N2IrpM": [
+    {
+      "type": 0,
+      "value": "Bevestig"
+    }
+  ],
+  "NAidKb": [
+    {
+      "type": 0,
+      "value": "Meldingen"
+    }
+  ],
+  "NAuFNH": [
+    {
+      "type": 0,
+      "value": "U heeft al een abonnement van dit type, gelieve te vernieuwen of te betalen"
+    }
+  ],
+  "NDTFsp": [
+    {
+      "type": 0,
+      "value": "Feedback"
+    }
+  ],
+  "NepkXH": [
+    {
+      "type": 0,
+      "value": "Kan niet stemmen met "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, stel een ander standaard zap bedrag in"
+    }
+  ],
+  "NndBJE": [
+    {
+      "type": 0,
+      "value": "Nieuwe gebruikerspagina"
+    }
+  ],
+  "Nr9Yyx": [
+    {
+      "type": 0,
+      "value": "Reposts"
+    }
+  ],
+  "NxzeNU": [
+    {
+      "type": 0,
+      "value": "Dood"
+    }
+  ],
+  "O3Jz4E": [
+    {
+      "type": 0,
+      "value": "Gebruik je uitnodigingscode om sats te verdienen!"
+    }
+  ],
+  "OEW7yJ": [
+    {
+      "type": 0,
+      "value": "Zaps"
+    }
+  ],
+  "OIqnZN": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps Attestaties voor gebeurtenissen"
+    }
+  ],
+  "OJHKIL": [
+    {
+      "type": 0,
+      "value": "Cadeauverpakking"
+    }
+  ],
+  "OKhRC6": [
+    {
+      "type": 0,
+      "value": "Deel"
+    }
+  ],
+  "OLEm6z": [
+    {
+      "type": 0,
+      "value": "Onbekende inlogfout"
+    }
+  ],
+  "OQSOJF": [
+    {
+      "type": 0,
+      "value": "Ontvang een gratis nostr adres"
+    }
+  ],
+  "OQXnew": [
+    {
+      "type": 0,
+      "value": "Uw abonnement is nog actief, u kunt nog niet vernieuwen"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "Aangemaakt"
+    }
+  ],
+  "ORa81+": [
+    {
+      "type": 0,
+      "value": "Verzoeken samenvoegen"
+    }
+  ],
+  "OoZgbB": [
+    {
+      "type": 0,
+      "value": "Bijwerken mislukt, probeer het opnieuw"
+    }
+  ],
+  "OuProE": [
+    {
+      "type": 0,
+      "value": "Inhoud in lange vorm"
+    }
+  ],
+  "OxPdQ0": [
+    {
+      "type": 0,
+      "value": "Scannen "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "P2o+ZZ": [
+    {
+      "type": 0,
+      "value": "Ongeldig Nostr-adres"
+    }
+  ],
+  "P61BTu": [
+    {
+      "type": 0,
+      "value": "Kopieer JSON event"
+    }
+  ],
+  "P7FD0F": [
+    {
+      "type": 0,
+      "value": "Systeem (Standaard)"
+    }
+  ],
+  "P7nJT9": [
+    {
+      "type": 0,
+      "value": "Totaal vandaag (UTC): "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "P8JC58": [
+    {
+      "type": 0,
+      "value": "Afstand"
+    }
+  ],
+  "PCSt5T": [
+    {
+      "type": 0,
+      "value": "Voorkeuren"
+    }
+  ],
+  "PXQ0z0": [
+    {
+      "type": 0,
+      "value": "Ontvangen naar "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "PamNxw": [
+    {
+      "type": 0,
+      "value": "Onbekende bestandsheader: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Pe0ogR": [
+    {
+      "type": 0,
+      "value": "Thema"
+    }
+  ],
+  "PrsIg7": [
+    {
+      "type": 0,
+      "value": "Reacties worden op elke pagina getoond, indien uitgeschakeld worden er geen reacties getoond"
+    }
+  ],
+  "QDFTjG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Relays"
+    }
+  ],
+  "QJfhKt": [
+    {
+      "type": 0,
+      "value": "De privésleutel is als een wachtwoord, maar kan niet gereset worden. Bewaak het zorgvuldig en laat het nooit aan iemand zien. Zodra iemand je privésleutel heeft, heeft hij of zij voor altijd toegang tot je account."
+    }
+  ],
+  "QWhotP": [
+    {
+      "type": 0,
+      "value": "Zap Pool werkt alleen als u een van de ondersteunde wallet connecties gebruikt (WebLN, LNDHub of Nostr Wallet Connect)"
+    }
+  ],
+  "QpaLA3": [
+    {
+      "type": 0,
+      "value": "Kanaalbericht"
+    }
+  ],
+  "Qxv0B2": [
+    {
+      "type": 0,
+      "value": "Op dit moment heb je "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats in je Zap-Pool."
+    }
+  ],
+  "Qy6/Ft": [
+    {
+      "type": 0,
+      "value": "Directe privéberichten"
+    }
+  ],
+  "R/6nsx": [
+    {
+      "type": 0,
+      "value": "Abonnement"
+    }
+  ],
+  "R81upa": [
+    {
+      "type": 0,
+      "value": "Mensen die je volgt"
+    }
+  ],
+  "RDha9y": [
+    {
+      "type": 0,
+      "value": "Service Worker wordt niet uitgevoerd"
+    }
+  ],
+  "RRz1cA": [
+    {
+      "type": 0,
+      "value": "Repository statusmeldingen"
+    }
+  ],
+  "RSr2uB": [
+    {
+      "type": 0,
+      "value": "Gebruikersnaam mag alleen kleine letters en cijfers bevatten"
+    }
+  ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "Verlopen"
+    }
+  ],
+  "RefZpK": [
+    {
+      "type": 0,
+      "value": "Kort Portret Video Evenement"
+    }
+  ],
+  "RfhLwC": [
+    {
+      "type": 0,
+      "value": "Door: "
+    },
+    {
+      "type": 1,
+      "value": "author"
+    }
+  ],
+  "RhDAoS": [
+    {
+      "type": 0,
+      "value": "Weet u zeker dat u dit wilt verwijderen "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "RmxSZo": [
+    {
+      "type": 0,
+      "value": "Gegevensautomaten"
+    }
+  ],
+  "RoOyAh": [
+    {
+      "type": 0,
+      "value": "Relays"
+    }
+  ],
+  "Rs4kCE": [
+    {
+      "type": 0,
+      "value": "Bladwijzers"
+    }
+  ],
+  "S/NV2G": [
+    {
+      "type": 0,
+      "value": "Belading: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "SFuk1v": [
+    {
+      "type": 0,
+      "value": "Rechten"
+    }
+  ],
+  "SLZGPn": [
+    {
+      "type": 0,
+      "value": "Voer een pincode in om je privésleutel te coderen. Je moet deze pincode elke keer invoeren als je "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": "opent."
+    }
+  ],
+  "SMO+on": [
+    {
+      "type": 0,
+      "value": "Stuur zap naar "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "SOqbe9": [
+    {
+      "type": 0,
+      "value": "Update Lightning Adres"
+    }
+  ],
+  "SP0+yi": [
+    {
+      "type": 0,
+      "value": "Abonnement kopen"
+    }
+  ],
+  "SW3TFA": [
+    {
+      "type": 0,
+      "value": "Populaire relais die worden gebruikt door mensen die je volgt."
+    }
+  ],
+  "SYQtZ7": [
+    {
+      "type": 0,
+      "value": "LN adres Proxy"
+    }
+  ],
+  "Sd0PKc": [
+    {
+      "type": 0,
+      "value": "Relais sets"
+    }
+  ],
+  "SfwSIm": [
+    {
+      "type": 0,
+      "value": "Probleemzoeker"
+    }
+  ],
+  "ShdEie": [
+    {
+      "type": 0,
+      "value": "Markeer alle als gelezen"
+    }
+  ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "Custom"
+    }
+  ],
+  "SmuYUd": [
+    {
+      "type": 0,
+      "value": "Hoe moeten we je noemen?"
+    }
+  ],
+  "Ss0sWu": [
+    {
+      "type": 0,
+      "value": "Nu betalen"
+    }
+  ],
+  "SsUQnC": [
+    {
+      "type": 0,
+      "value": "Toepassingsspecifieke gegevens"
+    }
+  ],
+  "StKzTE": [
+    {
+      "type": 0,
+      "value": "De auteur heeft deze opmerking gemarkeerd als een "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "gevoelig onderwerp"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "T83nqf": [
+    {
+      "type": 0,
+      "value": "Relais in de buurt van je geografische locatie."
+    }
+  ],
+  "TDR5ge": [
+    {
+      "type": 0,
+      "value": "Media in notities wordt automatisch getoond voor de geselecteerde personen, anders wordt alleen de link getoond"
+    }
+  ],
+  "TGc5nI": [
+    {
+      "type": 0,
+      "value": "Informatie over behandelaar"
+    }
+  ],
+  "TH1fFo": [
+    {
+      "type": 0,
+      "value": "Telegram"
+    }
+  ],
+  "TJo5E6": [
+    {
+      "type": 0,
+      "value": "Voorbeeld"
+    }
+  ],
+  "TOG64f": [
+    {
+      "type": 0,
+      "value": "Lokaal relais gebruiken"
+    }
+  ],
+  "TP/cMX": [
+    {
+      "type": 0,
+      "value": "Beëindigd"
+    }
+  ],
+  "TaeBqw": [
+    {
+      "type": 0,
+      "value": "Aanmelden met Nostr Extensie"
+    }
+  ],
+  "TdTXXf": [
+    {
+      "type": 0,
+      "value": "Meer informatie"
+    }
+  ],
+  "TdtZQ5": [
+    {
+      "type": 0,
+      "value": "Crypto"
+    }
+  ],
+  "Tdv6NY": [
+    {
+      "type": 0,
+      "value": "Interessesets"
+    }
+  ],
+  "TgDKhI": [
+    {
+      "type": 0,
+      "value": "Kalender Evenementen"
+    }
+  ],
+  "TpgeGw": [
+    {
+      "type": 0,
+      "value": "Hex Salt.."
+    }
+  ],
+  "Tpy00S": [
+    {
+      "type": 0,
+      "value": "Personen"
+    }
+  ],
+  "TvKqBp": [
+    {
+      "type": 0,
+      "value": "ik vond  leuk"
+    }
+  ],
+  "TwyMau": [
+    {
+      "type": 0,
+      "value": "Account"
+    }
+  ],
+  "U1aPPi": [
+    {
+      "type": 0,
+      "value": "Stop met luisteren"
+    }
+  ],
+  "U30H69": [
+    {
+      "type": 0,
+      "value": "Communautaire definitie"
+    }
+  ],
+  "UJTWqI": [
+    {
+      "type": 0,
+      "value": "Verwijderen uit mijn relais"
+    }
+  ],
+  "ULXFfP": [
+    {
+      "type": 0,
+      "value": "Ontvang"
+    }
+  ],
+  "UNjfWJ": [
+    {
+      "type": 0,
+      "value": "Controleer alle ontvangen evenementhandtekeningen van estafettes"
+    }
+  ],
+  "UT7Nkj": [
+    {
+      "type": 0,
+      "value": "Nieuwe Chat"
+    }
+  ],
+  "UUPFlt": [
+    {
+      "type": 0,
+      "value": "Gebruikers moeten akkoord gaan met de waarschuwing van de inhoud om de inhoud van uw notitie te tonen."
+    }
+  ],
+  "UaCh1c": [
+    {
+      "type": 0,
+      "value": "Server toevoegen"
+    }
+  ],
+  "Ub+AGc": [
+    {
+      "type": 0,
+      "value": "Aanmelden"
+    }
+  ],
+  "Up5U7K": [
+    {
+      "type": 0,
+      "value": "Blokkeren"
+    }
+  ],
+  "Ups2/p": [
+    {
+      "type": 0,
+      "value": "Uw aanvraag is in behandeling"
+    }
+  ],
+  "UrKTqQ": [
+    {
+      "type": 0,
+      "value": "Je hebt een actieve iris.to account"
+    }
+  ],
+  "UsCzPc": [
+    {
+      "type": 0,
+      "value": "Deel een persoonlijke uitnodiging met vrienden!"
+    }
+  ],
+  "UxgyeY": [
+    {
+      "type": 0,
+      "value": "Je verwijzingscode is "
+    },
+    {
+      "type": 1,
+      "value": "code"
+    }
+  ],
+  "V20Og0": [
+    {
+      "type": 0,
+      "value": "Label"
+    }
+  ],
+  "VOjC1i": [
+    {
+      "type": 0,
+      "value": "Kies naar welke service u bijlagen wilt uploaden"
+    }
+  ],
+  "VR5eHw": [
+    {
+      "type": 0,
+      "value": "Publieke sleutel (npub/nprofile)"
+    }
+  ],
+  "VcwrfF": [
+    {
+      "type": 0,
+      "value": "Ja graag"
+    }
+  ],
+  "VfhYxG": [
+    {
+      "type": 0,
+      "value": "Voor een volledige lijst met wijzigingen kun je de changelog "
+    },
+    {
+      "type": 1,
+      "value": "here"
+    },
+    {
+      "type": 0,
+      "value": "bekijken."
+    }
+  ],
+  "VlJkSk": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " gedempt"
+    }
+  ],
+  "VnXp8Z": [
+    {
+      "type": 0,
+      "value": "Profielfoto"
+    }
+  ],
+  "W1yoZY": [
+    {
+      "type": 0,
+      "value": "Het lijkt erop dat je geen abonnement hebt, je kan er één "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " krijgen"
+    }
+  ],
+  "W2PiAr": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Geblokkeerd"
+    }
+  ],
+  "W4SaxY": [
+    {
+      "type": 0,
+      "value": "Lokaal"
+    }
+  ],
+  "W9355R": [
+    {
+      "type": 0,
+      "value": "Niet langer negeren"
+    }
+  ],
+  "WeLEuL": [
+    {
+      "type": 0,
+      "value": "Van server"
+    }
+  ],
+  "Wj5TbN": [
+    {
+      "type": 0,
+      "value": "Problemen"
+    }
+  ],
+  "WmZhfL": [
+    {
+      "type": 0,
+      "value": "Vertaal notities automatisch naar je eigen taal"
+    }
+  ],
+  "WvGmZT": [
+    {
+      "type": 0,
+      "value": "npub / nprofile / nostr adres"
+    }
+  ],
+  "X6tipZ": [
+    {
+      "type": 0,
+      "value": "Aanmelden met sleutel"
+    }
+  ],
+  "X7xU8J": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex, mnemonic"
+    }
+  ],
+  "XECMfW": [
+    {
+      "type": 0,
+      "value": "Gebruiksgegevens verzenden"
+    }
+  ],
+  "XICsE8": [
+    {
+      "type": 0,
+      "value": "File hosts"
+    }
+  ],
+  "XPB8VV": [
+    {
+      "type": 0,
+      "value": "Alby portemonnee aansluiting"
+    }
+  ],
+  "XQiFEl": [
+    {
+      "type": 0,
+      "value": "Volgt Estafette Gezondheid"
+    }
+  ],
+  "XSdWHA": [
+    {
+      "type": 0,
+      "value": "Inwisselen"
+    }
+  ],
+  "XXm7jJ": [
+    {
+      "type": 0,
+      "value": "Trending Hashtags"
+    }
+  ],
+  "XgWvGA": [
+    {
+      "type": 0,
+      "value": "Reacties"
+    }
+  ],
+  "Xnimz0": [
+    {
+      "type": 0,
+      "value": "Verzenden van "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "Xopqkl": [
+    {
+      "type": 0,
+      "value": "Uw standaard zap bedrag is "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats, voorbeeldwaarden worden hiermee berekend."
+    }
+  ],
+  "YDMrKK": [
+    {
+      "type": 0,
+      "value": "Gebruikers"
+    }
+  ],
+  "YDURw6": [
+    {
+      "type": 0,
+      "value": "Service-URL"
+    }
+  ],
+  "YH2RKk": [
+    {
+      "type": 0,
+      "value": "Populaire mediaservers."
+    }
+  ],
+  "YQZY/S": [
+    {
+      "type": 0,
+      "value": "Het lijkt erop dat je niet genoeg mensen volgt, kijk eens op "
+    },
+    {
+      "type": 1,
+      "value": "newUsersPage"
+    },
+    {
+      "type": 0,
+      "value": " om mensen te ontdekken die je kunt volgen!"
+    }
+  ],
+  "YR2I9M": [
+    {
+      "type": 0,
+      "value": "Geen sleutels, geen "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": ", Er is geen manier om het te resetten als je geen back-up maakt. Het duurt maar een minuut."
+    }
+  ],
+  "YU7ZYp": [
+    {
+      "type": 0,
+      "value": "Openbare chat"
+    }
+  ],
+  "YXA3AH": [
+    {
+      "type": 0,
+      "value": "Reacties inschakelen"
+    }
+  ],
+  "Yf3DwC": [
+    {
+      "type": 0,
+      "value": "Sluit een portemonnee aan om directe betalingen te versturen"
+    }
+  ],
+  "YuoEb9": [
+    {
+      "type": 0,
+      "value": "Probeer een ander relais"
+    }
+  ],
+  "Z48UEo": [
+    {
+      "type": 0,
+      "value": "Kanaal metagegevens"
+    }
+  ],
+  "Z4BMCZ": [
+    {
+      "type": 0,
+      "value": "Voer koppelingszin in"
+    }
+  ],
+  "Z7kkeJ": [
+    {
+      "type": 0,
+      "value": "Gedelegeerde ondertekening"
+    }
+  ],
+  "ZFe9tl": [
+    {
+      "type": 0,
+      "value": "Een notitie samenstellen"
+    }
+  ],
+  "ZKORll": [
+    {
+      "type": 0,
+      "value": "Activeer Nu"
+    }
+  ],
+  "ZLmyG9": [
+    {
+      "type": 0,
+      "value": "Bijdragers"
+    }
+  ],
+  "ZS+jRE": [
+    {
+      "type": 0,
+      "value": "Zap-splitsingen verzenden naar"
+    }
+  ],
+  "Zff6lu": [
+    {
+      "type": 0,
+      "value": "Gebruikersnaam iris.to/"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "name"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " is voor jou gereserveerd!"
+    }
+  ],
+  "ZlIh4/": [
+    {
+      "type": 0,
+      "value": "Versleutelde rechtstreekse berichten"
+    }
+  ],
+  "ZlmK/p": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " uitgenodigd op "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    }
+  ],
+  "a1x4gD": [
+    {
+      "type": 0,
+      "value": "Mediaservers slaan media op die je kunt delen in notities als afbeeldingen en video's"
+    }
+  ],
+  "a5UPxh": [
+    {
+      "type": 0,
+      "value": "Support ontwikkelaars en platforms die NIP-05 identificatie-diensten aanbieden"
+    }
+  ],
+  "a7TDNm": [
+    {
+      "type": 0,
+      "value": "Notes zullen in real-time worden gestreamt naar het Global en Notes tabblad"
+    }
+  ],
+  "aHje0o": [
+    {
+      "type": 0,
+      "value": "Naam of nym"
+    }
+  ],
+  "aMaLBK": [
+    {
+      "type": 0,
+      "value": "Ondersteunde extensies"
+    }
+  ],
+  "aRex7h": [
+    {
+      "type": 0,
+      "value": "Betaald "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, vergoeding "
+    },
+    {
+      "type": 1,
+      "value": "fee"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "aSGz4J": [
+    {
+      "type": 0,
+      "value": "Maak verbinding met je eigen LND-knooppunt met Lightning Node Connect"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "Toon meer"
+    }
+  ],
+  "abbGKq": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " km"
+    }
+  ],
+  "ak3MTf": [
+    {
+      "type": 0,
+      "value": "Vrienden uitnodigen"
+    }
+  ],
+  "b12Goz": [
+    {
+      "type": 0,
+      "value": "Mnemonic"
+    }
+  ],
+  "b5vAk0": [
+    {
+      "type": 0,
+      "value": "Uw Nostr adres gedraagt zich als een Lightning adres en stuurt zaps door naar uw gekozen LNURL/Lightning adres"
+    }
+  ],
+  "bF1MYT": [
+    {
+      "type": 0,
+      "value": "Je bent een gemeenschapsleider en verdient "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "percent"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " van doorverwezen gebruikersabonnementen!"
+    }
+  ],
+  "bG00/W": [
+    {
+      "type": 0,
+      "value": "Service Werker Loopt"
+    }
+  ],
+  "bJ+wrA": [
+    {
+      "type": 0,
+      "value": "Snellijst berekenen"
+    }
+  ],
+  "bLZL5a": [
+    {
+      "type": 0,
+      "value": "Adres krijgen"
+    }
+  ],
+  "bMphls": [
+    {
+      "type": 0,
+      "value": "Aangemeld met alleen-lezen toegang"
+    }
+  ],
+  "bQdA2k": [
+    {
+      "type": 0,
+      "value": "Gevoelige inhoud"
+    }
+  ],
+  "bep9C3": [
+    {
+      "type": 0,
+      "value": "Publieke sleutel"
+    }
+  ],
+  "bfvyfs": [
+    {
+      "type": 0,
+      "value": "Anon"
+    }
+  ],
+  "bxv59V": [
+    {
+      "type": 0,
+      "value": "Zojuist"
+    }
+  ],
+  "c+1p0i": [
+    {
+      "type": 0,
+      "value": "Stomme sets"
+    }
+  ],
+  "c+JYNI": [
+    {
+      "type": 0,
+      "value": "Geen dank"
+    }
+  ],
+  "c2T+1B": [
+    {
+      "type": 0,
+      "value": "Omleidingen"
+    }
+  ],
+  "c35bj2": [
+    {
+      "type": 0,
+      "value": "Voor vragen over je NIP-05 bestelling stuur een DM: "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "c3LlRO": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "KiB"
+    }
+  ],
+  "c3g2hL": [
+    {
+      "type": 0,
+      "value": "Opnieuw uitzenden"
+    }
+  ],
+  "cFbU1B": [
+    {
+      "type": 0,
+      "value": "Gebruik je Alby? Ga naar "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " om je Nostr Wallet Connect in te stellen!"
+    }
+  ],
+  "cG/bKQ": [
+    {
+      "type": 0,
+      "value": "Inheemse nostr-portemonneeverbinding"
+    }
+  ],
+  "cHCwbF": [
+    {
+      "type": 0,
+      "value": "Fotografie"
+    }
+  ],
+  "cKbMRX": [
+    {
+      "type": 0,
+      "value": "Direct bericht"
+    }
+  ],
+  "cPIKU2": [
+    {
+      "type": 0,
+      "value": "Volgt"
+    }
+  ],
+  "cQfLWb": [
+    {
+      "type": 0,
+      "value": "URL.."
+    }
+  ],
+  "cVcgLJ": [
+    {
+      "type": 0,
+      "value": "Media Servers"
+    }
+  ],
+  "cWx9t8": [
+    {
+      "type": 0,
+      "value": "Demp allen"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "Wallet verbinden"
+    }
+  ],
+  "cnwHgH": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps"
+    }
+  ],
+  "cuP16y": [
+    {
+      "type": 0,
+      "value": "Ondersteuning voor meerdere accounts"
+    }
+  ],
+  "cuV2gK": [
+    {
+      "type": 0,
+      "value": "naam is geregistreerd"
+    }
+  ],
+  "cw1Ftc": [
+    {
+      "type": 0,
+      "value": "Live activiteiten"
+    }
+  ],
+  "cyR7Kh": [
+    {
+      "type": 0,
+      "value": "Terug"
+    }
+  ],
+  "d+6YsV": [
+    {
+      "type": 0,
+      "value": "Lijsten om te dempen:"
+    }
+  ],
+  "d0qim7": [
+    {
+      "type": 0,
+      "value": "WoT-filter"
+    }
+  ],
+  "d2ebEu": [
+    {
+      "type": 0,
+      "value": "Niet geabonneerd op Push"
+    }
+  ],
+  "d7d0/x": [
+    {
+      "type": 0,
+      "value": "LN Address"
+    }
+  ],
+  "dK2CcV": [
+    {
+      "type": 0,
+      "value": "De publieke sleutel is net als je gebruikersnaam, je kunt deze met iedereen delen."
+    }
+  ],
+  "dOQCL8": [
+    {
+      "type": 0,
+      "value": "Weergavenaam"
+    }
+  ],
+  "dZZIGe": [
+    {
+      "type": 0,
+      "value": "Modulaire artikelkop"
+    }
+  ],
+  "ddd3JX": [
+    {
+      "type": 0,
+      "value": "Populaire hashtags"
+    }
+  ],
+  "deEeEI": [
+    {
+      "type": 0,
+      "value": "Registreer"
+    }
+  ],
+  "djLctd": [
+    {
+      "type": 0,
+      "value": "Bedrag in sats"
+    }
+  ],
+  "dmcsBA": [
+    {
+      "type": 0,
+      "value": "Geclassificeerde lijst"
+    }
+  ],
+  "dmsiLv": [
+    {
+      "type": 0,
+      "value": "Een standaard Zap Pool-splitsing van "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " is geconfigureerd voor "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " ontwikkelaars, je kunt dit op elk moment uitschakelen in "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "e5x8FT": [
+    {
+      "type": 0,
+      "value": "Vriendelijk"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "Binnenkort beschikbaar"
+    }
+  ],
+  "e7VmYP": [
+    {
+      "type": 0,
+      "value": "Pin invoeren om je privésleutel te ontgrendelen"
+    }
+  ],
+  "e7qqly": [
+    {
+      "type": 0,
+      "value": "Alles markeren als gelezen"
+    }
+  ],
+  "eF0Re7": [
+    {
+      "type": 0,
+      "value": "Gebruik een nostr signer-extensie om aan te melden"
+    }
+  ],
+  "eHAneD": [
+    {
+      "type": 0,
+      "value": "Emoji reactie"
+    }
+  ],
+  "eJj8HD": [
+    {
+      "type": 0,
+      "value": "Word geverifieerd"
+    }
+  ],
+  "eSzf2G": [
+    {
+      "type": 0,
+      "value": "Een enkele zap van "
+    },
+    {
+      "type": 1,
+      "value": "nIn"
+    },
+    {
+      "type": 0,
+      "value": " sats zal "
+    },
+    {
+      "type": 1,
+      "value": "nOut"
+    },
+    {
+      "type": 0,
+      "value": " sats toewijzen aan de zap pool."
+    }
+  ],
+  "eW/Bj9": [
+    {
+      "type": 0,
+      "value": "Voer"
+    }
+  ],
+  "eXT2QQ": [
+    {
+      "type": 0,
+      "value": "Groepschat"
+    }
+  ],
+  "eZtOxB": [
+    {
+      "type": 0,
+      "value": "window.nostr mogelijkheid voor webbrowsers"
+    }
+  ],
+  "egib+2": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " andere"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " andere"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "ejEGdx": [
+    {
+      "type": 0,
+      "value": "Home"
+    }
+  ],
+  "eoV49s": [
+    {
+      "type": 0,
+      "value": "Slecht"
+    }
+  ],
+  "f1OxTe": [
+    {
+      "type": 0,
+      "value": "Community leaders zijn personen die het nostr ecosysteem laten groeien door actief te zijn in hun lokale gemeenschappen en nieuwe gebruikers te helpen. Iedereen kan een gemeenschapsleider worden, maar slechts weinigen dragen de huidige eretitel."
+    }
+  ],
+  "f2CAxA": [
+    {
+      "type": 0,
+      "value": "Dump"
+    }
+  ],
+  "fBI91o": [
+    {
+      "type": 0,
+      "value": "Zap"
+    }
+  ],
+  "fBlba3": [
+    {
+      "type": 0,
+      "value": "Bedankt voor het gebruik van "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": ", overweeg alsjeblieft om te doneren als je kunt."
+    }
+  ],
+  "fLIvbC": [
+    {
+      "type": 0,
+      "value": "Snort is een open source project dat wordt gebouwd door gepassioneerde mensen in hun vrije tijd. Uw donaties worden zeer gewaardeerd."
+    }
+  ],
+  "fOksnD": [
+    {
+      "type": 0,
+      "value": "Kan niet stemmen omdat LNURL-service geen zaps ondersteunt"
+    }
+  ],
+  "fQN+tq": [
+    {
+      "type": 0,
+      "value": "Berichten tonen met een waarschuwingslabel"
+    }
+  ],
+  "fWZYP5": [
+    {
+      "type": 0,
+      "value": "Vastgezet"
+    }
+  ],
+  "fX5RYm": [
+    {
+      "type": 0,
+      "value": "Kies een paar interessante onderwerpen"
+    }
+  ],
+  "filwqD": [
+    {
+      "type": 0,
+      "value": "Lezen"
+    }
+  ],
+  "fjAcWo": [
+    {
+      "type": 0,
+      "value": "Cadeauverpakkingen"
+    }
+  ],
+  "flnGvv": [
+    {
+      "type": 0,
+      "value": "Waar denk je aan?"
+    }
+  ],
+  "fqwcJ1": [
+    {
+      "type": 0,
+      "value": "Ketting Donatie"
+    }
+  ],
+  "fr+XYA": [
+    {
+      "type": 0,
+      "value": "Bliksem Pub RPC"
+    }
+  ],
+  "fsB/4p": [
+    {
+      "type": 0,
+      "value": "Opgeslagen"
+    }
+  ],
+  "fucxlm": [
+    {
+      "type": 0,
+      "value": "Media bijvoegen"
+    }
+  ],
+  "furjvW": [
+    {
+      "type": 0,
+      "value": "Stream bekijken"
+    }
+  ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "Over ons"
+    }
+  ],
+  "g985Wp": [
+    {
+      "type": 0,
+      "value": "Kan code niet verzenden"
+    }
+  ],
+  "gDzDRs": [
+    {
+      "type": 0,
+      "value": "Emoji die wordt verstuurd wanneer u reageert op een note"
+    }
+  ],
+  "gXgY3+": [
+    {
+      "type": 0,
+      "value": "Nog niet alle Nostr Apps ondersteunen dit"
+    }
+  ],
+  "gczcC5": [
+    {
+      "type": 0,
+      "value": "Abonneer"
+    }
+  ],
+  "geppt8": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count2"
+    },
+    {
+      "type": 0,
+      "value": " in geheugen)"
+    }
+  ],
+  "gjBiyj": [
+    {
+      "type": 0,
+      "value": "Laden..."
+    }
+  ],
+  "gkMmvC": [
+    {
+      "type": 0,
+      "value": "Android ondertekenapplicatie"
+    }
+  ],
+  "gl1NeW": [
+    {
+      "type": 0,
+      "value": "Lijsten"
+    }
+  ],
+  "go2/QF": [
+    {
+      "type": 0,
+      "value": "Gebruikersserverlijst"
+    }
+  ],
+  "grQ+mI": [
+    {
+      "type": 0,
+      "value": "Proof of Work"
+    }
+  ],
+  "gtNjNP": [
+    {
+      "type": 0,
+      "value": "Beschrijving basisprotocolstroom"
+    }
+  ],
+  "h7jvCs": [
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " is samen leuker!"
+    }
+  ],
+  "h8XMJL": [
+    {
+      "type": 0,
+      "value": "Badges"
+    }
+  ],
+  "h9M0rW": [
+    {
+      "type": 0,
+      "value": "Metagegevens gebruiker"
+    }
+  ],
+  "hF6IN2": [
+    {
+      "type": 0,
+      "value": "Snoeien Volglijst"
+    }
+  ],
+  "hMQmIw": [
+    {
+      "type": 0,
+      "value": "Synchroniseer account"
+    }
+  ],
+  "hMzcSq": [
+    {
+      "type": 0,
+      "value": "Berichten"
+    }
+  ],
+  "hRTfTR": [
+    {
+      "type": 0,
+      "value": "PRO"
+    }
+  ],
+  "hY4lzx": [
+    {
+      "type": 0,
+      "value": "Ondersteuningen"
+    }
+  ],
+  "hYOE+U": [
+    {
+      "type": 0,
+      "value": "Uitnodigen"
+    }
+  ],
+  "hicxcO": [
+    {
+      "type": 0,
+      "value": "Reacties tonen"
+    }
+  ],
+  "hmZ3Bz": [
+    {
+      "type": 0,
+      "value": "Media"
+    }
+  ],
+  "hniz8Z": [
+    {
+      "type": 0,
+      "value": "hier"
+    }
+  ],
+  "hv/eRj": [
+    {
+      "type": 0,
+      "value": "Geblokkeerde relaislijst"
+    }
+  ],
+  "hvFRBo": [
+    {
+      "type": 0,
+      "value": "Interactie"
+    }
+  ],
+  "i/dBAR": [
+    {
+      "type": 0,
+      "value": "Zap Pool"
+    }
+  ],
+  "i5gBFz": [
+    {
+      "type": 0,
+      "value": "Je verzonden en ontvangen betalingen worden hier weergegeven."
+    }
+  ],
+  "iCqGww": [
+    {
+      "type": 0,
+      "value": "Reacties ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "iEoXYx": [
+    {
+      "type": 0,
+      "value": "DeepL vertalingen"
+    }
+  ],
+  "iGT1eE": [
+    {
+      "type": 0,
+      "value": "Voorkom dat nepaccounts je imiteren"
+    }
+  ],
+  "iHN12u": [
+    {
+      "type": 0,
+      "value": "Admin"
+    }
+  ],
+  "iICVoL": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " volgt ("
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " duplicaten)"
+    }
+  ],
+  "iNWbVV": [
+    {
+      "type": 0,
+      "value": "Hendel"
+    }
+  ],
+  "iXPL0Z": [
+    {
+      "type": 0,
+      "value": "Kan niet inloggen met een privésleutel in een onbeveiligde omgeving, gebruik in plaats daarvan een Nostr key manager extensie"
+    }
+  ],
+  "iYc3Ld": [
+    {
+      "type": 0,
+      "value": "Betalingen"
+    }
+  ],
+  "icCxlA": [
+    {
+      "type": 0,
+      "value": "pagina voor nieuwe gebruikers"
+    }
+  ],
+  "ieGrWo": [
+    {
+      "type": 0,
+      "value": "Volgen"
+    }
+  ],
+  "igUUst": [
+    {
+      "type": 0,
+      "value": "Groepschat Antwoord met draad"
+    }
+  ],
+  "ipHVx5": [
+    {
+      "type": 0,
+      "value": "Factuur genereren"
+    }
+  ],
+  "itPgxd": [
+    {
+      "type": 0,
+      "value": "Profiel"
+    }
+  ],
+  "izWS4J": [
+    {
+      "type": 0,
+      "value": "Ontvolgen"
+    }
+  ],
+  "j9xbzF": [
+    {
+      "type": 0,
+      "value": "Al een back-up gemaakt"
+    }
+  ],
+  "jA3OE/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sat"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sats"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "jAmfGl": [
+    {
+      "type": 0,
+      "value": "Uw "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " abonnement is verlopen"
+    }
+  ],
+  "jHa/ko": [
+    {
+      "type": 0,
+      "value": "Ruim je feed op"
+    }
+  ],
+  "jMzO1S": [
+    {
+      "type": 0,
+      "value": "Interne fout: "
+    },
+    {
+      "type": 1,
+      "value": "msg"
+    }
+  ],
+  "jiAVXu": [
+    {
+      "type": 0,
+      "value": "Video-evenement"
+    }
+  ],
+  "jvo0vs": [
+    {
+      "type": 0,
+      "value": "Opslaan"
+    }
+  ],
+  "jzgQ2z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Reacties"
+    }
+  ],
+  "k0kCJp": [
+    {
+      "type": 0,
+      "value": "Nu solliciteren"
+    }
+  ],
+  "k2veDA": [
+    {
+      "type": 0,
+      "value": "Schrijven"
+    }
+  ],
+  "k7sKNy": [
+    {
+      "type": 0,
+      "value": "Onze eigen NIP-05 verificatieservice ondersteunt de ontwikkeling van deze site en geeft u een speciale badge op onze site!"
+    }
+  ],
+  "k9SQm1": [
+    {
+      "type": 0,
+      "value": "Relais waarop je eerder hebt aangesloten en die betrouwbaar lijken te zijn."
+    }
+  ],
+  "kEZUR8": [
+    {
+      "type": 0,
+      "value": "Registreer een Iris-gebruikersnaam"
+    }
+  ],
+  "kJYo0u": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " gerepost"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " anderen gerepost"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "kKC9ya": [
+    {
+      "type": 0,
+      "value": "Portemonnee-info"
+    }
+  ],
+  "kNd2FL": [
+    {
+      "type": 0,
+      "value": "Inloggen voor getijden"
+    }
+  ],
+  "kQAf2d": [
+    {
+      "type": 0,
+      "value": "Selecteer"
+    }
+  ],
+  "kaaf1E": [
+    {
+      "type": 0,
+      "value": "nu"
+    }
+  ],
+  "kc79d3": [
+    {
+      "type": 0,
+      "value": "Onderwerpen"
+    }
+  ],
+  "klCm96": [
+    {
+      "type": 0,
+      "value": "Goedkeuring communautaire post"
+    }
+  ],
+  "kqPQJD": [
+    {
+      "type": 0,
+      "value": "Zap-pool configureren"
+    }
+  ],
+  "kuPHYE": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " geliked"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " anderen geliked"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "l+ikU1": [
+    {
+      "type": 0,
+      "value": "Alles in "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    }
+  ],
+  "l3H1EK": [
+    {
+      "type": 0,
+      "value": "Nodig je vrienden uit"
+    }
+  ],
+  "l3nTjd": [
+    {
+      "type": 0,
+      "value": "Basissleutel afleiden uit mnemonische zaadzin"
+    }
+  ],
+  "lCILNz": [
+    {
+      "type": 0,
+      "value": "Koop nu"
+    }
+  ],
+  "lD3+8a": [
+    {
+      "type": 0,
+      "value": "Betaal"
+    }
+  ],
+  "lEnclp": [
+    {
+      "type": 0,
+      "value": "Mijn evenementen: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lPWASz": [
+    {
+      "type": 0,
+      "value": "Koop Nostr adres"
+    }
+  ],
+  "lTbT3s": [
+    {
+      "type": 0,
+      "value": "Wachtwoord Wallet"
+    }
+  ],
+  "lbr3Lq": [
+    {
+      "type": 0,
+      "value": "Link kopiëren"
+    }
+  ],
+  "lfOesV": [
+    {
+      "type": 0,
+      "value": "Niet-Zap"
+    }
+  ],
+  "lgg1KN": [
+    {
+      "type": 0,
+      "value": "accountoverzicht"
+    }
+  ],
+  "ll3xBp": [
+    {
+      "type": 0,
+      "value": "Proxyservice voor afbeeldingen"
+    }
+  ],
+  "lnaT9F": [
+    {
+      "type": 0,
+      "value": "Volgend "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lsNFM1": [
+    {
+      "type": 0,
+      "value": "Klik om inhoud van "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " te laden"
+    }
+  ],
+  "lvlPhZ": [
+    {
+      "type": 0,
+      "value": "Betaal invoice"
+    }
+  ],
+  "m/59y2": [
+    {
+      "type": 0,
+      "value": "Zap verzoek"
+    }
+  ],
+  "m6h2Eg": [
+    {
+      "type": 0,
+      "value": "Aanbeveling voor behandelaar"
+    }
+  ],
+  "mCEKiZ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " noten zijn gedempt"
+    }
+  ],
+  "mErPop": [
+    {
+      "type": 0,
+      "value": "Het lijkt erop dat je er geen hebt, check "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " om er een te kopen!"
+    }
+  ],
+  "mFtdYh": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " Relais voor werknemer"
+    }
+  ],
+  "mKAr6h": [
+    {
+      "type": 0,
+      "value": "Volg allen"
+    }
+  ],
+  "mKh2HS": [
+    {
+      "type": 0,
+      "value": "File Upload service"
+    }
+  ],
+  "mKhgP9": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "mOFG3K": [
+    {
+      "type": 0,
+      "value": "Start"
+    }
+  ],
+  "mfe8RW": [
+    {
+      "type": 0,
+      "value": "Optie: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "mmPSWH": [
+    {
+      "type": 0,
+      "value": "Alleen lezen"
+    }
+  ],
+  "n1Whvj": [
+    {
+      "type": 0,
+      "value": "Wissel"
+    }
+  ],
+  "n5l7tP": [
+    {
+      "type": 0,
+      "value": "Tijdgebonden kalendergebeurtenis"
+    }
+  ],
+  "n8k1SG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "MiB"
+    }
+  ],
+  "nD4frR": [
+    {
+      "type": 0,
+      "value": "Bevestiging bod"
+    }
+  ],
+  "nDejmx": [
+    {
+      "type": 0,
+      "value": "Deblokkeer"
+    }
+  ],
+  "nGBrvw": [
+    {
+      "type": 0,
+      "value": "Bladwijzers"
+    }
+  ],
+  "nGGDsi": [
+    {
+      "type": 0,
+      "value": "Meldingen toegestaan"
+    }
+  ],
+  "nIchMQ": [
+    {
+      "type": 0,
+      "value": "Zoeken naar accountactiviteit ("
+    },
+    {
+      "type": 1,
+      "value": "progress"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "nPHrqp": [
+    {
+      "type": 0,
+      "value": "Cojoin Pool"
+    }
+  ],
+  "nUT0Lv": [
+    {
+      "type": 0,
+      "value": "Gereedschap"
+    }
+  ],
+  "nWQFic": [
+    {
+      "type": 0,
+      "value": "Vernieuw"
+    }
+  ],
+  "nihgfo": [
+    {
+      "type": 0,
+      "value": "Luister naar dit artikel"
+    }
+  ],
+  "nwZXeh": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " geblokkeerd"
+    }
+  ],
+  "o/gK53": [
+    {
+      "type": 0,
+      "value": "Dek"
+    }
+  ],
+  "o7e+nJ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " volgers"
+    }
+  ],
+  "oJ+JJN": [
+    {
+      "type": 0,
+      "value": "Niets gevonden :/"
+    }
+  ],
+  "odFwjL": [
+    {
+      "type": 0,
+      "value": "Alleen volgend"
+    }
+  ],
+  "ojzbwv": [
+    {
+      "type": 0,
+      "value": "Hey, het lijkt erop dat je nog geen Nostr Adres hebt. Overweeg om er een te nemen! Bekijk "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "ozZ2Cj": [
+    {
+      "type": 0,
+      "value": "Badge"
+    }
+  ],
+  "p4N05H": [
+    {
+      "type": 0,
+      "value": "Uploaden"
+    }
+  ],
+  "p9Ps2l": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " hebben relais ("
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "pEEBFk": [
+    {
+      "type": 0,
+      "value": "Betrouwbare relais"
+    }
+  ],
+  "pI+77w": [
+    {
+      "type": 0,
+      "value": "Downloadbare back-ups van Snort relay"
+    }
+  ],
+  "pRess9": [
+    {
+      "type": 0,
+      "value": "ZapPool"
+    }
+  ],
+  "plOM0t": [
+    {
+      "type": 0,
+      "value": "Aangepaste emoji"
+    }
+  ],
+  "plg2Ua": [
+    {
+      "type": 0,
+      "value": "Kanaal dempen Gebruiker"
+    }
+  ],
+  "puLNUJ": [
+    {
+      "type": 0,
+      "value": "Vastmaken aan profielpagina"
+    }
+  ],
+  "pyjJ5f": [
+    {
+      "type": 0,
+      "value": "Nostr Marktplaats (voor veerkrachtige marktplaatsen)"
+    }
+  ],
+  "pzTOmv": [
+    {
+      "type": 0,
+      "value": "Volgers"
+    }
+  ],
+  "q3OuMw": [
+    {
+      "type": 0,
+      "value": "Torrent Commentaar"
+    }
+  ],
+  "qAY40L": [
+    {
+      "type": 0,
+      "value": "Op datum gebaseerd kalendergebeuren"
+    }
+  ],
+  "qBYNMb": [
+    {
+      "type": 0,
+      "value": "Groepsdraad beantwoorden"
+    }
+  ],
+  "qD9EUF": [
+    {
+      "type": 0,
+      "value": "E-mail <> DM bridge voor je Snort Nostr adres"
+    }
+  ],
+  "qDwvZ4": [
+    {
+      "type": 0,
+      "value": "Onbekende fout"
+    }
+  ],
+  "qFIVx4": [
+    {
+      "type": 0,
+      "value": "Profiel badges"
+    }
+  ],
+  "qMePPG": [
+    {
+      "type": 0,
+      "value": "Opmerking"
+    }
+  ],
+  "qMx1sA": [
+    {
+      "type": 0,
+      "value": "Standaard Zap-bedrag"
+    }
+  ],
+  "qUJTsT": [
+    {
+      "type": 0,
+      "value": "Geblokkeerd"
+    }
+  ],
+  "qXCbgZ": [
+    {
+      "type": 0,
+      "value": "Ontgrendel"
+    }
+  ],
+  "qZsKBR": [
+    {
+      "type": 0,
+      "value": "Vernieuw "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    }
+  ],
+  "qcJFEJ": [
+    {
+      "type": 0,
+      "value": "Meldingen API uitgeschakeld"
+    }
+  ],
+  "qdGuQo": [
+    {
+      "type": 0,
+      "value": "Uw privésleutel is (deel dit met niemand)"
+    }
+  ],
+  "qfmMQh": [
+    {
+      "type": 0,
+      "value": "Deze opmerking is gedempt"
+    }
+  ],
+  "qkvYUb": [
+    {
+      "type": 0,
+      "value": "Toevoegen aan Profiel"
+    }
+  ],
+  "qmJ8kD": [
+    {
+      "type": 0,
+      "value": "Vertaling mislukt"
+    }
+  ],
+  "qtWLmt": [
+    {
+      "type": 0,
+      "value": "Vind ik leuk"
+    }
+  ],
+  "qyJtWy": [
+    {
+      "type": 0,
+      "value": "Minder tonen"
+    }
+  ],
+  "qydxOd": [
+    {
+      "type": 0,
+      "value": "Wetenschap"
+    }
+  ],
+  "qz9fty": [
+    {
+      "type": 0,
+      "value": "Verkeerde pin"
+    }
+  ],
+  "r3C4x/": [
+    {
+      "type": 0,
+      "value": "Software"
+    }
+  ],
+  "r5srDR": [
+    {
+      "type": 0,
+      "value": "Voer wallet wachtwoord in"
+    }
+  ],
+  "rAQG0X": [
+    {
+      "type": 0,
+      "value": "Metagegevens relaallijst"
+    }
+  ],
+  "rIsVe+": [
+    {
+      "type": 0,
+      "value": "Openbare chatlijst"
+    }
+  ],
+  "rMgF34": [
+    {
+      "type": 0,
+      "value": "Nu terug naar boven"
+    }
+  ],
+  "rRRXtB": [
+    {
+      "type": 0,
+      "value": "Bliksemschichten"
+    }
+  ],
+  "rT14Ow": [
+    {
+      "type": 0,
+      "value": "Relays toevoegen"
+    }
+  ],
+  "reFEEC": [
+    {
+      "type": 0,
+      "value": "Rapportage"
+    }
+  ],
+  "rfuMjE": [
+    {
+      "type": 0,
+      "value": "(Standaard)"
+    }
+  ],
+  "rkM7l8": [
+    {
+      "type": 0,
+      "value": "Versleuteld rechtstreeks bericht"
+    }
+  ],
+  "rmdsT4": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " dagen"
+    }
+  ],
+  "rn52n9": [
+    {
+      "type": 0,
+      "value": "Openbare chatkanalen"
+    }
+  ],
+  "rx1i0i": [
+    {
+      "type": 0,
+      "value": "Korte link"
+    }
+  ],
+  "sFUkSN": [
+    {
+      "type": 0,
+      "value": "Bladwijzersets"
+    }
+  ],
+  "sKDn4e": [
+    {
+      "type": 0,
+      "value": "Badges tonen"
+    }
+  ],
+  "sUNhQE": [
+    {
+      "type": 0,
+      "value": "gebruiker"
+    }
+  ],
+  "sZQzjQ": [
+    {
+      "type": 0,
+      "value": "Mislukt bij het parsen van zap-splitsing: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "saInmO": [
+    {
+      "type": 0,
+      "value": "De getoonde relaisenaam is niet hetzelfde als de volledige URL die is ingevoerd."
+    }
+  ],
+  "saorw+": [
+    {
+      "type": 0,
+      "value": "Aanvraag voor verwijderen evenement"
+    }
+  ],
+  "sfL/O+": [
+    {
+      "type": 0,
+      "value": "Gedempte noten worden niet weergegeven"
+    }
+  ],
+  "t79a6U": [
+    {
+      "type": 0,
+      "value": "Succesvolle verbinding:"
+    }
+  ],
+  "tDDiRL": [
+    {
+      "type": 0,
+      "value": "Belangenlijst"
+    }
+  ],
+  "tFpT/O": [
+    {
+      "type": 0,
+      "value": "Artefactsets vrijgeven"
+    }
+  ],
+  "tO1oq9": [
+    {
+      "type": 0,
+      "value": "Video-evenementen"
+    }
+  ],
+  "tOdNiY": [
+    {
+      "type": 0,
+      "value": "Donker thema"
+    }
+  ],
+  "tRGdV1": [
+    {
+      "type": 0,
+      "value": "Versiescryptie"
+    }
+  ],
+  "tU0ADf": [
+    {
+      "type": 0,
+      "value": "Onbekend NIP-"
+    },
+    {
+      "type": 1,
+      "value": "x"
+    }
+  ],
+  "tVuVg9": [
+    {
+      "type": 0,
+      "value": "Video bekijken evenement"
+    }
+  ],
+  "tf1lIh": [
+    {
+      "type": 0,
+      "value": "Gratis"
+    }
+  ],
+  "th5lxp": [
+    {
+      "type": 0,
+      "value": "Stuur notitie naar een subset van schrijfrelays"
+    }
+  ],
+  "thnRpU": [
+    {
+      "type": 0,
+      "value": "NIP-05 geverifieerd worden kan helpen:"
+    }
+  ],
+  "tj6kdX": [
+    {
+      "type": 1,
+      "value": "sign"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "tjpYlr": [
+    {
+      "type": 0,
+      "value": "Relaisgegevens"
+    }
+  ],
+  "ttxS0b": [
+    {
+      "type": 0,
+      "value": "Supporter Badge"
+    }
+  ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "Status"
+    }
+  ],
+  "u/vOPu": [
+    {
+      "type": 0,
+      "value": "Betaald"
+    }
+  ],
+  "u4I8q8": [
+    {
+      "type": 0,
+      "value": "Speldenlijst"
+    }
+  ],
+  "u81G9+": [
+    {
+      "type": 0,
+      "value": "Uptime"
+    }
+  ],
+  "u9NoC1": [
+    {
+      "type": 0,
+      "value": "De naam moet uit minder dan "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " tekens bestaan."
+    }
+  ],
+  "uCk8r+": [
+    {
+      "type": 0,
+      "value": "Heb je al een account?"
+    }
+  ],
+  "uD7Els": [
+    {
+      "type": 0,
+      "value": "Externe identiteiten in profielen"
+    }
+  ],
+  "uJaMkO": [
+    {
+      "type": 0,
+      "value": "Relay-lijst om DM's te ontvangen"
+    }
+  ],
+  "uSV4Ti": [
+    {
+      "type": 0,
+      "value": "Reposts moeten handmatig worden bevestigd"
+    }
+  ],
+  "uc0din": [
+    {
+      "type": 0,
+      "value": "Stuur satsplitsingen naar"
+    }
+  ],
+  "ufvXH1": [
+    {
+      "type": 0,
+      "value": "Gevonden "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " evenementen"
+    }
+  ],
+  "uhu5aG": [
+    {
+      "type": 0,
+      "value": "Openbaar"
+    }
+  ],
+  "un1nGw": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Opmerkingen"
+    }
+  ],
+  "usAvMr": [
+    {
+      "type": 0,
+      "value": "Bewerk Profiel"
+    }
+  ],
+  "v8lolG": [
+    {
+      "type": 0,
+      "value": "Start chat"
+    }
+  ],
+  "vB3oQ/": [
+    {
+      "type": 0,
+      "value": "Moet een contactlijst of pubkey-lijst zijn"
+    }
+  ],
+  "vBsZhD": [
+    {
+      "type": 0,
+      "value": "Gemeenschappen lijst"
+    }
+  ],
+  "vN5UH8": [
+    {
+      "type": 0,
+      "value": "Profiel afbeelding"
+    }
+  ],
+  "vU/Q5i": [
+    {
+      "type": 0,
+      "value": "Deze tool zoekt naar het laatste evenement dat door al je volgers is gepubliceerd en verwijdert degenen die al 6 maanden niets hebben gepost."
+    }
+  ],
+  "vZ4quW": [
+    {
+      "type": 0,
+      "value": "NIP-05 is een DNS-gebaseerde identificatie die helpt u te valideren als een bepaalde gebruiker."
+    }
+  ],
+  "vhlWFg": [
+    {
+      "type": 0,
+      "value": "Poll Opties"
+    }
+  ],
+  "vlbWtt": [
+    {
+      "type": 0,
+      "value": "Verkrijg er één gratis"
+    }
+  ],
+  "voxBKC": [
+    {
+      "type": 0,
+      "value": "Gevolgd door vrienden"
+    }
+  ],
+  "vxwnbh": [
+    {
+      "type": 0,
+      "value": "Hoeveelheid werk van toepassing op alle gepubliceerde events"
+    }
+  ],
+  "w1Fanr": [
+    {
+      "type": 0,
+      "value": "Bedrijf"
+    }
+  ],
+  "w6qrwX": [
+    {
+      "type": 0,
+      "value": "NSFW"
+    }
+  ],
+  "wEQDC6": [
+    {
+      "type": 0,
+      "value": "Bewerk"
+    }
+  ],
+  "wOyDTB": [
+    {
+      "type": 0,
+      "value": "Lijst met bestandsopslagservers"
+    }
+  ],
+  "wSZR47": [
+    {
+      "type": 0,
+      "value": "Stuur  in"
+    }
+  ],
+  "wc9st7": [
+    {
+      "type": 0,
+      "value": "Media Bijlagen"
+    }
+  ],
+  "whSrs+": [
+    {
+      "type": 0,
+      "value": "Nostr Openbare Chat"
+    }
+  ],
+  "wih7iJ": [
+    {
+      "type": 0,
+      "value": "naam is geblokkeerd"
+    }
+  ],
+  "wlWMuh": [
+    {
+      "type": 0,
+      "value": "Patches"
+    }
+  ],
+  "wofVHy": [
+    {
+      "type": 0,
+      "value": "Moderatie"
+    }
+  ],
+  "wqyN/i": [
+    {
+      "type": 0,
+      "value": "Meer informatie over "
+    },
+    {
+      "type": 1,
+      "value": "service"
+    },
+    {
+      "type": 0,
+      "value": " bij "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "wtLjP6": [
+    {
+      "type": 0,
+      "value": "Kopieer ID"
+    }
+  ],
+  "x+3fl6": [
+    {
+      "type": 0,
+      "value": "Mijn relais"
+    }
+  ],
+  "x/Fx2P": [
+    {
+      "type": 0,
+      "value": "Ondersteun diensten die je gebruikt door een deel van je zaps in een pot geld te splitsen!"
+    }
+  ],
+  "x82IOl": [
+    {
+      "type": 0,
+      "value": "Dempen"
+    }
+  ],
+  "xEjBS7": [
+    {
+      "type": 0,
+      "value": "Voor jou"
+    }
+  ],
+  "xIcAOU": [
+    {
+      "type": 0,
+      "value": "Stemmen via "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    }
+  ],
+  "xIoGG9": [
+    {
+      "type": 0,
+      "value": "Ga naar"
+    }
+  ],
+  "xPCyu+": [
+    {
+      "type": 0,
+      "value": "nostr: URI-schema"
+    }
+  ],
+  "xaj9Ba": [
+    {
+      "type": 0,
+      "value": "Aanbieder"
+    }
+  ],
+  "xbVgIm": [
+    {
+      "type": 0,
+      "value": "Automatisch video's laden"
+    }
+  ],
+  "xhQMeQ": [
+    {
+      "type": 0,
+      "value": "Verloopt op"
+    }
+  ],
+  "xl4s/X": [
+    {
+      "type": 0,
+      "value": "Aanvullende voorwaarden:"
+    }
+  ],
+  "xmcVZ0": [
+    {
+      "type": 0,
+      "value": "Zoeken"
+    }
+  ],
+  "xybOUv": [
+    {
+      "type": 0,
+      "value": "VENTILATOR"
+    }
+  ],
+  "y/bmsG": [
+    {
+      "type": 0,
+      "value": "Sta  toe."
+    }
+  ],
+  "y1Z3or": [
+    {
+      "type": 0,
+      "value": "Taal"
+    }
+  ],
+  "yAztTU": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " eSats"
+    }
+  ],
+  "yCLnBC": [
+    {
+      "type": 0,
+      "value": "LNURL of Lightning Address"
+    }
+  ],
+  "yLzgxH": [
+    {
+      "type": 0,
+      "value": "Populaire relais"
+    }
+  ],
+  "yeX8yA": [
+    {
+      "type": 0,
+      "value": "Inheemse app"
+    }
+  ],
+  "z3UjXR": [
+    {
+      "type": 0,
+      "value": "Debug"
+    }
+  ],
+  "z3Ukvq": [
+    {
+      "type": 0,
+      "value": "Opstellen van long-form content"
+    }
+  ],
+  "zCb8fX": [
+    {
+      "type": 0,
+      "value": "Gewicht"
+    }
+  ],
+  "zFegDD": [
+    {
+      "type": 0,
+      "value": "Contact"
+    }
+  ],
+  "zINlao": [
+    {
+      "type": 0,
+      "value": "Eigenaar"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "Alle"
+    }
+  ],
+  "zcaOTs": [
+    {
+      "type": 0,
+      "value": "Zap hoeveelheid in sats"
+    }
+  ],
+  "zi9MdS": [
+    {
+      "type": 0,
+      "value": "Schaken (PGN)"
+    }
+  ],
+  "zm6qS1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " mins om te lezen"
+    }
+  ],
+  "zonsdq": [
+    {
+      "type": 0,
+      "value": "Laden van LNURL service mislukt"
+    }
+  ],
+  "zvCDao": [
+    {
+      "type": 0,
+      "value": "Recente notities automatisch weergeven"
+    }
+  ],
+  "zx0myy": [
+    {
+      "type": 0,
+      "value": "Deelnemers"
+    }
+  ]
 }

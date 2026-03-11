@@ -1,812 +1,5868 @@
 {
-  "+D82kt": "Êtes-vous sûr que vous voulez republier: {id}",
-  "+PzQ9Y": "Payer Maintenant",
-  "+QM0PJ": "Synchroniser tous les évènements de votre profil dans le cache local",
-  "+QMdsy": "Stats du relais",
-  "+UjDmN": "Connecté avec accès en écriture",
-  "+Vxixo": "Chat de Groupe Secret",
-  "+aZY2h": "Type de Zap",
-  "+tShPg": "suivants",
-  "+vA//S": "Connexions",
-  "+vIQlC": "Assurez-vous d'enregistrer le mot de passe suivant afin de gérer votre identifiant à l'avenir",
-  "+vVZ/G": "Connecter",
-  "+vj0U3": "éditer",
-  "+xliwN": "{name} a reposté",
-  "/B8zwF": "Votre espace comme vous le souhaitez 😌",
-  "/GCoTA": "Effacer",
-  "/JE/X+": "Support de compte",
-  "/T7HId": "Intégration du stockage de fichiers HTTP",
-  "/Xf4UW": "Envoyer des données anonymes sur l'utilisation",
-  "/b1IHW": "Message de chat de groupe",
-  "/d6vEc": "Rendez votre profil plus facile à trouver et à partager",
-  "/ioUrF": "Du dossier",
-  "/n5KSF": "{n} ms",
-  "00LcfG": "Voir plus",
-  "01iNut": "L'adresse Nostr ne vous appartient pas",
-  "08zn6O": "Clés d'exportation",
-  "0Azlrb": "Gérer",
-  "0BUTMv": "Chercher...",
-  "0MndVW": "Portefeuille générique LNDHub (BTCPayServer / Alby / LNBits)",
-  "0jOEtS": "LNURL invalide",
-  "0kOBMu": "Traitement des mentions",
-  "0mch2Y": "le nom contient des caractères non autorisés",
-  "0siT4z": "Politique",
-  "0uoY11": "Afficher l'état",
-  "0yO7wF": "{n} secondes",
-  "0zASjL": "Aller",
-  "1/BFEj": "trucs git",
-  "1Mo59U": "Êtes-vous sûr de vouloir supprimer cette note de vos favoris ?",
-  "1R43+L": "Accéder à la configuration de Nostr Wallet Connect",
-  "1UWegE": "Veillez à sauvegarder vos clés !",
-  "1c4YST": "Connecté à : {node} 🎉",
-  "1nYUGC": "{n} Abonnements",
-  "1o2BgB": "Vérifier les signatures",
-  "1ozeyg": "Nature",
-  "1udzha": "Conversations",
-  "2/2yg+": "Ajouter",
-  "25V4l1": "Bannière",
-  "25WwxF": "Vous n'avez pas de compte ?",
-  "28oKbu": "Communautés modérées",
-  "29sHFE": "Connexion au portefeuille",
-  "2BBGxX": "Étiquette de sujet dans les événements textuels",
-  "2HIqeO": "Liste des emoji de l'utilisateur",
-  "2IFGap": "Faire un don",
-  "2LbrkB": "Saisissez le mot de passe",
-  "2O2sfp": "Finition",
-  "2Qsf9/": "Listes génériques",
-  "2a2YiP": "{n} Favoris",
-  "2k0Cv+": "N'aime pas ({n})",
-  "2mcwT8": "Nouvelle note",
-  "2oCF7O": "Suivi par les amis des amis",
-  "2raFAu": "Données spécifiques à l'application",
-  "2ukA4d": "{n} heures",
-  "2z7Kky": "Derniers articles",
-  "3/onCd": "Réponses",
-  "39AHJm": "S'inscrire",
-  "3GWu6/": "Statuts de l'utilisateur",
-  "3KNMbJ": "Articles",
-  "3MKdAw": "Blobs stockés sur les serveurs médiatiques",
-  "3QwfJR": "~{amount}",
-  "3adEeb": "{n} téléspectateurs",
-  "3cc4Ct": "Clair",
-  "3gOsZq": "Traducteurs",
-  "3kbIhS": "Sans titre",
-  "3qnJlS": "Vous votez avec {amount} sats",
-  "3t3kok": "{n,plural,=1{{n} nouvelle note} other{{n} nouvelles notes}}",
-  "3tVy+Z": "{n} Abonnés",
-  "3yk8fB": "Portefeuille",
-  "40VR6s": "Nostr Connect",
-  "41BSaT": "Total des événements :",
-  "450Fty": "Aucun",
-  "47E53q": "Wiki",
-  "47FYwb": "Annuler",
-  "48zn4v": "Offre",
-  "4IPzdn": "Développeurs principaux",
-  "4L2vUY": "Votre indicatif NIP-05 est:",
-  "4MjsHk": "La vie",
-  "4OB335": "Ne pas aimer",
-  "4P/kKm": "Chiffrement par clé privée",
-  "4Vmpt4": "Nostr Plebs est l'un des premiers fournisseurs NIP-05 dans l'espace et offre une bonne collection de domaines à des prix raisonnables",
-  "4Z3t5i": "Utiliser imgproxy pour compresser les images",
-  "4emo2p": "Relais manquants",
-  "4rYCjn": "Note à Soi-même",
-  "4wgYpI": "Manipulateurs d'applications recommandés",
-  "5BVs2e": "zap",
-  "5CB6zB": "Zap Splits",
-  "5PRWs7": "API de notifications activée",
-  "5dfmvv": "Objectif Zap",
-  "5oTnfy": "Acheter Identifiant",
-  "5qEWCr": "Métadonnées des fichiers",
-  "5u6iEc": "Transférer vers la clé publique",
-  "5vMmmR": "Les noms d'utilisateur ne sont pas uniques sur Nostr. L'adresse nostr est votre adresse unique lisible par l'homme qui vous est unique lors de votre inscription.",
-  "5ykRmX": "Envoyer zap",
-  "6/hB3S": "Regarder la rediffusion",
-  "60kEE3": "Liste des sourds",
-  "62nsdy": "Réessayer",
-  "634VVz": "Échec de la connexion :",
-  "6559gb": "Nouvelle longueur de la liste de suivi {length}",
-  "65BmHb": "Échec du proxy de l'image de {host}, cliquez ici pour la charger directement",
-  "6D4Hhn": "Recommander le relais",
-  "6KGebm": "Sceau",
-  "6OSOXl": "Motif : <i>{reason}</i>",
-  "6WWD34": "Vous cherchez : {noteId}",
-  "6bgpn+": "Tous les clients ne supportent pas cette fonction, il se peut que vous receviez encore quelques zaps comme si la division des zaps n'était pas configurée.",
-  "6ewQqw": "Aime ({n})",
-  "6mr8WU": "Suivi par",
-  "6pdxsi": "Champs de métadonnées et balises supplémentaires",
-  "6uMqL1": "Non payé",
-  "6xNr8c": "Changer de compte",
-  "6xap9L": "Bon",
-  "7+Domh": "Notes",
-  "712i26": "Le mandataire utilise des factures HODL pour transmettre le paiement, ce qui masque la clé publique de votre nœud.",
-  "753yX5": "Étiquette",
-  "769A8p": "Article Wiki",
-  "77nkEO": "Document d'information sur le relais",
-  "7LFU8U": "Capacité de recherche",
-  "7UOvbT": "Hors ligne",
-  "7YkSA2": "Leader de la communauté",
-  "7gMmSL": "Réaction",
-  "7hp70g": "NIP-05",
-  "7jfPsW": "Contenu modulaire des articles",
-  "7nAz/z": "Mettez en sourdine les notes des personnes qui ne font pas partie de votre réseau de confiance.",
-  "7pFGAQ": "Fermer les relais",
-  "8/vBbP": "Reposte ({n})",
-  "89q5wc": "Confirmer la republication",
-  "8BDFvJ": "Conventions relatives à l'utilisation par les clients des balises e et p dans les événements textuels",
-  "8ED/4u": "Répondre à",
-  "8HJxXG": "S'inscrire",
-  "8QDesP": "Zapper {n} sats",
-  "8Rkoyb": "Bénéficiaire",
-  "8Y6bZQ": "Fractionnement non valide du zap : {input}",
-  "8ZGqWl": "Fil du groupe",
-  "8g2vyB": "le nom est trop long",
-  "8jmwT8": "entités encodées en bech32",
-  "8v1NN+": "Phrase d'appairage",
-  "8xdDLn": "Suivre les ensembles",
-  "8za9Pq": "Projet de liste d'annonces classées",
-  "9+Ddtu": "Suivant",
-  "9HU8vw": "Répondre",
-  "9SvQep": "Suit {n}",
-  "9V0wg3": "Calendrier Événement RSVP",
-  "9WRlF4": "Envoyer",
-  "9kO0VQ": "Masquer les notes en sourdine",
-  "9kSari": "Réessayer la publication",
-  "9pMqYs": "Adresse Nostr",
-  "9wO4wJ": "Facture Lightning",
-  "A86fJ+": "Repost générique",
-  "ADmfQT": "Parent",
-  "ALdW69": "Note par {name}",
-  "AN0Z7Q": "Mots en sourdine",
-  "ASRK0S": "Cet auteur a été mis en sourdine",
-  "AedFVZ": "Créer ou mettre à jour un produit",
-  "Ai8VHU": "Conservation illimitée des notes sur le relais Snort",
-  "AkCxS/": "Raison",
-  "AktAk2": "Superbe",
-  "Am8glJ": "Jeu",
-  "AqGfF4": "Création d'un canal",
-  "Aujn2T": "Compte",
-  "Awq32I": "Notifications push",
-  "AxDOiG": "Mois",
-  "AyGauy": "Se Connecter",
-  "B4C47Y": "le nom est trop court",
-  "B6+XJy": "zappé",
-  "B6H7eJ": "nsec, npub, nip-05, hex",
-  "B7wvUM": "Vous pouvez ajouter un ou plusieurs relais, un par ligne.",
-  "BGCM48": "Accès en écriture au relais Snort, avec conservation des évènements pendant 1 an",
-  "BGGacK": "Embeddings AI / Listes vectorielles",
-  "BQW4gi": "Groupes basés sur le relais",
-  "BWpuKl": "Actualiser",
-  "BfuAQ5": "Place de marché UI/UX",
-  "BjNwZW": "Adresse Nostr (nip05)",
-  "Blxcdx": "Relais",
-  "Bo+O//": "Auth HTTP",
-  "C1LjMx": "Don Lightning",
-  "C6Lhhp": "Événement en direct",
-  "C7642/": "Repost de citation",
-  "C81/uG": "Se déconnecter",
-  "C8FsOr": "Serveurs populaires",
-  "C8HhVE": "Utilisateurs recommandés",
-  "CA1efg": "Jeux vidéo",
-  "CHTbO3": "Échec du chargement de la facture",
-  "CJx5Nd": "Zaps de profil",
-  "CM+Cfj": "Liste de suivi",
-  "CM0k0d": "Élaguer la liste de suivi",
-  "CVWeJ6": "Personnes tendances",
-  "CYkOCI": "et {count} autres que vous suivez",
-  "Cdxwi0": "Annonces de dépôt",
-  "CmZ9ls": "{n} Mis en sourdine",
-  "Coy6SH": "Calendrier",
-  "CsCUYo": "{n} sats",
-  "Cu/K85": "Traduit de {lang}",
-  "CzHZoc": "Graphique social",
-  "D++Njw": "Texte Note Références",
-  "D+KzKd": "Zap automatiquement chaque note quand elle est chargée",
-  "D09wbg": "Définition du badge",
-  "D3idYv": "Paramètres",
-  "D9xTLE": "Canal Masquer le message",
-  "DBiVK1": "Cache",
-  "DKnriN": "Envoyer des sats",
-  "DZzCem": "Afficher les {n} dernières notes",
-  "Dh3hbq": "Zap automatique",
-  "Dn82AL": "Vivre",
-  "DqUmXt": "Produit vendu aux enchères",
-  "DrZqav": "À propos doit être inférieur à {limit} caractères",
-  "DtYelJ": "Transférer",
-  "Dx4ey3": "Tout afficher",
-  "E3oB+t": "Navigateur",
-  "E5ZIPD": "<big>{amount}</big> <small>sats</small>",
-  "EHqHsu": "Facture / Adresse Lightning",
-  "EJbFi7": "Notes de recherche",
-  "ELbg9p": "Fournisseurs de données",
-  "EQKRE4": "Afficher les badges sur les pages de profil",
-  "EWeVrH": "Réaction à un site web",
-  "EWyQH5": "Global",
-  "Ebl/B2": "Traduire en {lang}",
-  "Ec+xLY": "Ensembles de curation",
-  "EcZF24": "Relais personnalisés",
-  "EcfIwB": "Le nom d'utilisateur est disponible",
-  "EcglP9": "Clé",
-  "EjFyoR": "Adresse de don On-Chain",
-  "EnCOBJ": "Acheter",
-  "EsHX35": "Désolé, nous ne comprenons pas ce type d'événement ({name}), veuillez essayer l'une des applications suivantes à la place !",
-  "F/6VqP": "Serveur",
-  "F3l7xL": "Ajouter un Compte",
-  "F4eJ/3": "Annonces classées",
-  "FDguSC": "{n} Zaps",
-  "FHWpHC": "Réponse du portefeuille",
-  "FHvSk3": "Authentification des clients auprès des relais",
-  "FMfjrl": "Afficher les messages d'état sur les pages de profil",
-  "FSYL8G": "Utilisateurs tendances",
-  "FWJR1B": "Groupes d'utilisateurs",
-  "FcNSft": "Redirect émet une redirection HTTP vers l'adresse éclair fournie",
-  "FdhSU2": "Obtenir maintenant",
-  "FfYsOb": "Une erreur est survenue!",
-  "FmXUJg": "vous suit",
-  "FvanT6": "Comptes",
-  "FzbSGg": "Vous n'avez pas de serveurs de médias, essayez d'en ajouter.",
-  "G/yZLu": "Retirer",
-  "G1BGCg": "Sélectionnez un portefeuille",
-  "G3A56c": "Abonné aux pushs",
-  "GFOoEE": "Sel",
-  "GIqktu": "PIN soutenus",
-  "GL8aXW": "Favoris ({n})",
-  "GSye7T": "Adresse Lightning",
-  "GUlSVG": "Réclamez votre adresse nostr Snort incluse",
-  "Gcn9NQ": "Lien Magnet",
-  "GpkNYn": "Torrent",
-  "GqQeu/": "Adresse Lightning invalide",
-  "GspYR7": "{n} N'aime pas",
-  "Gxcr08": "Diffuser l'évènement",
-  "H+vHiz": "Clé hexadécimale..",
-  "H/oroO": "Faire face à des événements inconnus",
-  "H0JBH6": "Se Déconnecter",
-  "H0OG3T": "Infos du leader",
-  "H1GTaC": "Liste des signets",
-  "H6/kLh": "Commande Payée!",
-  "HAlOn1": "Nom",
-  "HFls6j": "le nom sera disponible plus tard",
-  "HOzFdo": "Mis en sourdine",
-  "HWbkEK": "Vider le cache et recharger",
-  "HbefNb": "Ouvrir le Wallet",
-  "HhcAVH": "Vous ne suivez pas cette personne, cliquez ici pour charger les médias de <i>{link}</i>, ou mettez à jour <a><i>vos préférences</i></a> pour toujours charger les médias de tout le monde.",
-  "HpAmQZ": "Critiques des relais",
-  "HqRNN8": "Soutien",
-  "HzSFeV": "Horaire d'expiration",
-  "I0tYZf": "Créer ou mettre à jour une stalle",
-  "I1AoOu": "Dernier message {time}",
-  "IEwZvs": "Êtes-vous sûr de vouloir désépingler cette note?",
-  "IIOul1": "Données du compte",
-  "IKKHqV": "Abonnements",
-  "IOu4Xh": "Vous devez être abonné à {tier} pour accéder à {app} deck",
-  "IVbtTS": "Zapper tous les {n} sats",
-  "IWz1ta": "Traduction automatique",
-  "IcHcWj": "Dernière visite :",
-  "Ig9/a1": "Envoyé {n} sats à {name}",
-  "IgsWFG": "Pas suivi par quelqu'un que vous suivez",
-  "IoQq+a": "Cliquez ici pour télécharger",
-  "IvjoDS": "Connecté",
-  "Ix8l+B": "Notes tendances",
-  "J+dIsA": "Abonnements",
-  "J1iLmb": "Notifications non autorisées",
-  "J2HeQ+": "Utiliser des virgules pour séparer les mots, par exemple mot1, mot2, mot3",
-  "J2Q92B": "Jeux d'Emoji",
-  "J6N9xl": "Sign in with Android signer",
-  "JCIgkj": "Nom d’utilisateur",
-  "JGrt9q": "Envoyer des sats à {name}",
-  "JHEHCk": "Zaps ({n})",
-  "JIVWWA": "Le sport",
-  "JPFYIM": "Aucune adresse Lightning",
-  "JSx7y9": "Abonnez-vous à {site_name} {plan} pour {price} et recevez les récompenses suivantes",
-  "JeoS4y": "Reposter",
-  "Jh5zKH": "Recherche dans la liste des relais",
-  "JjGgXI": "Rechercher des utilisateurs",
-  "JkLHGw": "Site Internet",
-  "JmcxzF": "Les relais sont des serveurs auxquels vous vous connectez pour envoyer et recevoir des événements. Visez 4 à 8 relais.",
-  "JymXbw": "Clé Privée",
-  "K1wl1/": "Temps de latence moyen :",
-  "K3r6DQ": "Supprimer",
-  "K7AkdL": "Montrer",
-  "K9zklU": "ID de contenu externe",
-  "KAhAcM": "Entrez la configuration LNDHub",
-  "KGmQjH": "Points forts",
-  "KJryGq": "Live Chat Message",
-  "KQvWvD": "Supprimé",
-  "KT9nox": "Événements protégés",
-  "KahimY": "Type d'événement inconnu : {kind}",
-  "KipVeG": "Correspondance entre les clés Nostr et les identifiants internet basés sur le DNS",
-  "KtsyO0": "Saisir l'identifiant",
-  "KyRp/q": "Demande de portefeuille",
-  "LBAnc7": "Voir en tant qu'utilisateur ?",
-  "LEmxc8": "Zap Goals",
-  "LKw/ue": "Consultez le code {link}",
-  "LR1XjT": "Épingle trop courte",
-  "LXxsbk": "Anonyme",
-  "LgbKvU": "Commenter",
-  "LhLvRx": "Le nom doit comporter entre 8 et 15 caractères",
-  "LmdPXO": "Impossible de vérifier l'adresse Nostr",
-  "Lu5/Bj": "Ouvrir avec Zapstr",
-  "LuDBLj": "Torrents",
-  "Lw+I+J": "{n,plural,=0{{name} a zappé} other{{name} & {n} autres ont zappé}}",
-  "LwYmVi": "Les zaps sur cette note seront répartis entre les utilisateurs suivants.",
-  "M3Oirc": "Menus de débogage",
-  "M6C/px": "Devenir un leader",
-  "MBAYRO": "Affiche \"Copy ID\" et \"Copy Event JSON\" dans le menu contextuel de chaque message",
-  "MI2jkA": "Pas disponible:",
-  "MKDHEa": "Salle de réunion",
-  "MP54GY": "Mot de passe du portefeuille",
-  "MWTx65": "Page par défaut",
-  "MYBYdJ": "Note de texte courte",
-  "MYUBaG": "Authentification du client",
-  "MiMipu": "Définir l'adresse Nostr primaire (nip05)",
-  "MkQ4FX": "Tags Proxy",
-  "Ml7+RS": "Envoyez ce lien à vos amis et partagez la magie de nostr.",
-  "Mrpkot": "Payer pour l'abonnement",
-  "MuVeKe": "Acheter une adresse nostr",
-  "Muhna4": "Comptage des résultats",
-  "MzRYWH": "Acheter {item}",
-  "Mzizei": "Iris.pour compte",
-  "N2IrpM": "Confirmer",
-  "NAidKb": "Notifications",
-  "NAuFNH": "Vous avez déjà un abonnement de ce type, veuillez renouveler ou payer",
-  "NDTFsp": "Retour d'information sur l'emploi",
-  "NepkXH": "Impossible de voter avec {amount} sats, veuillez définir un autre montant zap par défaut",
-  "NndBJE": "Page des nouveaux utilisateurs",
-  "Nr9Yyx": "Reposts",
-  "NxzeNU": "Mort",
-  "O3Jz4E": "Utilisez votre code d'invitation pour gagner des sats !",
-  "OEW7yJ": "Zaps",
-  "OIqnZN": "Attestations OpenTimestamps pour les événements",
-  "OJHKIL": "Emballage cadeau",
-  "OKhRC6": "Partager",
-  "OLEm6z": "Erreur de connexion inconnue",
-  "OQSOJF": "Obtenir une adresse nostr gratuite",
-  "OQXnew": "Votre abonnement est toujours actif, vous ne pouvez pas le renouveler pour le moment",
-  "ORGv1Q": "Créé",
-  "ORa81+": "Fusionner les demandes",
-  "OoZgbB": "Échec de la mise à jour, veuillez réessayer.",
-  "OuProE": "Contenu de longue durée",
-  "OxPdQ0": "Analyse du {date}",
-  "P2o+ZZ": "Adresse Nostr invalide",
-  "P61BTu": "Copier l'événement JSON",
-  "P7FD0F": "Système (Défaut)",
-  "P7nJT9": "Total aujourd'hui (UTC) : {amount} sats",
-  "P8JC58": "Distance",
-  "PCSt5T": "Préférences",
-  "PXQ0z0": "Réception vers <b>{wallet}</b>",
-  "PamNxw": "En-tête du fichier inconnu : {name}",
-  "Pe0ogR": "Thème",
-  "PrsIg7": "Les réactions seront affichées sur chaque page, si désactivées aucune réaction ne sera affichée",
-  "QDFTjG": "{n} Relais",
-  "QJfhKt": "La clé privée est comme un mot de passe, mais elle ne peut pas être réinitialisée. Gardez-la précieusement et ne la montrez jamais à personne. Une fois que quelqu'un possède votre clé privée, il a accès à votre compte pour toujours.",
-  "QWhotP": "Zap Pool ne fonctionne que si vous utilisez l'une des connexions de portefeuille supportées (WebLN, LNC, LNDHub ou Nostr Wallet Connect)",
-  "QpaLA3": "Message du canal",
-  "Qxv0B2": "Vous avez actuellement {number} sats dans votre réserve de zap.",
-  "Qy6/Ft": "Messages directs privés",
-  "R/6nsx": "Abonnement",
-  "R81upa": "Personnes que vous suivez",
-  "RDha9y": "Le Service Worker ne fonctionne pas",
-  "RRz1cA": "Annonces de l'état du référentiel",
-  "RSr2uB": "Le nom d'utilisateur ne doit contenir que des lettres minuscules et des chiffres.",
-  "RahCRH": "Expiré",
-  "RefZpK": "Événement vidéo de portrait en format court",
-  "RfhLwC": "Par : {author}",
-  "RhDAoS": "Êtes-vous sûr que vous voulez supprimer {id}",
-  "RmxSZo": "Distributeurs automatiques de données",
-  "RoOyAh": "Relais",
-  "Rs4kCE": "Favori",
-  "S/NV2G": "Note de chargement : {id}",
-  "SFuk1v": "Permissions",
-  "SLZGPn": "Saisissez un code PIN pour crypter votre clé privée. Vous devez saisir ce code PIN à chaque fois que vous ouvrez le site {site}.",
-  "SMO+on": "Envoyer zap à {name}",
-  "SOqbe9": "Mettre à jour l'adresse Lightning",
-  "SP0+yi": "Acheter un abonnement",
-  "SW3TFA": "Relais populaires utilisés par les personnes que vous suivez.",
-  "SYQtZ7": "Proxy d'adresse LN",
-  "Sd0PKc": "Jeux de relais",
-  "SfwSIm": "Suivi des problèmes",
-  "ShdEie": "Tout marquer comme lu",
-  "Sjo1P4": "Personnaliser",
-  "SmuYUd": "Comment devrions-nous vous appeler ?",
-  "Ss0sWu": "Payer maintenant",
-  "SsUQnC": "Données spécifiques à l'application",
-  "StKzTE": "L'auteur a marqué cette note comme étant un sujet sensible <i></i>",
-  "T83nqf": "Relais proches de votre situation géographique.",
-  "TDR5ge": "Les médias dans les notes seront automatiquement affichés pour les personnes sélectionnées, sinon seul le lien sera affiché",
-  "TGc5nI": "Informations sur le gestionnaire",
-  "TH1fFo": "Telegram",
-  "TJo5E6": "Avant-première",
-  "TOG64f": "Utiliser le relais local",
-  "TP/cMX": "Fin de contrat",
-  "TaeBqw": "Se connecter avec Nostr Extension",
-  "TdTXXf": "En savoir plus",
-  "TdtZQ5": "Crypto",
-  "Tdv6NY": "Jeux d'intérêt",
-  "TgDKhI": "Calendrier des événements",
-  "TpgeGw": "Sel Hex..",
-  "Tpy00S": "Personnes",
-  "TvKqBp": "aimé",
-  "TwyMau": "Compte",
-  "U1aPPi": "Cessez d'écouter",
-  "U30H69": "Définition de la communauté",
-  "UJTWqI": "Retirer de mes relais",
-  "ULXFfP": "Recevoir",
-  "UNjfWJ": "Vérifier toutes les signatures d'événement reçues des relais",
-  "UT7Nkj": "Nouvelle Discussion",
-  "UUPFlt": "Les utilisateur-trice-s doivent accepter l'avertissement de contenu pour afficher le contenu de votre note.",
-  "UaCh1c": "Ajouter un serveur",
-  "Ub+AGc": "Se connecter",
-  "Up5U7K": "Bloquer",
-  "Ups2/p": "Votre demande est en attente",
-  "UrKTqQ": "Vous avez un compte iris.to actif",
-  "UsCzPc": "Partagez une invitation personnalisée avec vos amis !",
-  "UxgyeY": "Votre code de référence est {code}",
-  "V20Og0": "Étiquetage",
-  "VOjC1i": "Choisissez le service d'hébergement vers lequel vous souhaitez héberger les pièces jointes",
-  "VR5eHw": "Clé publique (npub/nprofile)",
-  "VcwrfF": "Oui, s'il vous plaît",
-  "VfhYxG": "Pour voir la liste complète des changements, vous pouvez consulter le journal des modifications (changelog) {here}",
-  "VlJkSk": "{n} mis en sourdine",
-  "VnXp8Z": "Avatar",
-  "W1yoZY": "Il semble que vous n'avez aucun abonnement, vous pouvez en obtenir un {link}",
-  "W2PiAr": "{n} Bloqué",
-  "W4SaxY": "Locale",
-  "W9355R": "Retirer sourdine",
-  "WeLEuL": "Du serveur",
-  "Wj5TbN": "Enjeux",
-  "WmZhfL": "Traduction automatique des notes dans la langue locale",
-  "WvGmZT": "npub / nprofile / nostr address",
-  "X6tipZ": "S'identifier avec la clé",
-  "X7xU8J": "nsec, npub, nip-05, hex, mnémonique",
-  "XECMfW": "Envoyer des données d'utilisation",
-  "XICsE8": "Hébergeurs de fichiers",
-  "XPB8VV": "Connexion au portefeuille Alby",
-  "XQiFEl": "Suivi de la santé du relais",
-  "XSdWHA": "Racheter",
-  "XXm7jJ": "Hashtags tendance",
-  "XgWvGA": "Réactions",
-  "Xnimz0": "Envoi depuis <b>{wallet}</b>",
-  "Xopqkl": "Votre montant de zap par défaut est {number} sats, les valeurs d'exemple sont calculées à partir de ceci.",
-  "YDMrKK": "Utilisateurs",
-  "YDURw6": "URL de service",
-  "YH2RKk": "Serveurs de médias populaires.",
-  "YQZY/S": "Il semble que vous ne suivez pas assez de personnes, jetez un coup d'œil à {newUsersPage} pour découvrir des personnes à suivre !",
-  "YR2I9M": "Pas de clés, pas de {app}, il n'y a aucun moyen de le réinitialiser si vous ne sauvegardez pas. Cela ne prend qu'une minute.",
-  "YU7ZYp": "Chat public",
-  "YXA3AH": "Activer les réactions",
-  "Yf3DwC": "Connectez un portefeuille pour envoyer des paiements instantanés",
-  "YuoEb9": "Essayer un autre relais",
-  "Z48UEo": "Métadonnées du canal",
-  "Z4BMCZ": "Entrez la phrase d'appairage",
-  "Z7kkeJ": "Délégation de signature d'événements",
-  "ZFe9tl": "Composer une note",
-  "ZKORll": "Activer Maintenant",
-  "ZLmyG9": "Contributeurs",
-  "ZS+jRE": "Envoyer les zap splits à",
-  "Zff6lu": "Le nom d'utilisateur iris.to/<b>{name}</b> vous est réservé !",
-  "ZlIh4/": "Messages directs cryptés",
-  "ZlmK/p": "{name} vous a invité à rejoindre {app}",
-  "a1x4gD": "Les serveurs de médias stockent les médias que vous pouvez partager dans les notes sous forme d'images et de vidéos.",
-  "a5UPxh": "Financer les développeurs et plateformes fournissant des services de vérification NIP-05",
-  "a7TDNm": "Les notes seront diffusées en temps réel dans l'onglet global et dans l'onglet notes",
-  "aHje0o": "Nom ou pseudonyme",
-  "aMaLBK": "Extensions prises en charge",
-  "aRex7h": "Payé {amount} sats, frais {fee} sats",
-  "aSGz4J": "Connectez-vous à votre propre nœud LND avec Lightning Node Connect",
-  "aWpBzj": "Montrer plus",
-  "abbGKq": "{n} km",
-  "ak3MTf": "Inviter des amis",
-  "b12Goz": "Mnémonique",
-  "b5vAk0": "Votre identifiant agira comme une adresse Lightning et redirigera vers l'adresse LNURL ou Lightning de votre choix",
-  "bF1MYT": "Vous êtes un leader de la communauté et vous gagnez <b>{percent}</b> des abonnements des utilisateurs parrainés !",
-  "bG00/W": "Service Worker en fonctionnement",
-  "bJ+wrA": "Calculer la liste d'élagage",
-  "bLZL5a": "Obtenir l'adresse",
-  "bMphls": "Connecté avec un accès en lecture seule",
-  "bQdA2k": "Contenu sensible",
-  "bep9C3": "Clé publique",
-  "bfvyfs": "Anonyme",
-  "bxv59V": "Juste maintenant",
-  "c+1p0i": "Kind mute sets",
-  "c+JYNI": "Non merci",
-  "c2T+1B": "Redirections",
-  "c35bj2": "Si vous avez une question concernant votre commande NIP-05, veuillez contacter en DM {link}",
-  "c3LlRO": "{n}KiB",
-  "c3g2hL": "Republier",
-  "cFbU1B": "Vous utilisez Alby ? Allez sur {link} pour obtenir votre configuration NWC !",
-  "cG/bKQ": "Connexion au portefeuille nostr natif",
-  "cHCwbF": "Photographie",
-  "cKbMRX": "Message direct",
-  "cPIKU2": "Abonnements",
-  "cQfLWb": "URL..",
-  "cVcgLJ": "Serveurs de médias",
-  "cWx9t8": "Tout mettre en sourdine",
-  "cg1VJ2": "Connecter un portefeuille",
-  "cnwHgH": "OpenTimestamps",
-  "cuP16y": "Support multi-comptes",
-  "cuV2gK": "le nom est enregistré",
-  "cw1Ftc": "Activités en direct",
-  "cyR7Kh": "Retourner",
-  "d+6YsV": "Listes pour la mise en sourdine :",
-  "d0qim7": "Filtre WoT",
-  "d2ebEu": "Non abonné aux pushs",
-  "d7d0/x": "Adresse LN",
-  "dK2CcV": "La clé publique est comme votre nom d'utilisateur, vous pouvez la partager avec n'importe qui.",
-  "dOQCL8": "Nom à afficher",
-  "dZZIGe": "En-tête d'article modulaire",
-  "ddd3JX": "Hashtags populaires",
-  "deEeEI": "Registre",
-  "djLctd": "Quantité en sats",
-  "dmcsBA": "Annonces classées",
-  "dmsiLv": "Une répartition par défaut du Zap Pool de {n} a été configurée pour les développeurs de {site} . Vous pouvez la désactiver à tout moment dans {link}.",
-  "e5x8FT": "Type",
-  "e61Jf3": "Prochainement",
-  "e7VmYP": "Saisissez votre code PIN pour déverrouiller votre clé privée",
-  "e7qqly": "Marquer tout comme lu",
-  "eF0Re7": "Utiliser une extension de nostr signer pour se connecter",
-  "eHAneD": "Émoji de réaction",
-  "eJj8HD": "Se faire vérifier",
-  "eSzf2G": "Un seul zap de {nIn} sats allouera {nOut} sats à la pool de zap.",
-  "eW/Bj9": "Alimentation",
-  "eXT2QQ": "Discussion de groupe",
-  "eZtOxB": "capacité window.nostr pour les navigateurs web",
-  "egib+2": "{n,plural,=1{& {n} autre} other{& {n} autres}}",
-  "ejEGdx": "Accueil",
-  "eoV49s": "Pauvre",
-  "f1OxTe": "Les leaders de la communauté sont des personnes qui développent l'écosystème de nostr en étant actifs dans leurs communautés locales et en aidant à l'intégration de nouveaux utilisateurs. Tout le monde peut devenir un leader de la communauté, mais peu de personnes détiennent ce titre honorifique.",
-  "f2CAxA": "Décharge",
-  "fBI91o": "Zap",
-  "fBlba3": "Merci d'utiliser {site}. Veuillez envisager de faire un don si vous le pouvez.",
-  "fLIvbC": "Snort est un projet open source construit par des passionnés pendant leur temps libre, vos dons sont très appréciés",
-  "fOksnD": "Impossible de voter car le service LNURL ne prend pas en charge les zaps",
-  "fQN+tq": "Afficher les messages qui ont un tag d'avertissement de contenu",
-  "fWZYP5": "Épinglé",
-  "fX5RYm": "Choisissez quelques sujets d'intérêt",
-  "filwqD": "Lire",
-  "fjAcWo": "Emballages cadeaux",
-  "flnGvv": "Qu'avez-vous en tête?",
-  "fqwcJ1": "Don On-Chain",
-  "fr+XYA": "Lightning Pub RPC",
-  "fsB/4p": "Enregistré",
-  "fucxlm": "Joindre un média",
-  "furjvW": "Regarder la diffusion",
-  "g5pX+a": "À propos",
-  "g985Wp": "Échec de l'envoi du vote",
-  "gDzDRs": "Emoji à envoyer en cas de réaction à une note",
-  "gXgY3+": "Tous les clients ne supportent pas encore ceci",
-  "gczcC5": "S'abonner",
-  "geppt8": "{count} ({count2} en mémoire)",
-  "gjBiyj": "Chargement...",
-  "gkMmvC": "Application Android Signer",
-  "gl1NeW": "Listes",
-  "go2/QF": "Liste des serveurs d'utilisateurs",
-  "grQ+mI": "Preuve de Travail",
-  "gtNjNP": "Description du flux de protocole de base",
-  "h7jvCs": "{site} est plus amusant ensemble !",
-  "h8XMJL": "Badges",
-  "h9M0rW": "Métadonnées de l'utilisateur",
-  "hF6IN2": "Liste de suivi de l'élagage",
-  "hMQmIw": "Synchroniser le compte",
-  "hMzcSq": "Messages",
-  "hRTfTR": "PRO",
-  "hY4lzx": "Supporte",
-  "hYOE+U": "Invitation",
-  "hicxcO": "Afficher les réponses",
-  "hmZ3Bz": "Les médias",
-  "hniz8Z": "ici",
-  "hv/eRj": "Liste des relais bloqués",
-  "hvFRBo": "Interaction",
-  "i/dBAR": "Zap Pool",
-  "i5gBFz": "Vos paiements envoyés et reçus apparaîtront ici.",
-  "iCqGww": "Réactions ({n})",
-  "iEoXYx": "Traductions DeepL",
-  "iGT1eE": "Empêcher les faux comptes de vous imiter",
-  "iHN12u": "Administrateur",
-  "iICVoL": "{x} suit ({y} doublons)",
-  "iNWbVV": "Gérer",
-  "iXPL0Z": "Impossible de se connecter avec une clé privée via une connexion non sécurisée, veuillez utiliser une extension de gestionnaire de clés Nostr à la place",
-  "iYc3Ld": "Paiements",
-  "icCxlA": "page des nouveaux utilisateurs",
-  "ieGrWo": "Suivre",
-  "igUUst": "Chat de groupe Réponse filtrée",
-  "ipHVx5": "Générer la facture",
-  "itPgxd": "Profil",
-  "izWS4J": "Ne plus suivre",
-  "j9xbzF": "Déjà sauvegardé",
-  "jA3OE/": "{n} {n, plural, =1 {sat} other {sats}}",
-  "jAmfGl": "Votre abonnement à {site_name} a expiré",
-  "jHa/ko": "Nettoyez votre flux",
-  "jMzO1S": "Erreur interne : {msg}",
-  "jiAVXu": "Événement vidéo",
-  "jvo0vs": "Sauvegarder",
-  "jzgQ2z": "{n} Réactions",
-  "k0kCJp": "Postuler",
-  "k2veDA": "Écrire",
-  "k7sKNy": "Notre propre service de vérification NIP-05, aidez à soutenir le développement de ce site et obtenez un badge spécial brillant sur notre site !",
-  "k9SQm1": "Les relais auxquels vous vous êtes déjà connecté et qui semblent fiables.",
-  "kEZUR8": "Enregistrer un nom d'utilisateur pour Iris",
-  "kJYo0u": "{n,plural,=0{{name} a reposté} other{{name} & {n} autres ont reposté}}",
-  "kKC9ya": "Informations sur le portefeuille",
-  "kNd2FL": "Connexion à Tidal",
-  "kQAf2d": "Sélectionner",
-  "kaaf1E": "maintenant",
-  "kc79d3": "Sujets",
-  "klCm96": "Approbation du poste communautaire",
-  "kqPQJD": "Configurer le pool de zaps",
-  "kuPHYE": "{n,plural,=0{{name} a liké} other{{name} & {n} autres ont liké}}",
-  "l+ikU1": "Tout dans {plan}",
-  "l3H1EK": "Invitez vos amis",
-  "l3nTjd": "Dérivation d'une clé de base à partir d'une phrase de base mnémotechnique",
-  "lCILNz": "Acheter Maintenant",
-  "lD3+8a": "Payer",
-  "lEnclp": "Mes évènements : {n}",
-  "lPWASz": "Adresse nostr Snort",
-  "lTbT3s": "Mot de passe du portefeuille",
-  "lbr3Lq": "Copier le lien",
-  "lfOesV": "Non-Zap",
-  "lgg1KN": "compte",
-  "ll3xBp": "Service proxy d'images",
-  "lnaT9F": "Abonnements {n}",
-  "lsNFM1": "Cliquez pour afficher le contenu de {link}",
-  "lvlPhZ": "Payer Facture",
-  "m/59y2": "Demande de Zap",
-  "m6h2Eg": "Recommandation du gestionnaire",
-  "mCEKiZ": "{n} les notes ont été mises en sourdine",
-  "mErPop": "On dirait que vous n'en avez pas, consultez {link} pour en acheter un!",
-  "mFtdYh": "{type} Travailleurs relais",
-  "mKAr6h": "Suivre tout",
-  "mKh2HS": "Service d'hébergement de fichiers",
-  "mKhgP9": "{n,plural,=0{} =1{zappé} other{zappé}}",
-  "mOFG3K": "Démarrer",
-  "mfe8RW": "Option : {n}",
-  "mmPSWH": "Lecture seule",
-  "n1Whvj": "Changer",
-  "n5l7tP": "Événement du calendrier basé sur le temps",
-  "n8k1SG": "{n}Mio",
-  "nD4frR": "Confirmation de l'offre",
-  "nDejmx": "Débloquer",
-  "nGBrvw": "Favoris",
-  "nGGDsi": "Notifications autorisées",
-  "nIchMQ": "Recherche de l'activité du compte ({progress})",
-  "nPHrqp": "Coinjoin Pool",
-  "nUT0Lv": "Outils",
-  "nWQFic": "Renouveler",
-  "nihgfo": "Écouter cet article",
-  "nwZXeh": "{n} bloqué",
-  "o/gK53": "Pont",
-  "o7e+nJ": "{n} abonnés",
-  "oJ+JJN": "Aucun résultat :/",
-  "odFwjL": "Abonnements seulement",
-  "ojzbwv": "Hé, il semble que vous n'avez pas encore d'adresse Nostr, vous devriez en obtenir une ! Consultez {link}",
-  "ozZ2Cj": "Prix de l'insigne",
-  "p4N05H": "Importer",
-  "p9Ps2l": "{x}/{y} ont des relais ({percent})",
-  "pEEBFk": "Relais fiables",
-  "pI+77w": "Sauvegardes téléchargeables depuis le relais Snort",
-  "pRess9": "ZapPool",
-  "plOM0t": "Emoji personnalisé",
-  "plg2Ua": "Canal Mute Utilisateur",
-  "puLNUJ": "Épingler",
-  "pyjJ5f": "Nostr Marketplace (pour les places de marché résilientes)",
-  "pzTOmv": "Abonnés",
-  "q3OuMw": "Commentaire sur le torrent",
-  "qAY40L": "Événement du calendrier basé sur la date",
-  "qBYNMb": "Réponse au fil de discussion du groupe",
-  "qD9EUF": "Email <> pont DM pour votre adresse Snort nostr",
-  "qDwvZ4": "Une erreur inconnue s'est produite",
-  "qFIVx4": "Badges de profil",
-  "qMePPG": "Note",
-  "qMx1sA": "Montant des Zaps par défaut",
-  "qUJTsT": "Bloqué",
-  "qXCbgZ": "Déverrouiller",
-  "qZsKBR": "Renouveler {tier}",
-  "qcJFEJ": "API de notifications désactivée",
-  "qdGuQo": "Votre Clé Privée Est (ne la partagez avec personne)",
-  "qfmMQh": "Cette note a été mise en sourdine",
-  "qkvYUb": "Ajouter au Profil",
-  "qmJ8kD": "La traduction a échoué",
-  "qtWLmt": "Like",
-  "qyJtWy": "Afficher moins",
-  "qydxOd": "La science",
-  "qz9fty": "Broche incorrecte",
-  "r3C4x/": "Logiciel",
-  "r5srDR": "Entrez le mot de passe du portefeuille",
-  "rAQG0X": "Métadonnées de la liste de relais",
-  "rIsVe+": "Liste des chats publics",
-  "rMgF34": "Sauvegarder maintenant",
-  "rRRXtB": "Les coups de foudre",
-  "rT14Ow": "Ajouter Relais",
-  "reFEEC": "Rapports",
-  "rfuMjE": "(Défaut)",
-  "rkM7l8": "Message direct crypté",
-  "rmdsT4": "{n} jours",
-  "rn52n9": "Chaînes de discussion publiques",
-  "rx1i0i": "Lien court",
-  "sFUkSN": "Jeux de signets",
-  "sKDn4e": "Badges d'exposition",
-  "sUNhQE": "utilisateur",
-  "sZQzjQ": "Échec de l'analyse de la division zap : {input}",
-  "saInmO": "Le nom du relais affiché n'est pas le même que l'URL complet saisi.",
-  "saorw+": "Demande de suppression d'un événement",
-  "sfL/O+": "Les notes en sourdine ne seront pas affichées",
-  "t79a6U": "Réussite de la connexion :",
-  "tDDiRL": "Liste d'intérêts",
-  "tFpT/O": "Publication d'ensembles d'artefacts",
-  "tO1oq9": "Événements vidéo",
-  "tOdNiY": "Sombre",
-  "tRGdV1": "Chiffrement versionné",
-  "tU0ADf": "Inconnu PNM-{x}",
-  "tVuVg9": "Vidéo Voir l'événement",
-  "tf1lIh": "Gratuit",
-  "th5lxp": "Envoyer la note à un sous-ensemble de vos relais d'écriture",
-  "thnRpU": "Obtenir la vérification NIP-05 peut aider :",
-  "tj6kdX": "{sign} {amount} sats",
-  "tjpYlr": "Métriques du relais",
-  "ttxS0b": "Badge de Supporter",
-  "tzMNF3": "Statut",
-  "u/vOPu": "Payé",
-  "u4I8q8": "Liste des broches",
-  "u81G9+": "Temps de fonctionnement",
-  "u9NoC1": "Le nom doit être inférieur à {limit} caractères",
-  "uCk8r+": "Vous avez déjà un compte ?",
-  "uD7Els": "Identités externes dans les profils",
-  "uJaMkO": "Liste de relais pour la réception des DM",
-  "uSV4Ti": "Les republications seront automatiquement confirmées",
-  "uc0din": "Envoyer les splits de sats à",
-  "ufvXH1": "{n} évènements trouvés",
-  "uhu5aG": "Publique",
-  "un1nGw": "{n} notes",
-  "usAvMr": "Modifier le Profil",
-  "v8lolG": "Démarrer la discussion",
-  "vB3oQ/": "Il doit s'agir d'une liste de contacts ou d'une liste de clés publiques",
-  "vBsZhD": "Liste des communautés",
-  "vN5UH8": "Image de profil",
-  "vU/Q5i": "Cet outil recherche le dernier événement publié par toutes les personnes que vous suivez et supprime celles qui n'ont pas publié depuis 6 mois",
-  "vZ4quW": "NIP-05 est une spécification de vérification basée sur DNS qui permet de vous valider en tant qu'utilisateur réel.",
-  "vhlWFg": "Choix proposés",
-  "vlbWtt": "En obtenir un gratuit",
-  "voxBKC": "Suivi par des amis",
-  "vxwnbh": "Quantité de travail à appliquer à tous les événements publiés",
-  "w1Fanr": "Entreprises",
-  "w6qrwX": "NSFW",
-  "wEQDC6": "Modifier",
-  "wOyDTB": "Liste des serveurs de stockage de fichiers",
-  "wSZR47": "Soumettre",
-  "wc9st7": "Pièces jointes aux médias",
-  "whSrs+": "Chat Public Nostr",
-  "wih7iJ": "le nom est bloqué",
-  "wlWMuh": "Les écussons",
-  "wofVHy": "Modération",
-  "wqyN/i": "En savoir plus sur {service} sur {link}",
-  "wtLjP6": "Copier Identifiant",
-  "x+3fl6": "Mes relais",
-  "x/Fx2P": "Financez les services que vous utilisez en fractionnant une partie de tous vos zaps en un ensemble de fonds !",
-  "x82IOl": "Mode Sourdine",
-  "xEjBS7": "Pour vous",
-  "xIcAOU": "Votes par {type}",
-  "xIoGG9": "Aller à",
-  "xPCyu+": "nostr : Schéma URI",
-  "xaj9Ba": "Fournisseur",
-  "xbVgIm": "Charger automatiquement le média",
-  "xhQMeQ": "Expire",
-  "xl4s/X": "Conditions supplémentaires :",
-  "xmcVZ0": "Chercher",
-  "xybOUv": "FAN",
-  "y/bmsG": "Autoriser",
-  "y1Z3or": "Langue",
-  "yAztTU": "{n} eSats",
-  "yCLnBC": "LNURL ou adresse Lightning",
-  "yLzgxH": "Relais populaires",
-  "yeX8yA": "Application native",
-  "z3UjXR": "Débogage",
-  "z3Ukvq": "Rédiger un contenu de longue durée",
-  "zCb8fX": "Poids",
-  "zFegDD": "Contacted",
-  "zINlao": "Propriétaire",
-  "zQvVDJ": "Tout",
-  "zcaOTs": "Zapper montant en sats",
-  "zi9MdS": "Échecs (PGN)",
-  "zm6qS1": "{n} minutes de lecture",
-  "zonsdq": "Échec du chargement du service LNURL",
-  "zvCDao": "Afficher automatiquement les dernières notes",
-  "zx0myy": "Les participants"
+  "+D82kt": [
+    {
+      "type": 0,
+      "value": "Êtes-vous sûr que vous voulez republier: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "+PzQ9Y": [
+    {
+      "type": 0,
+      "value": "Payer Maintenant"
+    }
+  ],
+  "+QM0PJ": [
+    {
+      "type": 0,
+      "value": "Synchroniser tous les évènements de votre profil dans le cache local"
+    }
+  ],
+  "+QMdsy": [
+    {
+      "type": 0,
+      "value": "Stats du relais"
+    }
+  ],
+  "+UjDmN": [
+    {
+      "type": 0,
+      "value": "Connecté avec accès en écriture"
+    }
+  ],
+  "+Vxixo": [
+    {
+      "type": 0,
+      "value": "Chat de Groupe Secret"
+    }
+  ],
+  "+aZY2h": [
+    {
+      "type": 0,
+      "value": "Type de Zap"
+    }
+  ],
+  "+tShPg": [
+    {
+      "type": 0,
+      "value": "suivants"
+    }
+  ],
+  "+vA//S": [
+    {
+      "type": 0,
+      "value": "Connexions"
+    }
+  ],
+  "+vIQlC": [
+    {
+      "type": 0,
+      "value": "Assurez-vous d'enregistrer le mot de passe suivant afin de gérer votre identifiant à l'avenir"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "Connecter"
+    }
+  ],
+  "+vj0U3": [
+    {
+      "type": 0,
+      "value": "éditer"
+    }
+  ],
+  "+xliwN": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " a reposté"
+    }
+  ],
+  "/B8zwF": [
+    {
+      "type": 0,
+      "value": "Votre espace comme vous le souhaitez 😌"
+    }
+  ],
+  "/GCoTA": [
+    {
+      "type": 0,
+      "value": "Effacer"
+    }
+  ],
+  "/JE/X+": [
+    {
+      "type": 0,
+      "value": "Support de compte"
+    }
+  ],
+  "/T7HId": [
+    {
+      "type": 0,
+      "value": "Intégration du stockage de fichiers HTTP"
+    }
+  ],
+  "/Xf4UW": [
+    {
+      "type": 0,
+      "value": "Envoyer des données anonymes sur l'utilisation"
+    }
+  ],
+  "/b1IHW": [
+    {
+      "type": 0,
+      "value": "Message de chat de groupe"
+    }
+  ],
+  "/d6vEc": [
+    {
+      "type": 0,
+      "value": "Rendez votre profil plus facile à trouver et à partager"
+    }
+  ],
+  "/ioUrF": [
+    {
+      "type": 0,
+      "value": "Du dossier"
+    }
+  ],
+  "/n5KSF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ms"
+    }
+  ],
+  "00LcfG": [
+    {
+      "type": 0,
+      "value": "Voir plus"
+    }
+  ],
+  "01iNut": [
+    {
+      "type": 0,
+      "value": "L'adresse Nostr ne vous appartient pas"
+    }
+  ],
+  "08zn6O": [
+    {
+      "type": 0,
+      "value": "Clés d'exportation"
+    }
+  ],
+  "0Azlrb": [
+    {
+      "type": 0,
+      "value": "Gérer"
+    }
+  ],
+  "0BUTMv": [
+    {
+      "type": 0,
+      "value": "Chercher..."
+    }
+  ],
+  "0MndVW": [
+    {
+      "type": 0,
+      "value": "Portefeuille générique LNDHub (BTCPayServer / Alby / LNBits)"
+    }
+  ],
+  "0jOEtS": [
+    {
+      "type": 0,
+      "value": "LNURL invalide"
+    }
+  ],
+  "0kOBMu": [
+    {
+      "type": 0,
+      "value": "Traitement des mentions"
+    }
+  ],
+  "0mch2Y": [
+    {
+      "type": 0,
+      "value": "le nom contient des caractères non autorisés"
+    }
+  ],
+  "0siT4z": [
+    {
+      "type": 0,
+      "value": "Politique"
+    }
+  ],
+  "0uoY11": [
+    {
+      "type": 0,
+      "value": "Afficher l'état"
+    }
+  ],
+  "0yO7wF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " secondes"
+    }
+  ],
+  "0zASjL": [
+    {
+      "type": 0,
+      "value": "Aller"
+    }
+  ],
+  "1/BFEj": [
+    {
+      "type": 0,
+      "value": "trucs git"
+    }
+  ],
+  "1Mo59U": [
+    {
+      "type": 0,
+      "value": "Êtes-vous sûr de vouloir supprimer cette note de vos favoris ?"
+    }
+  ],
+  "1R43+L": [
+    {
+      "type": 0,
+      "value": "Accéder à la configuration de Nostr Wallet Connect"
+    }
+  ],
+  "1UWegE": [
+    {
+      "type": 0,
+      "value": "Veillez à sauvegarder vos clés !"
+    }
+  ],
+  "1c4YST": [
+    {
+      "type": 0,
+      "value": "Connecté à : "
+    },
+    {
+      "type": 1,
+      "value": "node"
+    },
+    {
+      "type": 0,
+      "value": " 🎉"
+    }
+  ],
+  "1nYUGC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Abonnements"
+    }
+  ],
+  "1o2BgB": [
+    {
+      "type": 0,
+      "value": "Vérifier les signatures"
+    }
+  ],
+  "1ozeyg": [
+    {
+      "type": 0,
+      "value": "Nature"
+    }
+  ],
+  "1udzha": [
+    {
+      "type": 0,
+      "value": "Conversations"
+    }
+  ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "Ajouter"
+    }
+  ],
+  "25V4l1": [
+    {
+      "type": 0,
+      "value": "Bannière"
+    }
+  ],
+  "25WwxF": [
+    {
+      "type": 0,
+      "value": "Vous n'avez pas de compte ?"
+    }
+  ],
+  "28oKbu": [
+    {
+      "type": 0,
+      "value": "Communautés modérées"
+    }
+  ],
+  "29sHFE": [
+    {
+      "type": 0,
+      "value": "Connexion au portefeuille"
+    }
+  ],
+  "2BBGxX": [
+    {
+      "type": 0,
+      "value": "Étiquette de sujet dans les événements textuels"
+    }
+  ],
+  "2HIqeO": [
+    {
+      "type": 0,
+      "value": "Liste des emoji de l'utilisateur"
+    }
+  ],
+  "2IFGap": [
+    {
+      "type": 0,
+      "value": "Faire un don"
+    }
+  ],
+  "2LbrkB": [
+    {
+      "type": 0,
+      "value": "Saisissez le mot de passe"
+    }
+  ],
+  "2O2sfp": [
+    {
+      "type": 0,
+      "value": "Finition"
+    }
+  ],
+  "2Qsf9/": [
+    {
+      "type": 0,
+      "value": "Listes génériques"
+    }
+  ],
+  "2a2YiP": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Favoris"
+    }
+  ],
+  "2k0Cv+": [
+    {
+      "type": 0,
+      "value": "N'aime pas ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "2mcwT8": [
+    {
+      "type": 0,
+      "value": "Nouvelle note"
+    }
+  ],
+  "2oCF7O": [
+    {
+      "type": 0,
+      "value": "Suivi par les amis des amis"
+    }
+  ],
+  "2raFAu": [
+    {
+      "type": 0,
+      "value": "Données spécifiques à l'application"
+    }
+  ],
+  "2ukA4d": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " heures"
+    }
+  ],
+  "2z7Kky": [
+    {
+      "type": 0,
+      "value": "Derniers articles"
+    }
+  ],
+  "3/onCd": [
+    {
+      "type": 0,
+      "value": "Réponses"
+    }
+  ],
+  "39AHJm": [
+    {
+      "type": 0,
+      "value": "S'inscrire"
+    }
+  ],
+  "3GWu6/": [
+    {
+      "type": 0,
+      "value": "Statuts de l'utilisateur"
+    }
+  ],
+  "3KNMbJ": [
+    {
+      "type": 0,
+      "value": "Articles"
+    }
+  ],
+  "3MKdAw": [
+    {
+      "type": 0,
+      "value": "Blobs stockés sur les serveurs médiatiques"
+    }
+  ],
+  "3QwfJR": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    }
+  ],
+  "3adEeb": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " téléspectateurs"
+    }
+  ],
+  "3cc4Ct": [
+    {
+      "type": 0,
+      "value": "Clair"
+    }
+  ],
+  "3gOsZq": [
+    {
+      "type": 0,
+      "value": "Traducteurs"
+    }
+  ],
+  "3kbIhS": [
+    {
+      "type": 0,
+      "value": "Sans titre"
+    }
+  ],
+  "3qnJlS": [
+    {
+      "type": 0,
+      "value": "Vous votez avec "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "3t3kok": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " nouvelle note"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " nouvelles notes"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "3tVy+Z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Abonnés"
+    }
+  ],
+  "3yk8fB": [
+    {
+      "type": 0,
+      "value": "Portefeuille"
+    }
+  ],
+  "40VR6s": [
+    {
+      "type": 0,
+      "value": "Nostr Connect"
+    }
+  ],
+  "41BSaT": [
+    {
+      "type": 0,
+      "value": "Total des événements :"
+    }
+  ],
+  "450Fty": [
+    {
+      "type": 0,
+      "value": "Aucun"
+    }
+  ],
+  "47E53q": [
+    {
+      "type": 0,
+      "value": "Wiki"
+    }
+  ],
+  "47FYwb": [
+    {
+      "type": 0,
+      "value": "Annuler"
+    }
+  ],
+  "48zn4v": [
+    {
+      "type": 0,
+      "value": "Offre"
+    }
+  ],
+  "4IPzdn": [
+    {
+      "type": 0,
+      "value": "Développeurs principaux"
+    }
+  ],
+  "4L2vUY": [
+    {
+      "type": 0,
+      "value": "Votre indicatif NIP-05 est:"
+    }
+  ],
+  "4MjsHk": [
+    {
+      "type": 0,
+      "value": "La vie"
+    }
+  ],
+  "4OB335": [
+    {
+      "type": 0,
+      "value": "Ne pas aimer"
+    }
+  ],
+  "4P/kKm": [
+    {
+      "type": 0,
+      "value": "Chiffrement par clé privée"
+    }
+  ],
+  "4Vmpt4": [
+    {
+      "type": 0,
+      "value": "Nostr Plebs est l'un des premiers fournisseurs NIP-05 dans l'espace et offre une bonne collection de domaines à des prix raisonnables"
+    }
+  ],
+  "4Z3t5i": [
+    {
+      "type": 0,
+      "value": "Utiliser imgproxy pour compresser les images"
+    }
+  ],
+  "4emo2p": [
+    {
+      "type": 0,
+      "value": "Relais manquants"
+    }
+  ],
+  "4rYCjn": [
+    {
+      "type": 0,
+      "value": "Note à Soi-même"
+    }
+  ],
+  "4wgYpI": [
+    {
+      "type": 0,
+      "value": "Manipulateurs d'applications recommandés"
+    }
+  ],
+  "5BVs2e": [
+    {
+      "type": 0,
+      "value": "zap"
+    }
+  ],
+  "5CB6zB": [
+    {
+      "type": 0,
+      "value": "Zap Splits"
+    }
+  ],
+  "5PRWs7": [
+    {
+      "type": 0,
+      "value": "API de notifications activée"
+    }
+  ],
+  "5dfmvv": [
+    {
+      "type": 0,
+      "value": "Objectif Zap"
+    }
+  ],
+  "5oTnfy": [
+    {
+      "type": 0,
+      "value": "Acheter Identifiant"
+    }
+  ],
+  "5qEWCr": [
+    {
+      "type": 0,
+      "value": "Métadonnées des fichiers"
+    }
+  ],
+  "5u6iEc": [
+    {
+      "type": 0,
+      "value": "Transférer vers la clé publique"
+    }
+  ],
+  "5vMmmR": [
+    {
+      "type": 0,
+      "value": "Les noms d'utilisateur ne sont pas uniques sur Nostr. L'adresse nostr est votre adresse unique lisible par l'homme qui vous est unique lors de votre inscription."
+    }
+  ],
+  "5ykRmX": [
+    {
+      "type": 0,
+      "value": "Envoyer zap"
+    }
+  ],
+  "6/hB3S": [
+    {
+      "type": 0,
+      "value": "Regarder la rediffusion"
+    }
+  ],
+  "60kEE3": [
+    {
+      "type": 0,
+      "value": "Liste des sourds"
+    }
+  ],
+  "62nsdy": [
+    {
+      "type": 0,
+      "value": "Réessayer"
+    }
+  ],
+  "634VVz": [
+    {
+      "type": 0,
+      "value": "Échec de la connexion :"
+    }
+  ],
+  "6559gb": [
+    {
+      "type": 0,
+      "value": "Nouvelle longueur de la liste de suivi "
+    },
+    {
+      "type": 1,
+      "value": "length"
+    }
+  ],
+  "65BmHb": [
+    {
+      "type": 0,
+      "value": "Échec du proxy de l'image de "
+    },
+    {
+      "type": 1,
+      "value": "host"
+    },
+    {
+      "type": 0,
+      "value": ", cliquez ici pour la charger directement"
+    }
+  ],
+  "6D4Hhn": [
+    {
+      "type": 0,
+      "value": "Recommander le relais"
+    }
+  ],
+  "6KGebm": [
+    {
+      "type": 0,
+      "value": "Sceau"
+    }
+  ],
+  "6OSOXl": [
+    {
+      "type": 0,
+      "value": "Motif : "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reason"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "6WWD34": [
+    {
+      "type": 0,
+      "value": "Vous cherchez : "
+    },
+    {
+      "type": 1,
+      "value": "noteId"
+    }
+  ],
+  "6bgpn+": [
+    {
+      "type": 0,
+      "value": "Tous les clients ne supportent pas cette fonction, il se peut que vous receviez encore quelques zaps comme si la division des zaps n'était pas configurée."
+    }
+  ],
+  "6ewQqw": [
+    {
+      "type": 0,
+      "value": "Aime ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "6mr8WU": [
+    {
+      "type": 0,
+      "value": "Suivi par"
+    }
+  ],
+  "6pdxsi": [
+    {
+      "type": 0,
+      "value": "Champs de métadonnées et balises supplémentaires"
+    }
+  ],
+  "6uMqL1": [
+    {
+      "type": 0,
+      "value": "Non payé"
+    }
+  ],
+  "6xNr8c": [
+    {
+      "type": 0,
+      "value": "Changer de compte"
+    }
+  ],
+  "6xap9L": [
+    {
+      "type": 0,
+      "value": "Bon"
+    }
+  ],
+  "7+Domh": [
+    {
+      "type": 0,
+      "value": "Notes"
+    }
+  ],
+  "712i26": [
+    {
+      "type": 0,
+      "value": "Le mandataire utilise des factures HODL pour transmettre le paiement, ce qui masque la clé publique de votre nœud."
+    }
+  ],
+  "753yX5": [
+    {
+      "type": 0,
+      "value": "Étiquette"
+    }
+  ],
+  "769A8p": [
+    {
+      "type": 0,
+      "value": "Article Wiki"
+    }
+  ],
+  "77nkEO": [
+    {
+      "type": 0,
+      "value": "Document d'information sur le relais"
+    }
+  ],
+  "7LFU8U": [
+    {
+      "type": 0,
+      "value": "Capacité de recherche"
+    }
+  ],
+  "7UOvbT": [
+    {
+      "type": 0,
+      "value": "Hors ligne"
+    }
+  ],
+  "7YkSA2": [
+    {
+      "type": 0,
+      "value": "Leader de la communauté"
+    }
+  ],
+  "7gMmSL": [
+    {
+      "type": 0,
+      "value": "Réaction"
+    }
+  ],
+  "7hp70g": [
+    {
+      "type": 0,
+      "value": "NIP-05"
+    }
+  ],
+  "7jfPsW": [
+    {
+      "type": 0,
+      "value": "Contenu modulaire des articles"
+    }
+  ],
+  "7nAz/z": [
+    {
+      "type": 0,
+      "value": "Mettez en sourdine les notes des personnes qui ne font pas partie de votre réseau de confiance."
+    }
+  ],
+  "7pFGAQ": [
+    {
+      "type": 0,
+      "value": "Fermer les relais"
+    }
+  ],
+  "8/vBbP": [
+    {
+      "type": 0,
+      "value": "Reposte ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "89q5wc": [
+    {
+      "type": 0,
+      "value": "Confirmer la republication"
+    }
+  ],
+  "8BDFvJ": [
+    {
+      "type": 0,
+      "value": "Conventions relatives à l'utilisation par les clients des balises e et p dans les événements textuels"
+    }
+  ],
+  "8ED/4u": [
+    {
+      "type": 0,
+      "value": "Répondre à"
+    }
+  ],
+  "8HJxXG": [
+    {
+      "type": 0,
+      "value": "S'inscrire"
+    }
+  ],
+  "8QDesP": [
+    {
+      "type": 0,
+      "value": "Zapper "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "8Rkoyb": [
+    {
+      "type": 0,
+      "value": "Bénéficiaire"
+    }
+  ],
+  "8Y6bZQ": [
+    {
+      "type": 0,
+      "value": "Fractionnement non valide du zap : "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "8ZGqWl": [
+    {
+      "type": 0,
+      "value": "Fil du groupe"
+    }
+  ],
+  "8g2vyB": [
+    {
+      "type": 0,
+      "value": "le nom est trop long"
+    }
+  ],
+  "8jmwT8": [
+    {
+      "type": 0,
+      "value": "entités encodées en bech32"
+    }
+  ],
+  "8v1NN+": [
+    {
+      "type": 0,
+      "value": "Phrase d'appairage"
+    }
+  ],
+  "8xdDLn": [
+    {
+      "type": 0,
+      "value": "Suivre les ensembles"
+    }
+  ],
+  "8za9Pq": [
+    {
+      "type": 0,
+      "value": "Projet de liste d'annonces classées"
+    }
+  ],
+  "9+Ddtu": [
+    {
+      "type": 0,
+      "value": "Suivant"
+    }
+  ],
+  "9HU8vw": [
+    {
+      "type": 0,
+      "value": "Répondre"
+    }
+  ],
+  "9SvQep": [
+    {
+      "type": 0,
+      "value": "Suit "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "9V0wg3": [
+    {
+      "type": 0,
+      "value": "Calendrier Événement RSVP"
+    }
+  ],
+  "9WRlF4": [
+    {
+      "type": 0,
+      "value": "Envoyer"
+    }
+  ],
+  "9kO0VQ": [
+    {
+      "type": 0,
+      "value": "Masquer les notes en sourdine"
+    }
+  ],
+  "9kSari": [
+    {
+      "type": 0,
+      "value": "Réessayer la publication"
+    }
+  ],
+  "9pMqYs": [
+    {
+      "type": 0,
+      "value": "Adresse Nostr"
+    }
+  ],
+  "9wO4wJ": [
+    {
+      "type": 0,
+      "value": "Facture Lightning"
+    }
+  ],
+  "A86fJ+": [
+    {
+      "type": 0,
+      "value": "Repost générique"
+    }
+  ],
+  "ADmfQT": [
+    {
+      "type": 0,
+      "value": "Parent"
+    }
+  ],
+  "ALdW69": [
+    {
+      "type": 0,
+      "value": "Note par "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "AN0Z7Q": [
+    {
+      "type": 0,
+      "value": "Mots en sourdine"
+    }
+  ],
+  "ASRK0S": [
+    {
+      "type": 0,
+      "value": "Cet auteur a été mis en sourdine"
+    }
+  ],
+  "AedFVZ": [
+    {
+      "type": 0,
+      "value": "Créer ou mettre à jour un produit"
+    }
+  ],
+  "Ai8VHU": [
+    {
+      "type": 0,
+      "value": "Conservation illimitée des notes sur le relais Snort"
+    }
+  ],
+  "AkCxS/": [
+    {
+      "type": 0,
+      "value": "Raison"
+    }
+  ],
+  "AktAk2": [
+    {
+      "type": 0,
+      "value": "Superbe"
+    }
+  ],
+  "Am8glJ": [
+    {
+      "type": 0,
+      "value": "Jeu"
+    }
+  ],
+  "AqGfF4": [
+    {
+      "type": 0,
+      "value": "Création d'un canal"
+    }
+  ],
+  "Aujn2T": [
+    {
+      "type": 0,
+      "value": "Compte"
+    }
+  ],
+  "Awq32I": [
+    {
+      "type": 0,
+      "value": "Notifications push"
+    }
+  ],
+  "AxDOiG": [
+    {
+      "type": 0,
+      "value": "Mois"
+    }
+  ],
+  "AyGauy": [
+    {
+      "type": 0,
+      "value": "Se Connecter"
+    }
+  ],
+  "B4C47Y": [
+    {
+      "type": 0,
+      "value": "le nom est trop court"
+    }
+  ],
+  "B6+XJy": [
+    {
+      "type": 0,
+      "value": "zappé"
+    }
+  ],
+  "B6H7eJ": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex"
+    }
+  ],
+  "B7wvUM": [
+    {
+      "type": 0,
+      "value": "Vous pouvez ajouter un ou plusieurs relais, un par ligne."
+    }
+  ],
+  "BGCM48": [
+    {
+      "type": 0,
+      "value": "Accès en écriture au relais Snort, avec conservation des évènements pendant 1 an"
+    }
+  ],
+  "BGGacK": [
+    {
+      "type": 0,
+      "value": "Embeddings AI / Listes vectorielles"
+    }
+  ],
+  "BQW4gi": [
+    {
+      "type": 0,
+      "value": "Groupes basés sur le relais"
+    }
+  ],
+  "BWpuKl": [
+    {
+      "type": 0,
+      "value": "Actualiser"
+    }
+  ],
+  "BfuAQ5": [
+    {
+      "type": 0,
+      "value": "Place de marché UI/UX"
+    }
+  ],
+  "BjNwZW": [
+    {
+      "type": 0,
+      "value": "Adresse Nostr (nip05)"
+    }
+  ],
+  "Blxcdx": [
+    {
+      "type": 0,
+      "value": "Relais"
+    }
+  ],
+  "Bo+O//": [
+    {
+      "type": 0,
+      "value": "Auth HTTP"
+    }
+  ],
+  "C1LjMx": [
+    {
+      "type": 0,
+      "value": "Don Lightning"
+    }
+  ],
+  "C6Lhhp": [
+    {
+      "type": 0,
+      "value": "Événement en direct"
+    }
+  ],
+  "C7642/": [
+    {
+      "type": 0,
+      "value": "Repost de citation"
+    }
+  ],
+  "C81/uG": [
+    {
+      "type": 0,
+      "value": "Se déconnecter"
+    }
+  ],
+  "C8FsOr": [
+    {
+      "type": 0,
+      "value": "Serveurs populaires"
+    }
+  ],
+  "C8HhVE": [
+    {
+      "type": 0,
+      "value": "Utilisateurs recommandés"
+    }
+  ],
+  "CA1efg": [
+    {
+      "type": 0,
+      "value": "Jeux vidéo"
+    }
+  ],
+  "CHTbO3": [
+    {
+      "type": 0,
+      "value": "Échec du chargement de la facture"
+    }
+  ],
+  "CJx5Nd": [
+    {
+      "type": 0,
+      "value": "Zaps de profil"
+    }
+  ],
+  "CM+Cfj": [
+    {
+      "type": 0,
+      "value": "Liste de suivi"
+    }
+  ],
+  "CM0k0d": [
+    {
+      "type": 0,
+      "value": "Élaguer la liste de suivi"
+    }
+  ],
+  "CVWeJ6": [
+    {
+      "type": 0,
+      "value": "Personnes tendances"
+    }
+  ],
+  "CYkOCI": [
+    {
+      "type": 0,
+      "value": "et "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " autres que vous suivez"
+    }
+  ],
+  "Cdxwi0": [
+    {
+      "type": 0,
+      "value": "Annonces de dépôt"
+    }
+  ],
+  "CmZ9ls": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Mis en sourdine"
+    }
+  ],
+  "Coy6SH": [
+    {
+      "type": 0,
+      "value": "Calendrier"
+    }
+  ],
+  "CsCUYo": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "Cu/K85": [
+    {
+      "type": 0,
+      "value": "Traduit de "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "CzHZoc": [
+    {
+      "type": 0,
+      "value": "Graphique social"
+    }
+  ],
+  "D++Njw": [
+    {
+      "type": 0,
+      "value": "Texte Note Références"
+    }
+  ],
+  "D+KzKd": [
+    {
+      "type": 0,
+      "value": "Zap automatiquement chaque note quand elle est chargée"
+    }
+  ],
+  "D09wbg": [
+    {
+      "type": 0,
+      "value": "Définition du badge"
+    }
+  ],
+  "D3idYv": [
+    {
+      "type": 0,
+      "value": "Paramètres"
+    }
+  ],
+  "D9xTLE": [
+    {
+      "type": 0,
+      "value": "Canal Masquer le message"
+    }
+  ],
+  "DBiVK1": [
+    {
+      "type": 0,
+      "value": "Cache"
+    }
+  ],
+  "DKnriN": [
+    {
+      "type": 0,
+      "value": "Envoyer des sats"
+    }
+  ],
+  "DZzCem": [
+    {
+      "type": 0,
+      "value": "Afficher les "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " dernières notes"
+    }
+  ],
+  "Dh3hbq": [
+    {
+      "type": 0,
+      "value": "Zap automatique"
+    }
+  ],
+  "Dn82AL": [
+    {
+      "type": 0,
+      "value": "Vivre"
+    }
+  ],
+  "DqUmXt": [
+    {
+      "type": 0,
+      "value": "Produit vendu aux enchères"
+    }
+  ],
+  "DrZqav": [
+    {
+      "type": 0,
+      "value": "À propos doit être inférieur à "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " caractères"
+    }
+  ],
+  "DtYelJ": [
+    {
+      "type": 0,
+      "value": "Transférer"
+    }
+  ],
+  "Dx4ey3": [
+    {
+      "type": 0,
+      "value": "Tout afficher"
+    }
+  ],
+  "E3oB+t": [
+    {
+      "type": 0,
+      "value": "Navigateur"
+    }
+  ],
+  "E5ZIPD": [
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "amount"
+        }
+      ],
+      "type": 8,
+      "value": "big"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "sats"
+        }
+      ],
+      "type": 8,
+      "value": "small"
+    }
+  ],
+  "EHqHsu": [
+    {
+      "type": 0,
+      "value": "Facture / Adresse Lightning"
+    }
+  ],
+  "EJbFi7": [
+    {
+      "type": 0,
+      "value": "Notes de recherche"
+    }
+  ],
+  "ELbg9p": [
+    {
+      "type": 0,
+      "value": "Fournisseurs de données"
+    }
+  ],
+  "EQKRE4": [
+    {
+      "type": 0,
+      "value": "Afficher les badges sur les pages de profil"
+    }
+  ],
+  "EWeVrH": [
+    {
+      "type": 0,
+      "value": "Réaction à un site web"
+    }
+  ],
+  "EWyQH5": [
+    {
+      "type": 0,
+      "value": "Global"
+    }
+  ],
+  "Ebl/B2": [
+    {
+      "type": 0,
+      "value": "Traduire en "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "Ec+xLY": [
+    {
+      "type": 0,
+      "value": "Ensembles de curation"
+    }
+  ],
+  "EcZF24": [
+    {
+      "type": 0,
+      "value": "Relais personnalisés"
+    }
+  ],
+  "EcfIwB": [
+    {
+      "type": 0,
+      "value": "Le nom d'utilisateur est disponible"
+    }
+  ],
+  "EcglP9": [
+    {
+      "type": 0,
+      "value": "Clé"
+    }
+  ],
+  "EjFyoR": [
+    {
+      "type": 0,
+      "value": "Adresse de don On-Chain"
+    }
+  ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "Acheter"
+    }
+  ],
+  "EsHX35": [
+    {
+      "type": 0,
+      "value": "Désolé, nous ne comprenons pas ce type d'événement ("
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "), veuillez essayer l'une des applications suivantes à la place !"
+    }
+  ],
+  "F/6VqP": [
+    {
+      "type": 0,
+      "value": "Serveur"
+    }
+  ],
+  "F3l7xL": [
+    {
+      "type": 0,
+      "value": "Ajouter un Compte"
+    }
+  ],
+  "F4eJ/3": [
+    {
+      "type": 0,
+      "value": "Annonces classées"
+    }
+  ],
+  "FDguSC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Zaps"
+    }
+  ],
+  "FHWpHC": [
+    {
+      "type": 0,
+      "value": "Réponse du portefeuille"
+    }
+  ],
+  "FHvSk3": [
+    {
+      "type": 0,
+      "value": "Authentification des clients auprès des relais"
+    }
+  ],
+  "FMfjrl": [
+    {
+      "type": 0,
+      "value": "Afficher les messages d'état sur les pages de profil"
+    }
+  ],
+  "FSYL8G": [
+    {
+      "type": 0,
+      "value": "Utilisateurs tendances"
+    }
+  ],
+  "FWJR1B": [
+    {
+      "type": 0,
+      "value": "Groupes d'utilisateurs"
+    }
+  ],
+  "FcNSft": [
+    {
+      "type": 0,
+      "value": "Redirect émet une redirection HTTP vers l'adresse éclair fournie"
+    }
+  ],
+  "FdhSU2": [
+    {
+      "type": 0,
+      "value": "Obtenir maintenant"
+    }
+  ],
+  "FfYsOb": [
+    {
+      "type": 0,
+      "value": "Une erreur est survenue!"
+    }
+  ],
+  "FmXUJg": [
+    {
+      "type": 0,
+      "value": "vous suit"
+    }
+  ],
+  "FvanT6": [
+    {
+      "type": 0,
+      "value": "Comptes"
+    }
+  ],
+  "FzbSGg": [
+    {
+      "type": 0,
+      "value": "Vous n'avez pas de serveurs de médias, essayez d'en ajouter."
+    }
+  ],
+  "G/yZLu": [
+    {
+      "type": 0,
+      "value": "Retirer"
+    }
+  ],
+  "G1BGCg": [
+    {
+      "type": 0,
+      "value": "Sélectionnez un portefeuille"
+    }
+  ],
+  "G3A56c": [
+    {
+      "type": 0,
+      "value": "Abonné aux pushs"
+    }
+  ],
+  "GFOoEE": [
+    {
+      "type": 0,
+      "value": "Sel"
+    }
+  ],
+  "GIqktu": [
+    {
+      "type": 0,
+      "value": "PIN soutenus"
+    }
+  ],
+  "GL8aXW": [
+    {
+      "type": 0,
+      "value": "Favoris ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "GSye7T": [
+    {
+      "type": 0,
+      "value": "Adresse Lightning"
+    }
+  ],
+  "GUlSVG": [
+    {
+      "type": 0,
+      "value": "Réclamez votre adresse nostr Snort incluse"
+    }
+  ],
+  "Gcn9NQ": [
+    {
+      "type": 0,
+      "value": "Lien Magnet"
+    }
+  ],
+  "GpkNYn": [
+    {
+      "type": 0,
+      "value": "Torrent"
+    }
+  ],
+  "GqQeu/": [
+    {
+      "type": 0,
+      "value": "Adresse Lightning invalide"
+    }
+  ],
+  "GspYR7": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " N'aime pas"
+    }
+  ],
+  "Gxcr08": [
+    {
+      "type": 0,
+      "value": "Diffuser l'évènement"
+    }
+  ],
+  "H+vHiz": [
+    {
+      "type": 0,
+      "value": "Clé hexadécimale.."
+    }
+  ],
+  "H/oroO": [
+    {
+      "type": 0,
+      "value": "Faire face à des événements inconnus"
+    }
+  ],
+  "H0JBH6": [
+    {
+      "type": 0,
+      "value": "Se Déconnecter"
+    }
+  ],
+  "H0OG3T": [
+    {
+      "type": 0,
+      "value": "Infos du leader"
+    }
+  ],
+  "H1GTaC": [
+    {
+      "type": 0,
+      "value": "Liste des signets"
+    }
+  ],
+  "H6/kLh": [
+    {
+      "type": 0,
+      "value": "Commande Payée!"
+    }
+  ],
+  "HAlOn1": [
+    {
+      "type": 0,
+      "value": "Nom"
+    }
+  ],
+  "HFls6j": [
+    {
+      "type": 0,
+      "value": "le nom sera disponible plus tard"
+    }
+  ],
+  "HOzFdo": [
+    {
+      "type": 0,
+      "value": "Mis en sourdine"
+    }
+  ],
+  "HWbkEK": [
+    {
+      "type": 0,
+      "value": "Vider le cache et recharger"
+    }
+  ],
+  "HbefNb": [
+    {
+      "type": 0,
+      "value": "Ouvrir le Wallet"
+    }
+  ],
+  "HhcAVH": [
+    {
+      "type": 0,
+      "value": "Vous ne suivez pas cette personne, cliquez ici pour charger les médias de "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "link"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": ", ou mettez à jour "
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "type": 0,
+              "value": "vos préférences"
+            }
+          ],
+          "type": 8,
+          "value": "i"
+        }
+      ],
+      "type": 8,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": " pour toujours charger les médias de tout le monde."
+    }
+  ],
+  "HpAmQZ": [
+    {
+      "type": 0,
+      "value": "Critiques des relais"
+    }
+  ],
+  "HqRNN8": [
+    {
+      "type": 0,
+      "value": "Soutien"
+    }
+  ],
+  "HzSFeV": [
+    {
+      "type": 0,
+      "value": "Horaire d'expiration"
+    }
+  ],
+  "I0tYZf": [
+    {
+      "type": 0,
+      "value": "Créer ou mettre à jour une stalle"
+    }
+  ],
+  "I1AoOu": [
+    {
+      "type": 0,
+      "value": "Dernier message "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    }
+  ],
+  "IEwZvs": [
+    {
+      "type": 0,
+      "value": "Êtes-vous sûr de vouloir désépingler cette note?"
+    }
+  ],
+  "IIOul1": [
+    {
+      "type": 0,
+      "value": "Données du compte"
+    }
+  ],
+  "IKKHqV": [
+    {
+      "type": 0,
+      "value": "Abonnements"
+    }
+  ],
+  "IOu4Xh": [
+    {
+      "type": 0,
+      "value": "Vous devez être abonné à "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    },
+    {
+      "type": 0,
+      "value": " pour accéder à "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": " deck"
+    }
+  ],
+  "IVbtTS": [
+    {
+      "type": 0,
+      "value": "Zapper tous les "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "IWz1ta": [
+    {
+      "type": 0,
+      "value": "Traduction automatique"
+    }
+  ],
+  "IcHcWj": [
+    {
+      "type": 0,
+      "value": "Dernière visite :"
+    }
+  ],
+  "Ig9/a1": [
+    {
+      "type": 0,
+      "value": "Envoyé "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats à "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "IgsWFG": [
+    {
+      "type": 0,
+      "value": "Pas suivi par quelqu'un que vous suivez"
+    }
+  ],
+  "IoQq+a": [
+    {
+      "type": 0,
+      "value": "Cliquez ici pour télécharger"
+    }
+  ],
+  "IvjoDS": [
+    {
+      "type": 0,
+      "value": "Connecté"
+    }
+  ],
+  "Ix8l+B": [
+    {
+      "type": 0,
+      "value": "Notes tendances"
+    }
+  ],
+  "J+dIsA": [
+    {
+      "type": 0,
+      "value": "Abonnements"
+    }
+  ],
+  "J1iLmb": [
+    {
+      "type": 0,
+      "value": "Notifications non autorisées"
+    }
+  ],
+  "J2HeQ+": [
+    {
+      "type": 0,
+      "value": "Utiliser des virgules pour séparer les mots, par exemple mot1, mot2, mot3"
+    }
+  ],
+  "J2Q92B": [
+    {
+      "type": 0,
+      "value": "Jeux d'Emoji"
+    }
+  ],
+  "J6N9xl": [
+    {
+      "type": 0,
+      "value": "Sign in with Android signer"
+    }
+  ],
+  "JCIgkj": [
+    {
+      "type": 0,
+      "value": "Nom d’utilisateur"
+    }
+  ],
+  "JGrt9q": [
+    {
+      "type": 0,
+      "value": "Envoyer des sats à "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "JHEHCk": [
+    {
+      "type": 0,
+      "value": "Zaps ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "JIVWWA": [
+    {
+      "type": 0,
+      "value": "Le sport"
+    }
+  ],
+  "JPFYIM": [
+    {
+      "type": 0,
+      "value": "Aucune adresse Lightning"
+    }
+  ],
+  "JSx7y9": [
+    {
+      "type": 0,
+      "value": "Abonnez-vous à "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": " pour "
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " et recevez les récompenses suivantes"
+    }
+  ],
+  "JeoS4y": [
+    {
+      "type": 0,
+      "value": "Reposter"
+    }
+  ],
+  "Jh5zKH": [
+    {
+      "type": 0,
+      "value": "Recherche dans la liste des relais"
+    }
+  ],
+  "JjGgXI": [
+    {
+      "type": 0,
+      "value": "Rechercher des utilisateurs"
+    }
+  ],
+  "JkLHGw": [
+    {
+      "type": 0,
+      "value": "Site Internet"
+    }
+  ],
+  "JmcxzF": [
+    {
+      "type": 0,
+      "value": "Les relais sont des serveurs auxquels vous vous connectez pour envoyer et recevoir des événements. Visez 4 à 8 relais."
+    }
+  ],
+  "JymXbw": [
+    {
+      "type": 0,
+      "value": "Clé Privée"
+    }
+  ],
+  "K1wl1/": [
+    {
+      "type": 0,
+      "value": "Temps de latence moyen :"
+    }
+  ],
+  "K3r6DQ": [
+    {
+      "type": 0,
+      "value": "Supprimer"
+    }
+  ],
+  "K7AkdL": [
+    {
+      "type": 0,
+      "value": "Montrer"
+    }
+  ],
+  "K9zklU": [
+    {
+      "type": 0,
+      "value": "ID de contenu externe"
+    }
+  ],
+  "KAhAcM": [
+    {
+      "type": 0,
+      "value": "Entrez la configuration LNDHub"
+    }
+  ],
+  "KGmQjH": [
+    {
+      "type": 0,
+      "value": "Points forts"
+    }
+  ],
+  "KJryGq": [
+    {
+      "type": 0,
+      "value": "Live Chat Message"
+    }
+  ],
+  "KQvWvD": [
+    {
+      "type": 0,
+      "value": "Supprimé"
+    }
+  ],
+  "KT9nox": [
+    {
+      "type": 0,
+      "value": "Événements protégés"
+    }
+  ],
+  "KahimY": [
+    {
+      "type": 0,
+      "value": "Type d'événement inconnu : "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    }
+  ],
+  "KipVeG": [
+    {
+      "type": 0,
+      "value": "Correspondance entre les clés Nostr et les identifiants internet basés sur le DNS"
+    }
+  ],
+  "KtsyO0": [
+    {
+      "type": 0,
+      "value": "Saisir l'identifiant"
+    }
+  ],
+  "KyRp/q": [
+    {
+      "type": 0,
+      "value": "Demande de portefeuille"
+    }
+  ],
+  "LBAnc7": [
+    {
+      "type": 0,
+      "value": "Voir en tant qu'utilisateur ?"
+    }
+  ],
+  "LEmxc8": [
+    {
+      "type": 0,
+      "value": "Zap Goals"
+    }
+  ],
+  "LKw/ue": [
+    {
+      "type": 0,
+      "value": "Consultez le code "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "LR1XjT": [
+    {
+      "type": 0,
+      "value": "Épingle trop courte"
+    }
+  ],
+  "LXxsbk": [
+    {
+      "type": 0,
+      "value": "Anonyme"
+    }
+  ],
+  "LgbKvU": [
+    {
+      "type": 0,
+      "value": "Commenter"
+    }
+  ],
+  "LhLvRx": [
+    {
+      "type": 0,
+      "value": "Le nom doit comporter entre 8 et 15 caractères"
+    }
+  ],
+  "LmdPXO": [
+    {
+      "type": 0,
+      "value": "Impossible de vérifier l'adresse Nostr"
+    }
+  ],
+  "Lu5/Bj": [
+    {
+      "type": 0,
+      "value": "Ouvrir avec Zapstr"
+    }
+  ],
+  "LuDBLj": [
+    {
+      "type": 0,
+      "value": "Torrents"
+    }
+  ],
+  "Lw+I+J": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " a zappé"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " autres ont zappé"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "LwYmVi": [
+    {
+      "type": 0,
+      "value": "Les zaps sur cette note seront répartis entre les utilisateurs suivants."
+    }
+  ],
+  "M3Oirc": [
+    {
+      "type": 0,
+      "value": "Menus de débogage"
+    }
+  ],
+  "M6C/px": [
+    {
+      "type": 0,
+      "value": "Devenir un leader"
+    }
+  ],
+  "MBAYRO": [
+    {
+      "type": 0,
+      "value": "Affiche \"Copy ID\" et \"Copy Event JSON\" dans le menu contextuel de chaque message"
+    }
+  ],
+  "MI2jkA": [
+    {
+      "type": 0,
+      "value": "Pas disponible:"
+    }
+  ],
+  "MKDHEa": [
+    {
+      "type": 0,
+      "value": "Salle de réunion"
+    }
+  ],
+  "MP54GY": [
+    {
+      "type": 0,
+      "value": "Mot de passe du portefeuille"
+    }
+  ],
+  "MWTx65": [
+    {
+      "type": 0,
+      "value": "Page par défaut"
+    }
+  ],
+  "MYBYdJ": [
+    {
+      "type": 0,
+      "value": "Note de texte courte"
+    }
+  ],
+  "MYUBaG": [
+    {
+      "type": 0,
+      "value": "Authentification du client"
+    }
+  ],
+  "MiMipu": [
+    {
+      "type": 0,
+      "value": "Définir l'adresse Nostr primaire (nip05)"
+    }
+  ],
+  "MkQ4FX": [
+    {
+      "type": 0,
+      "value": "Tags Proxy"
+    }
+  ],
+  "Ml7+RS": [
+    {
+      "type": 0,
+      "value": "Envoyez ce lien à vos amis et partagez la magie de nostr."
+    }
+  ],
+  "Mrpkot": [
+    {
+      "type": 0,
+      "value": "Payer pour l'abonnement"
+    }
+  ],
+  "MuVeKe": [
+    {
+      "type": 0,
+      "value": "Acheter une adresse nostr"
+    }
+  ],
+  "Muhna4": [
+    {
+      "type": 0,
+      "value": "Comptage des résultats"
+    }
+  ],
+  "MzRYWH": [
+    {
+      "type": 0,
+      "value": "Acheter "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    }
+  ],
+  "Mzizei": [
+    {
+      "type": 0,
+      "value": "Iris.pour compte"
+    }
+  ],
+  "N2IrpM": [
+    {
+      "type": 0,
+      "value": "Confirmer"
+    }
+  ],
+  "NAidKb": [
+    {
+      "type": 0,
+      "value": "Notifications"
+    }
+  ],
+  "NAuFNH": [
+    {
+      "type": 0,
+      "value": "Vous avez déjà un abonnement de ce type, veuillez renouveler ou payer"
+    }
+  ],
+  "NDTFsp": [
+    {
+      "type": 0,
+      "value": "Retour d'information sur l'emploi"
+    }
+  ],
+  "NepkXH": [
+    {
+      "type": 0,
+      "value": "Impossible de voter avec "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, veuillez définir un autre montant zap par défaut"
+    }
+  ],
+  "NndBJE": [
+    {
+      "type": 0,
+      "value": "Page des nouveaux utilisateurs"
+    }
+  ],
+  "Nr9Yyx": [
+    {
+      "type": 0,
+      "value": "Reposts"
+    }
+  ],
+  "NxzeNU": [
+    {
+      "type": 0,
+      "value": "Mort"
+    }
+  ],
+  "O3Jz4E": [
+    {
+      "type": 0,
+      "value": "Utilisez votre code d'invitation pour gagner des sats !"
+    }
+  ],
+  "OEW7yJ": [
+    {
+      "type": 0,
+      "value": "Zaps"
+    }
+  ],
+  "OIqnZN": [
+    {
+      "type": 0,
+      "value": "Attestations OpenTimestamps pour les événements"
+    }
+  ],
+  "OJHKIL": [
+    {
+      "type": 0,
+      "value": "Emballage cadeau"
+    }
+  ],
+  "OKhRC6": [
+    {
+      "type": 0,
+      "value": "Partager"
+    }
+  ],
+  "OLEm6z": [
+    {
+      "type": 0,
+      "value": "Erreur de connexion inconnue"
+    }
+  ],
+  "OQSOJF": [
+    {
+      "type": 0,
+      "value": "Obtenir une adresse nostr gratuite"
+    }
+  ],
+  "OQXnew": [
+    {
+      "type": 0,
+      "value": "Votre abonnement est toujours actif, vous ne pouvez pas le renouveler pour le moment"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "Créé"
+    }
+  ],
+  "ORa81+": [
+    {
+      "type": 0,
+      "value": "Fusionner les demandes"
+    }
+  ],
+  "OoZgbB": [
+    {
+      "type": 0,
+      "value": "Échec de la mise à jour, veuillez réessayer."
+    }
+  ],
+  "OuProE": [
+    {
+      "type": 0,
+      "value": "Contenu de longue durée"
+    }
+  ],
+  "OxPdQ0": [
+    {
+      "type": 0,
+      "value": "Analyse du "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "P2o+ZZ": [
+    {
+      "type": 0,
+      "value": "Adresse Nostr invalide"
+    }
+  ],
+  "P61BTu": [
+    {
+      "type": 0,
+      "value": "Copier l'événement JSON"
+    }
+  ],
+  "P7FD0F": [
+    {
+      "type": 0,
+      "value": "Système (Défaut)"
+    }
+  ],
+  "P7nJT9": [
+    {
+      "type": 0,
+      "value": "Total aujourd'hui (UTC) : "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "P8JC58": [
+    {
+      "type": 0,
+      "value": "Distance"
+    }
+  ],
+  "PCSt5T": [
+    {
+      "type": 0,
+      "value": "Préférences"
+    }
+  ],
+  "PXQ0z0": [
+    {
+      "type": 0,
+      "value": "Réception vers "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "PamNxw": [
+    {
+      "type": 0,
+      "value": "En-tête du fichier inconnu : "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Pe0ogR": [
+    {
+      "type": 0,
+      "value": "Thème"
+    }
+  ],
+  "PrsIg7": [
+    {
+      "type": 0,
+      "value": "Les réactions seront affichées sur chaque page, si désactivées aucune réaction ne sera affichée"
+    }
+  ],
+  "QDFTjG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Relais"
+    }
+  ],
+  "QJfhKt": [
+    {
+      "type": 0,
+      "value": "La clé privée est comme un mot de passe, mais elle ne peut pas être réinitialisée. Gardez-la précieusement et ne la montrez jamais à personne. Une fois que quelqu'un possède votre clé privée, il a accès à votre compte pour toujours."
+    }
+  ],
+  "QWhotP": [
+    {
+      "type": 0,
+      "value": "Zap Pool ne fonctionne que si vous utilisez l'une des connexions de portefeuille supportées (WebLN, LNC, LNDHub ou Nostr Wallet Connect)"
+    }
+  ],
+  "QpaLA3": [
+    {
+      "type": 0,
+      "value": "Message du canal"
+    }
+  ],
+  "Qxv0B2": [
+    {
+      "type": 0,
+      "value": "Vous avez actuellement "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats dans votre réserve de zap."
+    }
+  ],
+  "Qy6/Ft": [
+    {
+      "type": 0,
+      "value": "Messages directs privés"
+    }
+  ],
+  "R/6nsx": [
+    {
+      "type": 0,
+      "value": "Abonnement"
+    }
+  ],
+  "R81upa": [
+    {
+      "type": 0,
+      "value": "Personnes que vous suivez"
+    }
+  ],
+  "RDha9y": [
+    {
+      "type": 0,
+      "value": "Le Service Worker ne fonctionne pas"
+    }
+  ],
+  "RRz1cA": [
+    {
+      "type": 0,
+      "value": "Annonces de l'état du référentiel"
+    }
+  ],
+  "RSr2uB": [
+    {
+      "type": 0,
+      "value": "Le nom d'utilisateur ne doit contenir que des lettres minuscules et des chiffres."
+    }
+  ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "Expiré"
+    }
+  ],
+  "RefZpK": [
+    {
+      "type": 0,
+      "value": "Événement vidéo de portrait en format court"
+    }
+  ],
+  "RfhLwC": [
+    {
+      "type": 0,
+      "value": "Par : "
+    },
+    {
+      "type": 1,
+      "value": "author"
+    }
+  ],
+  "RhDAoS": [
+    {
+      "type": 0,
+      "value": "Êtes-vous sûr que vous voulez supprimer "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "RmxSZo": [
+    {
+      "type": 0,
+      "value": "Distributeurs automatiques de données"
+    }
+  ],
+  "RoOyAh": [
+    {
+      "type": 0,
+      "value": "Relais"
+    }
+  ],
+  "Rs4kCE": [
+    {
+      "type": 0,
+      "value": "Favori"
+    }
+  ],
+  "S/NV2G": [
+    {
+      "type": 0,
+      "value": "Note de chargement : "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "SFuk1v": [
+    {
+      "type": 0,
+      "value": "Permissions"
+    }
+  ],
+  "SLZGPn": [
+    {
+      "type": 0,
+      "value": "Saisissez un code PIN pour crypter votre clé privée. Vous devez saisir ce code PIN à chaque fois que vous ouvrez le site "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "SMO+on": [
+    {
+      "type": 0,
+      "value": "Envoyer zap à "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "SOqbe9": [
+    {
+      "type": 0,
+      "value": "Mettre à jour l'adresse Lightning"
+    }
+  ],
+  "SP0+yi": [
+    {
+      "type": 0,
+      "value": "Acheter un abonnement"
+    }
+  ],
+  "SW3TFA": [
+    {
+      "type": 0,
+      "value": "Relais populaires utilisés par les personnes que vous suivez."
+    }
+  ],
+  "SYQtZ7": [
+    {
+      "type": 0,
+      "value": "Proxy d'adresse LN"
+    }
+  ],
+  "Sd0PKc": [
+    {
+      "type": 0,
+      "value": "Jeux de relais"
+    }
+  ],
+  "SfwSIm": [
+    {
+      "type": 0,
+      "value": "Suivi des problèmes"
+    }
+  ],
+  "ShdEie": [
+    {
+      "type": 0,
+      "value": "Tout marquer comme lu"
+    }
+  ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "Personnaliser"
+    }
+  ],
+  "SmuYUd": [
+    {
+      "type": 0,
+      "value": "Comment devrions-nous vous appeler ?"
+    }
+  ],
+  "Ss0sWu": [
+    {
+      "type": 0,
+      "value": "Payer maintenant"
+    }
+  ],
+  "SsUQnC": [
+    {
+      "type": 0,
+      "value": "Données spécifiques à l'application"
+    }
+  ],
+  "StKzTE": [
+    {
+      "type": 0,
+      "value": "L'auteur a marqué cette note comme étant un sujet sensible "
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "T83nqf": [
+    {
+      "type": 0,
+      "value": "Relais proches de votre situation géographique."
+    }
+  ],
+  "TDR5ge": [
+    {
+      "type": 0,
+      "value": "Les médias dans les notes seront automatiquement affichés pour les personnes sélectionnées, sinon seul le lien sera affiché"
+    }
+  ],
+  "TGc5nI": [
+    {
+      "type": 0,
+      "value": "Informations sur le gestionnaire"
+    }
+  ],
+  "TH1fFo": [
+    {
+      "type": 0,
+      "value": "Telegram"
+    }
+  ],
+  "TJo5E6": [
+    {
+      "type": 0,
+      "value": "Avant-première"
+    }
+  ],
+  "TOG64f": [
+    {
+      "type": 0,
+      "value": "Utiliser le relais local"
+    }
+  ],
+  "TP/cMX": [
+    {
+      "type": 0,
+      "value": "Fin de contrat"
+    }
+  ],
+  "TaeBqw": [
+    {
+      "type": 0,
+      "value": "Se connecter avec Nostr Extension"
+    }
+  ],
+  "TdTXXf": [
+    {
+      "type": 0,
+      "value": "En savoir plus"
+    }
+  ],
+  "TdtZQ5": [
+    {
+      "type": 0,
+      "value": "Crypto"
+    }
+  ],
+  "Tdv6NY": [
+    {
+      "type": 0,
+      "value": "Jeux d'intérêt"
+    }
+  ],
+  "TgDKhI": [
+    {
+      "type": 0,
+      "value": "Calendrier des événements"
+    }
+  ],
+  "TpgeGw": [
+    {
+      "type": 0,
+      "value": "Sel Hex.."
+    }
+  ],
+  "Tpy00S": [
+    {
+      "type": 0,
+      "value": "Personnes"
+    }
+  ],
+  "TvKqBp": [
+    {
+      "type": 0,
+      "value": "aimé"
+    }
+  ],
+  "TwyMau": [
+    {
+      "type": 0,
+      "value": "Compte"
+    }
+  ],
+  "U1aPPi": [
+    {
+      "type": 0,
+      "value": "Cessez d'écouter"
+    }
+  ],
+  "U30H69": [
+    {
+      "type": 0,
+      "value": "Définition de la communauté"
+    }
+  ],
+  "UJTWqI": [
+    {
+      "type": 0,
+      "value": "Retirer de mes relais"
+    }
+  ],
+  "ULXFfP": [
+    {
+      "type": 0,
+      "value": "Recevoir"
+    }
+  ],
+  "UNjfWJ": [
+    {
+      "type": 0,
+      "value": "Vérifier toutes les signatures d'événement reçues des relais"
+    }
+  ],
+  "UT7Nkj": [
+    {
+      "type": 0,
+      "value": "Nouvelle Discussion"
+    }
+  ],
+  "UUPFlt": [
+    {
+      "type": 0,
+      "value": "Les utilisateur-trice-s doivent accepter l'avertissement de contenu pour afficher le contenu de votre note."
+    }
+  ],
+  "UaCh1c": [
+    {
+      "type": 0,
+      "value": "Ajouter un serveur"
+    }
+  ],
+  "Ub+AGc": [
+    {
+      "type": 0,
+      "value": "Se connecter"
+    }
+  ],
+  "Up5U7K": [
+    {
+      "type": 0,
+      "value": "Bloquer"
+    }
+  ],
+  "Ups2/p": [
+    {
+      "type": 0,
+      "value": "Votre demande est en attente"
+    }
+  ],
+  "UrKTqQ": [
+    {
+      "type": 0,
+      "value": "Vous avez un compte iris.to actif"
+    }
+  ],
+  "UsCzPc": [
+    {
+      "type": 0,
+      "value": "Partagez une invitation personnalisée avec vos amis !"
+    }
+  ],
+  "UxgyeY": [
+    {
+      "type": 0,
+      "value": "Votre code de référence est "
+    },
+    {
+      "type": 1,
+      "value": "code"
+    }
+  ],
+  "V20Og0": [
+    {
+      "type": 0,
+      "value": "Étiquetage"
+    }
+  ],
+  "VOjC1i": [
+    {
+      "type": 0,
+      "value": "Choisissez le service d'hébergement vers lequel vous souhaitez héberger les pièces jointes"
+    }
+  ],
+  "VR5eHw": [
+    {
+      "type": 0,
+      "value": "Clé publique (npub/nprofile)"
+    }
+  ],
+  "VcwrfF": [
+    {
+      "type": 0,
+      "value": "Oui, s'il vous plaît"
+    }
+  ],
+  "VfhYxG": [
+    {
+      "type": 0,
+      "value": "Pour voir la liste complète des changements, vous pouvez consulter le journal des modifications (changelog) "
+    },
+    {
+      "type": 1,
+      "value": "here"
+    }
+  ],
+  "VlJkSk": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " mis en sourdine"
+    }
+  ],
+  "VnXp8Z": [
+    {
+      "type": 0,
+      "value": "Avatar"
+    }
+  ],
+  "W1yoZY": [
+    {
+      "type": 0,
+      "value": "Il semble que vous n'avez aucun abonnement, vous pouvez en obtenir un "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "W2PiAr": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Bloqué"
+    }
+  ],
+  "W4SaxY": [
+    {
+      "type": 0,
+      "value": "Locale"
+    }
+  ],
+  "W9355R": [
+    {
+      "type": 0,
+      "value": "Retirer sourdine"
+    }
+  ],
+  "WeLEuL": [
+    {
+      "type": 0,
+      "value": "Du serveur"
+    }
+  ],
+  "Wj5TbN": [
+    {
+      "type": 0,
+      "value": "Enjeux"
+    }
+  ],
+  "WmZhfL": [
+    {
+      "type": 0,
+      "value": "Traduction automatique des notes dans la langue locale"
+    }
+  ],
+  "WvGmZT": [
+    {
+      "type": 0,
+      "value": "npub / nprofile / nostr address"
+    }
+  ],
+  "X6tipZ": [
+    {
+      "type": 0,
+      "value": "S'identifier avec la clé"
+    }
+  ],
+  "X7xU8J": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex, mnémonique"
+    }
+  ],
+  "XECMfW": [
+    {
+      "type": 0,
+      "value": "Envoyer des données d'utilisation"
+    }
+  ],
+  "XICsE8": [
+    {
+      "type": 0,
+      "value": "Hébergeurs de fichiers"
+    }
+  ],
+  "XPB8VV": [
+    {
+      "type": 0,
+      "value": "Connexion au portefeuille Alby"
+    }
+  ],
+  "XQiFEl": [
+    {
+      "type": 0,
+      "value": "Suivi de la santé du relais"
+    }
+  ],
+  "XSdWHA": [
+    {
+      "type": 0,
+      "value": "Racheter"
+    }
+  ],
+  "XXm7jJ": [
+    {
+      "type": 0,
+      "value": "Hashtags tendance"
+    }
+  ],
+  "XgWvGA": [
+    {
+      "type": 0,
+      "value": "Réactions"
+    }
+  ],
+  "Xnimz0": [
+    {
+      "type": 0,
+      "value": "Envoi depuis "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "Xopqkl": [
+    {
+      "type": 0,
+      "value": "Votre montant de zap par défaut est "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats, les valeurs d'exemple sont calculées à partir de ceci."
+    }
+  ],
+  "YDMrKK": [
+    {
+      "type": 0,
+      "value": "Utilisateurs"
+    }
+  ],
+  "YDURw6": [
+    {
+      "type": 0,
+      "value": "URL de service"
+    }
+  ],
+  "YH2RKk": [
+    {
+      "type": 0,
+      "value": "Serveurs de médias populaires."
+    }
+  ],
+  "YQZY/S": [
+    {
+      "type": 0,
+      "value": "Il semble que vous ne suivez pas assez de personnes, jetez un coup d'œil à "
+    },
+    {
+      "type": 1,
+      "value": "newUsersPage"
+    },
+    {
+      "type": 0,
+      "value": " pour découvrir des personnes à suivre !"
+    }
+  ],
+  "YR2I9M": [
+    {
+      "type": 0,
+      "value": "Pas de clés, pas de "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": ", il n'y a aucun moyen de le réinitialiser si vous ne sauvegardez pas. Cela ne prend qu'une minute."
+    }
+  ],
+  "YU7ZYp": [
+    {
+      "type": 0,
+      "value": "Chat public"
+    }
+  ],
+  "YXA3AH": [
+    {
+      "type": 0,
+      "value": "Activer les réactions"
+    }
+  ],
+  "Yf3DwC": [
+    {
+      "type": 0,
+      "value": "Connectez un portefeuille pour envoyer des paiements instantanés"
+    }
+  ],
+  "YuoEb9": [
+    {
+      "type": 0,
+      "value": "Essayer un autre relais"
+    }
+  ],
+  "Z48UEo": [
+    {
+      "type": 0,
+      "value": "Métadonnées du canal"
+    }
+  ],
+  "Z4BMCZ": [
+    {
+      "type": 0,
+      "value": "Entrez la phrase d'appairage"
+    }
+  ],
+  "Z7kkeJ": [
+    {
+      "type": 0,
+      "value": "Délégation de signature d'événements"
+    }
+  ],
+  "ZFe9tl": [
+    {
+      "type": 0,
+      "value": "Composer une note"
+    }
+  ],
+  "ZKORll": [
+    {
+      "type": 0,
+      "value": "Activer Maintenant"
+    }
+  ],
+  "ZLmyG9": [
+    {
+      "type": 0,
+      "value": "Contributeurs"
+    }
+  ],
+  "ZS+jRE": [
+    {
+      "type": 0,
+      "value": "Envoyer les zap splits à"
+    }
+  ],
+  "Zff6lu": [
+    {
+      "type": 0,
+      "value": "Le nom d'utilisateur iris.to/"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "name"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " vous est réservé !"
+    }
+  ],
+  "ZlIh4/": [
+    {
+      "type": 0,
+      "value": "Messages directs cryptés"
+    }
+  ],
+  "ZlmK/p": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " vous a invité à rejoindre "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    }
+  ],
+  "a1x4gD": [
+    {
+      "type": 0,
+      "value": "Les serveurs de médias stockent les médias que vous pouvez partager dans les notes sous forme d'images et de vidéos."
+    }
+  ],
+  "a5UPxh": [
+    {
+      "type": 0,
+      "value": "Financer les développeurs et plateformes fournissant des services de vérification NIP-05"
+    }
+  ],
+  "a7TDNm": [
+    {
+      "type": 0,
+      "value": "Les notes seront diffusées en temps réel dans l'onglet global et dans l'onglet notes"
+    }
+  ],
+  "aHje0o": [
+    {
+      "type": 0,
+      "value": "Nom ou pseudonyme"
+    }
+  ],
+  "aMaLBK": [
+    {
+      "type": 0,
+      "value": "Extensions prises en charge"
+    }
+  ],
+  "aRex7h": [
+    {
+      "type": 0,
+      "value": "Payé "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, frais "
+    },
+    {
+      "type": 1,
+      "value": "fee"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "aSGz4J": [
+    {
+      "type": 0,
+      "value": "Connectez-vous à votre propre nœud LND avec Lightning Node Connect"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "Montrer plus"
+    }
+  ],
+  "abbGKq": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " km"
+    }
+  ],
+  "ak3MTf": [
+    {
+      "type": 0,
+      "value": "Inviter des amis"
+    }
+  ],
+  "b12Goz": [
+    {
+      "type": 0,
+      "value": "Mnémonique"
+    }
+  ],
+  "b5vAk0": [
+    {
+      "type": 0,
+      "value": "Votre identifiant agira comme une adresse Lightning et redirigera vers l'adresse LNURL ou Lightning de votre choix"
+    }
+  ],
+  "bF1MYT": [
+    {
+      "type": 0,
+      "value": "Vous êtes un leader de la communauté et vous gagnez "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "percent"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " des abonnements des utilisateurs parrainés !"
+    }
+  ],
+  "bG00/W": [
+    {
+      "type": 0,
+      "value": "Service Worker en fonctionnement"
+    }
+  ],
+  "bJ+wrA": [
+    {
+      "type": 0,
+      "value": "Calculer la liste d'élagage"
+    }
+  ],
+  "bLZL5a": [
+    {
+      "type": 0,
+      "value": "Obtenir l'adresse"
+    }
+  ],
+  "bMphls": [
+    {
+      "type": 0,
+      "value": "Connecté avec un accès en lecture seule"
+    }
+  ],
+  "bQdA2k": [
+    {
+      "type": 0,
+      "value": "Contenu sensible"
+    }
+  ],
+  "bep9C3": [
+    {
+      "type": 0,
+      "value": "Clé publique"
+    }
+  ],
+  "bfvyfs": [
+    {
+      "type": 0,
+      "value": "Anonyme"
+    }
+  ],
+  "bxv59V": [
+    {
+      "type": 0,
+      "value": "Juste maintenant"
+    }
+  ],
+  "c+1p0i": [
+    {
+      "type": 0,
+      "value": "Kind mute sets"
+    }
+  ],
+  "c+JYNI": [
+    {
+      "type": 0,
+      "value": "Non merci"
+    }
+  ],
+  "c2T+1B": [
+    {
+      "type": 0,
+      "value": "Redirections"
+    }
+  ],
+  "c35bj2": [
+    {
+      "type": 0,
+      "value": "Si vous avez une question concernant votre commande NIP-05, veuillez contacter en DM "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "c3LlRO": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "KiB"
+    }
+  ],
+  "c3g2hL": [
+    {
+      "type": 0,
+      "value": "Republier"
+    }
+  ],
+  "cFbU1B": [
+    {
+      "type": 0,
+      "value": "Vous utilisez Alby ? Allez sur "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " pour obtenir votre configuration NWC !"
+    }
+  ],
+  "cG/bKQ": [
+    {
+      "type": 0,
+      "value": "Connexion au portefeuille nostr natif"
+    }
+  ],
+  "cHCwbF": [
+    {
+      "type": 0,
+      "value": "Photographie"
+    }
+  ],
+  "cKbMRX": [
+    {
+      "type": 0,
+      "value": "Message direct"
+    }
+  ],
+  "cPIKU2": [
+    {
+      "type": 0,
+      "value": "Abonnements"
+    }
+  ],
+  "cQfLWb": [
+    {
+      "type": 0,
+      "value": "URL.."
+    }
+  ],
+  "cVcgLJ": [
+    {
+      "type": 0,
+      "value": "Serveurs de médias"
+    }
+  ],
+  "cWx9t8": [
+    {
+      "type": 0,
+      "value": "Tout mettre en sourdine"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "Connecter un portefeuille"
+    }
+  ],
+  "cnwHgH": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps"
+    }
+  ],
+  "cuP16y": [
+    {
+      "type": 0,
+      "value": "Support multi-comptes"
+    }
+  ],
+  "cuV2gK": [
+    {
+      "type": 0,
+      "value": "le nom est enregistré"
+    }
+  ],
+  "cw1Ftc": [
+    {
+      "type": 0,
+      "value": "Activités en direct"
+    }
+  ],
+  "cyR7Kh": [
+    {
+      "type": 0,
+      "value": "Retourner"
+    }
+  ],
+  "d+6YsV": [
+    {
+      "type": 0,
+      "value": "Listes pour la mise en sourdine :"
+    }
+  ],
+  "d0qim7": [
+    {
+      "type": 0,
+      "value": "Filtre WoT"
+    }
+  ],
+  "d2ebEu": [
+    {
+      "type": 0,
+      "value": "Non abonné aux pushs"
+    }
+  ],
+  "d7d0/x": [
+    {
+      "type": 0,
+      "value": "Adresse LN"
+    }
+  ],
+  "dK2CcV": [
+    {
+      "type": 0,
+      "value": "La clé publique est comme votre nom d'utilisateur, vous pouvez la partager avec n'importe qui."
+    }
+  ],
+  "dOQCL8": [
+    {
+      "type": 0,
+      "value": "Nom à afficher"
+    }
+  ],
+  "dZZIGe": [
+    {
+      "type": 0,
+      "value": "En-tête d'article modulaire"
+    }
+  ],
+  "ddd3JX": [
+    {
+      "type": 0,
+      "value": "Hashtags populaires"
+    }
+  ],
+  "deEeEI": [
+    {
+      "type": 0,
+      "value": "Registre"
+    }
+  ],
+  "djLctd": [
+    {
+      "type": 0,
+      "value": "Quantité en sats"
+    }
+  ],
+  "dmcsBA": [
+    {
+      "type": 0,
+      "value": "Annonces classées"
+    }
+  ],
+  "dmsiLv": [
+    {
+      "type": 0,
+      "value": "Une répartition par défaut du Zap Pool de "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " a été configurée pour les développeurs de "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " . Vous pouvez la désactiver à tout moment dans "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "e5x8FT": [
+    {
+      "type": 0,
+      "value": "Type"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "Prochainement"
+    }
+  ],
+  "e7VmYP": [
+    {
+      "type": 0,
+      "value": "Saisissez votre code PIN pour déverrouiller votre clé privée"
+    }
+  ],
+  "e7qqly": [
+    {
+      "type": 0,
+      "value": "Marquer tout comme lu"
+    }
+  ],
+  "eF0Re7": [
+    {
+      "type": 0,
+      "value": "Utiliser une extension de nostr signer pour se connecter"
+    }
+  ],
+  "eHAneD": [
+    {
+      "type": 0,
+      "value": "Émoji de réaction"
+    }
+  ],
+  "eJj8HD": [
+    {
+      "type": 0,
+      "value": "Se faire vérifier"
+    }
+  ],
+  "eSzf2G": [
+    {
+      "type": 0,
+      "value": "Un seul zap de "
+    },
+    {
+      "type": 1,
+      "value": "nIn"
+    },
+    {
+      "type": 0,
+      "value": " sats allouera "
+    },
+    {
+      "type": 1,
+      "value": "nOut"
+    },
+    {
+      "type": 0,
+      "value": " sats à la pool de zap."
+    }
+  ],
+  "eW/Bj9": [
+    {
+      "type": 0,
+      "value": "Alimentation"
+    }
+  ],
+  "eXT2QQ": [
+    {
+      "type": 0,
+      "value": "Discussion de groupe"
+    }
+  ],
+  "eZtOxB": [
+    {
+      "type": 0,
+      "value": "capacité window.nostr pour les navigateurs web"
+    }
+  ],
+  "egib+2": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " autre"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " autres"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "ejEGdx": [
+    {
+      "type": 0,
+      "value": "Accueil"
+    }
+  ],
+  "eoV49s": [
+    {
+      "type": 0,
+      "value": "Pauvre"
+    }
+  ],
+  "f1OxTe": [
+    {
+      "type": 0,
+      "value": "Les leaders de la communauté sont des personnes qui développent l'écosystème de nostr en étant actifs dans leurs communautés locales et en aidant à l'intégration de nouveaux utilisateurs. Tout le monde peut devenir un leader de la communauté, mais peu de personnes détiennent ce titre honorifique."
+    }
+  ],
+  "f2CAxA": [
+    {
+      "type": 0,
+      "value": "Décharge"
+    }
+  ],
+  "fBI91o": [
+    {
+      "type": 0,
+      "value": "Zap"
+    }
+  ],
+  "fBlba3": [
+    {
+      "type": 0,
+      "value": "Merci d'utiliser "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": ". Veuillez envisager de faire un don si vous le pouvez."
+    }
+  ],
+  "fLIvbC": [
+    {
+      "type": 0,
+      "value": "Snort est un projet open source construit par des passionnés pendant leur temps libre, vos dons sont très appréciés"
+    }
+  ],
+  "fOksnD": [
+    {
+      "type": 0,
+      "value": "Impossible de voter car le service LNURL ne prend pas en charge les zaps"
+    }
+  ],
+  "fQN+tq": [
+    {
+      "type": 0,
+      "value": "Afficher les messages qui ont un tag d'avertissement de contenu"
+    }
+  ],
+  "fWZYP5": [
+    {
+      "type": 0,
+      "value": "Épinglé"
+    }
+  ],
+  "fX5RYm": [
+    {
+      "type": 0,
+      "value": "Choisissez quelques sujets d'intérêt"
+    }
+  ],
+  "filwqD": [
+    {
+      "type": 0,
+      "value": "Lire"
+    }
+  ],
+  "fjAcWo": [
+    {
+      "type": 0,
+      "value": "Emballages cadeaux"
+    }
+  ],
+  "flnGvv": [
+    {
+      "type": 0,
+      "value": "Qu'avez-vous en tête?"
+    }
+  ],
+  "fqwcJ1": [
+    {
+      "type": 0,
+      "value": "Don On-Chain"
+    }
+  ],
+  "fr+XYA": [
+    {
+      "type": 0,
+      "value": "Lightning Pub RPC"
+    }
+  ],
+  "fsB/4p": [
+    {
+      "type": 0,
+      "value": "Enregistré"
+    }
+  ],
+  "fucxlm": [
+    {
+      "type": 0,
+      "value": "Joindre un média"
+    }
+  ],
+  "furjvW": [
+    {
+      "type": 0,
+      "value": "Regarder la diffusion"
+    }
+  ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "À propos"
+    }
+  ],
+  "g985Wp": [
+    {
+      "type": 0,
+      "value": "Échec de l'envoi du vote"
+    }
+  ],
+  "gDzDRs": [
+    {
+      "type": 0,
+      "value": "Emoji à envoyer en cas de réaction à une note"
+    }
+  ],
+  "gXgY3+": [
+    {
+      "type": 0,
+      "value": "Tous les clients ne supportent pas encore ceci"
+    }
+  ],
+  "gczcC5": [
+    {
+      "type": 0,
+      "value": "S'abonner"
+    }
+  ],
+  "geppt8": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count2"
+    },
+    {
+      "type": 0,
+      "value": " en mémoire)"
+    }
+  ],
+  "gjBiyj": [
+    {
+      "type": 0,
+      "value": "Chargement..."
+    }
+  ],
+  "gkMmvC": [
+    {
+      "type": 0,
+      "value": "Application Android Signer"
+    }
+  ],
+  "gl1NeW": [
+    {
+      "type": 0,
+      "value": "Listes"
+    }
+  ],
+  "go2/QF": [
+    {
+      "type": 0,
+      "value": "Liste des serveurs d'utilisateurs"
+    }
+  ],
+  "grQ+mI": [
+    {
+      "type": 0,
+      "value": "Preuve de Travail"
+    }
+  ],
+  "gtNjNP": [
+    {
+      "type": 0,
+      "value": "Description du flux de protocole de base"
+    }
+  ],
+  "h7jvCs": [
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " est plus amusant ensemble !"
+    }
+  ],
+  "h8XMJL": [
+    {
+      "type": 0,
+      "value": "Badges"
+    }
+  ],
+  "h9M0rW": [
+    {
+      "type": 0,
+      "value": "Métadonnées de l'utilisateur"
+    }
+  ],
+  "hF6IN2": [
+    {
+      "type": 0,
+      "value": "Liste de suivi de l'élagage"
+    }
+  ],
+  "hMQmIw": [
+    {
+      "type": 0,
+      "value": "Synchroniser le compte"
+    }
+  ],
+  "hMzcSq": [
+    {
+      "type": 0,
+      "value": "Messages"
+    }
+  ],
+  "hRTfTR": [
+    {
+      "type": 0,
+      "value": "PRO"
+    }
+  ],
+  "hY4lzx": [
+    {
+      "type": 0,
+      "value": "Supporte"
+    }
+  ],
+  "hYOE+U": [
+    {
+      "type": 0,
+      "value": "Invitation"
+    }
+  ],
+  "hicxcO": [
+    {
+      "type": 0,
+      "value": "Afficher les réponses"
+    }
+  ],
+  "hmZ3Bz": [
+    {
+      "type": 0,
+      "value": "Les médias"
+    }
+  ],
+  "hniz8Z": [
+    {
+      "type": 0,
+      "value": "ici"
+    }
+  ],
+  "hv/eRj": [
+    {
+      "type": 0,
+      "value": "Liste des relais bloqués"
+    }
+  ],
+  "hvFRBo": [
+    {
+      "type": 0,
+      "value": "Interaction"
+    }
+  ],
+  "i/dBAR": [
+    {
+      "type": 0,
+      "value": "Zap Pool"
+    }
+  ],
+  "i5gBFz": [
+    {
+      "type": 0,
+      "value": "Vos paiements envoyés et reçus apparaîtront ici."
+    }
+  ],
+  "iCqGww": [
+    {
+      "type": 0,
+      "value": "Réactions ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "iEoXYx": [
+    {
+      "type": 0,
+      "value": "Traductions DeepL"
+    }
+  ],
+  "iGT1eE": [
+    {
+      "type": 0,
+      "value": "Empêcher les faux comptes de vous imiter"
+    }
+  ],
+  "iHN12u": [
+    {
+      "type": 0,
+      "value": "Administrateur"
+    }
+  ],
+  "iICVoL": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " suit ("
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " doublons)"
+    }
+  ],
+  "iNWbVV": [
+    {
+      "type": 0,
+      "value": "Gérer"
+    }
+  ],
+  "iXPL0Z": [
+    {
+      "type": 0,
+      "value": "Impossible de se connecter avec une clé privée via une connexion non sécurisée, veuillez utiliser une extension de gestionnaire de clés Nostr à la place"
+    }
+  ],
+  "iYc3Ld": [
+    {
+      "type": 0,
+      "value": "Paiements"
+    }
+  ],
+  "icCxlA": [
+    {
+      "type": 0,
+      "value": "page des nouveaux utilisateurs"
+    }
+  ],
+  "ieGrWo": [
+    {
+      "type": 0,
+      "value": "Suivre"
+    }
+  ],
+  "igUUst": [
+    {
+      "type": 0,
+      "value": "Chat de groupe Réponse filtrée"
+    }
+  ],
+  "ipHVx5": [
+    {
+      "type": 0,
+      "value": "Générer la facture"
+    }
+  ],
+  "itPgxd": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "izWS4J": [
+    {
+      "type": 0,
+      "value": "Ne plus suivre"
+    }
+  ],
+  "j9xbzF": [
+    {
+      "type": 0,
+      "value": "Déjà sauvegardé"
+    }
+  ],
+  "jA3OE/": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "sat"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "sats"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "jAmfGl": [
+    {
+      "type": 0,
+      "value": "Votre abonnement à "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " a expiré"
+    }
+  ],
+  "jHa/ko": [
+    {
+      "type": 0,
+      "value": "Nettoyez votre flux"
+    }
+  ],
+  "jMzO1S": [
+    {
+      "type": 0,
+      "value": "Erreur interne : "
+    },
+    {
+      "type": 1,
+      "value": "msg"
+    }
+  ],
+  "jiAVXu": [
+    {
+      "type": 0,
+      "value": "Événement vidéo"
+    }
+  ],
+  "jvo0vs": [
+    {
+      "type": 0,
+      "value": "Sauvegarder"
+    }
+  ],
+  "jzgQ2z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Réactions"
+    }
+  ],
+  "k0kCJp": [
+    {
+      "type": 0,
+      "value": "Postuler"
+    }
+  ],
+  "k2veDA": [
+    {
+      "type": 0,
+      "value": "Écrire"
+    }
+  ],
+  "k7sKNy": [
+    {
+      "type": 0,
+      "value": "Notre propre service de vérification NIP-05, aidez à soutenir le développement de ce site et obtenez un badge spécial brillant sur notre site !"
+    }
+  ],
+  "k9SQm1": [
+    {
+      "type": 0,
+      "value": "Les relais auxquels vous vous êtes déjà connecté et qui semblent fiables."
+    }
+  ],
+  "kEZUR8": [
+    {
+      "type": 0,
+      "value": "Enregistrer un nom d'utilisateur pour Iris"
+    }
+  ],
+  "kJYo0u": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " a reposté"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " autres ont reposté"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "kKC9ya": [
+    {
+      "type": 0,
+      "value": "Informations sur le portefeuille"
+    }
+  ],
+  "kNd2FL": [
+    {
+      "type": 0,
+      "value": "Connexion à Tidal"
+    }
+  ],
+  "kQAf2d": [
+    {
+      "type": 0,
+      "value": "Sélectionner"
+    }
+  ],
+  "kaaf1E": [
+    {
+      "type": 0,
+      "value": "maintenant"
+    }
+  ],
+  "kc79d3": [
+    {
+      "type": 0,
+      "value": "Sujets"
+    }
+  ],
+  "klCm96": [
+    {
+      "type": 0,
+      "value": "Approbation du poste communautaire"
+    }
+  ],
+  "kqPQJD": [
+    {
+      "type": 0,
+      "value": "Configurer le pool de zaps"
+    }
+  ],
+  "kuPHYE": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " a liké"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " autres ont liké"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "l+ikU1": [
+    {
+      "type": 0,
+      "value": "Tout dans "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    }
+  ],
+  "l3H1EK": [
+    {
+      "type": 0,
+      "value": "Invitez vos amis"
+    }
+  ],
+  "l3nTjd": [
+    {
+      "type": 0,
+      "value": "Dérivation d'une clé de base à partir d'une phrase de base mnémotechnique"
+    }
+  ],
+  "lCILNz": [
+    {
+      "type": 0,
+      "value": "Acheter Maintenant"
+    }
+  ],
+  "lD3+8a": [
+    {
+      "type": 0,
+      "value": "Payer"
+    }
+  ],
+  "lEnclp": [
+    {
+      "type": 0,
+      "value": "Mes évènements : "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lPWASz": [
+    {
+      "type": 0,
+      "value": "Adresse nostr Snort"
+    }
+  ],
+  "lTbT3s": [
+    {
+      "type": 0,
+      "value": "Mot de passe du portefeuille"
+    }
+  ],
+  "lbr3Lq": [
+    {
+      "type": 0,
+      "value": "Copier le lien"
+    }
+  ],
+  "lfOesV": [
+    {
+      "type": 0,
+      "value": "Non-Zap"
+    }
+  ],
+  "lgg1KN": [
+    {
+      "type": 0,
+      "value": "compte"
+    }
+  ],
+  "ll3xBp": [
+    {
+      "type": 0,
+      "value": "Service proxy d'images"
+    }
+  ],
+  "lnaT9F": [
+    {
+      "type": 0,
+      "value": "Abonnements "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lsNFM1": [
+    {
+      "type": 0,
+      "value": "Cliquez pour afficher le contenu de "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "lvlPhZ": [
+    {
+      "type": 0,
+      "value": "Payer Facture"
+    }
+  ],
+  "m/59y2": [
+    {
+      "type": 0,
+      "value": "Demande de Zap"
+    }
+  ],
+  "m6h2Eg": [
+    {
+      "type": 0,
+      "value": "Recommandation du gestionnaire"
+    }
+  ],
+  "mCEKiZ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " les notes ont été mises en sourdine"
+    }
+  ],
+  "mErPop": [
+    {
+      "type": 0,
+      "value": "On dirait que vous n'en avez pas, consultez "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " pour en acheter un!"
+    }
+  ],
+  "mFtdYh": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " Travailleurs relais"
+    }
+  ],
+  "mKAr6h": [
+    {
+      "type": 0,
+      "value": "Suivre tout"
+    }
+  ],
+  "mKh2HS": [
+    {
+      "type": 0,
+      "value": "Service d'hébergement de fichiers"
+    }
+  ],
+  "mKhgP9": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zappé"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zappé"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "mOFG3K": [
+    {
+      "type": 0,
+      "value": "Démarrer"
+    }
+  ],
+  "mfe8RW": [
+    {
+      "type": 0,
+      "value": "Option : "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "mmPSWH": [
+    {
+      "type": 0,
+      "value": "Lecture seule"
+    }
+  ],
+  "n1Whvj": [
+    {
+      "type": 0,
+      "value": "Changer"
+    }
+  ],
+  "n5l7tP": [
+    {
+      "type": 0,
+      "value": "Événement du calendrier basé sur le temps"
+    }
+  ],
+  "n8k1SG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "Mio"
+    }
+  ],
+  "nD4frR": [
+    {
+      "type": 0,
+      "value": "Confirmation de l'offre"
+    }
+  ],
+  "nDejmx": [
+    {
+      "type": 0,
+      "value": "Débloquer"
+    }
+  ],
+  "nGBrvw": [
+    {
+      "type": 0,
+      "value": "Favoris"
+    }
+  ],
+  "nGGDsi": [
+    {
+      "type": 0,
+      "value": "Notifications autorisées"
+    }
+  ],
+  "nIchMQ": [
+    {
+      "type": 0,
+      "value": "Recherche de l'activité du compte ("
+    },
+    {
+      "type": 1,
+      "value": "progress"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "nPHrqp": [
+    {
+      "type": 0,
+      "value": "Coinjoin Pool"
+    }
+  ],
+  "nUT0Lv": [
+    {
+      "type": 0,
+      "value": "Outils"
+    }
+  ],
+  "nWQFic": [
+    {
+      "type": 0,
+      "value": "Renouveler"
+    }
+  ],
+  "nihgfo": [
+    {
+      "type": 0,
+      "value": "Écouter cet article"
+    }
+  ],
+  "nwZXeh": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " bloqué"
+    }
+  ],
+  "o/gK53": [
+    {
+      "type": 0,
+      "value": "Pont"
+    }
+  ],
+  "o7e+nJ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " abonnés"
+    }
+  ],
+  "oJ+JJN": [
+    {
+      "type": 0,
+      "value": "Aucun résultat :/"
+    }
+  ],
+  "odFwjL": [
+    {
+      "type": 0,
+      "value": "Abonnements seulement"
+    }
+  ],
+  "ojzbwv": [
+    {
+      "type": 0,
+      "value": "Hé, il semble que vous n'avez pas encore d'adresse Nostr, vous devriez en obtenir une ! Consultez "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "ozZ2Cj": [
+    {
+      "type": 0,
+      "value": "Prix de l'insigne"
+    }
+  ],
+  "p4N05H": [
+    {
+      "type": 0,
+      "value": "Importer"
+    }
+  ],
+  "p9Ps2l": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " ont des relais ("
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "pEEBFk": [
+    {
+      "type": 0,
+      "value": "Relais fiables"
+    }
+  ],
+  "pI+77w": [
+    {
+      "type": 0,
+      "value": "Sauvegardes téléchargeables depuis le relais Snort"
+    }
+  ],
+  "pRess9": [
+    {
+      "type": 0,
+      "value": "ZapPool"
+    }
+  ],
+  "plOM0t": [
+    {
+      "type": 0,
+      "value": "Emoji personnalisé"
+    }
+  ],
+  "plg2Ua": [
+    {
+      "type": 0,
+      "value": "Canal Mute Utilisateur"
+    }
+  ],
+  "puLNUJ": [
+    {
+      "type": 0,
+      "value": "Épingler"
+    }
+  ],
+  "pyjJ5f": [
+    {
+      "type": 0,
+      "value": "Nostr Marketplace (pour les places de marché résilientes)"
+    }
+  ],
+  "pzTOmv": [
+    {
+      "type": 0,
+      "value": "Abonnés"
+    }
+  ],
+  "q3OuMw": [
+    {
+      "type": 0,
+      "value": "Commentaire sur le torrent"
+    }
+  ],
+  "qAY40L": [
+    {
+      "type": 0,
+      "value": "Événement du calendrier basé sur la date"
+    }
+  ],
+  "qBYNMb": [
+    {
+      "type": 0,
+      "value": "Réponse au fil de discussion du groupe"
+    }
+  ],
+  "qD9EUF": [
+    {
+      "type": 0,
+      "value": "Email <> pont DM pour votre adresse Snort nostr"
+    }
+  ],
+  "qDwvZ4": [
+    {
+      "type": 0,
+      "value": "Une erreur inconnue s'est produite"
+    }
+  ],
+  "qFIVx4": [
+    {
+      "type": 0,
+      "value": "Badges de profil"
+    }
+  ],
+  "qMePPG": [
+    {
+      "type": 0,
+      "value": "Note"
+    }
+  ],
+  "qMx1sA": [
+    {
+      "type": 0,
+      "value": "Montant des Zaps par défaut"
+    }
+  ],
+  "qUJTsT": [
+    {
+      "type": 0,
+      "value": "Bloqué"
+    }
+  ],
+  "qXCbgZ": [
+    {
+      "type": 0,
+      "value": "Déverrouiller"
+    }
+  ],
+  "qZsKBR": [
+    {
+      "type": 0,
+      "value": "Renouveler "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    }
+  ],
+  "qcJFEJ": [
+    {
+      "type": 0,
+      "value": "API de notifications désactivée"
+    }
+  ],
+  "qdGuQo": [
+    {
+      "type": 0,
+      "value": "Votre Clé Privée Est (ne la partagez avec personne)"
+    }
+  ],
+  "qfmMQh": [
+    {
+      "type": 0,
+      "value": "Cette note a été mise en sourdine"
+    }
+  ],
+  "qkvYUb": [
+    {
+      "type": 0,
+      "value": "Ajouter au Profil"
+    }
+  ],
+  "qmJ8kD": [
+    {
+      "type": 0,
+      "value": "La traduction a échoué"
+    }
+  ],
+  "qtWLmt": [
+    {
+      "type": 0,
+      "value": "Like"
+    }
+  ],
+  "qyJtWy": [
+    {
+      "type": 0,
+      "value": "Afficher moins"
+    }
+  ],
+  "qydxOd": [
+    {
+      "type": 0,
+      "value": "La science"
+    }
+  ],
+  "qz9fty": [
+    {
+      "type": 0,
+      "value": "Broche incorrecte"
+    }
+  ],
+  "r3C4x/": [
+    {
+      "type": 0,
+      "value": "Logiciel"
+    }
+  ],
+  "r5srDR": [
+    {
+      "type": 0,
+      "value": "Entrez le mot de passe du portefeuille"
+    }
+  ],
+  "rAQG0X": [
+    {
+      "type": 0,
+      "value": "Métadonnées de la liste de relais"
+    }
+  ],
+  "rIsVe+": [
+    {
+      "type": 0,
+      "value": "Liste des chats publics"
+    }
+  ],
+  "rMgF34": [
+    {
+      "type": 0,
+      "value": "Sauvegarder maintenant"
+    }
+  ],
+  "rRRXtB": [
+    {
+      "type": 0,
+      "value": "Les coups de foudre"
+    }
+  ],
+  "rT14Ow": [
+    {
+      "type": 0,
+      "value": "Ajouter Relais"
+    }
+  ],
+  "reFEEC": [
+    {
+      "type": 0,
+      "value": "Rapports"
+    }
+  ],
+  "rfuMjE": [
+    {
+      "type": 0,
+      "value": "(Défaut)"
+    }
+  ],
+  "rkM7l8": [
+    {
+      "type": 0,
+      "value": "Message direct crypté"
+    }
+  ],
+  "rmdsT4": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " jours"
+    }
+  ],
+  "rn52n9": [
+    {
+      "type": 0,
+      "value": "Chaînes de discussion publiques"
+    }
+  ],
+  "rx1i0i": [
+    {
+      "type": 0,
+      "value": "Lien court"
+    }
+  ],
+  "sFUkSN": [
+    {
+      "type": 0,
+      "value": "Jeux de signets"
+    }
+  ],
+  "sKDn4e": [
+    {
+      "type": 0,
+      "value": "Badges d'exposition"
+    }
+  ],
+  "sUNhQE": [
+    {
+      "type": 0,
+      "value": "utilisateur"
+    }
+  ],
+  "sZQzjQ": [
+    {
+      "type": 0,
+      "value": "Échec de l'analyse de la division zap : "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "saInmO": [
+    {
+      "type": 0,
+      "value": "Le nom du relais affiché n'est pas le même que l'URL complet saisi."
+    }
+  ],
+  "saorw+": [
+    {
+      "type": 0,
+      "value": "Demande de suppression d'un événement"
+    }
+  ],
+  "sfL/O+": [
+    {
+      "type": 0,
+      "value": "Les notes en sourdine ne seront pas affichées"
+    }
+  ],
+  "t79a6U": [
+    {
+      "type": 0,
+      "value": "Réussite de la connexion :"
+    }
+  ],
+  "tDDiRL": [
+    {
+      "type": 0,
+      "value": "Liste d'intérêts"
+    }
+  ],
+  "tFpT/O": [
+    {
+      "type": 0,
+      "value": "Publication d'ensembles d'artefacts"
+    }
+  ],
+  "tO1oq9": [
+    {
+      "type": 0,
+      "value": "Événements vidéo"
+    }
+  ],
+  "tOdNiY": [
+    {
+      "type": 0,
+      "value": "Sombre"
+    }
+  ],
+  "tRGdV1": [
+    {
+      "type": 0,
+      "value": "Chiffrement versionné"
+    }
+  ],
+  "tU0ADf": [
+    {
+      "type": 0,
+      "value": "Inconnu PNM-"
+    },
+    {
+      "type": 1,
+      "value": "x"
+    }
+  ],
+  "tVuVg9": [
+    {
+      "type": 0,
+      "value": "Vidéo Voir l'événement"
+    }
+  ],
+  "tf1lIh": [
+    {
+      "type": 0,
+      "value": "Gratuit"
+    }
+  ],
+  "th5lxp": [
+    {
+      "type": 0,
+      "value": "Envoyer la note à un sous-ensemble de vos relais d'écriture"
+    }
+  ],
+  "thnRpU": [
+    {
+      "type": 0,
+      "value": "Obtenir la vérification NIP-05 peut aider :"
+    }
+  ],
+  "tj6kdX": [
+    {
+      "type": 1,
+      "value": "sign"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "tjpYlr": [
+    {
+      "type": 0,
+      "value": "Métriques du relais"
+    }
+  ],
+  "ttxS0b": [
+    {
+      "type": 0,
+      "value": "Badge de Supporter"
+    }
+  ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "Statut"
+    }
+  ],
+  "u/vOPu": [
+    {
+      "type": 0,
+      "value": "Payé"
+    }
+  ],
+  "u4I8q8": [
+    {
+      "type": 0,
+      "value": "Liste des broches"
+    }
+  ],
+  "u81G9+": [
+    {
+      "type": 0,
+      "value": "Temps de fonctionnement"
+    }
+  ],
+  "u9NoC1": [
+    {
+      "type": 0,
+      "value": "Le nom doit être inférieur à "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " caractères"
+    }
+  ],
+  "uCk8r+": [
+    {
+      "type": 0,
+      "value": "Vous avez déjà un compte ?"
+    }
+  ],
+  "uD7Els": [
+    {
+      "type": 0,
+      "value": "Identités externes dans les profils"
+    }
+  ],
+  "uJaMkO": [
+    {
+      "type": 0,
+      "value": "Liste de relais pour la réception des DM"
+    }
+  ],
+  "uSV4Ti": [
+    {
+      "type": 0,
+      "value": "Les republications seront automatiquement confirmées"
+    }
+  ],
+  "uc0din": [
+    {
+      "type": 0,
+      "value": "Envoyer les splits de sats à"
+    }
+  ],
+  "ufvXH1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " évènements trouvés"
+    }
+  ],
+  "uhu5aG": [
+    {
+      "type": 0,
+      "value": "Publique"
+    }
+  ],
+  "un1nGw": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " notes"
+    }
+  ],
+  "usAvMr": [
+    {
+      "type": 0,
+      "value": "Modifier le Profil"
+    }
+  ],
+  "v8lolG": [
+    {
+      "type": 0,
+      "value": "Démarrer la discussion"
+    }
+  ],
+  "vB3oQ/": [
+    {
+      "type": 0,
+      "value": "Il doit s'agir d'une liste de contacts ou d'une liste de clés publiques"
+    }
+  ],
+  "vBsZhD": [
+    {
+      "type": 0,
+      "value": "Liste des communautés"
+    }
+  ],
+  "vN5UH8": [
+    {
+      "type": 0,
+      "value": "Image de profil"
+    }
+  ],
+  "vU/Q5i": [
+    {
+      "type": 0,
+      "value": "Cet outil recherche le dernier événement publié par toutes les personnes que vous suivez et supprime celles qui n'ont pas publié depuis 6 mois"
+    }
+  ],
+  "vZ4quW": [
+    {
+      "type": 0,
+      "value": "NIP-05 est une spécification de vérification basée sur DNS qui permet de vous valider en tant qu'utilisateur réel."
+    }
+  ],
+  "vhlWFg": [
+    {
+      "type": 0,
+      "value": "Choix proposés"
+    }
+  ],
+  "vlbWtt": [
+    {
+      "type": 0,
+      "value": "En obtenir un gratuit"
+    }
+  ],
+  "voxBKC": [
+    {
+      "type": 0,
+      "value": "Suivi par des amis"
+    }
+  ],
+  "vxwnbh": [
+    {
+      "type": 0,
+      "value": "Quantité de travail à appliquer à tous les événements publiés"
+    }
+  ],
+  "w1Fanr": [
+    {
+      "type": 0,
+      "value": "Entreprises"
+    }
+  ],
+  "w6qrwX": [
+    {
+      "type": 0,
+      "value": "NSFW"
+    }
+  ],
+  "wEQDC6": [
+    {
+      "type": 0,
+      "value": "Modifier"
+    }
+  ],
+  "wOyDTB": [
+    {
+      "type": 0,
+      "value": "Liste des serveurs de stockage de fichiers"
+    }
+  ],
+  "wSZR47": [
+    {
+      "type": 0,
+      "value": "Soumettre"
+    }
+  ],
+  "wc9st7": [
+    {
+      "type": 0,
+      "value": "Pièces jointes aux médias"
+    }
+  ],
+  "whSrs+": [
+    {
+      "type": 0,
+      "value": "Chat Public Nostr"
+    }
+  ],
+  "wih7iJ": [
+    {
+      "type": 0,
+      "value": "le nom est bloqué"
+    }
+  ],
+  "wlWMuh": [
+    {
+      "type": 0,
+      "value": "Les écussons"
+    }
+  ],
+  "wofVHy": [
+    {
+      "type": 0,
+      "value": "Modération"
+    }
+  ],
+  "wqyN/i": [
+    {
+      "type": 0,
+      "value": "En savoir plus sur "
+    },
+    {
+      "type": 1,
+      "value": "service"
+    },
+    {
+      "type": 0,
+      "value": " sur "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "wtLjP6": [
+    {
+      "type": 0,
+      "value": "Copier Identifiant"
+    }
+  ],
+  "x+3fl6": [
+    {
+      "type": 0,
+      "value": "Mes relais"
+    }
+  ],
+  "x/Fx2P": [
+    {
+      "type": 0,
+      "value": "Financez les services que vous utilisez en fractionnant une partie de tous vos zaps en un ensemble de fonds !"
+    }
+  ],
+  "x82IOl": [
+    {
+      "type": 0,
+      "value": "Mode Sourdine"
+    }
+  ],
+  "xEjBS7": [
+    {
+      "type": 0,
+      "value": "Pour vous"
+    }
+  ],
+  "xIcAOU": [
+    {
+      "type": 0,
+      "value": "Votes par "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    }
+  ],
+  "xIoGG9": [
+    {
+      "type": 0,
+      "value": "Aller à"
+    }
+  ],
+  "xPCyu+": [
+    {
+      "type": 0,
+      "value": "nostr : Schéma URI"
+    }
+  ],
+  "xaj9Ba": [
+    {
+      "type": 0,
+      "value": "Fournisseur"
+    }
+  ],
+  "xbVgIm": [
+    {
+      "type": 0,
+      "value": "Charger automatiquement le média"
+    }
+  ],
+  "xhQMeQ": [
+    {
+      "type": 0,
+      "value": "Expire"
+    }
+  ],
+  "xl4s/X": [
+    {
+      "type": 0,
+      "value": "Conditions supplémentaires :"
+    }
+  ],
+  "xmcVZ0": [
+    {
+      "type": 0,
+      "value": "Chercher"
+    }
+  ],
+  "xybOUv": [
+    {
+      "type": 0,
+      "value": "FAN"
+    }
+  ],
+  "y/bmsG": [
+    {
+      "type": 0,
+      "value": "Autoriser"
+    }
+  ],
+  "y1Z3or": [
+    {
+      "type": 0,
+      "value": "Langue"
+    }
+  ],
+  "yAztTU": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " eSats"
+    }
+  ],
+  "yCLnBC": [
+    {
+      "type": 0,
+      "value": "LNURL ou adresse Lightning"
+    }
+  ],
+  "yLzgxH": [
+    {
+      "type": 0,
+      "value": "Relais populaires"
+    }
+  ],
+  "yeX8yA": [
+    {
+      "type": 0,
+      "value": "Application native"
+    }
+  ],
+  "z3UjXR": [
+    {
+      "type": 0,
+      "value": "Débogage"
+    }
+  ],
+  "z3Ukvq": [
+    {
+      "type": 0,
+      "value": "Rédiger un contenu de longue durée"
+    }
+  ],
+  "zCb8fX": [
+    {
+      "type": 0,
+      "value": "Poids"
+    }
+  ],
+  "zFegDD": [
+    {
+      "type": 0,
+      "value": "Contacted"
+    }
+  ],
+  "zINlao": [
+    {
+      "type": 0,
+      "value": "Propriétaire"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "Tout"
+    }
+  ],
+  "zcaOTs": [
+    {
+      "type": 0,
+      "value": "Zapper montant en sats"
+    }
+  ],
+  "zi9MdS": [
+    {
+      "type": 0,
+      "value": "Échecs (PGN)"
+    }
+  ],
+  "zm6qS1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " minutes de lecture"
+    }
+  ],
+  "zonsdq": [
+    {
+      "type": 0,
+      "value": "Échec du chargement du service LNURL"
+    }
+  ],
+  "zvCDao": [
+    {
+      "type": 0,
+      "value": "Afficher automatiquement les dernières notes"
+    }
+  ],
+  "zx0myy": [
+    {
+      "type": 0,
+      "value": "Les participants"
+    }
+  ]
 }

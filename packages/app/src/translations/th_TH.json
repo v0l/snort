@@ -1,812 +1,5884 @@
 {
-  "+D82kt": "คุณแน่ใจหรือไม่ว่าต้องการจะรีโพสต์: {id}",
-  "+PzQ9Y": "จ่ายเลยตอนนี้",
-  "+QM0PJ": "Sync all events for your profile into local cache",
-  "+QMdsy": "Relay Stats",
-  "+UjDmN": "Logged in with write access",
-  "+Vxixo": "Secret Group Chat",
-  "+aZY2h": "รูปแบบการ Zap",
-  "+tShPg": "กำลังติดตาม",
-  "+vA//S": "เข้าสู่ระบบ",
-  "+vIQlC": "โปรดตรวจสอบให้แน่ใจว่าคุณได้ทำการบันทึกรหัสผ่านต่อไปนี้ไว้เรียบร้อยแล้ว เพื่อให้สะดวกต่อจัดการในอนาคต",
-  "+vVZ/G": "เชื่อมต่อ",
-  "+vj0U3": "แก้ไข",
-  "+xliwN": "{name} reposted",
-  "/B8zwF": "Your space the way you want it 😌",
-  "/GCoTA": "ล้าง",
-  "/JE/X+": "การสนับสนุนบัญชี",
-  "/T7HId": "HTTP File Storage Integration",
-  "/Xf4UW": "Send anonymous usage metrics",
-  "/b1IHW": "Group Chat Message",
-  "/d6vEc": "ทำให้ค้นหาและแบ่งปันโปรไฟล์ได้ง่ายขึ้น",
-  "/ioUrF": "From File",
-  "/n5KSF": "{n} ms",
-  "00LcfG": "Load more",
-  "01iNut": "Nostr address does not belong to you",
-  "08zn6O": "Export Keys",
-  "0Azlrb": "จัดการ",
-  "0BUTMv": "ค้นหา...",
-  "0MndVW": "Generic LNDHub wallet (BTCPayServer / Alby / LNBits)",
-  "0jOEtS": "LNURL ไม่ถูกต้อง",
-  "0kOBMu": "Handling Mentions",
-  "0mch2Y": "ชื่อมีอักขระที่ไม่อนุญาตให้ใช้",
-  "0siT4z": "Politics",
-  "0uoY11": "Show Status",
-  "0yO7wF": "{n} วินาที",
-  "0zASjL": "Go",
-  "1/BFEj": "git stuff",
-  "1Mo59U": "คุณแน่ใจหรือว่าต้องการลบโน้ตนี้ออกจากบุ๊คมาร์ค?",
-  "1R43+L": "ใส่ Nostr Wallet Connect config",
-  "1UWegE": "Be sure to back up your keys!",
-  "1c4YST": "เชื่อมต่อกับ: {node} 🎉",
-  "1nYUGC": "กำลังติดตาม {n}",
-  "1o2BgB": "Check Signatures",
-  "1ozeyg": "Nature",
-  "1udzha": "การสนทนา",
-  "2/2yg+": "เพิ่ม",
-  "25V4l1": "แบนเนอร์",
-  "25WwxF": "Don't have an account?",
-  "28oKbu": "Moderated Communities",
-  "29sHFE": "Wallet Connect",
-  "2BBGxX": "Subject tag in text events",
-  "2HIqeO": "User emoji list",
-  "2IFGap": "โดเนท",
-  "2LbrkB": "ป้อนรหัสผ่าน",
-  "2O2sfp": "Finish",
-  "2Qsf9/": "Generic lists",
-  "2a2YiP": "บุ๊คมาร์ค {n}",
-  "2k0Cv+": "ไม่ถูกใจ ({n})",
-  "2mcwT8": "New Note",
-  "2oCF7O": "Followed by friends of friends",
-  "2raFAu": "Application-specific data",
-  "2ukA4d": "{n} ชั่วโมง",
-  "2z7Kky": "Latest Articles",
-  "3/onCd": "Replies",
-  "39AHJm": "Sign Up",
-  "3GWu6/": "User Statuses",
-  "3KNMbJ": "Articles",
-  "3MKdAw": "Blobs stored on mediaservers",
-  "3QwfJR": "~{amount}",
-  "3adEeb": "{n} viewers",
-  "3cc4Ct": "สว่าง",
-  "3gOsZq": "แปลภาษา",
-  "3kbIhS": "Untitled",
-  "3qnJlS": "คุณกำลังลงคะแนนด้วย {amount} sats",
-  "3t3kok": "{n,plural,=1{{n} โน้ตใหม่} other{{n} โน้ตใหม่}}",
-  "3tVy+Z": "ผู้ติดตาม {n}",
-  "3yk8fB": "Wallet",
-  "40VR6s": "Nostr Connect",
-  "41BSaT": "Total Events:",
-  "450Fty": "ไม่มี",
-  "47E53q": "Wiki",
-  "47FYwb": "ยกเลิก",
-  "48zn4v": "Bid",
-  "4IPzdn": "นักพัฒนาหลัก",
-  "4L2vUY": "NIP-05 ใหม่ของคุณคือ:",
-  "4MjsHk": "Life",
-  "4OB335": "ไม่ถูกใจ",
-  "4P/kKm": "Private Key Encryption",
-  "4Vmpt4": "Nostr Plebs เป็นหนึ่งในผู้ให้บริการ NIP-05 รายแรก ๆ ในพื้นที่นี้ และเสนอชุดโดเมนที่ดีในราคาที่สมเหตุสมผล",
-  "4Z3t5i": "ใช้ imgproxy เพื่อบีบอัดรูปภาพ",
-  "4emo2p": "Missing Relays",
-  "4rYCjn": "หมายเหตุถึงตนเอง",
-  "4wgYpI": "Recommended Application Handlers",
-  "5BVs2e": "zaps",
-  "5CB6zB": "Zap Splits",
-  "5PRWs7": "Notifications API Enabled",
-  "5dfmvv": "Zap Goal",
-  "5oTnfy": "รหัสการซื้อ",
-  "5qEWCr": "File Metadata",
-  "5u6iEc": "แปลงเป็น Pubkey",
-  "5vMmmR": "Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration.",
-  "5ykRmX": "ส่ง zap",
-  "6/hB3S": "Watch Replay",
-  "60kEE3": "Mute list",
-  "62nsdy": "Retry",
-  "634VVz": "Connection Failed:",
-  "6559gb": "New follow list length {length}",
-  "65BmHb": "อิมเมจพร็อกซีจาก {host} ไม่สำเร็จ คลิกที่นี่เพื่อโหลดโดยตรง",
-  "6D4Hhn": "Recommend Relay",
-  "6KGebm": "Seal",
-  "6OSOXl": "Reason: <i>{reason}</i>",
-  "6WWD34": "Looking for: {noteId}",
-  "6bgpn+": "Not all clients support this, you may still receive some zaps as if zap splits was not configured",
-  "6ewQqw": "ถูกใจ ({n})",
-  "6mr8WU": "Followed by",
-  "6pdxsi": "Extra metadata fields and tags",
-  "6uMqL1": "ยังไม่ได้ชำระ",
-  "6xNr8c": "Switch accounts",
-  "6xap9L": "Good",
-  "7+Domh": "โน้ต",
-  "712i26": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node",
-  "753yX5": "Label",
-  "769A8p": "Wiki article",
-  "77nkEO": "Relay Information Document",
-  "7LFU8U": "Search Capability",
-  "7UOvbT": "Offline",
-  "7YkSA2": "Community Leader",
-  "7gMmSL": "Reaction",
-  "7hp70g": "NIP-05",
-  "7jfPsW": "Modular Article Content",
-  "7nAz/z": "Mute notes from people who are outside your web of trust",
-  "7pFGAQ": "Close Relays",
-  "8/vBbP": "รีโพสต์ ({n})",
-  "89q5wc": "ยืนยันรีโพสต์",
-  "8BDFvJ": "Conventions for clients' use of e and p tags in text events",
-  "8ED/4u": "Reply To",
-  "8HJxXG": "Sign up",
-  "8QDesP": "Zap {n} sats",
-  "8Rkoyb": "Recipient",
-  "8Y6bZQ": "Invalid zap split: {input}",
-  "8ZGqWl": "Group Thread",
-  "8g2vyB": "ชื่อยาวเกินไป",
-  "8jmwT8": "bech32-encoded entities",
-  "8v1NN+": "Pairing phrase",
-  "8xdDLn": "Follow sets",
-  "8za9Pq": "Draft Classified Listing",
-  "9+Ddtu": "ถัดไป",
-  "9HU8vw": "ตอบกลับ",
-  "9SvQep": "ติดตาม {n}",
-  "9V0wg3": "Calendar Event RSVP",
-  "9WRlF4": "ส่ง",
-  "9kO0VQ": "Hide muted notes",
-  "9kSari": "Retry publishing",
-  "9pMqYs": "Nostr Address",
-  "9wO4wJ": "Lightning Invoice",
-  "A86fJ+": "Generic Repost",
-  "ADmfQT": "ตอบกลับจาก",
-  "ALdW69": "Note by {name}",
-  "AN0Z7Q": "Muted Words",
-  "ASRK0S": "ผู้เขียนถูกปิดการมองเห็น",
-  "AedFVZ": "Create or update a product",
-  "Ai8VHU": "สามารถเก็บโน้ตได้อย่างไม่จำกัดบน Snort relay",
-  "AkCxS/": "เหตุผล",
-  "AktAk2": "Great",
-  "Am8glJ": "Game",
-  "AqGfF4": "Channel Creation",
-  "Aujn2T": "Count",
-  "Awq32I": "Push notifications",
-  "AxDOiG": "Months",
-  "AyGauy": "เข้าสู่ระบบ",
-  "B4C47Y": "ชื่อสั้นเกินไป",
-  "B6+XJy": "zap เรียบร้อยแล้ว",
-  "B6H7eJ": "nsec, npub, nip-05, hex",
-  "B7wvUM": "You can add a single or multiple relays, one per line.",
-  "BGCM48": "Write ไปยัง Snort relay จะเก็บรักษา event ให้เป็นเวลา 1 ปี",
-  "BGGacK": "AI Embeddings / Vector lists",
-  "BQW4gi": "Relay-based Groups",
-  "BWpuKl": "อัปเดต",
-  "BfuAQ5": "Marketplace UI/UX",
-  "BjNwZW": "Nostr address (nip05)",
-  "Blxcdx": "Relay",
-  "Bo+O//": "HTTP Auth",
-  "C1LjMx": "บริจาคด้วย Linghtning",
-  "C6Lhhp": "Live Event",
-  "C7642/": "Quote Repost",
-  "C81/uG": "ออกจากระบบ",
-  "C8FsOr": "Popular Servers",
-  "C8HhVE": "แนะนำให้ติดตาม",
-  "CA1efg": "Video sets",
-  "CHTbO3": "ไม่สามารถโหลด invoice",
-  "CJx5Nd": "Profile Zaps",
-  "CM+Cfj": "Follow List",
-  "CM0k0d": "Prune follow list",
-  "CVWeJ6": "บุตคลที่กำลังมาแรง",
-  "CYkOCI": "and {count} others you follow",
-  "Cdxwi0": "Repository announcements",
-  "CmZ9ls": "ปิดการมองเห็น {n} บัญชี",
-  "Coy6SH": "Calendar",
-  "CsCUYo": "{n} sats",
-  "Cu/K85": "แปลจาก {lang}",
-  "CzHZoc": "Social Graph",
-  "D++Njw": "Text Note References",
-  "D+KzKd": "Zap ให้ทุกโน้ตที่โหลดโดยอัตโนมัติ",
-  "D09wbg": "Badge Definition",
-  "D3idYv": "การตั้งค่า",
-  "D9xTLE": "Channel Hide Message",
-  "DBiVK1": "Cache",
-  "DKnriN": "ส่งซาโตชิ",
-  "DZzCem": "แสดงโน้ตล่าสุด {n} รายการ",
-  "Dh3hbq": "Zap โดยอัตโนมัติ",
-  "Dn82AL": "Live",
-  "DqUmXt": "Product sold as an auction",
-  "DrZqav": "About must be less than {limit} characters",
-  "DtYelJ": "โอนย้าย",
-  "Dx4ey3": "Toggle all",
-  "E3oB+t": "Browser",
-  "E5ZIPD": "<big>{amount}</big> <small>sats</small>",
-  "EHqHsu": "Invoice / Lightning Address",
-  "EJbFi7": "Search notes",
-  "ELbg9p": "ผู้ให้บริการข้อมูล",
-  "EQKRE4": "Show badges on profile pages",
-  "EWeVrH": "Reaction to a website",
-  "EWyQH5": "Global",
-  "Ebl/B2": "แปลจาก {lang}",
-  "Ec+xLY": "Curation sets",
-  "EcZF24": "รีเลย์ที่กำหนดเอง",
-  "EcfIwB": "Username is available",
-  "EcglP9": "Key",
-  "EjFyoR": "On-chain Donation Address",
-  "EnCOBJ": "ซื้อ",
-  "EsHX35": "Sorry, we dont understand this event kind ({name}), please try one of the following apps instead!",
-  "F/6VqP": "Server",
-  "F3l7xL": "เพิ่มบัญชี",
-  "F4eJ/3": "Classified Listings",
-  "FDguSC": "{n} Zaps",
-  "FHWpHC": "Wallet Response",
-  "FHvSk3": "Authentication of clients to relays",
-  "FMfjrl": "Show status messages on profile pages",
-  "FSYL8G": "Trending Users",
-  "FWJR1B": "User groups",
-  "FcNSft": "Redirect issues HTTP redirect to the supplied lightning address",
-  "FdhSU2": "รับทันที",
-  "FfYsOb": "พบข้อผิดพลาด!",
-  "FmXUJg": "ได้ติดตามคุณ",
-  "FvanT6": "Accounts",
-  "FzbSGg": "You dont have any media servers, try adding some.",
-  "G/yZLu": "ลบ",
-  "G1BGCg": "เลือก wallet",
-  "G3A56c": "Subscribed to Push",
-  "GFOoEE": "Salt",
-  "GIqktu": "Supported NIPs",
-  "GL8aXW": "บุ๊คมาร์ค ({n})",
-  "GSye7T": "Lightning Address",
-  "GUlSVG": "รับ Snort nostr address ของคุณ",
-  "Gcn9NQ": "Magnet Link",
-  "GpkNYn": "Torrent",
-  "GqQeu/": "Invalid Lightning Address",
-  "GspYR7": "{n} ไม่ถูกใจ",
-  "Gxcr08": "Broadcast Event",
-  "H+vHiz": "Hex Key..",
-  "H/oroO": "Dealing with Unknown Events",
-  "H0JBH6": "ออกจากระบบ",
-  "H0OG3T": "Leader Info",
-  "H1GTaC": "Bookmark list",
-  "H6/kLh": "ได้รับการชำระเงินเรียบร้อย!",
-  "HAlOn1": "ชื่อ",
-  "HFls6j": "ชื่อจะสามารถใช้ได้ในภายหลัง",
-  "HOzFdo": "ปิดการมองเห็น",
-  "HWbkEK": "ล้างแคชและดาวน์โหลดใหม่อีกครั้ง",
-  "HbefNb": "เปิด Wallet",
-  "HhcAVH": "You don't follow this person, click here to load media from <i>{link}</i>, or update <a><i>your preferences</i></a> to always load media from everybody.",
-  "HpAmQZ": "Relay reviews",
-  "HqRNN8": "Support",
-  "HzSFeV": "Expiration Timestamp",
-  "I0tYZf": "Create or update a stall",
-  "I1AoOu": "Last post {time}",
-  "IEwZvs": "คุณแน่ใจแล้วใช่มั้ยว่าต้องการลบโน้ตนี้?",
-  "IIOul1": "Account Data",
-  "IKKHqV": "Follows",
-  "IOu4Xh": "You must be a {tier} subscriber to access {app} deck",
-  "IVbtTS": "Zap all {n} sats",
-  "IWz1ta": "Auto Translate",
-  "IcHcWj": "Last Seen:",
-  "Ig9/a1": "ส่ง {n} sats ถึง {name}",
-  "IgsWFG": "Not followed by anyone you follow",
-  "IoQq+a": "Click here to load anyway",
-  "IvjoDS": "Connected",
-  "Ix8l+B": "โน๊ตที่กำลังมาแรง",
-  "J+dIsA": "การสมัครสมาชิก",
-  "J1iLmb": "Notifications Not Allowed",
-  "J2HeQ+": "Use commas to separate words e.g. word1, word2, word3",
-  "J2Q92B": "Emoji sets",
-  "J6N9xl": "Sign in with Android signer",
-  "JCIgkj": "ชื่อผู้ใช้",
-  "JGrt9q": "Send sats to {name}",
-  "JHEHCk": "Zaps ({n})",
-  "JIVWWA": "Sport",
-  "JPFYIM": "ไม่มี lightning address นี้",
-  "JSx7y9": "Subscribe to {site_name} {plan} for {price} and receive the following rewards",
-  "JeoS4y": "Repost",
-  "Jh5zKH": "Search relays list",
-  "JjGgXI": "Search users",
-  "JkLHGw": "เว็บไซต์",
-  "JmcxzF": "Relays are servers you connect to for sending and receiving events. Aim for 4-8 relays.",
-  "JymXbw": "Private Key",
-  "K1wl1/": "Average Latency:",
-  "K3r6DQ": "ลบ",
-  "K7AkdL": "แสดง",
-  "K9zklU": "External Content IDs",
-  "KAhAcM": "ใส่ LNDHub config",
-  "KGmQjH": "Highlights",
-  "KJryGq": "Live Chat Message",
-  "KQvWvD": "ลบทิ้งแล้ว",
-  "KT9nox": "Protected Events",
-  "KahimY": "ไม่รู้จัก event kind: {kind}",
-  "KipVeG": "Mapping Nostr keys to DNS-based internet identifiers",
-  "KtsyO0": "Enter Pin",
-  "KyRp/q": "Wallet Request",
-  "LBAnc7": "View as user?",
-  "LEmxc8": "Zap Goals",
-  "LKw/ue": "Check out the code {link}",
-  "LR1XjT": "Pin too short",
-  "LXxsbk": "ไม่ระบุตัวตน",
-  "LgbKvU": "ความคิดเห็น",
-  "LhLvRx": "Name must be between 8 and 15 characters",
-  "LmdPXO": "Cannot verify Nostr Address",
-  "Lu5/Bj": "เปิด Zapstr",
-  "LuDBLj": "Torrents",
-  "Lw+I+J": "{n,plural,=0{{name} zapped} other{{name} & {n} others zapped}}",
-  "LwYmVi": "Zaps on this note will be split to the following users.",
-  "M3Oirc": "เมนูการแก้ปัญหา",
-  "M6C/px": "Become a leader",
-  "MBAYRO": "แสดง \"Copy ID\" และ \"Copy Event JSON\" ในเมนูของแต่ละข้อความ",
-  "MI2jkA": "ไม่พร้อมใช้งาน:",
-  "MKDHEa": "Join Room",
-  "MP54GY": "รหัสผ่าน wallet",
-  "MWTx65": "หน้าเริ่มต้น",
-  "MYBYdJ": "Short Text Note",
-  "MYUBaG": "Client Authentication",
-  "MiMipu": "Set as primary Nostr address (nip05)",
-  "MkQ4FX": "Proxy Tags",
-  "Ml7+RS": "Send this link to your friends and share the magic of the nostr.",
-  "Mrpkot": "จ่ายเพื่อสมัครสมาชิก",
-  "MuVeKe": "Buy nostr address",
-  "Muhna4": "Counting results",
-  "MzRYWH": "กำลังซื้อ {item}",
-  "Mzizei": "Iris.to account",
-  "N2IrpM": "ยืนยัน",
-  "NAidKb": "Notifications",
-  "NAuFNH": "คุณได้สมัครสมาชิกประเภทนี้แล้ว โปรดต่ออายุหรือชำระเงิน",
-  "NDTFsp": "Job Feedback",
-  "NepkXH": "ไม่สามารถโหวตด้วย {amount} sats โปรดตั้งค่าจำนวน zap เริ่มต้นใหม่",
-  "NndBJE": "หน้าต่างสำหรับผู้ใช้ใหม่",
-  "Nr9Yyx": "Reposts",
-  "NxzeNU": "Dead",
-  "O3Jz4E": "Use your invite code to earn sats!",
-  "OEW7yJ": "Zaps",
-  "OIqnZN": "OpenTimestamps Attestations for Events",
-  "OJHKIL": "Gift Wrap",
-  "OKhRC6": "แชร์",
-  "OLEm6z": "พบข้อผิดพลาดการเข้าสู่ระบบที่ไม่ทราบสาเหตุ",
-  "OQSOJF": "Get a free nostr address",
-  "OQXnew": "การสมัครสมาชิกของคุณยังคงใช้งานได้ คุณยังไม่จำเป็นต้องต่ออายุ",
-  "ORGv1Q": "สร้าง",
-  "ORa81+": "Merge Requests",
-  "OoZgbB": "Failed to update, please try again",
-  "OuProE": "Long-form Content",
-  "OxPdQ0": "Scanning {date}",
-  "P2o+ZZ": "Invalid Nostr Address",
-  "P61BTu": "คัดลอก Event JSON",
-  "P7FD0F": "ระบบ (ค่าเริ่มต้น)",
-  "P7nJT9": "ยอดรวมวันนี้ (UTC): {amount} sats",
-  "P8JC58": "Distance",
-  "PCSt5T": "การตั้งค่า",
-  "PXQ0z0": "Receiving to <b>{wallet}</b>",
-  "PamNxw": "ส่วนต้นของไฟล์ที่ไม่รู้จัก: {name}",
-  "Pe0ogR": "ธีม",
-  "PrsIg7": "Reactions จะแสดงในทุกหน้า หากปิดใช้งาน จะไม่แสดง Reactions ใด ๆ",
-  "QDFTjG": "{n} รีเลย์",
-  "QJfhKt": "The private key is like a password, but it cannot be reset. Guard it carefully and never show it to anyone. Once someone has your private key, they will have access to your account forever.",
-  "QWhotP": "Zap Pool ใช้งานได้เฉพาะเมื่อคุณใช้การเชื่อมต่อ wallet ที่รองรับ (WebLN, LNC, LNDHub หรือ Nostr Wallet Connect)",
-  "QpaLA3": "Channel Message",
-  "Qxv0B2": "ขณะนี้มี {number} sats ใน zappool ของคุณ",
-  "Qy6/Ft": "Private Direct Messages",
-  "R/6nsx": "Subscription",
-  "R81upa": "People you follow",
-  "RDha9y": "Service Worker Not Running",
-  "RRz1cA": "Repository state announcements",
-  "RSr2uB": "Username must only contain lowercase letters and numbers",
-  "RahCRH": "หมดอายุแล้ว",
-  "RefZpK": "Short-form Portrait Video Event",
-  "RfhLwC": "โดย {author}",
-  "RhDAoS": "คุณแน่ใจหรือไม่ ว่าต้องการลบ {id}",
-  "RmxSZo": "Data Vending Machines",
-  "RoOyAh": "รีเลย์",
-  "Rs4kCE": "บุ๊คมาร์ก",
-  "S/NV2G": "Loading note: {id}",
-  "SFuk1v": "Permissions",
-  "SLZGPn": "Enter a pin to encrypt your private key, you must enter this pin every time you open {site}.",
-  "SMO+on": "Send zap to {name}",
-  "SOqbe9": "อัพเดต Lightning Address",
-  "SP0+yi": "ซื้อการสมัครสมาชิก",
-  "SW3TFA": "Popular relays used by people you follow.",
-  "SYQtZ7": "LN Address Proxy",
-  "Sd0PKc": "Relay sets",
-  "SfwSIm": "Problem Tracker",
-  "ShdEie": "Mark all read",
-  "Sjo1P4": "ปรับแต่งเอง",
-  "SmuYUd": "What should we call you?",
-  "Ss0sWu": "ชำระเงินทันที",
-  "SsUQnC": "Application-specific Data",
-  "StKzTE": "The author has marked this note as a <i>sensitive topic</i>",
-  "T83nqf": "Relays close to your geographic location.",
-  "TDR5ge": "สื่อในโน้ตจะแสดงโดยอัตโนมัติสำหรับบุคคลที่เลือกเท่านั้น คนอื่น ๆ จะแสดงเฉพาะลิงก์",
-  "TGc5nI": "Handler information",
-  "TH1fFo": "Telegram",
-  "TJo5E6": "Preview",
-  "TOG64f": "Use Local Relay",
-  "TP/cMX": "Ended",
-  "TaeBqw": "Sign in with Nostr Extension",
-  "TdTXXf": "Learn more",
-  "TdtZQ5": "Crypto",
-  "Tdv6NY": "Interest sets",
-  "TgDKhI": "Calendar Events",
-  "TpgeGw": "Hex Salt..",
-  "Tpy00S": "ผู้คน",
-  "TvKqBp": "liked",
-  "TwyMau": "Account",
-  "U1aPPi": "Stop listening",
-  "U30H69": "Community Definition",
-  "UJTWqI": "Remove from my relays",
-  "ULXFfP": "Receive",
-  "UNjfWJ": "Check all event signatures received from relays",
-  "UT7Nkj": "New Chat",
-  "UUPFlt": "ผู้ใช้จะต้องยอมรับคำเตือนเพื่อแสดงเนื้อหาในโน้ตของคุณ",
-  "UaCh1c": "Add Server",
-  "Ub+AGc": "Sign In",
-  "Up5U7K": "บล็อก",
-  "Ups2/p": "Your application is pending",
-  "UrKTqQ": "You have an active iris.to account",
-  "UsCzPc": "Share a personalized invitation with friends!",
-  "UxgyeY": "Your referral code is {code}",
-  "V20Og0": "Labeling",
-  "VOjC1i": "เลือกบริการอัปโหลดที่คุณต้องการอัปโหลดไฟล์แนบ",
-  "VR5eHw": "Public key (npub/nprofile)",
-  "VcwrfF": "Yes please",
-  "VfhYxG": "To see a full list of changes you can view the changelog {here}",
-  "VlJkSk": "ปิดการมองเห็น {n} บัญชี",
-  "VnXp8Z": "อวตาร",
-  "W1yoZY": "ดูเหมือนว่าคุณไม่มีการสมัครสมาชิกใด ๆ คุณสามารถสมัครรับข้อมูลได้ {link}",
-  "W2PiAr": "{n} บล็อค",
-  "W4SaxY": "Local",
-  "W9355R": "เปิดการมองเห็น",
-  "WeLEuL": "From Server",
-  "Wj5TbN": "Issues",
-  "WmZhfL": "Automatically translate notes to your local language",
-  "WvGmZT": "npub / nprofile / nostr address",
-  "X6tipZ": "Sign in with key",
-  "X7xU8J": "nsec, npub, nip-05, hex, mnemonic",
-  "XECMfW": "Send usage metrics",
-  "XICsE8": "สถานที่เก็บไฟล์",
-  "XPB8VV": "Alby wallet connection",
-  "XQiFEl": "Follows Relay Health",
-  "XSdWHA": "Redeem",
-  "XXm7jJ": "Trending Hashtags",
-  "XgWvGA": "Reactions",
-  "Xnimz0": "Sending from <b>{wallet}</b>",
-  "Xopqkl": "จํานวน zap เริ่มต้นของคุณคือ {number} sats ค่าตัวอย่างคํานวณจากสิ่งนี้",
-  "YDMrKK": "Users",
-  "YDURw6": "Service URL",
-  "YH2RKk": "Popular media servers.",
-  "YQZY/S": "It looks like you dont follow enough people, take a look at {newUsersPage} to discover people to follow!",
-  "YR2I9M": "No keys, no {app}, There is no way to reset it if you don't back up. It only takes a minute.",
-  "YU7ZYp": "Public Chat",
-  "YXA3AH": "เปิดใช้งาน reactions",
-  "Yf3DwC": "Connect a wallet to send instant payments",
-  "YuoEb9": "Try another relay",
-  "Z48UEo": "Channel Metadata",
-  "Z4BMCZ": "ใส่ pairing phrase",
-  "Z7kkeJ": "Delegated Event Signing",
-  "ZFe9tl": "Compose a note",
-  "ZKORll": "เปิดใช้งานทันที",
-  "ZLmyG9": "ผู้มีส่วนร่วม",
-  "ZS+jRE": "Send zap splits to",
-  "Zff6lu": "Username iris.to/<b>{name}</b> is reserved for you!",
-  "ZlIh4/": "Encrypted Direct Messages",
-  "ZlmK/p": "{name} invited you to {app}",
-  "a1x4gD": "Media servers store media which you can share in notes as images and videos",
-  "a5UPxh": "สนับสนุนนักพัฒนาและแฟลตฟอร์มที่ให้บริการ NIP-05",
-  "a7TDNm": "โน้ตจะแสดงแบบเรียลไทม์บนหน้า global และ โน้ต",
-  "aHje0o": "Name or nym",
-  "aMaLBK": "Supported Extensions",
-  "aRex7h": "Paid {amount} sats, fee {fee} sats",
-  "aSGz4J": "Connect to your own LND node with Lightning Node Connect",
-  "aWpBzj": "ดูเพิ่มเติม",
-  "abbGKq": "{n} km",
-  "ak3MTf": "Invite Friends",
-  "b12Goz": "Mnemonic",
-  "b5vAk0": "สิ่งนี้เหมือนกับ Lightning Address และจะเปลี่ยนการเชื่อมต่อไปที่ LNURL หรือ Lightning Addresses ที่คุณเลือก",
-  "bF1MYT": "You are a community leader and are earning <b>{percent}</b> of referred users subscriptions!",
-  "bG00/W": "Service Worker Running",
-  "bJ+wrA": "Compute prune list",
-  "bLZL5a": "Get Address",
-  "bMphls": "Logged in with read-only access",
-  "bQdA2k": "เนื้อหาที่ละเอียดอ่อน",
-  "bep9C3": "Public Key",
-  "bfvyfs": "ไม่ระบุชื่อ",
-  "bxv59V": "เมื่อสักครู่",
-  "c+1p0i": "Kind mute sets",
-  "c+JYNI": "No thanks",
-  "c2T+1B": "Redirects",
-  "c35bj2": "หากคุณมีคําถามใด ๆ เกี่ยวกับคําสั่งซื้อ NIP-05 ของคุณ โปรดติดต่อที่ {link}",
-  "c3LlRO": "{n}KiB",
-  "c3g2hL": "เผยแพร่อีกครั้ง",
-  "cFbU1B": "ใช้ Alby? ไปที่{link} เพื่อรับ NWC config ของคุณ",
-  "cG/bKQ": "Native nostr wallet connection",
-  "cHCwbF": "Photography",
-  "cKbMRX": "Direct Message",
-  "cPIKU2": "กำลังติดตาม",
-  "cQfLWb": "URL..",
-  "cVcgLJ": "Media Servers",
-  "cWx9t8": "ปิดการโต้ตอบทั้งหมด",
-  "cg1VJ2": "เชื่อมต่อ Wallet",
-  "cnwHgH": "OpenTimestamps",
-  "cuP16y": "รับรองการใช้งานหลายบัญชี",
-  "cuV2gK": "ชื่อนี้ถูกใช้งานแล้ว",
-  "cw1Ftc": "Live Activities",
-  "cyR7Kh": "ย้อนกลับ",
-  "d+6YsV": "Lists to mute:",
-  "d0qim7": "WoT Filter",
-  "d2ebEu": "Not Subscribed to Push",
-  "d7d0/x": "LN address",
-  "dK2CcV": "The public key is like your username, you can share it with anyone.",
-  "dOQCL8": "ชื่อที่แสดง",
-  "dZZIGe": "Modular Article Header",
-  "ddd3JX": "Popular Hashtags",
-  "deEeEI": "Register",
-  "djLctd": "Amount in sats",
-  "dmcsBA": "Classified Listing",
-  "dmsiLv": "A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}",
-  "e5x8FT": "Kind",
-  "e61Jf3": "เร็ว ๆ นี้",
-  "e7VmYP": "Enter pin to unlock your private key",
-  "e7qqly": "ทำเครื่องหมายเป็นอ่านแล้วทั้งหมด",
-  "eF0Re7": "Use a nostr signer extension to sign in",
-  "eHAneD": "Reaction emoji",
-  "eJj8HD": "รับการยืนยัน!",
-  "eSzf2G": "Zap จำนวน {nIn} sats จะจัดสรร {nOut} sats ให้กับ zap pool",
-  "eW/Bj9": "Feed",
-  "eXT2QQ": "Group Chat",
-  "eZtOxB": "window.nostr capability for web browsers",
-  "egib+2": "{n,plural,=1{& {n} other} other{& {n} others}}",
-  "ejEGdx": "Home",
-  "eoV49s": "Poor",
-  "f1OxTe": "Community leaders are individuals who grow the nostr ecosystem by being active in their local communities and helping onboard new users. Anyone can become a community leader, but few hold the current honorary title.",
-  "f2CAxA": "Dump",
-  "fBI91o": "Zaps",
-  "fBlba3": "Thanks for using {site}, please consider donating if you can.",
-  "fLIvbC": "Snort is an open source project built by passionate people in their free time, your donations are greatly appreciated",
-  "fOksnD": "ไม่สามารถโหวตได้เนื่องจากบริการ LNURL ไม่รองรับ zaps",
-  "fQN+tq": "Show posts that have a content warning tag",
-  "fWZYP5": "ปักหมุดข้อความแล้ว",
-  "fX5RYm": "Pick a few topics of interest",
-  "filwqD": "อ่าน",
-  "fjAcWo": "Gift Wraps",
-  "flnGvv": "คุณกำลังคิดอะไรอยู่?",
-  "fqwcJ1": "On-chain Donation",
-  "fr+XYA": "Lightning Pub RPC",
-  "fsB/4p": "บันทึกแล้ว",
-  "fucxlm": "Attach Media",
-  "furjvW": "Watch Stream",
-  "g5pX+a": "เกี่ยวกับ",
-  "g985Wp": "การโหวตไม่สำเร็จ",
-  "gDzDRs": "Emoji ที่ต้องการส่งเมื่อ reaction บนโน้ต",
-  "gXgY3+": "ยังไม่มี client ไหนรับรองสิ่งนี้",
-  "gczcC5": "สมัครสมาชิก",
-  "geppt8": "{count} ({count2} in memory)",
-  "gjBiyj": "กำลังโหลด...",
-  "gkMmvC": "Android Signer Application",
-  "gl1NeW": "Lists",
-  "go2/QF": "User server list",
-  "grQ+mI": "Proof of Work",
-  "gtNjNP": "Basic protocol flow description",
-  "h7jvCs": "{site} is more fun together!",
-  "h8XMJL": "เหรียญตรา",
-  "h9M0rW": "User Metadata",
-  "hF6IN2": "Prune Follow List",
-  "hMQmIw": "Sync Account",
-  "hMzcSq": "ข้อความ",
-  "hRTfTR": "PRO",
-  "hY4lzx": "สนับสนุน",
-  "hYOE+U": "Invite",
-  "hicxcO": "แสดงการตอบกลับ",
-  "hmZ3Bz": "Media",
-  "hniz8Z": "ที่นี่",
-  "hv/eRj": "Blocked relays list",
-  "hvFRBo": "Interaction",
-  "i/dBAR": "Zap Pool",
-  "i5gBFz": "Your sent and received payments will show up here.",
-  "iCqGww": "Reactions ({n})",
-  "iEoXYx": "แปล DeepL",
-  "iGT1eE": "ป้องกันไม่ให้บัญชีปลอมเลียนแบบคุณ",
-  "iHN12u": "Admin",
-  "iICVoL": "{x} follows ({y} duplicates)",
-  "iNWbVV": "จัดการ",
-  "iXPL0Z": "ไม่สามารถเข้าสู่ระบบด้วย private key ในการเชื่อมต่อที่ไม่ปลอดภัย โปรดใช้ Nostr key manager extension ในการจัดการ",
-  "iYc3Ld": "Payments",
-  "icCxlA": "new users page",
-  "ieGrWo": "ติดตาม",
-  "igUUst": "Group Chat Threaded Reply",
-  "ipHVx5": "Generate Invoice",
-  "itPgxd": "โปรไฟล์",
-  "izWS4J": "เลิกติดตาม",
-  "j9xbzF": "Already backed up",
-  "jA3OE/": "{n,plural,=1{{n} sat} other{{n} sats}}",
-  "jAmfGl": "Your {site_name} subscription is expired",
-  "jHa/ko": "Clean up your feed",
-  "jMzO1S": "ข้อผิดพลาดภายใน: {msg}",
-  "jiAVXu": "Video Event",
-  "jvo0vs": "บันทึก",
-  "jzgQ2z": "{n} Reactions",
-  "k0kCJp": "Apply Now",
-  "k2veDA": "เขียน",
-  "k7sKNy": "บริการตรวจสอบ NIP-05 เป็นของเรา ช่วยสนับสนุนการพัฒนาของเว็บไซต์ และรับเหรียญตราที่สวยงามบนเว็บไซต์ของเรา",
-  "k9SQm1": "Relays which you have connected to before and appear to be reliable.",
-  "kEZUR8": "Register an Iris username",
-  "kJYo0u": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}",
-  "kKC9ya": "Wallet Info",
-  "kNd2FL": "Tidal login",
-  "kQAf2d": "Select",
-  "kaaf1E": "ตอนนี้",
-  "kc79d3": "Topics",
-  "klCm96": "Community Post Approval",
-  "kqPQJD": "Configure zap pool",
-  "kuPHYE": "{n,plural,=0{{name} liked} other{{name} & {n} others liked}}",
-  "l+ikU1": "ทุกสิ่งทุกอย่างใน {plan}",
-  "l3H1EK": "Invite your friends",
-  "l3nTjd": "Basic key derivation from mnemonic seed phrase",
-  "lCILNz": "ซื้อตอนนี้",
-  "lD3+8a": "ชำระเงิน",
-  "lEnclp": "My events: {n}",
-  "lPWASz": "Snort nostr address",
-  "lTbT3s": "รหัสผ่าน wallet",
-  "lbr3Lq": "Copy link",
-  "lfOesV": "Non-Zap",
-  "lgg1KN": "หน้าต่างบัญชี",
-  "ll3xBp": "บริการ Image proxy",
-  "lnaT9F": "กำลังติดตาม {n}",
-  "lsNFM1": "คลิกเพื่อโหลดเนื้อหาจาก {link}",
-  "lvlPhZ": "จ่าย invoice",
-  "m/59y2": "Zap Request",
-  "m6h2Eg": "Handler recommendation",
-  "mCEKiZ": "{n} notes have been muted",
-  "mErPop": "เหมือนว่าคุณจะยังไม่มีนะ เช็ค {link} เพื่อซื้อสักอันสิ!",
-  "mFtdYh": "{type} Worker Relay",
-  "mKAr6h": "ติดตามทั้งหมด",
-  "mKh2HS": "บริการอัพโหลดไฟล์",
-  "mKhgP9": "{n,plural,=0{} =1{zapped} other{zapped}}",
-  "mOFG3K": "Start",
-  "mfe8RW": "ตัวเลือก: {n}",
-  "mmPSWH": "Read Only",
-  "n1Whvj": "สลับ",
-  "n5l7tP": "Time-Based Calendar Event",
-  "n8k1SG": "{n}MiB",
-  "nD4frR": "Bid confirmation",
-  "nDejmx": "ยกเลิกการบล็อค",
-  "nGBrvw": "บุ๊คมาร์ค",
-  "nGGDsi": "Notifications Allowed",
-  "nIchMQ": "Searching for account activity ({progress})",
-  "nPHrqp": "Coinjoin Pool",
-  "nUT0Lv": "Tools",
-  "nWQFic": "Renew",
-  "nihgfo": "Listen to this article",
-  "nwZXeh": "{n} บล็อค",
-  "o/gK53": "Deck",
-  "o7e+nJ": "ผู้ติดตาม {n}",
-  "oJ+JJN": "ไม่พบสิ่งใด :/",
-  "odFwjL": "เฉพาะที่ติดตามเท่านั้น",
-  "ojzbwv": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}",
-  "ozZ2Cj": "Badge Award",
-  "p4N05H": "Upload",
-  "p9Ps2l": "{x}/{y} have relays ({percent})",
-  "pEEBFk": "Reliable Relays",
-  "pI+77w": "ดาวน์โหลดข้อมูลสำรองจากรีเลย์ของ Snort",
-  "pRess9": "ZapPool",
-  "plOM0t": "Custom Emoji",
-  "plg2Ua": "Channel Mute User",
-  "puLNUJ": "ปักหมุด",
-  "pyjJ5f": "Nostr Marketplace (for resilient marketplaces)",
-  "pzTOmv": "ผู้ติดตาม",
-  "q3OuMw": "Torrent Comment",
-  "qAY40L": "Date-Based Calendar Event",
-  "qBYNMb": "Group Thread Reply",
-  "qD9EUF": "Email <> DM bridge ของคุณจาก Snort nostr address",
-  "qDwvZ4": "ข้อผิดพลาดที่ไม่รู้จัก",
-  "qFIVx4": "Profile Badges",
-  "qMePPG": "Note",
-  "qMx1sA": "จำนวน zap พื้นฐาน",
-  "qUJTsT": "บล็อค",
-  "qXCbgZ": "Unlock",
-  "qZsKBR": "Renew {tier}",
-  "qcJFEJ": "Notifications API Disabled",
-  "qdGuQo": "Private key ของคุณคือ(อย่าส่งข้อมูลนี้ให้ผู้อื่น)",
-  "qfmMQh": "This note has been muted",
-  "qkvYUb": "เพิ่มไปยังโปรไฟล์",
-  "qmJ8kD": "แปลล้มเหลว",
-  "qtWLmt": "Like",
-  "qyJtWy": "Show less",
-  "qydxOd": "Science",
-  "qz9fty": "Incorrect pin",
-  "r3C4x/": "ซอฟต์แวร์",
-  "r5srDR": "โปรดใส่รหัส wallet",
-  "rAQG0X": "Relay List Metadata",
-  "rIsVe+": "Public chats list",
-  "rMgF34": "Back up now",
-  "rRRXtB": "Lightning Zaps",
-  "rT14Ow": "เพิ่มรีเลย์",
-  "reFEEC": "Reporting",
-  "rfuMjE": "(ค่าเริ่มต้น)",
-  "rkM7l8": "Encrypted Direct Message",
-  "rmdsT4": "{n} days",
-  "rn52n9": "Public Chat Channels",
-  "rx1i0i": "Short link",
-  "sFUkSN": "Bookmark sets",
-  "sKDn4e": "Show Badges",
-  "sUNhQE": "user",
-  "sZQzjQ": "Failed to parse zap split: {input}",
-  "saInmO": "The relay name shown is not the same as the full URL entered.",
-  "saorw+": "Event Deletion Request",
-  "sfL/O+": "Muted notes will not be shown",
-  "t79a6U": "Connection Success:",
-  "tDDiRL": "Interests list",
-  "tFpT/O": "Release artifact sets",
-  "tO1oq9": "Video Events",
-  "tOdNiY": "มืด",
-  "tRGdV1": "Versioned Encryption",
-  "tU0ADf": "Unknown NIP-{x}",
-  "tVuVg9": "Video View Event",
-  "tf1lIh": "Free",
-  "th5lxp": "ส่งโน้ตของคุณไปยังชุดของรีเลย์ที่คุณอนุญาติให้เขียน",
-  "thnRpU": "การได้รับการยืนยัน NIP-05 สามารถช่วย:",
-  "tj6kdX": "{sign} {amount} sats",
-  "tjpYlr": "Relay Metrics",
-  "ttxS0b": "เหรียญตราของผู้สนับสนุน",
-  "tzMNF3": "Status",
-  "u/vOPu": "ชำระเงินแล้ว",
-  "u4I8q8": "Pin list",
-  "u81G9+": "Uptime",
-  "u9NoC1": "Name must be less than {limit} characters",
-  "uCk8r+": "Already have an account?",
-  "uD7Els": "External Identities in Profiles",
-  "uJaMkO": "Relay list to receive DMs",
-  "uSV4Ti": "การรีโพสจะต้องได้รับการยืนยันด้วยตนเอง",
-  "uc0din": "Send sats splits to",
-  "ufvXH1": "Found {n} events",
-  "uhu5aG": "Public",
-  "un1nGw": "{n} notes",
-  "usAvMr": "แก้ไขโปร์ไฟล์",
-  "v8lolG": "Start chat",
-  "vB3oQ/": "Must be a contact list or pubkey list",
-  "vBsZhD": "Communities list",
-  "vN5UH8": "Profile Image",
-  "vU/Q5i": "This tool will search for the last event published by all of your follows and remove those who have not posted in 6 months",
-  "vZ4quW": "จ่ายด้วย {wallet}",
-  "vhlWFg": "ตัวเลือกโพลล์",
-  "vlbWtt": "Get a free one",
-  "voxBKC": "Followed by friends",
-  "vxwnbh": "Amount of work to apply to all published events",
-  "w1Fanr": "Business",
-  "w6qrwX": "NSFW",
-  "wEQDC6": "แก้ไข",
-  "wOyDTB": "File storage server list",
-  "wSZR47": "Submit",
-  "wc9st7": "Media Attachments",
-  "whSrs+": "Nostr Public Chat",
-  "wih7iJ": "ชื่อนี้ถูกบล๊อค",
-  "wlWMuh": "Patches",
-  "wofVHy": "Moderation",
-  "wqyN/i": "ค้นหาข้อมูลเพิ่มเติมเกี่ยวกับ {service} ได้ที่ {link}",
-  "wtLjP6": "คัดลอก ID",
-  "x+3fl6": "My Relays",
-  "x/Fx2P": "จัดหาเงินทุนให้กับบริการที่คุณใช้โดยแบ่งส่วนของ zaps ทั้งหมดของคุณออกเป็นกองทุน!",
-  "x82IOl": "ปิดการมองเห็น",
-  "xEjBS7": "For you",
-  "xIcAOU": "Votes by {type}",
-  "xIoGG9": "ไปยัง",
-  "xPCyu+": "nostr: URI scheme",
-  "xaj9Ba": "ผู้ให้บริการ",
-  "xbVgIm": "โหลดสื่อโดยอัตโนมัติ",
-  "xhQMeQ": "หมดอายุ",
-  "xl4s/X": "Additional Terms:",
-  "xmcVZ0": "ค้นหา",
-  "xybOUv": "FAN",
-  "y/bmsG": "Allow",
-  "y1Z3or": "ภาษา",
-  "yAztTU": "{n} eSats",
-  "yCLnBC": "LNURL หรือ Lightning Address",
-  "yLzgxH": "Popular Relays",
-  "yeX8yA": "Native App",
-  "z3UjXR": "Debug",
-  "z3Ukvq": "Draft Long-form Content",
-  "zCb8fX": "Weight",
-  "zFegDD": "รายชื่อผู้ติดต่อ",
-  "zINlao": "เจ้าของ",
-  "zQvVDJ": "ทั้งหมด",
-  "zcaOTs": "จำนวน zap ในหน่วย sats",
-  "zi9MdS": "Chess (PGN)",
-  "zm6qS1": "{n} mins to read",
-  "zonsdq": "ไม่สามารถโหลดบริการ LNURL",
-  "zvCDao": "โชว์โน้ตแบบย่ออัตโนมัติ",
-  "zx0myy": "Participants"
+  "+D82kt": [
+    {
+      "type": 0,
+      "value": "คุณแน่ใจหรือไม่ว่าต้องการจะรีโพสต์: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "+PzQ9Y": [
+    {
+      "type": 0,
+      "value": "จ่ายเลยตอนนี้"
+    }
+  ],
+  "+QM0PJ": [
+    {
+      "type": 0,
+      "value": "Sync all events for your profile into local cache"
+    }
+  ],
+  "+QMdsy": [
+    {
+      "type": 0,
+      "value": "Relay Stats"
+    }
+  ],
+  "+UjDmN": [
+    {
+      "type": 0,
+      "value": "Logged in with write access"
+    }
+  ],
+  "+Vxixo": [
+    {
+      "type": 0,
+      "value": "Secret Group Chat"
+    }
+  ],
+  "+aZY2h": [
+    {
+      "type": 0,
+      "value": "รูปแบบการ Zap"
+    }
+  ],
+  "+tShPg": [
+    {
+      "type": 0,
+      "value": "กำลังติดตาม"
+    }
+  ],
+  "+vA//S": [
+    {
+      "type": 0,
+      "value": "เข้าสู่ระบบ"
+    }
+  ],
+  "+vIQlC": [
+    {
+      "type": 0,
+      "value": "โปรดตรวจสอบให้แน่ใจว่าคุณได้ทำการบันทึกรหัสผ่านต่อไปนี้ไว้เรียบร้อยแล้ว เพื่อให้สะดวกต่อจัดการในอนาคต"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "เชื่อมต่อ"
+    }
+  ],
+  "+vj0U3": [
+    {
+      "type": 0,
+      "value": "แก้ไข"
+    }
+  ],
+  "+xliwN": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " reposted"
+    }
+  ],
+  "/B8zwF": [
+    {
+      "type": 0,
+      "value": "Your space the way you want it 😌"
+    }
+  ],
+  "/GCoTA": [
+    {
+      "type": 0,
+      "value": "ล้าง"
+    }
+  ],
+  "/JE/X+": [
+    {
+      "type": 0,
+      "value": "การสนับสนุนบัญชี"
+    }
+  ],
+  "/T7HId": [
+    {
+      "type": 0,
+      "value": "HTTP File Storage Integration"
+    }
+  ],
+  "/Xf4UW": [
+    {
+      "type": 0,
+      "value": "Send anonymous usage metrics"
+    }
+  ],
+  "/b1IHW": [
+    {
+      "type": 0,
+      "value": "Group Chat Message"
+    }
+  ],
+  "/d6vEc": [
+    {
+      "type": 0,
+      "value": "ทำให้ค้นหาและแบ่งปันโปรไฟล์ได้ง่ายขึ้น"
+    }
+  ],
+  "/ioUrF": [
+    {
+      "type": 0,
+      "value": "From File"
+    }
+  ],
+  "/n5KSF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ms"
+    }
+  ],
+  "00LcfG": [
+    {
+      "type": 0,
+      "value": "Load more"
+    }
+  ],
+  "01iNut": [
+    {
+      "type": 0,
+      "value": "Nostr address does not belong to you"
+    }
+  ],
+  "08zn6O": [
+    {
+      "type": 0,
+      "value": "Export Keys"
+    }
+  ],
+  "0Azlrb": [
+    {
+      "type": 0,
+      "value": "จัดการ"
+    }
+  ],
+  "0BUTMv": [
+    {
+      "type": 0,
+      "value": "ค้นหา..."
+    }
+  ],
+  "0MndVW": [
+    {
+      "type": 0,
+      "value": "Generic LNDHub wallet (BTCPayServer / Alby / LNBits)"
+    }
+  ],
+  "0jOEtS": [
+    {
+      "type": 0,
+      "value": "LNURL ไม่ถูกต้อง"
+    }
+  ],
+  "0kOBMu": [
+    {
+      "type": 0,
+      "value": "Handling Mentions"
+    }
+  ],
+  "0mch2Y": [
+    {
+      "type": 0,
+      "value": "ชื่อมีอักขระที่ไม่อนุญาตให้ใช้"
+    }
+  ],
+  "0siT4z": [
+    {
+      "type": 0,
+      "value": "Politics"
+    }
+  ],
+  "0uoY11": [
+    {
+      "type": 0,
+      "value": "Show Status"
+    }
+  ],
+  "0yO7wF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " วินาที"
+    }
+  ],
+  "0zASjL": [
+    {
+      "type": 0,
+      "value": "Go"
+    }
+  ],
+  "1/BFEj": [
+    {
+      "type": 0,
+      "value": "git stuff"
+    }
+  ],
+  "1Mo59U": [
+    {
+      "type": 0,
+      "value": "คุณแน่ใจหรือว่าต้องการลบโน้ตนี้ออกจากบุ๊คมาร์ค?"
+    }
+  ],
+  "1R43+L": [
+    {
+      "type": 0,
+      "value": "ใส่ Nostr Wallet Connect config"
+    }
+  ],
+  "1UWegE": [
+    {
+      "type": 0,
+      "value": "Be sure to back up your keys!"
+    }
+  ],
+  "1c4YST": [
+    {
+      "type": 0,
+      "value": "เชื่อมต่อกับ: "
+    },
+    {
+      "type": 1,
+      "value": "node"
+    },
+    {
+      "type": 0,
+      "value": " 🎉"
+    }
+  ],
+  "1nYUGC": [
+    {
+      "type": 0,
+      "value": "กำลังติดตาม "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "1o2BgB": [
+    {
+      "type": 0,
+      "value": "Check Signatures"
+    }
+  ],
+  "1ozeyg": [
+    {
+      "type": 0,
+      "value": "Nature"
+    }
+  ],
+  "1udzha": [
+    {
+      "type": 0,
+      "value": "การสนทนา"
+    }
+  ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "เพิ่ม"
+    }
+  ],
+  "25V4l1": [
+    {
+      "type": 0,
+      "value": "แบนเนอร์"
+    }
+  ],
+  "25WwxF": [
+    {
+      "type": 0,
+      "value": "Don't have an account?"
+    }
+  ],
+  "28oKbu": [
+    {
+      "type": 0,
+      "value": "Moderated Communities"
+    }
+  ],
+  "29sHFE": [
+    {
+      "type": 0,
+      "value": "Wallet Connect"
+    }
+  ],
+  "2BBGxX": [
+    {
+      "type": 0,
+      "value": "Subject tag in text events"
+    }
+  ],
+  "2HIqeO": [
+    {
+      "type": 0,
+      "value": "User emoji list"
+    }
+  ],
+  "2IFGap": [
+    {
+      "type": 0,
+      "value": "โดเนท"
+    }
+  ],
+  "2LbrkB": [
+    {
+      "type": 0,
+      "value": "ป้อนรหัสผ่าน"
+    }
+  ],
+  "2O2sfp": [
+    {
+      "type": 0,
+      "value": "Finish"
+    }
+  ],
+  "2Qsf9/": [
+    {
+      "type": 0,
+      "value": "Generic lists"
+    }
+  ],
+  "2a2YiP": [
+    {
+      "type": 0,
+      "value": "บุ๊คมาร์ค "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "2k0Cv+": [
+    {
+      "type": 0,
+      "value": "ไม่ถูกใจ ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "2mcwT8": [
+    {
+      "type": 0,
+      "value": "New Note"
+    }
+  ],
+  "2oCF7O": [
+    {
+      "type": 0,
+      "value": "Followed by friends of friends"
+    }
+  ],
+  "2raFAu": [
+    {
+      "type": 0,
+      "value": "Application-specific data"
+    }
+  ],
+  "2ukA4d": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ชั่วโมง"
+    }
+  ],
+  "2z7Kky": [
+    {
+      "type": 0,
+      "value": "Latest Articles"
+    }
+  ],
+  "3/onCd": [
+    {
+      "type": 0,
+      "value": "Replies"
+    }
+  ],
+  "39AHJm": [
+    {
+      "type": 0,
+      "value": "Sign Up"
+    }
+  ],
+  "3GWu6/": [
+    {
+      "type": 0,
+      "value": "User Statuses"
+    }
+  ],
+  "3KNMbJ": [
+    {
+      "type": 0,
+      "value": "Articles"
+    }
+  ],
+  "3MKdAw": [
+    {
+      "type": 0,
+      "value": "Blobs stored on mediaservers"
+    }
+  ],
+  "3QwfJR": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    }
+  ],
+  "3adEeb": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " viewers"
+    }
+  ],
+  "3cc4Ct": [
+    {
+      "type": 0,
+      "value": "สว่าง"
+    }
+  ],
+  "3gOsZq": [
+    {
+      "type": 0,
+      "value": "แปลภาษา"
+    }
+  ],
+  "3kbIhS": [
+    {
+      "type": 0,
+      "value": "Untitled"
+    }
+  ],
+  "3qnJlS": [
+    {
+      "type": 0,
+      "value": "คุณกำลังลงคะแนนด้วย "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "3t3kok": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " โน้ตใหม่"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " โน้ตใหม่"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "3tVy+Z": [
+    {
+      "type": 0,
+      "value": "ผู้ติดตาม "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "3yk8fB": [
+    {
+      "type": 0,
+      "value": "Wallet"
+    }
+  ],
+  "40VR6s": [
+    {
+      "type": 0,
+      "value": "Nostr Connect"
+    }
+  ],
+  "41BSaT": [
+    {
+      "type": 0,
+      "value": "Total Events:"
+    }
+  ],
+  "450Fty": [
+    {
+      "type": 0,
+      "value": "ไม่มี"
+    }
+  ],
+  "47E53q": [
+    {
+      "type": 0,
+      "value": "Wiki"
+    }
+  ],
+  "47FYwb": [
+    {
+      "type": 0,
+      "value": "ยกเลิก"
+    }
+  ],
+  "48zn4v": [
+    {
+      "type": 0,
+      "value": "Bid"
+    }
+  ],
+  "4IPzdn": [
+    {
+      "type": 0,
+      "value": "นักพัฒนาหลัก"
+    }
+  ],
+  "4L2vUY": [
+    {
+      "type": 0,
+      "value": "NIP-05 ใหม่ของคุณคือ:"
+    }
+  ],
+  "4MjsHk": [
+    {
+      "type": 0,
+      "value": "Life"
+    }
+  ],
+  "4OB335": [
+    {
+      "type": 0,
+      "value": "ไม่ถูกใจ"
+    }
+  ],
+  "4P/kKm": [
+    {
+      "type": 0,
+      "value": "Private Key Encryption"
+    }
+  ],
+  "4Vmpt4": [
+    {
+      "type": 0,
+      "value": "Nostr Plebs เป็นหนึ่งในผู้ให้บริการ NIP-05 รายแรก ๆ ในพื้นที่นี้ และเสนอชุดโดเมนที่ดีในราคาที่สมเหตุสมผล"
+    }
+  ],
+  "4Z3t5i": [
+    {
+      "type": 0,
+      "value": "ใช้ imgproxy เพื่อบีบอัดรูปภาพ"
+    }
+  ],
+  "4emo2p": [
+    {
+      "type": 0,
+      "value": "Missing Relays"
+    }
+  ],
+  "4rYCjn": [
+    {
+      "type": 0,
+      "value": "หมายเหตุถึงตนเอง"
+    }
+  ],
+  "4wgYpI": [
+    {
+      "type": 0,
+      "value": "Recommended Application Handlers"
+    }
+  ],
+  "5BVs2e": [
+    {
+      "type": 0,
+      "value": "zaps"
+    }
+  ],
+  "5CB6zB": [
+    {
+      "type": 0,
+      "value": "Zap Splits"
+    }
+  ],
+  "5PRWs7": [
+    {
+      "type": 0,
+      "value": "Notifications API Enabled"
+    }
+  ],
+  "5dfmvv": [
+    {
+      "type": 0,
+      "value": "Zap Goal"
+    }
+  ],
+  "5oTnfy": [
+    {
+      "type": 0,
+      "value": "รหัสการซื้อ"
+    }
+  ],
+  "5qEWCr": [
+    {
+      "type": 0,
+      "value": "File Metadata"
+    }
+  ],
+  "5u6iEc": [
+    {
+      "type": 0,
+      "value": "แปลงเป็น Pubkey"
+    }
+  ],
+  "5vMmmR": [
+    {
+      "type": 0,
+      "value": "Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration."
+    }
+  ],
+  "5ykRmX": [
+    {
+      "type": 0,
+      "value": "ส่ง zap"
+    }
+  ],
+  "6/hB3S": [
+    {
+      "type": 0,
+      "value": "Watch Replay"
+    }
+  ],
+  "60kEE3": [
+    {
+      "type": 0,
+      "value": "Mute list"
+    }
+  ],
+  "62nsdy": [
+    {
+      "type": 0,
+      "value": "Retry"
+    }
+  ],
+  "634VVz": [
+    {
+      "type": 0,
+      "value": "Connection Failed:"
+    }
+  ],
+  "6559gb": [
+    {
+      "type": 0,
+      "value": "New follow list length "
+    },
+    {
+      "type": 1,
+      "value": "length"
+    }
+  ],
+  "65BmHb": [
+    {
+      "type": 0,
+      "value": "อิมเมจพร็อกซีจาก "
+    },
+    {
+      "type": 1,
+      "value": "host"
+    },
+    {
+      "type": 0,
+      "value": " ไม่สำเร็จ คลิกที่นี่เพื่อโหลดโดยตรง"
+    }
+  ],
+  "6D4Hhn": [
+    {
+      "type": 0,
+      "value": "Recommend Relay"
+    }
+  ],
+  "6KGebm": [
+    {
+      "type": 0,
+      "value": "Seal"
+    }
+  ],
+  "6OSOXl": [
+    {
+      "type": 0,
+      "value": "Reason: "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reason"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "6WWD34": [
+    {
+      "type": 0,
+      "value": "Looking for: "
+    },
+    {
+      "type": 1,
+      "value": "noteId"
+    }
+  ],
+  "6bgpn+": [
+    {
+      "type": 0,
+      "value": "Not all clients support this, you may still receive some zaps as if zap splits was not configured"
+    }
+  ],
+  "6ewQqw": [
+    {
+      "type": 0,
+      "value": "ถูกใจ ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "6mr8WU": [
+    {
+      "type": 0,
+      "value": "Followed by"
+    }
+  ],
+  "6pdxsi": [
+    {
+      "type": 0,
+      "value": "Extra metadata fields and tags"
+    }
+  ],
+  "6uMqL1": [
+    {
+      "type": 0,
+      "value": "ยังไม่ได้ชำระ"
+    }
+  ],
+  "6xNr8c": [
+    {
+      "type": 0,
+      "value": "Switch accounts"
+    }
+  ],
+  "6xap9L": [
+    {
+      "type": 0,
+      "value": "Good"
+    }
+  ],
+  "7+Domh": [
+    {
+      "type": 0,
+      "value": "โน้ต"
+    }
+  ],
+  "712i26": [
+    {
+      "type": 0,
+      "value": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node"
+    }
+  ],
+  "753yX5": [
+    {
+      "type": 0,
+      "value": "Label"
+    }
+  ],
+  "769A8p": [
+    {
+      "type": 0,
+      "value": "Wiki article"
+    }
+  ],
+  "77nkEO": [
+    {
+      "type": 0,
+      "value": "Relay Information Document"
+    }
+  ],
+  "7LFU8U": [
+    {
+      "type": 0,
+      "value": "Search Capability"
+    }
+  ],
+  "7UOvbT": [
+    {
+      "type": 0,
+      "value": "Offline"
+    }
+  ],
+  "7YkSA2": [
+    {
+      "type": 0,
+      "value": "Community Leader"
+    }
+  ],
+  "7gMmSL": [
+    {
+      "type": 0,
+      "value": "Reaction"
+    }
+  ],
+  "7hp70g": [
+    {
+      "type": 0,
+      "value": "NIP-05"
+    }
+  ],
+  "7jfPsW": [
+    {
+      "type": 0,
+      "value": "Modular Article Content"
+    }
+  ],
+  "7nAz/z": [
+    {
+      "type": 0,
+      "value": "Mute notes from people who are outside your web of trust"
+    }
+  ],
+  "7pFGAQ": [
+    {
+      "type": 0,
+      "value": "Close Relays"
+    }
+  ],
+  "8/vBbP": [
+    {
+      "type": 0,
+      "value": "รีโพสต์ ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "89q5wc": [
+    {
+      "type": 0,
+      "value": "ยืนยันรีโพสต์"
+    }
+  ],
+  "8BDFvJ": [
+    {
+      "type": 0,
+      "value": "Conventions for clients' use of e and p tags in text events"
+    }
+  ],
+  "8ED/4u": [
+    {
+      "type": 0,
+      "value": "Reply To"
+    }
+  ],
+  "8HJxXG": [
+    {
+      "type": 0,
+      "value": "Sign up"
+    }
+  ],
+  "8QDesP": [
+    {
+      "type": 0,
+      "value": "Zap "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "8Rkoyb": [
+    {
+      "type": 0,
+      "value": "Recipient"
+    }
+  ],
+  "8Y6bZQ": [
+    {
+      "type": 0,
+      "value": "Invalid zap split: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "8ZGqWl": [
+    {
+      "type": 0,
+      "value": "Group Thread"
+    }
+  ],
+  "8g2vyB": [
+    {
+      "type": 0,
+      "value": "ชื่อยาวเกินไป"
+    }
+  ],
+  "8jmwT8": [
+    {
+      "type": 0,
+      "value": "bech32-encoded entities"
+    }
+  ],
+  "8v1NN+": [
+    {
+      "type": 0,
+      "value": "Pairing phrase"
+    }
+  ],
+  "8xdDLn": [
+    {
+      "type": 0,
+      "value": "Follow sets"
+    }
+  ],
+  "8za9Pq": [
+    {
+      "type": 0,
+      "value": "Draft Classified Listing"
+    }
+  ],
+  "9+Ddtu": [
+    {
+      "type": 0,
+      "value": "ถัดไป"
+    }
+  ],
+  "9HU8vw": [
+    {
+      "type": 0,
+      "value": "ตอบกลับ"
+    }
+  ],
+  "9SvQep": [
+    {
+      "type": 0,
+      "value": "ติดตาม "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "9V0wg3": [
+    {
+      "type": 0,
+      "value": "Calendar Event RSVP"
+    }
+  ],
+  "9WRlF4": [
+    {
+      "type": 0,
+      "value": "ส่ง"
+    }
+  ],
+  "9kO0VQ": [
+    {
+      "type": 0,
+      "value": "Hide muted notes"
+    }
+  ],
+  "9kSari": [
+    {
+      "type": 0,
+      "value": "Retry publishing"
+    }
+  ],
+  "9pMqYs": [
+    {
+      "type": 0,
+      "value": "Nostr Address"
+    }
+  ],
+  "9wO4wJ": [
+    {
+      "type": 0,
+      "value": "Lightning Invoice"
+    }
+  ],
+  "A86fJ+": [
+    {
+      "type": 0,
+      "value": "Generic Repost"
+    }
+  ],
+  "ADmfQT": [
+    {
+      "type": 0,
+      "value": "ตอบกลับจาก"
+    }
+  ],
+  "ALdW69": [
+    {
+      "type": 0,
+      "value": "Note by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "AN0Z7Q": [
+    {
+      "type": 0,
+      "value": "Muted Words"
+    }
+  ],
+  "ASRK0S": [
+    {
+      "type": 0,
+      "value": "ผู้เขียนถูกปิดการมองเห็น"
+    }
+  ],
+  "AedFVZ": [
+    {
+      "type": 0,
+      "value": "Create or update a product"
+    }
+  ],
+  "Ai8VHU": [
+    {
+      "type": 0,
+      "value": "สามารถเก็บโน้ตได้อย่างไม่จำกัดบน Snort relay"
+    }
+  ],
+  "AkCxS/": [
+    {
+      "type": 0,
+      "value": "เหตุผล"
+    }
+  ],
+  "AktAk2": [
+    {
+      "type": 0,
+      "value": "Great"
+    }
+  ],
+  "Am8glJ": [
+    {
+      "type": 0,
+      "value": "Game"
+    }
+  ],
+  "AqGfF4": [
+    {
+      "type": 0,
+      "value": "Channel Creation"
+    }
+  ],
+  "Aujn2T": [
+    {
+      "type": 0,
+      "value": "Count"
+    }
+  ],
+  "Awq32I": [
+    {
+      "type": 0,
+      "value": "Push notifications"
+    }
+  ],
+  "AxDOiG": [
+    {
+      "type": 0,
+      "value": "Months"
+    }
+  ],
+  "AyGauy": [
+    {
+      "type": 0,
+      "value": "เข้าสู่ระบบ"
+    }
+  ],
+  "B4C47Y": [
+    {
+      "type": 0,
+      "value": "ชื่อสั้นเกินไป"
+    }
+  ],
+  "B6+XJy": [
+    {
+      "type": 0,
+      "value": "zap เรียบร้อยแล้ว"
+    }
+  ],
+  "B6H7eJ": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex"
+    }
+  ],
+  "B7wvUM": [
+    {
+      "type": 0,
+      "value": "You can add a single or multiple relays, one per line."
+    }
+  ],
+  "BGCM48": [
+    {
+      "type": 0,
+      "value": "Write ไปยัง Snort relay จะเก็บรักษา event ให้เป็นเวลา 1 ปี"
+    }
+  ],
+  "BGGacK": [
+    {
+      "type": 0,
+      "value": "AI Embeddings / Vector lists"
+    }
+  ],
+  "BQW4gi": [
+    {
+      "type": 0,
+      "value": "Relay-based Groups"
+    }
+  ],
+  "BWpuKl": [
+    {
+      "type": 0,
+      "value": "อัปเดต"
+    }
+  ],
+  "BfuAQ5": [
+    {
+      "type": 0,
+      "value": "Marketplace UI/UX"
+    }
+  ],
+  "BjNwZW": [
+    {
+      "type": 0,
+      "value": "Nostr address (nip05)"
+    }
+  ],
+  "Blxcdx": [
+    {
+      "type": 0,
+      "value": "Relay"
+    }
+  ],
+  "Bo+O//": [
+    {
+      "type": 0,
+      "value": "HTTP Auth"
+    }
+  ],
+  "C1LjMx": [
+    {
+      "type": 0,
+      "value": "บริจาคด้วย Linghtning"
+    }
+  ],
+  "C6Lhhp": [
+    {
+      "type": 0,
+      "value": "Live Event"
+    }
+  ],
+  "C7642/": [
+    {
+      "type": 0,
+      "value": "Quote Repost"
+    }
+  ],
+  "C81/uG": [
+    {
+      "type": 0,
+      "value": "ออกจากระบบ"
+    }
+  ],
+  "C8FsOr": [
+    {
+      "type": 0,
+      "value": "Popular Servers"
+    }
+  ],
+  "C8HhVE": [
+    {
+      "type": 0,
+      "value": "แนะนำให้ติดตาม"
+    }
+  ],
+  "CA1efg": [
+    {
+      "type": 0,
+      "value": "Video sets"
+    }
+  ],
+  "CHTbO3": [
+    {
+      "type": 0,
+      "value": "ไม่สามารถโหลด invoice"
+    }
+  ],
+  "CJx5Nd": [
+    {
+      "type": 0,
+      "value": "Profile Zaps"
+    }
+  ],
+  "CM+Cfj": [
+    {
+      "type": 0,
+      "value": "Follow List"
+    }
+  ],
+  "CM0k0d": [
+    {
+      "type": 0,
+      "value": "Prune follow list"
+    }
+  ],
+  "CVWeJ6": [
+    {
+      "type": 0,
+      "value": "บุตคลที่กำลังมาแรง"
+    }
+  ],
+  "CYkOCI": [
+    {
+      "type": 0,
+      "value": "and "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " others you follow"
+    }
+  ],
+  "Cdxwi0": [
+    {
+      "type": 0,
+      "value": "Repository announcements"
+    }
+  ],
+  "CmZ9ls": [
+    {
+      "type": 0,
+      "value": "ปิดการมองเห็น "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " บัญชี"
+    }
+  ],
+  "Coy6SH": [
+    {
+      "type": 0,
+      "value": "Calendar"
+    }
+  ],
+  "CsCUYo": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "Cu/K85": [
+    {
+      "type": 0,
+      "value": "แปลจาก "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "CzHZoc": [
+    {
+      "type": 0,
+      "value": "Social Graph"
+    }
+  ],
+  "D++Njw": [
+    {
+      "type": 0,
+      "value": "Text Note References"
+    }
+  ],
+  "D+KzKd": [
+    {
+      "type": 0,
+      "value": "Zap ให้ทุกโน้ตที่โหลดโดยอัตโนมัติ"
+    }
+  ],
+  "D09wbg": [
+    {
+      "type": 0,
+      "value": "Badge Definition"
+    }
+  ],
+  "D3idYv": [
+    {
+      "type": 0,
+      "value": "การตั้งค่า"
+    }
+  ],
+  "D9xTLE": [
+    {
+      "type": 0,
+      "value": "Channel Hide Message"
+    }
+  ],
+  "DBiVK1": [
+    {
+      "type": 0,
+      "value": "Cache"
+    }
+  ],
+  "DKnriN": [
+    {
+      "type": 0,
+      "value": "ส่งซาโตชิ"
+    }
+  ],
+  "DZzCem": [
+    {
+      "type": 0,
+      "value": "แสดงโน้ตล่าสุด "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " รายการ"
+    }
+  ],
+  "Dh3hbq": [
+    {
+      "type": 0,
+      "value": "Zap โดยอัตโนมัติ"
+    }
+  ],
+  "Dn82AL": [
+    {
+      "type": 0,
+      "value": "Live"
+    }
+  ],
+  "DqUmXt": [
+    {
+      "type": 0,
+      "value": "Product sold as an auction"
+    }
+  ],
+  "DrZqav": [
+    {
+      "type": 0,
+      "value": "About must be less than "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " characters"
+    }
+  ],
+  "DtYelJ": [
+    {
+      "type": 0,
+      "value": "โอนย้าย"
+    }
+  ],
+  "Dx4ey3": [
+    {
+      "type": 0,
+      "value": "Toggle all"
+    }
+  ],
+  "E3oB+t": [
+    {
+      "type": 0,
+      "value": "Browser"
+    }
+  ],
+  "E5ZIPD": [
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "amount"
+        }
+      ],
+      "type": 8,
+      "value": "big"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "sats"
+        }
+      ],
+      "type": 8,
+      "value": "small"
+    }
+  ],
+  "EHqHsu": [
+    {
+      "type": 0,
+      "value": "Invoice / Lightning Address"
+    }
+  ],
+  "EJbFi7": [
+    {
+      "type": 0,
+      "value": "Search notes"
+    }
+  ],
+  "ELbg9p": [
+    {
+      "type": 0,
+      "value": "ผู้ให้บริการข้อมูล"
+    }
+  ],
+  "EQKRE4": [
+    {
+      "type": 0,
+      "value": "Show badges on profile pages"
+    }
+  ],
+  "EWeVrH": [
+    {
+      "type": 0,
+      "value": "Reaction to a website"
+    }
+  ],
+  "EWyQH5": [
+    {
+      "type": 0,
+      "value": "Global"
+    }
+  ],
+  "Ebl/B2": [
+    {
+      "type": 0,
+      "value": "แปลจาก "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "Ec+xLY": [
+    {
+      "type": 0,
+      "value": "Curation sets"
+    }
+  ],
+  "EcZF24": [
+    {
+      "type": 0,
+      "value": "รีเลย์ที่กำหนดเอง"
+    }
+  ],
+  "EcfIwB": [
+    {
+      "type": 0,
+      "value": "Username is available"
+    }
+  ],
+  "EcglP9": [
+    {
+      "type": 0,
+      "value": "Key"
+    }
+  ],
+  "EjFyoR": [
+    {
+      "type": 0,
+      "value": "On-chain Donation Address"
+    }
+  ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "ซื้อ"
+    }
+  ],
+  "EsHX35": [
+    {
+      "type": 0,
+      "value": "Sorry, we dont understand this event kind ("
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "), please try one of the following apps instead!"
+    }
+  ],
+  "F/6VqP": [
+    {
+      "type": 0,
+      "value": "Server"
+    }
+  ],
+  "F3l7xL": [
+    {
+      "type": 0,
+      "value": "เพิ่มบัญชี"
+    }
+  ],
+  "F4eJ/3": [
+    {
+      "type": 0,
+      "value": "Classified Listings"
+    }
+  ],
+  "FDguSC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Zaps"
+    }
+  ],
+  "FHWpHC": [
+    {
+      "type": 0,
+      "value": "Wallet Response"
+    }
+  ],
+  "FHvSk3": [
+    {
+      "type": 0,
+      "value": "Authentication of clients to relays"
+    }
+  ],
+  "FMfjrl": [
+    {
+      "type": 0,
+      "value": "Show status messages on profile pages"
+    }
+  ],
+  "FSYL8G": [
+    {
+      "type": 0,
+      "value": "Trending Users"
+    }
+  ],
+  "FWJR1B": [
+    {
+      "type": 0,
+      "value": "User groups"
+    }
+  ],
+  "FcNSft": [
+    {
+      "type": 0,
+      "value": "Redirect issues HTTP redirect to the supplied lightning address"
+    }
+  ],
+  "FdhSU2": [
+    {
+      "type": 0,
+      "value": "รับทันที"
+    }
+  ],
+  "FfYsOb": [
+    {
+      "type": 0,
+      "value": "พบข้อผิดพลาด!"
+    }
+  ],
+  "FmXUJg": [
+    {
+      "type": 0,
+      "value": "ได้ติดตามคุณ"
+    }
+  ],
+  "FvanT6": [
+    {
+      "type": 0,
+      "value": "Accounts"
+    }
+  ],
+  "FzbSGg": [
+    {
+      "type": 0,
+      "value": "You dont have any media servers, try adding some."
+    }
+  ],
+  "G/yZLu": [
+    {
+      "type": 0,
+      "value": "ลบ"
+    }
+  ],
+  "G1BGCg": [
+    {
+      "type": 0,
+      "value": "เลือก wallet"
+    }
+  ],
+  "G3A56c": [
+    {
+      "type": 0,
+      "value": "Subscribed to Push"
+    }
+  ],
+  "GFOoEE": [
+    {
+      "type": 0,
+      "value": "Salt"
+    }
+  ],
+  "GIqktu": [
+    {
+      "type": 0,
+      "value": "Supported NIPs"
+    }
+  ],
+  "GL8aXW": [
+    {
+      "type": 0,
+      "value": "บุ๊คมาร์ค ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "GSye7T": [
+    {
+      "type": 0,
+      "value": "Lightning Address"
+    }
+  ],
+  "GUlSVG": [
+    {
+      "type": 0,
+      "value": "รับ Snort nostr address ของคุณ"
+    }
+  ],
+  "Gcn9NQ": [
+    {
+      "type": 0,
+      "value": "Magnet Link"
+    }
+  ],
+  "GpkNYn": [
+    {
+      "type": 0,
+      "value": "Torrent"
+    }
+  ],
+  "GqQeu/": [
+    {
+      "type": 0,
+      "value": "Invalid Lightning Address"
+    }
+  ],
+  "GspYR7": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ไม่ถูกใจ"
+    }
+  ],
+  "Gxcr08": [
+    {
+      "type": 0,
+      "value": "Broadcast Event"
+    }
+  ],
+  "H+vHiz": [
+    {
+      "type": 0,
+      "value": "Hex Key.."
+    }
+  ],
+  "H/oroO": [
+    {
+      "type": 0,
+      "value": "Dealing with Unknown Events"
+    }
+  ],
+  "H0JBH6": [
+    {
+      "type": 0,
+      "value": "ออกจากระบบ"
+    }
+  ],
+  "H0OG3T": [
+    {
+      "type": 0,
+      "value": "Leader Info"
+    }
+  ],
+  "H1GTaC": [
+    {
+      "type": 0,
+      "value": "Bookmark list"
+    }
+  ],
+  "H6/kLh": [
+    {
+      "type": 0,
+      "value": "ได้รับการชำระเงินเรียบร้อย!"
+    }
+  ],
+  "HAlOn1": [
+    {
+      "type": 0,
+      "value": "ชื่อ"
+    }
+  ],
+  "HFls6j": [
+    {
+      "type": 0,
+      "value": "ชื่อจะสามารถใช้ได้ในภายหลัง"
+    }
+  ],
+  "HOzFdo": [
+    {
+      "type": 0,
+      "value": "ปิดการมองเห็น"
+    }
+  ],
+  "HWbkEK": [
+    {
+      "type": 0,
+      "value": "ล้างแคชและดาวน์โหลดใหม่อีกครั้ง"
+    }
+  ],
+  "HbefNb": [
+    {
+      "type": 0,
+      "value": "เปิด Wallet"
+    }
+  ],
+  "HhcAVH": [
+    {
+      "type": 0,
+      "value": "You don't follow this person, click here to load media from "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "link"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": ", or update "
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "type": 0,
+              "value": "your preferences"
+            }
+          ],
+          "type": 8,
+          "value": "i"
+        }
+      ],
+      "type": 8,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": " to always load media from everybody."
+    }
+  ],
+  "HpAmQZ": [
+    {
+      "type": 0,
+      "value": "Relay reviews"
+    }
+  ],
+  "HqRNN8": [
+    {
+      "type": 0,
+      "value": "Support"
+    }
+  ],
+  "HzSFeV": [
+    {
+      "type": 0,
+      "value": "Expiration Timestamp"
+    }
+  ],
+  "I0tYZf": [
+    {
+      "type": 0,
+      "value": "Create or update a stall"
+    }
+  ],
+  "I1AoOu": [
+    {
+      "type": 0,
+      "value": "Last post "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    }
+  ],
+  "IEwZvs": [
+    {
+      "type": 0,
+      "value": "คุณแน่ใจแล้วใช่มั้ยว่าต้องการลบโน้ตนี้?"
+    }
+  ],
+  "IIOul1": [
+    {
+      "type": 0,
+      "value": "Account Data"
+    }
+  ],
+  "IKKHqV": [
+    {
+      "type": 0,
+      "value": "Follows"
+    }
+  ],
+  "IOu4Xh": [
+    {
+      "type": 0,
+      "value": "You must be a "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    },
+    {
+      "type": 0,
+      "value": " subscriber to access "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": " deck"
+    }
+  ],
+  "IVbtTS": [
+    {
+      "type": 0,
+      "value": "Zap all "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "IWz1ta": [
+    {
+      "type": 0,
+      "value": "Auto Translate"
+    }
+  ],
+  "IcHcWj": [
+    {
+      "type": 0,
+      "value": "Last Seen:"
+    }
+  ],
+  "Ig9/a1": [
+    {
+      "type": 0,
+      "value": "ส่ง "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats ถึง "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "IgsWFG": [
+    {
+      "type": 0,
+      "value": "Not followed by anyone you follow"
+    }
+  ],
+  "IoQq+a": [
+    {
+      "type": 0,
+      "value": "Click here to load anyway"
+    }
+  ],
+  "IvjoDS": [
+    {
+      "type": 0,
+      "value": "Connected"
+    }
+  ],
+  "Ix8l+B": [
+    {
+      "type": 0,
+      "value": "โน๊ตที่กำลังมาแรง"
+    }
+  ],
+  "J+dIsA": [
+    {
+      "type": 0,
+      "value": "การสมัครสมาชิก"
+    }
+  ],
+  "J1iLmb": [
+    {
+      "type": 0,
+      "value": "Notifications Not Allowed"
+    }
+  ],
+  "J2HeQ+": [
+    {
+      "type": 0,
+      "value": "Use commas to separate words e.g. word1, word2, word3"
+    }
+  ],
+  "J2Q92B": [
+    {
+      "type": 0,
+      "value": "Emoji sets"
+    }
+  ],
+  "J6N9xl": [
+    {
+      "type": 0,
+      "value": "Sign in with Android signer"
+    }
+  ],
+  "JCIgkj": [
+    {
+      "type": 0,
+      "value": "ชื่อผู้ใช้"
+    }
+  ],
+  "JGrt9q": [
+    {
+      "type": 0,
+      "value": "Send sats to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "JHEHCk": [
+    {
+      "type": 0,
+      "value": "Zaps ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "JIVWWA": [
+    {
+      "type": 0,
+      "value": "Sport"
+    }
+  ],
+  "JPFYIM": [
+    {
+      "type": 0,
+      "value": "ไม่มี lightning address นี้"
+    }
+  ],
+  "JSx7y9": [
+    {
+      "type": 0,
+      "value": "Subscribe to "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": " for "
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " and receive the following rewards"
+    }
+  ],
+  "JeoS4y": [
+    {
+      "type": 0,
+      "value": "Repost"
+    }
+  ],
+  "Jh5zKH": [
+    {
+      "type": 0,
+      "value": "Search relays list"
+    }
+  ],
+  "JjGgXI": [
+    {
+      "type": 0,
+      "value": "Search users"
+    }
+  ],
+  "JkLHGw": [
+    {
+      "type": 0,
+      "value": "เว็บไซต์"
+    }
+  ],
+  "JmcxzF": [
+    {
+      "type": 0,
+      "value": "Relays are servers you connect to for sending and receiving events. Aim for 4-8 relays."
+    }
+  ],
+  "JymXbw": [
+    {
+      "type": 0,
+      "value": "Private Key"
+    }
+  ],
+  "K1wl1/": [
+    {
+      "type": 0,
+      "value": "Average Latency:"
+    }
+  ],
+  "K3r6DQ": [
+    {
+      "type": 0,
+      "value": "ลบ"
+    }
+  ],
+  "K7AkdL": [
+    {
+      "type": 0,
+      "value": "แสดง"
+    }
+  ],
+  "K9zklU": [
+    {
+      "type": 0,
+      "value": "External Content IDs"
+    }
+  ],
+  "KAhAcM": [
+    {
+      "type": 0,
+      "value": "ใส่ LNDHub config"
+    }
+  ],
+  "KGmQjH": [
+    {
+      "type": 0,
+      "value": "Highlights"
+    }
+  ],
+  "KJryGq": [
+    {
+      "type": 0,
+      "value": "Live Chat Message"
+    }
+  ],
+  "KQvWvD": [
+    {
+      "type": 0,
+      "value": "ลบทิ้งแล้ว"
+    }
+  ],
+  "KT9nox": [
+    {
+      "type": 0,
+      "value": "Protected Events"
+    }
+  ],
+  "KahimY": [
+    {
+      "type": 0,
+      "value": "ไม่รู้จัก event kind: "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    }
+  ],
+  "KipVeG": [
+    {
+      "type": 0,
+      "value": "Mapping Nostr keys to DNS-based internet identifiers"
+    }
+  ],
+  "KtsyO0": [
+    {
+      "type": 0,
+      "value": "Enter Pin"
+    }
+  ],
+  "KyRp/q": [
+    {
+      "type": 0,
+      "value": "Wallet Request"
+    }
+  ],
+  "LBAnc7": [
+    {
+      "type": 0,
+      "value": "View as user?"
+    }
+  ],
+  "LEmxc8": [
+    {
+      "type": 0,
+      "value": "Zap Goals"
+    }
+  ],
+  "LKw/ue": [
+    {
+      "type": 0,
+      "value": "Check out the code "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "LR1XjT": [
+    {
+      "type": 0,
+      "value": "Pin too short"
+    }
+  ],
+  "LXxsbk": [
+    {
+      "type": 0,
+      "value": "ไม่ระบุตัวตน"
+    }
+  ],
+  "LgbKvU": [
+    {
+      "type": 0,
+      "value": "ความคิดเห็น"
+    }
+  ],
+  "LhLvRx": [
+    {
+      "type": 0,
+      "value": "Name must be between 8 and 15 characters"
+    }
+  ],
+  "LmdPXO": [
+    {
+      "type": 0,
+      "value": "Cannot verify Nostr Address"
+    }
+  ],
+  "Lu5/Bj": [
+    {
+      "type": 0,
+      "value": "เปิด Zapstr"
+    }
+  ],
+  "LuDBLj": [
+    {
+      "type": 0,
+      "value": "Torrents"
+    }
+  ],
+  "Lw+I+J": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " zapped"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others zapped"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "LwYmVi": [
+    {
+      "type": 0,
+      "value": "Zaps on this note will be split to the following users."
+    }
+  ],
+  "M3Oirc": [
+    {
+      "type": 0,
+      "value": "เมนูการแก้ปัญหา"
+    }
+  ],
+  "M6C/px": [
+    {
+      "type": 0,
+      "value": "Become a leader"
+    }
+  ],
+  "MBAYRO": [
+    {
+      "type": 0,
+      "value": "แสดง \"Copy ID\" และ \"Copy Event JSON\" ในเมนูของแต่ละข้อความ"
+    }
+  ],
+  "MI2jkA": [
+    {
+      "type": 0,
+      "value": "ไม่พร้อมใช้งาน:"
+    }
+  ],
+  "MKDHEa": [
+    {
+      "type": 0,
+      "value": "Join Room"
+    }
+  ],
+  "MP54GY": [
+    {
+      "type": 0,
+      "value": "รหัสผ่าน wallet"
+    }
+  ],
+  "MWTx65": [
+    {
+      "type": 0,
+      "value": "หน้าเริ่มต้น"
+    }
+  ],
+  "MYBYdJ": [
+    {
+      "type": 0,
+      "value": "Short Text Note"
+    }
+  ],
+  "MYUBaG": [
+    {
+      "type": 0,
+      "value": "Client Authentication"
+    }
+  ],
+  "MiMipu": [
+    {
+      "type": 0,
+      "value": "Set as primary Nostr address (nip05)"
+    }
+  ],
+  "MkQ4FX": [
+    {
+      "type": 0,
+      "value": "Proxy Tags"
+    }
+  ],
+  "Ml7+RS": [
+    {
+      "type": 0,
+      "value": "Send this link to your friends and share the magic of the nostr."
+    }
+  ],
+  "Mrpkot": [
+    {
+      "type": 0,
+      "value": "จ่ายเพื่อสมัครสมาชิก"
+    }
+  ],
+  "MuVeKe": [
+    {
+      "type": 0,
+      "value": "Buy nostr address"
+    }
+  ],
+  "Muhna4": [
+    {
+      "type": 0,
+      "value": "Counting results"
+    }
+  ],
+  "MzRYWH": [
+    {
+      "type": 0,
+      "value": "กำลังซื้อ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    }
+  ],
+  "Mzizei": [
+    {
+      "type": 0,
+      "value": "Iris.to account"
+    }
+  ],
+  "N2IrpM": [
+    {
+      "type": 0,
+      "value": "ยืนยัน"
+    }
+  ],
+  "NAidKb": [
+    {
+      "type": 0,
+      "value": "Notifications"
+    }
+  ],
+  "NAuFNH": [
+    {
+      "type": 0,
+      "value": "คุณได้สมัครสมาชิกประเภทนี้แล้ว โปรดต่ออายุหรือชำระเงิน"
+    }
+  ],
+  "NDTFsp": [
+    {
+      "type": 0,
+      "value": "Job Feedback"
+    }
+  ],
+  "NepkXH": [
+    {
+      "type": 0,
+      "value": "ไม่สามารถโหวตด้วย "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats โปรดตั้งค่าจำนวน zap เริ่มต้นใหม่"
+    }
+  ],
+  "NndBJE": [
+    {
+      "type": 0,
+      "value": "หน้าต่างสำหรับผู้ใช้ใหม่"
+    }
+  ],
+  "Nr9Yyx": [
+    {
+      "type": 0,
+      "value": "Reposts"
+    }
+  ],
+  "NxzeNU": [
+    {
+      "type": 0,
+      "value": "Dead"
+    }
+  ],
+  "O3Jz4E": [
+    {
+      "type": 0,
+      "value": "Use your invite code to earn sats!"
+    }
+  ],
+  "OEW7yJ": [
+    {
+      "type": 0,
+      "value": "Zaps"
+    }
+  ],
+  "OIqnZN": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps Attestations for Events"
+    }
+  ],
+  "OJHKIL": [
+    {
+      "type": 0,
+      "value": "Gift Wrap"
+    }
+  ],
+  "OKhRC6": [
+    {
+      "type": 0,
+      "value": "แชร์"
+    }
+  ],
+  "OLEm6z": [
+    {
+      "type": 0,
+      "value": "พบข้อผิดพลาดการเข้าสู่ระบบที่ไม่ทราบสาเหตุ"
+    }
+  ],
+  "OQSOJF": [
+    {
+      "type": 0,
+      "value": "Get a free nostr address"
+    }
+  ],
+  "OQXnew": [
+    {
+      "type": 0,
+      "value": "การสมัครสมาชิกของคุณยังคงใช้งานได้ คุณยังไม่จำเป็นต้องต่ออายุ"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "สร้าง"
+    }
+  ],
+  "ORa81+": [
+    {
+      "type": 0,
+      "value": "Merge Requests"
+    }
+  ],
+  "OoZgbB": [
+    {
+      "type": 0,
+      "value": "Failed to update, please try again"
+    }
+  ],
+  "OuProE": [
+    {
+      "type": 0,
+      "value": "Long-form Content"
+    }
+  ],
+  "OxPdQ0": [
+    {
+      "type": 0,
+      "value": "Scanning "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "P2o+ZZ": [
+    {
+      "type": 0,
+      "value": "Invalid Nostr Address"
+    }
+  ],
+  "P61BTu": [
+    {
+      "type": 0,
+      "value": "คัดลอก Event JSON"
+    }
+  ],
+  "P7FD0F": [
+    {
+      "type": 0,
+      "value": "ระบบ (ค่าเริ่มต้น)"
+    }
+  ],
+  "P7nJT9": [
+    {
+      "type": 0,
+      "value": "ยอดรวมวันนี้ (UTC): "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "P8JC58": [
+    {
+      "type": 0,
+      "value": "Distance"
+    }
+  ],
+  "PCSt5T": [
+    {
+      "type": 0,
+      "value": "การตั้งค่า"
+    }
+  ],
+  "PXQ0z0": [
+    {
+      "type": 0,
+      "value": "Receiving to "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "PamNxw": [
+    {
+      "type": 0,
+      "value": "ส่วนต้นของไฟล์ที่ไม่รู้จัก: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Pe0ogR": [
+    {
+      "type": 0,
+      "value": "ธีม"
+    }
+  ],
+  "PrsIg7": [
+    {
+      "type": 0,
+      "value": "Reactions จะแสดงในทุกหน้า หากปิดใช้งาน จะไม่แสดง Reactions ใด ๆ"
+    }
+  ],
+  "QDFTjG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " รีเลย์"
+    }
+  ],
+  "QJfhKt": [
+    {
+      "type": 0,
+      "value": "The private key is like a password, but it cannot be reset. Guard it carefully and never show it to anyone. Once someone has your private key, they will have access to your account forever."
+    }
+  ],
+  "QWhotP": [
+    {
+      "type": 0,
+      "value": "Zap Pool ใช้งานได้เฉพาะเมื่อคุณใช้การเชื่อมต่อ wallet ที่รองรับ (WebLN, LNC, LNDHub หรือ Nostr Wallet Connect)"
+    }
+  ],
+  "QpaLA3": [
+    {
+      "type": 0,
+      "value": "Channel Message"
+    }
+  ],
+  "Qxv0B2": [
+    {
+      "type": 0,
+      "value": "ขณะนี้มี "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats ใน zappool ของคุณ"
+    }
+  ],
+  "Qy6/Ft": [
+    {
+      "type": 0,
+      "value": "Private Direct Messages"
+    }
+  ],
+  "R/6nsx": [
+    {
+      "type": 0,
+      "value": "Subscription"
+    }
+  ],
+  "R81upa": [
+    {
+      "type": 0,
+      "value": "People you follow"
+    }
+  ],
+  "RDha9y": [
+    {
+      "type": 0,
+      "value": "Service Worker Not Running"
+    }
+  ],
+  "RRz1cA": [
+    {
+      "type": 0,
+      "value": "Repository state announcements"
+    }
+  ],
+  "RSr2uB": [
+    {
+      "type": 0,
+      "value": "Username must only contain lowercase letters and numbers"
+    }
+  ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "หมดอายุแล้ว"
+    }
+  ],
+  "RefZpK": [
+    {
+      "type": 0,
+      "value": "Short-form Portrait Video Event"
+    }
+  ],
+  "RfhLwC": [
+    {
+      "type": 0,
+      "value": "โดย "
+    },
+    {
+      "type": 1,
+      "value": "author"
+    }
+  ],
+  "RhDAoS": [
+    {
+      "type": 0,
+      "value": "คุณแน่ใจหรือไม่ ว่าต้องการลบ "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "RmxSZo": [
+    {
+      "type": 0,
+      "value": "Data Vending Machines"
+    }
+  ],
+  "RoOyAh": [
+    {
+      "type": 0,
+      "value": "รีเลย์"
+    }
+  ],
+  "Rs4kCE": [
+    {
+      "type": 0,
+      "value": "บุ๊คมาร์ก"
+    }
+  ],
+  "S/NV2G": [
+    {
+      "type": 0,
+      "value": "Loading note: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "SFuk1v": [
+    {
+      "type": 0,
+      "value": "Permissions"
+    }
+  ],
+  "SLZGPn": [
+    {
+      "type": 0,
+      "value": "Enter a pin to encrypt your private key, you must enter this pin every time you open "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "SMO+on": [
+    {
+      "type": 0,
+      "value": "Send zap to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "SOqbe9": [
+    {
+      "type": 0,
+      "value": "อัพเดต Lightning Address"
+    }
+  ],
+  "SP0+yi": [
+    {
+      "type": 0,
+      "value": "ซื้อการสมัครสมาชิก"
+    }
+  ],
+  "SW3TFA": [
+    {
+      "type": 0,
+      "value": "Popular relays used by people you follow."
+    }
+  ],
+  "SYQtZ7": [
+    {
+      "type": 0,
+      "value": "LN Address Proxy"
+    }
+  ],
+  "Sd0PKc": [
+    {
+      "type": 0,
+      "value": "Relay sets"
+    }
+  ],
+  "SfwSIm": [
+    {
+      "type": 0,
+      "value": "Problem Tracker"
+    }
+  ],
+  "ShdEie": [
+    {
+      "type": 0,
+      "value": "Mark all read"
+    }
+  ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "ปรับแต่งเอง"
+    }
+  ],
+  "SmuYUd": [
+    {
+      "type": 0,
+      "value": "What should we call you?"
+    }
+  ],
+  "Ss0sWu": [
+    {
+      "type": 0,
+      "value": "ชำระเงินทันที"
+    }
+  ],
+  "SsUQnC": [
+    {
+      "type": 0,
+      "value": "Application-specific Data"
+    }
+  ],
+  "StKzTE": [
+    {
+      "type": 0,
+      "value": "The author has marked this note as a "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "sensitive topic"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "T83nqf": [
+    {
+      "type": 0,
+      "value": "Relays close to your geographic location."
+    }
+  ],
+  "TDR5ge": [
+    {
+      "type": 0,
+      "value": "สื่อในโน้ตจะแสดงโดยอัตโนมัติสำหรับบุคคลที่เลือกเท่านั้น คนอื่น ๆ จะแสดงเฉพาะลิงก์"
+    }
+  ],
+  "TGc5nI": [
+    {
+      "type": 0,
+      "value": "Handler information"
+    }
+  ],
+  "TH1fFo": [
+    {
+      "type": 0,
+      "value": "Telegram"
+    }
+  ],
+  "TJo5E6": [
+    {
+      "type": 0,
+      "value": "Preview"
+    }
+  ],
+  "TOG64f": [
+    {
+      "type": 0,
+      "value": "Use Local Relay"
+    }
+  ],
+  "TP/cMX": [
+    {
+      "type": 0,
+      "value": "Ended"
+    }
+  ],
+  "TaeBqw": [
+    {
+      "type": 0,
+      "value": "Sign in with Nostr Extension"
+    }
+  ],
+  "TdTXXf": [
+    {
+      "type": 0,
+      "value": "Learn more"
+    }
+  ],
+  "TdtZQ5": [
+    {
+      "type": 0,
+      "value": "Crypto"
+    }
+  ],
+  "Tdv6NY": [
+    {
+      "type": 0,
+      "value": "Interest sets"
+    }
+  ],
+  "TgDKhI": [
+    {
+      "type": 0,
+      "value": "Calendar Events"
+    }
+  ],
+  "TpgeGw": [
+    {
+      "type": 0,
+      "value": "Hex Salt.."
+    }
+  ],
+  "Tpy00S": [
+    {
+      "type": 0,
+      "value": "ผู้คน"
+    }
+  ],
+  "TvKqBp": [
+    {
+      "type": 0,
+      "value": "liked"
+    }
+  ],
+  "TwyMau": [
+    {
+      "type": 0,
+      "value": "Account"
+    }
+  ],
+  "U1aPPi": [
+    {
+      "type": 0,
+      "value": "Stop listening"
+    }
+  ],
+  "U30H69": [
+    {
+      "type": 0,
+      "value": "Community Definition"
+    }
+  ],
+  "UJTWqI": [
+    {
+      "type": 0,
+      "value": "Remove from my relays"
+    }
+  ],
+  "ULXFfP": [
+    {
+      "type": 0,
+      "value": "Receive"
+    }
+  ],
+  "UNjfWJ": [
+    {
+      "type": 0,
+      "value": "Check all event signatures received from relays"
+    }
+  ],
+  "UT7Nkj": [
+    {
+      "type": 0,
+      "value": "New Chat"
+    }
+  ],
+  "UUPFlt": [
+    {
+      "type": 0,
+      "value": "ผู้ใช้จะต้องยอมรับคำเตือนเพื่อแสดงเนื้อหาในโน้ตของคุณ"
+    }
+  ],
+  "UaCh1c": [
+    {
+      "type": 0,
+      "value": "Add Server"
+    }
+  ],
+  "Ub+AGc": [
+    {
+      "type": 0,
+      "value": "Sign In"
+    }
+  ],
+  "Up5U7K": [
+    {
+      "type": 0,
+      "value": "บล็อก"
+    }
+  ],
+  "Ups2/p": [
+    {
+      "type": 0,
+      "value": "Your application is pending"
+    }
+  ],
+  "UrKTqQ": [
+    {
+      "type": 0,
+      "value": "You have an active iris.to account"
+    }
+  ],
+  "UsCzPc": [
+    {
+      "type": 0,
+      "value": "Share a personalized invitation with friends!"
+    }
+  ],
+  "UxgyeY": [
+    {
+      "type": 0,
+      "value": "Your referral code is "
+    },
+    {
+      "type": 1,
+      "value": "code"
+    }
+  ],
+  "V20Og0": [
+    {
+      "type": 0,
+      "value": "Labeling"
+    }
+  ],
+  "VOjC1i": [
+    {
+      "type": 0,
+      "value": "เลือกบริการอัปโหลดที่คุณต้องการอัปโหลดไฟล์แนบ"
+    }
+  ],
+  "VR5eHw": [
+    {
+      "type": 0,
+      "value": "Public key (npub/nprofile)"
+    }
+  ],
+  "VcwrfF": [
+    {
+      "type": 0,
+      "value": "Yes please"
+    }
+  ],
+  "VfhYxG": [
+    {
+      "type": 0,
+      "value": "To see a full list of changes you can view the changelog "
+    },
+    {
+      "type": 1,
+      "value": "here"
+    }
+  ],
+  "VlJkSk": [
+    {
+      "type": 0,
+      "value": "ปิดการมองเห็น "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " บัญชี"
+    }
+  ],
+  "VnXp8Z": [
+    {
+      "type": 0,
+      "value": "อวตาร"
+    }
+  ],
+  "W1yoZY": [
+    {
+      "type": 0,
+      "value": "ดูเหมือนว่าคุณไม่มีการสมัครสมาชิกใด ๆ คุณสามารถสมัครรับข้อมูลได้ "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "W2PiAr": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " บล็อค"
+    }
+  ],
+  "W4SaxY": [
+    {
+      "type": 0,
+      "value": "Local"
+    }
+  ],
+  "W9355R": [
+    {
+      "type": 0,
+      "value": "เปิดการมองเห็น"
+    }
+  ],
+  "WeLEuL": [
+    {
+      "type": 0,
+      "value": "From Server"
+    }
+  ],
+  "Wj5TbN": [
+    {
+      "type": 0,
+      "value": "Issues"
+    }
+  ],
+  "WmZhfL": [
+    {
+      "type": 0,
+      "value": "Automatically translate notes to your local language"
+    }
+  ],
+  "WvGmZT": [
+    {
+      "type": 0,
+      "value": "npub / nprofile / nostr address"
+    }
+  ],
+  "X6tipZ": [
+    {
+      "type": 0,
+      "value": "Sign in with key"
+    }
+  ],
+  "X7xU8J": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex, mnemonic"
+    }
+  ],
+  "XECMfW": [
+    {
+      "type": 0,
+      "value": "Send usage metrics"
+    }
+  ],
+  "XICsE8": [
+    {
+      "type": 0,
+      "value": "สถานที่เก็บไฟล์"
+    }
+  ],
+  "XPB8VV": [
+    {
+      "type": 0,
+      "value": "Alby wallet connection"
+    }
+  ],
+  "XQiFEl": [
+    {
+      "type": 0,
+      "value": "Follows Relay Health"
+    }
+  ],
+  "XSdWHA": [
+    {
+      "type": 0,
+      "value": "Redeem"
+    }
+  ],
+  "XXm7jJ": [
+    {
+      "type": 0,
+      "value": "Trending Hashtags"
+    }
+  ],
+  "XgWvGA": [
+    {
+      "type": 0,
+      "value": "Reactions"
+    }
+  ],
+  "Xnimz0": [
+    {
+      "type": 0,
+      "value": "Sending from "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "Xopqkl": [
+    {
+      "type": 0,
+      "value": "จํานวน zap เริ่มต้นของคุณคือ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats ค่าตัวอย่างคํานวณจากสิ่งนี้"
+    }
+  ],
+  "YDMrKK": [
+    {
+      "type": 0,
+      "value": "Users"
+    }
+  ],
+  "YDURw6": [
+    {
+      "type": 0,
+      "value": "Service URL"
+    }
+  ],
+  "YH2RKk": [
+    {
+      "type": 0,
+      "value": "Popular media servers."
+    }
+  ],
+  "YQZY/S": [
+    {
+      "type": 0,
+      "value": "It looks like you dont follow enough people, take a look at "
+    },
+    {
+      "type": 1,
+      "value": "newUsersPage"
+    },
+    {
+      "type": 0,
+      "value": " to discover people to follow!"
+    }
+  ],
+  "YR2I9M": [
+    {
+      "type": 0,
+      "value": "No keys, no "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": ", There is no way to reset it if you don't back up. It only takes a minute."
+    }
+  ],
+  "YU7ZYp": [
+    {
+      "type": 0,
+      "value": "Public Chat"
+    }
+  ],
+  "YXA3AH": [
+    {
+      "type": 0,
+      "value": "เปิดใช้งาน reactions"
+    }
+  ],
+  "Yf3DwC": [
+    {
+      "type": 0,
+      "value": "Connect a wallet to send instant payments"
+    }
+  ],
+  "YuoEb9": [
+    {
+      "type": 0,
+      "value": "Try another relay"
+    }
+  ],
+  "Z48UEo": [
+    {
+      "type": 0,
+      "value": "Channel Metadata"
+    }
+  ],
+  "Z4BMCZ": [
+    {
+      "type": 0,
+      "value": "ใส่ pairing phrase"
+    }
+  ],
+  "Z7kkeJ": [
+    {
+      "type": 0,
+      "value": "Delegated Event Signing"
+    }
+  ],
+  "ZFe9tl": [
+    {
+      "type": 0,
+      "value": "Compose a note"
+    }
+  ],
+  "ZKORll": [
+    {
+      "type": 0,
+      "value": "เปิดใช้งานทันที"
+    }
+  ],
+  "ZLmyG9": [
+    {
+      "type": 0,
+      "value": "ผู้มีส่วนร่วม"
+    }
+  ],
+  "ZS+jRE": [
+    {
+      "type": 0,
+      "value": "Send zap splits to"
+    }
+  ],
+  "Zff6lu": [
+    {
+      "type": 0,
+      "value": "Username iris.to/"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "name"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " is reserved for you!"
+    }
+  ],
+  "ZlIh4/": [
+    {
+      "type": 0,
+      "value": "Encrypted Direct Messages"
+    }
+  ],
+  "ZlmK/p": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " invited you to "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    }
+  ],
+  "a1x4gD": [
+    {
+      "type": 0,
+      "value": "Media servers store media which you can share in notes as images and videos"
+    }
+  ],
+  "a5UPxh": [
+    {
+      "type": 0,
+      "value": "สนับสนุนนักพัฒนาและแฟลตฟอร์มที่ให้บริการ NIP-05"
+    }
+  ],
+  "a7TDNm": [
+    {
+      "type": 0,
+      "value": "โน้ตจะแสดงแบบเรียลไทม์บนหน้า global และ โน้ต"
+    }
+  ],
+  "aHje0o": [
+    {
+      "type": 0,
+      "value": "Name or nym"
+    }
+  ],
+  "aMaLBK": [
+    {
+      "type": 0,
+      "value": "Supported Extensions"
+    }
+  ],
+  "aRex7h": [
+    {
+      "type": 0,
+      "value": "Paid "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, fee "
+    },
+    {
+      "type": 1,
+      "value": "fee"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "aSGz4J": [
+    {
+      "type": 0,
+      "value": "Connect to your own LND node with Lightning Node Connect"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "ดูเพิ่มเติม"
+    }
+  ],
+  "abbGKq": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " km"
+    }
+  ],
+  "ak3MTf": [
+    {
+      "type": 0,
+      "value": "Invite Friends"
+    }
+  ],
+  "b12Goz": [
+    {
+      "type": 0,
+      "value": "Mnemonic"
+    }
+  ],
+  "b5vAk0": [
+    {
+      "type": 0,
+      "value": "สิ่งนี้เหมือนกับ Lightning Address และจะเปลี่ยนการเชื่อมต่อไปที่ LNURL หรือ Lightning Addresses ที่คุณเลือก"
+    }
+  ],
+  "bF1MYT": [
+    {
+      "type": 0,
+      "value": "You are a community leader and are earning "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "percent"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " of referred users subscriptions!"
+    }
+  ],
+  "bG00/W": [
+    {
+      "type": 0,
+      "value": "Service Worker Running"
+    }
+  ],
+  "bJ+wrA": [
+    {
+      "type": 0,
+      "value": "Compute prune list"
+    }
+  ],
+  "bLZL5a": [
+    {
+      "type": 0,
+      "value": "Get Address"
+    }
+  ],
+  "bMphls": [
+    {
+      "type": 0,
+      "value": "Logged in with read-only access"
+    }
+  ],
+  "bQdA2k": [
+    {
+      "type": 0,
+      "value": "เนื้อหาที่ละเอียดอ่อน"
+    }
+  ],
+  "bep9C3": [
+    {
+      "type": 0,
+      "value": "Public Key"
+    }
+  ],
+  "bfvyfs": [
+    {
+      "type": 0,
+      "value": "ไม่ระบุชื่อ"
+    }
+  ],
+  "bxv59V": [
+    {
+      "type": 0,
+      "value": "เมื่อสักครู่"
+    }
+  ],
+  "c+1p0i": [
+    {
+      "type": 0,
+      "value": "Kind mute sets"
+    }
+  ],
+  "c+JYNI": [
+    {
+      "type": 0,
+      "value": "No thanks"
+    }
+  ],
+  "c2T+1B": [
+    {
+      "type": 0,
+      "value": "Redirects"
+    }
+  ],
+  "c35bj2": [
+    {
+      "type": 0,
+      "value": "หากคุณมีคําถามใด ๆ เกี่ยวกับคําสั่งซื้อ NIP-05 ของคุณ โปรดติดต่อที่ "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "c3LlRO": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "KiB"
+    }
+  ],
+  "c3g2hL": [
+    {
+      "type": 0,
+      "value": "เผยแพร่อีกครั้ง"
+    }
+  ],
+  "cFbU1B": [
+    {
+      "type": 0,
+      "value": "ใช้ Alby? ไปที่"
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " เพื่อรับ NWC config ของคุณ"
+    }
+  ],
+  "cG/bKQ": [
+    {
+      "type": 0,
+      "value": "Native nostr wallet connection"
+    }
+  ],
+  "cHCwbF": [
+    {
+      "type": 0,
+      "value": "Photography"
+    }
+  ],
+  "cKbMRX": [
+    {
+      "type": 0,
+      "value": "Direct Message"
+    }
+  ],
+  "cPIKU2": [
+    {
+      "type": 0,
+      "value": "กำลังติดตาม"
+    }
+  ],
+  "cQfLWb": [
+    {
+      "type": 0,
+      "value": "URL.."
+    }
+  ],
+  "cVcgLJ": [
+    {
+      "type": 0,
+      "value": "Media Servers"
+    }
+  ],
+  "cWx9t8": [
+    {
+      "type": 0,
+      "value": "ปิดการโต้ตอบทั้งหมด"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "เชื่อมต่อ Wallet"
+    }
+  ],
+  "cnwHgH": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps"
+    }
+  ],
+  "cuP16y": [
+    {
+      "type": 0,
+      "value": "รับรองการใช้งานหลายบัญชี"
+    }
+  ],
+  "cuV2gK": [
+    {
+      "type": 0,
+      "value": "ชื่อนี้ถูกใช้งานแล้ว"
+    }
+  ],
+  "cw1Ftc": [
+    {
+      "type": 0,
+      "value": "Live Activities"
+    }
+  ],
+  "cyR7Kh": [
+    {
+      "type": 0,
+      "value": "ย้อนกลับ"
+    }
+  ],
+  "d+6YsV": [
+    {
+      "type": 0,
+      "value": "Lists to mute:"
+    }
+  ],
+  "d0qim7": [
+    {
+      "type": 0,
+      "value": "WoT Filter"
+    }
+  ],
+  "d2ebEu": [
+    {
+      "type": 0,
+      "value": "Not Subscribed to Push"
+    }
+  ],
+  "d7d0/x": [
+    {
+      "type": 0,
+      "value": "LN address"
+    }
+  ],
+  "dK2CcV": [
+    {
+      "type": 0,
+      "value": "The public key is like your username, you can share it with anyone."
+    }
+  ],
+  "dOQCL8": [
+    {
+      "type": 0,
+      "value": "ชื่อที่แสดง"
+    }
+  ],
+  "dZZIGe": [
+    {
+      "type": 0,
+      "value": "Modular Article Header"
+    }
+  ],
+  "ddd3JX": [
+    {
+      "type": 0,
+      "value": "Popular Hashtags"
+    }
+  ],
+  "deEeEI": [
+    {
+      "type": 0,
+      "value": "Register"
+    }
+  ],
+  "djLctd": [
+    {
+      "type": 0,
+      "value": "Amount in sats"
+    }
+  ],
+  "dmcsBA": [
+    {
+      "type": 0,
+      "value": "Classified Listing"
+    }
+  ],
+  "dmsiLv": [
+    {
+      "type": 0,
+      "value": "A default Zap Pool split of "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " has been configured for "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " developers, you can disable it at any time in "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "e5x8FT": [
+    {
+      "type": 0,
+      "value": "Kind"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "เร็ว ๆ นี้"
+    }
+  ],
+  "e7VmYP": [
+    {
+      "type": 0,
+      "value": "Enter pin to unlock your private key"
+    }
+  ],
+  "e7qqly": [
+    {
+      "type": 0,
+      "value": "ทำเครื่องหมายเป็นอ่านแล้วทั้งหมด"
+    }
+  ],
+  "eF0Re7": [
+    {
+      "type": 0,
+      "value": "Use a nostr signer extension to sign in"
+    }
+  ],
+  "eHAneD": [
+    {
+      "type": 0,
+      "value": "Reaction emoji"
+    }
+  ],
+  "eJj8HD": [
+    {
+      "type": 0,
+      "value": "รับการยืนยัน!"
+    }
+  ],
+  "eSzf2G": [
+    {
+      "type": 0,
+      "value": "Zap จำนวน "
+    },
+    {
+      "type": 1,
+      "value": "nIn"
+    },
+    {
+      "type": 0,
+      "value": " sats จะจัดสรร "
+    },
+    {
+      "type": 1,
+      "value": "nOut"
+    },
+    {
+      "type": 0,
+      "value": " sats ให้กับ zap pool"
+    }
+  ],
+  "eW/Bj9": [
+    {
+      "type": 0,
+      "value": "Feed"
+    }
+  ],
+  "eXT2QQ": [
+    {
+      "type": 0,
+      "value": "Group Chat"
+    }
+  ],
+  "eZtOxB": [
+    {
+      "type": 0,
+      "value": "window.nostr capability for web browsers"
+    }
+  ],
+  "egib+2": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " other"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "ejEGdx": [
+    {
+      "type": 0,
+      "value": "Home"
+    }
+  ],
+  "eoV49s": [
+    {
+      "type": 0,
+      "value": "Poor"
+    }
+  ],
+  "f1OxTe": [
+    {
+      "type": 0,
+      "value": "Community leaders are individuals who grow the nostr ecosystem by being active in their local communities and helping onboard new users. Anyone can become a community leader, but few hold the current honorary title."
+    }
+  ],
+  "f2CAxA": [
+    {
+      "type": 0,
+      "value": "Dump"
+    }
+  ],
+  "fBI91o": [
+    {
+      "type": 0,
+      "value": "Zaps"
+    }
+  ],
+  "fBlba3": [
+    {
+      "type": 0,
+      "value": "Thanks for using "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": ", please consider donating if you can."
+    }
+  ],
+  "fLIvbC": [
+    {
+      "type": 0,
+      "value": "Snort is an open source project built by passionate people in their free time, your donations are greatly appreciated"
+    }
+  ],
+  "fOksnD": [
+    {
+      "type": 0,
+      "value": "ไม่สามารถโหวตได้เนื่องจากบริการ LNURL ไม่รองรับ zaps"
+    }
+  ],
+  "fQN+tq": [
+    {
+      "type": 0,
+      "value": "Show posts that have a content warning tag"
+    }
+  ],
+  "fWZYP5": [
+    {
+      "type": 0,
+      "value": "ปักหมุดข้อความแล้ว"
+    }
+  ],
+  "fX5RYm": [
+    {
+      "type": 0,
+      "value": "Pick a few topics of interest"
+    }
+  ],
+  "filwqD": [
+    {
+      "type": 0,
+      "value": "อ่าน"
+    }
+  ],
+  "fjAcWo": [
+    {
+      "type": 0,
+      "value": "Gift Wraps"
+    }
+  ],
+  "flnGvv": [
+    {
+      "type": 0,
+      "value": "คุณกำลังคิดอะไรอยู่?"
+    }
+  ],
+  "fqwcJ1": [
+    {
+      "type": 0,
+      "value": "On-chain Donation"
+    }
+  ],
+  "fr+XYA": [
+    {
+      "type": 0,
+      "value": "Lightning Pub RPC"
+    }
+  ],
+  "fsB/4p": [
+    {
+      "type": 0,
+      "value": "บันทึกแล้ว"
+    }
+  ],
+  "fucxlm": [
+    {
+      "type": 0,
+      "value": "Attach Media"
+    }
+  ],
+  "furjvW": [
+    {
+      "type": 0,
+      "value": "Watch Stream"
+    }
+  ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "เกี่ยวกับ"
+    }
+  ],
+  "g985Wp": [
+    {
+      "type": 0,
+      "value": "การโหวตไม่สำเร็จ"
+    }
+  ],
+  "gDzDRs": [
+    {
+      "type": 0,
+      "value": "Emoji ที่ต้องการส่งเมื่อ reaction บนโน้ต"
+    }
+  ],
+  "gXgY3+": [
+    {
+      "type": 0,
+      "value": "ยังไม่มี client ไหนรับรองสิ่งนี้"
+    }
+  ],
+  "gczcC5": [
+    {
+      "type": 0,
+      "value": "สมัครสมาชิก"
+    }
+  ],
+  "geppt8": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count2"
+    },
+    {
+      "type": 0,
+      "value": " in memory)"
+    }
+  ],
+  "gjBiyj": [
+    {
+      "type": 0,
+      "value": "กำลังโหลด..."
+    }
+  ],
+  "gkMmvC": [
+    {
+      "type": 0,
+      "value": "Android Signer Application"
+    }
+  ],
+  "gl1NeW": [
+    {
+      "type": 0,
+      "value": "Lists"
+    }
+  ],
+  "go2/QF": [
+    {
+      "type": 0,
+      "value": "User server list"
+    }
+  ],
+  "grQ+mI": [
+    {
+      "type": 0,
+      "value": "Proof of Work"
+    }
+  ],
+  "gtNjNP": [
+    {
+      "type": 0,
+      "value": "Basic protocol flow description"
+    }
+  ],
+  "h7jvCs": [
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " is more fun together!"
+    }
+  ],
+  "h8XMJL": [
+    {
+      "type": 0,
+      "value": "เหรียญตรา"
+    }
+  ],
+  "h9M0rW": [
+    {
+      "type": 0,
+      "value": "User Metadata"
+    }
+  ],
+  "hF6IN2": [
+    {
+      "type": 0,
+      "value": "Prune Follow List"
+    }
+  ],
+  "hMQmIw": [
+    {
+      "type": 0,
+      "value": "Sync Account"
+    }
+  ],
+  "hMzcSq": [
+    {
+      "type": 0,
+      "value": "ข้อความ"
+    }
+  ],
+  "hRTfTR": [
+    {
+      "type": 0,
+      "value": "PRO"
+    }
+  ],
+  "hY4lzx": [
+    {
+      "type": 0,
+      "value": "สนับสนุน"
+    }
+  ],
+  "hYOE+U": [
+    {
+      "type": 0,
+      "value": "Invite"
+    }
+  ],
+  "hicxcO": [
+    {
+      "type": 0,
+      "value": "แสดงการตอบกลับ"
+    }
+  ],
+  "hmZ3Bz": [
+    {
+      "type": 0,
+      "value": "Media"
+    }
+  ],
+  "hniz8Z": [
+    {
+      "type": 0,
+      "value": "ที่นี่"
+    }
+  ],
+  "hv/eRj": [
+    {
+      "type": 0,
+      "value": "Blocked relays list"
+    }
+  ],
+  "hvFRBo": [
+    {
+      "type": 0,
+      "value": "Interaction"
+    }
+  ],
+  "i/dBAR": [
+    {
+      "type": 0,
+      "value": "Zap Pool"
+    }
+  ],
+  "i5gBFz": [
+    {
+      "type": 0,
+      "value": "Your sent and received payments will show up here."
+    }
+  ],
+  "iCqGww": [
+    {
+      "type": 0,
+      "value": "Reactions ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "iEoXYx": [
+    {
+      "type": 0,
+      "value": "แปล DeepL"
+    }
+  ],
+  "iGT1eE": [
+    {
+      "type": 0,
+      "value": "ป้องกันไม่ให้บัญชีปลอมเลียนแบบคุณ"
+    }
+  ],
+  "iHN12u": [
+    {
+      "type": 0,
+      "value": "Admin"
+    }
+  ],
+  "iICVoL": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " follows ("
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " duplicates)"
+    }
+  ],
+  "iNWbVV": [
+    {
+      "type": 0,
+      "value": "จัดการ"
+    }
+  ],
+  "iXPL0Z": [
+    {
+      "type": 0,
+      "value": "ไม่สามารถเข้าสู่ระบบด้วย private key ในการเชื่อมต่อที่ไม่ปลอดภัย โปรดใช้ Nostr key manager extension ในการจัดการ"
+    }
+  ],
+  "iYc3Ld": [
+    {
+      "type": 0,
+      "value": "Payments"
+    }
+  ],
+  "icCxlA": [
+    {
+      "type": 0,
+      "value": "new users page"
+    }
+  ],
+  "ieGrWo": [
+    {
+      "type": 0,
+      "value": "ติดตาม"
+    }
+  ],
+  "igUUst": [
+    {
+      "type": 0,
+      "value": "Group Chat Threaded Reply"
+    }
+  ],
+  "ipHVx5": [
+    {
+      "type": 0,
+      "value": "Generate Invoice"
+    }
+  ],
+  "itPgxd": [
+    {
+      "type": 0,
+      "value": "โปรไฟล์"
+    }
+  ],
+  "izWS4J": [
+    {
+      "type": 0,
+      "value": "เลิกติดตาม"
+    }
+  ],
+  "j9xbzF": [
+    {
+      "type": 0,
+      "value": "Already backed up"
+    }
+  ],
+  "jA3OE/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sat"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sats"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "jAmfGl": [
+    {
+      "type": 0,
+      "value": "Your "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " subscription is expired"
+    }
+  ],
+  "jHa/ko": [
+    {
+      "type": 0,
+      "value": "Clean up your feed"
+    }
+  ],
+  "jMzO1S": [
+    {
+      "type": 0,
+      "value": "ข้อผิดพลาดภายใน: "
+    },
+    {
+      "type": 1,
+      "value": "msg"
+    }
+  ],
+  "jiAVXu": [
+    {
+      "type": 0,
+      "value": "Video Event"
+    }
+  ],
+  "jvo0vs": [
+    {
+      "type": 0,
+      "value": "บันทึก"
+    }
+  ],
+  "jzgQ2z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Reactions"
+    }
+  ],
+  "k0kCJp": [
+    {
+      "type": 0,
+      "value": "Apply Now"
+    }
+  ],
+  "k2veDA": [
+    {
+      "type": 0,
+      "value": "เขียน"
+    }
+  ],
+  "k7sKNy": [
+    {
+      "type": 0,
+      "value": "บริการตรวจสอบ NIP-05 เป็นของเรา ช่วยสนับสนุนการพัฒนาของเว็บไซต์ และรับเหรียญตราที่สวยงามบนเว็บไซต์ของเรา"
+    }
+  ],
+  "k9SQm1": [
+    {
+      "type": 0,
+      "value": "Relays which you have connected to before and appear to be reliable."
+    }
+  ],
+  "kEZUR8": [
+    {
+      "type": 0,
+      "value": "Register an Iris username"
+    }
+  ],
+  "kJYo0u": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " reposted"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others reposted"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "kKC9ya": [
+    {
+      "type": 0,
+      "value": "Wallet Info"
+    }
+  ],
+  "kNd2FL": [
+    {
+      "type": 0,
+      "value": "Tidal login"
+    }
+  ],
+  "kQAf2d": [
+    {
+      "type": 0,
+      "value": "Select"
+    }
+  ],
+  "kaaf1E": [
+    {
+      "type": 0,
+      "value": "ตอนนี้"
+    }
+  ],
+  "kc79d3": [
+    {
+      "type": 0,
+      "value": "Topics"
+    }
+  ],
+  "klCm96": [
+    {
+      "type": 0,
+      "value": "Community Post Approval"
+    }
+  ],
+  "kqPQJD": [
+    {
+      "type": 0,
+      "value": "Configure zap pool"
+    }
+  ],
+  "kuPHYE": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " liked"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " others liked"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "l+ikU1": [
+    {
+      "type": 0,
+      "value": "ทุกสิ่งทุกอย่างใน "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    }
+  ],
+  "l3H1EK": [
+    {
+      "type": 0,
+      "value": "Invite your friends"
+    }
+  ],
+  "l3nTjd": [
+    {
+      "type": 0,
+      "value": "Basic key derivation from mnemonic seed phrase"
+    }
+  ],
+  "lCILNz": [
+    {
+      "type": 0,
+      "value": "ซื้อตอนนี้"
+    }
+  ],
+  "lD3+8a": [
+    {
+      "type": 0,
+      "value": "ชำระเงิน"
+    }
+  ],
+  "lEnclp": [
+    {
+      "type": 0,
+      "value": "My events: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lPWASz": [
+    {
+      "type": 0,
+      "value": "Snort nostr address"
+    }
+  ],
+  "lTbT3s": [
+    {
+      "type": 0,
+      "value": "รหัสผ่าน wallet"
+    }
+  ],
+  "lbr3Lq": [
+    {
+      "type": 0,
+      "value": "Copy link"
+    }
+  ],
+  "lfOesV": [
+    {
+      "type": 0,
+      "value": "Non-Zap"
+    }
+  ],
+  "lgg1KN": [
+    {
+      "type": 0,
+      "value": "หน้าต่างบัญชี"
+    }
+  ],
+  "ll3xBp": [
+    {
+      "type": 0,
+      "value": "บริการ Image proxy"
+    }
+  ],
+  "lnaT9F": [
+    {
+      "type": 0,
+      "value": "กำลังติดตาม "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lsNFM1": [
+    {
+      "type": 0,
+      "value": "คลิกเพื่อโหลดเนื้อหาจาก "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "lvlPhZ": [
+    {
+      "type": 0,
+      "value": "จ่าย invoice"
+    }
+  ],
+  "m/59y2": [
+    {
+      "type": 0,
+      "value": "Zap Request"
+    }
+  ],
+  "m6h2Eg": [
+    {
+      "type": 0,
+      "value": "Handler recommendation"
+    }
+  ],
+  "mCEKiZ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " notes have been muted"
+    }
+  ],
+  "mErPop": [
+    {
+      "type": 0,
+      "value": "เหมือนว่าคุณจะยังไม่มีนะ เช็ค "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " เพื่อซื้อสักอันสิ!"
+    }
+  ],
+  "mFtdYh": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " Worker Relay"
+    }
+  ],
+  "mKAr6h": [
+    {
+      "type": 0,
+      "value": "ติดตามทั้งหมด"
+    }
+  ],
+  "mKh2HS": [
+    {
+      "type": 0,
+      "value": "บริการอัพโหลดไฟล์"
+    }
+  ],
+  "mKhgP9": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "mOFG3K": [
+    {
+      "type": 0,
+      "value": "Start"
+    }
+  ],
+  "mfe8RW": [
+    {
+      "type": 0,
+      "value": "ตัวเลือก: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "mmPSWH": [
+    {
+      "type": 0,
+      "value": "Read Only"
+    }
+  ],
+  "n1Whvj": [
+    {
+      "type": 0,
+      "value": "สลับ"
+    }
+  ],
+  "n5l7tP": [
+    {
+      "type": 0,
+      "value": "Time-Based Calendar Event"
+    }
+  ],
+  "n8k1SG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "MiB"
+    }
+  ],
+  "nD4frR": [
+    {
+      "type": 0,
+      "value": "Bid confirmation"
+    }
+  ],
+  "nDejmx": [
+    {
+      "type": 0,
+      "value": "ยกเลิกการบล็อค"
+    }
+  ],
+  "nGBrvw": [
+    {
+      "type": 0,
+      "value": "บุ๊คมาร์ค"
+    }
+  ],
+  "nGGDsi": [
+    {
+      "type": 0,
+      "value": "Notifications Allowed"
+    }
+  ],
+  "nIchMQ": [
+    {
+      "type": 0,
+      "value": "Searching for account activity ("
+    },
+    {
+      "type": 1,
+      "value": "progress"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "nPHrqp": [
+    {
+      "type": 0,
+      "value": "Coinjoin Pool"
+    }
+  ],
+  "nUT0Lv": [
+    {
+      "type": 0,
+      "value": "Tools"
+    }
+  ],
+  "nWQFic": [
+    {
+      "type": 0,
+      "value": "Renew"
+    }
+  ],
+  "nihgfo": [
+    {
+      "type": 0,
+      "value": "Listen to this article"
+    }
+  ],
+  "nwZXeh": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " บล็อค"
+    }
+  ],
+  "o/gK53": [
+    {
+      "type": 0,
+      "value": "Deck"
+    }
+  ],
+  "o7e+nJ": [
+    {
+      "type": 0,
+      "value": "ผู้ติดตาม "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "oJ+JJN": [
+    {
+      "type": 0,
+      "value": "ไม่พบสิ่งใด :/"
+    }
+  ],
+  "odFwjL": [
+    {
+      "type": 0,
+      "value": "เฉพาะที่ติดตามเท่านั้น"
+    }
+  ],
+  "ojzbwv": [
+    {
+      "type": 0,
+      "value": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "ozZ2Cj": [
+    {
+      "type": 0,
+      "value": "Badge Award"
+    }
+  ],
+  "p4N05H": [
+    {
+      "type": 0,
+      "value": "Upload"
+    }
+  ],
+  "p9Ps2l": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " have relays ("
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "pEEBFk": [
+    {
+      "type": 0,
+      "value": "Reliable Relays"
+    }
+  ],
+  "pI+77w": [
+    {
+      "type": 0,
+      "value": "ดาวน์โหลดข้อมูลสำรองจากรีเลย์ของ Snort"
+    }
+  ],
+  "pRess9": [
+    {
+      "type": 0,
+      "value": "ZapPool"
+    }
+  ],
+  "plOM0t": [
+    {
+      "type": 0,
+      "value": "Custom Emoji"
+    }
+  ],
+  "plg2Ua": [
+    {
+      "type": 0,
+      "value": "Channel Mute User"
+    }
+  ],
+  "puLNUJ": [
+    {
+      "type": 0,
+      "value": "ปักหมุด"
+    }
+  ],
+  "pyjJ5f": [
+    {
+      "type": 0,
+      "value": "Nostr Marketplace (for resilient marketplaces)"
+    }
+  ],
+  "pzTOmv": [
+    {
+      "type": 0,
+      "value": "ผู้ติดตาม"
+    }
+  ],
+  "q3OuMw": [
+    {
+      "type": 0,
+      "value": "Torrent Comment"
+    }
+  ],
+  "qAY40L": [
+    {
+      "type": 0,
+      "value": "Date-Based Calendar Event"
+    }
+  ],
+  "qBYNMb": [
+    {
+      "type": 0,
+      "value": "Group Thread Reply"
+    }
+  ],
+  "qD9EUF": [
+    {
+      "type": 0,
+      "value": "Email <> DM bridge ของคุณจาก Snort nostr address"
+    }
+  ],
+  "qDwvZ4": [
+    {
+      "type": 0,
+      "value": "ข้อผิดพลาดที่ไม่รู้จัก"
+    }
+  ],
+  "qFIVx4": [
+    {
+      "type": 0,
+      "value": "Profile Badges"
+    }
+  ],
+  "qMePPG": [
+    {
+      "type": 0,
+      "value": "Note"
+    }
+  ],
+  "qMx1sA": [
+    {
+      "type": 0,
+      "value": "จำนวน zap พื้นฐาน"
+    }
+  ],
+  "qUJTsT": [
+    {
+      "type": 0,
+      "value": "บล็อค"
+    }
+  ],
+  "qXCbgZ": [
+    {
+      "type": 0,
+      "value": "Unlock"
+    }
+  ],
+  "qZsKBR": [
+    {
+      "type": 0,
+      "value": "Renew "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    }
+  ],
+  "qcJFEJ": [
+    {
+      "type": 0,
+      "value": "Notifications API Disabled"
+    }
+  ],
+  "qdGuQo": [
+    {
+      "type": 0,
+      "value": "Private key ของคุณคือ(อย่าส่งข้อมูลนี้ให้ผู้อื่น)"
+    }
+  ],
+  "qfmMQh": [
+    {
+      "type": 0,
+      "value": "This note has been muted"
+    }
+  ],
+  "qkvYUb": [
+    {
+      "type": 0,
+      "value": "เพิ่มไปยังโปรไฟล์"
+    }
+  ],
+  "qmJ8kD": [
+    {
+      "type": 0,
+      "value": "แปลล้มเหลว"
+    }
+  ],
+  "qtWLmt": [
+    {
+      "type": 0,
+      "value": "Like"
+    }
+  ],
+  "qyJtWy": [
+    {
+      "type": 0,
+      "value": "Show less"
+    }
+  ],
+  "qydxOd": [
+    {
+      "type": 0,
+      "value": "Science"
+    }
+  ],
+  "qz9fty": [
+    {
+      "type": 0,
+      "value": "Incorrect pin"
+    }
+  ],
+  "r3C4x/": [
+    {
+      "type": 0,
+      "value": "ซอฟต์แวร์"
+    }
+  ],
+  "r5srDR": [
+    {
+      "type": 0,
+      "value": "โปรดใส่รหัส wallet"
+    }
+  ],
+  "rAQG0X": [
+    {
+      "type": 0,
+      "value": "Relay List Metadata"
+    }
+  ],
+  "rIsVe+": [
+    {
+      "type": 0,
+      "value": "Public chats list"
+    }
+  ],
+  "rMgF34": [
+    {
+      "type": 0,
+      "value": "Back up now"
+    }
+  ],
+  "rRRXtB": [
+    {
+      "type": 0,
+      "value": "Lightning Zaps"
+    }
+  ],
+  "rT14Ow": [
+    {
+      "type": 0,
+      "value": "เพิ่มรีเลย์"
+    }
+  ],
+  "reFEEC": [
+    {
+      "type": 0,
+      "value": "Reporting"
+    }
+  ],
+  "rfuMjE": [
+    {
+      "type": 0,
+      "value": "(ค่าเริ่มต้น)"
+    }
+  ],
+  "rkM7l8": [
+    {
+      "type": 0,
+      "value": "Encrypted Direct Message"
+    }
+  ],
+  "rmdsT4": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " days"
+    }
+  ],
+  "rn52n9": [
+    {
+      "type": 0,
+      "value": "Public Chat Channels"
+    }
+  ],
+  "rx1i0i": [
+    {
+      "type": 0,
+      "value": "Short link"
+    }
+  ],
+  "sFUkSN": [
+    {
+      "type": 0,
+      "value": "Bookmark sets"
+    }
+  ],
+  "sKDn4e": [
+    {
+      "type": 0,
+      "value": "Show Badges"
+    }
+  ],
+  "sUNhQE": [
+    {
+      "type": 0,
+      "value": "user"
+    }
+  ],
+  "sZQzjQ": [
+    {
+      "type": 0,
+      "value": "Failed to parse zap split: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "saInmO": [
+    {
+      "type": 0,
+      "value": "The relay name shown is not the same as the full URL entered."
+    }
+  ],
+  "saorw+": [
+    {
+      "type": 0,
+      "value": "Event Deletion Request"
+    }
+  ],
+  "sfL/O+": [
+    {
+      "type": 0,
+      "value": "Muted notes will not be shown"
+    }
+  ],
+  "t79a6U": [
+    {
+      "type": 0,
+      "value": "Connection Success:"
+    }
+  ],
+  "tDDiRL": [
+    {
+      "type": 0,
+      "value": "Interests list"
+    }
+  ],
+  "tFpT/O": [
+    {
+      "type": 0,
+      "value": "Release artifact sets"
+    }
+  ],
+  "tO1oq9": [
+    {
+      "type": 0,
+      "value": "Video Events"
+    }
+  ],
+  "tOdNiY": [
+    {
+      "type": 0,
+      "value": "มืด"
+    }
+  ],
+  "tRGdV1": [
+    {
+      "type": 0,
+      "value": "Versioned Encryption"
+    }
+  ],
+  "tU0ADf": [
+    {
+      "type": 0,
+      "value": "Unknown NIP-"
+    },
+    {
+      "type": 1,
+      "value": "x"
+    }
+  ],
+  "tVuVg9": [
+    {
+      "type": 0,
+      "value": "Video View Event"
+    }
+  ],
+  "tf1lIh": [
+    {
+      "type": 0,
+      "value": "Free"
+    }
+  ],
+  "th5lxp": [
+    {
+      "type": 0,
+      "value": "ส่งโน้ตของคุณไปยังชุดของรีเลย์ที่คุณอนุญาติให้เขียน"
+    }
+  ],
+  "thnRpU": [
+    {
+      "type": 0,
+      "value": "การได้รับการยืนยัน NIP-05 สามารถช่วย:"
+    }
+  ],
+  "tj6kdX": [
+    {
+      "type": 1,
+      "value": "sign"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "tjpYlr": [
+    {
+      "type": 0,
+      "value": "Relay Metrics"
+    }
+  ],
+  "ttxS0b": [
+    {
+      "type": 0,
+      "value": "เหรียญตราของผู้สนับสนุน"
+    }
+  ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "Status"
+    }
+  ],
+  "u/vOPu": [
+    {
+      "type": 0,
+      "value": "ชำระเงินแล้ว"
+    }
+  ],
+  "u4I8q8": [
+    {
+      "type": 0,
+      "value": "Pin list"
+    }
+  ],
+  "u81G9+": [
+    {
+      "type": 0,
+      "value": "Uptime"
+    }
+  ],
+  "u9NoC1": [
+    {
+      "type": 0,
+      "value": "Name must be less than "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " characters"
+    }
+  ],
+  "uCk8r+": [
+    {
+      "type": 0,
+      "value": "Already have an account?"
+    }
+  ],
+  "uD7Els": [
+    {
+      "type": 0,
+      "value": "External Identities in Profiles"
+    }
+  ],
+  "uJaMkO": [
+    {
+      "type": 0,
+      "value": "Relay list to receive DMs"
+    }
+  ],
+  "uSV4Ti": [
+    {
+      "type": 0,
+      "value": "การรีโพสจะต้องได้รับการยืนยันด้วยตนเอง"
+    }
+  ],
+  "uc0din": [
+    {
+      "type": 0,
+      "value": "Send sats splits to"
+    }
+  ],
+  "ufvXH1": [
+    {
+      "type": 0,
+      "value": "Found "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " events"
+    }
+  ],
+  "uhu5aG": [
+    {
+      "type": 0,
+      "value": "Public"
+    }
+  ],
+  "un1nGw": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " notes"
+    }
+  ],
+  "usAvMr": [
+    {
+      "type": 0,
+      "value": "แก้ไขโปร์ไฟล์"
+    }
+  ],
+  "v8lolG": [
+    {
+      "type": 0,
+      "value": "Start chat"
+    }
+  ],
+  "vB3oQ/": [
+    {
+      "type": 0,
+      "value": "Must be a contact list or pubkey list"
+    }
+  ],
+  "vBsZhD": [
+    {
+      "type": 0,
+      "value": "Communities list"
+    }
+  ],
+  "vN5UH8": [
+    {
+      "type": 0,
+      "value": "Profile Image"
+    }
+  ],
+  "vU/Q5i": [
+    {
+      "type": 0,
+      "value": "This tool will search for the last event published by all of your follows and remove those who have not posted in 6 months"
+    }
+  ],
+  "vZ4quW": [
+    {
+      "type": 0,
+      "value": "จ่ายด้วย "
+    },
+    {
+      "type": 1,
+      "value": "wallet"
+    }
+  ],
+  "vhlWFg": [
+    {
+      "type": 0,
+      "value": "ตัวเลือกโพลล์"
+    }
+  ],
+  "vlbWtt": [
+    {
+      "type": 0,
+      "value": "Get a free one"
+    }
+  ],
+  "voxBKC": [
+    {
+      "type": 0,
+      "value": "Followed by friends"
+    }
+  ],
+  "vxwnbh": [
+    {
+      "type": 0,
+      "value": "Amount of work to apply to all published events"
+    }
+  ],
+  "w1Fanr": [
+    {
+      "type": 0,
+      "value": "Business"
+    }
+  ],
+  "w6qrwX": [
+    {
+      "type": 0,
+      "value": "NSFW"
+    }
+  ],
+  "wEQDC6": [
+    {
+      "type": 0,
+      "value": "แก้ไข"
+    }
+  ],
+  "wOyDTB": [
+    {
+      "type": 0,
+      "value": "File storage server list"
+    }
+  ],
+  "wSZR47": [
+    {
+      "type": 0,
+      "value": "Submit"
+    }
+  ],
+  "wc9st7": [
+    {
+      "type": 0,
+      "value": "Media Attachments"
+    }
+  ],
+  "whSrs+": [
+    {
+      "type": 0,
+      "value": "Nostr Public Chat"
+    }
+  ],
+  "wih7iJ": [
+    {
+      "type": 0,
+      "value": "ชื่อนี้ถูกบล๊อค"
+    }
+  ],
+  "wlWMuh": [
+    {
+      "type": 0,
+      "value": "Patches"
+    }
+  ],
+  "wofVHy": [
+    {
+      "type": 0,
+      "value": "Moderation"
+    }
+  ],
+  "wqyN/i": [
+    {
+      "type": 0,
+      "value": "ค้นหาข้อมูลเพิ่มเติมเกี่ยวกับ "
+    },
+    {
+      "type": 1,
+      "value": "service"
+    },
+    {
+      "type": 0,
+      "value": " ได้ที่ "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "wtLjP6": [
+    {
+      "type": 0,
+      "value": "คัดลอก ID"
+    }
+  ],
+  "x+3fl6": [
+    {
+      "type": 0,
+      "value": "My Relays"
+    }
+  ],
+  "x/Fx2P": [
+    {
+      "type": 0,
+      "value": "จัดหาเงินทุนให้กับบริการที่คุณใช้โดยแบ่งส่วนของ zaps ทั้งหมดของคุณออกเป็นกองทุน!"
+    }
+  ],
+  "x82IOl": [
+    {
+      "type": 0,
+      "value": "ปิดการมองเห็น"
+    }
+  ],
+  "xEjBS7": [
+    {
+      "type": 0,
+      "value": "For you"
+    }
+  ],
+  "xIcAOU": [
+    {
+      "type": 0,
+      "value": "Votes by "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    }
+  ],
+  "xIoGG9": [
+    {
+      "type": 0,
+      "value": "ไปยัง"
+    }
+  ],
+  "xPCyu+": [
+    {
+      "type": 0,
+      "value": "nostr: URI scheme"
+    }
+  ],
+  "xaj9Ba": [
+    {
+      "type": 0,
+      "value": "ผู้ให้บริการ"
+    }
+  ],
+  "xbVgIm": [
+    {
+      "type": 0,
+      "value": "โหลดสื่อโดยอัตโนมัติ"
+    }
+  ],
+  "xhQMeQ": [
+    {
+      "type": 0,
+      "value": "หมดอายุ"
+    }
+  ],
+  "xl4s/X": [
+    {
+      "type": 0,
+      "value": "Additional Terms:"
+    }
+  ],
+  "xmcVZ0": [
+    {
+      "type": 0,
+      "value": "ค้นหา"
+    }
+  ],
+  "xybOUv": [
+    {
+      "type": 0,
+      "value": "FAN"
+    }
+  ],
+  "y/bmsG": [
+    {
+      "type": 0,
+      "value": "Allow"
+    }
+  ],
+  "y1Z3or": [
+    {
+      "type": 0,
+      "value": "ภาษา"
+    }
+  ],
+  "yAztTU": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " eSats"
+    }
+  ],
+  "yCLnBC": [
+    {
+      "type": 0,
+      "value": "LNURL หรือ Lightning Address"
+    }
+  ],
+  "yLzgxH": [
+    {
+      "type": 0,
+      "value": "Popular Relays"
+    }
+  ],
+  "yeX8yA": [
+    {
+      "type": 0,
+      "value": "Native App"
+    }
+  ],
+  "z3UjXR": [
+    {
+      "type": 0,
+      "value": "Debug"
+    }
+  ],
+  "z3Ukvq": [
+    {
+      "type": 0,
+      "value": "Draft Long-form Content"
+    }
+  ],
+  "zCb8fX": [
+    {
+      "type": 0,
+      "value": "Weight"
+    }
+  ],
+  "zFegDD": [
+    {
+      "type": 0,
+      "value": "รายชื่อผู้ติดต่อ"
+    }
+  ],
+  "zINlao": [
+    {
+      "type": 0,
+      "value": "เจ้าของ"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "ทั้งหมด"
+    }
+  ],
+  "zcaOTs": [
+    {
+      "type": 0,
+      "value": "จำนวน zap ในหน่วย sats"
+    }
+  ],
+  "zi9MdS": [
+    {
+      "type": 0,
+      "value": "Chess (PGN)"
+    }
+  ],
+  "zm6qS1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " mins to read"
+    }
+  ],
+  "zonsdq": [
+    {
+      "type": 0,
+      "value": "ไม่สามารถโหลดบริการ LNURL"
+    }
+  ],
+  "zvCDao": [
+    {
+      "type": 0,
+      "value": "โชว์โน้ตแบบย่ออัตโนมัติ"
+    }
+  ],
+  "zx0myy": [
+    {
+      "type": 0,
+      "value": "Participants"
+    }
+  ]
 }

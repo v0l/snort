@@ -1,812 +1,5884 @@
 {
-  "+D82kt": "Je, una uhakika unataka kuchapisha upya: {id}",
-  "+PzQ9Y": "Malipo sasa",
-  "+QM0PJ": "Sawazisha matukio yote ya wasifu wako kwenye akiba ya ndani",
-  "+QMdsy": "Relay Stats",
-  "+UjDmN": "Umeingia na ufikiaji wa kuandika",
-  "+Vxixo": "Gumzo la Siri la Kikundi",
-  "+aZY2h": "Aina ya Zap",
-  "+tShPg": "unafuata",
-  "+vA//S": "Ingizo",
-  "+vIQlC": "Tafadhali hakikisha kuwa umehifadhi nenosiri lifuatalo ili kudhibiti mpini wako katika siku zijazo",
-  "+vVZ/G": "Unganisha",
-  "+vj0U3": "hariri",
-  "+xliwN": "{name} amechapisha upya",
-  "/B8zwF": "Mahali pako kama unavyotaka 😌",
-  "/GCoTA": "Safisha",
-  "/JE/X+": "Usaidizi wa Akaunti",
-  "/T7HId": "HTTP File Storage Integration",
-  "/Xf4UW": "Tuma takwimu za matumizi kwa siri",
-  "/b1IHW": "Group Chat Message",
-  "/d6vEc": "Fanya wasifu wako kuwa rahisi kupata na kushiriki",
-  "/ioUrF": "From File",
-  "/n5KSF": "{n} dakika",
-  "00LcfG": "Pakia zaidi",
-  "01iNut": "Anwani ya Nostr sio yako",
-  "08zn6O": "Export Keys",
-  "0Azlrb": "Dhibiti",
-  "0BUTMv": "Tafuta...",
-  "0MndVW": "Mkoba wa kawaida wa LNDHub (BTCPayServer / Alby / LNBits)",
-  "0jOEtS": "LNURL isiyo halali",
-  "0kOBMu": "Handling Mentions",
-  "0mch2Y": "herufi katika jina imezuiliwa",
-  "0siT4z": "Siasa",
-  "0uoY11": "Onyesha Hali",
-  "0yO7wF": "{n} sekunde",
-  "0zASjL": "Enda",
-  "1/BFEj": "git stuff",
-  "1Mo59U": "Je, una uhakika unataka kuondoa kidokezo hiki kutoka kwa alamisho?",
-  "1R43+L": "Ingiza usanidi wa Nostr Wallet Connect",
-  "1UWegE": "Hakikisha kuhifadhi funguo zako!",
-  "1c4YST": "Imeunganishwa kwa: {node} 🎉",
-  "1nYUGC": "{n} Unafuata",
-  "1o2BgB": "Angalia Saini",
-  "1ozeyg": "Asili",
-  "1udzha": "Mazungumzo",
-  "2/2yg+": "Ongeza",
-  "25V4l1": "Bango",
-  "25WwxF": "Huna akaunti?",
-  "28oKbu": "Moderated Communities",
-  "29sHFE": "Wallet Connect",
-  "2BBGxX": "Subject tag in text events",
-  "2HIqeO": "User emoji list",
-  "2IFGap": "Changia",
-  "2LbrkB": "Hifadhi Nenosiri",
-  "2O2sfp": "Maliza",
-  "2Qsf9/": "Generic lists",
-  "2a2YiP": "{n} Alamisho",
-  "2k0Cv+": "Haipendwi ({n})",
-  "2mcwT8": "Nakala Mpya",
-  "2oCF7O": "Ikifuatiwa na marafiki wa marafiki",
-  "2raFAu": "Application-specific data",
-  "2ukA4d": "{n} masaa",
-  "2z7Kky": "Latest Articles",
-  "3/onCd": "Replies",
-  "39AHJm": "Jisajili",
-  "3GWu6/": "User Statuses",
-  "3KNMbJ": "Makala",
-  "3MKdAw": "Blobs stored on mediaservers",
-  "3QwfJR": "~{amount}",
-  "3adEeb": "{n} viewers",
-  "3cc4Ct": "Mwangaza",
-  "3gOsZq": "Watafsiri",
-  "3kbIhS": "Untitled",
-  "3qnJlS": "Unapiga kura kwa kutumia {amount} sats",
-  "3t3kok": "{n,plural,=1{{n} kidokezo kipya} other{{n} kidokezo kipya}}",
-  "3tVy+Z": "{n} Wafuasi",
-  "3yk8fB": "Wallet",
-  "40VR6s": "Nostr Connect",
-  "41BSaT": "Total Events:",
-  "450Fty": "Hakuna",
-  "47E53q": "Wiki",
-  "47FYwb": "Ghairi",
-  "48zn4v": "Bid",
-  "4IPzdn": "Wasanidi wa Msingi",
-  "4L2vUY": "NIP-05 yako mpya ni:",
-  "4MjsHk": "Maisha",
-  "4OB335": "Kutopenda",
-  "4P/kKm": "Private Key Encryption",
-  "4Vmpt4": "Nostr Plebs ni mtoa huduma wa kwanza wa NIP-05 katika soko na hutoa mkusanyiko bora wa vikoa kwa bei nzuri",
-  "4Z3t5i": "Tumia imgproxy kupunguza picha",
-  "4emo2p": "Relay Zilizopotea",
-  "4rYCjn": "Kumbuka Wewe Mwenyewe",
-  "4wgYpI": "Recommended Application Handlers",
-  "5BVs2e": "zap",
-  "5CB6zB": "Mgawanyiko wa Zap",
-  "5PRWs7": "Taarifa za Kidukizo Zimeruhusiwa",
-  "5dfmvv": "Zap Goal",
-  "5oTnfy": "Nunua Kitambulisho",
-  "5qEWCr": "File Metadata",
-  "5u6iEc": "Hamisha kwa Pubkey",
-  "5vMmmR": "Majina ya mtumiaji si ya kipekee kwenye Nostr. Anwani ya nostr ni anwani yako ya kipekee inayoweza kusomwa na binadamu ambayo ni ya kipekee kwako unapojiandikisha.",
-  "5ykRmX": "Tuma zap",
-  "6/hB3S": "Tazama Upya",
-  "60kEE3": "Mute list",
-  "62nsdy": "Jaribu tena",
-  "634VVz": "Connection Failed:",
-  "6559gb": "Urefu mpya wa orodha ya kufuatilia {length}",
-  "65BmHb": "Imeshindwa kufanya upakiaji mbadala kutoka kwa {host}, bonyeza hapa ili upakie moja kwa moja",
-  "6D4Hhn": "Recommend Relay",
-  "6KGebm": "Seal",
-  "6OSOXl": "Sababu: <i>{reason}</i>",
-  "6WWD34": "Looking for: {noteId}",
-  "6bgpn+": "Haitumiki kwa wateja wote, bado unaweza kupokea zile zile kama kugawanywa kwa zap haiko imewezeshwa",
-  "6ewQqw": "Vipendwa ({n})",
-  "6mr8WU": "Kufuatiliwa na",
-  "6pdxsi": "Extra metadata fields and tags",
-  "6uMqL1": "Haijalipwa",
-  "6xNr8c": "Switch accounts",
-  "6xap9L": "Good",
-  "7+Domh": "Noti",
-  "712i26": "Proxy hutumia ankara za HODL kusonga malipo, ambayo huficha pubkey ya nodo yako",
-  "753yX5": "Label",
-  "769A8p": "Wiki article",
-  "77nkEO": "Relay Information Document",
-  "7LFU8U": "Search Capability",
-  "7UOvbT": "Nje ya mtandao",
-  "7YkSA2": "Kiongozi wa Jamii",
-  "7gMmSL": "Reaction",
-  "7hp70g": "NIP-05",
-  "7jfPsW": "Modular Article Content",
-  "7nAz/z": "Mute notes from people who are outside your web of trust",
-  "7pFGAQ": "Close Relays",
-  "8/vBbP": "Machapisho upya ({n})",
-  "89q5wc": "Thibitisha Reposts",
-  "8BDFvJ": "Conventions for clients' use of e and p tags in text events",
-  "8ED/4u": "Jibu Kwa",
-  "8HJxXG": "Jisajili",
-  "8QDesP": "Zap {n} sats",
-  "8Rkoyb": "Mpokeaji",
-  "8Y6bZQ": "Zap isiyofaa: {input}",
-  "8ZGqWl": "Group Thread",
-  "8g2vyB": "Jina refu sana",
-  "8jmwT8": "bech32-encoded entities",
-  "8v1NN+": "Maneno ya Kuoanisha",
-  "8xdDLn": "Follow sets",
-  "8za9Pq": "Draft Classified Listing",
-  "9+Ddtu": "Inayofuata",
-  "9HU8vw": "Jibu",
-  "9SvQep": "Anafuata {n}",
-  "9V0wg3": "Calendar Event RSVP",
-  "9WRlF4": "Tuma",
-  "9kO0VQ": "Ficha madokezo yaliyonyamazishwa",
-  "9kSari": "Jaribu tena kuchapisha",
-  "9pMqYs": "Anwani ya Nostr",
-  "9wO4wJ": "Ankara ya Umeme",
-  "A86fJ+": "Generic Repost",
-  "ADmfQT": "Mzazi",
-  "ALdW69": "Kidokezo kutoka kwa {name}",
-  "AN0Z7Q": "Maneno Yaliyozuiwa",
-  "ASRK0S": "Mwandishi amenyamazishwa",
-  "AedFVZ": "Create or update a product",
-  "Ai8VHU": "Hifadhi tukio bila kikomo kwenye reli ya Snort",
-  "AkCxS/": "Sababu",
-  "AktAk2": "Great",
-  "Am8glJ": "Mchezo",
-  "AqGfF4": "Channel Creation",
-  "Aujn2T": "Hesabu",
-  "Awq32I": "Taarifa za Push",
-  "AxDOiG": "Miezi",
-  "AyGauy": "Ingia",
-  "B4C47Y": "Jina fupi sana",
-  "B6+XJy": "limezwapishwa",
-  "B6H7eJ": "nsec, npub, nip-05, hex",
-  "B7wvUM": "You can add a single or multiple relays, one per line.",
-  "BGCM48": "Andika ufikiaji wa upeanaji wa Snort, na uhifadhi wa mwaka 1 wa tukio",
-  "BGGacK": "AI Embeddings / Vector lists",
-  "BQW4gi": "Relay-based Groups",
-  "BWpuKl": "Sasisha",
-  "BfuAQ5": "Marketplace UI/UX",
-  "BjNwZW": "Anwani ya nostr (nip05)",
-  "Blxcdx": "Relay",
-  "Bo+O//": "HTTP Auth",
-  "C1LjMx": "Toleo la Umeme",
-  "C6Lhhp": "Live Event",
-  "C7642/": "Reposti ya Ujumbe",
-  "C81/uG": "Toka",
-  "C8FsOr": "Popular Servers",
-  "C8HhVE": "Inayopendekezwa Inafuata",
-  "CA1efg": "Video sets",
-  "CHTbO3": "Hakuna uwezo wa kupakia ankara",
-  "CJx5Nd": "Profile Zaps",
-  "CM+Cfj": "Orodha ya Kufuata",
-  "CM0k0d": "Katiza orodha ya kufuata",
-  "CVWeJ6": "Watu Wanaofanya Vizuri",
-  "CYkOCI": "na {count} wengine unao wafuatilia",
-  "Cdxwi0": "Repository announcements",
-  "CmZ9ls": "{n} Imenyamazishwa",
-  "Coy6SH": "Calendar",
-  "CsCUYo": "{n} sats",
-  "Cu/K85": "Imetafsiriwa kutoka {lang}",
-  "CzHZoc": "Grafu ya Jamii",
-  "D++Njw": "Text Note References",
-  "D+KzKd": "Zap kila kidokezo kiotomatiki inapopakia",
-  "D09wbg": "Badge Definition",
-  "D3idYv": "Mipangilio",
-  "D9xTLE": "Channel Hide Message",
-  "DBiVK1": "Hifadhi",
-  "DKnriN": "Tuma sats",
-  "DZzCem": "Onyesha vidokezo vya {n} hivi karibuni",
-  "Dh3hbq": "Zap ya Kiotomatiki",
-  "Dn82AL": "Moja kwa moja",
-  "DqUmXt": "Product sold as an auction",
-  "DrZqav": "Kuhusu inapaswa kuwa chini ya {limit} herufi",
-  "DtYelJ": "Hamisha",
-  "Dx4ey3": "Badilisha yote",
-  "E3oB+t": "Browser",
-  "E5ZIPD": "<big>{amount}</big> <small>sati</small>",
-  "EHqHsu": "Ankara / Anwani ya umeme",
-  "EJbFi7": "Tafuta vidokezo",
-  "ELbg9p": "Watoa Taarifa",
-  "EQKRE4": "Onyesha bendera kwenye kurasa za wasifu",
-  "EWeVrH": "Reaction to a website",
-  "EWyQH5": "Kote Duniani",
-  "Ebl/B2": "Tafsiri hadi {lang}",
-  "Ec+xLY": "Curation sets",
-  "EcZF24": "Reli Maalum",
-  "EcfIwB": "Jina la mtumiaji linapatikana",
-  "EcglP9": "Funguo",
-  "EjFyoR": "Anwani ya Mchango wa On-chain",
-  "EnCOBJ": "Nunua",
-  "EsHX35": "Sorry, we dont understand this event kind ({name}), please try one of the following apps instead!",
-  "F/6VqP": "Server",
-  "F3l7xL": "Ongeza Akaunti",
-  "F4eJ/3": "Classified Listings",
-  "FDguSC": "{n} Zaps",
-  "FHWpHC": "Wallet Response",
-  "FHvSk3": "Authentication of clients to relays",
-  "FMfjrl": "Onyesha taarifa za hali kwenye kurasa za wasifu",
-  "FSYL8G": "Watu Wanaofanya Vizuri",
-  "FWJR1B": "User groups",
-  "FcNSft": "Maelekezio ya HTTP yanarudishiwa kwa anwani ya lightning iliyotolewa",
-  "FdhSU2": "Dai sasa",
-  "FfYsOb": "Hitilafu imetokea!",
-  "FmXUJg": "anafuata",
-  "FvanT6": "Accounts",
-  "FzbSGg": "You dont have any media servers, try adding some.",
-  "G/yZLu": "Ondoa",
-  "G1BGCg": "Chagua Pochi",
-  "G3A56c": "Imejiunga na Push",
-  "GFOoEE": "Chumvi",
-  "GIqktu": "Supported NIPs",
-  "GL8aXW": "Alamisho ({n})",
-  "GSye7T": "Anwani ya Umeme",
-  "GUlSVG": "Dai anwani yako ya Nostr iliyoundwa",
-  "Gcn9NQ": "Kiungo cha Magneti",
-  "GpkNYn": "Torrent",
-  "GqQeu/": "Anwani isiyo halali ya Lightning",
-  "GspYR7": "{n}",
-  "Gxcr08": "Tukio la Tangaza",
-  "H+vHiz": "Ufunguo wa Hex..",
-  "H/oroO": "Dealing with Unknown Events",
-  "H0JBH6": "Toka nje",
-  "H0OG3T": "Habari za Kiongozi",
-  "H1GTaC": "Bookmark list",
-  "H6/kLh": "Agizo limelipwa!",
-  "HAlOn1": "Jina",
-  "HFls6j": "jina litapatikana baadae",
-  "HOzFdo": "Imenyamazishwa",
-  "HWbkEK": "Futa akiba na upakie upya",
-  "HbefNb": "Fungua Pochi",
-  "HhcAVH": "Humfuati mtu huyu, bofya hapa ili kupakia midia kutoka <i>{link}</i>, au usasishe <a><i>mapendeleo yako</i></a> ili kupakia kila mara midia kutoka kwa kila mtu.",
-  "HpAmQZ": "Relay reviews",
-  "HqRNN8": "Support",
-  "HzSFeV": "Expiration Timestamp",
-  "I0tYZf": "Create or update a stall",
-  "I1AoOu": "Chapisho la mwisho {time}",
-  "IEwZvs": "Je, una uhakika unataka kubandua kidokezo hiki?",
-  "IIOul1": "Data ya Akaunti",
-  "IKKHqV": "Anafuata",
-  "IOu4Xh": "Lazima uwe mnunuzi wa {tier} ili ufikie kisanduku cha {app}",
-  "IVbtTS": "Zap kila {n} ameketi",
-  "IWz1ta": "Tafsiri Kiotomatiki",
-  "IcHcWj": "Last Seen:",
-  "Ig9/a1": "Imetumwa sats {n} kwa {name}",
-  "IgsWFG": "Haifuatwi na mtu yeyote unayemfuata",
-  "IoQq+a": "Bofya hapa ili kupakia hata hivyo",
-  "IvjoDS": "Connected",
-  "Ix8l+B": "Vidokezo vinavyovuma",
-  "J+dIsA": "Usajili",
-  "J1iLmb": "Arifa Haziruhusiwi",
-  "J2HeQ+": "Tumia koma kutenganisha maneno k.m. neno1, neno2, neno3",
-  "J2Q92B": "Emoji sets",
-  "J6N9xl": "Sign in with Android signer",
-  "JCIgkj": "Jina la mtumiaji",
-  "JGrt9q": "Tuma sats kwa {name}",
-  "JHEHCk": "Zaps ({n})",
-  "JIVWWA": "Michezo",
-  "JPFYIM": "Hakuna anwani ya umeme",
-  "JSx7y9": "Jiunge na {site_name} {plan} kwa {price} na upokee tuzo zifuatazo",
-  "JeoS4y": "Reposti",
-  "Jh5zKH": "Search relays list",
-  "JjGgXI": "Tafuta watumiaji",
-  "JkLHGw": "Tovuti",
-  "JmcxzF": "Relays are servers you connect to for sending and receiving events. Aim for 4-8 relays.",
-  "JymXbw": "Ufunguo wa Kibinafsi",
-  "K1wl1/": "Average Latency:",
-  "K3r6DQ": "Futa",
-  "K7AkdL": "Onyesha",
-  "K9zklU": "External Content IDs",
-  "KAhAcM": "Ingiza usanidi wa LNDHub",
-  "KGmQjH": "Highlights",
-  "KJryGq": "Live Chat Message",
-  "KQvWvD": "Imefutwa",
-  "KT9nox": "Protected Events",
-  "KahimY": "Aina ya tukio lisilojulikana: {kind}",
-  "KipVeG": "Mapping Nostr keys to DNS-based internet identifiers",
-  "KtsyO0": "Weka Pini",
-  "KyRp/q": "Wallet Request",
-  "LBAnc7": "Je, unaona kama mtumiaji?",
-  "LEmxc8": "Zap Goals",
-  "LKw/ue": "Angalia msimbo {link}",
-  "LR1XjT": "Pini fupi sana",
-  "LXxsbk": "Asiyejulikana",
-  "LgbKvU": "Toa maoni",
-  "LhLvRx": "Jina lazima liwe kati ya vibambo 8 na 15",
-  "LmdPXO": "Haiwezi kuthibitisha Anwani ya Nostr",
-  "Lu5/Bj": "Fungua kwenye Zapstr",
-  "LuDBLj": "Torrents",
-  "Lw+I+J": "{n,plural,one {}=0{{name} zapped} other{{name} & {n} wengine walizap}}",
-  "LwYmVi": "Zaps kwenye taarifa hii zitagawanywa kwa watumiaji wafuatao.",
-  "M3Oirc": "Menyu ya Utatuzi",
-  "M6C/px": "Kuwa kiongozi",
-  "MBAYRO": "Onyesha 'Nakili Kitambulisho' na 'Nakili JSON' kwenye menyu ya muktadha kwa kila ujumbe",
-  "MI2jkA": "Haipatikani:",
-  "MKDHEa": "Join Room",
-  "MP54GY": "Nenosiri la Pochi",
-  "MWTx65": "Ukurasa Chaguomsingi",
-  "MYBYdJ": "Short Text Note",
-  "MYUBaG": "Client Authentication",
-  "MiMipu": "Wekeza kama Anwani Kuu ya Nostr (nip05)",
-  "MkQ4FX": "Proxy Tags",
-  "Ml7+RS": "Tuma kiungo hiki kwa marafiki wako na uishiriki uchawi wa nostr.",
-  "Mrpkot": "Lipia usajili",
-  "MuVeKe": "Nunua anwani ya nostr",
-  "Muhna4": "Counting results",
-  "MzRYWH": "Unanunua {item}",
-  "Mzizei": "Akaunti ya Iris.to",
-  "N2IrpM": "Thibitisha",
-  "NAidKb": "Arifa",
-  "NAuFNH": "Tayari una aina hii ya usajili, tafadhali sasisha au lipa",
-  "NDTFsp": "Job Feedback",
-  "NepkXH": "Haiwezi kupiga kura na {amount} sats, tafadhali weka kiwango kingine cha default cha zap",
-  "NndBJE": "Ukurasa Mpya wa Watumiaji",
-  "Nr9Yyx": "Reposts",
-  "NxzeNU": "Dead",
-  "O3Jz4E": "Tumia msimbo wako wa mwaliko kupata sats!",
-  "OEW7yJ": "Zaps",
-  "OIqnZN": "OpenTimestamps Attestations for Events",
-  "OJHKIL": "Gift Wrap",
-  "OKhRC6": "Shiriki",
-  "OLEm6z": "Hitilafu isiyojulikana ya kuingia",
-  "OQSOJF": "Pata anwani ya nostr bure",
-  "OQXnew": "Usajili wako bado unaendelea, bado huwezi kusasisha",
-  "ORGv1Q": "Imeundwa",
-  "ORa81+": "Merge Requests",
-  "OoZgbB": "Imeshindwa kusasisha, tafadhali jaribu tena",
-  "OuProE": "Long-form Content",
-  "OxPdQ0": "Inachanganua {date}",
-  "P2o+ZZ": "Anwani Isiyofaa ya Nostr",
-  "P61BTu": "Nakili Tukio JSON",
-  "P7FD0F": "Mfumo (Chaguo-msingi)",
-  "P7nJT9": "Jumla ya leo (UTC): {amount} sats",
-  "P8JC58": "Distance",
-  "PCSt5T": "Mapendeleo",
-  "PXQ0z0": "Inapokea kwa <b>{wallet}</b>",
-  "PamNxw": "Kijajuu cha faili kisichojulikana: {name}",
-  "Pe0ogR": "Mandhari",
-  "PrsIg7": "Maoni yataonyeshwa kwenye kila ukurasa, ikiwa imezimwa hakuna maoni yataonyeshwa",
-  "QDFTjG": "{n} Relays",
-  "QJfhKt": "Ufunguo wa faragha ni kama nenosiri, lakini hauwezi kuwekwa upya. Ilinde kwa uangalifu na usiwahi kuionyesha kwa mtu yeyote. Mtu akishapata ufunguo wako wa faragha, ataweza kufikia akaunti yako milele.",
-  "QWhotP": "Zap Pool hufanya kazi tu ikiwa unatumia mojawapo ya miunganisho ya pochi inayotumika (WebLN, LNC, LNDHub au Nostr Wallet Connect)",
-  "QpaLA3": "Channel Message",
-  "Qxv0B2": "Kwa sasa una viti {number} kwenye zap pool yako.",
-  "Qy6/Ft": "Private Direct Messages",
-  "R/6nsx": "Subscription",
-  "R81upa": "Watu unaowafuata",
-  "RDha9y": "Service Worker Haujatekelezwa",
-  "RRz1cA": "Repository state announcements",
-  "RSr2uB": "Jina la mtumiaji linapaswa kuwa na herufi ndogo na nambari pekee",
-  "RahCRH": "Muda wake umeisha",
-  "RefZpK": "Short-form Portrait Video Event",
-  "RfhLwC": "Na: {author}",
-  "RhDAoS": "Je, una uhakika unataka kufuta {id}",
-  "RmxSZo": "Data Vending Machines",
-  "RoOyAh": "Relays",
-  "Rs4kCE": "Alamisho",
-  "S/NV2G": "Loading note: {id}",
-  "SFuk1v": "Permissions",
-  "SLZGPn": "Ingiza pin kuweka funguo yako binafsi, unapaswa kuingiza pin hii kila wakati unapofungua {site}.",
-  "SMO+on": "Tuma zap kwa {name}",
-  "SOqbe9": "Sasisha Anwani ya Umeme",
-  "SP0+yi": "Nunua Usajili",
-  "SW3TFA": "Popular relays used by people you follow.",
-  "SYQtZ7": "Wakala wa Anwani ya LN",
-  "Sd0PKc": "Relay sets",
-  "SfwSIm": "Problem Tracker",
-  "ShdEie": "Weka alama kuwa zote zimesomwa",
-  "Sjo1P4": "Desturi",
-  "SmuYUd": "Utaitwa nini?",
-  "Ss0sWu": "Lipa Sasa",
-  "SsUQnC": "Application-specific Data",
-  "StKzTE": "Mwandishi ametaja madokezo haya kama <i>mada nyeti</i>",
-  "T83nqf": "Relays close to your geographic location.",
-  "TDR5ge": "Maudhui katika madokezo yataonyeshwa kiotomatiki kwa watu waliochaguliwa, vinginevyo kiungo pekee ndicho kitakachoonyeshwa",
-  "TGc5nI": "Handler information",
-  "TH1fFo": "Telegram",
-  "TJo5E6": "Onesha Mapema",
-  "TOG64f": "Use Local Relay",
-  "TP/cMX": "Imemalizika",
-  "TaeBqw": "Ingia kwa Upanuzi wa Nostr",
-  "TdTXXf": "Jifunze zaidi",
-  "TdtZQ5": "Crypto",
-  "Tdv6NY": "Interest sets",
-  "TgDKhI": "Calendar Events",
-  "TpgeGw": "Hex chumvi..",
-  "Tpy00S": "Watu",
-  "TvKqBp": "alipenda",
-  "TwyMau": "Account",
-  "U1aPPi": "Acha kusikiliza",
-  "U30H69": "Community Definition",
-  "UJTWqI": "Ondoa kwenye relays yangu",
-  "ULXFfP": "Pokea",
-  "UNjfWJ": "Angalia saini zote za tukio zilizopokelewa kutoka kwenye relays",
-  "UT7Nkj": "Gumzo Mpya",
-  "UUPFlt": "Watumiaji lazima wakubali onyo la maudhui ili kuonyesha maudhui ya dokezo lako.",
-  "UaCh1c": "Add Server",
-  "Ub+AGc": "Ingia",
-  "Up5U7K": "Zuia",
-  "Ups2/p": "Maombi yako yanangojea",
-  "UrKTqQ": "Una akaunti ya iris.to iliyopo",
-  "UsCzPc": "Share a personalized invitation with friends!",
-  "UxgyeY": "Msimbo wako wa rufaa ni {code}",
-  "V20Og0": "Labeling",
-  "VOjC1i": "Chagua huduma ya kupakia viambatisho",
-  "VR5eHw": "Ufunguo wa umma (npub/nprofile)",
-  "VcwrfF": "Ndio tafadhali",
-  "VfhYxG": "Ili kuona orodha kamili ya mabadiliko, unaweza kuangalia mabadiliko {hapa}",
-  "VlJkSk": "{n} zimefanywa kimya",
-  "VnXp8Z": "Picha",
-  "W1yoZY": "Inaonekana huna usajili wowote, unaweza kupata moja {link}",
-  "W2PiAr": "{n} Zimezuiliwa",
-  "W4SaxY": "Local",
-  "W9355R": "Rudisha sauti",
-  "WeLEuL": "From Server",
-  "Wj5TbN": "Issues",
-  "WmZhfL": "Tafsiri moja kwa moja madokezo kwa lugha yako ya asili",
-  "WvGmZT": "npub / nprofile / anwani ya Nostr",
-  "X6tipZ": "Ingia kwa ufunguo",
-  "X7xU8J": "nsec, npub, nip-05, hex, mnemoniki",
-  "XECMfW": "Tuma takwimu za matumizi",
-  "XICsE8": "Wapangaji wa Faili",
-  "XPB8VV": "Uunganisho wa mkoba wa Alby",
-  "XQiFEl": "Afya za Ufuatiliaji",
-  "XSdWHA": "Komboa",
-  "XXm7jJ": "Vishazi Vya Kupanda",
-  "XgWvGA": "Miitikio",
-  "Xnimz0": "Inatuma kutoka <b>{wallet}</b>",
-  "Xopqkl": "Kiasi chako chaguo-msingi cha zap ni {number} sats, thamani zilizopo zinakadiriwa kutoka hapo.",
-  "YDMrKK": "Users",
-  "YDURw6": "URL ya Huduma",
-  "YH2RKk": "Popular media servers.",
-  "YQZY/S": "It looks like you dont follow enough people, take a look at {newUsersPage} to discover people to follow!",
-  "YR2I9M": "Hakuna ufunguo, hakuna {app}, Hakuna njia ya kuzirejesha ikiwa haujafanya nakala rudufu. Inachukua dakika tu.",
-  "YU7ZYp": "Public Chat",
-  "YXA3AH": "Washa Mijibu",
-  "Yf3DwC": "Unganisha pochi ili kutuma malipo ya papo hapo",
-  "YuoEb9": "Try another relay",
-  "Z48UEo": "Channel Metadata",
-  "Z4BMCZ": "Weka maneno ya kuoanisha",
-  "Z7kkeJ": "Delegated Event Signing",
-  "ZFe9tl": "Compose a note",
-  "ZKORll": "Washa Sasa",
-  "ZLmyG9": "Wachangiaji",
-  "ZS+jRE": "Tuma mgawanyo wa zap kwa",
-  "Zff6lu": "Jina la mtumiaji iris.to/<b>{name}</b> limetengwa kwa ajili yako!",
-  "ZlIh4/": "Encrypted Direct Messages",
-  "ZlmK/p": "{name} amekualika kwenye {app}",
-  "a1x4gD": "Media servers store media which you can share in notes as images and videos",
-  "a5UPxh": "Watengenezaji wa mfuko na mifumo inayotoa huduma za uthibitishaji wa NIP-05",
-  "a7TDNm": "Vidokezo vitatiririka kwa wakati halisi kwenye kichupo cha kimataifa cha madokezo",
-  "aHje0o": "Jina au kifupisho",
-  "aMaLBK": "Vifaa Vinavyoungwa mkono",
-  "aRex7h": "Imelipwa {amount} sats, ada {fee} sats",
-  "aSGz4J": "Unganisha kwa nodi yako ya LND na Uunganisho wa Njia ya Umeme",
-  "aWpBzj": "Onyesha Zaidi",
-  "abbGKq": "{n} km",
-  "ak3MTf": "Invite Friends",
-  "b12Goz": "Mnemoniki",
-  "b5vAk0": "Nchi yako itafanya kama anwani ya umeme na itaelekeza kwenye LNURL uliyochagua au anwani ya Umeme",
-  "bF1MYT": "Wewe ni kiongozi wa jamii na unapata <b>{percent}</b> ya michango ya watumiaji waliotajwa!",
-  "bG00/W": "Mhudumu wa Huduma Unafanya Kazi",
-  "bJ+wrA": "Hesabu Orodha ya Kupogoa",
-  "bLZL5a": "Pata Anwani",
-  "bMphls": "Umeingia kwa upatikanaji wa kusoma tu",
-  "bQdA2k": "Maudhui Yanayofunuliwa",
-  "bep9C3": "Ufunguo wa Umma",
-  "bfvyfs": "Hajulikani",
-  "bxv59V": "Sasa Hivi",
-  "c+1p0i": "Kind mute sets",
-  "c+JYNI": "Hapana asante",
-  "c2T+1B": "Redirects",
-  "c35bj2": "Ikiwa una swali kuhusu agizo lako la NIP-05 tafadhali DM {link}",
-  "c3LlRO": "{n}KiB",
-  "c3g2hL": "Tangaza Tena",
-  "cFbU1B": "Je, unatumia Alby? Nenda kwenye {link} kupata usanidi wako wa NWC!",
-  "cG/bKQ": "Muunganisho wa mkoba wa asili wa nostr",
-  "cHCwbF": "Ufotografia",
-  "cKbMRX": "Direct Message",
-  "cPIKU2": "Ninafuata",
-  "cQfLWb": "URL..",
-  "cVcgLJ": "Media Servers",
-  "cWx9t8": "Funga Mijibu Yote",
-  "cg1VJ2": "Unganisha Pochi",
-  "cnwHgH": "OpenTimestamps",
-  "cuP16y": "Msaada wa Akaunti Nyingi",
-  "cuV2gK": "Jina limehifadhiwa",
-  "cw1Ftc": "Live Activities",
-  "cyR7Kh": "Rudi",
-  "d+6YsV": "Orodha za kufuta sauti:",
-  "d0qim7": "WoT Filter",
-  "d2ebEu": "Hajajiandikisha kwa Piga",
-  "d7d0/x": "Anwani ya LN",
-  "dK2CcV": "Ufunguo wa umma ni kama jina lako la mtumiaji, unaweza kuushiriki na mtu yeyote.",
-  "dOQCL8": "Jina la kuonyesha",
-  "dZZIGe": "Modular Article Header",
-  "ddd3JX": "Popular Hashtags",
-  "deEeEI": "Jisajili",
-  "djLctd": "Kiasi katika sati",
-  "dmcsBA": "Classified Listing",
-  "dmsiLv": "Mgawo wa default wa Zap Pool wa {n} umewekwa kwa watengenezaji wa {site}, unaweza kuzima wakati wowote kwenye {link}",
-  "e5x8FT": "Aina",
-  "e61Jf3": "Inakuja hivi karibuni",
-  "e7VmYP": "Ingiza pin kufuli funguo yako binafsi",
-  "e7qqly": "Weka Alama Yote Yamesomwa",
-  "eF0Re7": "Tumia kiendelezi cha kusaini Nostr kuingia",
-  "eHAneD": "Emoji ya majibu",
-  "eJj8HD": "Pata Kuthibitishwa",
-  "eSzf2G": "Zap moja ya {nIn} sats itatenga {nOut} sats kwenye bwawa la zap.",
-  "eW/Bj9": "Feed",
-  "eXT2QQ": "Mazungumzo ya Kikundi",
-  "eZtOxB": "window.nostr capability for web browsers",
-  "egib+2": "{n,plural,=1{& {n} mwingine} other{& {n} wengine}}",
-  "ejEGdx": "Nyumbani",
-  "eoV49s": "Poor",
-  "f1OxTe": "Viongozi wa jamii ni watu binafsi wanaoendeleza mfumo wa nostr kwa kuwa na shughuli katika jamii zao za kienyeji na kusaidia kuwajumuisha watumiaji wapya. Kila mtu anaweza kuwa kiongozi wa jamii, lakini wachache wanashikilia cheo cha heshima cha sasa.",
-  "f2CAxA": "Tupa",
-  "fBI91o": "Zap",
-  "fBlba3": "Asante kwa kutumia {site}, tafadhali fikiria kuchangia ikiwa unaweza.",
-  "fLIvbC": "Snort ni mradi wa chanzo huria uliojengwa na watu wenye shauku katika wakati wao wa bure, michango yako inathaminiwa sana",
-  "fOksnD": "Haiwezi kupiga kura kwa sababu huduma ya LNURL haitumii zaps",
-  "fQN+tq": "Onyesha machapisho yenye lebo ya onyo la yaliyomo",
-  "fWZYP5": "Imebandikwa",
-  "fX5RYm": "Chagua mada kadhaa za kuvutia",
-  "filwqD": "Soma",
-  "fjAcWo": "Vifurushi vya Zawadi",
-  "flnGvv": "Unafikiria nini?",
-  "fqwcJ1": "Michango kwenye Mnyororo",
-  "fr+XYA": "Lightning Pub RPC",
-  "fsB/4p": "Imehifadhiwa",
-  "fucxlm": "Attach Media",
-  "furjvW": "Tazama Tiririsha",
-  "g5pX+a": "Kuhusu",
-  "g985Wp": "Haiwezi kutuma kura",
-  "gDzDRs": "Emoji za kutuma unapojibu ujumbe kwa dokezo",
-  "gXgY3+": "Sio wateja wote wanaounga mkono hii bado",
-  "gczcC5": "Jisajili",
-  "geppt8": "{count} ({count2} katika kumbukumbu)",
-  "gjBiyj": "Inapakia...",
-  "gkMmvC": "Android Signer Application",
-  "gl1NeW": "Lists",
-  "go2/QF": "User server list",
-  "grQ+mI": "Ushahidi wa Kazi",
-  "gtNjNP": "Basic protocol flow description",
-  "h7jvCs": "{site} ina furaha zaidi pamoja!",
-  "h8XMJL": "Beji",
-  "h9M0rW": "User Metadata",
-  "hF6IN2": "Pogoa Orodha ya Ufuatao",
-  "hMQmIw": "Sawazisha Akaunti",
-  "hMzcSq": "Ujumbe",
-  "hRTfTR": "PRO",
-  "hY4lzx": "Inasaidia",
-  "hYOE+U": "Invite",
-  "hicxcO": "Onyesha majibu",
-  "hmZ3Bz": "Media",
-  "hniz8Z": "hapa",
-  "hv/eRj": "Blocked relays list",
-  "hvFRBo": "Interaction",
-  "i/dBAR": "Zap Pool",
-  "i5gBFz": "Malipo uliyotuma na kupokea yataonekana hapa.",
-  "iCqGww": "Maoni ({n})",
-  "iEoXYx": "Tafsiri za DeepL",
-  "iGT1eE": "Afya ya Kufuatilia Ufuatao ({x})",
-  "iHN12u": "Admin",
-  "iICVoL": "{x} inafuata ({y} nakala)",
-  "iNWbVV": "Mpini",
-  "iXPL0Z": "Haiwezi kuingia kwa kutumia ufunguo wa faragha kwenye muunganisho usio salama, tafadhali tumia kiendelezi cha kidhibiti cha ufunguo wa Nostr badala yake",
-  "iYc3Ld": "Malipo",
-  "icCxlA": "new users page",
-  "ieGrWo": "Fuata",
-  "igUUst": "Group Chat Threaded Reply",
-  "ipHVx5": "Tengeneza ankara",
-  "itPgxd": "Wasifu",
-  "izWS4J": "Acha kufuata",
-  "j9xbzF": "Tayari umefanya nakala rudufu",
-  "jA3OE/": "{n,plural,one {}=1{{n} sat} other{{n} sats}}",
-  "jAmfGl": "Usajili wako wa {site_name} umekwisha",
-  "jHa/ko": "Safisha chakula chako",
-  "jMzO1S": "Hitilafu ya ndani: {msg}",
-  "jiAVXu": "Video Event",
-  "jvo0vs": "Hifadhi",
-  "jzgQ2z": "{n} Maoni",
-  "k0kCJp": "Tumia Sasa",
-  "k2veDA": "Andika",
-  "k7sKNy": "Huduma yetu wenyewe ya uthibitishaji wa NIP-05, inasaidia kusaidia uundaji wa tovuti hii na kupata beji maalum inayong'aa kwenye tovuti yetu!",
-  "k9SQm1": "Relays which you have connected to before and appear to be reliable.",
-  "kEZUR8": "Jisajili jina la mtumiaji wa Iris",
-  "kJYo0u": "{n,plural,one {}=0{{name} alireposted} other{{name} & {n} na wengine wkarepost}}",
-  "kKC9ya": "Wallet Info",
-  "kNd2FL": "Tidal login",
-  "kQAf2d": "Select",
-  "kaaf1E": "sasa hivi",
-  "kc79d3": "Mada",
-  "klCm96": "Community Post Approval",
-  "kqPQJD": "Sanidi bwawa la zap",
-  "kuPHYE": "{n,plural,one {}=0{{name} amependa} other{{name} & {n} na wengine wamependa}}",
-  "l+ikU1": "Kila kitu katika {plan}",
-  "l3H1EK": "Waalika marafiki zako",
-  "l3nTjd": "Basic key derivation from mnemonic seed phrase",
-  "lCILNz": "Nunua Sasa hivi",
-  "lD3+8a": "Lipa",
-  "lEnclp": "Matukio yangu: {n}",
-  "lPWASz": "Anwani ya nostr ya Snort",
-  "lTbT3s": "Nenosiri la Wallet",
-  "lbr3Lq": "Copy link",
-  "lfOesV": "Isiyo ya Zap",
-  "lgg1KN": "ukurasa wa akaunti",
-  "ll3xBp": "Huduma ya wakala wa picha",
-  "lnaT9F": "Unafuata {n}",
-  "lsNFM1": "Bofya ili kupakia maudhui kutoka kwa {link}",
-  "lvlPhZ": "Lipa ankara",
-  "m/59y2": "Zap Request",
-  "m6h2Eg": "Handler recommendation",
-  "mCEKiZ": "{n} notes have been muted",
-  "mErPop": "Inaonekana huna, angalia {link} ili kununua!",
-  "mFtdYh": "{type} Worker Relay",
-  "mKAr6h": "Fuata wote",
-  "mKh2HS": "Huduma ya kupakia faili",
-  "mKhgP9": "{n,plural,one {}=0{} =1{zapped} other{zapped}}",
-  "mOFG3K": "Anza",
-  "mfe8RW": "Chaguo: {n}",
-  "mmPSWH": "Read Only",
-  "n1Whvj": "Badili",
-  "n5l7tP": "Time-Based Calendar Event",
-  "n8k1SG": "{n}MiB",
-  "nD4frR": "Bid confirmation",
-  "nDejmx": "Ondoa kizuizi",
-  "nGBrvw": "Alamisho",
-  "nGGDsi": "Ruhusu Arifa",
-  "nIchMQ": "Inatafuta shughuli za akaunti ({progress})",
-  "nPHrqp": "Coinjoin Pool",
-  "nUT0Lv": "Vyombo",
-  "nWQFic": "Upya",
-  "nihgfo": "Sikiliza makala hii",
-  "nwZXeh": "{n} imezuiliwa",
-  "o/gK53": "Sitaha",
-  "o7e+nJ": "wafuasi {n}",
-  "oJ+JJN": "Hakuna kilichopatikana:/",
-  "odFwjL": "Inafuata pekee",
-  "ojzbwv": "Hujambo, inaonekana kama bado huna Anwani ya Nostr, unapaswa kuipata! Angalia {link}",
-  "ozZ2Cj": "Badge Award",
-  "p4N05H": "Pakia",
-  "p9Ps2l": "{x}/{y} wana relay ({percent})",
-  "pEEBFk": "Reliable Relays",
-  "pI+77w": "Hifadhi rudufu zinazoweza kupakuliwa kutoka kwa relay ya Snort",
-  "pRess9": "ZapPool",
-  "plOM0t": "Custom Emoji",
-  "plg2Ua": "Channel Mute User",
-  "puLNUJ": "Bandika",
-  "pyjJ5f": "Nostr Marketplace (for resilient marketplaces)",
-  "pzTOmv": "Wafuasi",
-  "q3OuMw": "Torrent Comment",
-  "qAY40L": "Date-Based Calendar Event",
-  "qBYNMb": "Group Thread Reply",
-  "qD9EUF": "Barua pepe <> Daraja la DM kwa anwani yako ya nostr ya Snort",
-  "qDwvZ4": "Hitilafu isiyojulikana",
-  "qFIVx4": "Profile Badges",
-  "qMePPG": "Taarifa",
-  "qMx1sA": "Chaguo-msingi cha Zap",
-  "qUJTsT": "Imezuiwa",
-  "qXCbgZ": "Fungua",
-  "qZsKBR": "Jiandikishie upya {tier}",
-  "qcJFEJ": "API za Arifa zimelemazwa",
-  "qdGuQo": "Ufunguo wako wa Faragha Ni (usishiriki hii na mtu yeyote)",
-  "qfmMQh": "Hii taarifa imezimwa",
-  "qkvYUb": "Ongeza kwa Wasifu",
-  "qmJ8kD": "Tafsiri imeshindwa",
-  "qtWLmt": "Penda",
-  "qyJtWy": "Onyesha kidogo",
-  "qydxOd": "Sayansi",
-  "qz9fty": "Pin isiyo sahihi",
-  "r3C4x/": "Programu",
-  "r5srDR": "Ingiza nenosiri la pochi",
-  "rAQG0X": "Relay List Metadata",
-  "rIsVe+": "Public chats list",
-  "rMgF34": "Hifadhi nakala sasa",
-  "rRRXtB": "Lightning Zaps",
-  "rT14Ow": "Ongeza Relay",
-  "reFEEC": "Reporting",
-  "rfuMjE": "(Chaguo-msingi)",
-  "rkM7l8": "Encrypted Direct Message",
-  "rmdsT4": "siku {n}",
-  "rn52n9": "Vituo vya Gumzo la Umma",
-  "rx1i0i": "Kiungo fupi",
-  "sFUkSN": "Bookmark sets",
-  "sKDn4e": "Onyesha Vialamisho",
-  "sUNhQE": "mtumiaji",
-  "sZQzjQ": "Imeshindwa kuchambua mgawanyo wa zap: {input}",
-  "saInmO": "The relay name shown is not the same as the full URL entered.",
-  "saorw+": "Event Deletion Request",
-  "sfL/O+": "Vidokezo vilivyonyamazishwa havitaonyeshwa",
-  "t79a6U": "Connection Success:",
-  "tDDiRL": "Interests list",
-  "tFpT/O": "Release artifact sets",
-  "tO1oq9": "Video Events",
-  "tOdNiY": "Giza",
-  "tRGdV1": "Versioned Encryption",
-  "tU0ADf": "Unknown NIP-{x}",
-  "tVuVg9": "Video View Event",
-  "tf1lIh": "Free",
-  "th5lxp": "Tuma dokezo kwa kikundi kidogo cha relay zako za uandishi",
-  "thnRpU": "Kuthibitishwa kwa NIP-05 kunaweza kusaidia:",
-  "tj6kdX": "{sign} {amount} sati",
-  "tjpYlr": "Takwimu za Relay",
-  "ttxS0b": "Beji ya Msaidizi",
-  "tzMNF3": "Status",
-  "u/vOPu": "Imelipwa",
-  "u4I8q8": "Pin list",
-  "u81G9+": "Uptime",
-  "u9NoC1": "Jina lazima liwe chini ya wahusika {limit}",
-  "uCk8r+": "Je, tayari una akaunti?",
-  "uD7Els": "External Identities in Profiles",
-  "uJaMkO": "Relay list to receive DMs",
-  "uSV4Ti": "Machapisho mapya yanahitaji kuthibitishwa mwenyewe",
-  "uc0din": "Tuma sats zilizogawanywa kwa",
-  "ufvXH1": "Imepata matukio {n}",
-  "uhu5aG": "Umma",
-  "un1nGw": "{n} taarifa",
-  "usAvMr": "Badilisha Wasifu",
-  "v8lolG": "Anzisha gumzo",
-  "vB3oQ/": "Lazima iwe orodha ya mawasiliano au orodha ya pubkey",
-  "vBsZhD": "Communities list",
-  "vN5UH8": "Pata ya bure",
-  "vU/Q5i": "Zana hii itatafuta tukio la mwisho lililochapishwa na wafuatiliaji wako wote na kuondoa wale ambao hawajachapisha kwa miezi 6",
-  "vZ4quW": "NIP-05 ni uthibitishaji wa msingi wa DNS ambao husaidia kukuthibitisha kama mtumiaji halisi.",
-  "vhlWFg": "Chaguo za Kura",
-  "vlbWtt": "Pata ya bure",
-  "voxBKC": "Imefuatiliwa na marafiki",
-  "vxwnbh": "Kiasi cha kazi ya kuomba kwa matukio yote yaliyochapishwa",
-  "w1Fanr": "Biashara",
-  "w6qrwX": "NSFW",
-  "wEQDC6": "Hariri",
-  "wOyDTB": "File storage server list",
-  "wSZR47": "Tuma",
-  "wc9st7": "Media Attachments",
-  "whSrs+": "Nostr Gumzo la Umma",
-  "wih7iJ": "jina limezuiwa",
-  "wlWMuh": "Patches",
-  "wofVHy": "Usimamizi",
-  "wqyN/i": "Pata maelezo zaidi kuhusu {service} kwenye {link}",
-  "wtLjP6": "Nakili ID",
-  "x+3fl6": "My Relays",
-  "x/Fx2P": "Fundisha huduma unazotumia kwa kugawanya sehemu ya zap zako zote kwenye kundi la fedha!",
-  "x82IOl": "Nyamazisha",
-  "xEjBS7": "Kwa ajili yako",
-  "xIcAOU": "Kura za {type}",
-  "xIoGG9": "Nenda kwa",
-  "xPCyu+": "nostr: URI scheme",
-  "xaj9Ba": "Mtoa huduma",
-  "xbVgIm": "Pakia midia kiotomatiki",
-  "xhQMeQ": "Muda wake unaisha",
-  "xl4s/X": "Vigezo vingine:",
-  "xmcVZ0": "Tafuta",
-  "xybOUv": "SHABIKI",
-  "y/bmsG": "Ruhusu",
-  "y1Z3or": "Lugha",
-  "yAztTU": "{n} eSatI",
-  "yCLnBC": "LNURL au Anwani ya Umeme",
-  "yLzgxH": "Popular Relays",
-  "yeX8yA": "Native App",
-  "z3UjXR": "Debug",
-  "z3Ukvq": "Draft Long-form Content",
-  "zCb8fX": "Uzito",
-  "zFegDD": "Wasiliana",
-  "zINlao": "Mmiliki",
-  "zQvVDJ": "Yote",
-  "zcaOTs": "Kiasi cha Zap katika seti",
-  "zi9MdS": "Chess (PGN)",
-  "zm6qS1": "{n} dakika kusoma",
-  "zonsdq": "Imeshindwa kupakia huduma ya LNURL",
-  "zvCDao": "Onyesha taarifa mpya kiotomatiki",
-  "zx0myy": "Participants"
+  "+D82kt": [
+    {
+      "type": 0,
+      "value": "Je, una uhakika unataka kuchapisha upya: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "+PzQ9Y": [
+    {
+      "type": 0,
+      "value": "Malipo sasa"
+    }
+  ],
+  "+QM0PJ": [
+    {
+      "type": 0,
+      "value": "Sawazisha matukio yote ya wasifu wako kwenye akiba ya ndani"
+    }
+  ],
+  "+QMdsy": [
+    {
+      "type": 0,
+      "value": "Relay Stats"
+    }
+  ],
+  "+UjDmN": [
+    {
+      "type": 0,
+      "value": "Umeingia na ufikiaji wa kuandika"
+    }
+  ],
+  "+Vxixo": [
+    {
+      "type": 0,
+      "value": "Gumzo la Siri la Kikundi"
+    }
+  ],
+  "+aZY2h": [
+    {
+      "type": 0,
+      "value": "Aina ya Zap"
+    }
+  ],
+  "+tShPg": [
+    {
+      "type": 0,
+      "value": "unafuata"
+    }
+  ],
+  "+vA//S": [
+    {
+      "type": 0,
+      "value": "Ingizo"
+    }
+  ],
+  "+vIQlC": [
+    {
+      "type": 0,
+      "value": "Tafadhali hakikisha kuwa umehifadhi nenosiri lifuatalo ili kudhibiti mpini wako katika siku zijazo"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "Unganisha"
+    }
+  ],
+  "+vj0U3": [
+    {
+      "type": 0,
+      "value": "hariri"
+    }
+  ],
+  "+xliwN": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " amechapisha upya"
+    }
+  ],
+  "/B8zwF": [
+    {
+      "type": 0,
+      "value": "Mahali pako kama unavyotaka 😌"
+    }
+  ],
+  "/GCoTA": [
+    {
+      "type": 0,
+      "value": "Safisha"
+    }
+  ],
+  "/JE/X+": [
+    {
+      "type": 0,
+      "value": "Usaidizi wa Akaunti"
+    }
+  ],
+  "/T7HId": [
+    {
+      "type": 0,
+      "value": "HTTP File Storage Integration"
+    }
+  ],
+  "/Xf4UW": [
+    {
+      "type": 0,
+      "value": "Tuma takwimu za matumizi kwa siri"
+    }
+  ],
+  "/b1IHW": [
+    {
+      "type": 0,
+      "value": "Group Chat Message"
+    }
+  ],
+  "/d6vEc": [
+    {
+      "type": 0,
+      "value": "Fanya wasifu wako kuwa rahisi kupata na kushiriki"
+    }
+  ],
+  "/ioUrF": [
+    {
+      "type": 0,
+      "value": "From File"
+    }
+  ],
+  "/n5KSF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " dakika"
+    }
+  ],
+  "00LcfG": [
+    {
+      "type": 0,
+      "value": "Pakia zaidi"
+    }
+  ],
+  "01iNut": [
+    {
+      "type": 0,
+      "value": "Anwani ya Nostr sio yako"
+    }
+  ],
+  "08zn6O": [
+    {
+      "type": 0,
+      "value": "Export Keys"
+    }
+  ],
+  "0Azlrb": [
+    {
+      "type": 0,
+      "value": "Dhibiti"
+    }
+  ],
+  "0BUTMv": [
+    {
+      "type": 0,
+      "value": "Tafuta..."
+    }
+  ],
+  "0MndVW": [
+    {
+      "type": 0,
+      "value": "Mkoba wa kawaida wa LNDHub (BTCPayServer / Alby / LNBits)"
+    }
+  ],
+  "0jOEtS": [
+    {
+      "type": 0,
+      "value": "LNURL isiyo halali"
+    }
+  ],
+  "0kOBMu": [
+    {
+      "type": 0,
+      "value": "Handling Mentions"
+    }
+  ],
+  "0mch2Y": [
+    {
+      "type": 0,
+      "value": "herufi katika jina imezuiliwa"
+    }
+  ],
+  "0siT4z": [
+    {
+      "type": 0,
+      "value": "Siasa"
+    }
+  ],
+  "0uoY11": [
+    {
+      "type": 0,
+      "value": "Onyesha Hali"
+    }
+  ],
+  "0yO7wF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sekunde"
+    }
+  ],
+  "0zASjL": [
+    {
+      "type": 0,
+      "value": "Enda"
+    }
+  ],
+  "1/BFEj": [
+    {
+      "type": 0,
+      "value": "git stuff"
+    }
+  ],
+  "1Mo59U": [
+    {
+      "type": 0,
+      "value": "Je, una uhakika unataka kuondoa kidokezo hiki kutoka kwa alamisho?"
+    }
+  ],
+  "1R43+L": [
+    {
+      "type": 0,
+      "value": "Ingiza usanidi wa Nostr Wallet Connect"
+    }
+  ],
+  "1UWegE": [
+    {
+      "type": 0,
+      "value": "Hakikisha kuhifadhi funguo zako!"
+    }
+  ],
+  "1c4YST": [
+    {
+      "type": 0,
+      "value": "Imeunganishwa kwa: "
+    },
+    {
+      "type": 1,
+      "value": "node"
+    },
+    {
+      "type": 0,
+      "value": " 🎉"
+    }
+  ],
+  "1nYUGC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Unafuata"
+    }
+  ],
+  "1o2BgB": [
+    {
+      "type": 0,
+      "value": "Angalia Saini"
+    }
+  ],
+  "1ozeyg": [
+    {
+      "type": 0,
+      "value": "Asili"
+    }
+  ],
+  "1udzha": [
+    {
+      "type": 0,
+      "value": "Mazungumzo"
+    }
+  ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "Ongeza"
+    }
+  ],
+  "25V4l1": [
+    {
+      "type": 0,
+      "value": "Bango"
+    }
+  ],
+  "25WwxF": [
+    {
+      "type": 0,
+      "value": "Huna akaunti?"
+    }
+  ],
+  "28oKbu": [
+    {
+      "type": 0,
+      "value": "Moderated Communities"
+    }
+  ],
+  "29sHFE": [
+    {
+      "type": 0,
+      "value": "Wallet Connect"
+    }
+  ],
+  "2BBGxX": [
+    {
+      "type": 0,
+      "value": "Subject tag in text events"
+    }
+  ],
+  "2HIqeO": [
+    {
+      "type": 0,
+      "value": "User emoji list"
+    }
+  ],
+  "2IFGap": [
+    {
+      "type": 0,
+      "value": "Changia"
+    }
+  ],
+  "2LbrkB": [
+    {
+      "type": 0,
+      "value": "Hifadhi Nenosiri"
+    }
+  ],
+  "2O2sfp": [
+    {
+      "type": 0,
+      "value": "Maliza"
+    }
+  ],
+  "2Qsf9/": [
+    {
+      "type": 0,
+      "value": "Generic lists"
+    }
+  ],
+  "2a2YiP": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Alamisho"
+    }
+  ],
+  "2k0Cv+": [
+    {
+      "type": 0,
+      "value": "Haipendwi ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "2mcwT8": [
+    {
+      "type": 0,
+      "value": "Nakala Mpya"
+    }
+  ],
+  "2oCF7O": [
+    {
+      "type": 0,
+      "value": "Ikifuatiwa na marafiki wa marafiki"
+    }
+  ],
+  "2raFAu": [
+    {
+      "type": 0,
+      "value": "Application-specific data"
+    }
+  ],
+  "2ukA4d": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " masaa"
+    }
+  ],
+  "2z7Kky": [
+    {
+      "type": 0,
+      "value": "Latest Articles"
+    }
+  ],
+  "3/onCd": [
+    {
+      "type": 0,
+      "value": "Replies"
+    }
+  ],
+  "39AHJm": [
+    {
+      "type": 0,
+      "value": "Jisajili"
+    }
+  ],
+  "3GWu6/": [
+    {
+      "type": 0,
+      "value": "User Statuses"
+    }
+  ],
+  "3KNMbJ": [
+    {
+      "type": 0,
+      "value": "Makala"
+    }
+  ],
+  "3MKdAw": [
+    {
+      "type": 0,
+      "value": "Blobs stored on mediaservers"
+    }
+  ],
+  "3QwfJR": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    }
+  ],
+  "3adEeb": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " viewers"
+    }
+  ],
+  "3cc4Ct": [
+    {
+      "type": 0,
+      "value": "Mwangaza"
+    }
+  ],
+  "3gOsZq": [
+    {
+      "type": 0,
+      "value": "Watafsiri"
+    }
+  ],
+  "3kbIhS": [
+    {
+      "type": 0,
+      "value": "Untitled"
+    }
+  ],
+  "3qnJlS": [
+    {
+      "type": 0,
+      "value": "Unapiga kura kwa kutumia "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "3t3kok": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " kidokezo kipya"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " kidokezo kipya"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "3tVy+Z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Wafuasi"
+    }
+  ],
+  "3yk8fB": [
+    {
+      "type": 0,
+      "value": "Wallet"
+    }
+  ],
+  "40VR6s": [
+    {
+      "type": 0,
+      "value": "Nostr Connect"
+    }
+  ],
+  "41BSaT": [
+    {
+      "type": 0,
+      "value": "Total Events:"
+    }
+  ],
+  "450Fty": [
+    {
+      "type": 0,
+      "value": "Hakuna"
+    }
+  ],
+  "47E53q": [
+    {
+      "type": 0,
+      "value": "Wiki"
+    }
+  ],
+  "47FYwb": [
+    {
+      "type": 0,
+      "value": "Ghairi"
+    }
+  ],
+  "48zn4v": [
+    {
+      "type": 0,
+      "value": "Bid"
+    }
+  ],
+  "4IPzdn": [
+    {
+      "type": 0,
+      "value": "Wasanidi wa Msingi"
+    }
+  ],
+  "4L2vUY": [
+    {
+      "type": 0,
+      "value": "NIP-05 yako mpya ni:"
+    }
+  ],
+  "4MjsHk": [
+    {
+      "type": 0,
+      "value": "Maisha"
+    }
+  ],
+  "4OB335": [
+    {
+      "type": 0,
+      "value": "Kutopenda"
+    }
+  ],
+  "4P/kKm": [
+    {
+      "type": 0,
+      "value": "Private Key Encryption"
+    }
+  ],
+  "4Vmpt4": [
+    {
+      "type": 0,
+      "value": "Nostr Plebs ni mtoa huduma wa kwanza wa NIP-05 katika soko na hutoa mkusanyiko bora wa vikoa kwa bei nzuri"
+    }
+  ],
+  "4Z3t5i": [
+    {
+      "type": 0,
+      "value": "Tumia imgproxy kupunguza picha"
+    }
+  ],
+  "4emo2p": [
+    {
+      "type": 0,
+      "value": "Relay Zilizopotea"
+    }
+  ],
+  "4rYCjn": [
+    {
+      "type": 0,
+      "value": "Kumbuka Wewe Mwenyewe"
+    }
+  ],
+  "4wgYpI": [
+    {
+      "type": 0,
+      "value": "Recommended Application Handlers"
+    }
+  ],
+  "5BVs2e": [
+    {
+      "type": 0,
+      "value": "zap"
+    }
+  ],
+  "5CB6zB": [
+    {
+      "type": 0,
+      "value": "Mgawanyiko wa Zap"
+    }
+  ],
+  "5PRWs7": [
+    {
+      "type": 0,
+      "value": "Taarifa za Kidukizo Zimeruhusiwa"
+    }
+  ],
+  "5dfmvv": [
+    {
+      "type": 0,
+      "value": "Zap Goal"
+    }
+  ],
+  "5oTnfy": [
+    {
+      "type": 0,
+      "value": "Nunua Kitambulisho"
+    }
+  ],
+  "5qEWCr": [
+    {
+      "type": 0,
+      "value": "File Metadata"
+    }
+  ],
+  "5u6iEc": [
+    {
+      "type": 0,
+      "value": "Hamisha kwa Pubkey"
+    }
+  ],
+  "5vMmmR": [
+    {
+      "type": 0,
+      "value": "Majina ya mtumiaji si ya kipekee kwenye Nostr. Anwani ya nostr ni anwani yako ya kipekee inayoweza kusomwa na binadamu ambayo ni ya kipekee kwako unapojiandikisha."
+    }
+  ],
+  "5ykRmX": [
+    {
+      "type": 0,
+      "value": "Tuma zap"
+    }
+  ],
+  "6/hB3S": [
+    {
+      "type": 0,
+      "value": "Tazama Upya"
+    }
+  ],
+  "60kEE3": [
+    {
+      "type": 0,
+      "value": "Mute list"
+    }
+  ],
+  "62nsdy": [
+    {
+      "type": 0,
+      "value": "Jaribu tena"
+    }
+  ],
+  "634VVz": [
+    {
+      "type": 0,
+      "value": "Connection Failed:"
+    }
+  ],
+  "6559gb": [
+    {
+      "type": 0,
+      "value": "Urefu mpya wa orodha ya kufuatilia "
+    },
+    {
+      "type": 1,
+      "value": "length"
+    }
+  ],
+  "65BmHb": [
+    {
+      "type": 0,
+      "value": "Imeshindwa kufanya upakiaji mbadala kutoka kwa "
+    },
+    {
+      "type": 1,
+      "value": "host"
+    },
+    {
+      "type": 0,
+      "value": ", bonyeza hapa ili upakie moja kwa moja"
+    }
+  ],
+  "6D4Hhn": [
+    {
+      "type": 0,
+      "value": "Recommend Relay"
+    }
+  ],
+  "6KGebm": [
+    {
+      "type": 0,
+      "value": "Seal"
+    }
+  ],
+  "6OSOXl": [
+    {
+      "type": 0,
+      "value": "Sababu: "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reason"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "6WWD34": [
+    {
+      "type": 0,
+      "value": "Looking for: "
+    },
+    {
+      "type": 1,
+      "value": "noteId"
+    }
+  ],
+  "6bgpn+": [
+    {
+      "type": 0,
+      "value": "Haitumiki kwa wateja wote, bado unaweza kupokea zile zile kama kugawanywa kwa zap haiko imewezeshwa"
+    }
+  ],
+  "6ewQqw": [
+    {
+      "type": 0,
+      "value": "Vipendwa ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "6mr8WU": [
+    {
+      "type": 0,
+      "value": "Kufuatiliwa na"
+    }
+  ],
+  "6pdxsi": [
+    {
+      "type": 0,
+      "value": "Extra metadata fields and tags"
+    }
+  ],
+  "6uMqL1": [
+    {
+      "type": 0,
+      "value": "Haijalipwa"
+    }
+  ],
+  "6xNr8c": [
+    {
+      "type": 0,
+      "value": "Switch accounts"
+    }
+  ],
+  "6xap9L": [
+    {
+      "type": 0,
+      "value": "Good"
+    }
+  ],
+  "7+Domh": [
+    {
+      "type": 0,
+      "value": "Noti"
+    }
+  ],
+  "712i26": [
+    {
+      "type": 0,
+      "value": "Proxy hutumia ankara za HODL kusonga malipo, ambayo huficha pubkey ya nodo yako"
+    }
+  ],
+  "753yX5": [
+    {
+      "type": 0,
+      "value": "Label"
+    }
+  ],
+  "769A8p": [
+    {
+      "type": 0,
+      "value": "Wiki article"
+    }
+  ],
+  "77nkEO": [
+    {
+      "type": 0,
+      "value": "Relay Information Document"
+    }
+  ],
+  "7LFU8U": [
+    {
+      "type": 0,
+      "value": "Search Capability"
+    }
+  ],
+  "7UOvbT": [
+    {
+      "type": 0,
+      "value": "Nje ya mtandao"
+    }
+  ],
+  "7YkSA2": [
+    {
+      "type": 0,
+      "value": "Kiongozi wa Jamii"
+    }
+  ],
+  "7gMmSL": [
+    {
+      "type": 0,
+      "value": "Reaction"
+    }
+  ],
+  "7hp70g": [
+    {
+      "type": 0,
+      "value": "NIP-05"
+    }
+  ],
+  "7jfPsW": [
+    {
+      "type": 0,
+      "value": "Modular Article Content"
+    }
+  ],
+  "7nAz/z": [
+    {
+      "type": 0,
+      "value": "Mute notes from people who are outside your web of trust"
+    }
+  ],
+  "7pFGAQ": [
+    {
+      "type": 0,
+      "value": "Close Relays"
+    }
+  ],
+  "8/vBbP": [
+    {
+      "type": 0,
+      "value": "Machapisho upya ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "89q5wc": [
+    {
+      "type": 0,
+      "value": "Thibitisha Reposts"
+    }
+  ],
+  "8BDFvJ": [
+    {
+      "type": 0,
+      "value": "Conventions for clients' use of e and p tags in text events"
+    }
+  ],
+  "8ED/4u": [
+    {
+      "type": 0,
+      "value": "Jibu Kwa"
+    }
+  ],
+  "8HJxXG": [
+    {
+      "type": 0,
+      "value": "Jisajili"
+    }
+  ],
+  "8QDesP": [
+    {
+      "type": 0,
+      "value": "Zap "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "8Rkoyb": [
+    {
+      "type": 0,
+      "value": "Mpokeaji"
+    }
+  ],
+  "8Y6bZQ": [
+    {
+      "type": 0,
+      "value": "Zap isiyofaa: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "8ZGqWl": [
+    {
+      "type": 0,
+      "value": "Group Thread"
+    }
+  ],
+  "8g2vyB": [
+    {
+      "type": 0,
+      "value": "Jina refu sana"
+    }
+  ],
+  "8jmwT8": [
+    {
+      "type": 0,
+      "value": "bech32-encoded entities"
+    }
+  ],
+  "8v1NN+": [
+    {
+      "type": 0,
+      "value": "Maneno ya Kuoanisha"
+    }
+  ],
+  "8xdDLn": [
+    {
+      "type": 0,
+      "value": "Follow sets"
+    }
+  ],
+  "8za9Pq": [
+    {
+      "type": 0,
+      "value": "Draft Classified Listing"
+    }
+  ],
+  "9+Ddtu": [
+    {
+      "type": 0,
+      "value": "Inayofuata"
+    }
+  ],
+  "9HU8vw": [
+    {
+      "type": 0,
+      "value": "Jibu"
+    }
+  ],
+  "9SvQep": [
+    {
+      "type": 0,
+      "value": "Anafuata "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "9V0wg3": [
+    {
+      "type": 0,
+      "value": "Calendar Event RSVP"
+    }
+  ],
+  "9WRlF4": [
+    {
+      "type": 0,
+      "value": "Tuma"
+    }
+  ],
+  "9kO0VQ": [
+    {
+      "type": 0,
+      "value": "Ficha madokezo yaliyonyamazishwa"
+    }
+  ],
+  "9kSari": [
+    {
+      "type": 0,
+      "value": "Jaribu tena kuchapisha"
+    }
+  ],
+  "9pMqYs": [
+    {
+      "type": 0,
+      "value": "Anwani ya Nostr"
+    }
+  ],
+  "9wO4wJ": [
+    {
+      "type": 0,
+      "value": "Ankara ya Umeme"
+    }
+  ],
+  "A86fJ+": [
+    {
+      "type": 0,
+      "value": "Generic Repost"
+    }
+  ],
+  "ADmfQT": [
+    {
+      "type": 0,
+      "value": "Mzazi"
+    }
+  ],
+  "ALdW69": [
+    {
+      "type": 0,
+      "value": "Kidokezo kutoka kwa "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "AN0Z7Q": [
+    {
+      "type": 0,
+      "value": "Maneno Yaliyozuiwa"
+    }
+  ],
+  "ASRK0S": [
+    {
+      "type": 0,
+      "value": "Mwandishi amenyamazishwa"
+    }
+  ],
+  "AedFVZ": [
+    {
+      "type": 0,
+      "value": "Create or update a product"
+    }
+  ],
+  "Ai8VHU": [
+    {
+      "type": 0,
+      "value": "Hifadhi tukio bila kikomo kwenye reli ya Snort"
+    }
+  ],
+  "AkCxS/": [
+    {
+      "type": 0,
+      "value": "Sababu"
+    }
+  ],
+  "AktAk2": [
+    {
+      "type": 0,
+      "value": "Great"
+    }
+  ],
+  "Am8glJ": [
+    {
+      "type": 0,
+      "value": "Mchezo"
+    }
+  ],
+  "AqGfF4": [
+    {
+      "type": 0,
+      "value": "Channel Creation"
+    }
+  ],
+  "Aujn2T": [
+    {
+      "type": 0,
+      "value": "Hesabu"
+    }
+  ],
+  "Awq32I": [
+    {
+      "type": 0,
+      "value": "Taarifa za Push"
+    }
+  ],
+  "AxDOiG": [
+    {
+      "type": 0,
+      "value": "Miezi"
+    }
+  ],
+  "AyGauy": [
+    {
+      "type": 0,
+      "value": "Ingia"
+    }
+  ],
+  "B4C47Y": [
+    {
+      "type": 0,
+      "value": "Jina fupi sana"
+    }
+  ],
+  "B6+XJy": [
+    {
+      "type": 0,
+      "value": "limezwapishwa"
+    }
+  ],
+  "B6H7eJ": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex"
+    }
+  ],
+  "B7wvUM": [
+    {
+      "type": 0,
+      "value": "You can add a single or multiple relays, one per line."
+    }
+  ],
+  "BGCM48": [
+    {
+      "type": 0,
+      "value": "Andika ufikiaji wa upeanaji wa Snort, na uhifadhi wa mwaka 1 wa tukio"
+    }
+  ],
+  "BGGacK": [
+    {
+      "type": 0,
+      "value": "AI Embeddings / Vector lists"
+    }
+  ],
+  "BQW4gi": [
+    {
+      "type": 0,
+      "value": "Relay-based Groups"
+    }
+  ],
+  "BWpuKl": [
+    {
+      "type": 0,
+      "value": "Sasisha"
+    }
+  ],
+  "BfuAQ5": [
+    {
+      "type": 0,
+      "value": "Marketplace UI/UX"
+    }
+  ],
+  "BjNwZW": [
+    {
+      "type": 0,
+      "value": "Anwani ya nostr (nip05)"
+    }
+  ],
+  "Blxcdx": [
+    {
+      "type": 0,
+      "value": "Relay"
+    }
+  ],
+  "Bo+O//": [
+    {
+      "type": 0,
+      "value": "HTTP Auth"
+    }
+  ],
+  "C1LjMx": [
+    {
+      "type": 0,
+      "value": "Toleo la Umeme"
+    }
+  ],
+  "C6Lhhp": [
+    {
+      "type": 0,
+      "value": "Live Event"
+    }
+  ],
+  "C7642/": [
+    {
+      "type": 0,
+      "value": "Reposti ya Ujumbe"
+    }
+  ],
+  "C81/uG": [
+    {
+      "type": 0,
+      "value": "Toka"
+    }
+  ],
+  "C8FsOr": [
+    {
+      "type": 0,
+      "value": "Popular Servers"
+    }
+  ],
+  "C8HhVE": [
+    {
+      "type": 0,
+      "value": "Inayopendekezwa Inafuata"
+    }
+  ],
+  "CA1efg": [
+    {
+      "type": 0,
+      "value": "Video sets"
+    }
+  ],
+  "CHTbO3": [
+    {
+      "type": 0,
+      "value": "Hakuna uwezo wa kupakia ankara"
+    }
+  ],
+  "CJx5Nd": [
+    {
+      "type": 0,
+      "value": "Profile Zaps"
+    }
+  ],
+  "CM+Cfj": [
+    {
+      "type": 0,
+      "value": "Orodha ya Kufuata"
+    }
+  ],
+  "CM0k0d": [
+    {
+      "type": 0,
+      "value": "Katiza orodha ya kufuata"
+    }
+  ],
+  "CVWeJ6": [
+    {
+      "type": 0,
+      "value": "Watu Wanaofanya Vizuri"
+    }
+  ],
+  "CYkOCI": [
+    {
+      "type": 0,
+      "value": "na "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " wengine unao wafuatilia"
+    }
+  ],
+  "Cdxwi0": [
+    {
+      "type": 0,
+      "value": "Repository announcements"
+    }
+  ],
+  "CmZ9ls": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Imenyamazishwa"
+    }
+  ],
+  "Coy6SH": [
+    {
+      "type": 0,
+      "value": "Calendar"
+    }
+  ],
+  "CsCUYo": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "Cu/K85": [
+    {
+      "type": 0,
+      "value": "Imetafsiriwa kutoka "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "CzHZoc": [
+    {
+      "type": 0,
+      "value": "Grafu ya Jamii"
+    }
+  ],
+  "D++Njw": [
+    {
+      "type": 0,
+      "value": "Text Note References"
+    }
+  ],
+  "D+KzKd": [
+    {
+      "type": 0,
+      "value": "Zap kila kidokezo kiotomatiki inapopakia"
+    }
+  ],
+  "D09wbg": [
+    {
+      "type": 0,
+      "value": "Badge Definition"
+    }
+  ],
+  "D3idYv": [
+    {
+      "type": 0,
+      "value": "Mipangilio"
+    }
+  ],
+  "D9xTLE": [
+    {
+      "type": 0,
+      "value": "Channel Hide Message"
+    }
+  ],
+  "DBiVK1": [
+    {
+      "type": 0,
+      "value": "Hifadhi"
+    }
+  ],
+  "DKnriN": [
+    {
+      "type": 0,
+      "value": "Tuma sats"
+    }
+  ],
+  "DZzCem": [
+    {
+      "type": 0,
+      "value": "Onyesha vidokezo vya "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " hivi karibuni"
+    }
+  ],
+  "Dh3hbq": [
+    {
+      "type": 0,
+      "value": "Zap ya Kiotomatiki"
+    }
+  ],
+  "Dn82AL": [
+    {
+      "type": 0,
+      "value": "Moja kwa moja"
+    }
+  ],
+  "DqUmXt": [
+    {
+      "type": 0,
+      "value": "Product sold as an auction"
+    }
+  ],
+  "DrZqav": [
+    {
+      "type": 0,
+      "value": "Kuhusu inapaswa kuwa chini ya "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " herufi"
+    }
+  ],
+  "DtYelJ": [
+    {
+      "type": 0,
+      "value": "Hamisha"
+    }
+  ],
+  "Dx4ey3": [
+    {
+      "type": 0,
+      "value": "Badilisha yote"
+    }
+  ],
+  "E3oB+t": [
+    {
+      "type": 0,
+      "value": "Browser"
+    }
+  ],
+  "E5ZIPD": [
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "amount"
+        }
+      ],
+      "type": 8,
+      "value": "big"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "sati"
+        }
+      ],
+      "type": 8,
+      "value": "small"
+    }
+  ],
+  "EHqHsu": [
+    {
+      "type": 0,
+      "value": "Ankara / Anwani ya umeme"
+    }
+  ],
+  "EJbFi7": [
+    {
+      "type": 0,
+      "value": "Tafuta vidokezo"
+    }
+  ],
+  "ELbg9p": [
+    {
+      "type": 0,
+      "value": "Watoa Taarifa"
+    }
+  ],
+  "EQKRE4": [
+    {
+      "type": 0,
+      "value": "Onyesha bendera kwenye kurasa za wasifu"
+    }
+  ],
+  "EWeVrH": [
+    {
+      "type": 0,
+      "value": "Reaction to a website"
+    }
+  ],
+  "EWyQH5": [
+    {
+      "type": 0,
+      "value": "Kote Duniani"
+    }
+  ],
+  "Ebl/B2": [
+    {
+      "type": 0,
+      "value": "Tafsiri hadi "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "Ec+xLY": [
+    {
+      "type": 0,
+      "value": "Curation sets"
+    }
+  ],
+  "EcZF24": [
+    {
+      "type": 0,
+      "value": "Reli Maalum"
+    }
+  ],
+  "EcfIwB": [
+    {
+      "type": 0,
+      "value": "Jina la mtumiaji linapatikana"
+    }
+  ],
+  "EcglP9": [
+    {
+      "type": 0,
+      "value": "Funguo"
+    }
+  ],
+  "EjFyoR": [
+    {
+      "type": 0,
+      "value": "Anwani ya Mchango wa On-chain"
+    }
+  ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "Nunua"
+    }
+  ],
+  "EsHX35": [
+    {
+      "type": 0,
+      "value": "Sorry, we dont understand this event kind ("
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "), please try one of the following apps instead!"
+    }
+  ],
+  "F/6VqP": [
+    {
+      "type": 0,
+      "value": "Server"
+    }
+  ],
+  "F3l7xL": [
+    {
+      "type": 0,
+      "value": "Ongeza Akaunti"
+    }
+  ],
+  "F4eJ/3": [
+    {
+      "type": 0,
+      "value": "Classified Listings"
+    }
+  ],
+  "FDguSC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Zaps"
+    }
+  ],
+  "FHWpHC": [
+    {
+      "type": 0,
+      "value": "Wallet Response"
+    }
+  ],
+  "FHvSk3": [
+    {
+      "type": 0,
+      "value": "Authentication of clients to relays"
+    }
+  ],
+  "FMfjrl": [
+    {
+      "type": 0,
+      "value": "Onyesha taarifa za hali kwenye kurasa za wasifu"
+    }
+  ],
+  "FSYL8G": [
+    {
+      "type": 0,
+      "value": "Watu Wanaofanya Vizuri"
+    }
+  ],
+  "FWJR1B": [
+    {
+      "type": 0,
+      "value": "User groups"
+    }
+  ],
+  "FcNSft": [
+    {
+      "type": 0,
+      "value": "Maelekezio ya HTTP yanarudishiwa kwa anwani ya lightning iliyotolewa"
+    }
+  ],
+  "FdhSU2": [
+    {
+      "type": 0,
+      "value": "Dai sasa"
+    }
+  ],
+  "FfYsOb": [
+    {
+      "type": 0,
+      "value": "Hitilafu imetokea!"
+    }
+  ],
+  "FmXUJg": [
+    {
+      "type": 0,
+      "value": "anafuata"
+    }
+  ],
+  "FvanT6": [
+    {
+      "type": 0,
+      "value": "Accounts"
+    }
+  ],
+  "FzbSGg": [
+    {
+      "type": 0,
+      "value": "You dont have any media servers, try adding some."
+    }
+  ],
+  "G/yZLu": [
+    {
+      "type": 0,
+      "value": "Ondoa"
+    }
+  ],
+  "G1BGCg": [
+    {
+      "type": 0,
+      "value": "Chagua Pochi"
+    }
+  ],
+  "G3A56c": [
+    {
+      "type": 0,
+      "value": "Imejiunga na Push"
+    }
+  ],
+  "GFOoEE": [
+    {
+      "type": 0,
+      "value": "Chumvi"
+    }
+  ],
+  "GIqktu": [
+    {
+      "type": 0,
+      "value": "Supported NIPs"
+    }
+  ],
+  "GL8aXW": [
+    {
+      "type": 0,
+      "value": "Alamisho ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "GSye7T": [
+    {
+      "type": 0,
+      "value": "Anwani ya Umeme"
+    }
+  ],
+  "GUlSVG": [
+    {
+      "type": 0,
+      "value": "Dai anwani yako ya Nostr iliyoundwa"
+    }
+  ],
+  "Gcn9NQ": [
+    {
+      "type": 0,
+      "value": "Kiungo cha Magneti"
+    }
+  ],
+  "GpkNYn": [
+    {
+      "type": 0,
+      "value": "Torrent"
+    }
+  ],
+  "GqQeu/": [
+    {
+      "type": 0,
+      "value": "Anwani isiyo halali ya Lightning"
+    }
+  ],
+  "GspYR7": [
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "Gxcr08": [
+    {
+      "type": 0,
+      "value": "Tukio la Tangaza"
+    }
+  ],
+  "H+vHiz": [
+    {
+      "type": 0,
+      "value": "Ufunguo wa Hex.."
+    }
+  ],
+  "H/oroO": [
+    {
+      "type": 0,
+      "value": "Dealing with Unknown Events"
+    }
+  ],
+  "H0JBH6": [
+    {
+      "type": 0,
+      "value": "Toka nje"
+    }
+  ],
+  "H0OG3T": [
+    {
+      "type": 0,
+      "value": "Habari za Kiongozi"
+    }
+  ],
+  "H1GTaC": [
+    {
+      "type": 0,
+      "value": "Bookmark list"
+    }
+  ],
+  "H6/kLh": [
+    {
+      "type": 0,
+      "value": "Agizo limelipwa!"
+    }
+  ],
+  "HAlOn1": [
+    {
+      "type": 0,
+      "value": "Jina"
+    }
+  ],
+  "HFls6j": [
+    {
+      "type": 0,
+      "value": "jina litapatikana baadae"
+    }
+  ],
+  "HOzFdo": [
+    {
+      "type": 0,
+      "value": "Imenyamazishwa"
+    }
+  ],
+  "HWbkEK": [
+    {
+      "type": 0,
+      "value": "Futa akiba na upakie upya"
+    }
+  ],
+  "HbefNb": [
+    {
+      "type": 0,
+      "value": "Fungua Pochi"
+    }
+  ],
+  "HhcAVH": [
+    {
+      "type": 0,
+      "value": "Humfuati mtu huyu, bofya hapa ili kupakia midia kutoka "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "link"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": ", au usasishe "
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "type": 0,
+              "value": "mapendeleo yako"
+            }
+          ],
+          "type": 8,
+          "value": "i"
+        }
+      ],
+      "type": 8,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": " ili kupakia kila mara midia kutoka kwa kila mtu."
+    }
+  ],
+  "HpAmQZ": [
+    {
+      "type": 0,
+      "value": "Relay reviews"
+    }
+  ],
+  "HqRNN8": [
+    {
+      "type": 0,
+      "value": "Support"
+    }
+  ],
+  "HzSFeV": [
+    {
+      "type": 0,
+      "value": "Expiration Timestamp"
+    }
+  ],
+  "I0tYZf": [
+    {
+      "type": 0,
+      "value": "Create or update a stall"
+    }
+  ],
+  "I1AoOu": [
+    {
+      "type": 0,
+      "value": "Chapisho la mwisho "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    }
+  ],
+  "IEwZvs": [
+    {
+      "type": 0,
+      "value": "Je, una uhakika unataka kubandua kidokezo hiki?"
+    }
+  ],
+  "IIOul1": [
+    {
+      "type": 0,
+      "value": "Data ya Akaunti"
+    }
+  ],
+  "IKKHqV": [
+    {
+      "type": 0,
+      "value": "Anafuata"
+    }
+  ],
+  "IOu4Xh": [
+    {
+      "type": 0,
+      "value": "Lazima uwe mnunuzi wa "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    },
+    {
+      "type": 0,
+      "value": " ili ufikie kisanduku cha "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    }
+  ],
+  "IVbtTS": [
+    {
+      "type": 0,
+      "value": "Zap kila "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ameketi"
+    }
+  ],
+  "IWz1ta": [
+    {
+      "type": 0,
+      "value": "Tafsiri Kiotomatiki"
+    }
+  ],
+  "IcHcWj": [
+    {
+      "type": 0,
+      "value": "Last Seen:"
+    }
+  ],
+  "Ig9/a1": [
+    {
+      "type": 0,
+      "value": "Imetumwa sats "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " kwa "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "IgsWFG": [
+    {
+      "type": 0,
+      "value": "Haifuatwi na mtu yeyote unayemfuata"
+    }
+  ],
+  "IoQq+a": [
+    {
+      "type": 0,
+      "value": "Bofya hapa ili kupakia hata hivyo"
+    }
+  ],
+  "IvjoDS": [
+    {
+      "type": 0,
+      "value": "Connected"
+    }
+  ],
+  "Ix8l+B": [
+    {
+      "type": 0,
+      "value": "Vidokezo vinavyovuma"
+    }
+  ],
+  "J+dIsA": [
+    {
+      "type": 0,
+      "value": "Usajili"
+    }
+  ],
+  "J1iLmb": [
+    {
+      "type": 0,
+      "value": "Arifa Haziruhusiwi"
+    }
+  ],
+  "J2HeQ+": [
+    {
+      "type": 0,
+      "value": "Tumia koma kutenganisha maneno k.m. neno1, neno2, neno3"
+    }
+  ],
+  "J2Q92B": [
+    {
+      "type": 0,
+      "value": "Emoji sets"
+    }
+  ],
+  "J6N9xl": [
+    {
+      "type": 0,
+      "value": "Sign in with Android signer"
+    }
+  ],
+  "JCIgkj": [
+    {
+      "type": 0,
+      "value": "Jina la mtumiaji"
+    }
+  ],
+  "JGrt9q": [
+    {
+      "type": 0,
+      "value": "Tuma sats kwa "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "JHEHCk": [
+    {
+      "type": 0,
+      "value": "Zaps ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "JIVWWA": [
+    {
+      "type": 0,
+      "value": "Michezo"
+    }
+  ],
+  "JPFYIM": [
+    {
+      "type": 0,
+      "value": "Hakuna anwani ya umeme"
+    }
+  ],
+  "JSx7y9": [
+    {
+      "type": 0,
+      "value": "Jiunge na "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": " kwa "
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " na upokee tuzo zifuatazo"
+    }
+  ],
+  "JeoS4y": [
+    {
+      "type": 0,
+      "value": "Reposti"
+    }
+  ],
+  "Jh5zKH": [
+    {
+      "type": 0,
+      "value": "Search relays list"
+    }
+  ],
+  "JjGgXI": [
+    {
+      "type": 0,
+      "value": "Tafuta watumiaji"
+    }
+  ],
+  "JkLHGw": [
+    {
+      "type": 0,
+      "value": "Tovuti"
+    }
+  ],
+  "JmcxzF": [
+    {
+      "type": 0,
+      "value": "Relays are servers you connect to for sending and receiving events. Aim for 4-8 relays."
+    }
+  ],
+  "JymXbw": [
+    {
+      "type": 0,
+      "value": "Ufunguo wa Kibinafsi"
+    }
+  ],
+  "K1wl1/": [
+    {
+      "type": 0,
+      "value": "Average Latency:"
+    }
+  ],
+  "K3r6DQ": [
+    {
+      "type": 0,
+      "value": "Futa"
+    }
+  ],
+  "K7AkdL": [
+    {
+      "type": 0,
+      "value": "Onyesha"
+    }
+  ],
+  "K9zklU": [
+    {
+      "type": 0,
+      "value": "External Content IDs"
+    }
+  ],
+  "KAhAcM": [
+    {
+      "type": 0,
+      "value": "Ingiza usanidi wa LNDHub"
+    }
+  ],
+  "KGmQjH": [
+    {
+      "type": 0,
+      "value": "Highlights"
+    }
+  ],
+  "KJryGq": [
+    {
+      "type": 0,
+      "value": "Live Chat Message"
+    }
+  ],
+  "KQvWvD": [
+    {
+      "type": 0,
+      "value": "Imefutwa"
+    }
+  ],
+  "KT9nox": [
+    {
+      "type": 0,
+      "value": "Protected Events"
+    }
+  ],
+  "KahimY": [
+    {
+      "type": 0,
+      "value": "Aina ya tukio lisilojulikana: "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    }
+  ],
+  "KipVeG": [
+    {
+      "type": 0,
+      "value": "Mapping Nostr keys to DNS-based internet identifiers"
+    }
+  ],
+  "KtsyO0": [
+    {
+      "type": 0,
+      "value": "Weka Pini"
+    }
+  ],
+  "KyRp/q": [
+    {
+      "type": 0,
+      "value": "Wallet Request"
+    }
+  ],
+  "LBAnc7": [
+    {
+      "type": 0,
+      "value": "Je, unaona kama mtumiaji?"
+    }
+  ],
+  "LEmxc8": [
+    {
+      "type": 0,
+      "value": "Zap Goals"
+    }
+  ],
+  "LKw/ue": [
+    {
+      "type": 0,
+      "value": "Angalia msimbo "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "LR1XjT": [
+    {
+      "type": 0,
+      "value": "Pini fupi sana"
+    }
+  ],
+  "LXxsbk": [
+    {
+      "type": 0,
+      "value": "Asiyejulikana"
+    }
+  ],
+  "LgbKvU": [
+    {
+      "type": 0,
+      "value": "Toa maoni"
+    }
+  ],
+  "LhLvRx": [
+    {
+      "type": 0,
+      "value": "Jina lazima liwe kati ya vibambo 8 na 15"
+    }
+  ],
+  "LmdPXO": [
+    {
+      "type": 0,
+      "value": "Haiwezi kuthibitisha Anwani ya Nostr"
+    }
+  ],
+  "Lu5/Bj": [
+    {
+      "type": 0,
+      "value": "Fungua kwenye Zapstr"
+    }
+  ],
+  "LuDBLj": [
+    {
+      "type": 0,
+      "value": "Torrents"
+    }
+  ],
+  "Lw+I+J": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " zapped"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " wengine walizap"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "LwYmVi": [
+    {
+      "type": 0,
+      "value": "Zaps kwenye taarifa hii zitagawanywa kwa watumiaji wafuatao."
+    }
+  ],
+  "M3Oirc": [
+    {
+      "type": 0,
+      "value": "Menyu ya Utatuzi"
+    }
+  ],
+  "M6C/px": [
+    {
+      "type": 0,
+      "value": "Kuwa kiongozi"
+    }
+  ],
+  "MBAYRO": [
+    {
+      "type": 0,
+      "value": "Onyesha 'Nakili Kitambulisho' na 'Nakili JSON' kwenye menyu ya muktadha kwa kila ujumbe"
+    }
+  ],
+  "MI2jkA": [
+    {
+      "type": 0,
+      "value": "Haipatikani:"
+    }
+  ],
+  "MKDHEa": [
+    {
+      "type": 0,
+      "value": "Join Room"
+    }
+  ],
+  "MP54GY": [
+    {
+      "type": 0,
+      "value": "Nenosiri la Pochi"
+    }
+  ],
+  "MWTx65": [
+    {
+      "type": 0,
+      "value": "Ukurasa Chaguomsingi"
+    }
+  ],
+  "MYBYdJ": [
+    {
+      "type": 0,
+      "value": "Short Text Note"
+    }
+  ],
+  "MYUBaG": [
+    {
+      "type": 0,
+      "value": "Client Authentication"
+    }
+  ],
+  "MiMipu": [
+    {
+      "type": 0,
+      "value": "Wekeza kama Anwani Kuu ya Nostr (nip05)"
+    }
+  ],
+  "MkQ4FX": [
+    {
+      "type": 0,
+      "value": "Proxy Tags"
+    }
+  ],
+  "Ml7+RS": [
+    {
+      "type": 0,
+      "value": "Tuma kiungo hiki kwa marafiki wako na uishiriki uchawi wa nostr."
+    }
+  ],
+  "Mrpkot": [
+    {
+      "type": 0,
+      "value": "Lipia usajili"
+    }
+  ],
+  "MuVeKe": [
+    {
+      "type": 0,
+      "value": "Nunua anwani ya nostr"
+    }
+  ],
+  "Muhna4": [
+    {
+      "type": 0,
+      "value": "Counting results"
+    }
+  ],
+  "MzRYWH": [
+    {
+      "type": 0,
+      "value": "Unanunua "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    }
+  ],
+  "Mzizei": [
+    {
+      "type": 0,
+      "value": "Akaunti ya Iris.to"
+    }
+  ],
+  "N2IrpM": [
+    {
+      "type": 0,
+      "value": "Thibitisha"
+    }
+  ],
+  "NAidKb": [
+    {
+      "type": 0,
+      "value": "Arifa"
+    }
+  ],
+  "NAuFNH": [
+    {
+      "type": 0,
+      "value": "Tayari una aina hii ya usajili, tafadhali sasisha au lipa"
+    }
+  ],
+  "NDTFsp": [
+    {
+      "type": 0,
+      "value": "Job Feedback"
+    }
+  ],
+  "NepkXH": [
+    {
+      "type": 0,
+      "value": "Haiwezi kupiga kura na "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, tafadhali weka kiwango kingine cha default cha zap"
+    }
+  ],
+  "NndBJE": [
+    {
+      "type": 0,
+      "value": "Ukurasa Mpya wa Watumiaji"
+    }
+  ],
+  "Nr9Yyx": [
+    {
+      "type": 0,
+      "value": "Reposts"
+    }
+  ],
+  "NxzeNU": [
+    {
+      "type": 0,
+      "value": "Dead"
+    }
+  ],
+  "O3Jz4E": [
+    {
+      "type": 0,
+      "value": "Tumia msimbo wako wa mwaliko kupata sats!"
+    }
+  ],
+  "OEW7yJ": [
+    {
+      "type": 0,
+      "value": "Zaps"
+    }
+  ],
+  "OIqnZN": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps Attestations for Events"
+    }
+  ],
+  "OJHKIL": [
+    {
+      "type": 0,
+      "value": "Gift Wrap"
+    }
+  ],
+  "OKhRC6": [
+    {
+      "type": 0,
+      "value": "Shiriki"
+    }
+  ],
+  "OLEm6z": [
+    {
+      "type": 0,
+      "value": "Hitilafu isiyojulikana ya kuingia"
+    }
+  ],
+  "OQSOJF": [
+    {
+      "type": 0,
+      "value": "Pata anwani ya nostr bure"
+    }
+  ],
+  "OQXnew": [
+    {
+      "type": 0,
+      "value": "Usajili wako bado unaendelea, bado huwezi kusasisha"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "Imeundwa"
+    }
+  ],
+  "ORa81+": [
+    {
+      "type": 0,
+      "value": "Merge Requests"
+    }
+  ],
+  "OoZgbB": [
+    {
+      "type": 0,
+      "value": "Imeshindwa kusasisha, tafadhali jaribu tena"
+    }
+  ],
+  "OuProE": [
+    {
+      "type": 0,
+      "value": "Long-form Content"
+    }
+  ],
+  "OxPdQ0": [
+    {
+      "type": 0,
+      "value": "Inachanganua "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "P2o+ZZ": [
+    {
+      "type": 0,
+      "value": "Anwani Isiyofaa ya Nostr"
+    }
+  ],
+  "P61BTu": [
+    {
+      "type": 0,
+      "value": "Nakili Tukio JSON"
+    }
+  ],
+  "P7FD0F": [
+    {
+      "type": 0,
+      "value": "Mfumo (Chaguo-msingi)"
+    }
+  ],
+  "P7nJT9": [
+    {
+      "type": 0,
+      "value": "Jumla ya leo (UTC): "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "P8JC58": [
+    {
+      "type": 0,
+      "value": "Distance"
+    }
+  ],
+  "PCSt5T": [
+    {
+      "type": 0,
+      "value": "Mapendeleo"
+    }
+  ],
+  "PXQ0z0": [
+    {
+      "type": 0,
+      "value": "Inapokea kwa "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "PamNxw": [
+    {
+      "type": 0,
+      "value": "Kijajuu cha faili kisichojulikana: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Pe0ogR": [
+    {
+      "type": 0,
+      "value": "Mandhari"
+    }
+  ],
+  "PrsIg7": [
+    {
+      "type": 0,
+      "value": "Maoni yataonyeshwa kwenye kila ukurasa, ikiwa imezimwa hakuna maoni yataonyeshwa"
+    }
+  ],
+  "QDFTjG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Relays"
+    }
+  ],
+  "QJfhKt": [
+    {
+      "type": 0,
+      "value": "Ufunguo wa faragha ni kama nenosiri, lakini hauwezi kuwekwa upya. Ilinde kwa uangalifu na usiwahi kuionyesha kwa mtu yeyote. Mtu akishapata ufunguo wako wa faragha, ataweza kufikia akaunti yako milele."
+    }
+  ],
+  "QWhotP": [
+    {
+      "type": 0,
+      "value": "Zap Pool hufanya kazi tu ikiwa unatumia mojawapo ya miunganisho ya pochi inayotumika (WebLN, LNC, LNDHub au Nostr Wallet Connect)"
+    }
+  ],
+  "QpaLA3": [
+    {
+      "type": 0,
+      "value": "Channel Message"
+    }
+  ],
+  "Qxv0B2": [
+    {
+      "type": 0,
+      "value": "Kwa sasa una viti "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " kwenye zap pool yako."
+    }
+  ],
+  "Qy6/Ft": [
+    {
+      "type": 0,
+      "value": "Private Direct Messages"
+    }
+  ],
+  "R/6nsx": [
+    {
+      "type": 0,
+      "value": "Subscription"
+    }
+  ],
+  "R81upa": [
+    {
+      "type": 0,
+      "value": "Watu unaowafuata"
+    }
+  ],
+  "RDha9y": [
+    {
+      "type": 0,
+      "value": "Service Worker Haujatekelezwa"
+    }
+  ],
+  "RRz1cA": [
+    {
+      "type": 0,
+      "value": "Repository state announcements"
+    }
+  ],
+  "RSr2uB": [
+    {
+      "type": 0,
+      "value": "Jina la mtumiaji linapaswa kuwa na herufi ndogo na nambari pekee"
+    }
+  ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "Muda wake umeisha"
+    }
+  ],
+  "RefZpK": [
+    {
+      "type": 0,
+      "value": "Short-form Portrait Video Event"
+    }
+  ],
+  "RfhLwC": [
+    {
+      "type": 0,
+      "value": "Na: "
+    },
+    {
+      "type": 1,
+      "value": "author"
+    }
+  ],
+  "RhDAoS": [
+    {
+      "type": 0,
+      "value": "Je, una uhakika unataka kufuta "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "RmxSZo": [
+    {
+      "type": 0,
+      "value": "Data Vending Machines"
+    }
+  ],
+  "RoOyAh": [
+    {
+      "type": 0,
+      "value": "Relays"
+    }
+  ],
+  "Rs4kCE": [
+    {
+      "type": 0,
+      "value": "Alamisho"
+    }
+  ],
+  "S/NV2G": [
+    {
+      "type": 0,
+      "value": "Loading note: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "SFuk1v": [
+    {
+      "type": 0,
+      "value": "Permissions"
+    }
+  ],
+  "SLZGPn": [
+    {
+      "type": 0,
+      "value": "Ingiza pin kuweka funguo yako binafsi, unapaswa kuingiza pin hii kila wakati unapofungua "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "SMO+on": [
+    {
+      "type": 0,
+      "value": "Tuma zap kwa "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "SOqbe9": [
+    {
+      "type": 0,
+      "value": "Sasisha Anwani ya Umeme"
+    }
+  ],
+  "SP0+yi": [
+    {
+      "type": 0,
+      "value": "Nunua Usajili"
+    }
+  ],
+  "SW3TFA": [
+    {
+      "type": 0,
+      "value": "Popular relays used by people you follow."
+    }
+  ],
+  "SYQtZ7": [
+    {
+      "type": 0,
+      "value": "Wakala wa Anwani ya LN"
+    }
+  ],
+  "Sd0PKc": [
+    {
+      "type": 0,
+      "value": "Relay sets"
+    }
+  ],
+  "SfwSIm": [
+    {
+      "type": 0,
+      "value": "Problem Tracker"
+    }
+  ],
+  "ShdEie": [
+    {
+      "type": 0,
+      "value": "Weka alama kuwa zote zimesomwa"
+    }
+  ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "Desturi"
+    }
+  ],
+  "SmuYUd": [
+    {
+      "type": 0,
+      "value": "Utaitwa nini?"
+    }
+  ],
+  "Ss0sWu": [
+    {
+      "type": 0,
+      "value": "Lipa Sasa"
+    }
+  ],
+  "SsUQnC": [
+    {
+      "type": 0,
+      "value": "Application-specific Data"
+    }
+  ],
+  "StKzTE": [
+    {
+      "type": 0,
+      "value": "Mwandishi ametaja madokezo haya kama "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "mada nyeti"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "T83nqf": [
+    {
+      "type": 0,
+      "value": "Relays close to your geographic location."
+    }
+  ],
+  "TDR5ge": [
+    {
+      "type": 0,
+      "value": "Maudhui katika madokezo yataonyeshwa kiotomatiki kwa watu waliochaguliwa, vinginevyo kiungo pekee ndicho kitakachoonyeshwa"
+    }
+  ],
+  "TGc5nI": [
+    {
+      "type": 0,
+      "value": "Handler information"
+    }
+  ],
+  "TH1fFo": [
+    {
+      "type": 0,
+      "value": "Telegram"
+    }
+  ],
+  "TJo5E6": [
+    {
+      "type": 0,
+      "value": "Onesha Mapema"
+    }
+  ],
+  "TOG64f": [
+    {
+      "type": 0,
+      "value": "Use Local Relay"
+    }
+  ],
+  "TP/cMX": [
+    {
+      "type": 0,
+      "value": "Imemalizika"
+    }
+  ],
+  "TaeBqw": [
+    {
+      "type": 0,
+      "value": "Ingia kwa Upanuzi wa Nostr"
+    }
+  ],
+  "TdTXXf": [
+    {
+      "type": 0,
+      "value": "Jifunze zaidi"
+    }
+  ],
+  "TdtZQ5": [
+    {
+      "type": 0,
+      "value": "Crypto"
+    }
+  ],
+  "Tdv6NY": [
+    {
+      "type": 0,
+      "value": "Interest sets"
+    }
+  ],
+  "TgDKhI": [
+    {
+      "type": 0,
+      "value": "Calendar Events"
+    }
+  ],
+  "TpgeGw": [
+    {
+      "type": 0,
+      "value": "Hex chumvi.."
+    }
+  ],
+  "Tpy00S": [
+    {
+      "type": 0,
+      "value": "Watu"
+    }
+  ],
+  "TvKqBp": [
+    {
+      "type": 0,
+      "value": "alipenda"
+    }
+  ],
+  "TwyMau": [
+    {
+      "type": 0,
+      "value": "Account"
+    }
+  ],
+  "U1aPPi": [
+    {
+      "type": 0,
+      "value": "Acha kusikiliza"
+    }
+  ],
+  "U30H69": [
+    {
+      "type": 0,
+      "value": "Community Definition"
+    }
+  ],
+  "UJTWqI": [
+    {
+      "type": 0,
+      "value": "Ondoa kwenye relays yangu"
+    }
+  ],
+  "ULXFfP": [
+    {
+      "type": 0,
+      "value": "Pokea"
+    }
+  ],
+  "UNjfWJ": [
+    {
+      "type": 0,
+      "value": "Angalia saini zote za tukio zilizopokelewa kutoka kwenye relays"
+    }
+  ],
+  "UT7Nkj": [
+    {
+      "type": 0,
+      "value": "Gumzo Mpya"
+    }
+  ],
+  "UUPFlt": [
+    {
+      "type": 0,
+      "value": "Watumiaji lazima wakubali onyo la maudhui ili kuonyesha maudhui ya dokezo lako."
+    }
+  ],
+  "UaCh1c": [
+    {
+      "type": 0,
+      "value": "Add Server"
+    }
+  ],
+  "Ub+AGc": [
+    {
+      "type": 0,
+      "value": "Ingia"
+    }
+  ],
+  "Up5U7K": [
+    {
+      "type": 0,
+      "value": "Zuia"
+    }
+  ],
+  "Ups2/p": [
+    {
+      "type": 0,
+      "value": "Maombi yako yanangojea"
+    }
+  ],
+  "UrKTqQ": [
+    {
+      "type": 0,
+      "value": "Una akaunti ya iris.to iliyopo"
+    }
+  ],
+  "UsCzPc": [
+    {
+      "type": 0,
+      "value": "Share a personalized invitation with friends!"
+    }
+  ],
+  "UxgyeY": [
+    {
+      "type": 0,
+      "value": "Msimbo wako wa rufaa ni "
+    },
+    {
+      "type": 1,
+      "value": "code"
+    }
+  ],
+  "V20Og0": [
+    {
+      "type": 0,
+      "value": "Labeling"
+    }
+  ],
+  "VOjC1i": [
+    {
+      "type": 0,
+      "value": "Chagua huduma ya kupakia viambatisho"
+    }
+  ],
+  "VR5eHw": [
+    {
+      "type": 0,
+      "value": "Ufunguo wa umma (npub/nprofile)"
+    }
+  ],
+  "VcwrfF": [
+    {
+      "type": 0,
+      "value": "Ndio tafadhali"
+    }
+  ],
+  "VfhYxG": [
+    {
+      "type": 0,
+      "value": "Ili kuona orodha kamili ya mabadiliko, unaweza kuangalia mabadiliko "
+    },
+    {
+      "type": 1,
+      "value": "hapa"
+    }
+  ],
+  "VlJkSk": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " zimefanywa kimya"
+    }
+  ],
+  "VnXp8Z": [
+    {
+      "type": 0,
+      "value": "Picha"
+    }
+  ],
+  "W1yoZY": [
+    {
+      "type": 0,
+      "value": "Inaonekana huna usajili wowote, unaweza kupata moja "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "W2PiAr": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Zimezuiliwa"
+    }
+  ],
+  "W4SaxY": [
+    {
+      "type": 0,
+      "value": "Local"
+    }
+  ],
+  "W9355R": [
+    {
+      "type": 0,
+      "value": "Rudisha sauti"
+    }
+  ],
+  "WeLEuL": [
+    {
+      "type": 0,
+      "value": "From Server"
+    }
+  ],
+  "Wj5TbN": [
+    {
+      "type": 0,
+      "value": "Issues"
+    }
+  ],
+  "WmZhfL": [
+    {
+      "type": 0,
+      "value": "Tafsiri moja kwa moja madokezo kwa lugha yako ya asili"
+    }
+  ],
+  "WvGmZT": [
+    {
+      "type": 0,
+      "value": "npub / nprofile / anwani ya Nostr"
+    }
+  ],
+  "X6tipZ": [
+    {
+      "type": 0,
+      "value": "Ingia kwa ufunguo"
+    }
+  ],
+  "X7xU8J": [
+    {
+      "type": 0,
+      "value": "nsec, npub, nip-05, hex, mnemoniki"
+    }
+  ],
+  "XECMfW": [
+    {
+      "type": 0,
+      "value": "Tuma takwimu za matumizi"
+    }
+  ],
+  "XICsE8": [
+    {
+      "type": 0,
+      "value": "Wapangaji wa Faili"
+    }
+  ],
+  "XPB8VV": [
+    {
+      "type": 0,
+      "value": "Uunganisho wa mkoba wa Alby"
+    }
+  ],
+  "XQiFEl": [
+    {
+      "type": 0,
+      "value": "Afya za Ufuatiliaji"
+    }
+  ],
+  "XSdWHA": [
+    {
+      "type": 0,
+      "value": "Komboa"
+    }
+  ],
+  "XXm7jJ": [
+    {
+      "type": 0,
+      "value": "Vishazi Vya Kupanda"
+    }
+  ],
+  "XgWvGA": [
+    {
+      "type": 0,
+      "value": "Miitikio"
+    }
+  ],
+  "Xnimz0": [
+    {
+      "type": 0,
+      "value": "Inatuma kutoka "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "Xopqkl": [
+    {
+      "type": 0,
+      "value": "Kiasi chako chaguo-msingi cha zap ni "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " sats, thamani zilizopo zinakadiriwa kutoka hapo."
+    }
+  ],
+  "YDMrKK": [
+    {
+      "type": 0,
+      "value": "Users"
+    }
+  ],
+  "YDURw6": [
+    {
+      "type": 0,
+      "value": "URL ya Huduma"
+    }
+  ],
+  "YH2RKk": [
+    {
+      "type": 0,
+      "value": "Popular media servers."
+    }
+  ],
+  "YQZY/S": [
+    {
+      "type": 0,
+      "value": "It looks like you dont follow enough people, take a look at "
+    },
+    {
+      "type": 1,
+      "value": "newUsersPage"
+    },
+    {
+      "type": 0,
+      "value": " to discover people to follow!"
+    }
+  ],
+  "YR2I9M": [
+    {
+      "type": 0,
+      "value": "Hakuna ufunguo, hakuna "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": ", Hakuna njia ya kuzirejesha ikiwa haujafanya nakala rudufu. Inachukua dakika tu."
+    }
+  ],
+  "YU7ZYp": [
+    {
+      "type": 0,
+      "value": "Public Chat"
+    }
+  ],
+  "YXA3AH": [
+    {
+      "type": 0,
+      "value": "Washa Mijibu"
+    }
+  ],
+  "Yf3DwC": [
+    {
+      "type": 0,
+      "value": "Unganisha pochi ili kutuma malipo ya papo hapo"
+    }
+  ],
+  "YuoEb9": [
+    {
+      "type": 0,
+      "value": "Try another relay"
+    }
+  ],
+  "Z48UEo": [
+    {
+      "type": 0,
+      "value": "Channel Metadata"
+    }
+  ],
+  "Z4BMCZ": [
+    {
+      "type": 0,
+      "value": "Weka maneno ya kuoanisha"
+    }
+  ],
+  "Z7kkeJ": [
+    {
+      "type": 0,
+      "value": "Delegated Event Signing"
+    }
+  ],
+  "ZFe9tl": [
+    {
+      "type": 0,
+      "value": "Compose a note"
+    }
+  ],
+  "ZKORll": [
+    {
+      "type": 0,
+      "value": "Washa Sasa"
+    }
+  ],
+  "ZLmyG9": [
+    {
+      "type": 0,
+      "value": "Wachangiaji"
+    }
+  ],
+  "ZS+jRE": [
+    {
+      "type": 0,
+      "value": "Tuma mgawanyo wa zap kwa"
+    }
+  ],
+  "Zff6lu": [
+    {
+      "type": 0,
+      "value": "Jina la mtumiaji iris.to/"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "name"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " limetengwa kwa ajili yako!"
+    }
+  ],
+  "ZlIh4/": [
+    {
+      "type": 0,
+      "value": "Encrypted Direct Messages"
+    }
+  ],
+  "ZlmK/p": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " amekualika kwenye "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    }
+  ],
+  "a1x4gD": [
+    {
+      "type": 0,
+      "value": "Media servers store media which you can share in notes as images and videos"
+    }
+  ],
+  "a5UPxh": [
+    {
+      "type": 0,
+      "value": "Watengenezaji wa mfuko na mifumo inayotoa huduma za uthibitishaji wa NIP-05"
+    }
+  ],
+  "a7TDNm": [
+    {
+      "type": 0,
+      "value": "Vidokezo vitatiririka kwa wakati halisi kwenye kichupo cha kimataifa cha madokezo"
+    }
+  ],
+  "aHje0o": [
+    {
+      "type": 0,
+      "value": "Jina au kifupisho"
+    }
+  ],
+  "aMaLBK": [
+    {
+      "type": 0,
+      "value": "Vifaa Vinavyoungwa mkono"
+    }
+  ],
+  "aRex7h": [
+    {
+      "type": 0,
+      "value": "Imelipwa "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sats, ada "
+    },
+    {
+      "type": 1,
+      "value": "fee"
+    },
+    {
+      "type": 0,
+      "value": " sats"
+    }
+  ],
+  "aSGz4J": [
+    {
+      "type": 0,
+      "value": "Unganisha kwa nodi yako ya LND na Uunganisho wa Njia ya Umeme"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "Onyesha Zaidi"
+    }
+  ],
+  "abbGKq": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " km"
+    }
+  ],
+  "ak3MTf": [
+    {
+      "type": 0,
+      "value": "Invite Friends"
+    }
+  ],
+  "b12Goz": [
+    {
+      "type": 0,
+      "value": "Mnemoniki"
+    }
+  ],
+  "b5vAk0": [
+    {
+      "type": 0,
+      "value": "Nchi yako itafanya kama anwani ya umeme na itaelekeza kwenye LNURL uliyochagua au anwani ya Umeme"
+    }
+  ],
+  "bF1MYT": [
+    {
+      "type": 0,
+      "value": "Wewe ni kiongozi wa jamii na unapata "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "percent"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " ya michango ya watumiaji waliotajwa!"
+    }
+  ],
+  "bG00/W": [
+    {
+      "type": 0,
+      "value": "Mhudumu wa Huduma Unafanya Kazi"
+    }
+  ],
+  "bJ+wrA": [
+    {
+      "type": 0,
+      "value": "Hesabu Orodha ya Kupogoa"
+    }
+  ],
+  "bLZL5a": [
+    {
+      "type": 0,
+      "value": "Pata Anwani"
+    }
+  ],
+  "bMphls": [
+    {
+      "type": 0,
+      "value": "Umeingia kwa upatikanaji wa kusoma tu"
+    }
+  ],
+  "bQdA2k": [
+    {
+      "type": 0,
+      "value": "Maudhui Yanayofunuliwa"
+    }
+  ],
+  "bep9C3": [
+    {
+      "type": 0,
+      "value": "Ufunguo wa Umma"
+    }
+  ],
+  "bfvyfs": [
+    {
+      "type": 0,
+      "value": "Hajulikani"
+    }
+  ],
+  "bxv59V": [
+    {
+      "type": 0,
+      "value": "Sasa Hivi"
+    }
+  ],
+  "c+1p0i": [
+    {
+      "type": 0,
+      "value": "Kind mute sets"
+    }
+  ],
+  "c+JYNI": [
+    {
+      "type": 0,
+      "value": "Hapana asante"
+    }
+  ],
+  "c2T+1B": [
+    {
+      "type": 0,
+      "value": "Redirects"
+    }
+  ],
+  "c35bj2": [
+    {
+      "type": 0,
+      "value": "Ikiwa una swali kuhusu agizo lako la NIP-05 tafadhali DM "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "c3LlRO": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "KiB"
+    }
+  ],
+  "c3g2hL": [
+    {
+      "type": 0,
+      "value": "Tangaza Tena"
+    }
+  ],
+  "cFbU1B": [
+    {
+      "type": 0,
+      "value": "Je, unatumia Alby? Nenda kwenye "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " kupata usanidi wako wa NWC!"
+    }
+  ],
+  "cG/bKQ": [
+    {
+      "type": 0,
+      "value": "Muunganisho wa mkoba wa asili wa nostr"
+    }
+  ],
+  "cHCwbF": [
+    {
+      "type": 0,
+      "value": "Ufotografia"
+    }
+  ],
+  "cKbMRX": [
+    {
+      "type": 0,
+      "value": "Direct Message"
+    }
+  ],
+  "cPIKU2": [
+    {
+      "type": 0,
+      "value": "Ninafuata"
+    }
+  ],
+  "cQfLWb": [
+    {
+      "type": 0,
+      "value": "URL.."
+    }
+  ],
+  "cVcgLJ": [
+    {
+      "type": 0,
+      "value": "Media Servers"
+    }
+  ],
+  "cWx9t8": [
+    {
+      "type": 0,
+      "value": "Funga Mijibu Yote"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "Unganisha Pochi"
+    }
+  ],
+  "cnwHgH": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps"
+    }
+  ],
+  "cuP16y": [
+    {
+      "type": 0,
+      "value": "Msaada wa Akaunti Nyingi"
+    }
+  ],
+  "cuV2gK": [
+    {
+      "type": 0,
+      "value": "Jina limehifadhiwa"
+    }
+  ],
+  "cw1Ftc": [
+    {
+      "type": 0,
+      "value": "Live Activities"
+    }
+  ],
+  "cyR7Kh": [
+    {
+      "type": 0,
+      "value": "Rudi"
+    }
+  ],
+  "d+6YsV": [
+    {
+      "type": 0,
+      "value": "Orodha za kufuta sauti:"
+    }
+  ],
+  "d0qim7": [
+    {
+      "type": 0,
+      "value": "WoT Filter"
+    }
+  ],
+  "d2ebEu": [
+    {
+      "type": 0,
+      "value": "Hajajiandikisha kwa Piga"
+    }
+  ],
+  "d7d0/x": [
+    {
+      "type": 0,
+      "value": "Anwani ya LN"
+    }
+  ],
+  "dK2CcV": [
+    {
+      "type": 0,
+      "value": "Ufunguo wa umma ni kama jina lako la mtumiaji, unaweza kuushiriki na mtu yeyote."
+    }
+  ],
+  "dOQCL8": [
+    {
+      "type": 0,
+      "value": "Jina la kuonyesha"
+    }
+  ],
+  "dZZIGe": [
+    {
+      "type": 0,
+      "value": "Modular Article Header"
+    }
+  ],
+  "ddd3JX": [
+    {
+      "type": 0,
+      "value": "Popular Hashtags"
+    }
+  ],
+  "deEeEI": [
+    {
+      "type": 0,
+      "value": "Jisajili"
+    }
+  ],
+  "djLctd": [
+    {
+      "type": 0,
+      "value": "Kiasi katika sati"
+    }
+  ],
+  "dmcsBA": [
+    {
+      "type": 0,
+      "value": "Classified Listing"
+    }
+  ],
+  "dmsiLv": [
+    {
+      "type": 0,
+      "value": "Mgawo wa default wa Zap Pool wa "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " umewekwa kwa watengenezaji wa "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": ", unaweza kuzima wakati wowote kwenye "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "e5x8FT": [
+    {
+      "type": 0,
+      "value": "Aina"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "Inakuja hivi karibuni"
+    }
+  ],
+  "e7VmYP": [
+    {
+      "type": 0,
+      "value": "Ingiza pin kufuli funguo yako binafsi"
+    }
+  ],
+  "e7qqly": [
+    {
+      "type": 0,
+      "value": "Weka Alama Yote Yamesomwa"
+    }
+  ],
+  "eF0Re7": [
+    {
+      "type": 0,
+      "value": "Tumia kiendelezi cha kusaini Nostr kuingia"
+    }
+  ],
+  "eHAneD": [
+    {
+      "type": 0,
+      "value": "Emoji ya majibu"
+    }
+  ],
+  "eJj8HD": [
+    {
+      "type": 0,
+      "value": "Pata Kuthibitishwa"
+    }
+  ],
+  "eSzf2G": [
+    {
+      "type": 0,
+      "value": "Zap moja ya "
+    },
+    {
+      "type": 1,
+      "value": "nIn"
+    },
+    {
+      "type": 0,
+      "value": " sats itatenga "
+    },
+    {
+      "type": 1,
+      "value": "nOut"
+    },
+    {
+      "type": 0,
+      "value": " sats kwenye bwawa la zap."
+    }
+  ],
+  "eW/Bj9": [
+    {
+      "type": 0,
+      "value": "Feed"
+    }
+  ],
+  "eXT2QQ": [
+    {
+      "type": 0,
+      "value": "Mazungumzo ya Kikundi"
+    }
+  ],
+  "eZtOxB": [
+    {
+      "type": 0,
+      "value": "window.nostr capability for web browsers"
+    }
+  ],
+  "egib+2": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " mwingine"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " wengine"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "ejEGdx": [
+    {
+      "type": 0,
+      "value": "Nyumbani"
+    }
+  ],
+  "eoV49s": [
+    {
+      "type": 0,
+      "value": "Poor"
+    }
+  ],
+  "f1OxTe": [
+    {
+      "type": 0,
+      "value": "Viongozi wa jamii ni watu binafsi wanaoendeleza mfumo wa nostr kwa kuwa na shughuli katika jamii zao za kienyeji na kusaidia kuwajumuisha watumiaji wapya. Kila mtu anaweza kuwa kiongozi wa jamii, lakini wachache wanashikilia cheo cha heshima cha sasa."
+    }
+  ],
+  "f2CAxA": [
+    {
+      "type": 0,
+      "value": "Tupa"
+    }
+  ],
+  "fBI91o": [
+    {
+      "type": 0,
+      "value": "Zap"
+    }
+  ],
+  "fBlba3": [
+    {
+      "type": 0,
+      "value": "Asante kwa kutumia "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": ", tafadhali fikiria kuchangia ikiwa unaweza."
+    }
+  ],
+  "fLIvbC": [
+    {
+      "type": 0,
+      "value": "Snort ni mradi wa chanzo huria uliojengwa na watu wenye shauku katika wakati wao wa bure, michango yako inathaminiwa sana"
+    }
+  ],
+  "fOksnD": [
+    {
+      "type": 0,
+      "value": "Haiwezi kupiga kura kwa sababu huduma ya LNURL haitumii zaps"
+    }
+  ],
+  "fQN+tq": [
+    {
+      "type": 0,
+      "value": "Onyesha machapisho yenye lebo ya onyo la yaliyomo"
+    }
+  ],
+  "fWZYP5": [
+    {
+      "type": 0,
+      "value": "Imebandikwa"
+    }
+  ],
+  "fX5RYm": [
+    {
+      "type": 0,
+      "value": "Chagua mada kadhaa za kuvutia"
+    }
+  ],
+  "filwqD": [
+    {
+      "type": 0,
+      "value": "Soma"
+    }
+  ],
+  "fjAcWo": [
+    {
+      "type": 0,
+      "value": "Vifurushi vya Zawadi"
+    }
+  ],
+  "flnGvv": [
+    {
+      "type": 0,
+      "value": "Unafikiria nini?"
+    }
+  ],
+  "fqwcJ1": [
+    {
+      "type": 0,
+      "value": "Michango kwenye Mnyororo"
+    }
+  ],
+  "fr+XYA": [
+    {
+      "type": 0,
+      "value": "Lightning Pub RPC"
+    }
+  ],
+  "fsB/4p": [
+    {
+      "type": 0,
+      "value": "Imehifadhiwa"
+    }
+  ],
+  "fucxlm": [
+    {
+      "type": 0,
+      "value": "Attach Media"
+    }
+  ],
+  "furjvW": [
+    {
+      "type": 0,
+      "value": "Tazama Tiririsha"
+    }
+  ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "Kuhusu"
+    }
+  ],
+  "g985Wp": [
+    {
+      "type": 0,
+      "value": "Haiwezi kutuma kura"
+    }
+  ],
+  "gDzDRs": [
+    {
+      "type": 0,
+      "value": "Emoji za kutuma unapojibu ujumbe kwa dokezo"
+    }
+  ],
+  "gXgY3+": [
+    {
+      "type": 0,
+      "value": "Sio wateja wote wanaounga mkono hii bado"
+    }
+  ],
+  "gczcC5": [
+    {
+      "type": 0,
+      "value": "Jisajili"
+    }
+  ],
+  "geppt8": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count2"
+    },
+    {
+      "type": 0,
+      "value": " katika kumbukumbu)"
+    }
+  ],
+  "gjBiyj": [
+    {
+      "type": 0,
+      "value": "Inapakia..."
+    }
+  ],
+  "gkMmvC": [
+    {
+      "type": 0,
+      "value": "Android Signer Application"
+    }
+  ],
+  "gl1NeW": [
+    {
+      "type": 0,
+      "value": "Lists"
+    }
+  ],
+  "go2/QF": [
+    {
+      "type": 0,
+      "value": "User server list"
+    }
+  ],
+  "grQ+mI": [
+    {
+      "type": 0,
+      "value": "Ushahidi wa Kazi"
+    }
+  ],
+  "gtNjNP": [
+    {
+      "type": 0,
+      "value": "Basic protocol flow description"
+    }
+  ],
+  "h7jvCs": [
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " ina furaha zaidi pamoja!"
+    }
+  ],
+  "h8XMJL": [
+    {
+      "type": 0,
+      "value": "Beji"
+    }
+  ],
+  "h9M0rW": [
+    {
+      "type": 0,
+      "value": "User Metadata"
+    }
+  ],
+  "hF6IN2": [
+    {
+      "type": 0,
+      "value": "Pogoa Orodha ya Ufuatao"
+    }
+  ],
+  "hMQmIw": [
+    {
+      "type": 0,
+      "value": "Sawazisha Akaunti"
+    }
+  ],
+  "hMzcSq": [
+    {
+      "type": 0,
+      "value": "Ujumbe"
+    }
+  ],
+  "hRTfTR": [
+    {
+      "type": 0,
+      "value": "PRO"
+    }
+  ],
+  "hY4lzx": [
+    {
+      "type": 0,
+      "value": "Inasaidia"
+    }
+  ],
+  "hYOE+U": [
+    {
+      "type": 0,
+      "value": "Invite"
+    }
+  ],
+  "hicxcO": [
+    {
+      "type": 0,
+      "value": "Onyesha majibu"
+    }
+  ],
+  "hmZ3Bz": [
+    {
+      "type": 0,
+      "value": "Media"
+    }
+  ],
+  "hniz8Z": [
+    {
+      "type": 0,
+      "value": "hapa"
+    }
+  ],
+  "hv/eRj": [
+    {
+      "type": 0,
+      "value": "Blocked relays list"
+    }
+  ],
+  "hvFRBo": [
+    {
+      "type": 0,
+      "value": "Interaction"
+    }
+  ],
+  "i/dBAR": [
+    {
+      "type": 0,
+      "value": "Zap Pool"
+    }
+  ],
+  "i5gBFz": [
+    {
+      "type": 0,
+      "value": "Malipo uliyotuma na kupokea yataonekana hapa."
+    }
+  ],
+  "iCqGww": [
+    {
+      "type": 0,
+      "value": "Maoni ("
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "iEoXYx": [
+    {
+      "type": 0,
+      "value": "Tafsiri za DeepL"
+    }
+  ],
+  "iGT1eE": [
+    {
+      "type": 0,
+      "value": "Afya ya Kufuatilia Ufuatao ("
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "iHN12u": [
+    {
+      "type": 0,
+      "value": "Admin"
+    }
+  ],
+  "iICVoL": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " inafuata ("
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " nakala)"
+    }
+  ],
+  "iNWbVV": [
+    {
+      "type": 0,
+      "value": "Mpini"
+    }
+  ],
+  "iXPL0Z": [
+    {
+      "type": 0,
+      "value": "Haiwezi kuingia kwa kutumia ufunguo wa faragha kwenye muunganisho usio salama, tafadhali tumia kiendelezi cha kidhibiti cha ufunguo wa Nostr badala yake"
+    }
+  ],
+  "iYc3Ld": [
+    {
+      "type": 0,
+      "value": "Malipo"
+    }
+  ],
+  "icCxlA": [
+    {
+      "type": 0,
+      "value": "new users page"
+    }
+  ],
+  "ieGrWo": [
+    {
+      "type": 0,
+      "value": "Fuata"
+    }
+  ],
+  "igUUst": [
+    {
+      "type": 0,
+      "value": "Group Chat Threaded Reply"
+    }
+  ],
+  "ipHVx5": [
+    {
+      "type": 0,
+      "value": "Tengeneza ankara"
+    }
+  ],
+  "itPgxd": [
+    {
+      "type": 0,
+      "value": "Wasifu"
+    }
+  ],
+  "izWS4J": [
+    {
+      "type": 0,
+      "value": "Acha kufuata"
+    }
+  ],
+  "j9xbzF": [
+    {
+      "type": 0,
+      "value": "Tayari umefanya nakala rudufu"
+    }
+  ],
+  "jA3OE/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sat"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " sats"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "jAmfGl": [
+    {
+      "type": 0,
+      "value": "Usajili wako wa "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " umekwisha"
+    }
+  ],
+  "jHa/ko": [
+    {
+      "type": 0,
+      "value": "Safisha chakula chako"
+    }
+  ],
+  "jMzO1S": [
+    {
+      "type": 0,
+      "value": "Hitilafu ya ndani: "
+    },
+    {
+      "type": 1,
+      "value": "msg"
+    }
+  ],
+  "jiAVXu": [
+    {
+      "type": 0,
+      "value": "Video Event"
+    }
+  ],
+  "jvo0vs": [
+    {
+      "type": 0,
+      "value": "Hifadhi"
+    }
+  ],
+  "jzgQ2z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " Maoni"
+    }
+  ],
+  "k0kCJp": [
+    {
+      "type": 0,
+      "value": "Tumia Sasa"
+    }
+  ],
+  "k2veDA": [
+    {
+      "type": 0,
+      "value": "Andika"
+    }
+  ],
+  "k7sKNy": [
+    {
+      "type": 0,
+      "value": "Huduma yetu wenyewe ya uthibitishaji wa NIP-05, inasaidia kusaidia uundaji wa tovuti hii na kupata beji maalum inayong'aa kwenye tovuti yetu!"
+    }
+  ],
+  "k9SQm1": [
+    {
+      "type": 0,
+      "value": "Relays which you have connected to before and appear to be reliable."
+    }
+  ],
+  "kEZUR8": [
+    {
+      "type": 0,
+      "value": "Jisajili jina la mtumiaji wa Iris"
+    }
+  ],
+  "kJYo0u": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " alireposted"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " na wengine wkarepost"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "kKC9ya": [
+    {
+      "type": 0,
+      "value": "Wallet Info"
+    }
+  ],
+  "kNd2FL": [
+    {
+      "type": 0,
+      "value": "Tidal login"
+    }
+  ],
+  "kQAf2d": [
+    {
+      "type": 0,
+      "value": "Select"
+    }
+  ],
+  "kaaf1E": [
+    {
+      "type": 0,
+      "value": "sasa hivi"
+    }
+  ],
+  "kc79d3": [
+    {
+      "type": 0,
+      "value": "Mada"
+    }
+  ],
+  "klCm96": [
+    {
+      "type": 0,
+      "value": "Community Post Approval"
+    }
+  ],
+  "kqPQJD": [
+    {
+      "type": 0,
+      "value": "Sanidi bwawa la zap"
+    }
+  ],
+  "kuPHYE": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " amependa"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " & "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " na wengine wamependa"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "l+ikU1": [
+    {
+      "type": 0,
+      "value": "Kila kitu katika "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    }
+  ],
+  "l3H1EK": [
+    {
+      "type": 0,
+      "value": "Waalika marafiki zako"
+    }
+  ],
+  "l3nTjd": [
+    {
+      "type": 0,
+      "value": "Basic key derivation from mnemonic seed phrase"
+    }
+  ],
+  "lCILNz": [
+    {
+      "type": 0,
+      "value": "Nunua Sasa hivi"
+    }
+  ],
+  "lD3+8a": [
+    {
+      "type": 0,
+      "value": "Lipa"
+    }
+  ],
+  "lEnclp": [
+    {
+      "type": 0,
+      "value": "Matukio yangu: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lPWASz": [
+    {
+      "type": 0,
+      "value": "Anwani ya nostr ya Snort"
+    }
+  ],
+  "lTbT3s": [
+    {
+      "type": 0,
+      "value": "Nenosiri la Wallet"
+    }
+  ],
+  "lbr3Lq": [
+    {
+      "type": 0,
+      "value": "Copy link"
+    }
+  ],
+  "lfOesV": [
+    {
+      "type": 0,
+      "value": "Isiyo ya Zap"
+    }
+  ],
+  "lgg1KN": [
+    {
+      "type": 0,
+      "value": "ukurasa wa akaunti"
+    }
+  ],
+  "ll3xBp": [
+    {
+      "type": 0,
+      "value": "Huduma ya wakala wa picha"
+    }
+  ],
+  "lnaT9F": [
+    {
+      "type": 0,
+      "value": "Unafuata "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lsNFM1": [
+    {
+      "type": 0,
+      "value": "Bofya ili kupakia maudhui kutoka kwa "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "lvlPhZ": [
+    {
+      "type": 0,
+      "value": "Lipa ankara"
+    }
+  ],
+  "m/59y2": [
+    {
+      "type": 0,
+      "value": "Zap Request"
+    }
+  ],
+  "m6h2Eg": [
+    {
+      "type": 0,
+      "value": "Handler recommendation"
+    }
+  ],
+  "mCEKiZ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " notes have been muted"
+    }
+  ],
+  "mErPop": [
+    {
+      "type": 0,
+      "value": "Inaonekana huna, angalia "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " ili kununua!"
+    }
+  ],
+  "mFtdYh": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " Worker Relay"
+    }
+  ],
+  "mKAr6h": [
+    {
+      "type": 0,
+      "value": "Fuata wote"
+    }
+  ],
+  "mKh2HS": [
+    {
+      "type": 0,
+      "value": "Huduma ya kupakia faili"
+    }
+  ],
+  "mKhgP9": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "zapped"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "mOFG3K": [
+    {
+      "type": 0,
+      "value": "Anza"
+    }
+  ],
+  "mfe8RW": [
+    {
+      "type": 0,
+      "value": "Chaguo: "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "mmPSWH": [
+    {
+      "type": 0,
+      "value": "Read Only"
+    }
+  ],
+  "n1Whvj": [
+    {
+      "type": 0,
+      "value": "Badili"
+    }
+  ],
+  "n5l7tP": [
+    {
+      "type": 0,
+      "value": "Time-Based Calendar Event"
+    }
+  ],
+  "n8k1SG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "MiB"
+    }
+  ],
+  "nD4frR": [
+    {
+      "type": 0,
+      "value": "Bid confirmation"
+    }
+  ],
+  "nDejmx": [
+    {
+      "type": 0,
+      "value": "Ondoa kizuizi"
+    }
+  ],
+  "nGBrvw": [
+    {
+      "type": 0,
+      "value": "Alamisho"
+    }
+  ],
+  "nGGDsi": [
+    {
+      "type": 0,
+      "value": "Ruhusu Arifa"
+    }
+  ],
+  "nIchMQ": [
+    {
+      "type": 0,
+      "value": "Inatafuta shughuli za akaunti ("
+    },
+    {
+      "type": 1,
+      "value": "progress"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "nPHrqp": [
+    {
+      "type": 0,
+      "value": "Coinjoin Pool"
+    }
+  ],
+  "nUT0Lv": [
+    {
+      "type": 0,
+      "value": "Vyombo"
+    }
+  ],
+  "nWQFic": [
+    {
+      "type": 0,
+      "value": "Upya"
+    }
+  ],
+  "nihgfo": [
+    {
+      "type": 0,
+      "value": "Sikiliza makala hii"
+    }
+  ],
+  "nwZXeh": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " imezuiliwa"
+    }
+  ],
+  "o/gK53": [
+    {
+      "type": 0,
+      "value": "Sitaha"
+    }
+  ],
+  "o7e+nJ": [
+    {
+      "type": 0,
+      "value": "wafuasi "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "oJ+JJN": [
+    {
+      "type": 0,
+      "value": "Hakuna kilichopatikana:/"
+    }
+  ],
+  "odFwjL": [
+    {
+      "type": 0,
+      "value": "Inafuata pekee"
+    }
+  ],
+  "ojzbwv": [
+    {
+      "type": 0,
+      "value": "Hujambo, inaonekana kama bado huna Anwani ya Nostr, unapaswa kuipata! Angalia "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "ozZ2Cj": [
+    {
+      "type": 0,
+      "value": "Badge Award"
+    }
+  ],
+  "p4N05H": [
+    {
+      "type": 0,
+      "value": "Pakia"
+    }
+  ],
+  "p9Ps2l": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " wana relay ("
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "pEEBFk": [
+    {
+      "type": 0,
+      "value": "Reliable Relays"
+    }
+  ],
+  "pI+77w": [
+    {
+      "type": 0,
+      "value": "Hifadhi rudufu zinazoweza kupakuliwa kutoka kwa relay ya Snort"
+    }
+  ],
+  "pRess9": [
+    {
+      "type": 0,
+      "value": "ZapPool"
+    }
+  ],
+  "plOM0t": [
+    {
+      "type": 0,
+      "value": "Custom Emoji"
+    }
+  ],
+  "plg2Ua": [
+    {
+      "type": 0,
+      "value": "Channel Mute User"
+    }
+  ],
+  "puLNUJ": [
+    {
+      "type": 0,
+      "value": "Bandika"
+    }
+  ],
+  "pyjJ5f": [
+    {
+      "type": 0,
+      "value": "Nostr Marketplace (for resilient marketplaces)"
+    }
+  ],
+  "pzTOmv": [
+    {
+      "type": 0,
+      "value": "Wafuasi"
+    }
+  ],
+  "q3OuMw": [
+    {
+      "type": 0,
+      "value": "Torrent Comment"
+    }
+  ],
+  "qAY40L": [
+    {
+      "type": 0,
+      "value": "Date-Based Calendar Event"
+    }
+  ],
+  "qBYNMb": [
+    {
+      "type": 0,
+      "value": "Group Thread Reply"
+    }
+  ],
+  "qD9EUF": [
+    {
+      "type": 0,
+      "value": "Barua pepe <> Daraja la DM kwa anwani yako ya nostr ya Snort"
+    }
+  ],
+  "qDwvZ4": [
+    {
+      "type": 0,
+      "value": "Hitilafu isiyojulikana"
+    }
+  ],
+  "qFIVx4": [
+    {
+      "type": 0,
+      "value": "Profile Badges"
+    }
+  ],
+  "qMePPG": [
+    {
+      "type": 0,
+      "value": "Taarifa"
+    }
+  ],
+  "qMx1sA": [
+    {
+      "type": 0,
+      "value": "Chaguo-msingi cha Zap"
+    }
+  ],
+  "qUJTsT": [
+    {
+      "type": 0,
+      "value": "Imezuiwa"
+    }
+  ],
+  "qXCbgZ": [
+    {
+      "type": 0,
+      "value": "Fungua"
+    }
+  ],
+  "qZsKBR": [
+    {
+      "type": 0,
+      "value": "Jiandikishie upya "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    }
+  ],
+  "qcJFEJ": [
+    {
+      "type": 0,
+      "value": "API za Arifa zimelemazwa"
+    }
+  ],
+  "qdGuQo": [
+    {
+      "type": 0,
+      "value": "Ufunguo wako wa Faragha Ni (usishiriki hii na mtu yeyote)"
+    }
+  ],
+  "qfmMQh": [
+    {
+      "type": 0,
+      "value": "Hii taarifa imezimwa"
+    }
+  ],
+  "qkvYUb": [
+    {
+      "type": 0,
+      "value": "Ongeza kwa Wasifu"
+    }
+  ],
+  "qmJ8kD": [
+    {
+      "type": 0,
+      "value": "Tafsiri imeshindwa"
+    }
+  ],
+  "qtWLmt": [
+    {
+      "type": 0,
+      "value": "Penda"
+    }
+  ],
+  "qyJtWy": [
+    {
+      "type": 0,
+      "value": "Onyesha kidogo"
+    }
+  ],
+  "qydxOd": [
+    {
+      "type": 0,
+      "value": "Sayansi"
+    }
+  ],
+  "qz9fty": [
+    {
+      "type": 0,
+      "value": "Pin isiyo sahihi"
+    }
+  ],
+  "r3C4x/": [
+    {
+      "type": 0,
+      "value": "Programu"
+    }
+  ],
+  "r5srDR": [
+    {
+      "type": 0,
+      "value": "Ingiza nenosiri la pochi"
+    }
+  ],
+  "rAQG0X": [
+    {
+      "type": 0,
+      "value": "Relay List Metadata"
+    }
+  ],
+  "rIsVe+": [
+    {
+      "type": 0,
+      "value": "Public chats list"
+    }
+  ],
+  "rMgF34": [
+    {
+      "type": 0,
+      "value": "Hifadhi nakala sasa"
+    }
+  ],
+  "rRRXtB": [
+    {
+      "type": 0,
+      "value": "Lightning Zaps"
+    }
+  ],
+  "rT14Ow": [
+    {
+      "type": 0,
+      "value": "Ongeza Relay"
+    }
+  ],
+  "reFEEC": [
+    {
+      "type": 0,
+      "value": "Reporting"
+    }
+  ],
+  "rfuMjE": [
+    {
+      "type": 0,
+      "value": "(Chaguo-msingi)"
+    }
+  ],
+  "rkM7l8": [
+    {
+      "type": 0,
+      "value": "Encrypted Direct Message"
+    }
+  ],
+  "rmdsT4": [
+    {
+      "type": 0,
+      "value": "siku "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "rn52n9": [
+    {
+      "type": 0,
+      "value": "Vituo vya Gumzo la Umma"
+    }
+  ],
+  "rx1i0i": [
+    {
+      "type": 0,
+      "value": "Kiungo fupi"
+    }
+  ],
+  "sFUkSN": [
+    {
+      "type": 0,
+      "value": "Bookmark sets"
+    }
+  ],
+  "sKDn4e": [
+    {
+      "type": 0,
+      "value": "Onyesha Vialamisho"
+    }
+  ],
+  "sUNhQE": [
+    {
+      "type": 0,
+      "value": "mtumiaji"
+    }
+  ],
+  "sZQzjQ": [
+    {
+      "type": 0,
+      "value": "Imeshindwa kuchambua mgawanyo wa zap: "
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "saInmO": [
+    {
+      "type": 0,
+      "value": "The relay name shown is not the same as the full URL entered."
+    }
+  ],
+  "saorw+": [
+    {
+      "type": 0,
+      "value": "Event Deletion Request"
+    }
+  ],
+  "sfL/O+": [
+    {
+      "type": 0,
+      "value": "Vidokezo vilivyonyamazishwa havitaonyeshwa"
+    }
+  ],
+  "t79a6U": [
+    {
+      "type": 0,
+      "value": "Connection Success:"
+    }
+  ],
+  "tDDiRL": [
+    {
+      "type": 0,
+      "value": "Interests list"
+    }
+  ],
+  "tFpT/O": [
+    {
+      "type": 0,
+      "value": "Release artifact sets"
+    }
+  ],
+  "tO1oq9": [
+    {
+      "type": 0,
+      "value": "Video Events"
+    }
+  ],
+  "tOdNiY": [
+    {
+      "type": 0,
+      "value": "Giza"
+    }
+  ],
+  "tRGdV1": [
+    {
+      "type": 0,
+      "value": "Versioned Encryption"
+    }
+  ],
+  "tU0ADf": [
+    {
+      "type": 0,
+      "value": "Unknown NIP-"
+    },
+    {
+      "type": 1,
+      "value": "x"
+    }
+  ],
+  "tVuVg9": [
+    {
+      "type": 0,
+      "value": "Video View Event"
+    }
+  ],
+  "tf1lIh": [
+    {
+      "type": 0,
+      "value": "Free"
+    }
+  ],
+  "th5lxp": [
+    {
+      "type": 0,
+      "value": "Tuma dokezo kwa kikundi kidogo cha relay zako za uandishi"
+    }
+  ],
+  "thnRpU": [
+    {
+      "type": 0,
+      "value": "Kuthibitishwa kwa NIP-05 kunaweza kusaidia:"
+    }
+  ],
+  "tj6kdX": [
+    {
+      "type": 1,
+      "value": "sign"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " sati"
+    }
+  ],
+  "tjpYlr": [
+    {
+      "type": 0,
+      "value": "Takwimu za Relay"
+    }
+  ],
+  "ttxS0b": [
+    {
+      "type": 0,
+      "value": "Beji ya Msaidizi"
+    }
+  ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "Status"
+    }
+  ],
+  "u/vOPu": [
+    {
+      "type": 0,
+      "value": "Imelipwa"
+    }
+  ],
+  "u4I8q8": [
+    {
+      "type": 0,
+      "value": "Pin list"
+    }
+  ],
+  "u81G9+": [
+    {
+      "type": 0,
+      "value": "Uptime"
+    }
+  ],
+  "u9NoC1": [
+    {
+      "type": 0,
+      "value": "Jina lazima liwe chini ya wahusika "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    }
+  ],
+  "uCk8r+": [
+    {
+      "type": 0,
+      "value": "Je, tayari una akaunti?"
+    }
+  ],
+  "uD7Els": [
+    {
+      "type": 0,
+      "value": "External Identities in Profiles"
+    }
+  ],
+  "uJaMkO": [
+    {
+      "type": 0,
+      "value": "Relay list to receive DMs"
+    }
+  ],
+  "uSV4Ti": [
+    {
+      "type": 0,
+      "value": "Machapisho mapya yanahitaji kuthibitishwa mwenyewe"
+    }
+  ],
+  "uc0din": [
+    {
+      "type": 0,
+      "value": "Tuma sats zilizogawanywa kwa"
+    }
+  ],
+  "ufvXH1": [
+    {
+      "type": 0,
+      "value": "Imepata matukio "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "uhu5aG": [
+    {
+      "type": 0,
+      "value": "Umma"
+    }
+  ],
+  "un1nGw": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " taarifa"
+    }
+  ],
+  "usAvMr": [
+    {
+      "type": 0,
+      "value": "Badilisha Wasifu"
+    }
+  ],
+  "v8lolG": [
+    {
+      "type": 0,
+      "value": "Anzisha gumzo"
+    }
+  ],
+  "vB3oQ/": [
+    {
+      "type": 0,
+      "value": "Lazima iwe orodha ya mawasiliano au orodha ya pubkey"
+    }
+  ],
+  "vBsZhD": [
+    {
+      "type": 0,
+      "value": "Communities list"
+    }
+  ],
+  "vN5UH8": [
+    {
+      "type": 0,
+      "value": "Pata ya bure"
+    }
+  ],
+  "vU/Q5i": [
+    {
+      "type": 0,
+      "value": "Zana hii itatafuta tukio la mwisho lililochapishwa na wafuatiliaji wako wote na kuondoa wale ambao hawajachapisha kwa miezi 6"
+    }
+  ],
+  "vZ4quW": [
+    {
+      "type": 0,
+      "value": "NIP-05 ni uthibitishaji wa msingi wa DNS ambao husaidia kukuthibitisha kama mtumiaji halisi."
+    }
+  ],
+  "vhlWFg": [
+    {
+      "type": 0,
+      "value": "Chaguo za Kura"
+    }
+  ],
+  "vlbWtt": [
+    {
+      "type": 0,
+      "value": "Pata ya bure"
+    }
+  ],
+  "voxBKC": [
+    {
+      "type": 0,
+      "value": "Imefuatiliwa na marafiki"
+    }
+  ],
+  "vxwnbh": [
+    {
+      "type": 0,
+      "value": "Kiasi cha kazi ya kuomba kwa matukio yote yaliyochapishwa"
+    }
+  ],
+  "w1Fanr": [
+    {
+      "type": 0,
+      "value": "Biashara"
+    }
+  ],
+  "w6qrwX": [
+    {
+      "type": 0,
+      "value": "NSFW"
+    }
+  ],
+  "wEQDC6": [
+    {
+      "type": 0,
+      "value": "Hariri"
+    }
+  ],
+  "wOyDTB": [
+    {
+      "type": 0,
+      "value": "File storage server list"
+    }
+  ],
+  "wSZR47": [
+    {
+      "type": 0,
+      "value": "Tuma"
+    }
+  ],
+  "wc9st7": [
+    {
+      "type": 0,
+      "value": "Media Attachments"
+    }
+  ],
+  "whSrs+": [
+    {
+      "type": 0,
+      "value": "Nostr Gumzo la Umma"
+    }
+  ],
+  "wih7iJ": [
+    {
+      "type": 0,
+      "value": "jina limezuiwa"
+    }
+  ],
+  "wlWMuh": [
+    {
+      "type": 0,
+      "value": "Patches"
+    }
+  ],
+  "wofVHy": [
+    {
+      "type": 0,
+      "value": "Usimamizi"
+    }
+  ],
+  "wqyN/i": [
+    {
+      "type": 0,
+      "value": "Pata maelezo zaidi kuhusu "
+    },
+    {
+      "type": 1,
+      "value": "service"
+    },
+    {
+      "type": 0,
+      "value": " kwenye "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "wtLjP6": [
+    {
+      "type": 0,
+      "value": "Nakili ID"
+    }
+  ],
+  "x+3fl6": [
+    {
+      "type": 0,
+      "value": "My Relays"
+    }
+  ],
+  "x/Fx2P": [
+    {
+      "type": 0,
+      "value": "Fundisha huduma unazotumia kwa kugawanya sehemu ya zap zako zote kwenye kundi la fedha!"
+    }
+  ],
+  "x82IOl": [
+    {
+      "type": 0,
+      "value": "Nyamazisha"
+    }
+  ],
+  "xEjBS7": [
+    {
+      "type": 0,
+      "value": "Kwa ajili yako"
+    }
+  ],
+  "xIcAOU": [
+    {
+      "type": 0,
+      "value": "Kura za "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    }
+  ],
+  "xIoGG9": [
+    {
+      "type": 0,
+      "value": "Nenda kwa"
+    }
+  ],
+  "xPCyu+": [
+    {
+      "type": 0,
+      "value": "nostr: URI scheme"
+    }
+  ],
+  "xaj9Ba": [
+    {
+      "type": 0,
+      "value": "Mtoa huduma"
+    }
+  ],
+  "xbVgIm": [
+    {
+      "type": 0,
+      "value": "Pakia midia kiotomatiki"
+    }
+  ],
+  "xhQMeQ": [
+    {
+      "type": 0,
+      "value": "Muda wake unaisha"
+    }
+  ],
+  "xl4s/X": [
+    {
+      "type": 0,
+      "value": "Vigezo vingine:"
+    }
+  ],
+  "xmcVZ0": [
+    {
+      "type": 0,
+      "value": "Tafuta"
+    }
+  ],
+  "xybOUv": [
+    {
+      "type": 0,
+      "value": "SHABIKI"
+    }
+  ],
+  "y/bmsG": [
+    {
+      "type": 0,
+      "value": "Ruhusu"
+    }
+  ],
+  "y1Z3or": [
+    {
+      "type": 0,
+      "value": "Lugha"
+    }
+  ],
+  "yAztTU": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " eSatI"
+    }
+  ],
+  "yCLnBC": [
+    {
+      "type": 0,
+      "value": "LNURL au Anwani ya Umeme"
+    }
+  ],
+  "yLzgxH": [
+    {
+      "type": 0,
+      "value": "Popular Relays"
+    }
+  ],
+  "yeX8yA": [
+    {
+      "type": 0,
+      "value": "Native App"
+    }
+  ],
+  "z3UjXR": [
+    {
+      "type": 0,
+      "value": "Debug"
+    }
+  ],
+  "z3Ukvq": [
+    {
+      "type": 0,
+      "value": "Draft Long-form Content"
+    }
+  ],
+  "zCb8fX": [
+    {
+      "type": 0,
+      "value": "Uzito"
+    }
+  ],
+  "zFegDD": [
+    {
+      "type": 0,
+      "value": "Wasiliana"
+    }
+  ],
+  "zINlao": [
+    {
+      "type": 0,
+      "value": "Mmiliki"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "Yote"
+    }
+  ],
+  "zcaOTs": [
+    {
+      "type": 0,
+      "value": "Kiasi cha Zap katika seti"
+    }
+  ],
+  "zi9MdS": [
+    {
+      "type": 0,
+      "value": "Chess (PGN)"
+    }
+  ],
+  "zm6qS1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " dakika kusoma"
+    }
+  ],
+  "zonsdq": [
+    {
+      "type": 0,
+      "value": "Imeshindwa kupakia huduma ya LNURL"
+    }
+  ],
+  "zvCDao": [
+    {
+      "type": 0,
+      "value": "Onyesha taarifa mpya kiotomatiki"
+    }
+  ],
+  "zx0myy": [
+    {
+      "type": 0,
+      "value": "Participants"
+    }
+  ]
 }

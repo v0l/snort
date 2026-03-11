@@ -1,105 +1,133 @@
-import TrendingHashtags from "@/Components/Trending/TrendingHashtags";
-import TrendingNotes from "@/Components/Trending/TrendingPosts";
-import Discover from "@/Pages/Discover";
-import HashTagsPage from "@/Pages/HashTagsPage";
-import { ConversationsTab } from "@/Pages/Root/ConversationsTab";
-import { DefaultTab } from "@/Pages/Root/DefaultTab";
-import { FollowedByFriendsTab } from "@/Pages/Root/FollowedByFriendsTab";
-import FollowSetsPage from "@/Pages/Root/FollowSets";
-import { ForYouTab } from "@/Pages/Root/ForYouTab";
-import MediaPosts from "@/Pages/Root/Media";
-import { NotesTab } from "@/Pages/Root/NotesTab";
-import { TagsTab } from "@/Pages/Root/TagsTab";
-import { TopicsPage } from "@/Pages/TopicsPage";
-import type { ReactElement } from "react";
-import RelayFeedPage from "@/Pages/Root/RelayFeedPage";
-import type { RouteObject } from "react-router-dom";
-import SuggestedProfiles from "@/Components/SuggestedProfiles";
+import type { RouteObject } from 'react-router-dom'
 
 export type RootTabRoutePath =
-  | ""
-  | "for-you"
-  | "following"
-  | "followed-by-friends"
-  | "conversations"
-  | "discover"
-  | "tag/:tag"
-  | "trending/notes"
-  | "trending/hashtags"
-  | "suggested"
-  | "t/:tag"
-  | "topics"
-  | "media"
-  | "follow-sets"
-  | "relay";
+  | ''
+  | 'for-you'
+  | 'following'
+  | 'followed-by-friends'
+  | 'conversations'
+  | 'discover'
+  | 'tag/:tag'
+  | 'trending/notes'
+  | 'trending/hashtags'
+  | 'suggested'
+  | 't/:tag'
+  | 'topics'
+  | 'media'
+  | 'follow-sets'
+  | 'relay'
 
-export type RootTabRoute = {
-  element: ReactElement;
-} & RouteObject;
+export type RootTabRoute = RouteObject
 
 export const RootTabRoutes: RootTabRoute[] = [
   {
     index: true,
-    element: <DefaultTab />,
+    async lazy() {
+      const { DefaultTab } = await import('@/Pages/Root/DefaultTab')
+      return { Component: DefaultTab }
+    },
   },
   {
-    path: "for-you",
-    element: <ForYouTab />,
+    path: 'for-you',
+    async lazy() {
+      const { ForYouTab } = await import('@/Pages/Root/ForYouTab')
+      return { Component: ForYouTab }
+    },
   },
   {
-    path: "following",
-    element: <NotesTab />,
+    path: 'following',
+    async lazy() {
+      const { NotesTab } = await import('@/Pages/Root/NotesTab')
+      return { Component: NotesTab }
+    },
   },
   {
-    path: "followed-by-friends",
-    element: <FollowedByFriendsTab />,
+    path: 'followed-by-friends',
+    async lazy() {
+      const { FollowedByFriendsTab } = await import('@/Pages/Root/FollowedByFriendsTab')
+      return { Component: FollowedByFriendsTab }
+    },
   },
   {
-    path: "conversations",
-    element: <ConversationsTab />,
+    path: 'conversations',
+    async lazy() {
+      const { ConversationsTab } = await import('@/Pages/Root/ConversationsTab')
+      return { Component: ConversationsTab }
+    },
   },
   {
-    path: "discover",
-    element: <Discover />,
+    path: 'discover',
+    async lazy() {
+      const { default: Discover } = await import('@/Pages/Discover')
+      return { Component: Discover }
+    },
   },
   {
-    path: "tag/:tag",
-    element: <TagsTab />,
+    path: 'tag/:tag',
+    async lazy() {
+      const { TagsTab } = await import('@/Pages/Root/TagsTab')
+      return { Component: TagsTab }
+    },
   },
   {
-    path: "trending/notes",
-    element: <TrendingNotes />,
+    path: 'trending/notes',
+    async lazy() {
+      const { default: TrendingNotes } = await import('@/Components/Trending/TrendingPosts')
+      return { Component: TrendingNotes }
+    },
   },
   {
-    path: "trending/hashtags",
-    element: (
-      <div className="px-2">
-        <TrendingHashtags />
-      </div>
-    ),
+    path: 'trending/hashtags',
+    async lazy() {
+      const { default: TrendingHashtags } = await import('@/Components/Trending/TrendingHashtags')
+      const Wrapper = () => (
+        <div className="px-2">
+          <TrendingHashtags />
+        </div>
+      )
+      return { Component: Wrapper }
+    },
   },
   {
-    path: "t/:tag",
-    element: <HashTagsPage />,
+    path: 't/:tag',
+    async lazy() {
+      const { default: HashTagsPage } = await import('@/Pages/HashTagsPage')
+      return { Component: HashTagsPage }
+    },
   },
   {
-    path: "topics",
-    element: <TopicsPage />,
+    path: 'topics',
+    async lazy() {
+      const { TopicsPage } = await import('@/Pages/TopicsPage')
+      return { Component: TopicsPage }
+    },
   },
   {
-    path: "media",
-    element: <MediaPosts />,
+    path: 'media',
+    async lazy() {
+      const { default: MediaPosts } = await import('@/Pages/Root/Media')
+      return { Component: MediaPosts }
+    },
   },
   {
-    path: "follow-sets",
-    element: <FollowSetsPage />,
+    path: 'follow-sets',
+    async lazy() {
+      const { default: FollowSetsPage } = await import('@/Pages/Root/FollowSets')
+      return { Component: FollowSetsPage }
+    },
   },
   {
-    path: "relay/:relay?",
-    element: <RelayFeedPage />,
+    path: 'relay/:relay?',
+    async lazy() {
+      const { default: RelayFeedPage } = await import('@/Pages/Root/RelayFeedPage')
+      return { Component: RelayFeedPage }
+    },
   },
   {
-    path: "suggested",
-    element: <SuggestedProfiles />,
+    path: 'suggested',
+    async lazy() {
+      const { default: SuggestedProfiles } = await import('@/Components/SuggestedProfiles')
+      return { Component: SuggestedProfiles }
+    },
   },
-];
+]

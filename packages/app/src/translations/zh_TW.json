@@ -1,812 +1,5896 @@
 {
-  "+D82kt": "是否確定要轉發：{id}",
-  "+PzQ9Y": "立即支出",
-  "+QM0PJ": "將你的個人檔案的所有事件同步至本機快取",
-  "+QMdsy": "接力統計",
-  "+UjDmN": "已使用寫入權限登錄",
-  "+Vxixo": "祕密羣聊",
-  "+aZY2h": "打閃種類",
-  "+tShPg": "已關注",
-  "+vA//S": "登錄",
-  "+vIQlC": "請確保將以下密碼妥善保存以便將來管理你的代號",
-  "+vVZ/G": "連接",
-  "+vj0U3": "編輯",
-  "+xliwN": "{name} 轉發了",
-  "/B8zwF": "如你所願的空間 😌",
-  "/GCoTA": "清除",
-  "/JE/X+": "帳戶支持",
-  "/T7HId": "HTTP 檔案儲存整合",
-  "/Xf4UW": "傳送匿名使用資料",
-  "/b1IHW": "群聊訊息",
-  "/d6vEc": "使你的帳號可更方便地被找到及分享",
-  "/ioUrF": "從檔案",
-  "/n5KSF": "{n} 毫秒",
-  "00LcfG": "加載更多",
-  "01iNut": "Nostr 地址不屬於你",
-  "08zn6O": "導出密鑰",
-  "0Azlrb": "管理",
-  "0BUTMv": "搜索...",
-  "0MndVW": "通用 LNDHub 錢包（BTCPayServer / Alby / LNBits）",
-  "0jOEtS": "LNURL 無效",
-  "0kOBMu": "處理提及",
-  "0mch2Y": "名稱中有禁用字符",
-  "0siT4z": "政治",
-  "0uoY11": "顯示狀態",
-  "0yO7wF": "{n} 秒",
-  "0zASjL": "開始",
-  "1/BFEj": "git 的東西",
-  "1Mo59U": "是否確定要從收藏中移除此條筆記？",
-  "1R43+L": "輸入 Nostr Wallet Connect 配置",
-  "1UWegE": "請務必備份你的密鑰！",
-  "1c4YST": "已連接到：{node} 🎉",
-  "1nYUGC": "{n} 個關注",
-  "1o2BgB": "檢查簽名",
-  "1ozeyg": "自然",
-  "1udzha": "對話",
-  "2/2yg+": "添加",
-  "25V4l1": "橫幅",
-  "25WwxF": "沒有帳戶？",
-  "28oKbu": "管理的社群",
-  "29sHFE": "錢包連線",
-  "2BBGxX": "文字事件中的主題標籤",
-  "2HIqeO": "使用者表情符號清單",
-  "2IFGap": "捐贈",
-  "2LbrkB": "輸入密碼",
-  "2O2sfp": "完成",
-  "2Qsf9/": "通用清單",
-  "2a2YiP": "{n} 個收藏",
-  "2k0Cv+": "踩 （{n}）",
-  "2mcwT8": "新筆記",
-  "2oCF7O": "被好友的好友關注",
-  "2raFAu": "應用程式特定資料",
-  "2ukA4d": "{n}小時",
-  "2z7Kky": "最新文章",
-  "3/onCd": "回覆",
-  "39AHJm": "註冊",
-  "3GWu6/": "使用者狀態",
-  "3KNMbJ": "文章",
-  "3MKdAw": "儲存在媒體伺服器上的 Blob",
-  "3QwfJR": "~{amount}",
-  "3adEeb": "{n} 觀眾",
-  "3cc4Ct": "淺色",
-  "3gOsZq": "翻譯人員",
-  "3kbIhS": "無題",
-  "3qnJlS": "你正在用{amount}聰投票",
-  "3t3kok": "{n,plural,=1{{n}條新筆記} other{{n}條新筆記}}",
-  "3tVy+Z": "{n} 個粉絲",
-  "3yk8fB": "錢包",
-  "40VR6s": "Nostr Connect",
-  "41BSaT": "活動總數：",
-  "450Fty": "無",
-  "47E53q": "維基",
-  "47FYwb": "取消",
-  "48zn4v": "出價",
-  "4IPzdn": "主要開發人員",
-  "4L2vUY": "你的新 NIP-05 代號是：",
-  "4MjsHk": "生活",
-  "4OB335": "踩",
-  "4P/kKm": "私密金鑰加密",
-  "4Vmpt4": "Nostr Plebs 是該領域首批 NIP-05 供應商之一，以合理的價格提供大量域名",
-  "4Z3t5i": "使用 imgproxy 壓縮圖片",
-  "4emo2p": "缺少中繼器",
-  "4rYCjn": "自用筆記",
-  "4wgYpI": "推薦的應用處理程式",
-  "5BVs2e": "打閃",
-  "5CB6zB": "打閃拆分",
-  "5PRWs7": "已啟用通知 API",
-  "5dfmvv": "Zap 目標",
-  "5oTnfy": "購買代號",
-  "5qEWCr": "檔案元資料",
-  "5u6iEc": "轉移到公鑰",
-  "5vMmmR": "在 nostr 上，用戶名不是獨特的。Nostr 地址是你的獨特的人類可讀的地址。",
-  "5ykRmX": "發送打閃",
-  "6/hB3S": "觀看重播",
-  "60kEE3": "靜音清單",
-  "62nsdy": "重試",
-  "634VVz": "連線失敗：",
-  "6559gb": "新關注列表長度 {length}",
-  "65BmHb": "從 {host} 代理圖像失敗，點擊此處直接加載",
-  "6D4Hhn": "推薦繼電器",
-  "6KGebm": "密封",
-  "6OSOXl": "原因：<i>{reason}</i>",
-  "6WWD34": "尋找 {noteId}",
-  "6bgpn+": "並非所有客戶端都支持，就算已配置了打閃拆分，你仍然可能會收到一些打閃",
-  "6ewQqw": "贊（{n}）",
-  "6mr8WU": "被這些人關注",
-  "6pdxsi": "額外的元資料欄位和標籤",
-  "6uMqL1": "未付款",
-  "6xNr8c": "切換帳戶",
-  "6xap9L": "良好",
-  "7+Domh": "筆記",
-  "712i26": "代理使用 HODL 發票轉發付款，從而隱藏了你的節點的公鑰",
-  "753yX5": "標籤",
-  "769A8p": "維基文章",
-  "77nkEO": "中繼資訊文件",
-  "7LFU8U": "搜尋能力",
-  "7UOvbT": "離線",
-  "7YkSA2": "社區領袖",
-  "7gMmSL": "反應",
-  "7hp70g": "NIP-05",
-  "7jfPsW": "模組化文章內容",
-  "7nAz/z": "將不屬於您信任網的人的筆記設定為靜音",
-  "7pFGAQ": "關閉繼電器",
-  "8/vBbP": "轉發（{n}）",
-  "89q5wc": "確認轉發",
-  "8BDFvJ": "客戶在文字事件中使用 e 和 p 標籤的慣例",
-  "8ED/4u": "回覆",
-  "8HJxXG": "註冊",
-  "8QDesP": "打閃 {n} 聰",
-  "8Rkoyb": "接收方",
-  "8Y6bZQ": "無效打閃拆分：{input}",
-  "8ZGqWl": "群組主題",
-  "8g2vyB": "名稱過長",
-  "8jmwT8": "bech32 編碼的實體",
-  "8v1NN+": "配對詞句",
-  "8xdDLn": "遵循套裝",
-  "8za9Pq": "分類列表草案",
-  "9+Ddtu": "下一步",
-  "9HU8vw": "回覆",
-  "9SvQep": "關注 {n}",
-  "9V0wg3": "日曆活動 RSVP",
-  "9WRlF4": "發送",
-  "9kO0VQ": "隱藏已靜音筆記",
-  "9kSari": "重試發布",
-  "9pMqYs": "Nostr 地址",
-  "9wO4wJ": "閃電發票",
-  "A86fJ+": "通用轉貼",
-  "ADmfQT": "上一層",
-  "ALdW69": "{name} 的筆記",
-  "AN0Z7Q": "已被靜音的關鍵詞",
-  "ASRK0S": "该作者已被静音",
-  "AedFVZ": "建立或更新產品",
-  "Ai8VHU": "Snort 中繼器上無限制筆記保留",
-  "AkCxS/": "原因",
-  "AktAk2": "偉大",
-  "Am8glJ": "遊戲",
-  "AqGfF4": "頻道建立",
-  "Aujn2T": "總計",
-  "Awq32I": "推送通知",
-  "AxDOiG": "月",
-  "AyGauy": "登錄",
-  "B4C47Y": "名稱過短",
-  "B6+XJy": "已打閃",
-  "B6H7eJ": "nsec、npub、nip-05、十六進制",
-  "B7wvUM": "您可以新增單一或多個繼電器，每行一個。",
-  "BGCM48": "寫入 Snort 中繼器到權限，1年的事件保留",
-  "BGGacK": "AI 嵌入/向量清單",
-  "BQW4gi": "中繼群組",
-  "BWpuKl": "更新",
-  "BfuAQ5": "市場 UI/UX",
-  "BjNwZW": "Nostr 地址（NIP-05）",
-  "Blxcdx": "繼電器",
-  "Bo+O//": "HTTP Auth",
-  "C1LjMx": "閃電捐款",
-  "C6Lhhp": "現場活動",
-  "C7642/": "引用轉帖",
-  "C81/uG": "登出",
-  "C8FsOr": "熱門伺服器",
-  "C8HhVE": "推薦關注",
-  "CA1efg": "視訊套件",
-  "CHTbO3": "加載發票失敗",
-  "CJx5Nd": "簡介 Zaps",
-  "CM+Cfj": "關注列表",
-  "CM0k0d": "修剪關注列表",
-  "CVWeJ6": "熱門用戶",
-  "CYkOCI": "和 {count} 個你關注的人",
-  "Cdxwi0": "儲存庫公告",
-  "CmZ9ls": "{n} 已静音",
-  "Coy6SH": "行事曆",
-  "CsCUYo": "{n} 聰",
-  "Cu/K85": "翻譯自 {lang}",
-  "CzHZoc": "社交圖表",
-  "D++Njw": "文字說明 參考資料",
-  "D+KzKd": "加載時自動打閃每條筆記",
-  "D09wbg": "徽章定義",
-  "D3idYv": "設置",
-  "D9xTLE": "頻道隱藏訊息",
-  "DBiVK1": "緩存",
-  "DKnriN": "發送聰",
-  "DZzCem": "顯示最新的 {n} 條筆記",
-  "Dh3hbq": "自動打閃",
-  "Dn82AL": "直播",
-  "DqUmXt": "以拍賣方式出售的產品",
-  "DrZqav": "關於必須少於 {limit} 個字符",
-  "DtYelJ": "轉移",
-  "Dx4ey3": "切換全部",
-  "E3oB+t": "瀏覽器",
-  "E5ZIPD": "<big>{amount}</big> <small>聰</small>",
-  "EHqHsu": "發票 / 閃電地址",
-  "EJbFi7": "搜索筆記",
-  "ELbg9p": "數據提供方",
-  "EQKRE4": "在個人檔案頁面上顯示徽章",
-  "EWeVrH": "對網站的反應",
-  "EWyQH5": "全球",
-  "Ebl/B2": "翻譯成 {lang}",
-  "Ec+xLY": "編輯套件",
-  "EcZF24": "自定義中繼器",
-  "EcfIwB": "用戶名可用。",
-  "EcglP9": "密鑰",
-  "EjFyoR": "鏈上捐款地址",
-  "EnCOBJ": "購買",
-  "EsHX35": "抱歉，我們不瞭解此事件類型 ({name})，請嘗試以下其中一個應用程式！",
-  "F/6VqP": "伺服器",
-  "F3l7xL": "添加帳戶",
-  "F4eJ/3": "分類列表",
-  "FDguSC": "{n} 打閃",
-  "FHWpHC": "錢包回復",
-  "FHvSk3": "用戶端對中繼器的驗證",
-  "FMfjrl": "在個人檔案頁面上顯示狀態消息",
-  "FSYL8G": "熱門用戶",
-  "FWJR1B": "使用者群組",
-  "FcNSft": "重定向將 HTTP 重定向到所提供的閃電地址",
-  "FdhSU2": "立即領取",
-  "FfYsOb": "發生錯誤！",
-  "FmXUJg": "正在關注你",
-  "FvanT6": "帳戶",
-  "FzbSGg": "你沒有任何媒體伺服器，請嘗試新增一些。",
-  "G/yZLu": "移除",
-  "G1BGCg": "選擇錢包",
-  "G3A56c": "已訂閱推送通知",
-  "GFOoEE": "鹽",
-  "GIqktu": "支援的 NIP",
-  "GL8aXW": "收藏 （{n}）",
-  "GSye7T": "閃電地址",
-  "GUlSVG": "認領你包含的 Snort nostr 地址",
-  "Gcn9NQ": "磁力鏈接",
-  "GpkNYn": "傳輸",
-  "GqQeu/": "閃電地址無效",
-  "GspYR7": "{n} 踩",
-  "Gxcr08": "廣播事件",
-  "H+vHiz": "十六進制密鑰...",
-  "H/oroO": "處理未知事件",
-  "H0JBH6": "登出",
-  "H0OG3T": "領袖信息",
-  "H1GTaC": "書籤清單",
-  "H6/kLh": "訂單已支付！",
-  "HAlOn1": "名稱",
-  "HFls6j": "名稱稍後可用",
-  "HOzFdo": "已静音",
-  "HWbkEK": "清除緩存並重新加載",
-  "HbefNb": "打開錢包",
-  "HhcAVH": "你不關注此用戶，點擊此處從<i>{link}</i>加載多媒體，或更新<a><i>你的選項</i></a>來自動加載來自任何人的多媒體。",
-  "HpAmQZ": "繼電器回顧",
-  "HqRNN8": "支持",
-  "HzSFeV": "到期時間戳記",
-  "I0tYZf": "建立或更新檔位",
-  "I1AoOu": "最近發佈 {time}",
-  "IEwZvs": "是否確定要取消置頂此條筆記？",
-  "IIOul1": "帳戶數據",
-  "IKKHqV": "關注",
-  "IOu4Xh": "你必須是 {tier} 訂閱者，才能訪問 {app} 面板",
-  "IVbtTS": "打閃所有 {n} 聰",
-  "IWz1ta": "自動翻譯",
-  "IcHcWj": "最後一次見到",
-  "Ig9/a1": "向 {name} 發送了 {n} 聰",
-  "IgsWFG": "未被你關注的任何人關注",
-  "IoQq+a": "仍然要加載點擊這裡",
-  "IvjoDS": "連接",
-  "Ix8l+B": "熱門筆記",
-  "J+dIsA": "訂閱",
-  "J1iLmb": "未允許通知",
-  "J2HeQ+": "使用逗号分隔单词，如 word1, word2, word3",
-  "J2Q92B": "表情符號套裝",
-  "J6N9xl": "Sign in with Android signer",
-  "JCIgkj": "用戶名",
-  "JGrt9q": "將聰發送到 {name}",
-  "JHEHCk": "打閃（{n}）",
-  "JIVWWA": "體育",
-  "JPFYIM": "沒有閃電地址",
-  "JSx7y9": "以 {price} 訂閱 {site_name} {plan} 並獲得以下獎勵",
-  "JeoS4y": "轉發",
-  "Jh5zKH": "搜尋繼電器清單",
-  "JjGgXI": "搜索用戶",
-  "JkLHGw": "網站",
-  "JmcxzF": "繼電器是您連接的伺服器，用於傳送和接收事件。以 4-8 個中繼為目標。",
-  "JymXbw": "私鑰",
-  "K1wl1/": "平均延遲時間：",
-  "K3r6DQ": "刪除",
-  "K7AkdL": "顯示",
-  "K9zklU": "外部內容 ID",
-  "KAhAcM": "輸入 LNDHub 配置",
-  "KGmQjH": "重點介紹",
-  "KJryGq": "即時聊天訊息",
-  "KQvWvD": "已刪除",
-  "KT9nox": "受保護事件",
-  "KahimY": "未知事件類型：{kind}",
-  "KipVeG": "將 Nostr 金鑰對應到基於 DNS 的網際網路識別碼",
-  "KtsyO0": "輸入 PIN 碼",
-  "KyRp/q": "錢包需求",
-  "LBAnc7": "以用戶身份查看？",
-  "LEmxc8": "Zap 目標",
-  "LKw/ue": "在此處查看代碼：{link}",
-  "LR1XjT": "PIN 碼太短了",
-  "LXxsbk": "匿名",
-  "LgbKvU": "評論",
-  "LhLvRx": "名稱長度必須介於 8 到 15 個字符之間",
-  "LmdPXO": "無法驗證 Nostr 地址",
-  "Lu5/Bj": "在 Zapstr 上打開",
-  "LuDBLj": "下載",
-  "Lw+I+J": "{n,plural,=0{{name}已打閃} other{{name}和{n}個其他用戶已打閃}}",
-  "LwYmVi": "此筆記上的打閃將被拆分給以下的用戶。",
-  "M3Oirc": "調試選單",
-  "M6C/px": "成爲領袖",
-  "MBAYRO": "每條消息的上下文菜單中顯示“複製 ID”和“複製事件 JSON”",
-  "MI2jkA": "無法使用：",
-  "MKDHEa": "加入房間",
-  "MP54GY": "錢包密碼",
-  "MWTx65": "默認頁面",
-  "MYBYdJ": "簡短文字說明",
-  "MYUBaG": "用戶端驗證",
-  "MiMipu": "設置為主要 Nostr 地址（NIP-05）",
-  "MkQ4FX": "代理標籤",
-  "Ml7+RS": "將此鏈接發送給你的好友，分享 Nostr 的魅力。",
-  "Mrpkot": "支付訂閱",
-  "MuVeKe": "購買 nostr 地址",
-  "Muhna4": "計數結果",
-  "MzRYWH": "購買 {item}",
-  "Mzizei": "Iris.to 帳戶",
-  "N2IrpM": "確認",
-  "NAidKb": "通知",
-  "NAuFNH": "你已經有此類型的訂閱，請續訂或支付",
-  "NDTFsp": "工作反饋",
-  "NepkXH": "無法用{amount}聰投票，請設置一個不同的默認打閃金額",
-  "NndBJE": "新用戶頁面",
-  "Nr9Yyx": "轉貼",
-  "NxzeNU": "死亡",
-  "O3Jz4E": "使用你的邀請碼賺取聰！",
-  "OEW7yJ": "打閃",
-  "OIqnZN": "事件的 OpenTimestamps 驗證",
-  "OJHKIL": "禮品包裝",
-  "OKhRC6": "分享",
-  "OLEm6z": "未知登錄錯誤",
-  "OQSOJF": "獲取一個免費的 Nostr 地址",
-  "OQXnew": "你的訂閱仍然活躍，你還不能續訂",
-  "ORGv1Q": "已創建",
-  "ORa81+": "合併請求",
-  "OoZgbB": "無法更新, 請重試。",
-  "OuProE": "長篇內容",
-  "OxPdQ0": "掃描 {date}",
-  "P2o+ZZ": "Nostr 地址無效",
-  "P61BTu": "複製事件 JSON",
-  "P7FD0F": "系統（默認）",
-  "P7nJT9": "今天總計（UTC）：{amount} 聰",
-  "P8JC58": "距離",
-  "PCSt5T": "選項",
-  "PXQ0z0": "接收至 <b>{wallet}</b>",
-  "PamNxw": "未知文件標頭：{name}",
-  "Pe0ogR": "主題",
-  "PrsIg7": "回應將在每個頁面上顯示，如果禁用則不會顯示任何回應",
-  "QDFTjG": "{n} 中繼器",
-  "QJfhKt": "私鑰就像密碼一樣，但無法重設。請小心保管，切勿給任何人看。一旦有人擁有你的私鑰，他們將永遠擁有你帳戶的掌控權。",
-  "QWhotP": "打閃池只有當你使用支持的錢包（WebLN、LNC、LNDHub 或 Nostr Wallet Connect）時才能啟用",
-  "QpaLA3": "頻道訊息",
-  "Qxv0B2": "目前你的打閃池中有 {number} 聰。",
-  "Qy6/Ft": "私人直接訊息",
-  "R/6nsx": "訂閱",
-  "R81upa": "你關注的用戶",
-  "RDha9y": "服務工作程式未運行",
-  "RRz1cA": "儲存庫狀態公告",
-  "RSr2uB": "用戶名只能含有小寫字母和數字",
-  "RahCRH": "已過期",
-  "RefZpK": "人像短片活動",
-  "RfhLwC": "作者：{author}",
-  "RhDAoS": "是否確定要刪除 {id}",
-  "RmxSZo": "資料販賣機",
-  "RoOyAh": "中繼器",
-  "Rs4kCE": "收藏",
-  "S/NV2G": "載入注意事項： {id}",
-  "SFuk1v": "權限",
-  "SLZGPn": "輸入一個 PIN 碼來加密你的私鑰，每次開啟 {site} 時都必須輸入此 PIN 碼。",
-  "SMO+on": "將打閃發送到 {name}",
-  "SOqbe9": "更新閃電地址",
-  "SP0+yi": "購買訂閱",
-  "SW3TFA": "您追隨的人所使用的熱門繼電器。",
-  "SYQtZ7": "閃電地址代理",
-  "Sd0PKc": "繼電器組",
-  "SfwSIm": "問題追蹤",
-  "ShdEie": "全標已讀",
-  "Sjo1P4": "自定義",
-  "SmuYUd": "我們應該怎麼樣稱呼你？",
-  "Ss0sWu": "立即支付",
-  "SsUQnC": "應用程式特定資料",
-  "StKzTE": "作者已將此筆記標記為<i>敏感主題</i>",
-  "T83nqf": "鄰近您地理位置的繼電器。",
-  "TDR5ge": "帖子中的媒體將自動顯示給選定的人，否則只會顯示鏈接",
-  "TGc5nI": "處理者資訊",
-  "TH1fFo": "Telegram",
-  "TJo5E6": "預覽",
-  "TOG64f": "使用本地中繼",
-  "TP/cMX": "已結束",
-  "TaeBqw": "通過 Nostr 擴展程式登錄",
-  "TdTXXf": "瞭解更多",
-  "TdtZQ5": "加密貨幣",
-  "Tdv6NY": "興趣集",
-  "TgDKhI": "日曆活動",
-  "TpgeGw": "十六進制鹽..",
-  "Tpy00S": "用戶",
-  "TvKqBp": "已點贊",
-  "TwyMau": "帳戶",
-  "U1aPPi": "停止收聽",
-  "U30H69": "社群定義",
-  "UJTWqI": "從我的中繼器中移除",
-  "ULXFfP": "收款",
-  "UNjfWJ": "检查从中继收到的所有事件签名",
-  "UT7Nkj": "新聊天",
-  "UUPFlt": "用戶必須接受內容警告才能顯示你的筆記的內容。",
-  "UaCh1c": "新增伺服器",
-  "Ub+AGc": "登錄",
-  "Up5U7K": "屏蔽",
-  "Ups2/p": "你的申請正在處理中",
-  "UrKTqQ": "你有一個活躍的 iris.to 帳戶",
-  "UsCzPc": "與朋友分享個人化邀請函！",
-  "UxgyeY": "你的邀請代碼是 {code}",
-  "V20Og0": "標籤",
-  "VOjC1i": "選擇你要將附件上傳到哪個上傳服務",
-  "VR5eHw": "公鑰（npub/nprofile）",
-  "VcwrfF": "好的",
-  "VfhYxG": "要查看全部更改列表，請在此查看更新日誌：{here}",
-  "VlJkSk": "{n} 已静音",
-  "VnXp8Z": "頭像",
-  "W1yoZY": "看起來你沒有任何訂閱，你可以獲取一個{link}",
-  "W2PiAr": "{n} 已屏蔽",
-  "W4SaxY": "當地",
-  "W9355R": "解除静音",
-  "WeLEuL": "來自伺服器",
-  "Wj5TbN": "問題",
-  "WmZhfL": "自動將筆記翻譯成你的本地語言",
-  "WvGmZT": "npub / nprofile / nostr 地址",
-  "X6tipZ": "使用密鑰登錄",
-  "X7xU8J": "nsec、nsec、NIP-05、十六進制、助記詞句",
-  "XECMfW": "傳送使用資料",
-  "XICsE8": "文件主機",
-  "XPB8VV": "Alby 錢包連接",
-  "XQiFEl": "關注中繼器健康",
-  "XSdWHA": "兌現",
-  "XXm7jJ": "熱門主題標籤",
-  "XgWvGA": "回應",
-  "Xnimz0": "從 <b>{wallet}</b> 發送",
-  "Xopqkl": "你的默認打閃金額是 {number} 聰，示例值是以此計算的。",
-  "YDMrKK": "使用者",
-  "YDURw6": "服務 URL",
-  "YH2RKk": "受歡迎的媒體伺服器。",
-  "YQZY/S": "看起來您追隨的人還不夠多，請瀏覽 {newUsersPage} 發掘要追隨的人！",
-  "YR2I9M": "沒有密鑰，就沒有 {app}，如果不備份，就無法重置。這只需要一分鐘。",
-  "YU7ZYp": "公開聊天",
-  "YXA3AH": "启用回應",
-  "Yf3DwC": "連接錢包以發送即時付款",
-  "YuoEb9": "嘗試另一個繼電器",
-  "Z48UEo": "頻道元資料",
-  "Z4BMCZ": "輸入配對詞句",
-  "Z7kkeJ": "委託活動簽署",
-  "ZFe9tl": "撰寫筆記",
-  "ZKORll": "立即激活",
-  "ZLmyG9": "貢獻者",
-  "ZS+jRE": "將打閃拆分發送到",
-  "Zff6lu": "用戶名 iris.to/<b>{name}</b> 已為你保留！",
-  "ZlIh4/": "加密的直接訊息",
-  "ZlmK/p": "{name} 邀請你訪問 {app}",
-  "a1x4gD": "媒體伺服器儲存你可以在筆記中以圖像和視訊形式共享的媒體",
-  "a5UPxh": "資助提供 NIP-05 驗證服務的開發人員和平台",
-  "a7TDNm": "筆記將實時流式傳輸到全球和帖子選項卡",
-  "aHje0o": "名稱",
-  "aMaLBK": "支持的擴展",
-  "aRex7h": "支付 {amount} 聰，付費 {fee} 聰",
-  "aSGz4J": "使用 Lightning Node Connect 連接你自己的 LND 節點",
-  "aWpBzj": "顯示更多",
-  "abbGKq": "{n} 公里",
-  "ak3MTf": "邀請朋友",
-  "b12Goz": "助記詞",
-  "b5vAk0": "你的代號將像閃電地址一樣重定向至你所選的 LNURL 或閃電地址",
-  "bF1MYT": "你已成爲社區領袖，並可從邀請用戶的訂閱中賺取<b>{percent}</b>！",
-  "bG00/W": "服務工作程式正在運行",
-  "bJ+wrA": "計算修剪列表",
-  "bLZL5a": "獲取地址",
-  "bMphls": "已使用只讀權限登錄",
-  "bQdA2k": "敏感內容",
-  "bep9C3": "公鑰",
-  "bfvyfs": "匿名",
-  "bxv59V": "剛剛",
-  "c+1p0i": "親切的靜音套裝",
-  "c+JYNI": "不，謝謝",
-  "c2T+1B": "重定向",
-  "c35bj2": "如果你對 NIP-05 訂單有任何疑問，請私信 {link}",
-  "c3LlRO": "{n}KiB",
-  "c3g2hL": "再次廣播",
-  "cFbU1B": "使用 Alby？前往 {link} 來配置你的 NWC！",
-  "cG/bKQ": "原生 nostr 錢包連接",
-  "cHCwbF": "攝影",
-  "cKbMRX": "直接訊息",
-  "cPIKU2": "關注",
-  "cQfLWb": "URL..",
-  "cVcgLJ": "媒體伺服器",
-  "cWx9t8": "全部靜音",
-  "cg1VJ2": "連接錢包",
-  "cnwHgH": "OpenTimestamps",
-  "cuP16y": "多帳戶支持",
-  "cuV2gK": "名稱已被註冊",
-  "cw1Ftc": "現場活動",
-  "cyR7Kh": "返回",
-  "d+6YsV": "應靜音的列表：",
-  "d0qim7": "WoT 過濾器",
-  "d2ebEu": "未訂閱推送",
-  "d7d0/x": "閃電地址",
-  "dK2CcV": "公鑰就像你的用戶名，你可以與任何人分享。",
-  "dOQCL8": "顯示名稱",
-  "dZZIGe": "模組化文章標題",
-  "ddd3JX": "熱門標籤",
-  "deEeEI": "註冊",
-  "djLctd": "聰金額",
-  "dmcsBA": "分類列表",
-  "dmsiLv": "已為 {site} 開發人員配置了 {n} 的默認打閃池分割，你隨時可以在 {link} 中禁用它。",
-  "e5x8FT": "類別",
-  "e61Jf3": "即將上線",
-  "e7VmYP": "輸入 PIN 碼解鎖你的私鑰",
-  "e7qqly": "全標已讀",
-  "eF0Re7": "使用 Nostr 簽名擴展登錄",
-  "eHAneD": "回應表情符號",
-  "eJj8HD": "獲取驗證",
-  "eSzf2G": "一個 {nIn} 聰的打閃將分配 {nOut} 聰給打閃池。",
-  "eW/Bj9": "飼料",
-  "eXT2QQ": "羣聊",
-  "eZtOxB": "網頁瀏覽器的 window.nostr 功能",
-  "egib+2": "{n,plural,=1{& {n} 个其他} other{& {n} 个其他}}",
-  "ejEGdx": "主頁",
-  "eoV49s": "貧窮",
-  "f1OxTe": "社區領袖是指通過活躍於當地社區並幫助新用戶加入而發展 nostr 生態系統的個人。任何人都可以成爲社區領袖，但目前擁有這一榮譽稱號的人寥寥無幾。",
-  "f2CAxA": "轉儲",
-  "fBI91o": "打閃",
-  "fBlba3": "感謝你使用 {site}，請考慮捐贈。",
-  "fLIvbC": "Snort 是一個開放代碼項目，由熱心人士利用業餘時間創建，我們非常歡迎你的捐贈。",
-  "fOksnD": "無法投票，因為 LNURL 服務不支持打閃",
-  "fQN+tq": "顯示含有內容警告標籤的帖子",
-  "fWZYP5": "置頂",
-  "fX5RYm": "挑選幾個感興趣的主題",
-  "filwqD": "讀",
-  "fjAcWo": "禮品包裝",
-  "flnGvv": "你在想些什麼？",
-  "fqwcJ1": "鏈上捐款",
-  "fr+XYA": "Lightning Pub RPC",
-  "fsB/4p": "已保存",
-  "fucxlm": "附加媒體",
-  "furjvW": "觀看直播",
-  "g5pX+a": "關於",
-  "g985Wp": "發送投票失敗",
-  "gDzDRs": "回應筆記時發送的表情符號",
-  "gXgY3+": "並非所有客戶端都支持此功能",
-  "gczcC5": "訂閱",
-  "geppt8": "{count} ({count2} in memory)",
-  "gjBiyj": "加載中...",
-  "gkMmvC": "Android Signer 應用程式",
-  "gl1NeW": "清單",
-  "go2/QF": "使用者伺服器清單",
-  "grQ+mI": "工作量證明",
-  "gtNjNP": "基本通訊協定流程說明",
-  "h7jvCs": "{site} 一起使用更好玩！",
-  "h8XMJL": "徽章",
-  "h9M0rW": "使用者元資料",
-  "hF6IN2": "修剪關注列表",
-  "hMQmIw": "同步帳戶",
-  "hMzcSq": "消息",
-  "hRTfTR": "PRO",
-  "hY4lzx": "支持",
-  "hYOE+U": "邀請",
-  "hicxcO": "顯示回覆",
-  "hmZ3Bz": "多媒體",
-  "hniz8Z": "這裡",
-  "hv/eRj": "封鎖的繼電器清單",
-  "hvFRBo": "互動",
-  "i/dBAR": "打閃池",
-  "i5gBFz": "你已發送和收到的付款將顯示在此處。",
-  "iCqGww": "回應（{n}）",
-  "iEoXYx": "DeepL 翻譯",
-  "iGT1eE": "防止虛假帳戶冒充你",
-  "iHN12u": "管理員",
-  "iICVoL": "{x} 個關注 ({y} 個重複)",
-  "iNWbVV": "代號",
-  "iXPL0Z": "無法在不安全的連接上使用私鑰登錄，請使用 nostr 密鑰管理器擴展程序",
-  "iYc3Ld": "付款",
-  "icCxlA": "新使用者頁面",
-  "ieGrWo": "關注",
-  "igUUst": "群聊主題回覆",
-  "ipHVx5": "生成發票",
-  "itPgxd": "個人檔案",
-  "izWS4J": "取消關注",
-  "j9xbzF": "已备份",
-  "jA3OE/": "{n,plural,=1{{n} 聰} other{{n} 聰}}",
-  "jAmfGl": "你的 {site_name} 訂閱已過期了",
-  "jHa/ko": "清理你的訂閱",
-  "jMzO1S": "內部錯誤：{msg}",
-  "jiAVXu": "視訊活動",
-  "jvo0vs": "保存",
-  "jzgQ2z": "{n} 個回應",
-  "k0kCJp": "立即申請",
-  "k2veDA": "寫",
-  "k7sKNy": "我們自己的 NIP-05 驗證服務，幫助支持本站的發展，並在我們的網站上獲得閃亮的特殊徽章。",
-  "k9SQm1": "您之前連接過且看起來可靠的繼電器。",
-  "kEZUR8": "註冊一個 Iris 用戶名",
-  "kJYo0u": "{n,plural,=0{{name}已轉發} other{{name}和{n}個其他用戶已轉發}}",
-  "kKC9ya": "錢包資訊",
-  "kNd2FL": "潮汐登錄",
-  "kQAf2d": "選擇",
-  "kaaf1E": "現在",
-  "kc79d3": "话题",
-  "klCm96": "社區職位核准",
-  "kqPQJD": "設置打閃池",
-  "kuPHYE": "{n,plural,=0{{name}已點贊} other{{name}和{n}個其他用戶已點贊}}",
-  "l+ikU1": "{plan}提供",
-  "l3H1EK": "邀請你的好友",
-  "l3nTjd": "從記憶種子詞組衍生出基本金鑰",
-  "lCILNz": "立即購買",
-  "lD3+8a": "付款",
-  "lEnclp": "我的事件:  {n}",
-  "lPWASz": "Snort nostr 地址",
-  "lTbT3s": "錢包密碼",
-  "lbr3Lq": "複製連結",
-  "lfOesV": "非打閃",
-  "lgg1KN": "帳戶頁面",
-  "ll3xBp": "圖片代理服務",
-  "lnaT9F": "關注 {n}",
-  "lsNFM1": "點擊以從 {link} 加載內容",
-  "lvlPhZ": "支付發票",
-  "m/59y2": "Zap 請求",
-  "m6h2Eg": "處理者建議",
-  "mCEKiZ": "{n} 音符已被靜音",
-  "mErPop": "看起來你還沒有 nostr 地址，查看 {link} 以購買！",
-  "mFtdYh": "{type} 工人繼電器",
-  "mKAr6h": "全部關注",
-  "mKh2HS": "文件上傳服務",
-  "mKhgP9": "{n,plural,=0{} =1{已打閃} other{已打閃}}",
-  "mOFG3K": "開始",
-  "mfe8RW": "選項：{n}",
-  "mmPSWH": "僅讀",
-  "n1Whvj": "切換",
-  "n5l7tP": "基於時間的日曆事件",
-  "n8k1SG": "{n}MiB",
-  "nD4frR": "出價確認",
-  "nDejmx": "解除屏蔽",
-  "nGBrvw": "收藏",
-  "nGGDsi": "以允許通知",
-  "nIchMQ": "正在搜索帳戶活動（{progress}）",
-  "nPHrqp": "Coinjoin Pool",
-  "nUT0Lv": "工具",
-  "nWQFic": "續訂",
-  "nihgfo": "聆聽本文",
-  "nwZXeh": "{n} 已屏蔽",
-  "o/gK53": "面板",
-  "o7e+nJ": "{n} 個粉絲",
-  "oJ+JJN": "什麼都沒找到 :/",
-  "odFwjL": "僅關注",
-  "ojzbwv": "嘿，看起來你還沒有 nostr 地址，你應該去獲取一個！查看 {link}",
-  "ozZ2Cj": "徽章獎",
-  "p4N05H": "上傳",
-  "p9Ps2l": "{x}/{y} 有中繼器 ({percent})",
-  "pEEBFk": "可靠的繼電器",
-  "pI+77w": "可從 Snort 中繼器下載備份",
-  "pRess9": "打閃池",
-  "plOM0t": "自訂表情符號",
-  "plg2Ua": "頻道靜音使用者",
-  "puLNUJ": "置頂",
-  "pyjJ5f": "Nostr Marketplace (適用於彈性市場)",
-  "pzTOmv": "粉絲",
-  "q3OuMw": "Torrent 評論",
-  "qAY40L": "基於日期的日曆事件",
-  "qBYNMb": "群組主題回覆",
-  "qD9EUF": "給你的 Snort nostr 地址建立電子郵件 <> 私信橋",
-  "qDwvZ4": "未知錯誤",
-  "qFIVx4": "個人資料徽章",
-  "qMePPG": "筆記",
-  "qMx1sA": "默認打閃金額",
-  "qUJTsT": "已屏蔽",
-  "qXCbgZ": "解鎖",
-  "qZsKBR": "更新 {tier}",
-  "qcJFEJ": "已停用通知 API",
-  "qdGuQo": "你的私鑰是（不要與任何人分享）",
-  "qfmMQh": "该筆記已被静音",
-  "qkvYUb": "添加至個人檔案",
-  "qmJ8kD": "翻譯失敗",
-  "qtWLmt": "點贊",
-  "qyJtWy": "顯示更少",
-  "qydxOd": "科學",
-  "qz9fty": "PIN 碼不正確",
-  "r3C4x/": "軟件",
-  "r5srDR": "輸入錢包密碼",
-  "rAQG0X": "中繼清單元資料",
-  "rIsVe+": "公開聊天清單",
-  "rMgF34": "立即備份",
-  "rRRXtB": "電擊",
-  "rT14Ow": "添加中繼器",
-  "reFEEC": "報告",
-  "rfuMjE": "（默認）",
-  "rkM7l8": "加密直接訊息",
-  "rmdsT4": "{n}天",
-  "rn52n9": "公開聊天頻道",
-  "rx1i0i": "短鏈接",
-  "sFUkSN": "書籤集",
-  "sKDn4e": "顯示徽章",
-  "sUNhQE": "用戶",
-  "sZQzjQ": "解析打閃拆分失敗了：{input}",
-  "saInmO": "顯示的中繼名稱與輸入的完整 URL 不相同。",
-  "saorw+": "事件刪除請求",
-  "sfL/O+": "已靜音筆記將不顯示",
-  "t79a6U": "連接成功：",
-  "tDDiRL": "興趣清單",
-  "tFpT/O": "釋放工件集",
-  "tO1oq9": "視訊活動",
-  "tOdNiY": "深色",
-  "tRGdV1": "版本化加密",
-  "tU0ADf": "未知 NIP-{x}",
-  "tVuVg9": "視訊觀賞活動",
-  "tf1lIh": "免費",
-  "th5lxp": "將筆記發送到你的寫入中繼器的子集",
-  "thnRpU": "驗證 NIP-05 可以幫助：",
-  "tj6kdX": "{sign} {amount} 聰",
-  "tjpYlr": "中繼器指標",
-  "ttxS0b": "支持者徽章",
-  "tzMNF3": "狀態",
-  "u/vOPu": "已支付",
-  "u4I8q8": "針腳清單",
-  "u81G9+": "正常運行時間",
-  "u9NoC1": "名稱必須少於 {limit} 個字符",
-  "uCk8r+": "已經有帳戶？",
-  "uD7Els": "檔案中的外部身分",
-  "uJaMkO": "接收 DM 的中繼清單",
-  "uSV4Ti": "轉發需要人工確認",
-  "uc0din": "將聰拆分發送到",
-  "ufvXH1": "發現 {n} 個事件",
-  "uhu5aG": "公開",
-  "un1nGw": "{n} 條筆記",
-  "usAvMr": "編輯個人檔案",
-  "v8lolG": "開始聊天",
-  "vB3oQ/": "必須是一個聯繫人列表或公鑰列表",
-  "vBsZhD": "社群清單",
-  "vN5UH8": "頭像",
-  "vU/Q5i": "該工具將搜索所有關注最近發佈的事件，並刪除6個月內未發佈事件的關注。",
-  "vZ4quW": "NIP-05 是一種基於 DNS 的驗證規範，可幫助驗證你是真實用戶。",
-  "vhlWFg": "投票選項",
-  "vlbWtt": "獲取免費的",
-  "voxBKC": "好友關注",
-  "vxwnbh": "適用於所有發佈事件的工作量",
-  "w1Fanr": "商業",
-  "w6qrwX": "敏感內容",
-  "wEQDC6": "編輯",
-  "wOyDTB": "檔案儲存伺服器清單",
-  "wSZR47": "提交",
-  "wc9st7": "媒體附件",
-  "whSrs+": "Nostr 公開聊天",
-  "wih7iJ": "名稱已被屏蔽",
-  "wlWMuh": "補丁",
-  "wofVHy": "審核",
-  "wqyN/i": "在 {link} 瞭解有關 {service} 的更多信息",
-  "wtLjP6": "複製ID",
-  "x+3fl6": "我的繼電器",
-  "x/Fx2P": "將部份打閃分配到資金庫來資助你使用的服務！",
-  "x82IOl": "静音",
-  "xEjBS7": "爲你推薦",
-  "xIcAOU": "根據 {type} 的投票",
-  "xIoGG9": "前往",
-  "xPCyu+": "nostr：URI 方案",
-  "xaj9Ba": "供應方",
-  "xbVgIm": "自動加載媒體",
-  "xhQMeQ": "有效期",
-  "xl4s/X": "附加條款：",
-  "xmcVZ0": "搜索",
-  "xybOUv": "粉絲",
-  "y/bmsG": "允許",
-  "y1Z3or": "語言",
-  "yAztTU": "{n} e聰",
-  "yCLnBC": "LNURL 或閃電地址",
-  "yLzgxH": "熱門繼電器",
-  "yeX8yA": "原生應用程式",
-  "z3UjXR": "除錯",
-  "z3Ukvq": "草擬長篇內容",
-  "zCb8fX": "權重",
-  "zFegDD": "聯絡",
-  "zINlao": "所有者",
-  "zQvVDJ": "全部",
-  "zcaOTs": "以聰為單位的打閃金額",
-  "zi9MdS": "國際象棋 (PGN)",
-  "zm6qS1": "{n} 分鐘閱讀時間",
-  "zonsdq": "加載 LNURL 服務失敗",
-  "zvCDao": "自動顯示最新筆記",
-  "zx0myy": "參與者"
+  "+D82kt": [
+    {
+      "type": 0,
+      "value": "是否確定要轉發："
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "+PzQ9Y": [
+    {
+      "type": 0,
+      "value": "立即支出"
+    }
+  ],
+  "+QM0PJ": [
+    {
+      "type": 0,
+      "value": "將你的個人檔案的所有事件同步至本機快取"
+    }
+  ],
+  "+QMdsy": [
+    {
+      "type": 0,
+      "value": "接力統計"
+    }
+  ],
+  "+UjDmN": [
+    {
+      "type": 0,
+      "value": "已使用寫入權限登錄"
+    }
+  ],
+  "+Vxixo": [
+    {
+      "type": 0,
+      "value": "祕密羣聊"
+    }
+  ],
+  "+aZY2h": [
+    {
+      "type": 0,
+      "value": "打閃種類"
+    }
+  ],
+  "+tShPg": [
+    {
+      "type": 0,
+      "value": "已關注"
+    }
+  ],
+  "+vA//S": [
+    {
+      "type": 0,
+      "value": "登錄"
+    }
+  ],
+  "+vIQlC": [
+    {
+      "type": 0,
+      "value": "請確保將以下密碼妥善保存以便將來管理你的代號"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "連接"
+    }
+  ],
+  "+vj0U3": [
+    {
+      "type": 0,
+      "value": "編輯"
+    }
+  ],
+  "+xliwN": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " 轉發了"
+    }
+  ],
+  "/B8zwF": [
+    {
+      "type": 0,
+      "value": "如你所願的空間 😌"
+    }
+  ],
+  "/GCoTA": [
+    {
+      "type": 0,
+      "value": "清除"
+    }
+  ],
+  "/JE/X+": [
+    {
+      "type": 0,
+      "value": "帳戶支持"
+    }
+  ],
+  "/T7HId": [
+    {
+      "type": 0,
+      "value": "HTTP 檔案儲存整合"
+    }
+  ],
+  "/Xf4UW": [
+    {
+      "type": 0,
+      "value": "傳送匿名使用資料"
+    }
+  ],
+  "/b1IHW": [
+    {
+      "type": 0,
+      "value": "群聊訊息"
+    }
+  ],
+  "/d6vEc": [
+    {
+      "type": 0,
+      "value": "使你的帳號可更方便地被找到及分享"
+    }
+  ],
+  "/ioUrF": [
+    {
+      "type": 0,
+      "value": "從檔案"
+    }
+  ],
+  "/n5KSF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 毫秒"
+    }
+  ],
+  "00LcfG": [
+    {
+      "type": 0,
+      "value": "加載更多"
+    }
+  ],
+  "01iNut": [
+    {
+      "type": 0,
+      "value": "Nostr 地址不屬於你"
+    }
+  ],
+  "08zn6O": [
+    {
+      "type": 0,
+      "value": "導出密鑰"
+    }
+  ],
+  "0Azlrb": [
+    {
+      "type": 0,
+      "value": "管理"
+    }
+  ],
+  "0BUTMv": [
+    {
+      "type": 0,
+      "value": "搜索..."
+    }
+  ],
+  "0MndVW": [
+    {
+      "type": 0,
+      "value": "通用 LNDHub 錢包（BTCPayServer / Alby / LNBits）"
+    }
+  ],
+  "0jOEtS": [
+    {
+      "type": 0,
+      "value": "LNURL 無效"
+    }
+  ],
+  "0kOBMu": [
+    {
+      "type": 0,
+      "value": "處理提及"
+    }
+  ],
+  "0mch2Y": [
+    {
+      "type": 0,
+      "value": "名稱中有禁用字符"
+    }
+  ],
+  "0siT4z": [
+    {
+      "type": 0,
+      "value": "政治"
+    }
+  ],
+  "0uoY11": [
+    {
+      "type": 0,
+      "value": "顯示狀態"
+    }
+  ],
+  "0yO7wF": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 秒"
+    }
+  ],
+  "0zASjL": [
+    {
+      "type": 0,
+      "value": "開始"
+    }
+  ],
+  "1/BFEj": [
+    {
+      "type": 0,
+      "value": "git 的東西"
+    }
+  ],
+  "1Mo59U": [
+    {
+      "type": 0,
+      "value": "是否確定要從收藏中移除此條筆記？"
+    }
+  ],
+  "1R43+L": [
+    {
+      "type": 0,
+      "value": "輸入 Nostr Wallet Connect 配置"
+    }
+  ],
+  "1UWegE": [
+    {
+      "type": 0,
+      "value": "請務必備份你的密鑰！"
+    }
+  ],
+  "1c4YST": [
+    {
+      "type": 0,
+      "value": "已連接到："
+    },
+    {
+      "type": 1,
+      "value": "node"
+    },
+    {
+      "type": 0,
+      "value": " 🎉"
+    }
+  ],
+  "1nYUGC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 個關注"
+    }
+  ],
+  "1o2BgB": [
+    {
+      "type": 0,
+      "value": "檢查簽名"
+    }
+  ],
+  "1ozeyg": [
+    {
+      "type": 0,
+      "value": "自然"
+    }
+  ],
+  "1udzha": [
+    {
+      "type": 0,
+      "value": "對話"
+    }
+  ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "添加"
+    }
+  ],
+  "25V4l1": [
+    {
+      "type": 0,
+      "value": "橫幅"
+    }
+  ],
+  "25WwxF": [
+    {
+      "type": 0,
+      "value": "沒有帳戶？"
+    }
+  ],
+  "28oKbu": [
+    {
+      "type": 0,
+      "value": "管理的社群"
+    }
+  ],
+  "29sHFE": [
+    {
+      "type": 0,
+      "value": "錢包連線"
+    }
+  ],
+  "2BBGxX": [
+    {
+      "type": 0,
+      "value": "文字事件中的主題標籤"
+    }
+  ],
+  "2HIqeO": [
+    {
+      "type": 0,
+      "value": "使用者表情符號清單"
+    }
+  ],
+  "2IFGap": [
+    {
+      "type": 0,
+      "value": "捐贈"
+    }
+  ],
+  "2LbrkB": [
+    {
+      "type": 0,
+      "value": "輸入密碼"
+    }
+  ],
+  "2O2sfp": [
+    {
+      "type": 0,
+      "value": "完成"
+    }
+  ],
+  "2Qsf9/": [
+    {
+      "type": 0,
+      "value": "通用清單"
+    }
+  ],
+  "2a2YiP": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 個收藏"
+    }
+  ],
+  "2k0Cv+": [
+    {
+      "type": 0,
+      "value": "踩 （"
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "）"
+    }
+  ],
+  "2mcwT8": [
+    {
+      "type": 0,
+      "value": "新筆記"
+    }
+  ],
+  "2oCF7O": [
+    {
+      "type": 0,
+      "value": "被好友的好友關注"
+    }
+  ],
+  "2raFAu": [
+    {
+      "type": 0,
+      "value": "應用程式特定資料"
+    }
+  ],
+  "2ukA4d": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "小時"
+    }
+  ],
+  "2z7Kky": [
+    {
+      "type": 0,
+      "value": "最新文章"
+    }
+  ],
+  "3/onCd": [
+    {
+      "type": 0,
+      "value": "回覆"
+    }
+  ],
+  "39AHJm": [
+    {
+      "type": 0,
+      "value": "註冊"
+    }
+  ],
+  "3GWu6/": [
+    {
+      "type": 0,
+      "value": "使用者狀態"
+    }
+  ],
+  "3KNMbJ": [
+    {
+      "type": 0,
+      "value": "文章"
+    }
+  ],
+  "3MKdAw": [
+    {
+      "type": 0,
+      "value": "儲存在媒體伺服器上的 Blob"
+    }
+  ],
+  "3QwfJR": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    }
+  ],
+  "3adEeb": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 觀眾"
+    }
+  ],
+  "3cc4Ct": [
+    {
+      "type": 0,
+      "value": "淺色"
+    }
+  ],
+  "3gOsZq": [
+    {
+      "type": 0,
+      "value": "翻譯人員"
+    }
+  ],
+  "3kbIhS": [
+    {
+      "type": 0,
+      "value": "無題"
+    }
+  ],
+  "3qnJlS": [
+    {
+      "type": 0,
+      "value": "你正在用"
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": "聰投票"
+    }
+  ],
+  "3t3kok": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": "條新筆記"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": "條新筆記"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "3tVy+Z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 個粉絲"
+    }
+  ],
+  "3yk8fB": [
+    {
+      "type": 0,
+      "value": "錢包"
+    }
+  ],
+  "40VR6s": [
+    {
+      "type": 0,
+      "value": "Nostr Connect"
+    }
+  ],
+  "41BSaT": [
+    {
+      "type": 0,
+      "value": "活動總數："
+    }
+  ],
+  "450Fty": [
+    {
+      "type": 0,
+      "value": "無"
+    }
+  ],
+  "47E53q": [
+    {
+      "type": 0,
+      "value": "維基"
+    }
+  ],
+  "47FYwb": [
+    {
+      "type": 0,
+      "value": "取消"
+    }
+  ],
+  "48zn4v": [
+    {
+      "type": 0,
+      "value": "出價"
+    }
+  ],
+  "4IPzdn": [
+    {
+      "type": 0,
+      "value": "主要開發人員"
+    }
+  ],
+  "4L2vUY": [
+    {
+      "type": 0,
+      "value": "你的新 NIP-05 代號是："
+    }
+  ],
+  "4MjsHk": [
+    {
+      "type": 0,
+      "value": "生活"
+    }
+  ],
+  "4OB335": [
+    {
+      "type": 0,
+      "value": "踩"
+    }
+  ],
+  "4P/kKm": [
+    {
+      "type": 0,
+      "value": "私密金鑰加密"
+    }
+  ],
+  "4Vmpt4": [
+    {
+      "type": 0,
+      "value": "Nostr Plebs 是該領域首批 NIP-05 供應商之一，以合理的價格提供大量域名"
+    }
+  ],
+  "4Z3t5i": [
+    {
+      "type": 0,
+      "value": "使用 imgproxy 壓縮圖片"
+    }
+  ],
+  "4emo2p": [
+    {
+      "type": 0,
+      "value": "缺少中繼器"
+    }
+  ],
+  "4rYCjn": [
+    {
+      "type": 0,
+      "value": "自用筆記"
+    }
+  ],
+  "4wgYpI": [
+    {
+      "type": 0,
+      "value": "推薦的應用處理程式"
+    }
+  ],
+  "5BVs2e": [
+    {
+      "type": 0,
+      "value": "打閃"
+    }
+  ],
+  "5CB6zB": [
+    {
+      "type": 0,
+      "value": "打閃拆分"
+    }
+  ],
+  "5PRWs7": [
+    {
+      "type": 0,
+      "value": "已啟用通知 API"
+    }
+  ],
+  "5dfmvv": [
+    {
+      "type": 0,
+      "value": "Zap 目標"
+    }
+  ],
+  "5oTnfy": [
+    {
+      "type": 0,
+      "value": "購買代號"
+    }
+  ],
+  "5qEWCr": [
+    {
+      "type": 0,
+      "value": "檔案元資料"
+    }
+  ],
+  "5u6iEc": [
+    {
+      "type": 0,
+      "value": "轉移到公鑰"
+    }
+  ],
+  "5vMmmR": [
+    {
+      "type": 0,
+      "value": "在 nostr 上，用戶名不是獨特的。Nostr 地址是你的獨特的人類可讀的地址。"
+    }
+  ],
+  "5ykRmX": [
+    {
+      "type": 0,
+      "value": "發送打閃"
+    }
+  ],
+  "6/hB3S": [
+    {
+      "type": 0,
+      "value": "觀看重播"
+    }
+  ],
+  "60kEE3": [
+    {
+      "type": 0,
+      "value": "靜音清單"
+    }
+  ],
+  "62nsdy": [
+    {
+      "type": 0,
+      "value": "重試"
+    }
+  ],
+  "634VVz": [
+    {
+      "type": 0,
+      "value": "連線失敗："
+    }
+  ],
+  "6559gb": [
+    {
+      "type": 0,
+      "value": "新關注列表長度 "
+    },
+    {
+      "type": 1,
+      "value": "length"
+    }
+  ],
+  "65BmHb": [
+    {
+      "type": 0,
+      "value": "從 "
+    },
+    {
+      "type": 1,
+      "value": "host"
+    },
+    {
+      "type": 0,
+      "value": " 代理圖像失敗，點擊此處直接加載"
+    }
+  ],
+  "6D4Hhn": [
+    {
+      "type": 0,
+      "value": "推薦繼電器"
+    }
+  ],
+  "6KGebm": [
+    {
+      "type": 0,
+      "value": "密封"
+    }
+  ],
+  "6OSOXl": [
+    {
+      "type": 0,
+      "value": "原因："
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reason"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "6WWD34": [
+    {
+      "type": 0,
+      "value": "尋找 "
+    },
+    {
+      "type": 1,
+      "value": "noteId"
+    }
+  ],
+  "6bgpn+": [
+    {
+      "type": 0,
+      "value": "並非所有客戶端都支持，就算已配置了打閃拆分，你仍然可能會收到一些打閃"
+    }
+  ],
+  "6ewQqw": [
+    {
+      "type": 0,
+      "value": "贊（"
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "）"
+    }
+  ],
+  "6mr8WU": [
+    {
+      "type": 0,
+      "value": "被這些人關注"
+    }
+  ],
+  "6pdxsi": [
+    {
+      "type": 0,
+      "value": "額外的元資料欄位和標籤"
+    }
+  ],
+  "6uMqL1": [
+    {
+      "type": 0,
+      "value": "未付款"
+    }
+  ],
+  "6xNr8c": [
+    {
+      "type": 0,
+      "value": "切換帳戶"
+    }
+  ],
+  "6xap9L": [
+    {
+      "type": 0,
+      "value": "良好"
+    }
+  ],
+  "7+Domh": [
+    {
+      "type": 0,
+      "value": "筆記"
+    }
+  ],
+  "712i26": [
+    {
+      "type": 0,
+      "value": "代理使用 HODL 發票轉發付款，從而隱藏了你的節點的公鑰"
+    }
+  ],
+  "753yX5": [
+    {
+      "type": 0,
+      "value": "標籤"
+    }
+  ],
+  "769A8p": [
+    {
+      "type": 0,
+      "value": "維基文章"
+    }
+  ],
+  "77nkEO": [
+    {
+      "type": 0,
+      "value": "中繼資訊文件"
+    }
+  ],
+  "7LFU8U": [
+    {
+      "type": 0,
+      "value": "搜尋能力"
+    }
+  ],
+  "7UOvbT": [
+    {
+      "type": 0,
+      "value": "離線"
+    }
+  ],
+  "7YkSA2": [
+    {
+      "type": 0,
+      "value": "社區領袖"
+    }
+  ],
+  "7gMmSL": [
+    {
+      "type": 0,
+      "value": "反應"
+    }
+  ],
+  "7hp70g": [
+    {
+      "type": 0,
+      "value": "NIP-05"
+    }
+  ],
+  "7jfPsW": [
+    {
+      "type": 0,
+      "value": "模組化文章內容"
+    }
+  ],
+  "7nAz/z": [
+    {
+      "type": 0,
+      "value": "將不屬於您信任網的人的筆記設定為靜音"
+    }
+  ],
+  "7pFGAQ": [
+    {
+      "type": 0,
+      "value": "關閉繼電器"
+    }
+  ],
+  "8/vBbP": [
+    {
+      "type": 0,
+      "value": "轉發（"
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "）"
+    }
+  ],
+  "89q5wc": [
+    {
+      "type": 0,
+      "value": "確認轉發"
+    }
+  ],
+  "8BDFvJ": [
+    {
+      "type": 0,
+      "value": "客戶在文字事件中使用 e 和 p 標籤的慣例"
+    }
+  ],
+  "8ED/4u": [
+    {
+      "type": 0,
+      "value": "回覆"
+    }
+  ],
+  "8HJxXG": [
+    {
+      "type": 0,
+      "value": "註冊"
+    }
+  ],
+  "8QDesP": [
+    {
+      "type": 0,
+      "value": "打閃 "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 聰"
+    }
+  ],
+  "8Rkoyb": [
+    {
+      "type": 0,
+      "value": "接收方"
+    }
+  ],
+  "8Y6bZQ": [
+    {
+      "type": 0,
+      "value": "無效打閃拆分："
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "8ZGqWl": [
+    {
+      "type": 0,
+      "value": "群組主題"
+    }
+  ],
+  "8g2vyB": [
+    {
+      "type": 0,
+      "value": "名稱過長"
+    }
+  ],
+  "8jmwT8": [
+    {
+      "type": 0,
+      "value": "bech32 編碼的實體"
+    }
+  ],
+  "8v1NN+": [
+    {
+      "type": 0,
+      "value": "配對詞句"
+    }
+  ],
+  "8xdDLn": [
+    {
+      "type": 0,
+      "value": "遵循套裝"
+    }
+  ],
+  "8za9Pq": [
+    {
+      "type": 0,
+      "value": "分類列表草案"
+    }
+  ],
+  "9+Ddtu": [
+    {
+      "type": 0,
+      "value": "下一步"
+    }
+  ],
+  "9HU8vw": [
+    {
+      "type": 0,
+      "value": "回覆"
+    }
+  ],
+  "9SvQep": [
+    {
+      "type": 0,
+      "value": "關注 "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "9V0wg3": [
+    {
+      "type": 0,
+      "value": "日曆活動 RSVP"
+    }
+  ],
+  "9WRlF4": [
+    {
+      "type": 0,
+      "value": "發送"
+    }
+  ],
+  "9kO0VQ": [
+    {
+      "type": 0,
+      "value": "隱藏已靜音筆記"
+    }
+  ],
+  "9kSari": [
+    {
+      "type": 0,
+      "value": "重試發布"
+    }
+  ],
+  "9pMqYs": [
+    {
+      "type": 0,
+      "value": "Nostr 地址"
+    }
+  ],
+  "9wO4wJ": [
+    {
+      "type": 0,
+      "value": "閃電發票"
+    }
+  ],
+  "A86fJ+": [
+    {
+      "type": 0,
+      "value": "通用轉貼"
+    }
+  ],
+  "ADmfQT": [
+    {
+      "type": 0,
+      "value": "上一層"
+    }
+  ],
+  "ALdW69": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " 的筆記"
+    }
+  ],
+  "AN0Z7Q": [
+    {
+      "type": 0,
+      "value": "已被靜音的關鍵詞"
+    }
+  ],
+  "ASRK0S": [
+    {
+      "type": 0,
+      "value": "该作者已被静音"
+    }
+  ],
+  "AedFVZ": [
+    {
+      "type": 0,
+      "value": "建立或更新產品"
+    }
+  ],
+  "Ai8VHU": [
+    {
+      "type": 0,
+      "value": "Snort 中繼器上無限制筆記保留"
+    }
+  ],
+  "AkCxS/": [
+    {
+      "type": 0,
+      "value": "原因"
+    }
+  ],
+  "AktAk2": [
+    {
+      "type": 0,
+      "value": "偉大"
+    }
+  ],
+  "Am8glJ": [
+    {
+      "type": 0,
+      "value": "遊戲"
+    }
+  ],
+  "AqGfF4": [
+    {
+      "type": 0,
+      "value": "頻道建立"
+    }
+  ],
+  "Aujn2T": [
+    {
+      "type": 0,
+      "value": "總計"
+    }
+  ],
+  "Awq32I": [
+    {
+      "type": 0,
+      "value": "推送通知"
+    }
+  ],
+  "AxDOiG": [
+    {
+      "type": 0,
+      "value": "月"
+    }
+  ],
+  "AyGauy": [
+    {
+      "type": 0,
+      "value": "登錄"
+    }
+  ],
+  "B4C47Y": [
+    {
+      "type": 0,
+      "value": "名稱過短"
+    }
+  ],
+  "B6+XJy": [
+    {
+      "type": 0,
+      "value": "已打閃"
+    }
+  ],
+  "B6H7eJ": [
+    {
+      "type": 0,
+      "value": "nsec、npub、nip-05、十六進制"
+    }
+  ],
+  "B7wvUM": [
+    {
+      "type": 0,
+      "value": "您可以新增單一或多個繼電器，每行一個。"
+    }
+  ],
+  "BGCM48": [
+    {
+      "type": 0,
+      "value": "寫入 Snort 中繼器到權限，1年的事件保留"
+    }
+  ],
+  "BGGacK": [
+    {
+      "type": 0,
+      "value": "AI 嵌入/向量清單"
+    }
+  ],
+  "BQW4gi": [
+    {
+      "type": 0,
+      "value": "中繼群組"
+    }
+  ],
+  "BWpuKl": [
+    {
+      "type": 0,
+      "value": "更新"
+    }
+  ],
+  "BfuAQ5": [
+    {
+      "type": 0,
+      "value": "市場 UI/UX"
+    }
+  ],
+  "BjNwZW": [
+    {
+      "type": 0,
+      "value": "Nostr 地址（NIP-05）"
+    }
+  ],
+  "Blxcdx": [
+    {
+      "type": 0,
+      "value": "繼電器"
+    }
+  ],
+  "Bo+O//": [
+    {
+      "type": 0,
+      "value": "HTTP Auth"
+    }
+  ],
+  "C1LjMx": [
+    {
+      "type": 0,
+      "value": "閃電捐款"
+    }
+  ],
+  "C6Lhhp": [
+    {
+      "type": 0,
+      "value": "現場活動"
+    }
+  ],
+  "C7642/": [
+    {
+      "type": 0,
+      "value": "引用轉帖"
+    }
+  ],
+  "C81/uG": [
+    {
+      "type": 0,
+      "value": "登出"
+    }
+  ],
+  "C8FsOr": [
+    {
+      "type": 0,
+      "value": "熱門伺服器"
+    }
+  ],
+  "C8HhVE": [
+    {
+      "type": 0,
+      "value": "推薦關注"
+    }
+  ],
+  "CA1efg": [
+    {
+      "type": 0,
+      "value": "視訊套件"
+    }
+  ],
+  "CHTbO3": [
+    {
+      "type": 0,
+      "value": "加載發票失敗"
+    }
+  ],
+  "CJx5Nd": [
+    {
+      "type": 0,
+      "value": "簡介 Zaps"
+    }
+  ],
+  "CM+Cfj": [
+    {
+      "type": 0,
+      "value": "關注列表"
+    }
+  ],
+  "CM0k0d": [
+    {
+      "type": 0,
+      "value": "修剪關注列表"
+    }
+  ],
+  "CVWeJ6": [
+    {
+      "type": 0,
+      "value": "熱門用戶"
+    }
+  ],
+  "CYkOCI": [
+    {
+      "type": 0,
+      "value": "和 "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " 個你關注的人"
+    }
+  ],
+  "Cdxwi0": [
+    {
+      "type": 0,
+      "value": "儲存庫公告"
+    }
+  ],
+  "CmZ9ls": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 已静音"
+    }
+  ],
+  "Coy6SH": [
+    {
+      "type": 0,
+      "value": "行事曆"
+    }
+  ],
+  "CsCUYo": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 聰"
+    }
+  ],
+  "Cu/K85": [
+    {
+      "type": 0,
+      "value": "翻譯自 "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "CzHZoc": [
+    {
+      "type": 0,
+      "value": "社交圖表"
+    }
+  ],
+  "D++Njw": [
+    {
+      "type": 0,
+      "value": "文字說明 參考資料"
+    }
+  ],
+  "D+KzKd": [
+    {
+      "type": 0,
+      "value": "加載時自動打閃每條筆記"
+    }
+  ],
+  "D09wbg": [
+    {
+      "type": 0,
+      "value": "徽章定義"
+    }
+  ],
+  "D3idYv": [
+    {
+      "type": 0,
+      "value": "設置"
+    }
+  ],
+  "D9xTLE": [
+    {
+      "type": 0,
+      "value": "頻道隱藏訊息"
+    }
+  ],
+  "DBiVK1": [
+    {
+      "type": 0,
+      "value": "緩存"
+    }
+  ],
+  "DKnriN": [
+    {
+      "type": 0,
+      "value": "發送聰"
+    }
+  ],
+  "DZzCem": [
+    {
+      "type": 0,
+      "value": "顯示最新的 "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 條筆記"
+    }
+  ],
+  "Dh3hbq": [
+    {
+      "type": 0,
+      "value": "自動打閃"
+    }
+  ],
+  "Dn82AL": [
+    {
+      "type": 0,
+      "value": "直播"
+    }
+  ],
+  "DqUmXt": [
+    {
+      "type": 0,
+      "value": "以拍賣方式出售的產品"
+    }
+  ],
+  "DrZqav": [
+    {
+      "type": 0,
+      "value": "關於必須少於 "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " 個字符"
+    }
+  ],
+  "DtYelJ": [
+    {
+      "type": 0,
+      "value": "轉移"
+    }
+  ],
+  "Dx4ey3": [
+    {
+      "type": 0,
+      "value": "切換全部"
+    }
+  ],
+  "E3oB+t": [
+    {
+      "type": 0,
+      "value": "瀏覽器"
+    }
+  ],
+  "E5ZIPD": [
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "amount"
+        }
+      ],
+      "type": 8,
+      "value": "big"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "聰"
+        }
+      ],
+      "type": 8,
+      "value": "small"
+    }
+  ],
+  "EHqHsu": [
+    {
+      "type": 0,
+      "value": "發票 / 閃電地址"
+    }
+  ],
+  "EJbFi7": [
+    {
+      "type": 0,
+      "value": "搜索筆記"
+    }
+  ],
+  "ELbg9p": [
+    {
+      "type": 0,
+      "value": "數據提供方"
+    }
+  ],
+  "EQKRE4": [
+    {
+      "type": 0,
+      "value": "在個人檔案頁面上顯示徽章"
+    }
+  ],
+  "EWeVrH": [
+    {
+      "type": 0,
+      "value": "對網站的反應"
+    }
+  ],
+  "EWyQH5": [
+    {
+      "type": 0,
+      "value": "全球"
+    }
+  ],
+  "Ebl/B2": [
+    {
+      "type": 0,
+      "value": "翻譯成 "
+    },
+    {
+      "type": 1,
+      "value": "lang"
+    }
+  ],
+  "Ec+xLY": [
+    {
+      "type": 0,
+      "value": "編輯套件"
+    }
+  ],
+  "EcZF24": [
+    {
+      "type": 0,
+      "value": "自定義中繼器"
+    }
+  ],
+  "EcfIwB": [
+    {
+      "type": 0,
+      "value": "用戶名可用。"
+    }
+  ],
+  "EcglP9": [
+    {
+      "type": 0,
+      "value": "密鑰"
+    }
+  ],
+  "EjFyoR": [
+    {
+      "type": 0,
+      "value": "鏈上捐款地址"
+    }
+  ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "購買"
+    }
+  ],
+  "EsHX35": [
+    {
+      "type": 0,
+      "value": "抱歉，我們不瞭解此事件類型 ("
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ")，請嘗試以下其中一個應用程式！"
+    }
+  ],
+  "F/6VqP": [
+    {
+      "type": 0,
+      "value": "伺服器"
+    }
+  ],
+  "F3l7xL": [
+    {
+      "type": 0,
+      "value": "添加帳戶"
+    }
+  ],
+  "F4eJ/3": [
+    {
+      "type": 0,
+      "value": "分類列表"
+    }
+  ],
+  "FDguSC": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 打閃"
+    }
+  ],
+  "FHWpHC": [
+    {
+      "type": 0,
+      "value": "錢包回復"
+    }
+  ],
+  "FHvSk3": [
+    {
+      "type": 0,
+      "value": "用戶端對中繼器的驗證"
+    }
+  ],
+  "FMfjrl": [
+    {
+      "type": 0,
+      "value": "在個人檔案頁面上顯示狀態消息"
+    }
+  ],
+  "FSYL8G": [
+    {
+      "type": 0,
+      "value": "熱門用戶"
+    }
+  ],
+  "FWJR1B": [
+    {
+      "type": 0,
+      "value": "使用者群組"
+    }
+  ],
+  "FcNSft": [
+    {
+      "type": 0,
+      "value": "重定向將 HTTP 重定向到所提供的閃電地址"
+    }
+  ],
+  "FdhSU2": [
+    {
+      "type": 0,
+      "value": "立即領取"
+    }
+  ],
+  "FfYsOb": [
+    {
+      "type": 0,
+      "value": "發生錯誤！"
+    }
+  ],
+  "FmXUJg": [
+    {
+      "type": 0,
+      "value": "正在關注你"
+    }
+  ],
+  "FvanT6": [
+    {
+      "type": 0,
+      "value": "帳戶"
+    }
+  ],
+  "FzbSGg": [
+    {
+      "type": 0,
+      "value": "你沒有任何媒體伺服器，請嘗試新增一些。"
+    }
+  ],
+  "G/yZLu": [
+    {
+      "type": 0,
+      "value": "移除"
+    }
+  ],
+  "G1BGCg": [
+    {
+      "type": 0,
+      "value": "選擇錢包"
+    }
+  ],
+  "G3A56c": [
+    {
+      "type": 0,
+      "value": "已訂閱推送通知"
+    }
+  ],
+  "GFOoEE": [
+    {
+      "type": 0,
+      "value": "鹽"
+    }
+  ],
+  "GIqktu": [
+    {
+      "type": 0,
+      "value": "支援的 NIP"
+    }
+  ],
+  "GL8aXW": [
+    {
+      "type": 0,
+      "value": "收藏 （"
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "）"
+    }
+  ],
+  "GSye7T": [
+    {
+      "type": 0,
+      "value": "閃電地址"
+    }
+  ],
+  "GUlSVG": [
+    {
+      "type": 0,
+      "value": "認領你包含的 Snort nostr 地址"
+    }
+  ],
+  "Gcn9NQ": [
+    {
+      "type": 0,
+      "value": "磁力鏈接"
+    }
+  ],
+  "GpkNYn": [
+    {
+      "type": 0,
+      "value": "傳輸"
+    }
+  ],
+  "GqQeu/": [
+    {
+      "type": 0,
+      "value": "閃電地址無效"
+    }
+  ],
+  "GspYR7": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 踩"
+    }
+  ],
+  "Gxcr08": [
+    {
+      "type": 0,
+      "value": "廣播事件"
+    }
+  ],
+  "H+vHiz": [
+    {
+      "type": 0,
+      "value": "十六進制密鑰..."
+    }
+  ],
+  "H/oroO": [
+    {
+      "type": 0,
+      "value": "處理未知事件"
+    }
+  ],
+  "H0JBH6": [
+    {
+      "type": 0,
+      "value": "登出"
+    }
+  ],
+  "H0OG3T": [
+    {
+      "type": 0,
+      "value": "領袖信息"
+    }
+  ],
+  "H1GTaC": [
+    {
+      "type": 0,
+      "value": "書籤清單"
+    }
+  ],
+  "H6/kLh": [
+    {
+      "type": 0,
+      "value": "訂單已支付！"
+    }
+  ],
+  "HAlOn1": [
+    {
+      "type": 0,
+      "value": "名稱"
+    }
+  ],
+  "HFls6j": [
+    {
+      "type": 0,
+      "value": "名稱稍後可用"
+    }
+  ],
+  "HOzFdo": [
+    {
+      "type": 0,
+      "value": "已静音"
+    }
+  ],
+  "HWbkEK": [
+    {
+      "type": 0,
+      "value": "清除緩存並重新加載"
+    }
+  ],
+  "HbefNb": [
+    {
+      "type": 0,
+      "value": "打開錢包"
+    }
+  ],
+  "HhcAVH": [
+    {
+      "type": 0,
+      "value": "你不關注此用戶，點擊此處從"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "link"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": "加載多媒體，或更新"
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "type": 0,
+              "value": "你的選項"
+            }
+          ],
+          "type": 8,
+          "value": "i"
+        }
+      ],
+      "type": 8,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": "來自動加載來自任何人的多媒體。"
+    }
+  ],
+  "HpAmQZ": [
+    {
+      "type": 0,
+      "value": "繼電器回顧"
+    }
+  ],
+  "HqRNN8": [
+    {
+      "type": 0,
+      "value": "支持"
+    }
+  ],
+  "HzSFeV": [
+    {
+      "type": 0,
+      "value": "到期時間戳記"
+    }
+  ],
+  "I0tYZf": [
+    {
+      "type": 0,
+      "value": "建立或更新檔位"
+    }
+  ],
+  "I1AoOu": [
+    {
+      "type": 0,
+      "value": "最近發佈 "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    }
+  ],
+  "IEwZvs": [
+    {
+      "type": 0,
+      "value": "是否確定要取消置頂此條筆記？"
+    }
+  ],
+  "IIOul1": [
+    {
+      "type": 0,
+      "value": "帳戶數據"
+    }
+  ],
+  "IKKHqV": [
+    {
+      "type": 0,
+      "value": "關注"
+    }
+  ],
+  "IOu4Xh": [
+    {
+      "type": 0,
+      "value": "你必須是 "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    },
+    {
+      "type": 0,
+      "value": " 訂閱者，才能訪問 "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": " 面板"
+    }
+  ],
+  "IVbtTS": [
+    {
+      "type": 0,
+      "value": "打閃所有 "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 聰"
+    }
+  ],
+  "IWz1ta": [
+    {
+      "type": 0,
+      "value": "自動翻譯"
+    }
+  ],
+  "IcHcWj": [
+    {
+      "type": 0,
+      "value": "最後一次見到"
+    }
+  ],
+  "Ig9/a1": [
+    {
+      "type": 0,
+      "value": "向 "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " 發送了 "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 聰"
+    }
+  ],
+  "IgsWFG": [
+    {
+      "type": 0,
+      "value": "未被你關注的任何人關注"
+    }
+  ],
+  "IoQq+a": [
+    {
+      "type": 0,
+      "value": "仍然要加載點擊這裡"
+    }
+  ],
+  "IvjoDS": [
+    {
+      "type": 0,
+      "value": "連接"
+    }
+  ],
+  "Ix8l+B": [
+    {
+      "type": 0,
+      "value": "熱門筆記"
+    }
+  ],
+  "J+dIsA": [
+    {
+      "type": 0,
+      "value": "訂閱"
+    }
+  ],
+  "J1iLmb": [
+    {
+      "type": 0,
+      "value": "未允許通知"
+    }
+  ],
+  "J2HeQ+": [
+    {
+      "type": 0,
+      "value": "使用逗号分隔单词，如 word1, word2, word3"
+    }
+  ],
+  "J2Q92B": [
+    {
+      "type": 0,
+      "value": "表情符號套裝"
+    }
+  ],
+  "J6N9xl": [
+    {
+      "type": 0,
+      "value": "Sign in with Android signer"
+    }
+  ],
+  "JCIgkj": [
+    {
+      "type": 0,
+      "value": "用戶名"
+    }
+  ],
+  "JGrt9q": [
+    {
+      "type": 0,
+      "value": "將聰發送到 "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "JHEHCk": [
+    {
+      "type": 0,
+      "value": "打閃（"
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "）"
+    }
+  ],
+  "JIVWWA": [
+    {
+      "type": 0,
+      "value": "體育"
+    }
+  ],
+  "JPFYIM": [
+    {
+      "type": 0,
+      "value": "沒有閃電地址"
+    }
+  ],
+  "JSx7y9": [
+    {
+      "type": 0,
+      "value": "以 "
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " 訂閱 "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": " 並獲得以下獎勵"
+    }
+  ],
+  "JeoS4y": [
+    {
+      "type": 0,
+      "value": "轉發"
+    }
+  ],
+  "Jh5zKH": [
+    {
+      "type": 0,
+      "value": "搜尋繼電器清單"
+    }
+  ],
+  "JjGgXI": [
+    {
+      "type": 0,
+      "value": "搜索用戶"
+    }
+  ],
+  "JkLHGw": [
+    {
+      "type": 0,
+      "value": "網站"
+    }
+  ],
+  "JmcxzF": [
+    {
+      "type": 0,
+      "value": "繼電器是您連接的伺服器，用於傳送和接收事件。以 4-8 個中繼為目標。"
+    }
+  ],
+  "JymXbw": [
+    {
+      "type": 0,
+      "value": "私鑰"
+    }
+  ],
+  "K1wl1/": [
+    {
+      "type": 0,
+      "value": "平均延遲時間："
+    }
+  ],
+  "K3r6DQ": [
+    {
+      "type": 0,
+      "value": "刪除"
+    }
+  ],
+  "K7AkdL": [
+    {
+      "type": 0,
+      "value": "顯示"
+    }
+  ],
+  "K9zklU": [
+    {
+      "type": 0,
+      "value": "外部內容 ID"
+    }
+  ],
+  "KAhAcM": [
+    {
+      "type": 0,
+      "value": "輸入 LNDHub 配置"
+    }
+  ],
+  "KGmQjH": [
+    {
+      "type": 0,
+      "value": "重點介紹"
+    }
+  ],
+  "KJryGq": [
+    {
+      "type": 0,
+      "value": "即時聊天訊息"
+    }
+  ],
+  "KQvWvD": [
+    {
+      "type": 0,
+      "value": "已刪除"
+    }
+  ],
+  "KT9nox": [
+    {
+      "type": 0,
+      "value": "受保護事件"
+    }
+  ],
+  "KahimY": [
+    {
+      "type": 0,
+      "value": "未知事件類型："
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    }
+  ],
+  "KipVeG": [
+    {
+      "type": 0,
+      "value": "將 Nostr 金鑰對應到基於 DNS 的網際網路識別碼"
+    }
+  ],
+  "KtsyO0": [
+    {
+      "type": 0,
+      "value": "輸入 PIN 碼"
+    }
+  ],
+  "KyRp/q": [
+    {
+      "type": 0,
+      "value": "錢包需求"
+    }
+  ],
+  "LBAnc7": [
+    {
+      "type": 0,
+      "value": "以用戶身份查看？"
+    }
+  ],
+  "LEmxc8": [
+    {
+      "type": 0,
+      "value": "Zap 目標"
+    }
+  ],
+  "LKw/ue": [
+    {
+      "type": 0,
+      "value": "在此處查看代碼："
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "LR1XjT": [
+    {
+      "type": 0,
+      "value": "PIN 碼太短了"
+    }
+  ],
+  "LXxsbk": [
+    {
+      "type": 0,
+      "value": "匿名"
+    }
+  ],
+  "LgbKvU": [
+    {
+      "type": 0,
+      "value": "評論"
+    }
+  ],
+  "LhLvRx": [
+    {
+      "type": 0,
+      "value": "名稱長度必須介於 8 到 15 個字符之間"
+    }
+  ],
+  "LmdPXO": [
+    {
+      "type": 0,
+      "value": "無法驗證 Nostr 地址"
+    }
+  ],
+  "Lu5/Bj": [
+    {
+      "type": 0,
+      "value": "在 Zapstr 上打開"
+    }
+  ],
+  "LuDBLj": [
+    {
+      "type": 0,
+      "value": "下載"
+    }
+  ],
+  "Lw+I+J": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": "已打閃"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": "和"
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": "個其他用戶已打閃"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "LwYmVi": [
+    {
+      "type": 0,
+      "value": "此筆記上的打閃將被拆分給以下的用戶。"
+    }
+  ],
+  "M3Oirc": [
+    {
+      "type": 0,
+      "value": "調試選單"
+    }
+  ],
+  "M6C/px": [
+    {
+      "type": 0,
+      "value": "成爲領袖"
+    }
+  ],
+  "MBAYRO": [
+    {
+      "type": 0,
+      "value": "每條消息的上下文菜單中顯示“複製 ID”和“複製事件 JSON”"
+    }
+  ],
+  "MI2jkA": [
+    {
+      "type": 0,
+      "value": "無法使用："
+    }
+  ],
+  "MKDHEa": [
+    {
+      "type": 0,
+      "value": "加入房間"
+    }
+  ],
+  "MP54GY": [
+    {
+      "type": 0,
+      "value": "錢包密碼"
+    }
+  ],
+  "MWTx65": [
+    {
+      "type": 0,
+      "value": "默認頁面"
+    }
+  ],
+  "MYBYdJ": [
+    {
+      "type": 0,
+      "value": "簡短文字說明"
+    }
+  ],
+  "MYUBaG": [
+    {
+      "type": 0,
+      "value": "用戶端驗證"
+    }
+  ],
+  "MiMipu": [
+    {
+      "type": 0,
+      "value": "設置為主要 Nostr 地址（NIP-05）"
+    }
+  ],
+  "MkQ4FX": [
+    {
+      "type": 0,
+      "value": "代理標籤"
+    }
+  ],
+  "Ml7+RS": [
+    {
+      "type": 0,
+      "value": "將此鏈接發送給你的好友，分享 Nostr 的魅力。"
+    }
+  ],
+  "Mrpkot": [
+    {
+      "type": 0,
+      "value": "支付訂閱"
+    }
+  ],
+  "MuVeKe": [
+    {
+      "type": 0,
+      "value": "購買 nostr 地址"
+    }
+  ],
+  "Muhna4": [
+    {
+      "type": 0,
+      "value": "計數結果"
+    }
+  ],
+  "MzRYWH": [
+    {
+      "type": 0,
+      "value": "購買 "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    }
+  ],
+  "Mzizei": [
+    {
+      "type": 0,
+      "value": "Iris.to 帳戶"
+    }
+  ],
+  "N2IrpM": [
+    {
+      "type": 0,
+      "value": "確認"
+    }
+  ],
+  "NAidKb": [
+    {
+      "type": 0,
+      "value": "通知"
+    }
+  ],
+  "NAuFNH": [
+    {
+      "type": 0,
+      "value": "你已經有此類型的訂閱，請續訂或支付"
+    }
+  ],
+  "NDTFsp": [
+    {
+      "type": 0,
+      "value": "工作反饋"
+    }
+  ],
+  "NepkXH": [
+    {
+      "type": 0,
+      "value": "無法用"
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": "聰投票，請設置一個不同的默認打閃金額"
+    }
+  ],
+  "NndBJE": [
+    {
+      "type": 0,
+      "value": "新用戶頁面"
+    }
+  ],
+  "Nr9Yyx": [
+    {
+      "type": 0,
+      "value": "轉貼"
+    }
+  ],
+  "NxzeNU": [
+    {
+      "type": 0,
+      "value": "死亡"
+    }
+  ],
+  "O3Jz4E": [
+    {
+      "type": 0,
+      "value": "使用你的邀請碼賺取聰！"
+    }
+  ],
+  "OEW7yJ": [
+    {
+      "type": 0,
+      "value": "打閃"
+    }
+  ],
+  "OIqnZN": [
+    {
+      "type": 0,
+      "value": "事件的 OpenTimestamps 驗證"
+    }
+  ],
+  "OJHKIL": [
+    {
+      "type": 0,
+      "value": "禮品包裝"
+    }
+  ],
+  "OKhRC6": [
+    {
+      "type": 0,
+      "value": "分享"
+    }
+  ],
+  "OLEm6z": [
+    {
+      "type": 0,
+      "value": "未知登錄錯誤"
+    }
+  ],
+  "OQSOJF": [
+    {
+      "type": 0,
+      "value": "獲取一個免費的 Nostr 地址"
+    }
+  ],
+  "OQXnew": [
+    {
+      "type": 0,
+      "value": "你的訂閱仍然活躍，你還不能續訂"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "已創建"
+    }
+  ],
+  "ORa81+": [
+    {
+      "type": 0,
+      "value": "合併請求"
+    }
+  ],
+  "OoZgbB": [
+    {
+      "type": 0,
+      "value": "無法更新, 請重試。"
+    }
+  ],
+  "OuProE": [
+    {
+      "type": 0,
+      "value": "長篇內容"
+    }
+  ],
+  "OxPdQ0": [
+    {
+      "type": 0,
+      "value": "掃描 "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "P2o+ZZ": [
+    {
+      "type": 0,
+      "value": "Nostr 地址無效"
+    }
+  ],
+  "P61BTu": [
+    {
+      "type": 0,
+      "value": "複製事件 JSON"
+    }
+  ],
+  "P7FD0F": [
+    {
+      "type": 0,
+      "value": "系統（默認）"
+    }
+  ],
+  "P7nJT9": [
+    {
+      "type": 0,
+      "value": "今天總計（UTC）："
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " 聰"
+    }
+  ],
+  "P8JC58": [
+    {
+      "type": 0,
+      "value": "距離"
+    }
+  ],
+  "PCSt5T": [
+    {
+      "type": 0,
+      "value": "選項"
+    }
+  ],
+  "PXQ0z0": [
+    {
+      "type": 0,
+      "value": "接收至 "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    }
+  ],
+  "PamNxw": [
+    {
+      "type": 0,
+      "value": "未知文件標頭："
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "Pe0ogR": [
+    {
+      "type": 0,
+      "value": "主題"
+    }
+  ],
+  "PrsIg7": [
+    {
+      "type": 0,
+      "value": "回應將在每個頁面上顯示，如果禁用則不會顯示任何回應"
+    }
+  ],
+  "QDFTjG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 中繼器"
+    }
+  ],
+  "QJfhKt": [
+    {
+      "type": 0,
+      "value": "私鑰就像密碼一樣，但無法重設。請小心保管，切勿給任何人看。一旦有人擁有你的私鑰，他們將永遠擁有你帳戶的掌控權。"
+    }
+  ],
+  "QWhotP": [
+    {
+      "type": 0,
+      "value": "打閃池只有當你使用支持的錢包（WebLN、LNC、LNDHub 或 Nostr Wallet Connect）時才能啟用"
+    }
+  ],
+  "QpaLA3": [
+    {
+      "type": 0,
+      "value": "頻道訊息"
+    }
+  ],
+  "Qxv0B2": [
+    {
+      "type": 0,
+      "value": "目前你的打閃池中有 "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " 聰。"
+    }
+  ],
+  "Qy6/Ft": [
+    {
+      "type": 0,
+      "value": "私人直接訊息"
+    }
+  ],
+  "R/6nsx": [
+    {
+      "type": 0,
+      "value": "訂閱"
+    }
+  ],
+  "R81upa": [
+    {
+      "type": 0,
+      "value": "你關注的用戶"
+    }
+  ],
+  "RDha9y": [
+    {
+      "type": 0,
+      "value": "服務工作程式未運行"
+    }
+  ],
+  "RRz1cA": [
+    {
+      "type": 0,
+      "value": "儲存庫狀態公告"
+    }
+  ],
+  "RSr2uB": [
+    {
+      "type": 0,
+      "value": "用戶名只能含有小寫字母和數字"
+    }
+  ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "已過期"
+    }
+  ],
+  "RefZpK": [
+    {
+      "type": 0,
+      "value": "人像短片活動"
+    }
+  ],
+  "RfhLwC": [
+    {
+      "type": 0,
+      "value": "作者："
+    },
+    {
+      "type": 1,
+      "value": "author"
+    }
+  ],
+  "RhDAoS": [
+    {
+      "type": 0,
+      "value": "是否確定要刪除 "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "RmxSZo": [
+    {
+      "type": 0,
+      "value": "資料販賣機"
+    }
+  ],
+  "RoOyAh": [
+    {
+      "type": 0,
+      "value": "中繼器"
+    }
+  ],
+  "Rs4kCE": [
+    {
+      "type": 0,
+      "value": "收藏"
+    }
+  ],
+  "S/NV2G": [
+    {
+      "type": 0,
+      "value": "載入注意事項： "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    }
+  ],
+  "SFuk1v": [
+    {
+      "type": 0,
+      "value": "權限"
+    }
+  ],
+  "SLZGPn": [
+    {
+      "type": 0,
+      "value": "輸入一個 PIN 碼來加密你的私鑰，每次開啟 "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " 時都必須輸入此 PIN 碼。"
+    }
+  ],
+  "SMO+on": [
+    {
+      "type": 0,
+      "value": "將打閃發送到 "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "SOqbe9": [
+    {
+      "type": 0,
+      "value": "更新閃電地址"
+    }
+  ],
+  "SP0+yi": [
+    {
+      "type": 0,
+      "value": "購買訂閱"
+    }
+  ],
+  "SW3TFA": [
+    {
+      "type": 0,
+      "value": "您追隨的人所使用的熱門繼電器。"
+    }
+  ],
+  "SYQtZ7": [
+    {
+      "type": 0,
+      "value": "閃電地址代理"
+    }
+  ],
+  "Sd0PKc": [
+    {
+      "type": 0,
+      "value": "繼電器組"
+    }
+  ],
+  "SfwSIm": [
+    {
+      "type": 0,
+      "value": "問題追蹤"
+    }
+  ],
+  "ShdEie": [
+    {
+      "type": 0,
+      "value": "全標已讀"
+    }
+  ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "自定義"
+    }
+  ],
+  "SmuYUd": [
+    {
+      "type": 0,
+      "value": "我們應該怎麼樣稱呼你？"
+    }
+  ],
+  "Ss0sWu": [
+    {
+      "type": 0,
+      "value": "立即支付"
+    }
+  ],
+  "SsUQnC": [
+    {
+      "type": 0,
+      "value": "應用程式特定資料"
+    }
+  ],
+  "StKzTE": [
+    {
+      "type": 0,
+      "value": "作者已將此筆記標記為"
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "敏感主題"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    }
+  ],
+  "T83nqf": [
+    {
+      "type": 0,
+      "value": "鄰近您地理位置的繼電器。"
+    }
+  ],
+  "TDR5ge": [
+    {
+      "type": 0,
+      "value": "帖子中的媒體將自動顯示給選定的人，否則只會顯示鏈接"
+    }
+  ],
+  "TGc5nI": [
+    {
+      "type": 0,
+      "value": "處理者資訊"
+    }
+  ],
+  "TH1fFo": [
+    {
+      "type": 0,
+      "value": "Telegram"
+    }
+  ],
+  "TJo5E6": [
+    {
+      "type": 0,
+      "value": "預覽"
+    }
+  ],
+  "TOG64f": [
+    {
+      "type": 0,
+      "value": "使用本地中繼"
+    }
+  ],
+  "TP/cMX": [
+    {
+      "type": 0,
+      "value": "已結束"
+    }
+  ],
+  "TaeBqw": [
+    {
+      "type": 0,
+      "value": "通過 Nostr 擴展程式登錄"
+    }
+  ],
+  "TdTXXf": [
+    {
+      "type": 0,
+      "value": "瞭解更多"
+    }
+  ],
+  "TdtZQ5": [
+    {
+      "type": 0,
+      "value": "加密貨幣"
+    }
+  ],
+  "Tdv6NY": [
+    {
+      "type": 0,
+      "value": "興趣集"
+    }
+  ],
+  "TgDKhI": [
+    {
+      "type": 0,
+      "value": "日曆活動"
+    }
+  ],
+  "TpgeGw": [
+    {
+      "type": 0,
+      "value": "十六進制鹽.."
+    }
+  ],
+  "Tpy00S": [
+    {
+      "type": 0,
+      "value": "用戶"
+    }
+  ],
+  "TvKqBp": [
+    {
+      "type": 0,
+      "value": "已點贊"
+    }
+  ],
+  "TwyMau": [
+    {
+      "type": 0,
+      "value": "帳戶"
+    }
+  ],
+  "U1aPPi": [
+    {
+      "type": 0,
+      "value": "停止收聽"
+    }
+  ],
+  "U30H69": [
+    {
+      "type": 0,
+      "value": "社群定義"
+    }
+  ],
+  "UJTWqI": [
+    {
+      "type": 0,
+      "value": "從我的中繼器中移除"
+    }
+  ],
+  "ULXFfP": [
+    {
+      "type": 0,
+      "value": "收款"
+    }
+  ],
+  "UNjfWJ": [
+    {
+      "type": 0,
+      "value": "检查从中继收到的所有事件签名"
+    }
+  ],
+  "UT7Nkj": [
+    {
+      "type": 0,
+      "value": "新聊天"
+    }
+  ],
+  "UUPFlt": [
+    {
+      "type": 0,
+      "value": "用戶必須接受內容警告才能顯示你的筆記的內容。"
+    }
+  ],
+  "UaCh1c": [
+    {
+      "type": 0,
+      "value": "新增伺服器"
+    }
+  ],
+  "Ub+AGc": [
+    {
+      "type": 0,
+      "value": "登錄"
+    }
+  ],
+  "Up5U7K": [
+    {
+      "type": 0,
+      "value": "屏蔽"
+    }
+  ],
+  "Ups2/p": [
+    {
+      "type": 0,
+      "value": "你的申請正在處理中"
+    }
+  ],
+  "UrKTqQ": [
+    {
+      "type": 0,
+      "value": "你有一個活躍的 iris.to 帳戶"
+    }
+  ],
+  "UsCzPc": [
+    {
+      "type": 0,
+      "value": "與朋友分享個人化邀請函！"
+    }
+  ],
+  "UxgyeY": [
+    {
+      "type": 0,
+      "value": "你的邀請代碼是 "
+    },
+    {
+      "type": 1,
+      "value": "code"
+    }
+  ],
+  "V20Og0": [
+    {
+      "type": 0,
+      "value": "標籤"
+    }
+  ],
+  "VOjC1i": [
+    {
+      "type": 0,
+      "value": "選擇你要將附件上傳到哪個上傳服務"
+    }
+  ],
+  "VR5eHw": [
+    {
+      "type": 0,
+      "value": "公鑰（npub/nprofile）"
+    }
+  ],
+  "VcwrfF": [
+    {
+      "type": 0,
+      "value": "好的"
+    }
+  ],
+  "VfhYxG": [
+    {
+      "type": 0,
+      "value": "要查看全部更改列表，請在此查看更新日誌："
+    },
+    {
+      "type": 1,
+      "value": "here"
+    }
+  ],
+  "VlJkSk": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 已静音"
+    }
+  ],
+  "VnXp8Z": [
+    {
+      "type": 0,
+      "value": "頭像"
+    }
+  ],
+  "W1yoZY": [
+    {
+      "type": 0,
+      "value": "看起來你沒有任何訂閱，你可以獲取一個"
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "W2PiAr": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 已屏蔽"
+    }
+  ],
+  "W4SaxY": [
+    {
+      "type": 0,
+      "value": "當地"
+    }
+  ],
+  "W9355R": [
+    {
+      "type": 0,
+      "value": "解除静音"
+    }
+  ],
+  "WeLEuL": [
+    {
+      "type": 0,
+      "value": "來自伺服器"
+    }
+  ],
+  "Wj5TbN": [
+    {
+      "type": 0,
+      "value": "問題"
+    }
+  ],
+  "WmZhfL": [
+    {
+      "type": 0,
+      "value": "自動將筆記翻譯成你的本地語言"
+    }
+  ],
+  "WvGmZT": [
+    {
+      "type": 0,
+      "value": "npub / nprofile / nostr 地址"
+    }
+  ],
+  "X6tipZ": [
+    {
+      "type": 0,
+      "value": "使用密鑰登錄"
+    }
+  ],
+  "X7xU8J": [
+    {
+      "type": 0,
+      "value": "nsec、nsec、NIP-05、十六進制、助記詞句"
+    }
+  ],
+  "XECMfW": [
+    {
+      "type": 0,
+      "value": "傳送使用資料"
+    }
+  ],
+  "XICsE8": [
+    {
+      "type": 0,
+      "value": "文件主機"
+    }
+  ],
+  "XPB8VV": [
+    {
+      "type": 0,
+      "value": "Alby 錢包連接"
+    }
+  ],
+  "XQiFEl": [
+    {
+      "type": 0,
+      "value": "關注中繼器健康"
+    }
+  ],
+  "XSdWHA": [
+    {
+      "type": 0,
+      "value": "兌現"
+    }
+  ],
+  "XXm7jJ": [
+    {
+      "type": 0,
+      "value": "熱門主題標籤"
+    }
+  ],
+  "XgWvGA": [
+    {
+      "type": 0,
+      "value": "回應"
+    }
+  ],
+  "Xnimz0": [
+    {
+      "type": 0,
+      "value": "從 "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "wallet"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " 發送"
+    }
+  ],
+  "Xopqkl": [
+    {
+      "type": 0,
+      "value": "你的默認打閃金額是 "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " 聰，示例值是以此計算的。"
+    }
+  ],
+  "YDMrKK": [
+    {
+      "type": 0,
+      "value": "使用者"
+    }
+  ],
+  "YDURw6": [
+    {
+      "type": 0,
+      "value": "服務 URL"
+    }
+  ],
+  "YH2RKk": [
+    {
+      "type": 0,
+      "value": "受歡迎的媒體伺服器。"
+    }
+  ],
+  "YQZY/S": [
+    {
+      "type": 0,
+      "value": "看起來您追隨的人還不夠多，請瀏覽 "
+    },
+    {
+      "type": 1,
+      "value": "newUsersPage"
+    },
+    {
+      "type": 0,
+      "value": " 發掘要追隨的人！"
+    }
+  ],
+  "YR2I9M": [
+    {
+      "type": 0,
+      "value": "沒有密鑰，就沒有 "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    },
+    {
+      "type": 0,
+      "value": "，如果不備份，就無法重置。這只需要一分鐘。"
+    }
+  ],
+  "YU7ZYp": [
+    {
+      "type": 0,
+      "value": "公開聊天"
+    }
+  ],
+  "YXA3AH": [
+    {
+      "type": 0,
+      "value": "启用回應"
+    }
+  ],
+  "Yf3DwC": [
+    {
+      "type": 0,
+      "value": "連接錢包以發送即時付款"
+    }
+  ],
+  "YuoEb9": [
+    {
+      "type": 0,
+      "value": "嘗試另一個繼電器"
+    }
+  ],
+  "Z48UEo": [
+    {
+      "type": 0,
+      "value": "頻道元資料"
+    }
+  ],
+  "Z4BMCZ": [
+    {
+      "type": 0,
+      "value": "輸入配對詞句"
+    }
+  ],
+  "Z7kkeJ": [
+    {
+      "type": 0,
+      "value": "委託活動簽署"
+    }
+  ],
+  "ZFe9tl": [
+    {
+      "type": 0,
+      "value": "撰寫筆記"
+    }
+  ],
+  "ZKORll": [
+    {
+      "type": 0,
+      "value": "立即激活"
+    }
+  ],
+  "ZLmyG9": [
+    {
+      "type": 0,
+      "value": "貢獻者"
+    }
+  ],
+  "ZS+jRE": [
+    {
+      "type": 0,
+      "value": "將打閃拆分發送到"
+    }
+  ],
+  "Zff6lu": [
+    {
+      "type": 0,
+      "value": "用戶名 iris.to/"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "name"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " 已為你保留！"
+    }
+  ],
+  "ZlIh4/": [
+    {
+      "type": 0,
+      "value": "加密的直接訊息"
+    }
+  ],
+  "ZlmK/p": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " 邀請你訪問 "
+    },
+    {
+      "type": 1,
+      "value": "app"
+    }
+  ],
+  "a1x4gD": [
+    {
+      "type": 0,
+      "value": "媒體伺服器儲存你可以在筆記中以圖像和視訊形式共享的媒體"
+    }
+  ],
+  "a5UPxh": [
+    {
+      "type": 0,
+      "value": "資助提供 NIP-05 驗證服務的開發人員和平台"
+    }
+  ],
+  "a7TDNm": [
+    {
+      "type": 0,
+      "value": "筆記將實時流式傳輸到全球和帖子選項卡"
+    }
+  ],
+  "aHje0o": [
+    {
+      "type": 0,
+      "value": "名稱"
+    }
+  ],
+  "aMaLBK": [
+    {
+      "type": 0,
+      "value": "支持的擴展"
+    }
+  ],
+  "aRex7h": [
+    {
+      "type": 0,
+      "value": "支付 "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " 聰，付費 "
+    },
+    {
+      "type": 1,
+      "value": "fee"
+    },
+    {
+      "type": 0,
+      "value": " 聰"
+    }
+  ],
+  "aSGz4J": [
+    {
+      "type": 0,
+      "value": "使用 Lightning Node Connect 連接你自己的 LND 節點"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "顯示更多"
+    }
+  ],
+  "abbGKq": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 公里"
+    }
+  ],
+  "ak3MTf": [
+    {
+      "type": 0,
+      "value": "邀請朋友"
+    }
+  ],
+  "b12Goz": [
+    {
+      "type": 0,
+      "value": "助記詞"
+    }
+  ],
+  "b5vAk0": [
+    {
+      "type": 0,
+      "value": "你的代號將像閃電地址一樣重定向至你所選的 LNURL 或閃電地址"
+    }
+  ],
+  "bF1MYT": [
+    {
+      "type": 0,
+      "value": "你已成爲社區領袖，並可從邀請用戶的訂閱中賺取"
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "percent"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": "！"
+    }
+  ],
+  "bG00/W": [
+    {
+      "type": 0,
+      "value": "服務工作程式正在運行"
+    }
+  ],
+  "bJ+wrA": [
+    {
+      "type": 0,
+      "value": "計算修剪列表"
+    }
+  ],
+  "bLZL5a": [
+    {
+      "type": 0,
+      "value": "獲取地址"
+    }
+  ],
+  "bMphls": [
+    {
+      "type": 0,
+      "value": "已使用只讀權限登錄"
+    }
+  ],
+  "bQdA2k": [
+    {
+      "type": 0,
+      "value": "敏感內容"
+    }
+  ],
+  "bep9C3": [
+    {
+      "type": 0,
+      "value": "公鑰"
+    }
+  ],
+  "bfvyfs": [
+    {
+      "type": 0,
+      "value": "匿名"
+    }
+  ],
+  "bxv59V": [
+    {
+      "type": 0,
+      "value": "剛剛"
+    }
+  ],
+  "c+1p0i": [
+    {
+      "type": 0,
+      "value": "親切的靜音套裝"
+    }
+  ],
+  "c+JYNI": [
+    {
+      "type": 0,
+      "value": "不，謝謝"
+    }
+  ],
+  "c2T+1B": [
+    {
+      "type": 0,
+      "value": "重定向"
+    }
+  ],
+  "c35bj2": [
+    {
+      "type": 0,
+      "value": "如果你對 NIP-05 訂單有任何疑問，請私信 "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "c3LlRO": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "KiB"
+    }
+  ],
+  "c3g2hL": [
+    {
+      "type": 0,
+      "value": "再次廣播"
+    }
+  ],
+  "cFbU1B": [
+    {
+      "type": 0,
+      "value": "使用 Alby？前往 "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " 來配置你的 NWC！"
+    }
+  ],
+  "cG/bKQ": [
+    {
+      "type": 0,
+      "value": "原生 nostr 錢包連接"
+    }
+  ],
+  "cHCwbF": [
+    {
+      "type": 0,
+      "value": "攝影"
+    }
+  ],
+  "cKbMRX": [
+    {
+      "type": 0,
+      "value": "直接訊息"
+    }
+  ],
+  "cPIKU2": [
+    {
+      "type": 0,
+      "value": "關注"
+    }
+  ],
+  "cQfLWb": [
+    {
+      "type": 0,
+      "value": "URL.."
+    }
+  ],
+  "cVcgLJ": [
+    {
+      "type": 0,
+      "value": "媒體伺服器"
+    }
+  ],
+  "cWx9t8": [
+    {
+      "type": 0,
+      "value": "全部靜音"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "連接錢包"
+    }
+  ],
+  "cnwHgH": [
+    {
+      "type": 0,
+      "value": "OpenTimestamps"
+    }
+  ],
+  "cuP16y": [
+    {
+      "type": 0,
+      "value": "多帳戶支持"
+    }
+  ],
+  "cuV2gK": [
+    {
+      "type": 0,
+      "value": "名稱已被註冊"
+    }
+  ],
+  "cw1Ftc": [
+    {
+      "type": 0,
+      "value": "現場活動"
+    }
+  ],
+  "cyR7Kh": [
+    {
+      "type": 0,
+      "value": "返回"
+    }
+  ],
+  "d+6YsV": [
+    {
+      "type": 0,
+      "value": "應靜音的列表："
+    }
+  ],
+  "d0qim7": [
+    {
+      "type": 0,
+      "value": "WoT 過濾器"
+    }
+  ],
+  "d2ebEu": [
+    {
+      "type": 0,
+      "value": "未訂閱推送"
+    }
+  ],
+  "d7d0/x": [
+    {
+      "type": 0,
+      "value": "閃電地址"
+    }
+  ],
+  "dK2CcV": [
+    {
+      "type": 0,
+      "value": "公鑰就像你的用戶名，你可以與任何人分享。"
+    }
+  ],
+  "dOQCL8": [
+    {
+      "type": 0,
+      "value": "顯示名稱"
+    }
+  ],
+  "dZZIGe": [
+    {
+      "type": 0,
+      "value": "模組化文章標題"
+    }
+  ],
+  "ddd3JX": [
+    {
+      "type": 0,
+      "value": "熱門標籤"
+    }
+  ],
+  "deEeEI": [
+    {
+      "type": 0,
+      "value": "註冊"
+    }
+  ],
+  "djLctd": [
+    {
+      "type": 0,
+      "value": "聰金額"
+    }
+  ],
+  "dmcsBA": [
+    {
+      "type": 0,
+      "value": "分類列表"
+    }
+  ],
+  "dmsiLv": [
+    {
+      "type": 0,
+      "value": "已為 "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " 開發人員配置了 "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 的默認打閃池分割，你隨時可以在 "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " 中禁用它。"
+    }
+  ],
+  "e5x8FT": [
+    {
+      "type": 0,
+      "value": "類別"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "即將上線"
+    }
+  ],
+  "e7VmYP": [
+    {
+      "type": 0,
+      "value": "輸入 PIN 碼解鎖你的私鑰"
+    }
+  ],
+  "e7qqly": [
+    {
+      "type": 0,
+      "value": "全標已讀"
+    }
+  ],
+  "eF0Re7": [
+    {
+      "type": 0,
+      "value": "使用 Nostr 簽名擴展登錄"
+    }
+  ],
+  "eHAneD": [
+    {
+      "type": 0,
+      "value": "回應表情符號"
+    }
+  ],
+  "eJj8HD": [
+    {
+      "type": 0,
+      "value": "獲取驗證"
+    }
+  ],
+  "eSzf2G": [
+    {
+      "type": 0,
+      "value": "一個 "
+    },
+    {
+      "type": 1,
+      "value": "nIn"
+    },
+    {
+      "type": 0,
+      "value": " 聰的打閃將分配 "
+    },
+    {
+      "type": 1,
+      "value": "nOut"
+    },
+    {
+      "type": 0,
+      "value": " 聰給打閃池。"
+    }
+  ],
+  "eW/Bj9": [
+    {
+      "type": 0,
+      "value": "飼料"
+    }
+  ],
+  "eXT2QQ": [
+    {
+      "type": 0,
+      "value": "羣聊"
+    }
+  ],
+  "eZtOxB": [
+    {
+      "type": 0,
+      "value": "網頁瀏覽器的 window.nostr 功能"
+    }
+  ],
+  "egib+2": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " 个其他"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "& "
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " 个其他"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "ejEGdx": [
+    {
+      "type": 0,
+      "value": "主頁"
+    }
+  ],
+  "eoV49s": [
+    {
+      "type": 0,
+      "value": "貧窮"
+    }
+  ],
+  "f1OxTe": [
+    {
+      "type": 0,
+      "value": "社區領袖是指通過活躍於當地社區並幫助新用戶加入而發展 nostr 生態系統的個人。任何人都可以成爲社區領袖，但目前擁有這一榮譽稱號的人寥寥無幾。"
+    }
+  ],
+  "f2CAxA": [
+    {
+      "type": 0,
+      "value": "轉儲"
+    }
+  ],
+  "fBI91o": [
+    {
+      "type": 0,
+      "value": "打閃"
+    }
+  ],
+  "fBlba3": [
+    {
+      "type": 0,
+      "value": "感謝你使用 "
+    },
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": "，請考慮捐贈。"
+    }
+  ],
+  "fLIvbC": [
+    {
+      "type": 0,
+      "value": "Snort 是一個開放代碼項目，由熱心人士利用業餘時間創建，我們非常歡迎你的捐贈。"
+    }
+  ],
+  "fOksnD": [
+    {
+      "type": 0,
+      "value": "無法投票，因為 LNURL 服務不支持打閃"
+    }
+  ],
+  "fQN+tq": [
+    {
+      "type": 0,
+      "value": "顯示含有內容警告標籤的帖子"
+    }
+  ],
+  "fWZYP5": [
+    {
+      "type": 0,
+      "value": "置頂"
+    }
+  ],
+  "fX5RYm": [
+    {
+      "type": 0,
+      "value": "挑選幾個感興趣的主題"
+    }
+  ],
+  "filwqD": [
+    {
+      "type": 0,
+      "value": "讀"
+    }
+  ],
+  "fjAcWo": [
+    {
+      "type": 0,
+      "value": "禮品包裝"
+    }
+  ],
+  "flnGvv": [
+    {
+      "type": 0,
+      "value": "你在想些什麼？"
+    }
+  ],
+  "fqwcJ1": [
+    {
+      "type": 0,
+      "value": "鏈上捐款"
+    }
+  ],
+  "fr+XYA": [
+    {
+      "type": 0,
+      "value": "Lightning Pub RPC"
+    }
+  ],
+  "fsB/4p": [
+    {
+      "type": 0,
+      "value": "已保存"
+    }
+  ],
+  "fucxlm": [
+    {
+      "type": 0,
+      "value": "附加媒體"
+    }
+  ],
+  "furjvW": [
+    {
+      "type": 0,
+      "value": "觀看直播"
+    }
+  ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "關於"
+    }
+  ],
+  "g985Wp": [
+    {
+      "type": 0,
+      "value": "發送投票失敗"
+    }
+  ],
+  "gDzDRs": [
+    {
+      "type": 0,
+      "value": "回應筆記時發送的表情符號"
+    }
+  ],
+  "gXgY3+": [
+    {
+      "type": 0,
+      "value": "並非所有客戶端都支持此功能"
+    }
+  ],
+  "gczcC5": [
+    {
+      "type": 0,
+      "value": "訂閱"
+    }
+  ],
+  "geppt8": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count2"
+    },
+    {
+      "type": 0,
+      "value": " in memory)"
+    }
+  ],
+  "gjBiyj": [
+    {
+      "type": 0,
+      "value": "加載中..."
+    }
+  ],
+  "gkMmvC": [
+    {
+      "type": 0,
+      "value": "Android Signer 應用程式"
+    }
+  ],
+  "gl1NeW": [
+    {
+      "type": 0,
+      "value": "清單"
+    }
+  ],
+  "go2/QF": [
+    {
+      "type": 0,
+      "value": "使用者伺服器清單"
+    }
+  ],
+  "grQ+mI": [
+    {
+      "type": 0,
+      "value": "工作量證明"
+    }
+  ],
+  "gtNjNP": [
+    {
+      "type": 0,
+      "value": "基本通訊協定流程說明"
+    }
+  ],
+  "h7jvCs": [
+    {
+      "type": 1,
+      "value": "site"
+    },
+    {
+      "type": 0,
+      "value": " 一起使用更好玩！"
+    }
+  ],
+  "h8XMJL": [
+    {
+      "type": 0,
+      "value": "徽章"
+    }
+  ],
+  "h9M0rW": [
+    {
+      "type": 0,
+      "value": "使用者元資料"
+    }
+  ],
+  "hF6IN2": [
+    {
+      "type": 0,
+      "value": "修剪關注列表"
+    }
+  ],
+  "hMQmIw": [
+    {
+      "type": 0,
+      "value": "同步帳戶"
+    }
+  ],
+  "hMzcSq": [
+    {
+      "type": 0,
+      "value": "消息"
+    }
+  ],
+  "hRTfTR": [
+    {
+      "type": 0,
+      "value": "PRO"
+    }
+  ],
+  "hY4lzx": [
+    {
+      "type": 0,
+      "value": "支持"
+    }
+  ],
+  "hYOE+U": [
+    {
+      "type": 0,
+      "value": "邀請"
+    }
+  ],
+  "hicxcO": [
+    {
+      "type": 0,
+      "value": "顯示回覆"
+    }
+  ],
+  "hmZ3Bz": [
+    {
+      "type": 0,
+      "value": "多媒體"
+    }
+  ],
+  "hniz8Z": [
+    {
+      "type": 0,
+      "value": "這裡"
+    }
+  ],
+  "hv/eRj": [
+    {
+      "type": 0,
+      "value": "封鎖的繼電器清單"
+    }
+  ],
+  "hvFRBo": [
+    {
+      "type": 0,
+      "value": "互動"
+    }
+  ],
+  "i/dBAR": [
+    {
+      "type": 0,
+      "value": "打閃池"
+    }
+  ],
+  "i5gBFz": [
+    {
+      "type": 0,
+      "value": "你已發送和收到的付款將顯示在此處。"
+    }
+  ],
+  "iCqGww": [
+    {
+      "type": 0,
+      "value": "回應（"
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "）"
+    }
+  ],
+  "iEoXYx": [
+    {
+      "type": 0,
+      "value": "DeepL 翻譯"
+    }
+  ],
+  "iGT1eE": [
+    {
+      "type": 0,
+      "value": "防止虛假帳戶冒充你"
+    }
+  ],
+  "iHN12u": [
+    {
+      "type": 0,
+      "value": "管理員"
+    }
+  ],
+  "iICVoL": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " 個關注 ("
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " 個重複)"
+    }
+  ],
+  "iNWbVV": [
+    {
+      "type": 0,
+      "value": "代號"
+    }
+  ],
+  "iXPL0Z": [
+    {
+      "type": 0,
+      "value": "無法在不安全的連接上使用私鑰登錄，請使用 nostr 密鑰管理器擴展程序"
+    }
+  ],
+  "iYc3Ld": [
+    {
+      "type": 0,
+      "value": "付款"
+    }
+  ],
+  "icCxlA": [
+    {
+      "type": 0,
+      "value": "新使用者頁面"
+    }
+  ],
+  "ieGrWo": [
+    {
+      "type": 0,
+      "value": "關注"
+    }
+  ],
+  "igUUst": [
+    {
+      "type": 0,
+      "value": "群聊主題回覆"
+    }
+  ],
+  "ipHVx5": [
+    {
+      "type": 0,
+      "value": "生成發票"
+    }
+  ],
+  "itPgxd": [
+    {
+      "type": 0,
+      "value": "個人檔案"
+    }
+  ],
+  "izWS4J": [
+    {
+      "type": 0,
+      "value": "取消關注"
+    }
+  ],
+  "j9xbzF": [
+    {
+      "type": 0,
+      "value": "已备份"
+    }
+  ],
+  "jA3OE/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " 聰"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": " 聰"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "jAmfGl": [
+    {
+      "type": 0,
+      "value": "你的 "
+    },
+    {
+      "type": 1,
+      "value": "site_name"
+    },
+    {
+      "type": 0,
+      "value": " 訂閱已過期了"
+    }
+  ],
+  "jHa/ko": [
+    {
+      "type": 0,
+      "value": "清理你的訂閱"
+    }
+  ],
+  "jMzO1S": [
+    {
+      "type": 0,
+      "value": "內部錯誤："
+    },
+    {
+      "type": 1,
+      "value": "msg"
+    }
+  ],
+  "jiAVXu": [
+    {
+      "type": 0,
+      "value": "視訊活動"
+    }
+  ],
+  "jvo0vs": [
+    {
+      "type": 0,
+      "value": "保存"
+    }
+  ],
+  "jzgQ2z": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 個回應"
+    }
+  ],
+  "k0kCJp": [
+    {
+      "type": 0,
+      "value": "立即申請"
+    }
+  ],
+  "k2veDA": [
+    {
+      "type": 0,
+      "value": "寫"
+    }
+  ],
+  "k7sKNy": [
+    {
+      "type": 0,
+      "value": "我們自己的 NIP-05 驗證服務，幫助支持本站的發展，並在我們的網站上獲得閃亮的特殊徽章。"
+    }
+  ],
+  "k9SQm1": [
+    {
+      "type": 0,
+      "value": "您之前連接過且看起來可靠的繼電器。"
+    }
+  ],
+  "kEZUR8": [
+    {
+      "type": 0,
+      "value": "註冊一個 Iris 用戶名"
+    }
+  ],
+  "kJYo0u": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": "已轉發"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": "和"
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": "個其他用戶已轉發"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "kKC9ya": [
+    {
+      "type": 0,
+      "value": "錢包資訊"
+    }
+  ],
+  "kNd2FL": [
+    {
+      "type": 0,
+      "value": "潮汐登錄"
+    }
+  ],
+  "kQAf2d": [
+    {
+      "type": 0,
+      "value": "選擇"
+    }
+  ],
+  "kaaf1E": [
+    {
+      "type": 0,
+      "value": "現在"
+    }
+  ],
+  "kc79d3": [
+    {
+      "type": 0,
+      "value": "话题"
+    }
+  ],
+  "klCm96": [
+    {
+      "type": 0,
+      "value": "社區職位核准"
+    }
+  ],
+  "kqPQJD": [
+    {
+      "type": 0,
+      "value": "設置打閃池"
+    }
+  ],
+  "kuPHYE": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": "已點贊"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": "和"
+            },
+            {
+              "type": 1,
+              "value": "n"
+            },
+            {
+              "type": 0,
+              "value": "個其他用戶已點贊"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "l+ikU1": [
+    {
+      "type": 1,
+      "value": "plan"
+    },
+    {
+      "type": 0,
+      "value": "提供"
+    }
+  ],
+  "l3H1EK": [
+    {
+      "type": 0,
+      "value": "邀請你的好友"
+    }
+  ],
+  "l3nTjd": [
+    {
+      "type": 0,
+      "value": "從記憶種子詞組衍生出基本金鑰"
+    }
+  ],
+  "lCILNz": [
+    {
+      "type": 0,
+      "value": "立即購買"
+    }
+  ],
+  "lD3+8a": [
+    {
+      "type": 0,
+      "value": "付款"
+    }
+  ],
+  "lEnclp": [
+    {
+      "type": 0,
+      "value": "我的事件:  "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lPWASz": [
+    {
+      "type": 0,
+      "value": "Snort nostr 地址"
+    }
+  ],
+  "lTbT3s": [
+    {
+      "type": 0,
+      "value": "錢包密碼"
+    }
+  ],
+  "lbr3Lq": [
+    {
+      "type": 0,
+      "value": "複製連結"
+    }
+  ],
+  "lfOesV": [
+    {
+      "type": 0,
+      "value": "非打閃"
+    }
+  ],
+  "lgg1KN": [
+    {
+      "type": 0,
+      "value": "帳戶頁面"
+    }
+  ],
+  "ll3xBp": [
+    {
+      "type": 0,
+      "value": "圖片代理服務"
+    }
+  ],
+  "lnaT9F": [
+    {
+      "type": 0,
+      "value": "關注 "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "lsNFM1": [
+    {
+      "type": 0,
+      "value": "點擊以從 "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " 加載內容"
+    }
+  ],
+  "lvlPhZ": [
+    {
+      "type": 0,
+      "value": "支付發票"
+    }
+  ],
+  "m/59y2": [
+    {
+      "type": 0,
+      "value": "Zap 請求"
+    }
+  ],
+  "m6h2Eg": [
+    {
+      "type": 0,
+      "value": "處理者建議"
+    }
+  ],
+  "mCEKiZ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 音符已被靜音"
+    }
+  ],
+  "mErPop": [
+    {
+      "type": 0,
+      "value": "看起來你還沒有 nostr 地址，查看 "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " 以購買！"
+    }
+  ],
+  "mFtdYh": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " 工人繼電器"
+    }
+  ],
+  "mKAr6h": [
+    {
+      "type": 0,
+      "value": "全部關注"
+    }
+  ],
+  "mKh2HS": [
+    {
+      "type": 0,
+      "value": "文件上傳服務"
+    }
+  ],
+  "mKhgP9": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "已打閃"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "已打閃"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
+  "mOFG3K": [
+    {
+      "type": 0,
+      "value": "開始"
+    }
+  ],
+  "mfe8RW": [
+    {
+      "type": 0,
+      "value": "選項："
+    },
+    {
+      "type": 1,
+      "value": "n"
+    }
+  ],
+  "mmPSWH": [
+    {
+      "type": 0,
+      "value": "僅讀"
+    }
+  ],
+  "n1Whvj": [
+    {
+      "type": 0,
+      "value": "切換"
+    }
+  ],
+  "n5l7tP": [
+    {
+      "type": 0,
+      "value": "基於時間的日曆事件"
+    }
+  ],
+  "n8k1SG": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "MiB"
+    }
+  ],
+  "nD4frR": [
+    {
+      "type": 0,
+      "value": "出價確認"
+    }
+  ],
+  "nDejmx": [
+    {
+      "type": 0,
+      "value": "解除屏蔽"
+    }
+  ],
+  "nGBrvw": [
+    {
+      "type": 0,
+      "value": "收藏"
+    }
+  ],
+  "nGGDsi": [
+    {
+      "type": 0,
+      "value": "以允許通知"
+    }
+  ],
+  "nIchMQ": [
+    {
+      "type": 0,
+      "value": "正在搜索帳戶活動（"
+    },
+    {
+      "type": 1,
+      "value": "progress"
+    },
+    {
+      "type": 0,
+      "value": "）"
+    }
+  ],
+  "nPHrqp": [
+    {
+      "type": 0,
+      "value": "Coinjoin Pool"
+    }
+  ],
+  "nUT0Lv": [
+    {
+      "type": 0,
+      "value": "工具"
+    }
+  ],
+  "nWQFic": [
+    {
+      "type": 0,
+      "value": "續訂"
+    }
+  ],
+  "nihgfo": [
+    {
+      "type": 0,
+      "value": "聆聽本文"
+    }
+  ],
+  "nwZXeh": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 已屏蔽"
+    }
+  ],
+  "o/gK53": [
+    {
+      "type": 0,
+      "value": "面板"
+    }
+  ],
+  "o7e+nJ": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 個粉絲"
+    }
+  ],
+  "oJ+JJN": [
+    {
+      "type": 0,
+      "value": "什麼都沒找到 :/"
+    }
+  ],
+  "odFwjL": [
+    {
+      "type": 0,
+      "value": "僅關注"
+    }
+  ],
+  "ojzbwv": [
+    {
+      "type": 0,
+      "value": "嘿，看起來你還沒有 nostr 地址，你應該去獲取一個！查看 "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
+  "ozZ2Cj": [
+    {
+      "type": 0,
+      "value": "徽章獎"
+    }
+  ],
+  "p4N05H": [
+    {
+      "type": 0,
+      "value": "上傳"
+    }
+  ],
+  "p9Ps2l": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "y"
+    },
+    {
+      "type": 0,
+      "value": " 有中繼器 ("
+    },
+    {
+      "type": 1,
+      "value": "percent"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "pEEBFk": [
+    {
+      "type": 0,
+      "value": "可靠的繼電器"
+    }
+  ],
+  "pI+77w": [
+    {
+      "type": 0,
+      "value": "可從 Snort 中繼器下載備份"
+    }
+  ],
+  "pRess9": [
+    {
+      "type": 0,
+      "value": "打閃池"
+    }
+  ],
+  "plOM0t": [
+    {
+      "type": 0,
+      "value": "自訂表情符號"
+    }
+  ],
+  "plg2Ua": [
+    {
+      "type": 0,
+      "value": "頻道靜音使用者"
+    }
+  ],
+  "puLNUJ": [
+    {
+      "type": 0,
+      "value": "置頂"
+    }
+  ],
+  "pyjJ5f": [
+    {
+      "type": 0,
+      "value": "Nostr Marketplace (適用於彈性市場)"
+    }
+  ],
+  "pzTOmv": [
+    {
+      "type": 0,
+      "value": "粉絲"
+    }
+  ],
+  "q3OuMw": [
+    {
+      "type": 0,
+      "value": "Torrent 評論"
+    }
+  ],
+  "qAY40L": [
+    {
+      "type": 0,
+      "value": "基於日期的日曆事件"
+    }
+  ],
+  "qBYNMb": [
+    {
+      "type": 0,
+      "value": "群組主題回覆"
+    }
+  ],
+  "qD9EUF": [
+    {
+      "type": 0,
+      "value": "給你的 Snort nostr 地址建立電子郵件 <> 私信橋"
+    }
+  ],
+  "qDwvZ4": [
+    {
+      "type": 0,
+      "value": "未知錯誤"
+    }
+  ],
+  "qFIVx4": [
+    {
+      "type": 0,
+      "value": "個人資料徽章"
+    }
+  ],
+  "qMePPG": [
+    {
+      "type": 0,
+      "value": "筆記"
+    }
+  ],
+  "qMx1sA": [
+    {
+      "type": 0,
+      "value": "默認打閃金額"
+    }
+  ],
+  "qUJTsT": [
+    {
+      "type": 0,
+      "value": "已屏蔽"
+    }
+  ],
+  "qXCbgZ": [
+    {
+      "type": 0,
+      "value": "解鎖"
+    }
+  ],
+  "qZsKBR": [
+    {
+      "type": 0,
+      "value": "更新 "
+    },
+    {
+      "type": 1,
+      "value": "tier"
+    }
+  ],
+  "qcJFEJ": [
+    {
+      "type": 0,
+      "value": "已停用通知 API"
+    }
+  ],
+  "qdGuQo": [
+    {
+      "type": 0,
+      "value": "你的私鑰是（不要與任何人分享）"
+    }
+  ],
+  "qfmMQh": [
+    {
+      "type": 0,
+      "value": "该筆記已被静音"
+    }
+  ],
+  "qkvYUb": [
+    {
+      "type": 0,
+      "value": "添加至個人檔案"
+    }
+  ],
+  "qmJ8kD": [
+    {
+      "type": 0,
+      "value": "翻譯失敗"
+    }
+  ],
+  "qtWLmt": [
+    {
+      "type": 0,
+      "value": "點贊"
+    }
+  ],
+  "qyJtWy": [
+    {
+      "type": 0,
+      "value": "顯示更少"
+    }
+  ],
+  "qydxOd": [
+    {
+      "type": 0,
+      "value": "科學"
+    }
+  ],
+  "qz9fty": [
+    {
+      "type": 0,
+      "value": "PIN 碼不正確"
+    }
+  ],
+  "r3C4x/": [
+    {
+      "type": 0,
+      "value": "軟件"
+    }
+  ],
+  "r5srDR": [
+    {
+      "type": 0,
+      "value": "輸入錢包密碼"
+    }
+  ],
+  "rAQG0X": [
+    {
+      "type": 0,
+      "value": "中繼清單元資料"
+    }
+  ],
+  "rIsVe+": [
+    {
+      "type": 0,
+      "value": "公開聊天清單"
+    }
+  ],
+  "rMgF34": [
+    {
+      "type": 0,
+      "value": "立即備份"
+    }
+  ],
+  "rRRXtB": [
+    {
+      "type": 0,
+      "value": "電擊"
+    }
+  ],
+  "rT14Ow": [
+    {
+      "type": 0,
+      "value": "添加中繼器"
+    }
+  ],
+  "reFEEC": [
+    {
+      "type": 0,
+      "value": "報告"
+    }
+  ],
+  "rfuMjE": [
+    {
+      "type": 0,
+      "value": "（默認）"
+    }
+  ],
+  "rkM7l8": [
+    {
+      "type": 0,
+      "value": "加密直接訊息"
+    }
+  ],
+  "rmdsT4": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "天"
+    }
+  ],
+  "rn52n9": [
+    {
+      "type": 0,
+      "value": "公開聊天頻道"
+    }
+  ],
+  "rx1i0i": [
+    {
+      "type": 0,
+      "value": "短鏈接"
+    }
+  ],
+  "sFUkSN": [
+    {
+      "type": 0,
+      "value": "書籤集"
+    }
+  ],
+  "sKDn4e": [
+    {
+      "type": 0,
+      "value": "顯示徽章"
+    }
+  ],
+  "sUNhQE": [
+    {
+      "type": 0,
+      "value": "用戶"
+    }
+  ],
+  "sZQzjQ": [
+    {
+      "type": 0,
+      "value": "解析打閃拆分失敗了："
+    },
+    {
+      "type": 1,
+      "value": "input"
+    }
+  ],
+  "saInmO": [
+    {
+      "type": 0,
+      "value": "顯示的中繼名稱與輸入的完整 URL 不相同。"
+    }
+  ],
+  "saorw+": [
+    {
+      "type": 0,
+      "value": "事件刪除請求"
+    }
+  ],
+  "sfL/O+": [
+    {
+      "type": 0,
+      "value": "已靜音筆記將不顯示"
+    }
+  ],
+  "t79a6U": [
+    {
+      "type": 0,
+      "value": "連接成功："
+    }
+  ],
+  "tDDiRL": [
+    {
+      "type": 0,
+      "value": "興趣清單"
+    }
+  ],
+  "tFpT/O": [
+    {
+      "type": 0,
+      "value": "釋放工件集"
+    }
+  ],
+  "tO1oq9": [
+    {
+      "type": 0,
+      "value": "視訊活動"
+    }
+  ],
+  "tOdNiY": [
+    {
+      "type": 0,
+      "value": "深色"
+    }
+  ],
+  "tRGdV1": [
+    {
+      "type": 0,
+      "value": "版本化加密"
+    }
+  ],
+  "tU0ADf": [
+    {
+      "type": 0,
+      "value": "未知 NIP-"
+    },
+    {
+      "type": 1,
+      "value": "x"
+    }
+  ],
+  "tVuVg9": [
+    {
+      "type": 0,
+      "value": "視訊觀賞活動"
+    }
+  ],
+  "tf1lIh": [
+    {
+      "type": 0,
+      "value": "免費"
+    }
+  ],
+  "th5lxp": [
+    {
+      "type": 0,
+      "value": "將筆記發送到你的寫入中繼器的子集"
+    }
+  ],
+  "thnRpU": [
+    {
+      "type": 0,
+      "value": "驗證 NIP-05 可以幫助："
+    }
+  ],
+  "tj6kdX": [
+    {
+      "type": 1,
+      "value": "sign"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " 聰"
+    }
+  ],
+  "tjpYlr": [
+    {
+      "type": 0,
+      "value": "中繼器指標"
+    }
+  ],
+  "ttxS0b": [
+    {
+      "type": 0,
+      "value": "支持者徽章"
+    }
+  ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "狀態"
+    }
+  ],
+  "u/vOPu": [
+    {
+      "type": 0,
+      "value": "已支付"
+    }
+  ],
+  "u4I8q8": [
+    {
+      "type": 0,
+      "value": "針腳清單"
+    }
+  ],
+  "u81G9+": [
+    {
+      "type": 0,
+      "value": "正常運行時間"
+    }
+  ],
+  "u9NoC1": [
+    {
+      "type": 0,
+      "value": "名稱必須少於 "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " 個字符"
+    }
+  ],
+  "uCk8r+": [
+    {
+      "type": 0,
+      "value": "已經有帳戶？"
+    }
+  ],
+  "uD7Els": [
+    {
+      "type": 0,
+      "value": "檔案中的外部身分"
+    }
+  ],
+  "uJaMkO": [
+    {
+      "type": 0,
+      "value": "接收 DM 的中繼清單"
+    }
+  ],
+  "uSV4Ti": [
+    {
+      "type": 0,
+      "value": "轉發需要人工確認"
+    }
+  ],
+  "uc0din": [
+    {
+      "type": 0,
+      "value": "將聰拆分發送到"
+    }
+  ],
+  "ufvXH1": [
+    {
+      "type": 0,
+      "value": "發現 "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 個事件"
+    }
+  ],
+  "uhu5aG": [
+    {
+      "type": 0,
+      "value": "公開"
+    }
+  ],
+  "un1nGw": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 條筆記"
+    }
+  ],
+  "usAvMr": [
+    {
+      "type": 0,
+      "value": "編輯個人檔案"
+    }
+  ],
+  "v8lolG": [
+    {
+      "type": 0,
+      "value": "開始聊天"
+    }
+  ],
+  "vB3oQ/": [
+    {
+      "type": 0,
+      "value": "必須是一個聯繫人列表或公鑰列表"
+    }
+  ],
+  "vBsZhD": [
+    {
+      "type": 0,
+      "value": "社群清單"
+    }
+  ],
+  "vN5UH8": [
+    {
+      "type": 0,
+      "value": "頭像"
+    }
+  ],
+  "vU/Q5i": [
+    {
+      "type": 0,
+      "value": "該工具將搜索所有關注最近發佈的事件，並刪除6個月內未發佈事件的關注。"
+    }
+  ],
+  "vZ4quW": [
+    {
+      "type": 0,
+      "value": "NIP-05 是一種基於 DNS 的驗證規範，可幫助驗證你是真實用戶。"
+    }
+  ],
+  "vhlWFg": [
+    {
+      "type": 0,
+      "value": "投票選項"
+    }
+  ],
+  "vlbWtt": [
+    {
+      "type": 0,
+      "value": "獲取免費的"
+    }
+  ],
+  "voxBKC": [
+    {
+      "type": 0,
+      "value": "好友關注"
+    }
+  ],
+  "vxwnbh": [
+    {
+      "type": 0,
+      "value": "適用於所有發佈事件的工作量"
+    }
+  ],
+  "w1Fanr": [
+    {
+      "type": 0,
+      "value": "商業"
+    }
+  ],
+  "w6qrwX": [
+    {
+      "type": 0,
+      "value": "敏感內容"
+    }
+  ],
+  "wEQDC6": [
+    {
+      "type": 0,
+      "value": "編輯"
+    }
+  ],
+  "wOyDTB": [
+    {
+      "type": 0,
+      "value": "檔案儲存伺服器清單"
+    }
+  ],
+  "wSZR47": [
+    {
+      "type": 0,
+      "value": "提交"
+    }
+  ],
+  "wc9st7": [
+    {
+      "type": 0,
+      "value": "媒體附件"
+    }
+  ],
+  "whSrs+": [
+    {
+      "type": 0,
+      "value": "Nostr 公開聊天"
+    }
+  ],
+  "wih7iJ": [
+    {
+      "type": 0,
+      "value": "名稱已被屏蔽"
+    }
+  ],
+  "wlWMuh": [
+    {
+      "type": 0,
+      "value": "補丁"
+    }
+  ],
+  "wofVHy": [
+    {
+      "type": 0,
+      "value": "審核"
+    }
+  ],
+  "wqyN/i": [
+    {
+      "type": 0,
+      "value": "在 "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": " 瞭解有關 "
+    },
+    {
+      "type": 1,
+      "value": "service"
+    },
+    {
+      "type": 0,
+      "value": " 的更多信息"
+    }
+  ],
+  "wtLjP6": [
+    {
+      "type": 0,
+      "value": "複製ID"
+    }
+  ],
+  "x+3fl6": [
+    {
+      "type": 0,
+      "value": "我的繼電器"
+    }
+  ],
+  "x/Fx2P": [
+    {
+      "type": 0,
+      "value": "將部份打閃分配到資金庫來資助你使用的服務！"
+    }
+  ],
+  "x82IOl": [
+    {
+      "type": 0,
+      "value": "静音"
+    }
+  ],
+  "xEjBS7": [
+    {
+      "type": 0,
+      "value": "爲你推薦"
+    }
+  ],
+  "xIcAOU": [
+    {
+      "type": 0,
+      "value": "根據 "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " 的投票"
+    }
+  ],
+  "xIoGG9": [
+    {
+      "type": 0,
+      "value": "前往"
+    }
+  ],
+  "xPCyu+": [
+    {
+      "type": 0,
+      "value": "nostr：URI 方案"
+    }
+  ],
+  "xaj9Ba": [
+    {
+      "type": 0,
+      "value": "供應方"
+    }
+  ],
+  "xbVgIm": [
+    {
+      "type": 0,
+      "value": "自動加載媒體"
+    }
+  ],
+  "xhQMeQ": [
+    {
+      "type": 0,
+      "value": "有效期"
+    }
+  ],
+  "xl4s/X": [
+    {
+      "type": 0,
+      "value": "附加條款："
+    }
+  ],
+  "xmcVZ0": [
+    {
+      "type": 0,
+      "value": "搜索"
+    }
+  ],
+  "xybOUv": [
+    {
+      "type": 0,
+      "value": "粉絲"
+    }
+  ],
+  "y/bmsG": [
+    {
+      "type": 0,
+      "value": "允許"
+    }
+  ],
+  "y1Z3or": [
+    {
+      "type": 0,
+      "value": "語言"
+    }
+  ],
+  "yAztTU": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " e聰"
+    }
+  ],
+  "yCLnBC": [
+    {
+      "type": 0,
+      "value": "LNURL 或閃電地址"
+    }
+  ],
+  "yLzgxH": [
+    {
+      "type": 0,
+      "value": "熱門繼電器"
+    }
+  ],
+  "yeX8yA": [
+    {
+      "type": 0,
+      "value": "原生應用程式"
+    }
+  ],
+  "z3UjXR": [
+    {
+      "type": 0,
+      "value": "除錯"
+    }
+  ],
+  "z3Ukvq": [
+    {
+      "type": 0,
+      "value": "草擬長篇內容"
+    }
+  ],
+  "zCb8fX": [
+    {
+      "type": 0,
+      "value": "權重"
+    }
+  ],
+  "zFegDD": [
+    {
+      "type": 0,
+      "value": "聯絡"
+    }
+  ],
+  "zINlao": [
+    {
+      "type": 0,
+      "value": "所有者"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "全部"
+    }
+  ],
+  "zcaOTs": [
+    {
+      "type": 0,
+      "value": "以聰為單位的打閃金額"
+    }
+  ],
+  "zi9MdS": [
+    {
+      "type": 0,
+      "value": "國際象棋 (PGN)"
+    }
+  ],
+  "zm6qS1": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " 分鐘閱讀時間"
+    }
+  ],
+  "zonsdq": [
+    {
+      "type": 0,
+      "value": "加載 LNURL 服務失敗"
+    }
+  ],
+  "zvCDao": [
+    {
+      "type": 0,
+      "value": "自動顯示最新筆記"
+    }
+  ],
+  "zx0myy": [
+    {
+      "type": 0,
+      "value": "參與者"
+    }
+  ]
 }
