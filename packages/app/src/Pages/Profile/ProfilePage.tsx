@@ -76,26 +76,26 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
     }
   }, [user, navigate])
 
+  const resolvedParamId = propId || params.id
   useEffect(() => {
     if (!id) {
-      const resolvedId = propId || params.id
-      if (resolvedId?.match(EmailRegex)) {
-        const [name, domain] = resolvedId.split('@')
+      if (resolvedParamId?.match(EmailRegex)) {
+        const [name, domain] = resolvedParamId.split('@')
         fetchNip05Pubkey(name, domain).then(a => {
           setId(a)
         })
       } else {
-        const nav = tryParseNostrLink(resolvedId ?? '')
+        const nav = tryParseNostrLink(resolvedParamId ?? '')
         if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
           setId(nav.id)
           setRelays(nav.relays)
         } else {
-          setId(parseId(resolvedId ?? ''))
+          setId(parseId(resolvedParamId ?? ''))
         }
       }
+      setTab(ProfileTabSelectors.Notes)
     }
-    setTab(ProfileTabSelectors.Notes)
-  }, [id, propId, params])
+  }, [id, resolvedParamId])
 
   function tabContent() {
     if (!id) return null
