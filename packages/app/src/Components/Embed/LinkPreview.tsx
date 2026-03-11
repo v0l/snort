@@ -1,84 +1,89 @@
-import { useEffect, useState } from "react";
-import { LRUCache } from "typescript-lru-cache";
+import { useEffect, useState } from 'react'
+import { LRUCache } from 'typescript-lru-cache'
 
-import { MediaElement } from "@/Components/Embed/MediaElement";
-import Spinner from "@/Components/Icons/Spinner";
-import { type LinkPreviewData, NostrServices } from "@/External";
+import { MediaElement } from '@/Components/Embed/MediaElement'
+import Spinner from '@/Components/Icons/Spinner'
+import { type LinkPreviewData, NostrServices } from '@/External'
 
-import { ProxyImg } from "../ProxyImg";
-import GenericPlayer from "./GenericPlayer";
+import { ProxyImg } from '../ProxyImg'
+import GenericPlayer from './GenericPlayer'
 
 async function fetchUrlPreviewInfo(url: string) {
-  const api = new NostrServices();
+  const api = new NostrServices()
   try {
-    return await api.linkPreview(url.endsWith(")") ? url.slice(0, -1) : url);
+    return await api.linkPreview(url.endsWith(')') ? url.slice(0, -1) : url)
   } catch (e) {
-    console.warn(`Failed to load link preview`, url);
+    console.warn(`Failed to load link preview`, url)
   }
 }
 
 const cache = new LRUCache<string, LinkPreviewData>({
   maxSize: 1000,
-});
+})
 
 const LinkPreview = ({ url }: { url: string }) => {
-  const uu = new URL(url);
-  const [preview, setPreview] = useState<LinkPreviewData | null>(cache.get(url));
+  const uu = new URL(url)
+  const [preview, setPreview] = useState<LinkPreviewData | null>(cache.get(url))
 
   useEffect(() => {
-    (async () => {
-      if (preview) return;
-      const data = await fetchUrlPreviewInfo(url);
+    if (cache.get(url)) return
+    let cancelled = false
+    ;(async () => {
+      const data = await fetchUrlPreviewInfo(url)
+      if (cancelled) return
       if (data) {
-        const type = data.og_tags?.find(a => a[0].toLowerCase() === "og:type");
-        const canPreviewType = type?.[1].startsWith("image") || type?.[1].startsWith("video") || false;
+        const type = data.og_tags?.find(a => a[0].toLowerCase() === 'og:type')
+        const canPreviewType = type?.[1].startsWith('image') || type?.[1].startsWith('video') || false
         if (canPreviewType || data.image) {
-          setPreview(data);
-          cache.set(url, data);
-          return;
+          setPreview(data)
+          cache.set(url, data)
+          return
         }
       }
 
-      setPreview(null);
-    })();
-  }, [url]);
+      setPreview(null)
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [url])
 
   if (preview === null)
     return (
       <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="text-highlight">
         {url}
       </a>
-    );
+    )
 
   function previewElement() {
-    const type = preview?.og_tags?.find(a => a[0].toLowerCase() === "og:type")?.[1];
-    if (type?.startsWith("video")) {
-      const urlTags = ["og:video:secure_url", "og:video:url", "og:video"];
-      const link = preview?.og_tags?.find(a => urlTags.includes(a[0].toLowerCase()))?.[1];
-      const videoType = preview?.og_tags?.find(a => a[0].toLowerCase() === "og:video:type")?.[1] ?? "video/mp4";
-      if (link && videoType.startsWith("video/")) {
-        return <MediaElement src={link} mime={videoType} />;
+    const type = preview?.og_tags?.find(a => a[0].toLowerCase() === 'og:type')?.[1]
+    if (type?.startsWith('video')) {
+      const urlTags = ['og:video:secure_url', 'og:video:url', 'og:video']
+      const link = preview?.og_tags?.find(a => urlTags.includes(a[0].toLowerCase()))?.[1]
+      const videoType = preview?.og_tags?.find(a => a[0].toLowerCase() === 'og:video:type')?.[1] ?? 'video/mp4'
+      if (link && videoType.startsWith('video/')) {
+        return <MediaElement src={link} mime={videoType} />
       }
-      if (link && videoType.startsWith("text/html") && preview?.image) {
-        return <GenericPlayer url={link} poster={preview?.image} />;
+      if (link && videoType.startsWith('text/html') && preview?.image) {
+        return <GenericPlayer url={link} poster={preview?.image} />
       }
     }
-    if (type?.startsWith("image")) {
-      const urlTags = ["og:image:secure_url", "og:image:url", "og:image"];
-      const link = preview?.og_tags?.find(a => urlTags.includes(a[0].toLowerCase()))?.[1];
-      const videoType = preview?.og_tags?.find(a => a[0].toLowerCase() === "og:image:type")?.[1] ?? "image/png";
+    if (type?.startsWith('image')) {
+      const urlTags = ['og:image:secure_url', 'og:image:url', 'og:image']
+      const link = preview?.og_tags?.find(a => urlTags.includes(a[0].toLowerCase()))?.[1]
+      const videoType = preview?.og_tags?.find(a => a[0].toLowerCase() === 'og:image:type')?.[1] ?? 'image/png'
       if (link) {
-        return <MediaElement src={link} mime={videoType} />;
+        return <MediaElement src={link} mime={videoType} />
       }
     }
     if (preview?.image) {
-      let src = preview?.image;
-      if (!preview.image.startsWith("http")) {
-        src = `${uu.protocol}//${uu.hostname}/${preview.image}`;
+      let src = preview?.image
+      if (!preview.image.startsWith('http')) {
+        src = `${uu.protocol}//${uu.hostname}/${preview.image}`
       }
-      return <ProxyImg src={src} className="w-full object-cover aspect-video" />;
+      return <ProxyImg src={src} className="w-full object-cover aspect-video" />
     }
-    return null;
+    return null
   }
 
   return (
@@ -97,7 +102,7 @@ const LinkPreview = ({ url }: { url: string }) => {
       )}
       {!preview && <Spinner className="items-center" />}
     </div>
-  );
-};
+  )
+}
 
-export default LinkPreview;
+export default LinkPreview

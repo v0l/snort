@@ -1,146 +1,146 @@
-import { EventKind, type NostrEvent, RequestBuilder, type TaggedNostrEvent } from "@snort/system";
-import { WorkerRelayInterface } from "@snort/worker-relay";
-import { memo, useEffect, useMemo, useState } from "react";
-import { useNavigationType } from "react-router-dom";
+import { EventKind, type NostrEvent, RequestBuilder, type TaggedNostrEvent } from '@snort/system'
+import { WorkerRelayInterface } from '@snort/worker-relay'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigationType } from 'react-router-dom'
 
-import { Relay } from "@/Cache";
-import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
-import useTimelineFeed, { type TimelineFeedOptions, type TimelineSubject } from "@/Feed/TimelineFeed";
-import useFollowsControls from "@/Hooks/useFollowControls";
-import useHistoryState from "@/Hooks/useHistoryState";
-import useLogin from "@/Hooks/useLogin";
-import { System } from "@/system";
+import { Relay } from '@/Cache'
+import { TimelineRenderer } from '@/Components/Feed/TimelineRenderer'
+import useTimelineFeed, { type TimelineFeedOptions, type TimelineSubject } from '@/Feed/TimelineFeed'
+import useFollowsControls from '@/Hooks/useFollowControls'
+import useHistoryState from '@/Hooks/useHistoryState'
+import useLogin from '@/Hooks/useLogin'
+import { System } from '@/system'
 
 let forYouFeed = {
   events: [] as NostrEvent[],
   created_at: 0,
-};
+}
 
-let getForYouFeedPromise: Promise<NostrEvent[]> | null = null;
-let reactionsRequested = false;
+let getForYouFeedPromise: Promise<NostrEvent[]> | null = null
+let reactionsRequested = false
 
 const getReactedByFollows = (follows: string[]) => {
-  const rb1 = new RequestBuilder("follows:reactions");
-  rb1.withFilter().kinds([EventKind.Reaction, EventKind.ZapReceipt]).authors(follows).limit(100);
-  const q = System.Query(rb1);
+  const rb1 = new RequestBuilder('follows:reactions')
+  rb1.withFilter().kinds([EventKind.Reaction, EventKind.ZapReceipt]).authors(follows).limit(100)
+  const q = System.Query(rb1)
   setTimeout(() => {
-    q.cancel();
-    const reactedIds = new Set<string>();
+    q.cancel()
+    const reactedIds = new Set<string>()
     q.snapshot.forEach((ev: TaggedNostrEvent) => {
-      const reactedTo = ev.tags.find((t: string[]) => t[0] === "e")?.[1];
+      const reactedTo = ev.tags.find((t: string[]) => t[0] === 'e')?.[1]
       if (reactedTo) {
-        reactedIds.add(reactedTo);
+        reactedIds.add(reactedTo)
       }
-    });
-    const rb2 = new RequestBuilder("follows:reactedEvents");
-    rb2.withFilter().ids(Array.from(reactedIds));
-    System.Query(rb2);
-  }, 500);
-};
+    })
+    const rb2 = new RequestBuilder('follows:reactedEvents')
+    rb2.withFilter().ids(Array.from(reactedIds))
+    System.Query(rb2)
+  }, 500)
+}
 
 export const ForYouTab = memo(function ForYouTab() {
-  const [notes, setNotes] = useState<NostrEvent[]>(forYouFeed.events);
+  const [notes, setNotes] = useState<NostrEvent[]>(forYouFeed.events)
   const login = useLogin(s => ({
     publicKey: s.publicKey,
     tags: s.state.getList(EventKind.InterestSet),
-  }));
-  const navigationType = useNavigationType();
-  const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt");
-  const { followList } = useFollowsControls();
+  }))
+  const navigationType = useNavigationType()
+  const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), 'openedAt')
+  const { followList } = useFollowsControls()
 
   if (!reactionsRequested && login.publicKey) {
-    reactionsRequested = true;
+    reactionsRequested = true
     // on first load, ask relays for reactions to events by follows
-    getReactedByFollows(followList);
+    getReactedByFollows(followList)
   }
 
   const subject = useMemo(
     () =>
       ({
-        type: "pubkey",
+        type: 'pubkey',
         items: followList,
         discriminator: login.publicKey?.slice(0, 12),
         extra: rb => {
           if (login.tags.length > 0) {
-            rb.withFilter().kinds([EventKind.TextNote]).tags(login.tags);
+            rb.withFilter().kinds([EventKind.TextNote]).tags(login.tags)
           }
         },
       }) as TimelineSubject,
     [login.publicKey, followList, login.tags],
-  );
+  )
   // also get "follows" feed so data is loaded from relays and there's a fallback if "for you" feed is empty
-  const latestFeed = useTimelineFeed(subject, { method: "TIME_RANGE", now: openedAt } as TimelineFeedOptions);
+  const latestFeed = useTimelineFeed(subject, { method: 'TIME_RANGE', now: openedAt } as TimelineFeedOptions)
   const filteredLatestFeed = useMemo(() => {
     return (
       latestFeed.main?.filter((ev: NostrEvent) => {
         // no replies
-        return !ev.tags.some((tag: string[]) => tag[0] === "e");
+        return !ev.tags.some((tag: string[]) => tag[0] === 'e')
       }) ?? []
-    );
-  }, [latestFeed.main, subject]);
+    )
+  }, [latestFeed.main])
 
-  const getFeed = () => {
+  const getFeed = useCallback(() => {
     if (!login.publicKey) {
-      return [];
+      return []
     }
     if (!getForYouFeedPromise && Relay instanceof WorkerRelayInterface) {
-      getForYouFeedPromise = Relay.forYouFeed(login.publicKey);
+      getForYouFeedPromise = Relay.forYouFeed(login.publicKey)
     }
     getForYouFeedPromise?.then(notes => {
-      getForYouFeedPromise = null;
+      getForYouFeedPromise = null
       if (notes.length < 10) {
         setTimeout(() => {
           if (Relay instanceof WorkerRelayInterface) {
-            getForYouFeedPromise = Relay.forYouFeed(login.publicKey!);
+            getForYouFeedPromise = Relay.forYouFeed(login.publicKey!)
           }
-        }, 1000);
+        }, 1000)
       }
       forYouFeed = {
         events: notes,
         created_at: Date.now(),
-      };
-      setNotes(notes);
-    });
-  };
+      }
+      setNotes(notes)
+    })
+  }, [login.publicKey])
 
   useEffect(() => {
     if (
       forYouFeed.events.length < 10 ||
-      (navigationType !== "POP" && Date.now() - forYouFeed.created_at > 1000 * 60 * 2)
+      (navigationType !== 'POP' && Date.now() - forYouFeed.created_at > 1000 * 60 * 2)
     ) {
-      getFeed();
+      getFeed()
     }
-  }, []);
+  }, [navigationType, getFeed])
 
   const combinedFeed = useMemo(() => {
-    const seen = new Set<string>();
-    const combined = [];
-    let i = 0; // Index for `notes`
-    let j = 0; // Index for `latestFeed.main`
-    let count = 0; // Combined feed count to decide when to insert from `latestFeed`
+    const seen = new Set<string>()
+    const combined = []
+    let i = 0 // Index for `notes`
+    let j = 0 // Index for `latestFeed.main`
+    let count = 0 // Combined feed count to decide when to insert from `latestFeed`
 
     while (i < notes.length || j < (filteredLatestFeed.length ?? 0)) {
       // Insert approximately 1 event from `latestFeed` for every 4 events from `notes`
       if (count % 5 === 0 && j < (filteredLatestFeed.length ?? 0)) {
-        const ev = filteredLatestFeed[j];
-        if (!seen.has(ev.id) && !ev.tags.some((a: string[]) => a[0] === "e")) {
-          seen.add(ev.id);
-          combined.push(ev);
+        const ev = filteredLatestFeed[j]
+        if (!seen.has(ev.id) && !ev.tags.some((a: string[]) => a[0] === 'e')) {
+          seen.add(ev.id)
+          combined.push(ev)
         }
-        j++;
+        j++
       } else if (i < notes.length) {
         // Add from `notes` otherwise
-        const ev = notes[i];
+        const ev = notes[i]
         if (!seen.has(ev.id)) {
-          seen.add(ev.id);
-          combined.push(ev);
+          seen.add(ev.id)
+          combined.push(ev)
         }
-        i++;
+        i++
       }
-      count++;
+      count++
     }
-    return combined;
-  }, [notes, filteredLatestFeed]);
+    return combined
+  }, [notes, filteredLatestFeed])
 
   const frags = useMemo(() => {
     return [
@@ -148,8 +148,8 @@ export const ForYouTab = memo(function ForYouTab() {
         events: combinedFeed as Array<TaggedNostrEvent>,
         refTime: Date.now(),
       },
-    ];
-  }, [notes]);
+    ]
+  }, [combinedFeed])
 
-  return <TimelineRenderer frags={frags} latest={[]} loadMore={() => latestFeed.loadMore()} showLatest={() => {}} />;
-});
+  return <TimelineRenderer frags={frags} latest={[]} loadMore={() => latestFeed.loadMore()} showLatest={() => {}} />
+})

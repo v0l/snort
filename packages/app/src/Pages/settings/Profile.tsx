@@ -1,94 +1,119 @@
-import { fetchNip05Pubkey, LNURL } from "@snort/shared";
-import { mapEventToProfile } from "@snort/system";
-import { useUserProfile } from "@snort/system-react";
-import { useEffect, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-import { Link } from "react-router-dom";
+import { fetchNip05Pubkey, LNURL } from '@snort/shared'
+import { mapEventToProfile } from '@snort/system'
+import { useUserProfile } from '@snort/system-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
+import { Link } from 'react-router-dom'
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
-import messages from "@/Components/messages";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
-import { debounce, openFile } from "@/Utils";
-import { MaxAboutLength, MaxUsernameLength } from "@/Utils/Const";
-import useFileUpload from "@/Utils/Upload";
-import AvatarEditor from "@/Components/User/AvatarEditor";
+import AsyncButton from '@/Components/Button/AsyncButton'
+import { ErrorOrOffline } from '@/Components/ErrorOrOffline'
+import messages from '@/Components/messages'
+import AvatarEditor from '@/Components/User/AvatarEditor'
+import useEventPublisher from '@/Hooks/useEventPublisher'
+import useLogin from '@/Hooks/useLogin'
+import { debounce, openFile } from '@/Utils'
+import { MaxAboutLength, MaxUsernameLength } from '@/Utils/Const'
+import useFileUpload from '@/Utils/Upload'
 
 export interface ProfileSettingsProps {
-  avatar?: boolean;
-  banner?: boolean;
+  avatar?: boolean
+  banner?: boolean
 }
 
 export default function ProfileSettings(props: ProfileSettingsProps) {
-  const { formatMessage } = useIntl();
-  const { id, publicKey, readonly } = useLogin(s => ({ id: s.id, publicKey: s.publicKey, readonly: s.readonly }));
-  const user = useUserProfile(publicKey ?? "");
-  const { publisher, system } = useEventPublisher();
-  const uploader = useFileUpload();
-  const [error, setError] = useState<Error>();
+  const { formatMessage } = useIntl()
+  const { id, publicKey, readonly } = useLogin(s => ({ id: s.id, publicKey: s.publicKey, readonly: s.readonly }))
+  const user = useUserProfile(publicKey ?? '')
+  const { publisher, system } = useEventPublisher()
+  const uploader = useFileUpload()
+  const [error, setError] = useState<Error>()
+  const isDirty = useRef(false)
 
-  const [name, setName] = useState<string>();
-  const [picture, setPicture] = useState<string>();
-  const [banner, setBanner] = useState<string>();
-  const [about, setAbout] = useState<string>();
-  const [website, setWebsite] = useState<string>();
-  const [nip05, setNip05] = useState<string>();
-  const [lud16, setLud16] = useState<string>();
-  const [nip05AddressValid, setNip05AddressValid] = useState<boolean>();
-  const [invalidNip05AddressMessage, setInvalidNip05AddressMessage] = useState<string>();
-  const [usernameValid, setUsernameValid] = useState<boolean>();
-  const [invalidUsernameMessage, setInvalidUsernameMessage] = useState<string>();
-  const [aboutValid, setAboutValid] = useState<boolean>();
-  const [invalidAboutMessage, setInvalidAboutMessage] = useState<string>();
-  const [lud16Valid, setLud16Valid] = useState<boolean>();
-  const [invalidLud16Message, setInvalidLud16Message] = useState<string>();
+  const [name, setName] = useState<string>()
+  const [picture, setPicture] = useState<string>()
+  const [banner, setBanner] = useState<string>()
+  const [about, setAbout] = useState<string>()
+  const [website, setWebsite] = useState<string>()
+  const [nip05, setNip05] = useState<string>()
+  const [lud16, setLud16] = useState<string>()
+  const [nip05AddressValid, setNip05AddressValid] = useState<boolean>()
+  const [invalidNip05AddressMessage, setInvalidNip05AddressMessage] = useState<string>()
+  const [usernameValid, setUsernameValid] = useState<boolean>()
+  const [invalidUsernameMessage, setInvalidUsernameMessage] = useState<string>()
+  const [aboutValid, setAboutValid] = useState<boolean>()
+  const [invalidAboutMessage, setInvalidAboutMessage] = useState<string>()
+  const [lud16Valid, setLud16Valid] = useState<boolean>()
+  const [invalidLud16Message, setInvalidLud16Message] = useState<string>()
 
   useEffect(() => {
-    if (user) {
-      setName(user.name);
-      setPicture(user.picture);
-      setBanner(user.banner);
-      setAbout(user.about);
-      setWebsite(user.website);
-      setNip05(user.nip05);
-      setLud16(user.lud16);
+    if (user && !isDirty.current) {
+      setName(user.name)
+      setPicture(user.picture)
+      setBanner(user.banner)
+      setAbout(user.about)
+      setWebsite(user.website)
+      setNip05(user.nip05)
+      setLud16(user.lud16)
     }
-  }, [user]);
+  }, [user])
+
+  const nip05NostrAddressVerification = useCallback(
+    async (nip05Domain: string | undefined, nip05Name: string | undefined) => {
+      try {
+        const result = await fetchNip05Pubkey(nip05Name!, nip05Domain!)
+        if (result) {
+          if (result === publicKey) {
+            setNip05AddressValid(true)
+          } else {
+            setInvalidNip05AddressMessage(
+              formatMessage({ defaultMessage: 'Nostr address does not belong to you', id: '01iNut' }),
+            )
+          }
+        } else {
+          setNip05AddressValid(false)
+          setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
+        }
+      } catch (e) {
+        setNip05AddressValid(false)
+        setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
+      }
+    },
+    [publicKey, formatMessage],
+  )
 
   useEffect(() => {
     return debounce(500, async () => {
       if (lud16) {
         try {
-          await new LNURL(lud16).load();
-          setLud16Valid(true);
-          setInvalidLud16Message("");
+          await new LNURL(lud16).load()
+          setLud16Valid(true)
+          setInvalidLud16Message('')
         } catch (e) {
-          setLud16Valid(false);
-          setInvalidLud16Message(formatMessage(messages.InvalidLud16));
+          setLud16Valid(false)
+          setInvalidLud16Message(formatMessage(messages.InvalidLud16))
         }
       } else {
-        setInvalidLud16Message("");
+        setInvalidLud16Message('')
       }
-    });
-  }, [lud16]);
+    })
+  }, [lud16, formatMessage])
 
   useEffect(() => {
     return debounce(500, async () => {
-      const Nip05AddressElements = nip05?.split("@") ?? [];
+      const Nip05AddressElements = nip05?.split('@') ?? []
       if ((nip05?.length ?? 0) === 0) {
-        setNip05AddressValid(false);
-        setInvalidNip05AddressMessage("");
+        setNip05AddressValid(false)
+        setInvalidNip05AddressMessage('')
       } else if (Nip05AddressElements.length < 2) {
-        setNip05AddressValid(false);
-        setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address));
+        setNip05AddressValid(false)
+        setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
       } else if (Nip05AddressElements.length === 2) {
-        nip05NostrAddressVerification(Nip05AddressElements.pop(), Nip05AddressElements.pop());
+        nip05NostrAddressVerification(Nip05AddressElements.pop(), Nip05AddressElements.pop())
       } else {
-        setNip05AddressValid(false);
+        setNip05AddressValid(false)
       }
-    });
-  }, [nip05]);
+    })
+  }, [nip05, formatMessage, nip05NostrAddressVerification])
 
   async function saveProfile() {
     // copy user object and delete internal fields
@@ -101,117 +126,99 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       website,
       nip05,
       lud16,
-    } as Record<string, string | number | undefined | boolean>;
-    delete userCopy["loaded"];
-    delete userCopy["created"];
-    delete userCopy["pubkey"];
-    delete userCopy["npub"];
-    delete userCopy["deleted"];
-    delete userCopy["zapService"];
-    delete userCopy["isNostrAddressValid"];
-    console.debug(userCopy);
+    } as Record<string, string | number | undefined | boolean>
+    delete userCopy['loaded']
+    delete userCopy['created']
+    delete userCopy['pubkey']
+    delete userCopy['npub']
+    delete userCopy['deleted']
+    delete userCopy['zapService']
+    delete userCopy['isNostrAddressValid']
+    console.debug(userCopy)
 
     if (publisher) {
-      const ev = await publisher.metadata(userCopy);
-      await system.BroadcastEvent(ev);
+      const ev = await publisher.metadata(userCopy)
+      await system.BroadcastEvent(ev)
 
-      const newProfile = mapEventToProfile(ev);
+      const newProfile = mapEventToProfile(ev)
       if (newProfile) {
-        await system.config.profiles.set(newProfile);
+        await system.config.profiles.set(newProfile)
       }
     }
   }
 
   async function uploadFile() {
     try {
-      setError(undefined);
-      const file = await openFile();
+      setError(undefined)
+      const file = await openFile()
       if (file && uploader) {
-        const rsp = await uploader.upload(file);
-        if ("error" in rsp && typeof rsp?.error === "string") {
-          throw new Error(`Upload failed ${rsp.error}`);
+        const rsp = await uploader.upload(file)
+        if ('error' in rsp && typeof rsp?.error === 'string') {
+          throw new Error(`Upload failed ${rsp.error}`)
         }
-        return rsp.url;
+        return rsp.url
       }
     } catch (e) {
       if (e instanceof Error) {
-        setError(e);
+        setError(e)
       }
     }
   }
 
   async function setNewBanner() {
-    const rsp = await uploadFile();
+    const rsp = await uploadFile()
     if (rsp) {
-      setBanner(rsp);
+      setBanner(rsp)
     }
   }
 
   async function setNewAvatar() {
-    const rsp = await uploadFile();
+    const rsp = await uploadFile()
     if (rsp) {
-      setPicture(rsp);
+      setPicture(rsp)
     }
   }
 
   async function onNip05Change(e: React.ChangeEvent<HTMLInputElement>) {
-    const Nip05Address = e.target.value.toLowerCase();
-    setNip05(Nip05Address);
+    isDirty.current = true
+    const Nip05Address = e.target.value.toLowerCase()
+    setNip05(Nip05Address)
   }
 
   async function onLimitCheck(val: string, field: string) {
-    if (field === "username") {
-      setName(val);
+    isDirty.current = true
+    if (field === 'username') {
+      setName(val)
       if (val?.length >= MaxUsernameLength) {
-        setUsernameValid(false);
+        setUsernameValid(false)
         setInvalidUsernameMessage(
           formatMessage(messages.UserNameLengthError, {
             limit: MaxUsernameLength,
           }),
-        );
+        )
       } else {
-        setUsernameValid(true);
-        setInvalidUsernameMessage("");
+        setUsernameValid(true)
+        setInvalidUsernameMessage('')
       }
-    } else if (field === "about") {
-      setAbout(val);
+    } else if (field === 'about') {
+      setAbout(val)
       if (val?.length >= MaxAboutLength) {
-        setAboutValid(false);
+        setAboutValid(false)
         setInvalidAboutMessage(
           formatMessage(messages.AboutLengthError, {
             limit: MaxAboutLength,
           }),
-        );
+        )
       } else {
-        setAboutValid(true);
-        setInvalidAboutMessage("");
+        setAboutValid(true)
+        setInvalidAboutMessage('')
       }
-    }
-  }
-
-  async function nip05NostrAddressVerification(nip05Domain: string | undefined, nip05Name: string | undefined) {
-    try {
-      const result = await fetchNip05Pubkey(nip05Name!, nip05Domain!);
-      if (result) {
-        if (result === publicKey) {
-          setNip05AddressValid(true);
-        } else {
-          setInvalidNip05AddressMessage(
-            formatMessage({ defaultMessage: "Nostr address does not belong to you", id: "01iNut" }),
-          );
-        }
-      } else {
-        setNip05AddressValid(false);
-        setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address));
-      }
-    } catch (e) {
-      setNip05AddressValid(false);
-      setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address));
     }
   }
 
   async function onLud16Change(address: string) {
-    setLud16(address);
+    isDirty.current = true
+    setLud16(address)
   }
 
   function editor() {
@@ -225,7 +232,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             className=""
             type="text"
             value={name}
-            onChange={e => onLimitCheck(e.target.value, "username")}
+            onChange={e => onLimitCheck(e.target.value, 'username')}
             disabled={readonly}
             maxLength={MaxUsernameLength}
           />
@@ -237,10 +244,11 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </h4>
           <textarea
             className=""
-            onChange={e => onLimitCheck(e.target.value, "about")}
+            onChange={e => onLimitCheck(e.target.value, 'about')}
             value={about}
             disabled={readonly}
-            maxLength={MaxAboutLength}></textarea>
+            maxLength={MaxAboutLength}
+          ></textarea>
           <div>{aboutValid === false ? <span className="warning">{invalidAboutMessage}</span> : <></>}</div>
         </div>
         <div className="flex flex-col gap-2">
@@ -251,7 +259,10 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             className=""
             type="text"
             value={website}
-            onChange={e => setWebsite(e.target.value)}
+            onChange={e => {
+              isDirty.current = true
+              setWebsite(e.target.value)
+            }}
             disabled={readonly}
           />
         </div>
@@ -296,11 +307,11 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           <FormattedMessage defaultMessage="Save" />
         </AsyncButton>
       </div>
-    );
+    )
   }
 
   function settings() {
-    if (!publicKey) return null;
+    if (!publicKey) return null
     return (
       <>
         <div className="flex flex-col gap-2">
@@ -309,7 +320,8 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               style={{
                 background: (banner?.length ?? 0) > 0 ? `no-repeat center/cover url("${banner}")` : undefined,
               }}
-              className="bg-layer-1 -mx-3 min-h-[140px] flex items-center justify-center">
+              className="bg-layer-1 -mx-3 min-h-[140px] flex items-center justify-center"
+            >
               <AsyncButton onClick={() => setNewBanner()} disabled={readonly}>
                 <FormattedMessage defaultMessage="Upload Banner" />
               </AsyncButton>
@@ -320,8 +332,8 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         {error && <ErrorOrOffline error={error} />}
         {editor()}
       </>
-    );
+    )
   }
 
-  return <div className="settings">{settings()}</div>;
+  return <div className="settings">{settings()}</div>
 }

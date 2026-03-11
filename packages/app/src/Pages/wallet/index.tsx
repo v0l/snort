@@ -1,68 +1,78 @@
 /* eslint-disable max-lines */
-import type { LNWallet, Sats, WalletInvoice } from "@snort/wallet";
-import classNames from "classnames";
-import { lazy, Suspense, useEffect, useState } from "react";
-import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import type { LNWallet, Sats, WalletInvoice } from '@snort/wallet'
+import classNames from 'classnames'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import { FormattedMessage, FormattedNumber, useIntl } from 'react-intl'
+import { useNavigate } from 'react-router-dom'
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import { AsyncIcon } from "@/Components/Button/AsyncIcon";
-import NoteTime from "@/Components/Event/Note/NoteTime";
-import Icon from "@/Components/Icons/Icon";
-import { useRates } from "@/Hooks/useRates";
-import { unwrap } from "@/Utils";
-import { useWallet, Wallets } from "@/Wallet";
-const PriceChart = lazy(async () => await import("./price-chart"));
+import AsyncButton from '@/Components/Button/AsyncButton'
+import { AsyncIcon } from '@/Components/Button/AsyncIcon'
+import NoteTime from '@/Components/Event/Note/NoteTime'
+import Icon from '@/Components/Icons/Icon'
+import { useRates } from '@/Hooks/useRates'
+import { unwrap } from '@/Utils'
+import { useWallet, Wallets } from '@/Wallet'
+
+const PriceChart = lazy(async () => await import('./price-chart'))
 
 export default function WalletPage(props: { showHistory: boolean }) {
-  const navigate = useNavigate();
-  const { formatMessage } = useIntl();
-  const [balance, setBalance] = useState<Sats>();
-  const [history, setHistory] = useState<WalletInvoice[]>();
-  const [walletPassword, setWalletPassword] = useState<string>();
-  const [error, setError] = useState<string>();
-  const walletState = useWallet();
-  const wallet = walletState.wallet;
-  const rates = useRates("BTCUSD");
+  const navigate = useNavigate()
+  const { formatMessage } = useIntl()
+  const [balance, setBalance] = useState<Sats>()
+  const [history, setHistory] = useState<WalletInvoice[]>()
+  const [walletPassword, setWalletPassword] = useState<string>()
+  const [error, setError] = useState<string>()
+  const walletState = useWallet()
+  const wallet = walletState.wallet
+  const rates = useRates('BTCUSD')
 
-  async function loadWallet(wallet: LNWallet) {
-    try {
-      setError(undefined);
-      setBalance(0);
-      setHistory(undefined);
-      if (wallet.canGetBalance()) {
-        const b = await wallet.getBalance();
-        setBalance(b as Sats);
+  const loadWallet = useCallback(
+    async (wallet: LNWallet) => {
+      try {
+        setError(undefined)
+        setBalance(0)
+        setHistory(undefined)
+        if (wallet.canGetBalance()) {
+          const b = await wallet.getBalance()
+          setBalance(b as Sats)
+        }
+        if (wallet.canGetInvoices() && (props.showHistory ?? true)) {
+          const h = await wallet.getInvoices()
+          setHistory((h as WalletInvoice[]).sort((a, b) => b.timestamp - a.timestamp))
+        }
+      } catch (e) {
+        if (e instanceof Error) {
+          setError((e as Error).message)
+        } else {
+          setError(formatMessage({ defaultMessage: 'Unknown error', id: 'qDwvZ4' }))
+        }
       }
-      if (wallet.canGetInvoices() && (props.showHistory ?? true)) {
-        const h = await wallet.getInvoices();
-        setHistory((h as WalletInvoice[]).sort((a, b) => b.timestamp - a.timestamp));
-      }
-    } catch (e) {
-      if (e instanceof Error) {
-        setError((e as Error).message);
-      } else {
-        setError(formatMessage({ defaultMessage: "Unknown error", id: "qDwvZ4" }));
-      }
-    }
-  }
+    },
+    [props.showHistory, formatMessage],
+  )
 
   useEffect(() => {
-    if (wallet && wallet.isReady()) {
-      loadWallet(wallet).catch(console.warn);
+    if (wallet?.isReady()) {
+      let cancelled = false
+      loadWallet(wallet).catch(e => {
+        if (!cancelled) console.warn(e)
+      })
+      return () => {
+        cancelled = true
+      }
     }
-  }, [wallet]);
+  }, [wallet, loadWallet])
 
   async function loginWallet(pw: string) {
     if (wallet) {
-      await wallet.login(pw);
-      await loadWallet(wallet);
-      setWalletPassword(undefined);
+      await wallet.login(pw)
+      await loadWallet(wallet)
+      setWalletPassword(undefined)
     }
   }
 
   function unlockWallet() {
-    if (!wallet || wallet.isReady()) return null;
+    if (!wallet || wallet.isReady()) return null
     return (
       <>
         <h3>
@@ -73,9 +83,9 @@ export default function WalletPage(props: { showHistory: boolean }) {
             <input
               type="password"
               placeholder={formatMessage({
-                defaultMessage: "Wallet password",
-                id: "MP54GY",
-                description: "Wallet password input placeholder",
+                defaultMessage: 'Wallet password',
+                id: 'MP54GY',
+                description: 'Wallet password input placeholder',
               })}
               className="w-max"
               value={walletPassword}
@@ -87,7 +97,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
           </AsyncButton>
         </div>
       </>
-    );
+    )
   }
 
   function walletList() {
@@ -95,7 +105,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
       return (
         <div className="flex flex-col gap-4">
           <div>
-            <button onClick={() => navigate("/settings/wallet")}>
+            <button onClick={() => navigate('/settings/wallet')}>
               <FormattedMessage defaultMessage="Connect Wallet" />
             </button>
           </div>
@@ -103,7 +113,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
             <FormattedMessage defaultMessage="Connect a wallet to send instant payments" />
           </small>
         </div>
-      );
+      )
     }
     return (
       <div className="flex items-center">
@@ -117,16 +127,16 @@ export default function WalletPage(props: { showHistory: boolean }) {
                 <option value={a.id} key={a.id}>
                   {a.info.alias}
                 </option>
-              );
+              )
             })}
           </select>
         </div>
       </div>
-    );
+    )
   }
 
   function walletHistory() {
-    if (!wallet?.canGetInvoices() || !(props.showHistory ?? true)) return;
+    if (!wallet?.canGetInvoices() || !(props.showHistory ?? true)) return
 
     return (
       <div className="flex flex-col gap-1">
@@ -140,9 +150,9 @@ export default function WalletPage(props: { showHistory: boolean }) {
         )}
         {history?.map(a => {
           const dirClassname = {
-            "text-[--success]": a.direction === "in",
-            "text-[--error]": a.direction === "out",
-          };
+            'text-[--success]': a.direction === 'in',
+            'text-[--error]': a.direction === 'out',
+          }
           return (
             <div className="flex gap-4 p-2 hover:bg-neutral-800 rounded-lg items-center" key={a.timestamp}>
               <div>
@@ -150,7 +160,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
                   <Icon
                     name="arrow-up-right"
                     className={classNames(dirClassname, {
-                      "rotate-180": a.direction === "in",
+                      'rotate-180': a.direction === 'in',
                     })}
                   />
                 </div>
@@ -161,7 +171,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
                   <div className="text-neutral-400 text-sm">
                     <NoteTime
                       from={a.timestamp * 1000}
-                      fallback={formatMessage({ defaultMessage: "now", id: "kaaf1E" })}
+                      fallback={formatMessage({ defaultMessage: 'now', id: 'kaaf1E' })}
                     />
                   </div>
                 </div>
@@ -171,7 +181,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
                       defaultMessage="{sign} {amount} sats"
                       id="tj6kdX"
                       values={{
-                        sign: a.direction === "in" ? "+" : "-",
+                        sign: a.direction === 'in' ? '+' : '-',
                         amount: <FormattedNumber value={a.amount / 1e3} />,
                       }}
                     />
@@ -194,14 +204,14 @@ export default function WalletPage(props: { showHistory: boolean }) {
                 </div>
               </div>
             </div>
-          );
+          )
         })}
       </div>
-    );
+    )
   }
 
   function walletBalance() {
-    if (!wallet?.canGetBalance()) return;
+    if (!wallet?.canGetBalance()) return
     return (
       <div className="flex items-center gap-2">
         <FormattedMessage
@@ -215,11 +225,11 @@ export default function WalletPage(props: { showHistory: boolean }) {
         />
         <AsyncIcon size={20} className="text-neutral-400 cursor-pointer" iconName="closedeye" />
       </div>
-    );
+    )
   }
 
   function walletInfo() {
-    if (!wallet) return;
+    if (!wallet) return
 
     return (
       <>
@@ -238,13 +248,13 @@ export default function WalletPage(props: { showHistory: boolean }) {
           </div>
           <div className="flex gap-2">
             {wallet?.canCreateInvoice() && (
-              <AsyncButton className="secondary" onClick={() => navigate("/wallet/receive")}>
+              <AsyncButton className="secondary" onClick={() => navigate('/wallet/receive')}>
                 <FormattedMessage defaultMessage="Receive" />
                 <Icon name="arrow-up-right" className="rotate-180" />
               </AsyncButton>
             )}
             {wallet?.canPayInvoice() && (
-              <AsyncButton onClick={() => navigate("/wallet/send")} className="primary">
+              <AsyncButton onClick={() => navigate('/wallet/send')} className="primary">
                 <FormattedMessage defaultMessage="Send" />
                 <Icon name="arrow-up-right" />
               </AsyncButton>
@@ -253,7 +263,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
         </div>
         {walletHistory()}
       </>
-    );
+    )
   }
 
   return (
@@ -268,5 +278,5 @@ export default function WalletPage(props: { showHistory: boolean }) {
       {unlockWallet()}
       {walletInfo()}
     </div>
-  );
+  )
 }

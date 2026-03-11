@@ -1,71 +1,64 @@
-import type { NostrLink, TaggedNostrEvent } from "@snort/system";
-import { createContext, useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import type { NostrLink, TaggedNostrEvent } from '@snort/system'
+import { createContext, useEffect, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 
-import ErrorBoundary from "@/Components/ErrorBoundary";
-import { LongFormText } from "@/Components/Event/LongFormText";
-import Modal from "@/Components/Modal/Modal";
-import { SpotlightThreadModal } from "@/Components/Spotlight/SpotlightThreadModal";
-import Toaster from "@/Components/Toaster/Toaster";
-import useLoginFeed from "@/Feed/LoginFeed";
-import useLogin from "@/Hooks/useLogin";
-import { useLoginRelays } from "@/Hooks/useLoginRelays";
-import usePreferences from "@/Hooks/usePreferences";
-import { useTheme } from "@/Hooks/useTheme";
-import { ArticlesCol, MediaCol, NotesCol, NotificationsCol } from "@/Pages/Deck/Columns";
-import NavSidebar from "@/Pages/Layout/NavSidebar";
-import { mapPlanName } from "@/Pages/subscribe/utils";
-import { trackEvent } from "@/Utils";
-import { getCurrentSubscription } from "@/Utils/Subscription";
+import ErrorBoundary from '@/Components/ErrorBoundary'
+import { LongFormText } from '@/Components/Event/LongFormText'
+import Modal from '@/Components/Modal/Modal'
+import { SpotlightThreadModal } from '@/Components/Spotlight/SpotlightThreadModal'
+import Toaster from '@/Components/Toaster/Toaster'
+import useLoginFeed from '@/Feed/LoginFeed'
+import useLogin from '@/Hooks/useLogin'
+import { useLoginRelays } from '@/Hooks/useLoginRelays'
+import usePreferences from '@/Hooks/usePreferences'
+import { useTheme } from '@/Hooks/useTheme'
+import { ArticlesCol, MediaCol, NotesCol, NotificationsCol } from '@/Pages/Deck/Columns'
+import NavSidebar from '@/Pages/Layout/NavSidebar'
+import { mapPlanName } from '@/Pages/subscribe/utils'
+import { trackEvent } from '@/Utils'
+import { getCurrentSubscription } from '@/Utils/Subscription'
 
-type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
+type Cols = 'notes' | 'articles' | 'media' | 'streams' | 'notifications'
 
 interface DeckState {
-  thread?: NostrLink;
-  article?: TaggedNostrEvent;
+  thread?: NostrLink
+  article?: TaggedNostrEvent
 }
 
 interface DeckScope {
-  setThread: (e?: NostrLink) => void;
-  setArticle: (e?: TaggedNostrEvent) => void;
-  reset: () => void;
+  setThread: (e?: NostrLink) => void
+  setArticle: (e?: TaggedNostrEvent) => void
+  reset: () => void
 }
 
-export const DeckContext = createContext<DeckScope | undefined>(undefined);
+export const DeckContext = createContext<DeckScope | undefined>(undefined)
 
 export function SnortDeckLayout() {
-  const location = useLocation();
+  const location = useLocation()
   const login = useLogin(s => ({
     publicKey: s.publicKey,
     subscriptions: s.subscriptions,
-  }));
-  const telemetry = usePreferences(s => s.telemetry);
-  const navigate = useNavigate();
+  }))
+  const telemetry = usePreferences(s => s.telemetry)
   const [deckState, setDeckState] = useState<DeckState>({
     thread: undefined,
     article: undefined,
-  });
-  const sub = getCurrentSubscription(login.subscriptions);
+  })
+  const sub = getCurrentSubscription(login.subscriptions)
 
-  useLoginFeed();
-  useTheme();
-  useLoginRelays();
-
-  useEffect(() => {
-    if (!login.publicKey) {
-      navigate("/");
-    }
-  }, [login]);
+  useLoginFeed()
+  useTheme()
+  useLoginRelays()
 
   useEffect(() => {
     if (CONFIG.features.analytics && (telemetry ?? true)) {
-      trackEvent("pageview");
+      trackEvent('pageview', { path: location.pathname })
     }
-  }, [location]);
+  }, [location.pathname, telemetry])
 
-  if (!login.publicKey) return null;
-  const showDeck = CONFIG.showDeck || !(CONFIG.deckSubKind !== undefined && (sub?.type ?? -1) < CONFIG.deckSubKind);
+  if (!login.publicKey) return <Navigate to="/" replace />
+  const showDeck = CONFIG.showDeck || !(CONFIG.deckSubKind !== undefined && (sub?.type ?? -1) < CONFIG.deckSubKind)
   if (!showDeck) {
     return (
       <div className="deck-layout">
@@ -92,9 +85,9 @@ export function SnortDeckLayout() {
           </div>
         </div>
       </div>
-    );
+    )
   }
-  const cols = ["notes", "media", "notifications", "articles"] as Array<Cols>;
+  const cols = ['notes', 'media', 'notifications', 'articles'] as Array<Cols>
   return (
     <div className="deck-layout">
       <DeckContext.Provider
@@ -103,20 +96,21 @@ export function SnortDeckLayout() {
           setThread: (e?: NostrLink) => setDeckState({ thread: e }),
           setArticle: (e?: TaggedNostrEvent) => setDeckState({ article: e }),
           reset: () => setDeckState({}),
-        }}>
+        }}
+      >
         <NavSidebar narrow={true} />
         <ErrorBoundary>
           <div className="deck-cols">
             {cols.map(c => {
               switch (c) {
-                case "notes":
-                  return <NotesCol />;
-                case "media":
-                  return <MediaCol setThread={t => setDeckState({ thread: t })} />;
-                case "articles":
-                  return <ArticlesCol />;
-                case "notifications":
-                  return <NotificationsCol setThread={t => setDeckState({ thread: t })} />;
+                case 'notes':
+                  return <NotesCol />
+                case 'media':
+                  return <MediaCol setThread={t => setDeckState({ thread: t })} />
+                case 'articles':
+                  return <ArticlesCol />
+                case 'notifications':
+                  return <NotificationsCol setThread={t => setDeckState({ thread: t })} />
               }
             })}
           </div>
@@ -133,7 +127,8 @@ export function SnortDeckLayout() {
                 id="deck-article"
                 onClose={() => setDeckState({})}
                 className="long-form"
-                onClick={() => setDeckState({})}>
+                onClick={() => setDeckState({})}
+              >
                 <div onClick={e => e.stopPropagation()}>
                   <LongFormText ev={deckState.article} isPreview={false} />
                 </div>
@@ -144,5 +139,5 @@ export function SnortDeckLayout() {
         </ErrorBoundary>
       </DeckContext.Provider>
     </div>
-  );
+  )
 }

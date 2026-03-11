@@ -1,18 +1,18 @@
-import { fetchNip05Pubkey, LNURL, NostrPrefix } from "@snort/shared";
-import { type CachedMetadata, tryParseNostrLink } from "@snort/system";
-import { useUserProfile } from "@snort/system-react";
-import { use, useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { fetchNip05Pubkey, LNURL, NostrPrefix } from '@snort/shared'
+import { type CachedMetadata, tryParseNostrLink } from '@snort/system'
+import { useUserProfile } from '@snort/system-react'
+import { use, useEffect, useMemo, useState } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-import { ProxyImg } from "@/Components/ProxyImg";
-import { SpotlightContext } from "@/Components/Spotlight/context";
-import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors";
-import FollowsList from "@/Components/User/FollowListBase";
-import MutedList from "@/Components/User/MutedList";
-import useFollowsFeed from "@/Feed/FollowsFeed";
-import useLogin from "@/Hooks/useLogin";
-import AvatarSection from "@/Pages/Profile/AvatarSection";
-import ProfileDetails from "@/Pages/Profile/ProfileDetails";
+import { ProxyImg } from '@/Components/ProxyImg'
+import { SpotlightContext } from '@/Components/Spotlight/context'
+import TabSelectors, { type Tab } from '@/Components/TabSelectors/TabSelectors'
+import FollowsList from '@/Components/User/FollowListBase'
+import MutedList from '@/Components/User/MutedList'
+import useFollowsFeed from '@/Feed/FollowsFeed'
+import useLogin from '@/Hooks/useLogin'
+import AvatarSection from '@/Pages/Profile/AvatarSection'
+import ProfileDetails from '@/Pages/Profile/ProfileDetails'
 import {
   BookMarksTab,
   FollowersTab,
@@ -21,117 +21,117 @@ import {
   ReactionsTab,
   RelaysTab,
   ZapsProfileTab,
-} from "@/Pages/Profile/ProfileTabComponents";
-import ProfileTabSelectors from "@/Pages/Profile/ProfileTabSelectors";
-import { ProfileTabType } from "@/Pages/Profile/ProfileTabType";
-import { parseId, unwrap } from "@/Utils";
-import { EmailRegex } from "@/Utils/Const";
+} from '@/Pages/Profile/ProfileTabComponents'
+import ProfileTabSelectors from '@/Pages/Profile/ProfileTabSelectors'
+import { ProfileTabType } from '@/Pages/Profile/ProfileTabType'
+import { parseId, unwrap } from '@/Utils'
+import { EmailRegex } from '@/Utils/Const'
 
 interface ProfilePageProps {
-  id?: string;
-  state?: CachedMetadata;
+  id?: string
+  state?: CachedMetadata
 }
 
 export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
-  const params = useParams();
-  const location = useLocation();
-  const spotlight = use(SpotlightContext);
-  const profileState = (location.state as CachedMetadata | undefined) || state;
-  const navigate = useNavigate();
-  const [id, setId] = useState<string | undefined>(profileState?.pubkey);
-  const [relays, setRelays] = useState<Array<string>>();
-  const user = useUserProfile(profileState ? undefined : id) || profileState;
+  const params = useParams()
+  const location = useLocation()
+  const spotlight = use(SpotlightContext)
+  const profileState = (location.state as CachedMetadata | undefined) || state
+  const navigate = useNavigate()
+  const [id, setId] = useState<string | undefined>(profileState?.pubkey)
+  const [relays, setRelays] = useState<Array<string>>()
+  const user = useUserProfile(profileState ? undefined : id) || profileState
   const { loginPubKey, readonly } = useLogin(s => ({
     loginPubKey: s.publicKey,
     readonly: s.readonly,
-  }));
-  const isMe = loginPubKey === id;
-  const aboutText = user?.about || "";
+  }))
+  const isMe = loginPubKey === id
+  const aboutText = user?.about || ''
 
   const lnurl = useMemo(() => {
     try {
-      return new LNURL(user?.lud16 || user?.lud06 || "");
+      return new LNURL(user?.lud16 || user?.lud06 || '')
     } catch {
       // ignored
     }
-  }, [user]);
+  }, [user])
 
   // feeds
-  const follows = useFollowsFeed(id);
+  const follows = useFollowsFeed(id)
 
   // tabs
-  const [tab, setTab] = useState<Tab>(ProfileTabSelectors.Notes);
+  const [tab, setTab] = useState<Tab>(ProfileTabSelectors.Notes)
   const optionalTabs = [ProfileTabSelectors.Zaps, ProfileTabSelectors.Relays, ProfileTabSelectors.Bookmarks].filter(a =>
     unwrap(a),
-  ) as Tab[];
+  ) as Tab[]
 
   useEffect(() => {
     if (
       user?.nip05 &&
       user.nip05.endsWith(`@${CONFIG.nip05Domain}`) &&
-      (!("isNostrAddressValid" in user) || user.isNostrAddressValid)
+      (!('isNostrAddressValid' in user) || user.isNostrAddressValid)
     ) {
-      const [username] = user.nip05.split("@");
-      navigate(`/${username}`, { replace: true });
+      const [username] = user.nip05.split('@')
+      navigate(`/${username}`, { replace: true })
     }
-  }, [user]);
+  }, [user, navigate])
 
   useEffect(() => {
     if (!id) {
-      const resolvedId = propId || params.id;
+      const resolvedId = propId || params.id
       if (resolvedId?.match(EmailRegex)) {
-        const [name, domain] = resolvedId.split("@");
+        const [name, domain] = resolvedId.split('@')
         fetchNip05Pubkey(name, domain).then(a => {
-          setId(a);
-        });
+          setId(a)
+        })
       } else {
-        const nav = tryParseNostrLink(resolvedId ?? "");
+        const nav = tryParseNostrLink(resolvedId ?? '')
         if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
-          setId(nav.id);
-          setRelays(nav.relays);
+          setId(nav.id)
+          setRelays(nav.relays)
         } else {
-          setId(parseId(resolvedId ?? ""));
+          setId(parseId(resolvedId ?? ''))
         }
       }
     }
-    setTab(ProfileTabSelectors.Notes);
-  }, [id, propId, params]);
+    setTab(ProfileTabSelectors.Notes)
+  }, [id, propId, params])
 
   function tabContent() {
-    if (!id) return null;
+    if (!id) return null
 
     switch (tab.value) {
       case ProfileTabType.NOTES:
-        return <ProfileNotesTab id={id} relays={relays} isMe={isMe} />;
+        return <ProfileNotesTab id={id} relays={relays} isMe={isMe} />
       case ProfileTabType.ZAPS: {
-        return <ZapsProfileTab id={id} />;
+        return <ZapsProfileTab id={id} />
       }
       case ProfileTabType.FOLLOWS: {
         if (isMe) {
-          return <FollowsList pubkeys={follows ?? []} showFollowAll={!isMe} className="px-3 py-2" />;
+          return <FollowsList pubkeys={follows ?? []} showFollowAll={!isMe} className="px-3 py-2" />
         } else {
-          return <FollowsTab id={id} />;
+          return <FollowsTab id={id} />
         }
       }
       case ProfileTabType.FOLLOWERS: {
-        return <FollowersTab id={id} />;
+        return <FollowersTab id={id} />
       }
       case ProfileTabType.RELAYS: {
-        return <RelaysTab id={id} />;
+        return <RelaysTab id={id} />
       }
       case ProfileTabType.BOOKMARKS: {
-        return <BookMarksTab id={id} />;
+        return <BookMarksTab id={id} />
       }
       case ProfileTabType.REACTIONS: {
-        return <ReactionsTab id={id} />;
+        return <ReactionsTab id={id} />
       }
       case ProfileTabType.MUTED: {
-        return <MutedList />;
+        return <MutedList />
       }
     }
   }
 
-  const bannerWidth = Math.min(window.innerWidth, 940);
+  const bannerWidth = Math.min(window.innerWidth, 940)
   return (
     <>
       <div>
@@ -143,7 +143,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
             size={bannerWidth}
             onClick={() => {
               if (user.banner) {
-                spotlight?.showImages([user.banner]);
+                spotlight?.showImages([user.banner])
               }
             }}
             missingImageElement={<></>}
@@ -158,6 +158,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
             aboutText={aboutText}
             lnurl={lnurl}
             showLnQr={true}
+            follows={follows}
           />
         </div>
       </div>
@@ -176,5 +177,5 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       </div>
       <div>{tabContent()}</div>
     </>
-  );
+  )
 }

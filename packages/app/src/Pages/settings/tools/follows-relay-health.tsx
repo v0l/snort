@@ -1,39 +1,39 @@
-import { dedupe } from "@snort/shared";
-import { OutboxModel } from "@snort/system";
-import { SnortContext } from "@snort/system-react";
-import { type ReactNode, use, useMemo } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
+import { dedupe } from '@snort/shared'
+import { OutboxModel } from '@snort/system'
+import { SnortContext } from '@snort/system-react'
+import { type ReactNode, use, useMemo } from 'react'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 
-import { CollapsedSection } from "@/Components/Collapsed";
-import ProfilePreview from "@/Components/User/ProfilePreview";
-import useFollowsControls from "@/Hooks/useFollowControls";
-import { getRelayName } from "@/Utils";
+import { CollapsedSection } from '@/Components/Collapsed'
+import ProfilePreview from '@/Components/User/ProfilePreview'
+import useFollowsControls from '@/Hooks/useFollowControls'
+import { getRelayName } from '@/Utils'
 
 export function FollowsRelayHealth({
   withTitle,
   popularRelays,
   missingRelaysActions,
 }: {
-  withTitle?: boolean;
-  popularRelays?: boolean;
-  missingRelaysActions?: (k: string) => ReactNode;
+  withTitle?: boolean
+  popularRelays?: boolean
+  missingRelaysActions?: (k: string) => ReactNode
 }) {
-  const system = use(SnortContext);
-  const { followList: follows } = useFollowsControls();
-  const uniqueFollows = dedupe(follows);
+  const system = use(SnortContext)
+  const { followList: follows } = useFollowsControls()
+  const uniqueFollows = dedupe(follows)
 
   const hasRelays = useMemo(() => {
-    return uniqueFollows.filter(a => (system.config.relays.getFromCache(a)?.relays.length ?? 0) > 0);
-  }, [uniqueFollows]);
+    return uniqueFollows.filter(a => (system.config.relays.getFromCache(a)?.relays.length ?? 0) > 0)
+  }, [uniqueFollows, system])
 
   const missingRelays = useMemo(() => {
-    return uniqueFollows.filter(a => !hasRelays.includes(a));
-  }, [hasRelays]);
+    return uniqueFollows.filter(a => !hasRelays.includes(a))
+  }, [uniqueFollows, hasRelays])
 
   const topWriteRelays = useMemo(() => {
-    const outbox = OutboxModel.fromSystem(system);
-    return outbox.pickTopRelays(uniqueFollows, 1e31, "write");
-  }, [uniqueFollows]);
+    const outbox = OutboxModel.fromSystem(system)
+    return outbox.pickTopRelays(uniqueFollows, 1e31, 'write')
+  }, [uniqueFollows, system])
 
   return (
     <div className="flex flex-col gap-4">
@@ -59,7 +59,8 @@ export function FollowsRelayHealth({
             <div className="text-lg">
               <FormattedMessage defaultMessage="Missing Relays" />
             </div>
-          }>
+          }
+        >
           <div className="flex flex-col gap-2">
             {missingRelays.map(a => (
               <ProfilePreview
@@ -92,5 +93,5 @@ export function FollowsRelayHealth({
         </div>
       )}
     </div>
-  );
+  )
 }

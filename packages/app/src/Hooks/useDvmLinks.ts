@@ -81,7 +81,7 @@ export default function useDVMLinks(
     return () => {
       req.abort(system)
     }
-  }, [req, signer, system])
+  }, [req, signer, system, cacheKey, relays])
 
   const links = useMemo(() => {
     if (!result) return

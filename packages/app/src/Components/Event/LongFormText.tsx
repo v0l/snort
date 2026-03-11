@@ -1,36 +1,37 @@
-import type { TaggedNostrEvent } from "@snort/system";
-import classNames from "classnames";
-import { useCallback, useMemo, useRef, useState } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
+import type { TaggedNostrEvent } from '@snort/system'
+import classNames from 'classnames'
+import { useCallback, useMemo, useRef, useState } from 'react'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 
-import Text from "@/Components/Text/Text";
-import ProfilePreview from "@/Components/User/ProfilePreview";
-import useImgProxy from "@/Hooks/useImgProxy";
-import { findTag } from "@/Utils";
+import Text from '@/Components/Text/Text'
+import ProfilePreview from '@/Components/User/ProfilePreview'
+import useImgProxy from '@/Hooks/useImgProxy'
+import { findTag } from '@/Utils'
 
-import { Markdown } from "./Markdown";
-import NoteFooter from "./Note/NoteFooter/NoteFooter";
-import NoteTime from "./Note/NoteTime";
-import { NoteProvider } from "./Note/NoteContext";
-import { NoteContextMenu } from "./Note/NoteContextMenu";
+import { Markdown } from './Markdown'
+import { NoteProvider } from './Note/NoteContext'
+import { NoteContextMenu } from './Note/NoteContextMenu'
+import NoteFooter from './Note/NoteFooter/NoteFooter'
+import NoteTime from './Note/NoteTime'
 
 interface LongFormTextProps {
-  ev: TaggedNostrEvent;
-  isPreview: boolean;
-  onClick?: () => void;
-  truncate?: boolean;
+  ev: TaggedNostrEvent
+  isPreview: boolean
+  onClick?: () => void
+  truncate?: boolean
 }
 
-const TEXT_TRUNCATE_LENGTH = 400;
+const TEXT_TRUNCATE_LENGTH = 400
 
 export function LongFormText(props: LongFormTextProps) {
-  const title = findTag(props.ev, "title");
-  const summary = findTag(props.ev, "summary");
-  const image = findTag(props.ev, "image");
-  const { proxy } = useImgProxy();
-  const [reading, setReading] = useState(false);
-  const [showMore, setShowMore] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const title = findTag(props.ev, 'title')
+  const summary = findTag(props.ev, 'summary')
+  const image = findTag(props.ev, 'image')
+  const { proxy } = useImgProxy()
+  const [reading, setReading] = useState(false)
+  const readingRef = useRef(false)
+  const [showMore, setShowMore] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
   function previewText() {
     return (
@@ -42,67 +43,70 @@ export function LongFormText(props: LongFormTextProps) {
         truncate={props.isPreview ? 250 : undefined}
         disableLinkPreview={props.isPreview}
       />
-    );
+    )
   }
 
   const readTime = useMemo(() => {
-    const wpm = 225;
-    const words = props.ev.content.trim().split(/\s+/).length;
+    const wpm = 225
+    const words = props.ev.content.trim().split(/\s+/).length
     return {
       words,
       wpm,
       mins: Math.ceil(words / wpm),
-    };
-  }, [props.ev.content]);
+    }
+  }, [props.ev.content])
 
-  const readAsync = async (text: string) => {
-    return await new Promise<void>(resolve => {
-      const ut = new SpeechSynthesisUtterance(text);
+  const readAsync = useCallback((text: string) => {
+    return new Promise<void>(resolve => {
+      const ut = new SpeechSynthesisUtterance(text)
       ut.onend = () => {
-        resolve();
-      };
-      window.speechSynthesis.speak(ut);
-    });
-  };
+        resolve()
+      }
+      window.speechSynthesis.speak(ut)
+    })
+  }, [])
 
   const readArticle = useCallback(async () => {
-    if (ref.current && !reading) {
-      setReading(true);
-      const paragraphs = ref.current.querySelectorAll("p,h1,h2,h3,h4,h5,h6");
+    if (ref.current && !readingRef.current) {
+      readingRef.current = true
+      setReading(true)
+      const paragraphs = ref.current.querySelectorAll('p,h1,h2,h3,h4,h5,h6')
       for (const p of paragraphs) {
         if (p.textContent) {
-          p.classList.add("reading");
-          await readAsync(p.textContent);
-          p.classList.remove("reading");
+          p.classList.add('reading')
+          await readAsync(p.textContent)
+          p.classList.remove('reading')
         }
       }
-      setReading(false);
+      readingRef.current = false
+      setReading(false)
     }
-  }, [ref, reading]);
+  }, [readAsync])
 
   const stopReading = () => {
-    setReading(false);
+    setReading(false)
     if (ref.current) {
-      const paragraphs = ref.current.querySelectorAll("p,h1,h2,h3,h4,h5,h6");
-      paragraphs.forEach(a => a.classList.remove("reading"));
-      window.speechSynthesis.cancel();
+      const paragraphs = ref.current.querySelectorAll('p,h1,h2,h3,h4,h5,h6')
+      paragraphs.forEach(a => a.classList.remove('reading'))
+      window.speechSynthesis.cancel()
     }
-  };
+  }
 
   const ToggleShowMore = () => (
     <a
       className="highlight cursor-pointer"
       onClick={e => {
-        e.preventDefault();
-        e.stopPropagation();
-        setShowMore(!showMore);
-      }}>
+        e.preventDefault()
+        e.stopPropagation()
+        setShowMore(!showMore)
+      }}
+    >
       {showMore ? <FormattedMessage defaultMessage="Show less" /> : <FormattedMessage defaultMessage="Show more" />}
     </a>
-  );
+  )
 
-  const shouldTruncate = props.truncate && props.ev.content.length > TEXT_TRUNCATE_LENGTH;
-  const content = shouldTruncate && !showMore ? props.ev.content.slice(0, TEXT_TRUNCATE_LENGTH) : props.ev.content;
+  const shouldTruncate = props.truncate && props.ev.content.length > TEXT_TRUNCATE_LENGTH
+  const content = shouldTruncate && !showMore ? props.ev.content.slice(0, TEXT_TRUNCATE_LENGTH) : props.ev.content
 
   function fullText() {
     return (
@@ -137,16 +141,17 @@ export function LongFormText(props: LongFormTextProps) {
         <hr className="h-px my-1" />
         <NoteFooter />
       </>
-    );
+    )
   }
 
   return (
     <NoteProvider ev={props.ev}>
       <div
-        className={classNames("flex flex-col gap-4 p-4 break-words leading-6", {
-          "cursor-pointer": props.isPreview,
+        className={classNames('flex flex-col gap-4 p-4 break-words leading-6', {
+          'cursor-pointer': props.isPreview,
         })}
-        onClick={props.onClick}>
+        onClick={props.onClick}
+      >
         <ProfilePreview
           pubkey={props.ev.pubkey}
           actions={
@@ -165,5 +170,5 @@ export function LongFormText(props: LongFormTextProps) {
         {props.isPreview ? previewText() : fullText()}
       </div>
     </NoteProvider>
-  );
+  )
 }

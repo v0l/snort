@@ -1,25 +1,21 @@
-import { LNURL } from "@snort/shared";
-import { useEffect, useState } from "react";
-import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
-
-import AsyncButton from "@/Components/Button/AsyncButton";
-import Icon from "@/Components/Icons/Icon";
-import { useWallet } from "@/Wallet";
-import type { WalletInvoice } from "@snort/wallet";
+import { LNURL } from '@snort/shared'
+import type { WalletInvoice } from '@snort/wallet'
+import { useState } from 'react'
+import { FormattedMessage, FormattedNumber, useIntl } from 'react-intl'
+import AsyncButton from '@/Components/Button/AsyncButton'
+import Icon from '@/Components/Icons/Icon'
+import { useWallet } from '@/Wallet'
 
 export function WalletSendPage() {
-  const wallets = useWallet();
-  const { formatMessage } = useIntl();
-  const [invoice, setInvoice] = useState("");
-  const [error, setError] = useState("");
-  const [lnurl, isLnurl] = useState(true);
-  const [amount, setAmount] = useState(0);
-  const [comment, setComment] = useState("");
-  const [result, setResult] = useState<WalletInvoice>();
+  const wallets = useWallet()
+  const { formatMessage } = useIntl()
+  const [invoice, setInvoice] = useState('')
+  const [error, setError] = useState('')
+  const [amount, setAmount] = useState(0)
+  const [comment, setComment] = useState('')
+  const [result, setResult] = useState<WalletInvoice>()
 
-  useEffect(() => {
-    isLnurl(!invoice.startsWith("lnbc"));
-  }, [invoice]);
+  const lnurl = !invoice.startsWith('lnbc')
 
   return (
     <div className="px-3 py-2 flex flex-col gap-4">
@@ -38,7 +34,7 @@ export function WalletSendPage() {
       </p>
       <input
         type="text"
-        placeholder={formatMessage({ defaultMessage: "Invoice / Lightning Address", id: "EHqHsu" })}
+        placeholder={formatMessage({ defaultMessage: 'Invoice / Lightning Address', id: 'EHqHsu' })}
         value={invoice}
         onChange={e => setInvoice(e.target.value)}
       />
@@ -46,7 +42,7 @@ export function WalletSendPage() {
         <>
           <input
             type="text"
-            placeholder={formatMessage({ defaultMessage: "Comment", id: "LgbKvU" })}
+            placeholder={formatMessage({ defaultMessage: 'Comment', id: 'LgbKvU' })}
             value={comment}
             onChange={e => setComment(e.target.value)}
           />
@@ -63,22 +59,23 @@ export function WalletSendPage() {
           try {
             if (wallets.wallet) {
               if (!lnurl) {
-                const res = await wallets.wallet.payInvoice(invoice);
-                setResult(res);
+                const res = await wallets.wallet.payInvoice(invoice)
+                setResult(res)
               } else {
-                const lnurl = new LNURL(invoice);
-                await lnurl.load();
-                const pr = await lnurl.getInvoice(amount, comment);
+                const lnurl = new LNURL(invoice)
+                await lnurl.load()
+                const pr = await lnurl.getInvoice(amount, comment)
                 if (pr.pr) {
-                  const res = await wallets.wallet.payInvoice(pr.pr);
-                  setResult(res);
+                  const res = await wallets.wallet.payInvoice(pr.pr)
+                  setResult(res)
                 }
               }
             }
           } catch (e) {
-            setError((e as Error).message);
+            setError((e as Error).message)
           }
-        }}>
+        }}
+      >
         <FormattedMessage defaultMessage="Pay" />
       </AsyncButton>
       {error && <b className="warning">{error}</b>}
@@ -96,5 +93,5 @@ export function WalletSendPage() {
         </div>
       )}
     </div>
-  );
+  )
 }

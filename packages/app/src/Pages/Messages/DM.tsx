@@ -1,69 +1,70 @@
-import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import { FormattedMessage, useIntl } from "react-intl";
-
-import { type Chat, type ChatMessage, ChatType } from "@/chat";
-import NoteTime from "@/Components/Event/Note/NoteTime";
-import messages from "@/Components/messages";
-import Text from "@/Components/Text/Text";
-import ProfileImage from "@/Components/User/ProfileImage";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
+import { useCallback, useEffect, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
+import { FormattedMessage, useIntl } from 'react-intl'
+import NoteTime from '@/Components/Event/Note/NoteTime'
+import messages from '@/Components/messages'
+import Text from '@/Components/Text/Text'
+import ProfileImage from '@/Components/User/ProfileImage'
+import { type Chat, type ChatMessage, ChatType } from '@/chat'
+import useEventPublisher from '@/Hooks/useEventPublisher'
+import useLogin from '@/Hooks/useLogin'
 
 export interface DMProps {
-  chat: Chat;
-  data: ChatMessage;
+  chat: Chat
+  data: ChatMessage
 }
 
 export default function DM(props: DMProps) {
-  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
-  const { publisher } = useEventPublisher();
-  const msg = props.data;
-  const [content, setContent] = useState<string>();
-  const { ref, inView } = useInView({ triggerOnce: true });
-  const { formatMessage } = useIntl();
-  const isMe = msg.from === publicKey;
-  const otherPubkey = isMe ? publicKey : msg.from;
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }))
+  const { publisher } = useEventPublisher()
+  const msg = props.data
+  const [content, setContent] = useState<string>()
+  const { ref, inView } = useInView({ triggerOnce: true })
+  const { formatMessage } = useIntl()
+  const isMe = msg.from === publicKey
+  const otherPubkey = isMe ? publicKey : msg.from
 
-  async function decrypt() {
+  const decrypt = useCallback(async () => {
     if (publisher) {
-      const decrypted = await msg.decrypt(publisher);
-      setContent(decrypted || "<ERROR>");
-      props.chat.markRead(msg.id);
+      const decrypted = await msg.decrypt(publisher)
+      setContent(decrypted || '<ERROR>')
+      props.chat.markRead(msg.id)
     }
-  }
+  }, [publisher, msg, props.chat])
 
   function sender() {
-    const isGroup = props.chat.type === ChatType.PrivateGroupChat || props.chat.type === ChatType.PublicGroupChat;
+    const isGroup = props.chat.type === ChatType.PrivateGroupChat || props.chat.type === ChatType.PublicGroupChat
     if (isGroup && !isMe) {
-      return <ProfileImage pubkey={msg.from} />;
+      return <ProfileImage pubkey={msg.from} />
     }
   }
 
   useEffect(() => {
     if (inView) {
       if (msg.needsDecryption) {
-        decrypt().catch(console.error);
+        decrypt().catch(console.error)
       } else {
-        setContent(msg.content);
+        setContent(msg.content)
       }
     }
-  }, [inView]);
+  }, [inView, msg, decrypt])
 
   return (
     <div
       className={
         isMe
-          ? "self-end mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap align-self-end"
-          : "mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap"
+          ? 'self-end mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap align-self-end'
+          : 'mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap'
       }
-      ref={ref}>
+      ref={ref}
+    >
       <div
         className={
           isMe
-            ? "p-3 bg-[image:var(--dm-gradient)] rounded-tl-lg rounded-tr-lg rounded-bl-lg rounded-rounded-lg-none"
-            : "p-3 bg-layer-1 rounded-tl-lg rounded-tr-lg rounded-br-none rounded-bl-none"
-        }>
+            ? 'p-3 bg-[image:var(--dm-gradient)] rounded-tl-lg rounded-tr-lg rounded-bl-lg rounded-rounded-lg-none'
+            : 'p-3 bg-layer-1 rounded-tl-lg rounded-tr-lg rounded-br-none rounded-bl-none'
+        }
+      >
         {sender()}
         {content ? (
           <Text id={msg.id} content={content} tags={[]} creator={otherPubkey} />
@@ -71,9 +72,9 @@ export default function DM(props: DMProps) {
           <FormattedMessage defaultMessage="Loading..." />
         )}
       </div>
-      <div className={isMe ? "text-end text-gray-400 text-sm mt-1" : "text-gray-400 text-sm mt-1"}>
+      <div className={isMe ? 'text-end text-gray-400 text-sm mt-1' : 'text-gray-400 text-sm mt-1'}>
         <NoteTime from={msg.created_at * 1000} fallback={formatMessage(messages.JustNow)} />
       </div>
     </div>
-  );
+  )
 }

@@ -1,32 +1,36 @@
-import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import { useCallback, useEffect, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
+import { Link } from 'react-router-dom'
 
-import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { ApiHost } from "@/Utils/Const";
-import SnortServiceProvider, { type ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
-import Nip05 from "@/Components/User/Nip05";
+import { ErrorOrOffline } from '@/Components/ErrorOrOffline'
+import Nip05 from '@/Components/User/Nip05'
+import useEventPublisher from '@/Hooks/useEventPublisher'
+import { ApiHost } from '@/Utils/Const'
+import SnortServiceProvider, { type ManageHandle } from '@/Utils/Nip05/SnortServiceProvider'
 
 export default function ListHandles() {
-  const { publisher } = useEventPublisher();
-  const [handles, setHandles] = useState<Array<ManageHandle>>([]);
-  const [error, setError] = useState<Error>();
+  const { publisher } = useEventPublisher()
+  const [handles, setHandles] = useState<Array<ManageHandle>>([])
+  const [error, setError] = useState<Error>()
+
+  const loadHandles = useCallback(async () => {
+    if (!publisher) return
+    const sp = new SnortServiceProvider(publisher, `${ApiHost}/api/v1/n5sp`)
+    const list = await sp.list()
+    setHandles(list as Array<ManageHandle>)
+  }, [publisher])
 
   useEffect(() => {
+    let cancelled = false
     loadHandles().catch(e => {
-      if (e instanceof Error) {
-        setError(e);
+      if (!cancelled && e instanceof Error) {
+        setError(e)
       }
-    });
-  }, [publisher]);
-
-  async function loadHandles() {
-    if (!publisher) return;
-    const sp = new SnortServiceProvider(publisher, `${ApiHost}/api/v1/n5sp`);
-    const list = await sp.list();
-    setHandles(list as Array<ManageHandle>);
-  }
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [loadHandles])
 
   return (
     <div className="flex flex-col gap-4">
@@ -53,5 +57,5 @@ export default function ListHandles() {
 
       {error && <ErrorOrOffline error={error} onRetry={loadHandles} />}
     </div>
-  );
+  )
 }

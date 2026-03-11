@@ -1,41 +1,47 @@
-import { Nip11, type RelayInfoDocument } from "@snort/system";
-import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { Link, useParams } from "react-router-dom";
+import { Nip11, type RelayInfoDocument } from '@snort/system'
+import { useEffect, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
+import { Link, useParams } from 'react-router-dom'
 
-import { CollapsedSection } from "@/Components/Collapsed";
-import NipDescription from "@/Components/nip";
-import RelayPaymentLabel from "@/Components/Relay/paid";
-import RelayPermissions from "@/Components/Relay/permissions";
-import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
-import RelaySoftware from "@/Components/Relay/software";
-import RelayStatusLabel from "@/Components/Relay/status-label";
-import RelayUptime from "@/Components/Relay/uptime";
-import ProfileImage from "@/Components/User/ProfileImage";
-import useRelayState from "@/Feed/RelayState";
-import { getRelayName, parseId } from "@/Utils";
+import { CollapsedSection } from '@/Components/Collapsed'
+import NipDescription from '@/Components/nip'
+import RelayPaymentLabel from '@/Components/Relay/paid'
+import RelayPermissions from '@/Components/Relay/permissions'
+import { RelayFavicon } from '@/Components/Relay/RelaysMetadata'
+import RelaySoftware from '@/Components/Relay/software'
+import RelayStatusLabel from '@/Components/Relay/status-label'
+import RelayUptime from '@/Components/Relay/uptime'
+import ProfileImage from '@/Components/User/ProfileImage'
+import useRelayState from '@/Feed/RelayState'
+import { getRelayName, parseId } from '@/Utils'
 
 const RelayInfo = () => {
-  const params = useParams();
-  const [info, setInfo] = useState<RelayInfoDocument>();
+  const params = useParams()
+  const [info, setInfo] = useState<RelayInfoDocument>()
 
-  const conn = useRelayState(params.id ?? "");
+  const conn = useRelayState(params.id ?? '')
 
   useEffect(() => {
-    Nip11.loadRelayDocument(params.id ?? "")
-      .then(setInfo)
-      .catch(console.error);
-  }, []);
+    let cancelled = false
+    Nip11.loadRelayDocument(params.id ?? '')
+      .then(info => {
+        if (!cancelled) setInfo(info)
+      })
+      .catch(console.error)
+    return () => {
+      cancelled = true
+    }
+  }, [params.id])
 
   return (
     <>
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <div className="flex gap-4 items-center">
-            <RelayFavicon url={params.id ?? ""} size={80} />
+            <RelayFavicon url={params.id ?? ''} size={80} />
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
-                <div className="text-2xl font-bold">{info?.name ?? getRelayName(params.id ?? "")}</div>
+                <div className="text-2xl font-bold">{info?.name ?? getRelayName(params.id ?? '')}</div>
                 {info && <RelayPaymentLabel info={info} />}
               </div>
               <div className="text-gray-light">{params.id}</div>
@@ -58,10 +64,11 @@ const RelayInfo = () => {
               <div>
                 {info?.contact && (
                   <a
-                    href={`${info.contact.startsWith("mailto:") ? "" : "mailto:"}${info.contact}`}
+                    href={`${info.contact.startsWith('mailto:') ? '' : 'mailto:'}${info.contact}`}
                     target="_blank"
-                    rel="noreferrer">
-                    {info.contact.replace("mailto:", "")}
+                    rel="noreferrer"
+                  >
+                    {info.contact.replace('mailto:', '')}
                   </a>
                 )}
               </div>
@@ -105,7 +112,7 @@ const RelayInfo = () => {
 
         <hr />
         <div className="flex gap-4">
-          <Link to={`/relay/${encodeURIComponent(params.id ?? "")}`}>
+          <Link to={`/relay/${encodeURIComponent(params.id ?? '')}`}>
             <button>
               <FormattedMessage defaultMessage="View Feed" />
             </button>
@@ -178,13 +185,15 @@ const RelayInfo = () => {
                 <FormattedMessage defaultMessage="Supported NIPs" />
               </div>
             }
-            startClosed={false}>
+            startClosed={false}
+          >
             <ul className="list-disc">
               {info.supported_nips.map(n => (
                 <li key={n}>
                   <Link
                     target="_blank"
-                    to={`https://github.com/nostr-protocol/nips/blob/master/${n.toString().padStart(2, "0")}.md`}>
+                    to={`https://github.com/nostr-protocol/nips/blob/master/${n.toString().padStart(2, '0')}.md`}
+                  >
                     <NipDescription nip={n} />
                   </Link>
                 </li>
@@ -194,7 +203,7 @@ const RelayInfo = () => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default RelayInfo;
+export default RelayInfo

@@ -1,71 +1,71 @@
-import { unixNow } from "@snort/shared";
-import type { TaggedNostrEvent } from "@snort/system";
-import { useCallback, useMemo } from "react";
+import { unixNow } from '@snort/shared'
+import type { TaggedNostrEvent } from '@snort/system'
+import { useCallback, useMemo } from 'react'
 
-import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
-import useTimelineFeed, { type TimelineFeed, type TimelineSubject } from "@/Feed/TimelineFeed";
-import useHistoryState from "@/Hooks/useHistoryState";
-import useWoT from "@/Hooks/useWoT";
-import { dedupeByPubkey } from "@/Utils";
+import { TimelineRenderer } from '@/Components/Feed/TimelineRenderer'
+import useTimelineFeed, { type TimelineFeed, type TimelineSubject } from '@/Feed/TimelineFeed'
+import useHistoryState from '@/Hooks/useHistoryState'
+import useWoT from '@/Hooks/useWoT'
+import { dedupeByPubkey } from '@/Utils'
 
 export interface TimelineProps {
-  postsOnly: boolean;
-  subject: TimelineSubject;
-  method: "TIME_RANGE" | "LIMIT_UNTIL";
-  followDistance?: number;
-  ignoreModeration?: boolean;
-  window?: number;
-  now?: number;
-  noSort?: boolean;
+  postsOnly: boolean
+  subject: TimelineSubject
+  method: 'TIME_RANGE' | 'LIMIT_UNTIL'
+  followDistance?: number
+  ignoreModeration?: boolean
+  window?: number
+  now?: number
+  noSort?: boolean
 }
 
 /**
  * A list of notes by "subject"
  */
 const Timeline = (props: TimelineProps) => {
-  const [openedAt] = useHistoryState(unixNow(), "openedAt");
+  const [openedAt] = useHistoryState(unixNow(), 'openedAt')
   const feedOptions = useMemo(
     () => ({
       method: props.method,
       window: props.window,
       now: props.now ?? openedAt,
     }),
-    [props],
-  );
-  const feed: TimelineFeed = useTimelineFeed(props.subject, feedOptions);
-  const wot = useWoT();
+    [props.method, props.window, props.now, openedAt],
+  )
+  const feed: TimelineFeed = useTimelineFeed(props.subject, feedOptions)
+  const wot = useWoT()
 
   const filterPosts = useCallback(
     (nts: readonly TaggedNostrEvent[]) => {
       const checkFollowDistance = (a: TaggedNostrEvent) => {
         if (props.followDistance === undefined) {
-          return true;
+          return true
         }
-        const followDistance = wot.followDistance(a.pubkey);
-        return followDistance === props.followDistance;
-      };
+        const followDistance = wot.followDistance(a.pubkey)
+        return followDistance === props.followDistance
+      }
       return nts
-        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
-        .filter(a => props.ignoreModeration || checkFollowDistance(a));
+        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === 'e') : true))
+        .filter(a => props.ignoreModeration || checkFollowDistance(a))
     },
-    [props.postsOnly, props.ignoreModeration, props.followDistance],
-  );
+    [props.postsOnly, props.ignoreModeration, props.followDistance, wot],
+  )
 
   const mainFeed = useMemo(() => {
-    return filterPosts(feed.main ?? []);
-  }, [feed.main, filterPosts]);
+    return filterPosts(feed.main ?? [])
+  }, [feed.main, filterPosts])
   const latestFeed = useMemo(() => {
-    return filterPosts(feed.latest ?? []).filter(a => !mainFeed.some(b => b.id === a.id));
-  }, [feed.latest, feed.main, filterPosts]);
+    return filterPosts(feed.latest ?? []).filter(a => !mainFeed.some(b => b.id === a.id))
+  }, [feed.latest, mainFeed, filterPosts])
 
   const latestAuthors = useMemo(() => {
-    return dedupeByPubkey(latestFeed).map(e => e.pubkey);
-  }, [latestFeed]);
+    return dedupeByPubkey(latestFeed).map(e => e.pubkey)
+  }, [latestFeed])
 
   function onShowLatest(scrollToTop = false) {
-    feed.showLatest();
+    feed.showLatest()
     if (scrollToTop) {
-      window.scrollTo(0, 0);
+      window.scrollTo(0, 0)
     }
   }
 
@@ -80,8 +80,8 @@ const Timeline = (props: TimelineProps) => {
       latest={latestAuthors}
       showLatest={t => onShowLatest(t)}
       loadMore={() => feed.loadMore()}
-      highlightText={props.subject.type === "post_keyword" ? props.subject.items[0] : undefined}
+      highlightText={props.subject.type === 'post_keyword' ? props.subject.items[0] : undefined}
     />
-  );
-};
-export default Timeline;
+  )
+}
+export default Timeline

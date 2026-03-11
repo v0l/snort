@@ -1,17 +1,17 @@
-import { unwrap } from "@snort/shared";
-import { EventKind, type NostrEvent, type NostrLink, type TaggedNostrEvent } from "@snort/system";
-import classNames from "classnames";
-import { useEffect, useMemo, useState } from "react";
+import { unwrap } from '@snort/shared'
+import { EventKind, type NostrEvent, type NostrLink, type TaggedNostrEvent } from '@snort/system'
+import classNames from 'classnames'
+import { useEffect, useMemo, useState } from 'react'
 
-import { AsyncIcon } from "@/Components/Button/AsyncIcon";
-import { AutoLoadMore } from "@/Components/Event/LoadMore";
-import { useNotificationsView } from "@/Feed/WorkerRelayView";
-import useLogin from "@/Hooks/useLogin";
-import useModeration from "@/Hooks/useModeration";
-import { markNotificationsRead } from "@/Utils/Login";
+import { AsyncIcon } from '@/Components/Button/AsyncIcon'
+import { AutoLoadMore } from '@/Components/Event/LoadMore'
+import { useNotificationsView } from '@/Feed/WorkerRelayView'
+import useLogin from '@/Hooks/useLogin'
+import useModeration from '@/Hooks/useModeration'
+import { markNotificationsRead } from '@/Utils/Login'
 
-import { getNotificationContext } from "./getNotificationContext";
-import { NotificationGroup } from "./NotificationGroup";
+import { getNotificationContext } from './getNotificationContext'
+import { NotificationGroup } from './NotificationGroup'
 
 enum NotificationSummaryFilter {
   Reactions = 1,
@@ -21,70 +21,83 @@ enum NotificationSummaryFilter {
   All = 255,
 }
 
+const hasFlag = (v: number, f: NotificationSummaryFilter) => {
+  return (v & f) > 0
+}
+
+const groupInterval = 3600 * 6
+
+const timeKey = (ev: NostrEvent) => {
+  const onHour = ev.created_at - (ev.created_at % groupInterval)
+  return onHour.toString()
+}
+
+function FilterIcon({
+  f,
+  icon,
+  iconActiveClass,
+  filter,
+  setFilter,
+}: {
+  f: NotificationSummaryFilter
+  icon: string
+  iconActiveClass: string
+  filter: number
+  setFilter: (fn: (v: number) => number) => void
+}) {
+  const active = hasFlag(filter, f)
+  return (
+    <AsyncIcon
+      className={classNames('button-icon-sm transparent', { active, [iconActiveClass]: active })}
+      onClick={() => setFilter(v => v ^ f)}
+      name={''}
+      iconName={icon}
+    />
+  )
+}
+
 export default function NotificationsPage({ onClick }: { onClick?: (link: NostrLink) => void }) {
-  const login = useLogin();
-  const { isMuted } = useModeration();
-  const groupInterval = 3600 * 6;
-  const [limit, setLimit] = useState(100);
-  const [filter, setFilter] = useState(NotificationSummaryFilter.All);
+  const login = useLogin()
+  const { isMuted } = useModeration()
+  const [limit, setLimit] = useState(100)
+  const [filter, setFilter] = useState(NotificationSummaryFilter.All)
 
   useEffect(() => {
-    markNotificationsRead(login);
-  }, []);
+    markNotificationsRead(login)
+  }, [login])
 
-  const notifications = useNotificationsView();
-
-  const hasFlag = (v: number, f: NotificationSummaryFilter) => {
-    return (v & f) > 0;
-  };
-
-  const filterIcon = (f: NotificationSummaryFilter, icon: string, iconActiveClass: string) => {
-    const active = hasFlag(filter, f);
-    return (
-      <AsyncIcon
-        className={classNames("button-icon-sm transparent", { active, [iconActiveClass]: active })}
-        onClick={() => setFilter(v => v ^ f)}
-        name={""}
-        iconName={icon}
-      />
-    );
-  };
-
-  const timeKey = (ev: NostrEvent) => {
-    const onHour = ev.created_at - (ev.created_at % groupInterval);
-    return onHour.toString();
-  };
+  const notifications = useNotificationsView()
 
   const myNotifications = useMemo(() => {
     return notifications
       .sort((a, b) => (a.created_at > b.created_at ? -1 : 1))
       .slice(0, limit)
-      .filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey))
+      .filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === 'p' && b[1] === login.publicKey))
       .filter(a => {
         if (a.kind === EventKind.TextNote) {
-          return hasFlag(filter, NotificationSummaryFilter.Mentions);
+          return hasFlag(filter, NotificationSummaryFilter.Mentions)
         } else if (a.kind === EventKind.Reaction) {
-          return hasFlag(filter, NotificationSummaryFilter.Reactions);
+          return hasFlag(filter, NotificationSummaryFilter.Reactions)
         } else if (a.kind === EventKind.Repost) {
-          return hasFlag(filter, NotificationSummaryFilter.Reposts);
+          return hasFlag(filter, NotificationSummaryFilter.Reposts)
         } else if (a.kind === EventKind.ZapReceipt) {
-          return hasFlag(filter, NotificationSummaryFilter.Zaps);
+          return hasFlag(filter, NotificationSummaryFilter.Zaps)
         }
-        return true;
-      });
-  }, [notifications, login.publicKey, limit, filter]);
+        return true
+      })
+  }, [notifications, login.publicKey, limit, filter, isMuted])
 
   const timeGrouped = useMemo(() => {
     return myNotifications.reduce((acc, v) => {
-      const key = `${timeKey(v)}:${getNotificationContext(v)?.encode()}:${v.kind}`;
+      const key = `${timeKey(v)}:${getNotificationContext(v)?.encode()}:${v.kind}`
       if (acc.has(key)) {
-        unwrap(acc.get(key)).push(v);
+        unwrap(acc.get(key)).push(v)
       } else {
-        acc.set(key, [v]);
+        acc.set(key, [v])
       }
-      return acc;
-    }, new Map<string, Array<TaggedNostrEvent>>());
-  }, [myNotifications]);
+      return acc
+    }, new Map<string, Array<TaggedNostrEvent>>())
+  }, [myNotifications])
 
   return (
     <>
@@ -92,10 +105,34 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
         <div className="flex justify-between items-center mx-1">
           <div></div>
           <div className="flex items-center gap-2">
-            {filterIcon(NotificationSummaryFilter.Reactions, "heart-solid", "text-heart")}
-            {filterIcon(NotificationSummaryFilter.Zaps, "zap-solid", "text-zap")}
-            {filterIcon(NotificationSummaryFilter.Reposts, "repeat", "text-repost")}
-            {filterIcon(NotificationSummaryFilter.Mentions, "at-sign", "text-mention")}
+            <FilterIcon
+              f={NotificationSummaryFilter.Reactions}
+              icon="heart-solid"
+              iconActiveClass="text-heart"
+              filter={filter}
+              setFilter={setFilter}
+            />
+            <FilterIcon
+              f={NotificationSummaryFilter.Zaps}
+              icon="zap-solid"
+              iconActiveClass="text-zap"
+              filter={filter}
+              setFilter={setFilter}
+            />
+            <FilterIcon
+              f={NotificationSummaryFilter.Reposts}
+              icon="repeat"
+              iconActiveClass="text-repost"
+              filter={filter}
+              setFilter={setFilter}
+            />
+            <FilterIcon
+              f={NotificationSummaryFilter.Mentions}
+              icon="at-sign"
+              iconActiveClass="text-mention"
+              filter={filter}
+              setFilter={setFilter}
+            />
           </div>
         </div>
 
@@ -104,10 +141,10 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
 
         <AutoLoadMore
           onClick={() => {
-            setLimit(l => l + 100);
+            setLimit(l => l + 100)
           }}
         />
       </div>
     </>
-  );
+  )
 }

@@ -1,31 +1,31 @@
-import type { RelaySettings, SystemInterface } from "@snort/system";
-import { useEffect } from "react";
+import type { RelaySettings, SystemInterface } from '@snort/system'
+import { useEffect } from 'react'
 
-import useEventPublisher from "./useEventPublisher";
-import useRelays from "./useRelays";
+import useEventPublisher from './useEventPublisher'
+import useRelays from './useRelays'
 
 export function useLoginRelays() {
-  const relays = useRelays();
-  const { system } = useEventPublisher();
+  const relays = useRelays()
+  const { system } = useEventPublisher()
 
   useEffect(() => {
     if (relays) {
-      updateRelayConnections(system, relays).catch(console.error);
+      updateRelayConnections(system, relays).catch(console.error)
     }
-  }, [relays]);
+  }, [relays, system])
 }
 
 export async function updateRelayConnections(system: SystemInterface, relays: Record<string, RelaySettings>) {
   if (import.meta.env.VITE_SINGLE_RELAY) {
-    system.ConnectToRelay(import.meta.env.VITE_SINGLE_RELAY, { read: true, write: true });
+    system.ConnectToRelay(import.meta.env.VITE_SINGLE_RELAY, { read: true, write: true })
   } else {
     for (const [k, v] of Object.entries(relays)) {
       // note: don't awit this, causes race condition with sending requests to relays
-      system.ConnectToRelay(k, v);
+      system.ConnectToRelay(k, v)
     }
     for (const [k, v] of system.pool) {
       if (!relays[k] && !v.ephemeral) {
-        system.DisconnectRelay(k);
+        system.DisconnectRelay(k)
       }
     }
   }
