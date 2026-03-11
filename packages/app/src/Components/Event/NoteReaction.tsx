@@ -1,7 +1,7 @@
 import { NostrPrefix } from '@snort/shared'
 import { EventKind, NostrLink, type TaggedNostrEvent } from '@snort/system'
 import { useUserProfile } from '@snort/system-react'
-import { useMemo, useRef } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { FormattedMessage } from 'react-intl'
 import Icon from '@/Components/Icons/Icon'
@@ -83,14 +83,16 @@ export default function NoteReaction(props: NoteReactionProps) {
     )
   }
 
+  const setRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      rootRef.current = el
+      inViewRef(el)
+    },
+    [inViewRef],
+  )
+
   return (
-    <div
-      className="flex flex-col gap-2"
-      ref={el => {
-        rootRef.current = el
-        inViewRef(el)
-      }}
-    >
+    <div className="flex flex-col gap-2" ref={setRef}>
       {inView && inner()}
     </div>
   )
