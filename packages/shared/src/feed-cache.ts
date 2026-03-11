@@ -1,28 +1,28 @@
-import debug from "debug";
-import { removeUndefined, unixNowMs } from "./utils";
-import type { CacheStore } from "./cache-store";
-import { EventEmitter } from "eventemitter3";
+import debug from 'debug'
+import { EventEmitter } from 'eventemitter3'
+import type { CacheStore } from './cache-store'
+import { removeUndefined, unixNowMs } from './utils'
 
-type HookFn = () => void;
+type HookFn = () => void
 
 export interface KeyedHookFilter {
-  key: string;
-  fn: HookFn;
+  key: string
+  fn: HookFn
 }
 
 export interface CacheEvents<T> {
-  change: (keys: Array<string>) => void;
-  update: (v: T) => void;
+  change: (keys: Array<string>) => void
+  update: (v: T) => void
 }
 
 export type CachedTable<T> = {
-  preload(follows?: Array<string>): Promise<void>;
-  keysOnTable(): Array<string>;
-  getFromCache(key?: string): T | undefined;
-  get(key?: string): Promise<T | undefined>;
-  bulkGet(keys: Array<string>): Promise<Array<T>>;
-  set(obj: T): Promise<void>;
-  bulkSet(obj: Array<T> | Readonly<Array<T>>): Promise<void>;
+  preload(follows?: Array<string>): Promise<void>
+  keysOnTable(): Array<string>
+  getFromCache(key?: string): T | undefined
+  get(key?: string): Promise<T | undefined>
+  bulkGet(keys: Array<string>): Promise<Array<T>>
+  set(obj: T): Promise<void>
+  bulkSet(obj: Array<T> | Readonly<Array<T>>): Promise<void>
 
   /**
    * Try to update an entry where created values exists
@@ -31,211 +31,256 @@ export type CachedTable<T> = {
    */
   update<TWithCreated extends T & { created: number; loaded: number }>(
     m: TWithCreated,
-  ): Promise<"new" | "refresh" | "updated" | "no_change">;
+  ): Promise<'new' | 'refresh' | 'updated' | 'no_change'>
 
   /**
    * Loads a list of rows from disk cache
    * @param keys List of ids to load
    * @returns Keys that do not exist on disk cache
    */
-  buffer(keys: Array<string>): Promise<Array<string>>;
-  key(of: T): string;
-  snapshot(): Array<T>;
-  search(q: string): Promise<Array<T>>;
-  clear(): Promise<void>;
-} & EventEmitter<CacheEvents<T>>;
+  buffer(keys: Array<string>): Promise<Array<string>>
+  key(of: T): string
+  snapshot(): Array<T>
+  search(q: string): Promise<Array<T>>
+  clear(): Promise<void>
+
+  /**
+   * Subscribe to changes for a specific key only.
+   * More efficient than listening to the broad "change" event when only one key matters.
+   * Returns an unsubscribe function.
+   */
+  subscribe(key: string, cb: () => void): () => void
+} & EventEmitter<CacheEvents<T>>
 
 /**
  * Generic cache with optional persistent storage backend
  */
 export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCached>> implements CachedTable<TCached> {
-  readonly name: string;
-  #snapshot: Array<TCached> = [];
-  protected log: ReturnType<typeof debug>;
-  #hits = 0;
-  #miss = 0;
-  protected store?: CacheStore<TCached>;
-  protected onTable: Set<string> = new Set();
-  protected cache: Map<string, TCached> = new Map();
+  readonly name: string
+  #snapshot: Array<TCached> = []
+  protected log: ReturnType<typeof debug>
+  #hits = 0
+  #miss = 0
+  protected store?: CacheStore<TCached>
+  protected onTable: Set<string> = new Set()
+  protected cache: Map<string, TCached> = new Map()
+  /** Per-key subscribers for O(1) targeted notifications */
+  #keyListeners = new Map<string, Set<() => void>>()
 
   constructor(name: string, store?: CacheStore<TCached>) {
-    super();
-    this.name = name;
-    this.store = store;
-    this.log = debug(name);
+    super()
+    this.name = name
+    this.store = store
+    this.log = debug(name)
     setInterval(() => {
       this.log(
-        "%d loaded, %d on-disk, %d hooks, %d% hit",
+        '%d loaded, %d on-disk, %d hooks, %d% hit',
         this.cache.size,
         this.onTable.size,
-        this.listenerCount("change"),
+        this.listenerCount('change'),
         ((this.#hits / (this.#hits + this.#miss)) * 100).toFixed(1),
-      );
-    }, 30_000);
-    this.on("change", () => {
-      this.#snapshot = this.takeSnapshot();
-    });
+      )
+    }, 30_000)
+    this.on('change', () => {
+      this.#snapshot = this.takeSnapshot()
+    })
   }
 
   async preload() {
     // assume already preloaded if keys exist on table in memory
     if (this.onTable.size === 0) {
-      const keys = (await this.store?.keys()) ?? [];
-      this.onTable = new Set<string>(keys);
+      const keys = (await this.store?.keys()) ?? []
+      this.onTable = new Set<string>(keys)
     }
   }
 
   hook(fn: HookFn, key: string | undefined) {
     const handle = (keys: Array<string>) => {
       if (!key || keys.includes(key)) {
-        fn();
+        fn()
       }
-    };
-    this.on("change", handle);
-    return () => this.off("change", handle);
+    }
+    this.on('change', handle)
+    return () => this.off('change', handle)
+  }
+
+  /**
+   * Subscribe to changes for a specific key only.
+   * O(1) per notification — more efficient than listening to the broad "change" event.
+   * Returns an unsubscribe function.
+   */
+  subscribe(key: string, cb: () => void): () => void {
+    let listeners = this.#keyListeners.get(key)
+    if (!listeners) {
+      listeners = new Set()
+      this.#keyListeners.set(key, listeners)
+    }
+    listeners.add(cb)
+    return () => {
+      const s = this.#keyListeners.get(key)
+      if (s) {
+        s.delete(cb)
+        if (s.size === 0) {
+          this.#keyListeners.delete(key)
+        }
+      }
+    }
+  }
+
+  #notifyKeyListeners(key: string) {
+    const listeners = this.#keyListeners.get(key)
+    if (listeners) {
+      for (const cb of listeners) {
+        cb()
+      }
+    }
   }
 
   keysOnTable() {
-    return [...this.onTable];
+    return [...this.onTable]
   }
 
   getFromCache(key?: string) {
     if (key) {
-      const ret = this.cache.get(key);
+      const ret = this.cache.get(key)
       if (ret) {
-        this.#hits++;
+        this.#hits++
       } else {
-        this.#miss++;
+        this.#miss++
       }
-      return ret;
+      return ret
     }
   }
 
   async get(key?: string) {
     if (key && !this.cache.has(key) && this.store) {
-      const cached = await this.store.get(key);
+      const cached = await this.store.get(key)
       if (cached) {
-        this.cache.set(this.key(cached), cached);
-        this.emit("change", [key]);
-        return cached;
+        this.cache.set(this.key(cached), cached)
+        this.emit('change', [key])
+        return cached
       }
     }
-    return key ? this.cache.get(key) : undefined;
+    return key ? this.cache.get(key) : undefined
   }
 
   async bulkGet(keys: Array<string>) {
-    const missing = keys.filter(a => !this.cache.has(a));
+    const missing = keys.filter(a => !this.cache.has(a))
     if (missing.length > 0 && this.store) {
-      const cached = await this.store.bulkGet(missing);
+      const cached = await this.store.bulkGet(missing)
       cached.forEach(a => {
         if (a) {
-          this.cache.set(this.key(a), a);
+          this.cache.set(this.key(a), a)
         }
-      });
+      })
     }
-    return removeUndefined(keys.map(a => this.cache.get(a)));
+    return removeUndefined(keys.map(a => this.cache.get(a)))
   }
 
   async set(obj: TCached) {
-    const k = this.key(obj);
-    this.cache.set(k, obj);
+    const k = this.key(obj)
+    this.cache.set(k, obj)
     if (this.store) {
       try {
-        await this.store.put(obj);
-        this.onTable.add(k);
+        await this.store.put(obj)
+        this.onTable.add(k)
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
     }
-    this.emit("change", [k]);
+    this.emit('change', [k])
+    this.#notifyKeyListeners(k)
   }
 
   async bulkSet(obj: Array<TCached> | Readonly<Array<TCached>>) {
     if (this.store) {
       try {
-        await this.store.bulkPut(obj);
-        obj.forEach(a => this.onTable.add(this.key(a)));
+        await this.store.bulkPut(obj)
+        obj.forEach(a => this.onTable.add(this.key(a)))
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
     }
-    obj.forEach(v => this.cache.set(this.key(v), v));
+    obj.forEach(v => this.cache.set(this.key(v), v))
     this.emit(
-      "change",
+      'change',
       obj.map(a => this.key(a)),
-    );
+    )
+    for (const v of obj) {
+      this.#notifyKeyListeners(this.key(v))
+    }
   }
 
   async update<TCachedWithCreated extends TCached & { created: number; loaded: number }>(m: TCachedWithCreated) {
-    const k = this.key(m);
-    const existing = this.getFromCache(k) as TCachedWithCreated;
+    const k = this.key(m)
+    const existing = this.getFromCache(k) as TCachedWithCreated
     const updateType = (() => {
       if (!existing) {
-        return "new";
+        return 'new'
       }
       if (existing.created < m.created) {
-        return "updated";
+        return 'updated'
       }
       if (existing && existing.loaded < m.loaded) {
-        return "refresh";
+        return 'refresh'
       }
-      return "no_change";
-    })();
-    this.log("Updating %s %s %o", k, updateType, m);
-    if (updateType !== "no_change") {
+      return 'no_change'
+    })()
+    this.log('Updating %s %s %o', k, updateType, m)
+    if (updateType !== 'no_change') {
       const updated = {
         ...existing,
         ...m,
-      };
-      await this.set(updated);
+      }
+      await this.set(updated)
     }
-    return updateType;
+    return updateType
   }
 
   async buffer(keys: Array<string>): Promise<Array<string>> {
-    const needsBuffer = keys.filter(a => !this.cache.has(a));
+    const needsBuffer = keys.filter(a => !this.cache.has(a))
     if (this.store && needsBuffer.length > 0) {
       const mapped = needsBuffer.map(a => ({
         has: this.onTable.has(a),
         key: a,
-      }));
-      const keysToLoad = mapped.filter(a => a.has).map(a => a.key);
+      }))
+      const keysToLoad = mapped.filter(a => a.has).map(a => a.key)
 
       // Skip store query if no keys need loading
       if (keysToLoad.length === 0) {
-        return mapped.filter(a => !a.has).map(a => a.key);
+        return mapped.filter(a => !a.has).map(a => a.key)
       }
 
-      const start = unixNowMs();
-      const fromCache = removeUndefined(await this.store.bulkGet(keysToLoad));
+      const start = unixNowMs()
+      const fromCache = removeUndefined(await this.store.bulkGet(keysToLoad))
       if (fromCache.length > 0) {
         fromCache.forEach(a => {
-          this.cache.set(this.key(a), a);
-        });
+          this.cache.set(this.key(a), a)
+        })
         this.emit(
-          "change",
+          'change',
           fromCache.map(a => this.key(a)),
-        );
-        this.log(`Loaded %d/%d in %d ms`, fromCache.length, keys.length, (unixNowMs() - start).toLocaleString());
+        )
+        this.log(`Loaded %d/%d in %d ms`, fromCache.length, keys.length, (unixNowMs() - start).toLocaleString())
       }
-      return mapped.filter(a => !a.has).map(a => a.key);
+      return mapped.filter(a => !a.has).map(a => a.key)
     }
 
     // no persistent store, always return all keys
-    return needsBuffer;
+    return needsBuffer
   }
 
   async clear() {
-    await this.store?.clear();
-    this.cache.clear();
-    this.onTable.clear();
+    await this.store?.clear()
+    this.cache.clear()
+    this.onTable.clear()
   }
 
   snapshot() {
-    return this.#snapshot;
+    return this.#snapshot
   }
 
-  abstract key(of: TCached): string;
-  abstract takeSnapshot(): Array<TCached>;
-  abstract search(q: string): Promise<Array<TCached>>;
+  abstract key(of: TCached): string
+  abstract takeSnapshot(): Array<TCached>
+  abstract search(q: string): Promise<Array<TCached>>
 }
