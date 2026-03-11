@@ -20,6 +20,8 @@ export class TraceTimeline extends ExternalStore<TraceTimelineSnapshot> {
   #enabled: boolean = true;
   // Track last entry index for each trace ID to update runtime
   #lastEntryIndex: Map<string, number> = new Map();
+  // Track start timestamp for each trace ID to compute total elapsed time
+  #startTimestamp: Map<string, number> = new Map();
 
   constructor() {
     super();
@@ -54,6 +56,11 @@ export class TraceTimeline extends ExternalStore<TraceTimelineSnapshot> {
   addTrace(event: QueryTraceEvent, queryName?: string) {
     if (!this.#enabled) return;
 
+    // Record start timestamp on first state for this trace
+    if (!this.#startTimestamp.has(event.id)) {
+      this.#startTimestamp.set(event.id, event.timestamp);
+    }
+
     // Update runtime of previous entry for this trace
     const lastIndex = this.#lastEntryIndex.get(event.id);
     if (lastIndex !== undefined && lastIndex < this.#entries.length) {
@@ -61,11 +68,21 @@ export class TraceTimeline extends ExternalStore<TraceTimelineSnapshot> {
       lastEntry.runtime = event.timestamp - lastEntry.event.timestamp;
     }
 
+    // For terminal/EOSE states, set runtime to total elapsed time from start
+    const isTerminal = [
+      QueryTraceState.EOSE,
+      QueryTraceState.LOCAL_CLOSE,
+      QueryTraceState.REMOTE_CLOSE,
+      QueryTraceState.TIMEOUT,
+      QueryTraceState.DROP,
+    ].includes(event.state);
+    const totalRuntime = isTerminal ? event.timestamp - (this.#startTimestamp.get(event.id) ?? event.timestamp) : undefined;
+
     // Create new entry
     const entry: TimelineEntry = {
       event,
       queryName,
-      runtime: undefined, // Will be set when next state change occurs
+      runtime: totalRuntime, // Will be set when next state change occurs (non-terminal), or total elapsed (terminal)
     };
 
     // Add entry and update index tracking
@@ -109,6 +126,7 @@ export class TraceTimeline extends ExternalStore<TraceTimelineSnapshot> {
   clear() {
     this.#entries = [];
     this.#lastEntryIndex.clear();
+    this.#startTimestamp.clear();
     this.notifyChange();
   }
 
@@ -127,8 +145,16 @@ export class TraceTimeline extends ExternalStore<TraceTimelineSnapshot> {
       const tid = entry.event.id; // Thread ID = query trace ID
       const queryName = entry.queryName || "Query";
 
-      if (entry.runtime !== undefined) {
-        // Duration event - shows as a bar
+      const isTerminal = [
+        QueryTraceState.EOSE,
+        QueryTraceState.LOCAL_CLOSE,
+        QueryTraceState.REMOTE_CLOSE,
+        QueryTraceState.TIMEOUT,
+        QueryTraceState.DROP,
+      ].includes(entry.event.state);
+
+      if (entry.runtime !== undefined && !isTerminal) {
+        // Duration event - shows as a bar (non-terminal states only)
         const duration = entry.runtime * 1000; // Convert to microseconds
         traceEvents.push({
           name: `${queryName} (${entry.event.state})`,
@@ -149,7 +175,7 @@ export class TraceTimeline extends ExternalStore<TraceTimelineSnapshot> {
           },
         });
       } else {
-        // Instant event - shows as a point
+        // Instant event - shows as a point (terminal states, or states without a runtime yet)
         traceEvents.push({
           name: `${queryName} (${entry.event.state})`,
           cat: [QueryTraceState.TIMEOUT, QueryTraceState.DROP].includes(entry.event.state) ? "timeout" : "complete",
@@ -164,6 +190,7 @@ export class TraceTimeline extends ExternalStore<TraceTimelineSnapshot> {
             subscriptionId: entry.event.id,
             connectionId: entry.event.connId,
             state: entry.event.state,
+            runtime: entry.runtime, // Total elapsed ms from QUEUED to this terminal state
             filters: entry.event.filters,
           },
         });
