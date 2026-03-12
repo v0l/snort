@@ -31,12 +31,12 @@ const ThreadCache = new LRUCache<string, Thread | undefined>({
 })
 
 /**
- * Set of events whose Schnorr signature has already been verified successfully.
- * Using WeakSet so GC can reclaim events once they are no longer referenced elsewhere.
- * This prevents double-verification when the same event passes through multiple
- * pipeline stages (e.g. Connection.#onMessage → ConnectionPool "unverifiedEvent" handler).
+ * Set of event IDs whose Schnorr signature has already been verified successfully.
+ * ID-based (not object-based) so re-arrivals of the same event from different
+ * relays are also skipped. Capped to avoid unbounded growth.
  */
-const VerifiedEvents = new WeakSet<NostrEvent>()
+const MAX_VERIFIED_CACHE = 50_000
+const VerifiedEventIds = new Set<string>()
 
 /**
  * Helper class for parsing event data
@@ -85,20 +85,23 @@ export abstract class EventExt {
    * @returns True only if the event is cryptographically authentic.
    */
   static verify(e: NostrEvent) {
-    // Fast path: already verified in this session
-    if (VerifiedEvents.has(e)) return true
-
     // Schnorr sig = 64 bytes = 128 hex chars; pubkey = 32 bytes = 64 hex chars
     if (!e.sig || e.sig.length !== 128 || !/^[0-9a-f]+$/i.test(e.sig)) return false
     if (!e.pubkey || e.pubkey.length !== 64 || !/^[0-9a-f]+$/i.test(e.pubkey)) return false
 
+    // Always recompute the ID from the payload — if it doesn't match e.id, the
+    // event is malformed/tampered regardless of what's in the verified cache.
     const id = EventExt.createId(e)
-    // Verify that the event's id field matches the computed hash
     if (e.id !== id) return false
+
+    // Fast path: this exact payload hash has already passed Schnorr verification.
+    // Safe because we just confirmed e.id === sha256(canonical payload), so a
+    // forged event with a stolen ID would have failed the hash check above first.
+    if (VerifiedEventIds.has(id)) return true
 
     try {
       const ok = schnorr.verify(hexToBytes(e.sig), hexToBytes(id), hexToBytes(e.pubkey))
-      if (ok) VerifiedEvents.add(e)
+      if (ok) EventExt.markVerified(e)
       return ok
     } catch {
       return false
@@ -106,20 +109,22 @@ export abstract class EventExt {
   }
 
   /**
-   * Returns true if this event object has already been verified in the current session.
-   * Cheaper than re-running the full Schnorr check.
+   * Returns true if this event ID has already been verified in the current session.
    */
   static isVerified(e: NostrEvent) {
-    return VerifiedEvents.has(e)
+    return VerifiedEventIds.has(e.id)
   }
 
   /**
    * Mark an event as verified. Call this after an external verifier (e.g. WASM)
-   * has confirmed the signature so that subsequent EventExt.verify() calls skip
-   * the JS Schnorr check.
+   * has confirmed the signature so that subsequent verify() calls are skipped
+   * for any object carrying the same event ID.
    */
   static markVerified(e: NostrEvent) {
-    VerifiedEvents.add(e)
+    if (VerifiedEventIds.size >= MAX_VERIFIED_CACHE) {
+      VerifiedEventIds.clear()
+    }
+    VerifiedEventIds.add(e.id)
   }
 
   static createId(e: NostrEvent | NotSignedNostrEvent) {
