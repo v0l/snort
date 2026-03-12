@@ -1,6 +1,6 @@
 {
   "name": "@snort/wallet",
-  "version": "2.0.0-pre.8",
+  "version": "2.0.0-pre.9",
   "description": "Snort wallet system package",
   "type": "module",
   "main": "dist/index.js",
@@ -15,8 +15,8 @@
   "files": ["src", "dist"],
   "dependencies": {
     "@scure/base": "^2.0.0",
-    "@snort/shared": "^2.0.0-pre.3",
-    "@snort/system": "^2.0.0-pre.8",
+    "@snort/shared": "^2.0.0-pre.4",
+    "@snort/system": "^2.0.0-pre.10",
     "debug": "^4.4.3",
     "eventemitter3": "^5.0.1"
   },

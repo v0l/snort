@@ -1,6 +1,6 @@
 {
   "name": "@snort/bot",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Simple bot framework",
   "type": "module",
   "module": "src/index.ts",
