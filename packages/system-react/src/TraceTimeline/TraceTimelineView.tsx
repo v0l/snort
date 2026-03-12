@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 import { QueryTraceState, type TimelineEntry } from "@snort/system"
-import { SnortContext } from "../context"
 import { use, useMemo, useState, useSyncExternalStore } from "react"
+import { SnortContext } from "../context"
 import "./TraceTimeline.css"
 import { TraceTimelineDetailPopup } from "./TraceTimelineDetailPopup"
 
@@ -25,7 +25,7 @@ export function TraceTimelineView() {
     60000: "1m",
   }
 
-  const emptyTimeline = { entries: [] as TimelineEntry[] }
+  const emptyTimeline = { entries: [] as TimelineEntry[], enabled: false }
   const timeline = useSyncExternalStore(
     c => system.traceTimeline!.hook(c),
     () => system.traceTimeline!.snapshot(),

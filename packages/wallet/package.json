@@ -16,7 +16,7 @@
   "dependencies": {
     "@scure/base": "^2.0.0",
     "@snort/shared": "^2.0.0-pre.4",
-    "@snort/system": "^2.0.0-pre.10",
+    "@snort/system": "^2.0.0-pre.11",
     "debug": "^4.4.3",
     "eventemitter3": "^5.0.1"
   },
