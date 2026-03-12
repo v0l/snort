@@ -1,16 +1,16 @@
-import type { UserMetadata } from '@snort/system'
-import { useUserProfile } from '@snort/system-react'
-import classNames from 'classnames'
-import type React from 'react'
-import { type ReactNode, useRef } from 'react'
+import type { UserMetadata } from "@snort/system"
+import { useUserProfile } from "@snort/system-react"
+import classNames from "classnames"
+import type React from "react"
+import { type ReactNode, useRef } from "react"
 
-import Avatar from '@/Components/User/Avatar'
-import FollowDistanceIndicator from '@/Components/User/FollowDistanceIndicator'
+import Avatar from "@/Components/User/Avatar"
+import FollowDistanceIndicator from "@/Components/User/FollowDistanceIndicator"
 
-import DisplayName from './DisplayName'
-import Nip05 from './Nip05'
-import { ProfileCardWrapper } from './ProfileCardWrapper'
-import { ProfileLink } from './ProfileLink'
+import DisplayName from "./DisplayName"
+import Nip05 from "./Nip05"
+import { ProfileCardWrapper } from "./ProfileCardWrapper"
+import { ProfileLink } from "./ProfileLink"
 
 export interface ProfileImageProps {
   pubkey: string
@@ -50,10 +50,10 @@ export default function ProfileImage({
   showNip05 = true,
 }: ProfileImageProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const user = useUserProfile(profile ? '' : pubkey, ref) ?? profile
+  const user = useUserProfile(profile ? "" : pubkey, ref) ?? profile
 
   function handleClick(e: React.MouseEvent) {
-    if (link === '') {
+    if (link === "") {
       e.preventDefault()
       onClick?.(e)
     }
@@ -106,15 +106,15 @@ export default function ProfileImage({
   }
 
   const classNamesOverInner = classNames(
-    'min-w-0 z-2',
+    "min-w-0 z-2",
     {
-      'flex gap-2 items-center': showUsername,
+      "flex gap-2 items-center": showUsername,
     },
     className,
   )
 
   const content =
-    link === '' ? (
+    link === "" ? (
       <div ref={ref} className={classNamesOverInner} onClick={handleClick}>
         {inner()}
       </div>

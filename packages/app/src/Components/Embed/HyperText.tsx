@@ -1,14 +1,14 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from "react"
 
-import AppleMusicEmbed from "@/Components/Embed/AppleMusicEmbed";
-import LinkPreview from "@/Components/Embed/LinkPreview";
-import MixCloudEmbed from "@/Components/Embed/MixCloudEmbed";
-import SoundCloudEmbed from "@/Components/Embed/SoundCloudEmded";
-import SpotifyEmbed from "@/Components/Embed/SpotifyEmbed";
-import TidalEmbed from "@/Components/Embed/TidalEmbed";
-import TwitchEmbed from "@/Components/Embed/TwitchEmbed";
-import WavlakeEmbed from "@/Components/Embed/WavlakeEmbed";
-import YoutubeEmbed from "@/Components/Embed/YoutubeEmbed";
+import AppleMusicEmbed from "@/Components/Embed/AppleMusicEmbed"
+import LinkPreview from "@/Components/Embed/LinkPreview"
+import MixCloudEmbed from "@/Components/Embed/MixCloudEmbed"
+import SoundCloudEmbed from "@/Components/Embed/SoundCloudEmded"
+import SpotifyEmbed from "@/Components/Embed/SpotifyEmbed"
+import TidalEmbed from "@/Components/Embed/TidalEmbed"
+import TwitchEmbed from "@/Components/Embed/TwitchEmbed"
+import WavlakeEmbed from "@/Components/Embed/WavlakeEmbed"
+import YoutubeEmbed from "@/Components/Embed/YoutubeEmbed"
 import {
   AppleMusicRegex,
   MixCloudRegex,
@@ -18,33 +18,33 @@ import {
   TwitchRegex,
   WavlakeRegex,
   YoutubeUrlRegex,
-} from "@/Utils/Const";
+} from "@/Utils/Const"
 
 interface HypeTextProps {
-  link: string;
-  children?: ReactNode | Array<ReactNode> | null;
-  showLinkPreview?: boolean;
+  link: string
+  children?: ReactNode | Array<ReactNode> | null
+  showLinkPreview?: boolean
 }
 
 export default function HyperText({ link, showLinkPreview, children }: HypeTextProps) {
   if (link.match(YoutubeUrlRegex)) {
-    return <YoutubeEmbed link={link} />;
+    return <YoutubeEmbed link={link} />
   } else if (link.match(TidalRegex)) {
-    return <TidalEmbed link={link} />;
+    return <TidalEmbed link={link} />
   } else if (link.match(SoundCloudRegex)) {
-    return <SoundCloudEmbed link={link} />;
+    return <SoundCloudEmbed link={link} />
   } else if (link.match(MixCloudRegex)) {
-    return <MixCloudEmbed link={link} />;
+    return <MixCloudEmbed link={link} />
   } else if (link.match(SpotifyRegex)) {
-    return <SpotifyEmbed link={link} />;
+    return <SpotifyEmbed link={link} />
   } else if (link.match(TwitchRegex)) {
-    return <TwitchEmbed link={link} />;
+    return <TwitchEmbed link={link} />
   } else if (link.match(AppleMusicRegex)) {
-    return <AppleMusicEmbed link={link} />;
+    return <AppleMusicEmbed link={link} />
   } else if (link.match(WavlakeRegex)) {
-    return <WavlakeEmbed link={link} />;
+    return <WavlakeEmbed link={link} />
   } else if (showLinkPreview ?? true) {
-    return <LinkPreview url={link} />;
+    return <LinkPreview url={link} />
   }
   return (
     <a
@@ -52,8 +52,9 @@ export default function HyperText({ link, showLinkPreview, children }: HypeTextP
       onClick={e => e.stopPropagation()}
       target="_blank"
       rel="noreferrer"
-      className="text-highlight no-underline hover:underline">
+      className="text-highlight no-underline hover:underline"
+    >
       {children ?? link}
     </a>
-  );
+  )
 }

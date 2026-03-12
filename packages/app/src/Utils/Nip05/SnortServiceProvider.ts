@@ -1,15 +1,15 @@
-import { EventKind, type EventPublisher } from "@snort/system";
+import { EventKind, type EventPublisher } from "@snort/system"
 
-import { type ServiceError, ServiceProvider } from "./ServiceProvider";
+import { type ServiceError, ServiceProvider } from "./ServiceProvider"
 
 export interface ManageHandle {
-  id: string;
-  handle: string;
-  domain: string;
-  pubkey: string;
-  created: Date;
-  lnAddress?: string;
-  forwardType?: ForwardType;
+  id: string
+  handle: string
+  domain: string
+  pubkey: string
+  created: Date
+  lnAddress?: string
+  forwardType?: ForwardType
 }
 
 export enum ForwardType {
@@ -19,28 +19,28 @@ export enum ForwardType {
 }
 
 export interface PatchHandle {
-  lnAddress?: string;
-  forwardType?: ForwardType;
+  lnAddress?: string
+  forwardType?: ForwardType
 }
 
 export default class SnortServiceProvider extends ServiceProvider {
-  readonly #publisher: EventPublisher;
+  readonly #publisher: EventPublisher
 
   constructor(publisher: EventPublisher, url: string | URL) {
-    super(url);
-    this.#publisher = publisher;
+    super(url)
+    this.#publisher = publisher
   }
 
   async list() {
-    return this.getJsonAuthd<Array<ManageHandle>>("/list", "GET");
+    return this.getJsonAuthd<Array<ManageHandle>>("/list", "GET")
   }
 
   async transfer(id: string, to: string) {
-    return this.getJsonAuthd<object>(`/${id}/transfer?to=${to}`, "PATCH");
+    return this.getJsonAuthd<object>(`/${id}/transfer?to=${to}`, "PATCH")
   }
 
   async patch(id: string, obj: PatchHandle) {
-    return this.getJsonAuthd<object>(`/${id}`, "PATCH", obj);
+    return this.getJsonAuthd<object>(`/${id}`, "PATCH", obj)
   }
 
   async registerForSubscription(handle: string, domain: string, id: string) {
@@ -49,7 +49,7 @@ export default class SnortServiceProvider extends ServiceProvider {
       domain,
       pk: "",
       ref: "snort",
-    });
+    })
   }
 
   async getJsonAuthd<T>(
@@ -59,20 +59,20 @@ export default class SnortServiceProvider extends ServiceProvider {
     headers?: { [key: string]: string },
   ): Promise<T | ServiceError> {
     const auth = await this.#publisher.generic(eb => {
-      eb.kind(EventKind.HttpAuthentication);
-      eb.tag(["url", `${this.url}${path}`]);
-      eb.tag(["method", method ?? "GET"]);
-      return eb;
-    });
+      eb.kind(EventKind.HttpAuthentication)
+      eb.tag(["url", `${this.url}${path}`])
+      eb.tag(["method", method ?? "GET"])
+      return eb
+    })
     if (!auth) {
       return {
         error: "INVALID_TOKEN",
-      } as ServiceError;
+      } as ServiceError
     }
 
     return this.getJson<T>(path, method, body, {
       ...headers,
       authorization: `Nostr ${window.btoa(JSON.stringify(auth))}`,
-    });
+    })
   }
 }

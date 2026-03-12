@@ -1,14 +1,14 @@
-import { lazy } from "react";
-import { Outlet, type RouteObject, useLocation } from "react-router-dom";
+import { lazy } from "react"
+import { Outlet, type RouteObject, useLocation } from "react-router-dom"
 
-import { LiveStreams } from "@/Components/LiveStream/LiveStreams";
-import { RootTabRoutes } from "@/Pages/Root/RootTabRoutes";
-import { getCurrentRefCode } from "@/Utils";
+import { LiveStreams } from "@/Components/LiveStream/LiveStreams"
+import { RootTabRoutes } from "@/Pages/Root/RootTabRoutes"
+import { getCurrentRefCode } from "@/Utils"
 
-const InviteModal = lazy(() => import("@/Components/Invite"));
+const InviteModal = lazy(() => import("@/Components/Invite"))
 export default function RootPage() {
-  const code = getCurrentRefCode();
-  const location = useLocation();
+  const code = getCurrentRefCode()
+  const location = useLocation()
   return (
     <>
       {(location.pathname === "/" || location.pathname === "/following") && <LiveStreams />}
@@ -17,7 +17,7 @@ export default function RootPage() {
       </div>
       {code && <InviteModal />}
     </>
-  );
+  )
 }
 export const RootRoutes = [
   {
@@ -25,4 +25,4 @@ export const RootRoutes = [
     element: <RootPage />,
     children: RootTabRoutes,
   },
-] as RouteObject[];
+] as RouteObject[]

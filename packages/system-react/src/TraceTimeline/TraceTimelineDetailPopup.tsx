@@ -1,20 +1,20 @@
-import { QueryTraceState, type TimelineEntry } from "@snort/system";
-import "./TraceTimeline.css";
+import { QueryTraceState, type TimelineEntry } from "@snort/system"
+import "./TraceTimeline.css"
 
 interface TraceTimelineDetailPopupProps {
-  selectedEntry: TimelineEntry;
-  onClose: () => void;
+  selectedEntry: TimelineEntry
+  onClose: () => void
 }
 
 export function TraceTimelineDetailPopup({ selectedEntry, onClose }: TraceTimelineDetailPopupProps) {
   const formatTime = (ms: number) => {
-    if (ms < 1) return `${(ms * 1000).toFixed(0)}μs`;
-    if (ms < 1000) return `${ms.toFixed(0)}ms`;
-    return `${(ms / 1000).toFixed(2)}s`;
-  };
+    if (ms < 1) return `${(ms * 1000).toFixed(0)}μs`
+    if (ms < 1000) return `${ms.toFixed(0)}ms`
+    return `${(ms / 1000).toFixed(2)}s`
+  }
 
   const formatTimestamp = (unixMs: number) => {
-    const date = new Date(unixMs);
+    const date = new Date(unixMs)
     return date.toLocaleString(undefined, {
       year: "numeric",
       month: "short",
@@ -23,13 +23,13 @@ export function TraceTimelineDetailPopup({ selectedEntry, onClose }: TraceTimeli
       minute: "2-digit",
       second: "2-digit",
       fractionalSecondDigits: 3,
-    });
-  };
+    })
+  }
 
   const getStatusBadgeClass = (state: QueryTraceState): string => {
     // Streaming
     if (state === QueryTraceState.WAITING_STREAM) {
-      return "status-badge status-streaming";
+      return "status-badge status-streaming"
     }
     // Active/pending states
     if (
@@ -40,19 +40,19 @@ export function TraceTimelineDetailPopup({ selectedEntry, onClose }: TraceTimeli
         QueryTraceState.SYNC_FALLBACK,
       ].includes(state)
     ) {
-      return "status-badge status-active";
+      return "status-badge status-active"
     }
     // Error states
     if ([QueryTraceState.TIMEOUT, QueryTraceState.DROP].includes(state)) {
-      return "status-badge status-error";
+      return "status-badge status-error"
     }
     // Success states
     if ([QueryTraceState.EOSE, QueryTraceState.LOCAL_CLOSE, QueryTraceState.REMOTE_CLOSE].includes(state)) {
-      return "status-badge status-success";
+      return "status-badge status-success"
     }
     // Fallback
-    return "status-badge status-fallback";
-  };
+    return "status-badge status-fallback"
+  }
 
   return (
     <div className="trace-timeline-details">
@@ -124,5 +124,5 @@ export function TraceTimelineDetailPopup({ selectedEntry, onClose }: TraceTimeli
         Close
       </button>
     </div>
-  );
+  )
 }

@@ -1,24 +1,24 @@
-import { LNDHubWallet, WalletKind } from "@snort/wallet";
-import { useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-import { useNavigate } from "react-router-dom";
-import { v4 as uuid } from "uuid";
+import { LNDHubWallet, WalletKind } from "@snort/wallet"
+import { useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { useNavigate } from "react-router-dom"
+import { v4 as uuid } from "uuid"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import { unwrap } from "@/Utils";
-import { type WalletConfig, Wallets } from "@/Wallet";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import { unwrap } from "@/Utils"
+import { type WalletConfig, Wallets } from "@/Wallet"
 
 const ConnectLNDHub = () => {
-  const navigate = useNavigate();
-  const { formatMessage } = useIntl();
-  const [config, setConfig] = useState<string>();
-  const [error, setError] = useState<string>();
+  const navigate = useNavigate()
+  const { formatMessage } = useIntl()
+  const [config, setConfig] = useState<string>()
+  const [error, setError] = useState<string>()
 
   async function tryConnect(config: string) {
     try {
-      const connection = new LNDHubWallet(config);
-      await connection.login();
-      const info = await connection.getInfo();
+      const connection = new LNDHubWallet(config)
+      await connection.login()
+      const info = await connection.getInfo()
 
       const newWallet = {
         id: uuid(),
@@ -26,20 +26,20 @@ const ConnectLNDHub = () => {
         active: true,
         info,
         data: config,
-      } as WalletConfig;
-      Wallets.add(newWallet);
+      } as WalletConfig
+      Wallets.add(newWallet)
 
-      navigate("/settings/wallet");
+      navigate("/settings/wallet")
     } catch (e) {
       if (e instanceof Error) {
-        setError((e as Error).message);
+        setError((e as Error).message)
       } else {
         setError(
           formatMessage({
             defaultMessage: "Unknown error",
             id: "qDwvZ4",
           }),
-        );
+        )
       }
     }
   }
@@ -65,7 +65,7 @@ const ConnectLNDHub = () => {
       </div>
       {error && <b className="error p-2.5">{error}</b>}
     </>
-  );
-};
+  )
+}
 
-export default ConnectLNDHub;
+export default ConnectLNDHub

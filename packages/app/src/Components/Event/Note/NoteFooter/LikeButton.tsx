@@ -1,42 +1,42 @@
-import { normalizeReaction } from "@snort/shared";
-import type { TaggedNostrEvent } from "@snort/system";
-import classNames from "classnames";
-import { useIntl } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import { normalizeReaction } from "@snort/shared"
+import type { TaggedNostrEvent } from "@snort/system"
+import classNames from "classnames"
+import { useIntl } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
+import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
 
 export const LikeButton = ({
   ev,
   positiveReactions,
 }: {
-  ev: TaggedNostrEvent;
-  positiveReactions: TaggedNostrEvent[];
+  ev: TaggedNostrEvent
+  positiveReactions: TaggedNostrEvent[]
 }) => {
-  const { formatMessage } = useIntl();
-  const navigate = useNavigate();
-  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
-  const { publisher, system } = useEventPublisher();
+  const { formatMessage } = useIntl()
+  const navigate = useNavigate()
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }))
+  const { publisher, system } = useEventPublisher()
 
   const hasReacted = (emoji: string) => {
     return positiveReactions?.some(
       ({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === publicKey,
-    );
-  };
+    )
+  }
 
   const react = async (content: string) => {
     if (!hasReacted(content) && publisher) {
-      const evLike = await publisher.react(ev, content);
-      system.BroadcastEvent(evLike);
+      const evLike = await publisher.react(ev, content)
+      system.BroadcastEvent(evLike)
     }
     if (!publisher) {
-      navigate("/login");
+      navigate("/login")
     }
-  };
+  }
 
-  const reacted = hasReacted("+");
+  const reacted = hasReacted("+")
 
   return (
     <AsyncFooterIcon
@@ -49,5 +49,5 @@ export const LikeButton = ({
       value={positiveReactions.length}
       onClick={() => react("+")}
     />
-  );
-};
+  )
+}

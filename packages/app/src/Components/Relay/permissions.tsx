@@ -1,10 +1,10 @@
-import type { ConnectionType } from "@snort/system/dist/connection-pool";
-import { FormattedMessage } from "react-intl";
+import type { ConnectionType } from "@snort/system/dist/connection-pool"
+import { FormattedMessage } from "react-intl"
 
-import useLogin from "@/Hooks/useLogin";
+import useLogin from "@/Hooks/useLogin"
 
 export default function RelayPermissions({ conn }: { conn: ConnectionType }) {
-  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
+  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }))
 
   return (
     <div className="flex gap-2 cursor-pointer select-none">
@@ -15,7 +15,8 @@ export default function RelayPermissions({ conn }: { conn: ConnectionType }) {
             read: !conn.settings.read,
             write: conn.settings.write,
           })
-        }>
+        }
+      >
         <FormattedMessage defaultMessage="Read" />
       </div>
       <div
@@ -25,9 +26,10 @@ export default function RelayPermissions({ conn }: { conn: ConnectionType }) {
             read: conn.settings.read,
             write: !conn.settings.write,
           })
-        }>
+        }
+      >
         <FormattedMessage defaultMessage="Write" />
       </div>
     </div>
-  );
+  )
 }

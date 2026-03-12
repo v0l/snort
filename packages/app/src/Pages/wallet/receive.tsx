@@ -1,18 +1,18 @@
-import { useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import Copy from "@/Components/Copy/Copy";
-import QrCode from "@/Components/QrCode";
-import { useWallet } from "@/Wallet";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import Copy from "@/Components/Copy/Copy"
+import QrCode from "@/Components/QrCode"
+import { useWallet } from "@/Wallet"
 
 export function WalletReceivePage() {
-  const wallets = useWallet();
-  const { formatMessage } = useIntl();
-  const [invoice, setInvoice] = useState("");
-  const [error, setError] = useState("");
-  const [amount, setAmount] = useState(0);
-  const [comment, setComment] = useState("");
+  const wallets = useWallet()
+  const { formatMessage } = useIntl()
+  const [invoice, setInvoice] = useState("")
+  const [error, setError] = useState("")
+  const [amount, setAmount] = useState(0)
+  const [comment, setComment] = useState("")
 
   return (
     <div className="px-3 py-2 flex flex-col gap-4">
@@ -49,13 +49,14 @@ export function WalletReceivePage() {
                 amount: amount,
                 memo: comment,
                 expiry: 600,
-              });
-              setInvoice(inv.pr);
+              })
+              setInvoice(inv.pr)
             }
           } catch (e) {
-            setError((e as Error).message);
+            setError((e as Error).message)
           }
-        }}>
+        }}
+      >
         <FormattedMessage defaultMessage="Generate Invoice" />
       </AsyncButton>
       {error && <b className="warning">{error}</b>}
@@ -66,5 +67,5 @@ export function WalletReceivePage() {
         </div>
       )}
     </div>
-  );
+  )
 }

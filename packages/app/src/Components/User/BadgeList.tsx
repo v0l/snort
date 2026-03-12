@@ -1,29 +1,29 @@
-import type { TaggedNostrEvent } from "@snort/system";
-import { useState } from "react";
-import { FormattedMessage } from "react-intl";
+import type { TaggedNostrEvent } from "@snort/system"
+import { useState } from "react"
+import { FormattedMessage } from "react-intl"
 
-import Modal from "@/Components/Modal/Modal";
-import { ProxyImg } from "@/Components/ProxyImg";
-import Username from "@/Components/User/Username";
-import { findTag } from "@/Utils";
-import useProfileBadges from "@/Feed/BadgesFeed";
+import Modal from "@/Components/Modal/Modal"
+import { ProxyImg } from "@/Components/ProxyImg"
+import Username from "@/Components/User/Username"
+import { findTag } from "@/Utils"
+import useProfileBadges from "@/Feed/BadgesFeed"
 
 interface BadgeInfo {
-  id: string;
-  pubkey: string;
-  name?: string;
-  description?: string;
-  thumb?: string;
-  image?: string;
+  id: string
+  pubkey: string
+  name?: string
+  description?: string
+  thumb?: string
+  image?: string
 }
 
 export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
-  const [badgeModal, setShowModal] = useState<BadgeInfo>();
+  const [badgeModal, setShowModal] = useState<BadgeInfo>()
   const badgeMetadata = badges.map(b => {
-    const thumb = findTag(b, "thumb");
-    const image = findTag(b, "image");
-    const name = findTag(b, "name");
-    const description = findTag(b, "description");
+    const thumb = findTag(b, "thumb")
+    const image = findTag(b, "image")
+    const name = findTag(b, "name")
+    const description = findTag(b, "description")
     return {
       id: b.id,
       pubkey: b.pubkey,
@@ -31,9 +31,9 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
       description,
       thumb: (thumb?.length ?? 0 > 0) ? thumb : image,
       image,
-    } as BadgeInfo;
-  });
-  if (badgeMetadata.length === 0) return;
+    } as BadgeInfo
+  })
+  if (badgeMetadata.length === 0) return
   return (
     <>
       <div className="flex items-center gap-1 flex-wrap">
@@ -49,7 +49,8 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
             missingImageElement={
               <div
                 className="w-8 h-8 layer-1 flex items-center justify-center cursor-pointer"
-                onClick={() => setShowModal(v)}>
+                onClick={() => setShowModal(v)}
+              >
                 ?
               </div>
             }
@@ -75,10 +76,10 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
         </Modal>
       )}
     </>
-  );
+  )
 }
 
 export function ProfileBadges({ pubkey }: { pubkey: string }) {
-  const badges = useProfileBadges(pubkey);
-  return <BadgeList badges={badges} />;
+  const badges = useProfileBadges(pubkey)
+  return <BadgeList badges={badges} />
 }

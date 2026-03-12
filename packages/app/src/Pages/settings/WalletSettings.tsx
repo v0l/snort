@@ -1,35 +1,36 @@
-import type { ReactNode } from "react";
-import { FormattedMessage } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import type { ReactNode } from "react"
+import { FormattedMessage } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import AlbyIcon from "@/Components/Icons/Alby";
-import BlueWallet from "@/Components/Icons/BlueWallet";
-import Icon from "@/Components/Icons/Icon";
-import NWCIcon from "@/Components/Icons/NWC";
-import { getAlbyOAuth } from "@/Pages/settings/wallet/utils";
+import AlbyIcon from "@/Components/Icons/Alby"
+import BlueWallet from "@/Components/Icons/BlueWallet"
+import Icon from "@/Components/Icons/Icon"
+import NWCIcon from "@/Components/Icons/NWC"
+import { getAlbyOAuth } from "@/Pages/settings/wallet/utils"
 
 const WalletRow = (props: {
-  logo: ReactNode;
-  name: ReactNode;
-  url: string;
-  desc?: ReactNode;
-  onClick?: () => void;
+  logo: ReactNode
+  name: ReactNode
+  url: string
+  desc?: ReactNode
+  onClick?: () => void
 }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <div
       className="flex items-center gap-4 px-4 py-2 layer-1-hover"
       onClick={() => {
         if (props.onClick) {
-          props.onClick();
+          props.onClick()
         } else {
           if (props.url.startsWith("http")) {
-            window.location.href = props.url;
+            window.location.href = props.url
           } else {
-            navigate(props.url);
+            navigate(props.url)
           }
         }
-      }}>
+      }}
+    >
       <div className="aspect-square layer-2 p-3 flex items-center justify-center">{props.logo}</div>
       <div className="flex flex-col gap-1 grow justify-center">
         <div className="text-xl font-bold">{props.name}</div>
@@ -37,8 +38,8 @@ const WalletRow = (props: {
       </div>
       <Icon name="arrowFront" />
     </div>
-  );
-};
+  )
+}
 
 const WalletSettings = () => {
   return (
@@ -65,15 +66,15 @@ const WalletSettings = () => {
             name="Alby"
             url={""}
             onClick={() => {
-              const alby = getAlbyOAuth();
-              window.location.href = alby.getAuthUrl();
+              const alby = getAlbyOAuth()
+              window.location.href = alby.getAuthUrl()
             }}
             desc={<FormattedMessage defaultMessage="Alby wallet connection" />}
           />
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default WalletSettings;
+export default WalletSettings

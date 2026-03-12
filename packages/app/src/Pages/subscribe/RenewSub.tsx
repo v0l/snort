@@ -1,25 +1,25 @@
-import { unixNow, unwrap } from "@snort/shared";
-import { useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { unixNow, unwrap } from "@snort/shared"
+import { useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import ZapModal from "@/Components/ZapModal/ZapModal";
-import SnortApi, { type Subscription, SubscriptionError } from "@/External/SnortApi";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
-import { mapPlanName, mapSubscriptionErrorCode } from "@/Pages/subscribe/utils";
-import { mostRecentSubscription } from "@/Utils/Subscription";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import ZapModal from "@/Components/ZapModal/ZapModal"
+import SnortApi, { type Subscription, SubscriptionError } from "@/External/SnortApi"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
+import { mapPlanName, mapSubscriptionErrorCode } from "@/Pages/subscribe/utils"
+import { mostRecentSubscription } from "@/Utils/Subscription"
 
 export function RenewSub({ sub: s }: { sub?: Subscription }) {
-  const { subscriptions } = useLogin(s => ({ subscriptions: s.subscriptions }));
-  const { publisher } = useEventPublisher();
-  const { formatMessage } = useIntl();
+  const { subscriptions } = useLogin(s => ({ subscriptions: s.subscriptions }))
+  const { publisher } = useEventPublisher()
+  const { formatMessage } = useIntl()
 
-  const [invoice, setInvoice] = useState("");
-  const [error, setError] = useState<SubscriptionError>();
-  const [months, setMonths] = useState(1);
+  const [invoice, setInvoice] = useState("")
+  const [error, setError] = useState<SubscriptionError>()
+  const [months, setMonths] = useState(1)
 
-  const recentSub = mostRecentSubscription(subscriptions);
+  const recentSub = mostRecentSubscription(subscriptions)
   const sub =
     s ??
     (recentSub
@@ -30,21 +30,21 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
           expires: unwrap(recentSub).end,
           state: unwrap(recentSub).end > unixNow() ? "expired" : "paid",
         } as Subscription)
-      : undefined);
+      : undefined)
 
   async function renew(id: string, months: number) {
-    const api = new SnortApi(undefined, publisher?.signer);
+    const api = new SnortApi(undefined, publisher?.signer)
     try {
-      const rsp = await api.renewSubscription(id, months);
-      setInvoice(rsp.pr);
+      const rsp = await api.renewSubscription(id, months)
+      setInvoice(rsp.pr)
     } catch (e) {
       if (e instanceof SubscriptionError) {
-        setError(e);
+        setError(e)
       }
     }
   }
 
-  if (!sub) return;
+  if (!sub) return
   return (
     <>
       <div className="flex gap-2">
@@ -83,5 +83,5 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
       />
       {error && <b className="error">{mapSubscriptionErrorCode(error)}</b>}
     </>
-  );
+  )
 }

@@ -1,16 +1,16 @@
-import { mapEventToProfile, type UserMetadata } from '@snort/system'
-import { useUserProfile } from '@snort/system-react'
-import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { useNavigate } from 'react-router-dom'
+import { mapEventToProfile, type UserMetadata } from "@snort/system"
+import { useUserProfile } from "@snort/system-react"
+import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import { ProfilesCache } from '@/Cache'
-import AsyncButton from '@/Components/Button/AsyncButton'
-import Copy from '@/Components/Copy/Copy'
-import ZapModal from '@/Components/ZapModal/ZapModal'
-import useEventPublisher from '@/Hooks/useEventPublisher'
-import useLogin from '@/Hooks/useLogin'
-import { debounce, unwrap } from '@/Utils'
+import { ProfilesCache } from "@/Cache"
+import AsyncButton from "@/Components/Button/AsyncButton"
+import Copy from "@/Components/Copy/Copy"
+import ZapModal from "@/Components/ZapModal/ZapModal"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
+import { debounce, unwrap } from "@/Utils"
 import {
   type CheckRegisterResponse,
   type HandleAvailability,
@@ -19,11 +19,11 @@ import {
   type ServiceError,
   type ServiceErrorCode,
   ServiceProvider,
-} from '@/Utils/Nip05/ServiceProvider'
-import SnortServiceProvider from '@/Utils/Nip05/SnortServiceProvider'
-import { formatShort } from '@/Utils/Number'
+} from "@/Utils/Nip05/ServiceProvider"
+import SnortServiceProvider from "@/Utils/Nip05/SnortServiceProvider"
+import { formatShort } from "@/Utils/Number"
 
-import messages from './messages'
+import messages from "./messages"
 
 type Nip05ServiceProps = {
   name: string
@@ -47,8 +47,8 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   const svc = useMemo(() => new ServiceProvider(props.service), [props.service])
   const [serviceConfig, setServiceConfig] = useState<ServiceConfig>()
   const [error, setError] = useState<ServiceError>()
-  const [handle, setHandle] = useState<string>('')
-  const [domain, setDomain] = useState<string>('')
+  const [handle, setHandle] = useState<string>("")
+  const [domain, setDomain] = useState<string>("")
   const checkingRef = useRef(false)
   const [availabilityResponse, setAvailabilityResponse] = useState<HandleAvailability>()
   const [registerResponse, setRegisterResponse] = useState<HandleRegisterResponse>()
@@ -77,7 +77,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
     svc
       .GetConfig()
       .then(a => {
-        if ('error' in a) {
+        if ("error" in a) {
           setError(a as ServiceError)
         } else {
           const svc = a as ServiceConfig
@@ -94,23 +94,23 @@ export default function Nip5Service(props: Nip05ServiceProps) {
     setAvailabilityResponse(undefined)
     if (handle && domain) {
       if (handle.length < (domainConfig?.length[0] ?? 2)) {
-        setAvailabilityResponse({ available: false, why: 'TOO_SHORT' })
+        setAvailabilityResponse({ available: false, why: "TOO_SHORT" })
         return
       }
       if (handle.length > (domainConfig?.length[1] ?? 20)) {
-        setAvailabilityResponse({ available: false, why: 'TOO_LONG' })
+        setAvailabilityResponse({ available: false, why: "TOO_LONG" })
         return
       }
-      const rx = new RegExp(domainConfig?.regex[0] ?? '', domainConfig?.regex[1] ?? '')
+      const rx = new RegExp(domainConfig?.regex[0] ?? "", domainConfig?.regex[1] ?? "")
       if (!rx.test(handle)) {
-        setAvailabilityResponse({ available: false, why: 'REGEX' })
+        setAvailabilityResponse({ available: false, why: "REGEX" })
         return
       }
       return debounce(500, () => {
         svc
           .CheckAvailable(handle, domain)
           .then(a => {
-            if ('error' in a) {
+            if ("error" in a) {
               setError(a as ServiceError)
             } else {
               setAvailabilityResponse(a as HandleAvailability)
@@ -124,7 +124,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   const checkRegistration = useCallback(
     async (rsp: HandleRegisterResponse) => {
       const status = await svc.CheckRegistration(rsp.token)
-      if ('error' in status) {
+      if ("error" in status) {
         setError(status)
         setRegisterResponse(undefined)
         setShowInvoice(false)
@@ -133,7 +133,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         if (result.paid) {
           if (!result.available) {
             setError({
-              error: 'REGISTERED',
+              error: "REGISTERED",
             } as ServiceError)
           } else {
             setError(undefined)
@@ -168,14 +168,14 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       return undefined
     }
     const whyMap = new Map([
-      ['TOO_SHORT', formatMessage(messages.TooShort)],
-      ['TOO_LONG', formatMessage(messages.TooLong)],
-      ['REGEX', formatMessage(messages.Regex)],
-      ['REGISTERED', formatMessage(messages.Registered)],
-      ['DISALLOWED_null', formatMessage(messages.Disallowed)],
-      ['DISALLOWED_later', formatMessage(messages.DisalledLater)],
+      ["TOO_SHORT", formatMessage(messages.TooShort)],
+      ["TOO_LONG", formatMessage(messages.TooLong)],
+      ["REGEX", formatMessage(messages.Regex)],
+      ["REGISTERED", formatMessage(messages.Registered)],
+      ["DISALLOWED_null", formatMessage(messages.Disallowed)],
+      ["DISALLOWED_later", formatMessage(messages.DisalledLater)],
     ])
-    return whyMap.get(e === 'DISALLOWED' ? `${e}_${t}` : e)
+    return whyMap.get(e === "DISALLOWED" ? `${e}_${t}` : e)
   }
 
   async function startBuy(handle: string, domain: string) {
@@ -184,7 +184,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
     }
 
     const rsp = await svc.RegisterHandle(handle, domain, publicKey)
-    if ('error' in rsp) {
+    if ("error" in rsp) {
       setError(rsp)
     } else {
       setRegisterResponse(rsp)
@@ -199,7 +199,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
 
     const svcEx = new SnortServiceProvider(publisher, props.service)
     const rsp = await svcEx.registerForSubscription(handle, domain, sub)
-    if ('error' in rsp) {
+    if ("error" in rsp) {
       setError(rsp)
     } else {
       if (props.onSuccess) {
@@ -225,7 +225,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         ProfilesCache.set(newMeta)
       }
       if (helpText) {
-        navigate('/settings/profile')
+        navigate("/settings/profile")
       }
     }
   }
@@ -295,7 +295,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       )}
       {availabilityResponse?.available === false && !registerStatus && (
         <b className="error">
-          <FormattedMessage {...messages.NotAvailable} />{' '}
+          <FormattedMessage {...messages.NotAvailable} />{" "}
           {mapError(availabilityResponse.why, availabilityResponse.reasonTag || null)}
         </b>
       )}
@@ -311,7 +311,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             <FormattedMessage {...messages.OrderPaid} />
           </h4>
           <p>
-            <FormattedMessage {...messages.NewNip} />{' '}
+            <FormattedMessage {...messages.NewNip} />{" "}
             <code>
               {handle}@{domain}
             </code>
@@ -324,7 +324,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
           </p>
           <Copy text={registerStatus.password} />
           <p>
-            <FormattedMessage {...messages.GoTo} />{' '}
+            <FormattedMessage {...messages.GoTo} />{" "}
             <a href={props.supportLink} target="_blank" rel="noreferrer">
               <FormattedMessage {...messages.AccountPage} />
             </a>

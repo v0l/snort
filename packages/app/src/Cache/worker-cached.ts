@@ -1,8 +1,8 @@
-import { type CachedTable, type CacheEvents, removeUndefined, unixNowMs } from '@snort/shared'
-import type { CachedBase, CacheRelay, NostrEvent, ReqFilter } from '@snort/system'
-import debug from 'debug'
-import { EventEmitter } from 'eventemitter3'
-import { LRUCache } from 'typescript-lru-cache'
+import { type CachedTable, type CacheEvents, removeUndefined, unixNowMs } from "@snort/shared"
+import type { CachedBase, CacheRelay, NostrEvent, ReqFilter } from "@snort/system"
+import debug from "debug"
+import { EventEmitter } from "eventemitter3"
+import { LRUCache } from "typescript-lru-cache"
 
 /**
  * Generic worker relay based cache, key by pubkey
@@ -28,7 +28,7 @@ export abstract class WorkerBaseCache<T extends CachedBase>
 
   async clear() {
     this.#cache.clear()
-    this.emit('change', [])
+    this.emit("change", [])
   }
 
   key(of: T): string {
@@ -51,7 +51,7 @@ export abstract class WorkerBaseCache<T extends CachedBase>
    */
   protected async preloadTable(id: string, f: ReqFilter) {
     const start = unixNowMs()
-    const data = await this.#relay.query(['REQ', id, f])
+    const data = await this.#relay.query(["REQ", id, f])
     if (f.ids_only === true) {
       this.#keys = new Set(data as unknown as Array<string>)
     } else {
@@ -65,7 +65,7 @@ export abstract class WorkerBaseCache<T extends CachedBase>
 
   async search(q: string) {
     const results = await this.#relay.query([
-      'REQ',
+      "REQ",
       `${this.name()}-search`,
       {
         kinds: [this.kind],
@@ -102,7 +102,7 @@ export abstract class WorkerBaseCache<T extends CachedBase>
     if (keys.length === 0) return []
 
     const results = await this.#relay.query([
-      'REQ',
+      "REQ",
       `${this.name()}-bulk`,
       {
         authors: keys,
@@ -114,7 +114,7 @@ export abstract class WorkerBaseCache<T extends CachedBase>
       this.#cache.set(pf.pubkey, pf)
     }
     this.emit(
-      'change',
+      "change",
       mapped.map(a => a.pubkey),
     )
     return mapped
@@ -139,33 +139,33 @@ export abstract class WorkerBaseCache<T extends CachedBase>
   async set(obj: T) {
     const k = this.key(obj)
     this.setInternal(obj)
-    this.emit('change', [k])
+    this.emit("change", [k])
     this.#notifyKeyListeners(k)
   }
 
   async bulkSet(obj: T[] | readonly T[]) {
     obj.map(a => this.setInternal(a))
-    this.emit('change', obj.map(this.key))
+    this.emit("change", obj.map(this.key))
     for (const v of obj) {
       this.#notifyKeyListeners(this.key(v))
     }
   }
 
-  async update(obj: T): Promise<'new' | 'refresh' | 'updated' | 'no_change'> {
+  async update(obj: T): Promise<"new" | "refresh" | "updated" | "no_change"> {
     const k = this.key(obj)
     const existing = this.getFromCache(k) as (T & { created: number; loaded: number }) | undefined
     if (existing) {
       const typedObj = obj as T & { created?: number; loaded?: number }
       // If we have a newer or same-age entry already cached, skip the overwrite
       if (existing.created !== undefined && typedObj.created !== undefined && existing.created > typedObj.created) {
-        return 'no_change'
+        return "no_change"
       }
       if (existing.loaded !== undefined && typedObj.loaded !== undefined && existing.loaded >= typedObj.loaded) {
-        return 'no_change'
+        return "no_change"
       }
     }
     await this.set(obj)
-    return existing ? 'updated' : 'new'
+    return existing ? "updated" : "new"
   }
 
   /**

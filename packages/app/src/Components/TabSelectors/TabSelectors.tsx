@@ -1,23 +1,23 @@
-import classNames from "classnames";
-import type { ReactNode } from "react";
+import classNames from "classnames"
+import type { ReactNode } from "react"
 
-import useHorizontalScroll from "@/Hooks/useHorizontalScroll";
+import useHorizontalScroll from "@/Hooks/useHorizontalScroll"
 
 export interface Tab {
-  text: ReactNode;
-  value: number;
-  disabled?: boolean;
+  text: ReactNode
+  value: number
+  disabled?: boolean
 }
 
 interface TabsProps {
-  tabs: Tab[];
-  tab: Tab;
-  className?: string;
-  setTab: (t: Tab) => void;
+  tabs: Tab[]
+  tab: Tab
+  className?: string
+  setTab: (t: Tab) => void
 }
 
 interface TabElementProps extends Omit<TabsProps, "tabs"> {
-  t: Tab;
+  t: Tab
 }
 
 export const TabSelector = ({ t, tab, setTab }: TabElementProps) => {
@@ -31,21 +31,22 @@ export const TabSelector = ({ t, tab, setTab }: TabElementProps) => {
           disabled: t.disabled,
         },
       )}
-      onClick={() => !t.disabled && setTab(t)}>
+      onClick={() => !t.disabled && setTab(t)}
+    >
       {t.text}
     </div>
-  );
-};
+  )
+}
 
 const TabSelectors = ({ tabs, tab, className, setTab }: TabsProps) => {
-  const horizontalScroll = useHorizontalScroll();
+  const horizontalScroll = useHorizontalScroll()
   return (
     <div className={classNames(className, "flex gap-2 overflow-hidden hide-scrollbar w-full")} ref={horizontalScroll}>
       {tabs.map((t, index) => (
         <TabSelector key={index} tab={tab} setTab={setTab} t={t} />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default TabSelectors;
+export default TabSelectors

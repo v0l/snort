@@ -1,17 +1,17 @@
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl"
 
-import MuteButton from "@/Components/User/MuteButton";
-import ProfilePreview from "@/Components/User/ProfilePreview";
-import useModeration from "@/Hooks/useModeration";
+import MuteButton from "@/Components/User/MuteButton"
+import ProfilePreview from "@/Components/User/ProfilePreview"
+import useModeration from "@/Hooks/useModeration"
 
-import messages from "../messages";
+import messages from "../messages"
 
 export interface MutedListProps {
-  pubkeys: Array<string>;
+  pubkeys: Array<string>
 }
 
 export default function MutedList() {
-  const { muteList } = useModeration();
+  const { muteList } = useModeration()
 
   return (
     <div className="px-3 py-2">
@@ -21,7 +21,7 @@ export default function MutedList() {
         </div>
       </div>
       {muteList?.map(a => {
-        const tag = a.toEventTag();
+        const tag = a.toEventTag()
         switch (tag?.at(0)) {
           case "p": {
             return (
@@ -31,11 +31,11 @@ export default function MutedList() {
                 options={{ about: false }}
                 key={tag[1]}
               />
-            );
+            )
           }
         }
-        return undefined;
+        return undefined
       })}
     </div>
-  );
+  )
 }

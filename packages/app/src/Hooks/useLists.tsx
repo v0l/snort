@@ -1,6 +1,6 @@
-import { EventKind, NostrLink, RequestBuilder } from '@snort/system'
-import { useEventsFeed, useRequestBuilder } from '@snort/system-react'
-import { useMemo } from 'react'
+import { EventKind, NostrLink, RequestBuilder } from "@snort/system"
+import { useEventsFeed, useRequestBuilder } from "@snort/system-react"
+import { useMemo } from "react"
 
 const PinListKinds = [EventKind.PinList]
 const BookmarksListKinds = [EventKind.BookmarksList]

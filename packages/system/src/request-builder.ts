@@ -1,10 +1,10 @@
-import { appendDedupe, dedupe, NostrPrefix, removeUndefined, sanitizeRelayUrl, unwrap } from '@snort/shared'
+import { appendDedupe, dedupe, NostrPrefix, removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared"
 
-import type EventKind from './event-kind'
-import { EventExt, NostrLink, type ToNostrEventTag } from '.'
-import type { ReqFilter, TaggedNostrEvent } from './nostr'
-import type { RequestRouter } from './request-router'
-import type { NostrEvent } from 'nostr-social-graph'
+import type EventKind from "./event-kind"
+import { EventExt, NostrLink, type ToNostrEventTag } from "."
+import type { ReqFilter, TaggedNostrEvent } from "./nostr"
+import type { RequestRouter } from "./request-router"
+import type { NostrEvent } from "nostr-social-graph"
 
 /**
  * A built REQ filter ready for sending to System
@@ -194,7 +194,7 @@ export class RequestFilterBuilder {
     return this
   }
 
-  tag(key: 'e' | 'p' | 'd' | 't' | 'r' | 'a' | 'g' | string, value?: Array<string>) {
+  tag(key: "e" | "p" | "d" | "t" | "r" | "a" | "g" | string, value?: Array<string>) {
     if (!value) return this
     this.#filter[`#${key}`] = appendDedupe(this.#filter[`#${key}`] as Array<string>, value)
     return this
@@ -225,7 +225,7 @@ export class RequestFilterBuilder {
   link(link: NostrLink | ToNostrEventTag) {
     if (link instanceof NostrLink) {
       if (link.type === NostrPrefix.Address) {
-        this.tag('d', [link.id])
+        this.tag("d", [link.id])
           .kinds([unwrap(link.kind)])
           .authors([unwrap(link.author)])
       } else {
@@ -253,7 +253,7 @@ export class RequestFilterBuilder {
    */
   replyToLink(links: Array<NostrLink>) {
     const types = dedupe(links.map(a => a.type))
-    if (types.length > 1) throw new Error('Cannot add multiple links of different kinds')
+    if (types.length > 1) throw new Error("Cannot add multiple links of different kinds")
 
     const tags = removeUndefined(links.map(a => a.toEventTag()))
     this.tag(

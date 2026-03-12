@@ -1,6 +1,6 @@
-import { type DVMJobInput, DVMJobRequest, NostrLink, PrivateKeySigner, type TaggedNostrEvent } from '@snort/system'
-import { useEffect, useMemo, useState } from 'react'
-import useEventPublisher from './useEventPublisher'
+import { type DVMJobInput, DVMJobRequest, NostrLink, PrivateKeySigner, type TaggedNostrEvent } from "@snort/system"
+import { useEffect, useMemo, useState } from "react"
+import useEventPublisher from "./useEventPublisher"
 
 // Session-scoped ephemeral signer for anonymous DVM requests
 let ephemeralSigner: PrivateKeySigner | undefined
@@ -22,7 +22,7 @@ export default function useDVMLinks(
   relays?: Array<string>,
   parser?: (c: string) => Array<NostrLink>,
 ) {
-  const cacheKey = `${provider ? `${provider}:` : ''}${kind}${relays ? `:${relays.join(',')}` : ''}`
+  const cacheKey = `${provider ? `${provider}:` : ""}${kind}${relays ? `:${relays.join(",")}` : ""}`
   const { publisher, system } = useEventPublisher()
   const [result, setResult] = useState<TaggedNostrEvent>()
   const [error, setError] = useState<Error>()
@@ -58,7 +58,7 @@ export default function useDVMLinks(
     if (cached) {
       try {
         const jCached = JSON.parse(cached) as TaggedNostrEvent | undefined
-        if (jCached && 'content' in jCached) {
+        if (jCached && "content" in jCached) {
           setResult(jCached)
           return
         } else {
@@ -70,11 +70,11 @@ export default function useDVMLinks(
     }
     setResult(undefined)
 
-    req.on('result', e => {
+    req.on("result", e => {
       setResult(e)
       window.sessionStorage.setItem(k, JSON.stringify(e))
     })
-    req.on('error', e => {
+    req.on("error", e => {
       setError(new Error(e))
     })
     req.request(signer, system, relays)

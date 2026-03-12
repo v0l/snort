@@ -1,7 +1,7 @@
-import type { LNURLSuccessAction } from "@snort/shared";
-import { FormattedMessage } from "react-intl";
+import type { LNURLSuccessAction } from "@snort/shared"
+import { FormattedMessage } from "react-intl"
 
-import Icon from "@/Components/Icons/Icon";
+import Icon from "@/Components/Icons/Icon"
 
 export function SuccessAction({ success }: { success: LNURLSuccessAction }) {
   return (
@@ -18,5 +18,5 @@ export function SuccessAction({ success }: { success: LNURLSuccessAction }) {
         </p>
       )}
     </div>
-  );
+  )
 }

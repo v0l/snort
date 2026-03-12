@@ -1,20 +1,20 @@
-import { useSyncExternalStore } from "react";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import { useSyncExternalStore } from "react"
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import { ZapPoolTarget } from "@/Pages/ZapPool/ZapPoolTarget";
-import { SnortPubKey } from "@/Utils/Const";
-import { ZapPoolController, ZapPoolRecipientType } from "@/Utils/ZapPoolController";
-import { bech32ToHex, unwrap } from "@snort/shared";
+import { ZapPoolTarget } from "@/Pages/ZapPool/ZapPoolTarget"
+import { SnortPubKey } from "@/Utils/Const"
+import { ZapPoolController, ZapPoolRecipientType } from "@/Utils/ZapPoolController"
+import { bech32ToHex, unwrap } from "@snort/shared"
 
 export function ZapPoolDonateSection() {
   if (!CONFIG.features.zapPool) {
-    return;
+    return
   }
   const zapPool = useSyncExternalStore(
     c => unwrap(ZapPoolController).hook(c),
     () => unwrap(ZapPoolController).snapshot(),
-  );
+  )
 
   return (
     <>
@@ -43,5 +43,5 @@ export function ZapPoolDonateSection() {
         }
       />
     </>
-  );
+  )
 }

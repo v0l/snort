@@ -1,25 +1,25 @@
-import type { NostrLink, TaggedNostrEvent } from '@snort/system'
-import { createContext, useEffect, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
-import { Link, Navigate, useLocation } from 'react-router-dom'
+import type { NostrLink, TaggedNostrEvent } from "@snort/system"
+import { createContext, useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { Link, Navigate, useLocation } from "react-router-dom"
 
-import ErrorBoundary from '@/Components/ErrorBoundary'
-import { LongFormText } from '@/Components/Event/LongFormText'
-import Modal from '@/Components/Modal/Modal'
-import { SpotlightThreadModal } from '@/Components/Spotlight/SpotlightThreadModal'
-import Toaster from '@/Components/Toaster/Toaster'
-import useLoginFeed from '@/Feed/LoginFeed'
-import useLogin from '@/Hooks/useLogin'
-import { useLoginRelays } from '@/Hooks/useLoginRelays'
-import usePreferences from '@/Hooks/usePreferences'
-import { useTheme } from '@/Hooks/useTheme'
-import { ArticlesCol, MediaCol, NotesCol, NotificationsCol } from '@/Pages/Deck/Columns'
-import NavSidebar from '@/Pages/Layout/NavSidebar'
-import { mapPlanName } from '@/Pages/subscribe/utils'
-import { trackEvent } from '@/Utils'
-import { getCurrentSubscription } from '@/Utils/Subscription'
+import ErrorBoundary from "@/Components/ErrorBoundary"
+import { LongFormText } from "@/Components/Event/LongFormText"
+import Modal from "@/Components/Modal/Modal"
+import { SpotlightThreadModal } from "@/Components/Spotlight/SpotlightThreadModal"
+import Toaster from "@/Components/Toaster/Toaster"
+import useLoginFeed from "@/Feed/LoginFeed"
+import useLogin from "@/Hooks/useLogin"
+import { useLoginRelays } from "@/Hooks/useLoginRelays"
+import usePreferences from "@/Hooks/usePreferences"
+import { useTheme } from "@/Hooks/useTheme"
+import { ArticlesCol, MediaCol, NotesCol, NotificationsCol } from "@/Pages/Deck/Columns"
+import NavSidebar from "@/Pages/Layout/NavSidebar"
+import { mapPlanName } from "@/Pages/subscribe/utils"
+import { trackEvent } from "@/Utils"
+import { getCurrentSubscription } from "@/Utils/Subscription"
 
-type Cols = 'notes' | 'articles' | 'media' | 'streams' | 'notifications'
+type Cols = "notes" | "articles" | "media" | "streams" | "notifications"
 
 interface DeckState {
   thread?: NostrLink
@@ -53,7 +53,7 @@ export function SnortDeckLayout() {
 
   useEffect(() => {
     if (CONFIG.features.analytics && (telemetry ?? true)) {
-      trackEvent('pageview', { path: location.pathname })
+      trackEvent("pageview", { path: location.pathname })
     }
   }, [location.pathname, telemetry])
 
@@ -87,7 +87,7 @@ export function SnortDeckLayout() {
       </div>
     )
   }
-  const cols = ['notes', 'media', 'notifications', 'articles'] as Array<Cols>
+  const cols = ["notes", "media", "notifications", "articles"] as Array<Cols>
   return (
     <div className="deck-layout">
       <DeckContext.Provider
@@ -103,13 +103,13 @@ export function SnortDeckLayout() {
           <div className="deck-cols">
             {cols.map(c => {
               switch (c) {
-                case 'notes':
+                case "notes":
                   return <NotesCol />
-                case 'media':
+                case "media":
                   return <MediaCol setThread={t => setDeckState({ thread: t })} />
-                case 'articles':
+                case "articles":
                   return <ArticlesCol />
-                case 'notifications':
+                case "notifications":
                   return <NotificationsCol setThread={t => setDeckState({ thread: t })} />
               }
             })}

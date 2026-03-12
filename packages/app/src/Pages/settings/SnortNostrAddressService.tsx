@@ -1,5 +1,5 @@
-import { FormattedMessage } from "react-intl";
-import { ApiHost } from "@/Utils/Const";
+import { FormattedMessage } from "react-intl"
+import { ApiHost } from "@/Utils/Const"
 
 export const SnortNostrAddressService = {
   name: CONFIG.appNameCapitalized,
@@ -9,4 +9,4 @@ export const SnortNostrAddressService = {
   about: (
     <FormattedMessage defaultMessage="Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!" />
   ),
-};
+}

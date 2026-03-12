@@ -1,33 +1,33 @@
-import type { OkResponse, TaggedNostrEvent } from "@snort/system";
-import { SnortContext } from "@snort/system-react";
-import { use, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import type { OkResponse, TaggedNostrEvent } from "@snort/system"
+import { SnortContext } from "@snort/system-react"
+import { use, useState } from "react"
+import { FormattedMessage } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import Modal from "@/Components/Modal/Modal";
-import useRelays from "@/Hooks/useRelays";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import Modal from "@/Components/Modal/Modal"
+import useRelays from "@/Hooks/useRelays"
 
 export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: TaggedNostrEvent }) {
-  const [selected, setSelected] = useState<Array<string>>();
-  const [replies, setReplies] = useState<Array<OkResponse>>([]);
-  const [sending, setSending] = useState(false);
-  const system = use(SnortContext);
-  const relays = useRelays();
+  const [selected, setSelected] = useState<Array<string>>()
+  const [replies, setReplies] = useState<Array<OkResponse>>([])
+  const [sending, setSending] = useState(false)
+  const system = use(SnortContext)
+  const relays = useRelays()
 
   async function sendReBroadcast() {
-    setSending(true);
-    setReplies([]);
+    setSending(true)
+    setReplies([])
     try {
       if (selected) {
-        await Promise.all(selected.map(r => system.WriteOnceToRelay(r, ev).then(o => setReplies(v => [...v, o]))));
+        await Promise.all(selected.map(r => system.WriteOnceToRelay(r, ev).then(o => setReplies(v => [...v, o]))))
       } else {
-        const rsp = await system.BroadcastEvent(ev);
-        setReplies(rsp);
+        const rsp = await system.BroadcastEvent(ev)
+        setReplies(rsp)
       }
     } catch (e) {
-      console.error(e);
+      console.error(e)
     } finally {
-      setSending(false);
+      setSending(false)
     }
   }
 
@@ -73,5 +73,5 @@ export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: Tagged
         </div>
       </Modal>
     </>
-  );
+  )
 }

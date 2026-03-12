@@ -1,12 +1,12 @@
-import { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useMemo } from "react"
+import { useParams } from "react-router-dom"
 
-import Timeline from "@/Components/Feed/Timeline";
-import type { TimelineSubject } from "@/Feed/TimelineFeed";
+import Timeline from "@/Components/Feed/Timeline"
+import type { TimelineSubject } from "@/Feed/TimelineFeed"
 
 export const TagsTab = (params: { tag?: string }) => {
-  const { tag } = useParams();
-  const t = params.tag ?? tag ?? "";
+  const { tag } = useParams()
+  const t = params.tag ?? tag ?? ""
   const subject: TimelineSubject = useMemo(
     () => ({
       type: "hashtag",
@@ -15,7 +15,7 @@ export const TagsTab = (params: { tag?: string }) => {
       streams: true,
     }),
     [t],
-  );
+  )
 
-  return <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} />;
-};
+  return <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} />
+}

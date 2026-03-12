@@ -1,21 +1,21 @@
-import type { RouteObject } from 'react-router-dom'
+import type { RouteObject } from "react-router-dom"
 
 export type RootTabRoutePath =
-  | ''
-  | 'for-you'
-  | 'following'
-  | 'followed-by-friends'
-  | 'conversations'
-  | 'discover'
-  | 'tag/:tag'
-  | 'trending/notes'
-  | 'trending/hashtags'
-  | 'suggested'
-  | 't/:tag'
-  | 'topics'
-  | 'media'
-  | 'follow-sets'
-  | 'relay'
+  | ""
+  | "for-you"
+  | "following"
+  | "followed-by-friends"
+  | "conversations"
+  | "discover"
+  | "tag/:tag"
+  | "trending/notes"
+  | "trending/hashtags"
+  | "suggested"
+  | "t/:tag"
+  | "topics"
+  | "media"
+  | "follow-sets"
+  | "relay"
 
 export type RootTabRoute = RouteObject
 
@@ -23,63 +23,63 @@ export const RootTabRoutes: RootTabRoute[] = [
   {
     index: true,
     async lazy() {
-      const { DefaultTab } = await import('@/Pages/Root/DefaultTab')
+      const { DefaultTab } = await import("@/Pages/Root/DefaultTab")
       return { Component: DefaultTab }
     },
   },
   {
-    path: 'for-you',
+    path: "for-you",
     async lazy() {
-      const { ForYouTab } = await import('@/Pages/Root/ForYouTab')
+      const { ForYouTab } = await import("@/Pages/Root/ForYouTab")
       return { Component: ForYouTab }
     },
   },
   {
-    path: 'following',
+    path: "following",
     async lazy() {
-      const { NotesTab } = await import('@/Pages/Root/NotesTab')
+      const { NotesTab } = await import("@/Pages/Root/NotesTab")
       return { Component: NotesTab }
     },
   },
   {
-    path: 'followed-by-friends',
+    path: "followed-by-friends",
     async lazy() {
-      const { FollowedByFriendsTab } = await import('@/Pages/Root/FollowedByFriendsTab')
+      const { FollowedByFriendsTab } = await import("@/Pages/Root/FollowedByFriendsTab")
       return { Component: FollowedByFriendsTab }
     },
   },
   {
-    path: 'conversations',
+    path: "conversations",
     async lazy() {
-      const { ConversationsTab } = await import('@/Pages/Root/ConversationsTab')
+      const { ConversationsTab } = await import("@/Pages/Root/ConversationsTab")
       return { Component: ConversationsTab }
     },
   },
   {
-    path: 'discover',
+    path: "discover",
     async lazy() {
-      const { default: Discover } = await import('@/Pages/Discover')
+      const { default: Discover } = await import("@/Pages/Discover")
       return { Component: Discover }
     },
   },
   {
-    path: 'tag/:tag',
+    path: "tag/:tag",
     async lazy() {
-      const { TagsTab } = await import('@/Pages/Root/TagsTab')
+      const { TagsTab } = await import("@/Pages/Root/TagsTab")
       return { Component: TagsTab }
     },
   },
   {
-    path: 'trending/notes',
+    path: "trending/notes",
     async lazy() {
-      const { default: TrendingNotes } = await import('@/Components/Trending/TrendingPosts')
+      const { default: TrendingNotes } = await import("@/Components/Trending/TrendingPosts")
       return { Component: TrendingNotes }
     },
   },
   {
-    path: 'trending/hashtags',
+    path: "trending/hashtags",
     async lazy() {
-      const { default: TrendingHashtags } = await import('@/Components/Trending/TrendingHashtags')
+      const { default: TrendingHashtags } = await import("@/Components/Trending/TrendingHashtags")
       const Wrapper = () => (
         <div className="px-2">
           <TrendingHashtags />
@@ -89,44 +89,44 @@ export const RootTabRoutes: RootTabRoute[] = [
     },
   },
   {
-    path: 't/:tag',
+    path: "t/:tag",
     async lazy() {
-      const { default: HashTagsPage } = await import('@/Pages/HashTagsPage')
+      const { default: HashTagsPage } = await import("@/Pages/HashTagsPage")
       return { Component: HashTagsPage }
     },
   },
   {
-    path: 'topics',
+    path: "topics",
     async lazy() {
-      const { TopicsPage } = await import('@/Pages/TopicsPage')
+      const { TopicsPage } = await import("@/Pages/TopicsPage")
       return { Component: TopicsPage }
     },
   },
   {
-    path: 'media',
+    path: "media",
     async lazy() {
-      const { default: MediaPosts } = await import('@/Pages/Root/Media')
+      const { default: MediaPosts } = await import("@/Pages/Root/Media")
       return { Component: MediaPosts }
     },
   },
   {
-    path: 'follow-sets',
+    path: "follow-sets",
     async lazy() {
-      const { default: FollowSetsPage } = await import('@/Pages/Root/FollowSets')
+      const { default: FollowSetsPage } = await import("@/Pages/Root/FollowSets")
       return { Component: FollowSetsPage }
     },
   },
   {
-    path: 'relay/:relay?',
+    path: "relay/:relay?",
     async lazy() {
-      const { default: RelayFeedPage } = await import('@/Pages/Root/RelayFeedPage')
+      const { default: RelayFeedPage } = await import("@/Pages/Root/RelayFeedPage")
       return { Component: RelayFeedPage }
     },
   },
   {
-    path: 'suggested',
+    path: "suggested",
     async lazy() {
-      const { default: SuggestedProfiles } = await import('@/Components/SuggestedProfiles')
+      const { default: SuggestedProfiles } = await import("@/Components/SuggestedProfiles")
       return { Component: SuggestedProfiles }
     },
   },

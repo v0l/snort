@@ -1,5 +1,5 @@
-import { appendDedupe, dedupe, removeUndefined, unixNowMs, unwrap } from '@snort/shared'
-import debug from 'debug'
+import { appendDedupe, dedupe, removeUndefined, unixNowMs, unwrap } from "@snort/shared"
+import debug from "debug"
 import {
   EventKind,
   type NostrEvent,
@@ -7,17 +7,17 @@ import {
   type ReqFilter,
   RequestBuilder,
   type SystemInterface,
-} from '..'
-import { RelayListCacheExpire } from '../const'
-import type { FlatReqFilter } from '../query-optimizer'
-import { BaseRequestRouter } from '../request-router'
-import { type AuthorsRelaysCache, DefaultPickNRelays, type EventFetcher, type PickedRelays } from '.'
+} from ".."
+import { RelayListCacheExpire } from "../const"
+import type { FlatReqFilter } from "../query-optimizer"
+import { BaseRequestRouter } from "../request-router"
+import { type AuthorsRelaysCache, DefaultPickNRelays, type EventFetcher, type PickedRelays } from "."
 
 /**
  * Simple outbox model using most popular relays
  */
 export class OutboxModel extends BaseRequestRouter {
-  #log = debug('OutboxModel')
+  #log = debug("OutboxModel")
   #relays: AuthorsRelaysCache
   #fetcher: EventFetcher
 
@@ -38,14 +38,14 @@ export class OutboxModel extends BaseRequestRouter {
    * @param type Read/Write relays
    * @returns
    */
-  pickTopRelays(authors: Array<string>, pickN: number, type: 'write' | 'read'): Array<PickedRelays> {
+  pickTopRelays(authors: Array<string>, pickN: number, type: "write" | "read"): Array<PickedRelays> {
     // map of pubkey -> [write relays]
     const allRelays = authors.map(a => {
       return {
         key: a,
         relays: this.#relays
           .getFromCache(a)
-          ?.relays?.filter(a => (type === 'write' ? a.settings.write : a.settings.read))
+          ?.relays?.filter(a => (type === "write" ? a.settings.write : a.settings.read))
           .sort(() => (Math.random() < 0.5 ? 1 : -1)),
       }
     })
@@ -69,7 +69,7 @@ export class OutboxModel extends BaseRequestRouter {
     const topRelays = [...relayUserMap.entries()].sort(([, v], [, v1]) => v1.size - v.size)
 
     if (missing.length > 0) {
-      this.#log('No relay metadata found, outbox model will not work for %O', missing)
+      this.#log("No relay metadata found, outbox model will not work for %O", missing)
     }
     // <relay, key[]> - count keys per relay
     // <key, relay[]> - pick n top relays
@@ -101,8 +101,8 @@ export class OutboxModel extends BaseRequestRouter {
    */
   forRequest(filter: ReqFilter, pickN?: number): Array<ReqFilter> {
     // when sending a request prioritize the #p filter over authors
-    const pattern = filter['#p'] !== undefined ? 'inbox' : 'outbox'
-    const key = filter['#p'] !== undefined ? '#p' : 'authors'
+    const pattern = filter["#p"] !== undefined ? "inbox" : "outbox"
+    const key = filter["#p"] !== undefined ? "#p" : "authors"
     const authors = filter[key]
     if ((authors?.length ?? 0) === 0) {
       return [filter]
@@ -111,7 +111,7 @@ export class OutboxModel extends BaseRequestRouter {
     const topWriteRelays = this.pickTopRelays(
       unwrap(authors),
       pickN ?? DefaultPickNRelays,
-      pattern === 'inbox' ? 'read' : 'write',
+      pattern === "inbox" ? "read" : "write",
     )
     const pickedRelays = dedupe(topWriteRelays.flatMap(a => a.relays))
 
@@ -130,7 +130,7 @@ export class OutboxModel extends BaseRequestRouter {
         [key]: noRelays,
       } as ReqFilter)
     }
-    this.#log('Picked: pattern=%s, input=%O, output=%O', pattern, filter, picked)
+    this.#log("Picked: pattern=%s, input=%O, output=%O", pattern, filter, picked)
     return picked
   }
 
@@ -145,7 +145,7 @@ export class OutboxModel extends BaseRequestRouter {
     if (authors.length === 0) {
       return input
     }
-    const topRelays = this.pickTopRelays(authors, pickN ?? DefaultPickNRelays, 'write')
+    const topRelays = this.pickTopRelays(authors, pickN ?? DefaultPickNRelays, "write")
     const pickedRelays = dedupe(topRelays.flatMap(a => a.relays))
 
     const picked = pickedRelays.flatMap(a => {
@@ -167,7 +167,7 @@ export class OutboxModel extends BaseRequestRouter {
       picked.push(...input.filter(v => !v.authors || noRelays.has(v.authors)))
     }
 
-    this.#log('Picked: pattern=%s, input=%O, output=%O', 'outbox', input, picked)
+    this.#log("Picked: pattern=%s, input=%O, output=%O", "outbox", input, picked)
     return picked
   }
 
@@ -179,22 +179,22 @@ export class OutboxModel extends BaseRequestRouter {
    * @returns
    */
   async forReply(ev: NostrEvent, pickN?: number) {
-    const recipients = dedupe([ev.pubkey, ...ev.tags.filter(a => a[0] === 'p').map(a => a[1])])
+    const recipients = dedupe([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1])])
     await this.updateRelayLists(recipients)
-    const relays = this.pickTopRelays(recipients, pickN ?? DefaultPickNRelays, 'read')
+    const relays = this.pickTopRelays(recipients, pickN ?? DefaultPickNRelays, "read")
     const ret = removeUndefined(dedupe(relays.flatMap(a => a.relays)))
 
-    this.#log('Picked: pattern=%s, input=%O, output=%O', 'inbox', ev, ret)
+    this.#log("Picked: pattern=%s, input=%O, output=%O", "inbox", ev, ret)
     return ret
   }
 
   async forReplyTo(pk: string, pickN?: number | undefined): Promise<string[]> {
     const recipients = [pk]
     await this.updateRelayLists(recipients)
-    const relays = this.pickTopRelays(recipients, pickN ?? DefaultPickNRelays, 'read')
+    const relays = this.pickTopRelays(recipients, pickN ?? DefaultPickNRelays, "read")
     const ret = removeUndefined(dedupe(relays.flatMap(a => a.relays)))
 
-    this.#log('Picked: pattern=%s, input=%s, output=%O', 'inbox', pk, ret)
+    this.#log("Picked: pattern=%s, input=%s, output=%O", "inbox", pk, ret)
     return ret
   }
 
@@ -207,8 +207,8 @@ export class OutboxModel extends BaseRequestRouter {
     const expire = unixNowMs() - RelayListCacheExpire
     const expired = authors.filter(a => (this.#relays.getFromCache(a)?.loaded ?? 0) < expire)
     if (expired.length > 0) {
-      this.#log('Updating relays for authors: %O', expired)
-      const rb = new RequestBuilder('system-update-relays-for-outbox')
+      this.#log("Updating relays for authors: %O", expired)
+      const rb = new RequestBuilder("system-update-relays-for-outbox")
       rb.withFilter().authors(expired).kinds([EventKind.Relays, EventKind.ContactList])
       const relayLists = await this.#fetcher.Fetch(rb)
       await this.#relays.bulkSet(

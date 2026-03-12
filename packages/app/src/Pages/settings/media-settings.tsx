@@ -1,21 +1,21 @@
-import { sanitizeRelayUrl, unwrap } from "@snort/shared";
-import { EventKind, UnknownTag } from "@snort/system";
-import { useState } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
+import { sanitizeRelayUrl, unwrap } from "@snort/shared"
+import { EventKind, UnknownTag } from "@snort/system"
+import { useState } from "react"
+import { FormattedMessage, FormattedNumber } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import IconButton from "@/Components/Button/IconButton";
-import { CollapsedSection } from "@/Components/Collapsed";
-import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
-import useDiscoverMediaServers from "@/Hooks/useDiscoverMediaServers";
-import useLogin from "@/Hooks/useLogin";
-import { getRelayName } from "@/Utils";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import IconButton from "@/Components/Button/IconButton"
+import { CollapsedSection } from "@/Components/Collapsed"
+import { RelayFavicon } from "@/Components/Relay/RelaysMetadata"
+import useDiscoverMediaServers from "@/Hooks/useDiscoverMediaServers"
+import useLogin from "@/Hooks/useLogin"
+import { getRelayName } from "@/Utils"
 
 export default function MediaSettingsPage() {
-  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
-  const list = state.getList(EventKind.BlossomServerList);
-  const [newServer, setNewServer] = useState("");
-  const knownServers = useDiscoverMediaServers();
+  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }))
+  const list = state.getList(EventKind.BlossomServerList)
+  const [newServer, setNewServer] = useState("")
+  const knownServers = useDiscoverMediaServers()
 
   return (
     <div className="flex flex-col gap-3">
@@ -27,7 +27,7 @@ export default function MediaSettingsPage() {
       </p>
       <div className="flex flex-col gap-3">
         {list.map(a => {
-          const [, addr] = unwrap(a.toEventTag());
+          const [, addr] = unwrap(a.toEventTag())
           return (
             <div key={addr} className="layer-1 flex justify-between items-center">
               {addr}
@@ -37,11 +37,11 @@ export default function MediaSettingsPage() {
                   size: 15,
                 }}
                 onClick={async () => {
-                  state.removeFromList(EventKind.BlossomServerList, [new UnknownTag(["server", addr])], true);
+                  state.removeFromList(EventKind.BlossomServerList, [new UnknownTag(["server", addr])], true)
                 }}
               />
             </div>
-          );
+          )
         })}
         {list.length === 0 && (
           <small>
@@ -68,10 +68,11 @@ export default function MediaSettingsPage() {
                   EventKind.BlossomServerList,
                   [new UnknownTag(["server", new URL(newServer).toString()])],
                   true,
-                );
-                setNewServer("");
+                )
+                setNewServer("")
               }
-            }}>
+            }}
+          >
             <FormattedMessage defaultMessage="Add" />
           </AsyncButton>
         </div>
@@ -81,7 +82,8 @@ export default function MediaSettingsPage() {
           <div className="text-xl font-medium">
             <FormattedMessage defaultMessage="Popular Servers" />
           </div>
-        }>
+        }
+      >
         <small>
           <FormattedMessage defaultMessage="Popular media servers." />
         </small>
@@ -115,8 +117,9 @@ export default function MediaSettingsPage() {
                       className="!py-1 mb-1"
                       disabled={list.some(b => b.equals(new UnknownTag(["server", k])))}
                       onClick={async () => {
-                        state.addToList(EventKind.BlossomServerList, [new UnknownTag(["server", k])], true);
-                      }}>
+                        state.addToList(EventKind.BlossomServerList, [new UnknownTag(["server", k])], true)
+                      }}
+                    >
                       <FormattedMessage defaultMessage="Add" />
                     </AsyncButton>
                   </td>
@@ -126,5 +129,5 @@ export default function MediaSettingsPage() {
         </table>
       </CollapsedSection>
     </div>
-  );
+  )
 }

@@ -1,7 +1,7 @@
 const TwitchEmbed = ({ link }: { link: string }) => {
-  const channel = link.split("/").slice(-1);
+  const channel = link.split("/").slice(-1)
 
-  const args = `?channel=${channel}&parent=${window.location.hostname}&muted=true`;
+  const args = `?channel=${channel}&parent=${window.location.hostname}&muted=true`
   return (
     <iframe
       src={`https://player.twitch.tv/${args}`}
@@ -9,7 +9,7 @@ const TwitchEmbed = ({ link }: { link: string }) => {
       allowFullScreen={true}
       loading="lazy"
     />
-  );
-};
+  )
+}
 
-export default TwitchEmbed;
+export default TwitchEmbed

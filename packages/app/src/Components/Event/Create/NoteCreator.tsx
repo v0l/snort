@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { fetchNip05Pubkey, NostrPrefix, unixNow } from "@snort/shared";
+import { fetchNip05Pubkey, NostrPrefix, unixNow } from "@snort/shared"
 import {
   type EventBuilder,
   EventKind,
@@ -11,45 +11,45 @@ import {
   readNip94Tags,
   type TaggedNostrEvent,
   tryParseNostrLink,
-} from "@snort/system";
-import { useUserProfile } from "@snort/system-react";
-import type { ZapTarget } from "@snort/wallet";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import classNames from "classnames";
-import { type ClipboardEventHandler, type DragEvent, useEffect } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+} from "@snort/system"
+import { useUserProfile } from "@snort/system-react"
+import type { ZapTarget } from "@snort/wallet"
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
+import classNames from "classnames"
+import { type ClipboardEventHandler, type DragEvent, useEffect } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import { AsyncIcon } from "@/Components/Button/AsyncIcon";
-import CloseButton from "@/Components/Button/CloseButton";
-import IconButton from "@/Components/Button/IconButton";
-import { sendEventToRelays } from "@/Components/Event/Create/util";
-import Note, { NoteProps, type NotePropsOptions } from "@/Components/Event/EventComponent";
-import Flyout from "@/Components/flyout";
-import Icon from "@/Components/Icons/Icon";
-import { ToggleSwitch } from "@/Components/Icons/Toggle";
-import Modal from "@/Components/Modal/Modal";
-import Textarea from "@/Components/Textarea/Textarea";
-import { Toastore } from "@/Components/Toaster/Toaster";
-import { MediaServerFileList } from "@/Components/Upload/file-picker";
-import Avatar from "@/Components/User/Avatar";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
-import usePreferences from "@/Hooks/usePreferences";
-import useRelays from "@/Hooks/useRelays";
-import { useNoteCreator } from "@/State/NoteCreator";
-import { openFile, trackEvent } from "@/Utils";
-import useFileUpload from "@/Utils/Upload";
-import { GetPowWorker } from "@/Utils/wasm";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import { AsyncIcon } from "@/Components/Button/AsyncIcon"
+import CloseButton from "@/Components/Button/CloseButton"
+import IconButton from "@/Components/Button/IconButton"
+import { sendEventToRelays } from "@/Components/Event/Create/util"
+import Note, { NoteProps, type NotePropsOptions } from "@/Components/Event/EventComponent"
+import Flyout from "@/Components/flyout"
+import Icon from "@/Components/Icons/Icon"
+import { ToggleSwitch } from "@/Components/Icons/Toggle"
+import Modal from "@/Components/Modal/Modal"
+import Textarea from "@/Components/Textarea/Textarea"
+import { Toastore } from "@/Components/Toaster/Toaster"
+import { MediaServerFileList } from "@/Components/Upload/file-picker"
+import Avatar from "@/Components/User/Avatar"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
+import usePreferences from "@/Hooks/usePreferences"
+import useRelays from "@/Hooks/useRelays"
+import { useNoteCreator } from "@/State/NoteCreator"
+import { openFile, trackEvent } from "@/Utils"
+import useFileUpload from "@/Utils/Upload"
+import { GetPowWorker } from "@/Utils/wasm"
 
-import { OkResponseRow } from "./OkResponseRow";
+import { OkResponseRow } from "./OkResponseRow"
 
 const previewNoteOptions = {
   showContextMenu: false,
   showFooter: false,
   canClick: false,
   showTime: false,
-} as NotePropsOptions;
+} as NotePropsOptions
 
 const replyToNoteOptions = {
   showFooter: false,
@@ -59,38 +59,38 @@ const replyToNoteOptions = {
   canClick: false,
   longFormPreview: true,
   showMedia: false,
-} as NotePropsOptions;
+} as NotePropsOptions
 
 export function NoteCreator() {
-  const { formatMessage } = useIntl();
-  const uploader = useFileUpload();
-  const publicKey = useLogin(s => s.publicKey);
-  const profile = useUserProfile(publicKey);
-  const pow = usePreferences(s => s.pow);
-  const relays = useRelays();
-  const { system, publisher: pub } = useEventPublisher();
-  const publisher = pow ? pub?.pow(pow, GetPowWorker()) : pub;
-  const note = useNoteCreator();
+  const { formatMessage } = useIntl()
+  const uploader = useFileUpload()
+  const publicKey = useLogin(s => s.publicKey)
+  const profile = useUserProfile(publicKey)
+  const pow = usePreferences(s => s.pow)
+  const relays = useRelays()
+  const { system, publisher: pub } = useEventPublisher()
+  const publisher = pow ? pub?.pow(pow, GetPowWorker()) : pub
+  const note = useNoteCreator()
 
   useEffect(() => {
-    const draft = localStorage.getItem("msgDraft");
+    const draft = localStorage.getItem("msgDraft")
     if (draft) {
-      note.update(n => (n.note = draft));
+      note.update(n => (n.note = draft))
     }
-  }, []);
+  }, [])
 
   async function buildNote() {
     try {
-      note.update(v => (v.error = ""));
+      note.update(v => (v.error = ""))
       if (note && publisher) {
-        let extraTags: Array<Array<string>> | undefined;
+        let extraTags: Array<Array<string>> | undefined
         if (note.zapSplits) {
-          const parsedSplits = [] as Array<ZapTarget>;
+          const parsedSplits = [] as Array<ZapTarget>
           for (const s of note.zapSplits) {
             if (s.value.startsWith(NostrPrefix.PublicKey) || s.value.startsWith(NostrPrefix.Profile)) {
-              const link = tryParseNostrLink(s.value);
+              const link = tryParseNostrLink(s.value)
               if (link) {
-                parsedSplits.push({ ...s, value: link.id });
+                parsedSplits.push({ ...s, value: link.id })
               } else {
                 throw new Error(
                   formatMessage(
@@ -101,13 +101,13 @@ export function NoteCreator() {
                       input: s.value,
                     },
                   ),
-                );
+                )
               }
             } else if (s.value.includes("@")) {
-              const [name, domain] = s.value.split("@");
-              const pubkey = await fetchNip05Pubkey(name, domain);
+              const [name, domain] = s.value.split("@")
+              const pubkey = await fetchNip05Pubkey(name, domain)
               if (pubkey) {
-                parsedSplits.push({ ...s, value: pubkey });
+                parsedSplits.push({ ...s, value: pubkey })
               } else {
                 throw new Error(
                   formatMessage(
@@ -118,7 +118,7 @@ export function NoteCreator() {
                       input: s.value,
                     },
                   ),
-                );
+                )
               }
             } else {
               throw new Error(
@@ -130,29 +130,29 @@ export function NoteCreator() {
                     input: s.value,
                   },
                 ),
-              );
+              )
             }
           }
-          extraTags = parsedSplits.map(v => ["zap", v.value, "", String(v.weight)]);
+          extraTags = parsedSplits.map(v => ["zap", v.value, "", String(v.weight)])
         }
 
         if (note.sensitive) {
-          extraTags ??= [];
-          extraTags.push(["content-warning", note.sensitive]);
+          extraTags ??= []
+          extraTags.push(["content-warning", note.sensitive])
         }
         if (note.pollOptions) {
-          extraTags ??= [];
-          extraTags.push(...note.pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
+          extraTags ??= []
+          extraTags.push(...note.pollOptions.map((a, i) => ["poll_option", i.toString(), a]))
         }
         if (note.hashTags.length > 0) {
-          extraTags ??= [];
-          extraTags.push(...note.hashTags.map(a => ["t", a.toLowerCase()]));
+          extraTags ??= []
+          extraTags.push(...note.hashTags.map(a => ["t", a.toLowerCase()]))
         }
 
         // attach 1 link and use other duplicates as fallback urls
         for (const [, v] of Object.entries(note.attachments ?? {})) {
-          const at = v[0];
-          note.note += note.note.length > 0 ? `\n${at.url}` : at.url;
+          const at = v[0]
+          note.note += note.note.length > 0 ? `\n${at.url}` : at.url
           const n94 =
             (at.nip94?.length ?? 0) > 0
               ? readNip94Tags(at.nip94!)
@@ -161,85 +161,85 @@ export function NoteCreator() {
                   hash: at.sha256,
                   size: at.size,
                   mimeType: at.type,
-                } as Nip94Tags);
+                } as Nip94Tags)
 
           // attach fallbacks
-          n94.fallback ??= [];
+          n94.fallback ??= []
           n94.fallback.push(
             ...v
               .slice(1)
               .filter(a => a.url)
               .map(a => a.url!),
-          );
+          )
 
-          extraTags ??= [];
-          extraTags.push(nip94TagsToIMeta(n94));
+          extraTags ??= []
+          extraTags.push(nip94TagsToIMeta(n94))
         }
 
         // add quote repost
         if (note.quote) {
           if (!note.note.endsWith("\n")) {
-            note.note += "\n";
+            note.note += "\n"
           }
-          const link = NostrLink.fromEvent(note.quote);
-          link.scope = LinkScope.Quote;
+          const link = NostrLink.fromEvent(note.quote)
+          link.scope = LinkScope.Quote
 
-          note.note += `nostr:${link.encode(CONFIG.eventLinkPrefix)}`;
-          const quoteTag = Nip18.linkToTag(link);
-          extraTags ??= [];
-          extraTags.push(quoteTag);
+          note.note += `nostr:${link.encode(CONFIG.eventLinkPrefix)}`
+          const quoteTag = Nip18.linkToTag(link)
+          extraTags ??= []
+          extraTags.push(quoteTag)
         }
         const hk = (eb: EventBuilder) => {
-          extraTags?.forEach(t => eb.tag(t));
-          note.extraTags?.forEach(t => eb.tag(t));
+          extraTags?.forEach(t => eb.tag(t))
+          note.extraTags?.forEach(t => eb.tag(t))
           if (note.pollOptions) {
-            eb.kind(EventKind.Polls);
+            eb.kind(EventKind.Polls)
           }
-          return eb;
-        };
+          return eb
+        }
         const ev = note.replyTo
           ? await publisher.reply(note.replyTo, note.note, hk)
-          : await publisher.note(note.note, hk);
-        return ev;
+          : await publisher.note(note.note, hk)
+        return ev
       }
     } catch (e) {
       note.update(v => {
         if (e instanceof Error) {
-          v.error = e.message;
+          v.error = e.message
         } else {
-          v.error = e as string;
+          v.error = e as string
         }
-      });
+      })
     }
   }
 
   async function sendNote() {
-    const ev = await buildNote();
+    const ev = await buildNote()
     if (ev) {
-      let props: Record<string, boolean> | undefined ;
+      let props: Record<string, boolean> | undefined
       if (ev.tags.find(a => a[0] === "content-warning")) {
-        props ??= {};
-        props["content-warning"] = true;
+        props ??= {}
+        props["content-warning"] = true
       }
       if (ev.tags.find(a => a[0] === "poll_option")) {
-        props ??= {};
-        props["poll"] = true;
+        props ??= {}
+        props["poll"] = true
       }
       if (ev.tags.find(a => a[0] === "zap")) {
-        props ??= {};
-        props["zap-split"] = true;
+        props ??= {}
+        props["zap-split"] = true
       }
       if (note.hashTags.length > 0) {
-        props ??= {};
-        props["hashtags"] = true;
+        props ??= {}
+        props["hashtags"] = true
       }
       if (props) {
-        props["content-warning"] ??= false;
-        props["poll"] ??= false;
-        props["zap-split"] ??= false;
-        props["hashtags"] ??= false;
+        props["content-warning"] ??= false
+        props["poll"] ??= false
+        props["zap-split"] ??= false
+        props["hashtags"] ??= false
       }
-      trackEvent("PostNote", props);
+      trackEvent("PostNote", props)
 
       sendEventToRelays(system, ev, note.selectedCustomRelays, r => {
         if (CONFIG.noteCreatorToast) {
@@ -247,80 +247,80 @@ export function NoteCreator() {
             Toastore.push({
               element: c => <OkResponseRow rsp={rr} close={c} />,
               expire: unixNow() + (rr.ok ? 5 : 55555),
-            });
-          });
+            })
+          })
         }
-      });
-      note.update(n => n.reset());
-      localStorage.removeItem("msgDraft");
+      })
+      note.update(n => n.reset())
+      localStorage.removeItem("msgDraft")
     }
   }
 
   async function attachFile() {
     try {
-      const file = await openFile();
+      const file = await openFile()
       if (file) {
-        uploadFile(file);
+        uploadFile(file)
       }
     } catch (e) {
       note.update(v => {
         if (e instanceof Error) {
-          v.error = e.message;
+          v.error = e.message
         } else {
-          v.error = e as string;
+          v.error = e as string
         }
-      });
+      })
     }
   }
 
   async function uploadFile(file: File) {
     try {
       if (file && uploader) {
-        const rx = await uploader.upload(file);
+        const rx = await uploader.upload(file)
         note.update(v => {
           if (rx.url) {
-            v.attachments ??= {};
-            v.attachments[rx.sha256] ??= [];
-            v.attachments[rx.sha256].push(rx);
+            v.attachments ??= {}
+            v.attachments[rx.sha256] ??= []
+            v.attachments[rx.sha256].push(rx)
           }
-        });
+        })
       }
     } catch (e) {
       note.update(v => {
         if (e instanceof Error) {
-          v.error = e.message;
+          v.error = e.message
         } else {
-          v.error = e as string;
+          v.error = e as string
         }
-      });
+      })
     }
   }
 
   function onChange(ev: React.ChangeEvent<HTMLTextAreaElement>) {
-    const { value } = ev.target;
-    note.update(n => (n.note = value));
-    localStorage.setItem("msgDraft", value);
+    const { value } = ev.target
+    note.update(n => (n.note = value))
+    localStorage.setItem("msgDraft", value)
   }
 
   function cancel() {
     note.update(v => {
-      v.show = false;
-      v.reset();
-    });
+      v.show = false
+      v.reset()
+    })
   }
 
   async function onSubmit(ev: React.MouseEvent) {
-    ev.stopPropagation();
-    await sendNote();
+    ev.stopPropagation()
+    await sendNote()
   }
 
   async function loadPreview() {
     if (note.preview) {
-      note.update(v => (v.preview = undefined));
+      note.update(v => (v.preview = undefined))
     } else if (publisher) {
-      const tmpNote = await buildNote();
-      trackEvent("PostNotePreview");
-      note.update(v => (v.preview = tmpNote));
+      const tmpNote = await buildNote()
+      trackEvent("PostNotePreview")
+      note.update(v => (v.preview = tmpNote))
     }
   }
 
@@ -328,7 +328,7 @@ export function NoteCreator() {
     if (note.preview) {
       return (
         <Note className="hover:bg-transparent" data={note.preview as TaggedNostrEvent} options={previewNoteOptions} />
-      );
+      )
     }
   }
 
@@ -354,23 +354,23 @@ export function NoteCreator() {
             <Icon name="plus" size={14} />
           </button>
         </>
-      );
+      )
     }
   }
 
   function changePollOption(i: number, v: string) {
     if (note.pollOptions) {
-      const copy = [...note.pollOptions];
-      copy[i] = v;
-      note.update(v => (v.pollOptions = copy));
+      const copy = [...note.pollOptions]
+      copy[i] = v
+      note.update(v => (v.pollOptions = copy))
     }
   }
 
   function removePollOption(i: number) {
     if (note.pollOptions) {
-      const copy = [...note.pollOptions];
-      copy.splice(i, 1);
-      note.update(v => (v.pollOptions = copy));
+      const copy = [...note.pollOptions]
+      copy.splice(i, 1)
+      note.update(v => (v.pollOptions = copy))
     }
   }
 
@@ -402,14 +402,14 @@ export function NoteCreator() {
                                   ? e.target.checked
                                   : !note.selectedCustomRelays || note.selectedCustomRelays.includes(el),
                               )),
-                    );
+                    )
                   }}
                 />
               </div>
             </div>
           ))}
       </div>
-    );
+    )
   }
 
   /*function listAccounts() {
@@ -490,7 +490,8 @@ export function NoteCreator() {
               type="button"
               onClick={() =>
                 note.update(v => (v.zapSplits = [...(v.zapSplits ?? []), { type: "pubkey", value: "", weight: 1 }]))
-              }>
+              }
+            >
               <FormattedMessage defaultMessage="Add" />
             </button>
           </div>
@@ -519,7 +520,7 @@ export function NoteCreator() {
           </span>
         </div>
       </>
-    );
+    )
   }
 
   function noteCreatorFooter() {
@@ -542,17 +543,19 @@ export function NoteCreator() {
                 <DropdownMenu.Item
                   className="px-6 py-2 text-base font-semibold bg-layer-2 light:bg-white hover:bg-layer-3 light:hover:bg-neutral-200 cursor-pointer outline-none"
                   onClick={e => {
-                    e.stopPropagation();
-                    note.update(s => (s.filePicker = "compact"));
-                  }}>
+                    e.stopPropagation()
+                    note.update(s => (s.filePicker = "compact"))
+                  }}
+                >
                   <FormattedMessage defaultMessage="From Server" />
                 </DropdownMenu.Item>
                 <DropdownMenu.Item
                   className="px-6 py-2 text-base font-semibold bg-layer-2 light:bg-white hover:bg-layer-3 light:hover:bg-neutral-200 cursor-pointer outline-none"
                   onClick={e => {
-                    e.stopPropagation();
-                    attachFile();
-                  }}>
+                    e.stopPropagation()
+                    attachFile()
+                  }}
+                >
                   <FormattedMessage defaultMessage="From File" />
                 </DropdownMenu.Item>
               </DropdownMenu.Content>
@@ -588,45 +591,45 @@ export function NoteCreator() {
           {note.replyTo ? <FormattedMessage defaultMessage="Reply" /> : <FormattedMessage defaultMessage="Send" />}
         </AsyncButton>
       </div>
-    );
+    )
   }
 
   const handlePaste: ClipboardEventHandler<HTMLDivElement> = evt => {
     if (evt.clipboardData) {
-      const clipboardItems = evt.clipboardData.items;
+      const clipboardItems = evt.clipboardData.items
       const items: DataTransferItem[] = Array.from(clipboardItems).filter((item: DataTransferItem) => {
         // Filter the image items only
-        return /^image\//.test(item.type);
-      });
+        return /^image\//.test(item.type)
+      })
       if (items.length === 0) {
-        return;
+        return
       }
 
-      const item = items[0];
-      const blob = item.getAsFile();
+      const item = items[0]
+      const blob = item.getAsFile()
       if (blob) {
-        uploadFile(blob);
+        uploadFile(blob)
       }
     }
-  };
+  }
 
   const handleDragOver = (event: DragEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-  };
+    event.preventDefault()
+  }
 
   const handleDragLeave = (event: DragEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-  };
+    event.preventDefault()
+  }
 
   const handleDrop = (event: DragEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const droppedFiles = Array.from(event.dataTransfer.files);
+    const droppedFiles = Array.from(event.dataTransfer.files)
 
     droppedFiles.forEach(async file => {
-      await uploadFile(file);
-    });
-  };
+      await uploadFile(file)
+    })
+  }
 
   function noteCreatorForm() {
     return (
@@ -676,7 +679,7 @@ export function NoteCreator() {
                 onFocus={() => note.update(v => (v.active = true))}
                 onKeyDown={e => {
                   if (e.key === "Enter" && e.metaKey) {
-                    sendNote().catch(console.warn);
+                    sendNote().catch(console.warn)
                   }
                 }}
               />
@@ -695,9 +698,9 @@ export function NoteCreator() {
                   onClick={() =>
                     note.update(n => {
                       if (n.attachments?.[k]) {
-                        delete n.attachments[k];
+                        delete n.attachments[k]
                       }
-                      return n;
+                      return n
                     })
                   }
                 />
@@ -728,19 +731,20 @@ export function NoteCreator() {
                 onClick={() => note.update(n => (n.filePicker = n.filePicker === "wide" ? "compact" : "wide"))}
               />
             </>
-          }>
+          }
+        >
           <div className="overflow-y-auto h-[calc(100%-2rem)]">
             {note.filePicker !== "hidden" && (
               <MediaServerFileList
                 onPicked={files => {
                   note.update(n => {
                     for (const x of files) {
-                      n.attachments ??= {};
-                      n.attachments[x.sha256] ??= [];
-                      n.attachments[x.sha256].push(x);
+                      n.attachments ??= {}
+                      n.attachments[x.sha256] ??= []
+                      n.attachments[x.sha256].push(x)
                     }
-                    n.filePicker = "hidden";
-                  });
+                    n.filePicker = "hidden"
+                  })
                 }}
                 cols={note.filePicker === "compact" ? 2 : 6}
               />
@@ -748,19 +752,19 @@ export function NoteCreator() {
           </div>
         </Flyout>
       </div>
-    );
+    )
   }
 
   function reset() {
     note.update(v => {
-      v.show = false;
-    });
+      v.show = false
+    })
   }
 
-  if (!note.show) return null;
+  if (!note.show) return null
   return (
     <Modal id="note-creator" onClose={reset}>
       {noteCreatorForm()}
     </Modal>
-  );
+  )
 }

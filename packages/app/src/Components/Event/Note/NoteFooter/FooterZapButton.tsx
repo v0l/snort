@@ -1,22 +1,22 @@
-import { barrierQueue } from '@snort/shared'
-import { NostrLink, type ParsedZap, type TaggedNostrEvent } from '@snort/system'
-import { useUserProfile } from '@snort/system-react'
-import { Zapper, type ZapTarget } from '@snort/wallet'
-import type React from 'react'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { useIntl } from 'react-intl'
-import { useLongPress } from 'use-long-press'
+import { barrierQueue } from "@snort/shared"
+import { NostrLink, type ParsedZap, type TaggedNostrEvent } from "@snort/system"
+import { useUserProfile } from "@snort/system-react"
+import { Zapper, type ZapTarget } from "@snort/wallet"
+import type React from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
+import { useIntl } from "react-intl"
+import { useLongPress } from "use-long-press"
 
-import { AsyncFooterIcon } from '@/Components/Event/Note/NoteFooter/AsyncFooterIcon'
-import { ZapperQueue } from '@/Components/Event/Note/NoteFooter/ZapperQueue'
-import { ZapsSummary } from '@/Components/Event/ZapsSummary'
-import ZapModal from '@/Components/ZapModal/ZapModal'
-import useEventPublisher from '@/Hooks/useEventPublisher'
-import useLogin from '@/Hooks/useLogin'
-import usePreferences from '@/Hooks/usePreferences'
-import { getDisplayName } from '@/Utils'
-import { ZapPoolController } from '@/Utils/ZapPoolController'
-import { useWallet } from '@/Wallet'
+import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon"
+import { ZapperQueue } from "@/Components/Event/Note/NoteFooter/ZapperQueue"
+import { ZapsSummary } from "@/Components/Event/ZapsSummary"
+import ZapModal from "@/Components/ZapModal/ZapModal"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
+import usePreferences from "@/Hooks/usePreferences"
+import { getDisplayName } from "@/Utils"
+import { ZapPoolController } from "@/Utils/ZapPoolController"
+import { useWallet } from "@/Wallet"
 
 export interface ZapIconProps {
   ev: TaggedNostrEvent
@@ -46,7 +46,7 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
   const longPress = useLongPress(() => setShowZapModal(true), { captureEvent: true })
 
   const getZapTarget = useCallback((): Array<ZapTarget> | undefined => {
-    if (ev.tags.some(v => v[0] === 'zap')) {
+    if (ev.tags.some(v => v[0] === "zap")) {
       return Zapper.fromEvent(ev)
     }
 
@@ -54,7 +54,7 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
     if (authorTarget) {
       return [
         {
-          type: 'lnurl',
+          type: "lnurl",
           value: authorTarget,
           weight: 1,
           name: getDisplayName(author, ev.pubkey),
@@ -76,8 +76,8 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
       try {
         await fastZapInner(lnurl, preferences.defaultZapAmount)
       } catch (e) {
-        console.warn('Fast zap failed', e)
-        if (!(e instanceof Error) || e.message !== 'User rejected') {
+        console.warn("Fast zap failed", e)
+        if (!(e instanceof Error) || e.message !== "User rejected") {
           setShowZapModal(true)
         }
       } finally {
@@ -135,10 +135,10 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
         <>
           <div ref={zapRef} className="flex flex-row flex-none min-w-[50px] md:min-w-[80px] gap-4 items-center">
             <AsyncFooterIcon
-              className={didZap ? 'reacted text-zap' : 'hover:text-zap'}
+              className={didZap ? "reacted text-zap" : "hover:text-zap"}
               {...longPress()}
-              title={formatMessage({ defaultMessage: 'Zap', id: 'fBI91o' })}
-              iconName={canFastZap ? 'zapFast' : 'zap'}
+              title={formatMessage({ defaultMessage: "Zap", id: "fBI91o" })}
+              iconName={canFastZap ? "zapFast" : "zap"}
               value={zapTotal}
               onClick={fastZap}
             />

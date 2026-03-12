@@ -1,12 +1,12 @@
-import { bech32ToHex, ExternalStore, LNURL, unixNow } from "@snort/shared";
-import { type LNWallet, WalletInvoiceState } from "@snort/wallet";
-import debug from "debug";
+import { bech32ToHex, ExternalStore, LNURL, unixNow } from "@snort/shared"
+import { type LNWallet, WalletInvoiceState } from "@snort/wallet"
+import debug from "debug"
 
-import { ProfilesCache } from "@/Cache";
-import { Toastore } from "@/Components/Toaster/Toaster";
-import { SnortPubKey } from "@/Utils/Const";
-import { getDisplayName, trackEvent } from "@/Utils/index";
-import { Wallets } from "@/Wallet";
+import { ProfilesCache } from "@/Cache"
+import { Toastore } from "@/Components/Toaster/Toaster"
+import { SnortPubKey } from "@/Utils/Const"
+import { getDisplayName, trackEvent } from "@/Utils/index"
+import { Wallets } from "@/Wallet"
 
 export enum ZapPoolRecipientType {
   Generic = 0,
@@ -16,46 +16,46 @@ export enum ZapPoolRecipientType {
 }
 
 export interface ZapPoolRecipient {
-  type: ZapPoolRecipientType;
-  pubkey: string;
-  split: number;
-  sum: number;
+  type: ZapPoolRecipientType
+  pubkey: string
+  split: number
+  sum: number
 }
 
 class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
-  #log = debug("ZapPool");
-  #store = new Map<string, ZapPoolRecipient>();
-  #isPayoutInProgress = false;
-  #lastPayout = 0;
+  #log = debug("ZapPool")
+  #store = new Map<string, ZapPoolRecipient>()
+  #isPayoutInProgress = false
+  #lastPayout = 0
 
   constructor() {
-    super();
-    this.#load();
-    setTimeout(() => this.#autoPayout().catch(console.error), 5_000);
+    super()
+    this.#load()
+    setTimeout(() => this.#autoPayout().catch(console.error), 5_000)
   }
 
   async payout(wallet: LNWallet) {
     if (this.#isPayoutInProgress) {
-      throw new Error("Payout already in progress");
+      throw new Error("Payout already in progress")
     }
-    this.#isPayoutInProgress = true;
-    this.#lastPayout = unixNow();
+    this.#isPayoutInProgress = true
+    this.#lastPayout = unixNow()
     for (const x of this.#store.values()) {
-      if (x.sum === 0) continue;
+      if (x.sum === 0) continue
       try {
-        const profile = await ProfilesCache.get(x.pubkey);
+        const profile = await ProfilesCache.get(x.pubkey)
         if (!profile) {
-          throw new Error(`Failed to get profile for ${x.pubkey}`);
+          throw new Error(`Failed to get profile for ${x.pubkey}`)
         }
-        const svc = new LNURL(profile.lud16 || profile.lud06 || "");
-        await svc.load();
-        const amtSend = x.sum;
-        const invoice = await svc.getInvoice(amtSend, `SnortZapPool: ${x.split}%`);
+        const svc = new LNURL(profile.lud16 || profile.lud06 || "")
+        await svc.load()
+        const amtSend = x.sum
+        const invoice = await svc.getInvoice(amtSend, `SnortZapPool: ${x.split}%`)
         if (invoice.pr) {
-          const result = await wallet.payInvoice(invoice.pr);
-          this.#log("%o %o", invoice, result);
+          const result = await wallet.payInvoice(invoice.pr)
+          this.#log("%o %o", invoice, result)
           if (result.state === WalletInvoiceState.Paid) {
-            x.sum -= amtSend;
+            x.sum -= amtSend
             Toastore.push({
               element: `Sent ${amtSend.toLocaleString()} sats to ${getDisplayName(
                 profile,
@@ -63,86 +63,86 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
               )} from your zap pool`,
               expire: unixNow() + 10,
               icon: "zap",
-            });
+            })
           } else {
-            throw new Error(`Failed to pay invoice, unknown reason`);
+            throw new Error(`Failed to pay invoice, unknown reason`)
           }
         } else {
-          throw new Error(invoice.reason ?? "Failed to get invoice");
+          throw new Error(invoice.reason ?? "Failed to get invoice")
         }
       } catch (e) {
-        console.error(e);
+        console.error(e)
         if (e instanceof Error) {
-          const profile = ProfilesCache.getFromCache(x.pubkey);
+          const profile = ProfilesCache.getFromCache(x.pubkey)
           Toastore.push({
             element: `Failed to send sats to ${getDisplayName(profile, x.pubkey)} (${
               e.message
             }), please try again later`,
             expire: unixNow() + 10,
             icon: "close",
-          });
+          })
         }
       }
     }
-    this.#save();
-    this.notifyChange();
-    this.#isPayoutInProgress = false;
+    this.#save()
+    this.notifyChange()
+    this.#isPayoutInProgress = false
   }
 
   calcAllocation(n: number) {
-    let res = 0;
+    let res = 0
     for (const x of this.#store.values()) {
-      res += Math.ceil(n * (x.split / 100));
+      res += Math.ceil(n * (x.split / 100))
     }
-    return res;
+    return res
   }
 
   allocate(n: number) {
     if (this.#isPayoutInProgress) {
-      throw new Error("Payout is in progress, cannot allocate to pool");
+      throw new Error("Payout is in progress, cannot allocate to pool")
     }
     for (const x of this.#store.values()) {
-      x.sum += Math.ceil(n * (x.split / 100));
+      x.sum += Math.ceil(n * (x.split / 100))
     }
-    this.#save();
-    this.notifyChange();
+    this.#save()
+    this.notifyChange()
   }
 
   getOrDefault(rcpt: ZapPoolRecipient): ZapPoolRecipient {
-    const k = this.#key(rcpt);
-    const existing = this.#store.get(k);
+    const k = this.#key(rcpt)
+    const existing = this.#store.get(k)
     if (existing) {
-      return { ...existing };
+      return { ...existing }
     }
-    return rcpt;
+    return rcpt
   }
 
   set(rcpt: ZapPoolRecipient) {
-    const k = this.#key(rcpt);
+    const k = this.#key(rcpt)
     // delete entry if split is 0 and sum is 0
     if (rcpt.split === 0 && rcpt.sum === 0 && this.#store.has(k)) {
-      this.#store.delete(k);
+      this.#store.delete(k)
     } else {
-      this.#store.set(k, rcpt);
+      this.#store.set(k, rcpt)
     }
-    this.#save();
-    this.notifyChange();
+    this.#save()
+    this.notifyChange()
   }
 
   #key(rcpt: ZapPoolRecipient) {
-    return `${rcpt.pubkey}-${rcpt.type}`;
+    return `${rcpt.pubkey}-${rcpt.type}`
   }
 
   #save() {
-    globalThis.localStorage.setItem("zap-pool", JSON.stringify(this.takeSnapshot()));
-    globalThis.localStorage.setItem("zap-pool-last-payout", this.#lastPayout.toString());
+    globalThis.localStorage.setItem("zap-pool", JSON.stringify(this.takeSnapshot()))
+    globalThis.localStorage.setItem("zap-pool-last-payout", this.#lastPayout.toString())
   }
 
   #load() {
-    const existing = globalThis.localStorage.getItem("zap-pool");
+    const existing = globalThis.localStorage.getItem("zap-pool")
     if (existing) {
-      const arr = JSON.parse(existing) as Array<ZapPoolRecipient>;
-      this.#store = new Map(arr.map(a => [`${a.pubkey}-${a.type}`, a]));
+      const arr = JSON.parse(existing) as Array<ZapPoolRecipient>
+      this.#store = new Map(arr.map(a => [`${a.pubkey}-${a.type}`, a]))
     } else if (CONFIG.defaultZapPoolFee) {
       this.#store = new Map([
         [
@@ -154,37 +154,37 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
             sum: 0,
           },
         ],
-      ]);
+      ])
     }
 
-    const lastPayout = globalThis.localStorage.getItem("zap-pool-last-payout");
+    const lastPayout = globalThis.localStorage.getItem("zap-pool-last-payout")
     if (lastPayout) {
-      this.#lastPayout = Number(lastPayout);
+      this.#lastPayout = Number(lastPayout)
     }
   }
 
   async #autoPayout() {
-    const payoutInterval = 60 * 60;
+    const payoutInterval = 60 * 60
     try {
       if (this.#lastPayout < unixNow() - payoutInterval) {
-        const wallet = Wallets.get();
+        const wallet = Wallets.get()
         if (wallet) {
           if (wallet.canAutoLogin()) {
-            await wallet.login();
+            await wallet.login()
           }
-          trackEvent("ZapPool", { automatic: true });
-          await this.payout(wallet);
+          trackEvent("ZapPool", { automatic: true })
+          await this.payout(wallet)
         }
       }
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
-    setTimeout(() => this.#autoPayout().catch(console.error), 60_000);
+    setTimeout(() => this.#autoPayout().catch(console.error), 60_000)
   }
 
   takeSnapshot(): ZapPoolRecipient[] {
-    return [...this.#store.values()];
+    return [...this.#store.values()]
   }
 }
 
-export const ZapPoolController = CONFIG.features.zapPool ? new ZapPool() : undefined;
+export const ZapPoolController = CONFIG.features.zapPool ? new ZapPool() : undefined

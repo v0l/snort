@@ -1,6 +1,6 @@
-import { unixNow } from '@snort/shared'
-import EventEmitter from 'eventemitter3'
-import { type ReqFilter, RequestBuilder, type SystemInterface, type TaggedNostrEvent } from '..'
+import { unixNow } from "@snort/shared"
+import EventEmitter from "eventemitter3"
+import { type ReqFilter, RequestBuilder, type SystemInterface, type TaggedNostrEvent } from ".."
 
 /**
  * When nostr was created
@@ -19,7 +19,7 @@ export class RangeSync extends EventEmitter<RangeSyncEvents> {
   #id = crypto.randomUUID()
   #start: number = NostrBirthday
   #windowSize: number = 60 * 60 * 12
-  #fetcher!: SystemInterface['Fetch']
+  #fetcher!: SystemInterface["Fetch"]
 
   private constructor() {
     super()
@@ -31,7 +31,7 @@ export class RangeSync extends EventEmitter<RangeSyncEvents> {
     return rs
   }
 
-  static forFetcher(fn: SystemInterface['Fetch']) {
+  static forFetcher(fn: SystemInterface["Fetch"]) {
     const rs = new RangeSync()
     rs.#fetcher = fn
     return rs
@@ -42,7 +42,7 @@ export class RangeSync extends EventEmitter<RangeSyncEvents> {
    */
   setWindowSize(n: number) {
     if (n < 60) {
-      throw new Error('Window size too small')
+      throw new Error("Window size too small")
     }
     this.#windowSize = n
   }
@@ -63,7 +63,7 @@ export class RangeSync extends EventEmitter<RangeSyncEvents> {
    */
   async sync(filter: ReqFilter) {
     if (filter.since !== undefined || filter.until !== undefined || filter.limit !== undefined) {
-      throw new Error('Filter must not contain since/until/limit')
+      throw new Error("Filter must not contain since/until/limit")
     }
 
     const now = unixNow()
@@ -73,9 +73,9 @@ export class RangeSync extends EventEmitter<RangeSyncEvents> {
       rb.withBareFilter(filter)
         .since(end - this.#windowSize)
         .until(end)
-      this.emit('scan', end)
+      this.emit("scan", end)
       const results = await this.#fetcher(rb)
-      this.emit('event', results)
+      this.emit("event", results)
     }
   }
 }

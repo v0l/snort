@@ -1,5 +1,5 @@
-import { removeUndefined } from "@snort/shared";
-import { EventExt, type TaggedNostrEvent } from "@snort/system";
+import { removeUndefined } from "@snort/shared"
+import { EventExt, type TaggedNostrEvent } from "@snort/system"
 
 export function getReplies(
   from: string,
@@ -7,8 +7,8 @@ export function getReplies(
   chains?: Map<string, Array<string>>,
 ): ReadonlyArray<TaggedNostrEvent> {
   if (!from || !chains) {
-    return [];
+    return []
   }
-  const replyIds = chains.get(from) ?? [];
-  return removeUndefined(replyIds.map(r => replies.find(x => EventExt.keyOf(x) === r)));
+  const replyIds = chains.get(from) ?? []
+  return removeUndefined(replyIds.map(r => replies.find(x => EventExt.keyOf(x) === r)))
 }

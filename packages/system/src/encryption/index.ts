@@ -4,6 +4,6 @@ export enum MessageEncryptorVersion {
 }
 
 export interface MessageEncryptor {
-  encryptData(plaintext: string): Promise<string> | string;
-  decryptData(ciphertext: string): Promise<string> | string;
+  encryptData(plaintext: string): Promise<string> | string
+  decryptData(ciphertext: string): Promise<string> | string
 }

@@ -1,45 +1,45 @@
-import type { ReqFilter } from "../src";
+import type { ReqFilter } from "../src"
 import {
   canMergeFilters,
   filterIncludes,
   flatMerge,
   mergeSimilar,
   simpleMerge,
-} from "../src/query-optimizer/request-merger";
-import type { FlatReqFilter } from "../src/query-optimizer";
-import { expandFilter } from "../src/query-optimizer/request-expander";
-import { describe, expect, test } from "bun:test";
+} from "../src/query-optimizer/request-merger"
+import type { FlatReqFilter } from "../src/query-optimizer"
+import { expandFilter } from "../src/query-optimizer/request-expander"
+import { describe, expect, test } from "bun:test"
 
 describe("RequestMerger", () => {
   test("should simple merge authors", () => {
     const a = {
       authors: ["a"],
-    } as ReqFilter;
+    } as ReqFilter
     const b = {
       authors: ["b"],
-    } as ReqFilter;
+    } as ReqFilter
 
-    const merged = mergeSimilar([a, b]);
+    const merged = mergeSimilar([a, b])
     expect(merged).toEqual([
       {
         authors: ["a", "b"],
       },
-    ]);
-  });
+    ])
+  })
 
   test("should append non-mergable filters", () => {
     const a = {
       authors: ["a"],
-    } as ReqFilter;
+    } as ReqFilter
     const b = {
       authors: ["b"],
-    } as ReqFilter;
+    } as ReqFilter
     const c = {
       limit: 5,
       authors: ["a"],
-    };
+    }
 
-    const merged = mergeSimilar([a, b, c]);
+    const merged = mergeSimilar([a, b, c])
     expect(merged).toEqual([
       {
         authors: ["a", "b"],
@@ -48,36 +48,36 @@ describe("RequestMerger", () => {
         limit: 5,
         authors: ["a"],
       },
-    ]);
-  });
+    ])
+  })
 
   test("filterIncludes", () => {
     const bigger = {
       authors: ["a", "b", "c"],
       since: 99,
-    } as ReqFilter;
+    } as ReqFilter
     const smaller = {
       authors: ["c"],
       since: 100,
-    } as ReqFilter;
-    expect(filterIncludes(bigger, smaller)).toBe(true);
-  });
+    } as ReqFilter
+    expect(filterIncludes(bigger, smaller)).toBe(true)
+  })
 
   test("simpleMerge", () => {
     const a = {
       authors: ["a", "b", "c"],
       since: 99,
-    } as ReqFilter;
+    } as ReqFilter
     const b = {
       authors: ["c", "d", "e"],
       since: 100,
-    } as ReqFilter;
+    } as ReqFilter
     expect(simpleMerge([a, b])).toEqual({
       authors: ["a", "b", "c", "d", "e"],
       since: 100,
-    });
-  });
-});
+    })
+  })
+})
 
 describe("flatMerge", () => {
   test("should flat merge simple", () => {
@@ -92,7 +92,7 @@ describe("flatMerge", () => {
       { authors: "c", limit: 100, resultSetId: "limit-c-100" },
       { authors: "b", limit: 100, resultSetId: "limit-b-100" },
       { ids: "1", authors: "c", resultSetId: "" },
-    ] as Array<FlatReqFilter>;
+    ] as Array<FlatReqFilter>
     const output = [
       { ids: ["0"], authors: ["a", "b", "c"] },
       { kinds: [1, 2] },
@@ -100,10 +100,10 @@ describe("flatMerge", () => {
       { authors: ["c"], limit: 100 },
       { authors: ["b"], limit: 100 },
       { ids: ["1"], authors: ["c"] },
-    ] as Array<ReqFilter>;
+    ] as Array<ReqFilter>
 
-    expect(flatMerge(input)).toMatchObject(output);
-  });
+    expect(flatMerge(input)).toMatchObject(output)
+  })
 
   test("should expand and flat merge complex same", () => {
     const input = [
@@ -111,88 +111,88 @@ describe("flatMerge", () => {
       { kinds: [4], authors: ["kieran"] },
       { kinds: [4], "#p": ["kieran"] },
       { kinds: [1000], authors: ["snort"], "#p": ["kieran"] },
-    ] as Array<ReqFilter>;
+    ] as Array<ReqFilter>
 
-    const dut = flatMerge(input.flatMap(expandFilter).sort(() => (Math.random() > 0.5 ? 1 : -1)));
-    expect(dut.every(a => input.some(b => canMergeFilters(b, a) === false))).toEqual(true);
-  });
-});
+    const dut = flatMerge(input.flatMap(expandFilter).sort(() => (Math.random() > 0.5 ? 1 : -1)))
+    expect(dut.every(a => input.some(b => canMergeFilters(b, a) === false))).toEqual(true)
+  })
+})
 
 describe("canMerge", () => {
   test("should have 0 distance", () => {
     const a = {
       ids: "a",
       resultSetId: "",
-    } as FlatReqFilter;
+    } as FlatReqFilter
     const b = {
       ids: "a",
       resultSetId: "",
-    } as FlatReqFilter;
-    expect(canMergeFilters(a, b)).toEqual(true);
-  });
+    } as FlatReqFilter
+    expect(canMergeFilters(a, b)).toEqual(true)
+  })
   test("should have 1 distance", () => {
     const a = {
       ids: "a",
       resultSetId: "",
-    } as FlatReqFilter;
+    } as FlatReqFilter
     const b = {
       ids: "b",
       resultSetId: "",
-    } as FlatReqFilter;
-    expect(canMergeFilters(a, b)).toEqual(true);
-  });
+    } as FlatReqFilter
+    expect(canMergeFilters(a, b)).toEqual(true)
+  })
   test("should have 10 distance", () => {
     const a = {
       ids: "a",
       resultSetId: "",
-    } as FlatReqFilter;
+    } as FlatReqFilter
     const b = {
       ids: "a",
       kinds: 1,
       resultSetId: "",
-    } as FlatReqFilter;
-    expect(canMergeFilters(a, b)).toEqual(false);
-  });
+    } as FlatReqFilter
+    expect(canMergeFilters(a, b)).toEqual(false)
+  })
   test("should have 11 distance", () => {
     const a = {
       ids: "a",
       resultSetId: "",
-    } as FlatReqFilter;
+    } as FlatReqFilter
     const b = {
       ids: "b",
       kinds: 1,
       resultSetId: "",
-    } as FlatReqFilter;
-    expect(canMergeFilters(a, b)).toEqual(false);
-  });
+    } as FlatReqFilter
+    expect(canMergeFilters(a, b)).toEqual(false)
+  })
   test("should have 1 distance, arrays", () => {
     const a = {
       since: 1,
       until: 100,
       kinds: [1],
       authors: ["kieran", "snort", "c", "d", "e"],
-    };
+    }
     const b = {
       since: 1,
       until: 100,
       kinds: [6969],
       authors: ["kieran", "snort", "c", "d", "e"],
-    };
-    expect(canMergeFilters(a, b)).toEqual(true);
-  });
+    }
+    expect(canMergeFilters(a, b)).toEqual(true)
+  })
   test("should have 1 distance, array change extra", () => {
     const a = {
       since: 1,
       until: 100,
       kinds: [1],
       authors: ["f", "kieran", "snort", "c", "d"],
-    };
+    }
     const b = {
       since: 1,
       until: 100,
       kinds: [1],
       authors: ["kieran", "snort", "c", "d", "e"],
-    };
-    expect(canMergeFilters(a, b)).toEqual(true);
-  });
-});
+    }
+    expect(canMergeFilters(a, b)).toEqual(true)
+  })
+})

@@ -1,11 +1,11 @@
-import { xchacha20 } from '@noble/ciphers/chacha.js'
-import { equalBytes } from '@noble/ciphers/utils.js'
-import { hkdf } from '@noble/hashes/hkdf.js'
-import { hmac } from '@noble/hashes/hmac.js'
-import { scryptAsync } from '@noble/hashes/scrypt.js'
-import { sha256 } from '@noble/hashes/sha2.js'
-import { bytesToHex, hexToBytes, randomBytes, utf8ToBytes } from '@noble/hashes/utils.js'
-import { base64 } from '@scure/base'
+import { xchacha20 } from "@noble/ciphers/chacha.js"
+import { equalBytes } from "@noble/ciphers/utils.js"
+import { hkdf } from "@noble/hashes/hkdf.js"
+import { hmac } from "@noble/hashes/hmac.js"
+import { scryptAsync } from "@noble/hashes/scrypt.js"
+import { sha256 } from "@noble/hashes/sha2.js"
+import { bytesToHex, hexToBytes, randomBytes, utf8ToBytes } from "@noble/hashes/utils.js"
+import { base64 } from "@scure/base"
 
 export class InvalidPinError extends Error {
   constructor() {
@@ -33,7 +33,7 @@ export abstract class KeyStorage {
    * Create a key storage class from its payload
    */
   static fromPayload(o: object) {
-    if ('raw' in o && typeof o.raw === 'string') {
+    if ("raw" in o && typeof o.raw === "string") {
       return new NotEncrypted(o.raw)
     } else {
       return new PinEncrypted(o as unknown as PinEncryptedPayload)
@@ -62,7 +62,7 @@ export class PinEncrypted extends KeyStorage {
   }
 
   get value() {
-    if (!this.#decrypted) throw new Error('Content has not been decrypted yet')
+    if (!this.#decrypted) throw new Error("Content has not been decrypted yet")
     return bytesToHex(this.#decrypted)
   }
 
@@ -90,8 +90,8 @@ export class PinEncrypted extends KeyStorage {
     if (salt.length !== 24 || nonce.length !== 24 || actualMac.length !== 32) throw new InvalidPinError()
 
     const masterKey = await scryptAsync(pin, salt, PinEncrypted.#opts)
-    const encKey = hkdf(sha256, masterKey, salt, utf8ToBytes('pin-enc'), 32)
-    const macKey = hkdf(sha256, masterKey, salt, utf8ToBytes('pin-mac'), 32)
+    const encKey = hkdf(sha256, masterKey, salt, utf8ToBytes("pin-enc"), 32)
+    const macKey = hkdf(sha256, masterKey, salt, utf8ToBytes("pin-mac"), 32)
 
     // Verify MAC over (nonce || ciphertext) before decryption — encrypt-then-MAC
     const macData = new Uint8Array(nonce.length + ciphertext.length)
@@ -117,13 +117,13 @@ export class PinEncrypted extends KeyStorage {
   static async create(content: string, pin: string) {
     const plaintext = hexToBytes(content)
     if (plaintext.length !== 32) {
-      throw new Error('PinEncrypted content must be exactly 32 bytes (64 hex characters)')
+      throw new Error("PinEncrypted content must be exactly 32 bytes (64 hex characters)")
     }
     const salt = randomBytes(24)
     const nonce = randomBytes(24)
     const masterKey = await scryptAsync(pin, salt, PinEncrypted.#opts)
-    const encKey = hkdf(sha256, masterKey, salt, utf8ToBytes('pin-enc'), 32)
-    const macKey = hkdf(sha256, masterKey, salt, utf8ToBytes('pin-mac'), 32)
+    const encKey = hkdf(sha256, masterKey, salt, utf8ToBytes("pin-enc"), 32)
+    const macKey = hkdf(sha256, masterKey, salt, utf8ToBytes("pin-mac"), 32)
 
     // Encrypt first, then MAC over (nonce || ciphertext) — encrypt-then-MAC
     const ciphertext = xchacha20(encKey, nonce, plaintext)
@@ -161,7 +161,7 @@ export class NotEncrypted extends KeyStorage {
   }
 
   override unlock(code: string): Promise<void> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
 
   override toPayload(): Object {

@@ -1,9 +1,9 @@
-import classNames from "classnames";
-import { FormattedMessage } from "react-intl";
+import classNames from "classnames"
+import { FormattedMessage } from "react-intl"
 
-import Icon from "@/Components/Icons/Icon";
+import Icon from "@/Components/Icons/Icon"
 
-import AsyncButton from "./Button/AsyncButton";
+import AsyncButton from "./Button/AsyncButton"
 
 export function Offline({ onRetry, className }: { onRetry?: () => void | Promise<void>; className?: string }) {
   return (
@@ -18,5 +18,5 @@ export function Offline({ onRetry, className }: { onRetry?: () => void | Promise
         </AsyncButton>
       )}
     </div>
-  );
+  )
 }

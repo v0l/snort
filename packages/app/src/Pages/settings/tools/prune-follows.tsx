@@ -1,15 +1,15 @@
-import { dedupe, unixNow } from "@snort/shared";
-import { RequestBuilder } from "@snort/system";
-import { useMemo, useState } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
+import { dedupe, unixNow } from "@snort/shared"
+import { RequestBuilder } from "@snort/system"
+import { useMemo, useState } from "react"
+import { FormattedMessage, FormattedNumber } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import ProfileImage from "@/Components/User/ProfileImage";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useFollowsControls from "@/Hooks/useFollowControls";
-import { Day } from "@/Utils/Const";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import ProfileImage from "@/Components/User/ProfileImage"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useFollowsControls from "@/Hooks/useFollowControls"
+import { Day } from "@/Utils/Const"
 
-import { FollowsRelayHealth } from "./follows-relay-health";
+import { FollowsRelayHealth } from "./follows-relay-health"
 
 enum PruneStage {
   FetchLastPostTimestamp,
@@ -17,63 +17,63 @@ enum PruneStage {
 }
 
 export function PruneFollowList() {
-  const followControls = useFollowsControls();
-  const { system } = useEventPublisher();
-  const uniqueFollows = dedupe(followControls.followList);
-  const [status, setStatus] = useState<PruneStage>();
-  const [progress, setProgress] = useState(0);
-  const [lastPost, setLastPosts] = useState<Record<string, number>>();
-  const [unfollow, setUnfollow] = useState<Array<string>>([]);
+  const followControls = useFollowsControls()
+  const { system } = useEventPublisher()
+  const uniqueFollows = dedupe(followControls.followList)
+  const [status, setStatus] = useState<PruneStage>()
+  const [progress, setProgress] = useState(0)
+  const [lastPost, setLastPosts] = useState<Record<string, number>>()
+  const [unfollow, setUnfollow] = useState<Array<string>>([])
 
   async function fetchLastPosts() {
-    setStatus(PruneStage.FetchLastPostTimestamp);
-    setProgress(0);
-    setLastPosts(undefined);
+    setStatus(PruneStage.FetchLastPostTimestamp)
+    setProgress(0)
+    setLastPosts(undefined)
 
-    const BatchSize = 10;
+    const BatchSize = 10
     const chunks = uniqueFollows.reduce(
       (acc, v, i) => {
-        const batch = Math.floor(i / BatchSize).toString();
-        acc[batch] ??= [];
-        acc[batch].push(v);
-        return acc;
+        const batch = Math.floor(i / BatchSize).toString()
+        acc[batch] ??= []
+        acc[batch].push(v)
+        return acc
       },
       {} as Record<string, Array<string>>,
-    );
+    )
 
-    const result = {} as Record<string, number>;
-    const batches = Math.ceil(uniqueFollows.length / BatchSize);
+    const result = {} as Record<string, number>
+    const batches = Math.ceil(uniqueFollows.length / BatchSize)
     for (const [batch, pubkeys] of Object.entries(chunks)) {
-      console.debug(batch, pubkeys);
-      const req = new RequestBuilder(`prune-${batch}`);
+      console.debug(batch, pubkeys)
+      const req = new RequestBuilder(`prune-${batch}`)
       req.withOptions({
         outboxPickN: 10,
         timeout: 10_000,
-      });
-      pubkeys.forEach(p => req.withFilter().limit(1).kinds([0, 1, 3, 5, 6, 7, 10002]).authors([p]));
-      const results = await system.Fetch(req);
-      console.debug(results);
+      })
+      pubkeys.forEach(p => req.withFilter().limit(1).kinds([0, 1, 3, 5, 6, 7, 10002]).authors([p]))
+      const results = await system.Fetch(req)
+      console.debug(results)
       for (const rx of results) {
         if ((result[rx.pubkey] ?? 0) < rx.created_at) {
-          result[rx.pubkey] = rx.created_at;
+          result[rx.pubkey] = rx.created_at
         }
       }
-      setProgress(Number(batch) / batches);
+      setProgress(Number(batch) / batches)
     }
 
     for (const pk of uniqueFollows) {
-      result[pk] ??= 0;
+      result[pk] ??= 0
     }
-    setLastPosts(result);
-    setStatus(PruneStage.Done);
+    setLastPosts(result)
+    setStatus(PruneStage.Done)
   }
 
   const newFollowList = useMemo(() => {
-    return uniqueFollows.filter(a => !unfollow.includes(a) && a.length === 64);
-  }, [uniqueFollows, unfollow]);
+    return uniqueFollows.filter(a => !unfollow.includes(a) && a.length === 64)
+  }, [uniqueFollows, unfollow])
 
   async function publishFollowList() {
-    await followControls.setFollows(newFollowList);
+    await followControls.setFollows(newFollowList)
   }
 
   function getStatus() {
@@ -87,7 +87,7 @@ export function PruneFollowList() {
               progress: <FormattedNumber style="percent" value={progress} />,
             }}
           />
-        );
+        )
     }
   }
 
@@ -101,7 +101,7 @@ export function PruneFollowList() {
         />
         <FormattedMessage defaultMessage="Unfollow" />
       </div>
-    );
+    )
   }
 
   return (
@@ -150,7 +150,7 @@ export function PruneFollowList() {
                     {personToggle(k)}
                   </div>
                 </div>
-              );
+              )
             })}
       </div>
       <div className="px-4 pb-5 pt-2 rounded-lg bg-secondary">
@@ -166,5 +166,5 @@ export function PruneFollowList() {
         </AsyncButton>
       </div>
     </div>
-  );
+  )
 }

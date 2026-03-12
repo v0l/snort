@@ -1,7 +1,7 @@
-import type { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from './nostr'
-import type { CacheRelay } from './cache-relay'
-import type { Connection } from './connection'
-import { NoteCollection } from './note-collection'
+import type { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr"
+import type { CacheRelay } from "./cache-relay"
+import type { Connection } from "./connection"
+import { NoteCollection } from "./note-collection"
 
 /**
  * Use a regular connection as a CacheRelay
@@ -16,7 +16,7 @@ export class ConnectionCacheRelay implements CacheRelay {
       return {
         ok: true,
         id: ev.id,
-        message: 'duplicate',
+        message: "duplicate",
       } as OkResponse
     this.#eventsSent.add(ev.id)
     return await this.connection.publish(ev)
@@ -35,15 +35,15 @@ export class ConnectionCacheRelay implements CacheRelay {
         if (s === id) {
           resolve(results.snapshot)
           this.connection.closeRequest(id)
-          this.connection.off('unverifiedEvent', evh)
-          this.connection.off('eose', eoh)
-          this.connection.off('closed', eoh)
+          this.connection.off("unverifiedEvent", evh)
+          this.connection.off("eose", eoh)
+          this.connection.off("closed", eoh)
         }
       }
-      this.connection.on('unverifiedEvent', evh)
-      this.connection.on('eose', eoh)
-      this.connection.on('closed', eoh)
-      this.connection.request(['REQ', id, ...(req.slice(2) as Array<ReqFilter>)])
+      this.connection.on("unverifiedEvent", evh)
+      this.connection.on("eose", eoh)
+      this.connection.on("closed", eoh)
+      this.connection.request(["REQ", id, ...(req.slice(2) as Array<ReqFilter>)])
     })
   }
 

@@ -1,9 +1,9 @@
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl"
 
-import Nip5Service from "@/Components/Nip5Service";
-import { SnortNostrAddressService } from "@/Pages/settings/SnortNostrAddressService";
+import Nip5Service from "@/Components/Nip5Service"
+import { SnortNostrAddressService } from "@/Pages/settings/SnortNostrAddressService"
 
-const Nip5Services = [SnortNostrAddressService];
+const Nip5Services = [SnortNostrAddressService]
 
 export default function NostrAddressPage() {
   return (
@@ -28,5 +28,5 @@ export default function NostrAddressPage() {
         <Nip5Service key={a.name} {...a} />
       ))}
     </div>
-  );
+  )
 }

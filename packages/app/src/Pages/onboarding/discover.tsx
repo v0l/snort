@@ -1,15 +1,15 @@
-import { FormattedMessage } from "react-intl";
-import { useLocation, useNavigate } from "react-router-dom";
+import { FormattedMessage } from "react-intl"
+import { useLocation, useNavigate } from "react-router-dom"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import TrendingUsers from "@/Components/Trending/TrendingUsers";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import TrendingUsers from "@/Components/Trending/TrendingUsers"
 
-import type { NewUserState } from ".";
+import type { NewUserState } from "."
 
 export default function Discover() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const state = location.state as NewUserState;
+  const location = useLocation()
+  const navigate = useNavigate()
+  const state = location.state as NewUserState
 
   return (
     <div className="flex flex-col gap-6">
@@ -37,9 +37,10 @@ export default function Discover() {
           navigate("/login/sign-up/moderation", {
             state,
           })
-        }>
+        }
+      >
         <FormattedMessage defaultMessage="Next" />
       </AsyncButton>
     </div>
-  );
+  )
 }

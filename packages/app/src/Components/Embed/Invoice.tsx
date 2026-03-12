@@ -1,31 +1,31 @@
-import { decodeInvoice } from "@snort/shared";
-import classNames from "classnames";
-import { useState } from "react";
-import { useMemo } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { decodeInvoice } from "@snort/shared"
+import classNames from "classnames"
+import { useState } from "react"
+import { useMemo } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
-import Icon from "@/Components/Icons/Icon";
-import ZapModal from "@/Components/ZapModal/ZapModal";
-import { useWallet } from "@/Wallet";
+import Icon from "@/Components/Icons/Icon"
+import ZapModal from "@/Components/ZapModal/ZapModal"
+import { useWallet } from "@/Wallet"
 
-import messages from "../messages";
+import messages from "../messages"
 
 export interface InvoiceProps {
-  invoice: string;
+  invoice: string
 }
 
 export default function Invoice(props: InvoiceProps) {
-  const invoice = props.invoice;
-  const { formatMessage } = useIntl();
-  const [showInvoice, setShowInvoice] = useState(false);
-  const walletState = useWallet();
-  const wallet = walletState.wallet;
+  const invoice = props.invoice
+  const { formatMessage } = useIntl()
+  const [showInvoice, setShowInvoice] = useState(false)
+  const walletState = useWallet()
+  const wallet = walletState.wallet
 
-  const info = useMemo(() => decodeInvoice(invoice), [invoice]);
-  const [isPaid, setIsPaid] = useState(false);
-  const isExpired = info?.expired;
-  const amount = info?.amount ?? 0;
-  const description = info?.description;
+  const info = useMemo(() => decodeInvoice(invoice), [invoice])
+  const [isPaid, setIsPaid] = useState(false)
+  const isExpired = info?.expired
+  const amount = info?.amount ?? 0
+  const description = info?.description
 
   function header() {
     return (
@@ -41,20 +41,20 @@ export default function Invoice(props: InvoiceProps) {
           onClose={() => setShowInvoice(false)}
         />
       </>
-    );
+    )
   }
 
   async function payInvoice(e: React.MouseEvent<HTMLButtonElement>) {
-    e.stopPropagation();
+    e.stopPropagation()
     if (wallet?.isReady) {
       try {
-        await wallet.payInvoice(invoice);
-        setIsPaid(true);
+        await wallet.payInvoice(invoice)
+        setIsPaid(true)
       } catch (error) {
-        setShowInvoice(true);
+        setShowInvoice(true)
       }
     } else {
-      setShowInvoice(true);
+      setShowInvoice(true)
     }
   }
 
@@ -83,12 +83,13 @@ export default function Invoice(props: InvoiceProps) {
               disabled={isExpired}
               type="button"
               onClick={payInvoice}
-              className="w-full h-11 font-semibold text-[19px] leading-[23px]">
+              className="w-full h-11 font-semibold text-[19px] leading-[23px]"
+            >
               {isExpired ? <FormattedMessage {...messages.Expired} /> : <FormattedMessage {...messages.Pay} />}
             </button>
           )}
         </div>
       </div>
     </>
-  );
+  )
 }

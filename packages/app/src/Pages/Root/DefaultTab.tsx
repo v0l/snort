@@ -1,6 +1,6 @@
-import { Navigate } from 'react-router-dom'
-import useLogin from '@/Hooks/useLogin'
-import usePreferences from '@/Hooks/usePreferences'
+import { Navigate } from "react-router-dom"
+import useLogin from "@/Hooks/useLogin"
+import usePreferences from "@/Hooks/usePreferences"
 
 export const DefaultTab = () => {
   const { publicKey } = useLogin(s => ({

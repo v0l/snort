@@ -1,5 +1,5 @@
-import TimelineFollows from "@/Components/Feed/TimelineFollows";
+import TimelineFollows from "@/Components/Feed/TimelineFollows"
 
 export const ConversationsTab = () => {
-  return <TimelineFollows postsOnly={false} />;
-};
+  return <TimelineFollows postsOnly={false} />
+}

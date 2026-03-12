@@ -1,7 +1,7 @@
-import { parseNostrLink } from "@snort/system";
-import { SnortBot } from "../src/index";
+import { parseNostrLink } from "@snort/system"
+import { SnortBot } from "../src/index"
 
-const noGoodLink = parseNostrLink("npub12hcytyr8fumy3axde8wgeced523gyp6v6zczqktwuqeaztfc2xzsz3rdp4");
+const noGoodLink = parseNostrLink("npub12hcytyr8fumy3axde8wgeced523gyp6v6zczqktwuqeaztfc2xzsz3rdp4")
 
 SnortBot.simple("example")
   .link(noGoodLink)
@@ -15,6 +15,6 @@ SnortBot.simple("example")
     about: "An example bot",
   })
   .command("!ping", h => {
-    h.reply("PONG!");
+    h.reply("PONG!")
   })
-  .run();
+  .run()

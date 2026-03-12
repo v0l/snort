@@ -1,11 +1,11 @@
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl"
 
-import Icon from "@/Components/Icons/Icon";
-import type { ReactNode } from "react";
+import Icon from "@/Components/Icons/Icon"
+import type { ReactNode } from "react"
 
 interface BackButtonProps {
-  text?: ReactNode;
-  onClick?(): void;
+  text?: ReactNode
+  onClick?(): void
 }
 
 export default function BackButton({ text, onClick }: BackButtonProps) {
@@ -13,10 +13,11 @@ export default function BackButton({ text, onClick }: BackButtonProps) {
     <div
       className="flex gap-2 items-center cursor-pointer hover:underline"
       onClick={() => {
-        onClick?.();
-      }}>
+        onClick?.()
+      }}
+    >
       <Icon name="arrowBack" />
       <span>{text || <FormattedMessage defaultMessage="Back" />}</span>
     </div>
-  );
+  )
 }

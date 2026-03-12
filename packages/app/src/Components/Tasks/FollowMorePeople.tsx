@@ -1,15 +1,15 @@
-import type { CachedMetadata } from "@snort/system";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import type { CachedMetadata } from "@snort/system"
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import { BaseUITask } from "@/Components/Tasks/index";
-import type { LoginSession } from "@/Utils/Login";
+import { BaseUITask } from "@/Components/Tasks/index"
+import type { LoginSession } from "@/Utils/Login"
 
 export class FollowMorePeopleTask extends BaseUITask {
-  id = "follow-more-people";
+  id = "follow-more-people"
 
   check(_meta: CachedMetadata, session: LoginSession): boolean {
-    return !this.state.muted && (session.state.follows?.length ?? 0) < 10;
+    return !this.state.muted && (session.state.follows?.length ?? 0) < 10
   }
 
   render() {
@@ -28,6 +28,6 @@ export class FollowMorePeopleTask extends BaseUITask {
           />
         </p>
       </>
-    );
+    )
   }
 }

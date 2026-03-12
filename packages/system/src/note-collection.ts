@@ -1,7 +1,7 @@
-import { appendDedupe, SortedMap } from '@snort/shared'
-import { EventEmitter } from 'eventemitter3'
-import { EventExt, EventType, type TaggedNostrEvent } from '.'
-import { findTag } from './utils'
+import { appendDedupe, SortedMap } from "@snort/shared"
+import { EventEmitter } from "eventemitter3"
+import { EventExt, EventType, type TaggedNostrEvent } from "."
+import { findTag } from "./utils"
 
 export const EmptySnapshot: NoteStoreSnapshotData = []
 export type NoteStoreSnapshotData = Array<TaggedNostrEvent>
@@ -68,7 +68,7 @@ export abstract class HookedNoteStore extends NoteStore {
     if (this.#bufEmit.length > 0) {
       const cloned = [...this.#bufEmit]
       this.#bufEmit = []
-      this.emit('event', cloned)
+      this.emit("event", cloned)
     }
   }
 
@@ -83,7 +83,7 @@ export abstract class HookedNoteStore extends NoteStore {
       this.#nextEmit = undefined
     }
     this.#storeSnapshot = undefined
-    this.emit('event', [])
+    this.emit("event", [])
   }
 }
 
@@ -137,7 +137,7 @@ export class NoteCollection extends KeyedReplaceableNoteStore {
     super(e => {
       switch (EventExt.getType(e.kind)) {
         case EventType.Addressable:
-          return `${e.kind}:${e.pubkey}:${findTag(e, 'd')}`
+          return `${e.kind}:${e.pubkey}:${findTag(e, "d")}`
         case EventType.Replaceable:
           return `${e.kind}:${e.pubkey}`
         default:

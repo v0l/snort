@@ -1,113 +1,113 @@
-import { ExternalStore, unwrap } from "@snort/shared";
-import { type LNWallet, loadWallet, type WalletInfo, WalletKind } from "@snort/wallet";
-import { useEffect, useSyncExternalStore } from "react";
+import { ExternalStore, unwrap } from "@snort/shared"
+import { type LNWallet, loadWallet, type WalletInfo, WalletKind } from "@snort/wallet"
+import { useEffect, useSyncExternalStore } from "react"
 
 export interface WalletConfig {
-  id: string;
-  kind: WalletKind;
-  active: boolean;
-  info: WalletInfo;
+  id: string
+  kind: WalletKind
+  active: boolean
+  info: WalletInfo
 
   /**
    * Opaque string for wallet config
    */
-  data?: string;
+  data?: string
 }
 
 export interface WalletStoreSnapshot {
-  configs: Array<WalletConfig>;
-  config?: WalletConfig;
-  wallet?: LNWallet;
+  configs: Array<WalletConfig>
+  config?: WalletConfig
+  wallet?: LNWallet
 }
 
 export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
-  #configs: Array<WalletConfig>;
-  #instance: Map<string, LNWallet>;
+  #configs: Array<WalletConfig>
+  #instance: Map<string, LNWallet>
 
   constructor() {
-    super();
-    this.#configs = [];
-    this.#instance = new Map();
-    this.load(false);
-    this.notifyChange();
+    super()
+    this.#configs = []
+    this.#instance = new Map()
+    this.load(false)
+    this.notifyChange()
   }
 
   list() {
-    return Object.freeze([...this.#configs]);
+    return Object.freeze([...this.#configs])
   }
 
   get() {
-    const activeConfig = this.#configs.find(a => a.active);
+    const activeConfig = this.#configs.find(a => a.active)
     if (!activeConfig) {
       if (this.#configs.length === 0) {
-        return undefined;
+        return undefined
       }
-      throw new Error("No active wallet config");
+      throw new Error("No active wallet config")
     }
     if (this.#instance.has(activeConfig.id)) {
-      return unwrap(this.#instance.get(activeConfig.id));
+      return unwrap(this.#instance.get(activeConfig.id))
     } else {
-      const w = this.#activateWallet(activeConfig);
+      const w = this.#activateWallet(activeConfig)
       if (w) {
         if ("then" in w) {
           w.then(async wx => {
             if (wx) {
-              this.#instance.set(activeConfig.id, wx);
-              this.notifyChange();
+              this.#instance.set(activeConfig.id, wx)
+              this.notifyChange()
             }
-          });
-          return undefined;
+          })
+          return undefined
         } else {
-          this.#instance.set(activeConfig.id, w);
-          this.notifyChange();
+          this.#instance.set(activeConfig.id, w)
+          this.notifyChange()
         }
-        return w;
+        return w
       } else {
-        throw new Error("Unable to activate wallet config");
+        throw new Error("Unable to activate wallet config")
       }
     }
   }
 
   add(cfg: WalletConfig) {
-    this.#configs.push(cfg);
-    this.save();
+    this.#configs.push(cfg)
+    this.save()
   }
 
   remove(id: string) {
-    const idx = this.#configs.findIndex(a => a.id === id);
+    const idx = this.#configs.findIndex(a => a.id === id)
     if (idx === -1) {
-      throw new Error("Wallet not found");
+      throw new Error("Wallet not found")
     }
-    const [removed] = this.#configs.splice(idx, 1);
+    const [removed] = this.#configs.splice(idx, 1)
     if (removed.active && this.#configs.length > 0) {
-      this.#configs[0].active = true;
+      this.#configs[0].active = true
     }
-    this.save();
+    this.save()
   }
 
   switch(id: string) {
-    this.#configs.forEach(a => (a.active = a.id === id));
-    this.save();
+    this.#configs.forEach(a => (a.active = a.id === id))
+    this.save()
   }
 
   save() {
-    const json = JSON.stringify(this.#configs);
-    window.localStorage.setItem("wallet-config", json);
-    this.notifyChange();
+    const json = JSON.stringify(this.#configs)
+    window.localStorage.setItem("wallet-config", json)
+    this.notifyChange()
   }
 
   load(snapshot = true) {
-    const cfg = window.localStorage.getItem("wallet-config");
+    const cfg = window.localStorage.getItem("wallet-config")
     if (cfg) {
-      this.#configs = JSON.parse(cfg);
+      this.#configs = JSON.parse(cfg)
     }
     if (snapshot) {
-      this.notifyChange();
+      this.notifyChange()
     }
   }
 
   free() {
-    this.#instance.forEach(w => w.close());
+    this.#instance.forEach(w => w.close())
   }
 
   takeSnapshot(): WalletStoreSnapshot {
@@ -115,55 +115,55 @@ export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
       configs: [...this.#configs],
       config: this.#configs.find(a => a.active),
       wallet: this.get(),
-    } as WalletStoreSnapshot;
+    } as WalletStoreSnapshot
   }
 
   async #activateWallet(cfg: WalletConfig) {
-    const w = await loadWallet(cfg.kind, cfg.data);
+    const w = await loadWallet(cfg.kind, cfg.data)
     if (w) {
-      w.on("change", d => this.#onWalletChange(cfg, d));
+      w.on("change", d => this.#onWalletChange(cfg, d))
     }
-    return w;
+    return w
   }
 
   #onWalletChange(cfg: WalletConfig, data?: string) {
     if (data) {
-      const activeConfig = this.#configs.find(a => a.id === cfg.id);
+      const activeConfig = this.#configs.find(a => a.id === cfg.id)
       if (activeConfig) {
-        activeConfig.data = data;
+        activeConfig.data = data
       }
-      this.save();
+      this.save()
     } else {
-      this.notifyChange();
+      this.notifyChange()
     }
   }
 }
 
-export const Wallets = new WalletStore();
+export const Wallets = new WalletStore()
 window.document.addEventListener("close", () => {
-  Wallets.free();
-});
+  Wallets.free()
+})
 
 export function useWallet() {
   const wallet = useSyncExternalStore<WalletStoreSnapshot>(
     h => Wallets.hook(h),
     () => Wallets.snapshot(),
-  );
+  )
   useEffect(() => {
     if (wallet.wallet?.isReady() === false && wallet.wallet.canAutoLogin()) {
-      wallet.wallet.login().catch(console.error);
+      wallet.wallet.login().catch(console.error)
     }
-  }, [wallet]);
-  return wallet;
+  }, [wallet])
+  return wallet
 }
 
 /**
  * Adds a wallet config for WebLN if detected
  */
 export function setupWebLNWalletConfig(store: WalletStore) {
-  const wallets = store.list();
+  const wallets = store.list()
 
-  const existing = wallets.find(a => a.kind === WalletKind.WebLN);
+  const existing = wallets.find(a => a.kind === WalletKind.WebLN)
   if (window.webln && !existing) {
     const newConfig = {
       id: "webln",
@@ -172,9 +172,9 @@ export function setupWebLNWalletConfig(store: WalletStore) {
       info: {
         alias: "WebLN",
       },
-    } as WalletConfig;
-    store.add(newConfig);
+    } as WalletConfig
+    store.add(newConfig)
   } else if (existing) {
-    store.remove(existing.id);
+    store.remove(existing.id)
   }
 }

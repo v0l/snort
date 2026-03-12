@@ -1,12 +1,12 @@
-import classNames from "classnames";
-import { FormattedMessage } from "react-intl";
+import classNames from "classnames"
+import { FormattedMessage } from "react-intl"
 
-import Icon from "@/Components/Icons/Icon";
+import Icon from "@/Components/Icons/Icon"
 
-import messages from "../messages";
+import messages from "../messages"
 
 export interface NoteToSelfProps {
-  className?: string;
+  className?: string
 }
 
 function NoteLabel() {
@@ -14,7 +14,7 @@ function NoteLabel() {
     <div className="font-bold flex items-center gap-1">
       <FormattedMessage {...messages.NoteToSelf} /> <Icon name="badge" size={15} />
     </div>
-  );
+  )
 }
 
 export default function NoteToSelf({ className }: NoteToSelfProps) {
@@ -27,5 +27,5 @@ export default function NoteToSelf({ className }: NoteToSelfProps) {
       </div>
       <NoteLabel />
     </div>
-  );
+  )
 }

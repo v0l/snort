@@ -1,29 +1,29 @@
-import React from "react";
+import React from "react"
 
-import { trackEvent } from "@/Utils";
+import { trackEvent } from "@/Utils"
 
 interface ErrorBoundaryState {
-  hasError: boolean;
-  error?: Error;
+  hasError: boolean
+  error?: Error
 }
 
 interface ErrorBoundaryProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false };
+    super(props)
+    this.state = { hasError: false }
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return { hasError: true, error };
+    return { hasError: true, error }
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Caught an error:", error, errorInfo);
-    trackEvent("error", { error: error.message, errorInfo: JSON.stringify(errorInfo) });
+    console.error("Caught an error:", error, errorInfo)
+    trackEvent("error", { error: error.message, errorInfo: JSON.stringify(errorInfo) })
   }
 
   render() {
@@ -35,9 +35,9 @@ export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, E
           <b>{this.state.error?.message}</b>
           <pre>{this.state.error?.stack}</pre>
         </div>
-      );
+      )
     }
 
-    return this.props.children;
+    return this.props.children
   }
 }

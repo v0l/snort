@@ -1,42 +1,42 @@
-import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { Link, useNavigate } from "react-router-dom"
 
-import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
-import PageSpinner from "@/Components/PageSpinner";
-import SnortApi, { type Subscription, SubscriptionError } from "@/External/SnortApi";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { mapSubscriptionErrorCode } from "@/Pages/subscribe/utils";
+import { ErrorOrOffline } from "@/Components/ErrorOrOffline"
+import PageSpinner from "@/Components/PageSpinner"
+import SnortApi, { type Subscription, SubscriptionError } from "@/External/SnortApi"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import { mapSubscriptionErrorCode } from "@/Pages/subscribe/utils"
 
-import SubscriptionCard from "./SubscriptionCard";
+import SubscriptionCard from "./SubscriptionCard"
 
 export default function ManageSubscriptionPage() {
-  const { publisher } = useEventPublisher();
-  const api = new SnortApi(undefined, publisher?.signer);
-  const navigate = useNavigate();
+  const { publisher } = useEventPublisher()
+  const api = new SnortApi(undefined, publisher?.signer)
+  const navigate = useNavigate()
 
-  const [subs, setSubs] = useState<Array<Subscription>>();
-  const [error, setError] = useState<Error>();
+  const [subs, setSubs] = useState<Array<Subscription>>()
+  const [error, setError] = useState<Error>()
 
   async function loadSubs() {
-    setError(undefined);
+    setError(undefined)
     try {
-      const s = await api.listSubscriptions();
-      setSubs(s);
+      const s = await api.listSubscriptions()
+      setSubs(s)
     } catch (e) {
       if (e instanceof Error) {
-        setError(e);
+        setError(e)
       }
     }
   }
   useEffect(() => {
-    loadSubs();
-  }, []);
+    loadSubs()
+  }, [])
 
   if (!(error instanceof SubscriptionError) && error instanceof Error)
-    return <ErrorOrOffline error={error} onRetry={loadSubs} className="px-3 py-2" />;
+    return <ErrorOrOffline error={error} onRetry={loadSubs} className="px-3 py-2" />
   if (subs === undefined) {
-    return <PageSpinner />;
+    return <PageSpinner />
   }
   return (
     <div className="px-3 py-2 flex flex-col gap-4">
@@ -68,5 +68,5 @@ export default function ManageSubscriptionPage() {
       )}
       {error instanceof SubscriptionError && <b className="error">{mapSubscriptionErrorCode(error)}</b>}
     </div>
-  );
+  )
 }

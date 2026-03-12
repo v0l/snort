@@ -1,4 +1,4 @@
-import type { OkResponse, ReqCommand, TaggedNostrEvent } from "./nostr";
+import type { OkResponse, ReqCommand, TaggedNostrEvent } from "./nostr"
 
 /**
  * A cache relay is an always available local (local network / browser worker) relay
@@ -8,15 +8,15 @@ export interface CacheRelay {
   /**
    * Write event to cache relay
    */
-  event(ev: TaggedNostrEvent): Promise<OkResponse>;
+  event(ev: TaggedNostrEvent): Promise<OkResponse>
 
   /**
    * Read event from cache relay
    */
-  query(req: ReqCommand): Promise<Array<TaggedNostrEvent>>;
+  query(req: ReqCommand): Promise<Array<TaggedNostrEvent>>
 
   /**
    * Delete events by filter
    */
-  delete(req: ReqCommand): Promise<Array<string>>;
+  delete(req: ReqCommand): Promise<Array<string>>
 }

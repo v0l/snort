@@ -25,7 +25,8 @@ export default function ECashIcon(props: { width?: number; height?: number }) {
           y1="6.7213"
           x2="7.11501"
           y2="6.7213"
-          gradientUnits="userSpaceOnUse">
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="white" />
           <stop offset="1" stopColor="white" stopOpacity="0.5" />
         </linearGradient>
@@ -35,7 +36,8 @@ export default function ECashIcon(props: { width?: number; height?: number }) {
           y1="32.2311"
           x2="7.11501"
           y2="32.2311"
-          gradientUnits="userSpaceOnUse">
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="white" />
           <stop offset="1" stopColor="white" stopOpacity="0.5" />
         </linearGradient>
@@ -45,11 +47,12 @@ export default function ECashIcon(props: { width?: number; height?: number }) {
           y1="19.4576"
           x2="22.2658"
           y2="19.4576"
-          gradientUnits="userSpaceOnUse">
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="white" />
           <stop offset="1" stopColor="white" stopOpacity="0.5" />
         </linearGradient>
       </defs>
     </svg>
-  );
+  )
 }

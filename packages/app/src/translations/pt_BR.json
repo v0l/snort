@@ -2931,8 +2931,7 @@
       "value": "O autor marcou esta nota como um tópico sensível "
     },
     {
-      "children": [
-      ],
+      "children": [],
       "type": 8,
       "value": "i"
     }
@@ -4802,8 +4801,7 @@
       "offset": 0,
       "options": {
         "=0": {
-          "value": [
-          ]
+          "value": []
         },
         "=1": {
           "value": [

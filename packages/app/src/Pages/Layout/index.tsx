@@ -1,73 +1,73 @@
-import { TraceTimelineOverlay } from "@snort/system-react";
-import { useCallback, useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { TraceTimelineOverlay } from "@snort/system-react"
+import { useCallback, useEffect } from "react"
+import { Outlet, useLocation } from "react-router-dom"
 
-import CloseButton from "@/Components/Button/CloseButton";
-import ErrorBoundary from "@/Components/ErrorBoundary";
-import { LoginUnlock } from "@/Components/PinPrompt/PinPrompt";
-import ScrollToTop from "@/Components/ScrollToTop";
-import Toaster from "@/Components/Toaster/Toaster";
-import useLoginFeed from "@/Feed/LoginFeed";
-import { useCommunityLeaders } from "@/Hooks/useCommunityLeaders";
-import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
-import useLogin from "@/Hooks/useLogin";
-import { useLoginRelays } from "@/Hooks/useLoginRelays";
-import usePreferences from "@/Hooks/usePreferences";
-import { useTheme } from "@/Hooks/useTheme";
-import { useTraceTimeline } from "@/Hooks/useTraceTimeline";
-import { isFormElement, trackEvent } from "@/Utils";
-import { LoginStore } from "@/Utils/Login";
+import CloseButton from "@/Components/Button/CloseButton"
+import ErrorBoundary from "@/Components/ErrorBoundary"
+import { LoginUnlock } from "@/Components/PinPrompt/PinPrompt"
+import ScrollToTop from "@/Components/ScrollToTop"
+import Toaster from "@/Components/Toaster/Toaster"
+import useLoginFeed from "@/Feed/LoginFeed"
+import { useCommunityLeaders } from "@/Hooks/useCommunityLeaders"
+import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut"
+import useLogin from "@/Hooks/useLogin"
+import { useLoginRelays } from "@/Hooks/useLoginRelays"
+import usePreferences from "@/Hooks/usePreferences"
+import { useTheme } from "@/Hooks/useTheme"
+import { useTraceTimeline } from "@/Hooks/useTraceTimeline"
+import { isFormElement, trackEvent } from "@/Utils"
+import { LoginStore } from "@/Utils/Login"
 
-import Footer from "./Footer";
-import { Header } from "./Header";
-import NavSidebar from "./NavSidebar";
-import RightColumn from "./RightColumn";
+import Footer from "./Footer"
+import { Header } from "./Header"
+import NavSidebar from "./NavSidebar"
+import RightColumn from "./RightColumn"
 
 export default function Index() {
-  const location = useLocation();
+  const location = useLocation()
   const { id, stalker } = useLogin(s => ({
     id: s.id,
     stalker: s.stalker ?? false,
-  }));
-  const telemetry = usePreferences(s => s.telemetry);
-  const traceTimeline = useTraceTimeline();
+  }))
+  const telemetry = usePreferences(s => s.telemetry)
+  const traceTimeline = useTraceTimeline()
 
-  useTheme();
-  useLoginRelays();
-  useLoginFeed();
-  useCommunityLeaders();
+  useTheme()
+  useLoginRelays()
+  useLoginFeed()
+  useCommunityLeaders()
 
-  const hideHeaderPaths = ["/login", "/new"];
-  const shouldHideFooter = location.pathname.startsWith("/messages/");
-  const shouldHideHeader = hideHeaderPaths.some(path => location.pathname.startsWith(path));
+  const hideHeaderPaths = ["/login", "/new"]
+  const shouldHideFooter = location.pathname.startsWith("/messages/")
+  const shouldHideHeader = hideHeaderPaths.some(path => location.pathname.startsWith(path))
 
   const handleKeyboardShortcut = useCallback((event: Event) => {
     if (event.target && !isFormElement(event.target as HTMLElement)) {
-      event.preventDefault();
-      window.scrollTo({ top: 0, behavior: "instant" });
+      event.preventDefault()
+      window.scrollTo({ top: 0, behavior: "instant" })
     }
-  }, []);
+  }, [])
 
   const handleTraceTimelineShortcut = useCallback(
     (event: Event) => {
       if (event.target && !isFormElement(event.target as HTMLElement)) {
-        event.preventDefault();
-        traceTimeline.toggle();
+        event.preventDefault()
+        traceTimeline.toggle()
       }
     },
     [traceTimeline],
-  );
+  )
 
   useEffect(() => {
     if (CONFIG.features.analytics && (telemetry ?? true)) {
-      trackEvent("pageview");
+      trackEvent("pageview")
     }
-  }, [location]);
+  }, [location])
 
-  useKeyboardShortcut(".", handleKeyboardShortcut);
-  useKeyboardShortcut("t", handleTraceTimelineShortcut);
+  useKeyboardShortcut(".", handleKeyboardShortcut)
+  useKeyboardShortcut("t", handleTraceTimelineShortcut)
 
-  const isStalker = !!stalker;
+  const isStalker = !!stalker
 
   return (
     <ErrorBoundary>
@@ -92,7 +92,7 @@ export default function Index() {
         <TraceTimelineOverlay isOpen={traceTimeline.isOpen} onClose={() => traceTimeline.close()} />
       </div>
     </ErrorBoundary>
-  );
+  )
 }
 
 function StalkerModal({ id }: { id: string }) {
@@ -100,5 +100,5 @@ function StalkerModal({ id }: { id: string }) {
     <div className="stalker" onClick={() => LoginStore.removeSession(id)}>
       <CloseButton />
     </div>
-  );
+  )
 }

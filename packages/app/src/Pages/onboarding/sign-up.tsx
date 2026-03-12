@@ -1,45 +1,45 @@
-import AsyncButton from "@/Components/Button/AsyncButton";
-import { trackEvent } from "@/Utils";
-import { generateNewLogin, generateNewLoginKeys } from "@/Utils/Login";
-import { NotEncrypted } from "@snort/system";
-import { SnortContext } from "@snort/system-react";
-import { useState, use, type FormEvent } from "react";
-import { useIntl, FormattedMessage } from "react-intl";
-import { useNavigate, Link } from "react-router-dom";
-import type { NewUserState } from ".";
-import { Bech32Regex } from "@snort/shared";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import { trackEvent } from "@/Utils"
+import { generateNewLogin, generateNewLoginKeys } from "@/Utils/Login"
+import { NotEncrypted } from "@snort/system"
+import { SnortContext } from "@snort/system-react"
+import { useState, use, type FormEvent } from "react"
+import { useIntl, FormattedMessage } from "react-intl"
+import { useNavigate, Link } from "react-router-dom"
+import type { NewUserState } from "."
+import { Bech32Regex } from "@snort/shared"
 
 export default function SignUp() {
-  const { formatMessage } = useIntl();
-  const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const system = use(SnortContext);
+  const { formatMessage } = useIntl()
+  const navigate = useNavigate()
+  const [name, setName] = useState("")
+  const system = use(SnortContext)
 
   const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (CONFIG.signUp.quickStart) {
       return generateNewLogin(await generateNewLoginKeys(), system, key => Promise.resolve(new NotEncrypted(key)), {
         name,
       }).then(() => {
-        trackEvent("Login", { newAccount: true });
-        navigate("/trending/notes");
-      });
+        trackEvent("Login", { newAccount: true })
+        navigate("/trending/notes")
+      })
     }
     navigate("/login/sign-up/profile", {
       state: {
         name: name,
       } as NewUserState,
-    });
-  };
+    })
+  }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
+    const val = e.target.value
     if (val.match(Bech32Regex)) {
-      e.preventDefault();
+      e.preventDefault()
     } else {
-      setName(val);
+      setName(val)
     }
-  };
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -83,5 +83,5 @@ export default function SignUp() {
         </AsyncButton>
       </div>
     </div>
-  );
+  )
 }

@@ -1,6 +1,6 @@
-import { type CachedTable, isHex, removeUndefined } from '@snort/shared'
-import debug from 'debug'
-import type { RequestBuilder, SystemInterface, TaggedNostrEvent } from '.'
+import { type CachedTable, isHex, removeUndefined } from "@snort/shared"
+import debug from "debug"
+import type { RequestBuilder, SystemInterface, TaggedNostrEvent } from "."
 
 /** How long a key stays blacklisted before being retried (ms) */
 const BlacklistTtl = 5 * 60 * 1_000 // 5 minutes
@@ -82,9 +82,9 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
     this.#system = system
     this.cache = cache
     this.#flush = {
-      high: new DebouncedFlush(FlushIntervals.high, () => this.#dispatch('high')),
-      normal: new DebouncedFlush(FlushIntervals.normal, () => this.#dispatch('normal')),
-      low: new DebouncedFlush(FlushIntervals.low, () => this.#dispatch('low')),
+      high: new DebouncedFlush(FlushIntervals.high, () => this.#dispatch("high")),
+      normal: new DebouncedFlush(FlushIntervals.normal, () => this.#dispatch("normal")),
+      low: new DebouncedFlush(FlushIntervals.low, () => this.#dispatch("low")),
     }
   }
 
@@ -124,7 +124,7 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
    * @param pk One or more hex pubkeys
    * @param priority Priority tier — higher tiers flush sooner (default: "normal")
    */
-  TrackKeys(pk: string | Array<string>, priority: ProfilePriority = 'normal') {
+  TrackKeys(pk: string | Array<string>, priority: ProfilePriority = "normal") {
     for (const p of Array.isArray(pk) ? pk : [pk]) {
       if (!isHex(p) || p.length !== 64) continue
       this.#wantSetFor(priority).add(p)
@@ -154,11 +154,11 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
       return existing
     } else {
       return await new Promise<T>((resolve, reject) => {
-        this.TrackKeys(key, 'high')
+        this.TrackKeys(key, "high")
         const timeout = setTimeout(() => {
           unsub()
           this.UntrackKeys(key)
-          reject(new Error('Fetch timeout'))
+          reject(new Error("Fetch timeout"))
         }, timeoutMs)
 
         const unsub = this.cache.subscribe(key, () => {
@@ -171,7 +171,7 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
           } else {
             clearTimeout(timeout)
             unsub()
-            reject(new Error('Not found'))
+            reject(new Error("Not found"))
           }
         })
       })
@@ -181,11 +181,11 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
   /** Returns the want-set for the given priority tier */
   #wantSetFor(priority: ProfilePriority): Set<string> {
     switch (priority) {
-      case 'high':
+      case "high":
         return this.#wantHigh
-      case 'normal':
+      case "normal":
         return this.#wantNormal
-      case 'low':
+      case "low":
         return this.#wantLow
     }
   }
@@ -214,7 +214,7 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
     const candidates = this.#allWanted.filter(a => !this.#blacklist.has(a) && !this.#inFlight.has(a))
 
     if (candidates.length === 0) {
-      this.#log('Dispatch triggered by %s — no candidates', triggeredBy)
+      this.#log("Dispatch triggered by %s — no candidates", triggeredBy)
       return
     }
 
@@ -230,11 +230,11 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
       const missing = candidates.filter(a => (this.cache.getFromCache(a)?.loaded ?? 0) < cutoff)
 
       if (missing.length === 0) {
-        this.#log('Dispatch triggered by %s — all candidates fresh', triggeredBy)
+        this.#log("Dispatch triggered by %s — all candidates fresh", triggeredBy)
         return
       }
 
-      this.#log('Fetching %d keys (triggered by %s)', missing.length, triggeredBy)
+      this.#log("Fetching %d keys (triggered by %s)", missing.length, triggeredBy)
 
       // Mark all as in-flight before dispatching to prevent re-entry
       for (const k of missing) {
@@ -252,7 +252,7 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
         this.#blacklist.set(k, Date.now())
       }
     } catch (e) {
-      this.#log('Dispatch error: %O', e)
+      this.#log("Dispatch error: %O", e)
     } finally {
       // Release in-flight locks regardless of outcome
       // (keys were added above; we clear them all here)
@@ -263,7 +263,7 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
   }
 
   async #loadChunk(keys: Array<string>, chunkIndex: number): Promise<Array<T>> {
-    this.#log('Loading chunk %d (%d keys)', chunkIndex, keys.length)
+    this.#log("Loading chunk %d (%d keys)", chunkIndex, keys.length)
     const ret: Array<T> = []
 
     // Use a unique ID per chunk to avoid QueryManager collisions
@@ -276,7 +276,7 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
       await Promise.all(results.map(a => this.cache.update(a)))
     })
 
-    this.#log('Chunk %d: got %d results', chunkIndex, ret.length)
+    this.#log("Chunk %d: got %d results", chunkIndex, ret.length)
     return ret
   }
 

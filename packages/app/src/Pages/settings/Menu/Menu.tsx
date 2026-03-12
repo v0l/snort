@@ -1,32 +1,32 @@
-import { type ReactNode, useCallback } from "react";
-import { FormattedMessage } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import { type ReactNode, useCallback } from "react"
+import { FormattedMessage } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import useLogin from "@/Hooks/useLogin";
-import { SettingsMenuComponent } from "@/Pages/settings/Menu/SettingsMenuComponent";
-import { LoginStore, logout } from "@/Utils/Login";
-import { getCurrentSubscription } from "@/Utils/Subscription";
+import useLogin from "@/Hooks/useLogin"
+import { SettingsMenuComponent } from "@/Pages/settings/Menu/SettingsMenuComponent"
+import { LoginStore, logout } from "@/Utils/Login"
+import { getCurrentSubscription } from "@/Utils/Subscription"
 
 export type SettingsMenuItems = Array<{
-  title: ReactNode;
+  title: ReactNode
   items: Array<{
-    icon: string;
-    iconBg: string;
-    message: ReactNode;
-    path?: string;
-    action?: () => void;
-  }>;
-}>;
+    icon: string
+    iconBg: string
+    message: ReactNode
+    path?: string
+    action?: () => void
+  }>
+}>
 
 const SettingsIndex = () => {
-  const login = useLogin();
-  const navigate = useNavigate();
-  const sub = getCurrentSubscription(LoginStore.allSubscriptions());
+  const login = useLogin()
+  const navigate = useNavigate()
+  const sub = getCurrentSubscription(LoginStore.allSubscriptions())
 
   const handleLogout = useCallback(() => {
-    logout(login.id);
-    navigate("/");
-  }, [login.id, navigate]);
+    logout(login.id)
+    navigate("/")
+  }, [login.id, navigate])
 
   const settingsGroups = [
     {
@@ -175,9 +175,9 @@ const SettingsIndex = () => {
         },
       ],
     },
-  ] as SettingsMenuItems;
+  ] as SettingsMenuItems
 
-  return <SettingsMenuComponent menu={settingsGroups} />;
-};
+  return <SettingsMenuComponent menu={settingsGroups} />
+}
 
-export default SettingsIndex;
+export default SettingsIndex

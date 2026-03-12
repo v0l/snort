@@ -1,19 +1,19 @@
-import { fetchNip05Pubkey, LNURL } from '@snort/shared'
-import { mapEventToProfile } from '@snort/system'
-import { useUserProfile } from '@snort/system-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { fetchNip05Pubkey, LNURL } from "@snort/shared"
+import { mapEventToProfile } from "@snort/system"
+import { useUserProfile } from "@snort/system-react"
+import { useCallback, useEffect, useRef, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { Link } from "react-router-dom"
 
-import AsyncButton from '@/Components/Button/AsyncButton'
-import { ErrorOrOffline } from '@/Components/ErrorOrOffline'
-import messages from '@/Components/messages'
-import AvatarEditor from '@/Components/User/AvatarEditor'
-import useEventPublisher from '@/Hooks/useEventPublisher'
-import useLogin from '@/Hooks/useLogin'
-import { debounce, openFile } from '@/Utils'
-import { MaxAboutLength, MaxUsernameLength } from '@/Utils/Const'
-import useFileUpload from '@/Utils/Upload'
+import AsyncButton from "@/Components/Button/AsyncButton"
+import { ErrorOrOffline } from "@/Components/ErrorOrOffline"
+import messages from "@/Components/messages"
+import AvatarEditor from "@/Components/User/AvatarEditor"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
+import { debounce, openFile } from "@/Utils"
+import { MaxAboutLength, MaxUsernameLength } from "@/Utils/Const"
+import useFileUpload from "@/Utils/Upload"
 
 export interface ProfileSettingsProps {
   avatar?: boolean
@@ -23,7 +23,7 @@ export interface ProfileSettingsProps {
 export default function ProfileSettings(props: ProfileSettingsProps) {
   const { formatMessage } = useIntl()
   const { id, publicKey, readonly } = useLogin(s => ({ id: s.id, publicKey: s.publicKey, readonly: s.readonly }))
-  const user = useUserProfile(publicKey ?? '')
+  const user = useUserProfile(publicKey ?? "")
   const { publisher, system } = useEventPublisher()
   const uploader = useFileUpload()
   const [error, setError] = useState<Error>()
@@ -66,7 +66,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             setNip05AddressValid(true)
           } else {
             setInvalidNip05AddressMessage(
-              formatMessage({ defaultMessage: 'Nostr address does not belong to you', id: '01iNut' }),
+              formatMessage({ defaultMessage: "Nostr address does not belong to you", id: "01iNut" }),
             )
           }
         } else {
@@ -87,23 +87,23 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         try {
           await new LNURL(lud16).load()
           setLud16Valid(true)
-          setInvalidLud16Message('')
+          setInvalidLud16Message("")
         } catch (e) {
           setLud16Valid(false)
           setInvalidLud16Message(formatMessage(messages.InvalidLud16))
         }
       } else {
-        setInvalidLud16Message('')
+        setInvalidLud16Message("")
       }
     })
   }, [lud16, formatMessage])
 
   useEffect(() => {
     return debounce(500, async () => {
-      const Nip05AddressElements = nip05?.split('@') ?? []
+      const Nip05AddressElements = nip05?.split("@") ?? []
       if ((nip05?.length ?? 0) === 0) {
         setNip05AddressValid(false)
-        setInvalidNip05AddressMessage('')
+        setInvalidNip05AddressMessage("")
       } else if (Nip05AddressElements.length < 2) {
         setNip05AddressValid(false)
         setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
@@ -127,13 +127,13 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       nip05,
       lud16,
     } as Record<string, string | number | undefined | boolean>
-    delete userCopy['loaded']
-    delete userCopy['created']
-    delete userCopy['pubkey']
-    delete userCopy['npub']
-    delete userCopy['deleted']
-    delete userCopy['zapService']
-    delete userCopy['isNostrAddressValid']
+    delete userCopy["loaded"]
+    delete userCopy["created"]
+    delete userCopy["pubkey"]
+    delete userCopy["npub"]
+    delete userCopy["deleted"]
+    delete userCopy["zapService"]
+    delete userCopy["isNostrAddressValid"]
     console.debug(userCopy)
 
     if (publisher) {
@@ -153,7 +153,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       const file = await openFile()
       if (file && uploader) {
         const rsp = await uploader.upload(file)
-        if ('error' in rsp && typeof rsp?.error === 'string') {
+        if ("error" in rsp && typeof rsp?.error === "string") {
           throw new Error(`Upload failed ${rsp.error}`)
         }
         return rsp.url
@@ -187,7 +187,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
   async function onLimitCheck(val: string, field: string) {
     isDirty.current = true
-    if (field === 'username') {
+    if (field === "username") {
       setName(val)
       if (val?.length >= MaxUsernameLength) {
         setUsernameValid(false)
@@ -198,9 +198,9 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         )
       } else {
         setUsernameValid(true)
-        setInvalidUsernameMessage('')
+        setInvalidUsernameMessage("")
       }
-    } else if (field === 'about') {
+    } else if (field === "about") {
       setAbout(val)
       if (val?.length >= MaxAboutLength) {
         setAboutValid(false)
@@ -211,7 +211,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         )
       } else {
         setAboutValid(true)
-        setInvalidAboutMessage('')
+        setInvalidAboutMessage("")
       }
     }
   }
@@ -232,7 +232,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             className=""
             type="text"
             value={name}
-            onChange={e => onLimitCheck(e.target.value, 'username')}
+            onChange={e => onLimitCheck(e.target.value, "username")}
             disabled={readonly}
             maxLength={MaxUsernameLength}
           />
@@ -244,7 +244,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </h4>
           <textarea
             className=""
-            onChange={e => onLimitCheck(e.target.value, 'about')}
+            onChange={e => onLimitCheck(e.target.value, "about")}
             value={about}
             disabled={readonly}
             maxLength={MaxAboutLength}

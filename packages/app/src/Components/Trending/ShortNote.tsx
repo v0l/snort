@@ -1,18 +1,19 @@
-import { NostrLink, type TaggedNostrEvent } from "@snort/system";
-import { Link } from "react-router-dom";
+import { NostrLink, type TaggedNostrEvent } from "@snort/system"
+import { Link } from "react-router-dom"
 
-import NoteTime from "@/Components/Event/Note/NoteTime";
-import Text from "@/Components/Text/Text";
-import ProfileImage from "@/Components/User/ProfileImage";
+import NoteTime from "@/Components/Event/Note/NoteTime"
+import Text from "@/Components/Text/Text"
+import ProfileImage from "@/Components/User/ProfileImage"
 
 export default function TrendingNote({ event }: { event: TaggedNostrEvent }) {
   // replace newlines with spaces, replace double spaces with single spaces
-  const content = event.content.slice(0, 80).replace(/\n/g, " ").replace(/ {2,}/g, " ");
+  const content = event.content.slice(0, 80).replace(/\n/g, " ").replace(/ {2,}/g, " ")
   return (
     <Link
       to={`/${NostrLink.fromEvent(event).encode(CONFIG.eventLinkPrefix)}`}
       state={event}
-      className="flex flex-col gap-1">
+      className="flex flex-col gap-1"
+    >
       <div className="flex flex-row justify-between">
         <ProfileImage pubkey={event.pubkey} size={28} showProfileCard={true} link="" />
         <NoteTime from={event.created_at * 1000} />
@@ -26,5 +27,5 @@ export default function TrendingNote({ event }: { event: TaggedNostrEvent }) {
         disableMedia={true}
       />
     </Link>
-  );
+  )
 }

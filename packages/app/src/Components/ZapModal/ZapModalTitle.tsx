@@ -1,18 +1,18 @@
-import type { Zapper, ZapTarget } from "@snort/wallet";
-import { FormattedMessage } from "react-intl";
+import type { Zapper, ZapTarget } from "@snort/wallet"
+import { FormattedMessage } from "react-intl"
 
-import ProfileImage from "@/Components/User/ProfileImage";
-import type { SendSatsInputSelection } from "@/Components/ZapModal/ZapModalInput";
-import { formatShort } from "@/Utils/Number";
+import ProfileImage from "@/Components/User/ProfileImage"
+import type { SendSatsInputSelection } from "@/Components/ZapModal/ZapModalInput"
+import { formatShort } from "@/Utils/Number"
 
 export function ZapModalTitle({
   targets,
   zapper,
   amount,
 }: {
-  targets?: Array<ZapTarget>;
-  zapper?: Zapper;
-  amount?: SendSatsInputSelection;
+  targets?: Array<ZapTarget>
+  zapper?: Zapper
+  amount?: SendSatsInputSelection
 }) {
   if (!targets) {
     return (
@@ -25,13 +25,13 @@ export function ZapModalTitle({
           )}
         </div>
       </>
-    );
+    )
   }
   if (targets.length === 1 && targets[0].name) {
-    const t = targets[0];
+    const t = targets[0]
     const values = {
       name: t.name,
-    };
+    }
     return (
       <ProfileImage
         pubkey={t.zap?.pubkey ?? ""}
@@ -46,10 +46,10 @@ export function ZapModalTitle({
         }
         link=""
       />
-    );
+    )
   }
   if (targets.length > 1) {
-    const total = targets.reduce((acc, v) => (acc += v.weight), 0);
+    const total = targets.reduce((acc, v) => (acc += v.weight), 0)
 
     return (
       <div className="flex flex-col gap-3">
@@ -72,6 +72,6 @@ export function ZapModalTitle({
           ))}
         </div>
       </div>
-    );
+    )
   }
 }

@@ -1,27 +1,27 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom"
 
-import Icon from "@/Components/Icons/Icon";
-import { AllLanguageCodes } from "@/Components/IntlProvider/IntlProviderUtils";
-import { useLocale } from "@/Components/IntlProvider/useLocale";
+import Icon from "@/Components/Icons/Icon"
+import { AllLanguageCodes } from "@/Components/IntlProvider/IntlProviderUtils"
+import { useLocale } from "@/Components/IntlProvider/useLocale"
 
-import Discover from "./discover";
-import Moderation from "./moderation";
-import Profile from "./profile";
-import SignIn from "./sign-in";
-import SignUp from "./sign-up";
-import Topics from "./topics";
+import Discover from "./discover"
+import Moderation from "./moderation"
+import Profile from "./profile"
+import SignIn from "./sign-in"
+import SignUp from "./sign-up"
+import Topics from "./topics"
 
-export { Discover, Moderation, Profile, SignIn, SignUp, Topics };
+export { Discover, Moderation, Profile, SignIn, SignUp, Topics }
 
 export interface NewUserState {
-  name?: string;
-  picture?: string;
-  topics?: Array<string>;
-  muteLists?: Array<string>;
+  name?: string
+  picture?: string
+  topics?: Array<string>
+  muteLists?: Array<string>
 }
 
 export function OnboardingLayout() {
-  const { lang, setOverride } = useLocale();
+  const { lang, setOverride } = useLocale()
 
   return (
     <div className="p-6">
@@ -41,5 +41,5 @@ export function OnboardingLayout() {
         <Outlet />
       </div>
     </div>
-  );
+  )
 }

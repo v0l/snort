@@ -1,20 +1,20 @@
-import Timeline from "@/Components/Feed/Timeline";
-import type { TimelineSubject } from "@/Feed/TimelineFeed";
-import { sanitizeRelayUrl } from "@snort/shared";
-import { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import Timeline from "@/Components/Feed/Timeline"
+import type { TimelineSubject } from "@/Feed/TimelineFeed"
+import { sanitizeRelayUrl } from "@snort/shared"
+import { useMemo } from "react"
+import { useParams } from "react-router-dom"
 
 export default function RelayFeedPage() {
-  const relayParam = useParams().relay as string | undefined;
+  const relayParam = useParams().relay as string | undefined
   const relay = useMemo(() => {
     if (relayParam) {
-      let u = relayParam;
+      let u = relayParam
       if (!u?.startsWith("ws")) {
-        u = `wss://${u}`;
+        u = `wss://${u}`
       }
-      return sanitizeRelayUrl(u);
+      return sanitizeRelayUrl(u)
     }
-  }, [relayParam]);
+  }, [relayParam])
 
   const subject = useMemo(
     () =>
@@ -24,7 +24,7 @@ export default function RelayFeedPage() {
         relay: relay ? [relay] : undefined,
       }) as TimelineSubject,
     [relay],
-  );
+  )
 
-  return <Timeline postsOnly={false} subject={subject} method={"LIMIT_UNTIL"} />;
+  return <Timeline postsOnly={false} subject={subject} method={"LIMIT_UNTIL"} />
 }

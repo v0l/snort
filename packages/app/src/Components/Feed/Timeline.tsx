@@ -1,17 +1,17 @@
-import { unixNow } from '@snort/shared'
-import type { TaggedNostrEvent } from '@snort/system'
-import { useCallback, useMemo } from 'react'
+import { unixNow } from "@snort/shared"
+import type { TaggedNostrEvent } from "@snort/system"
+import { useCallback, useMemo } from "react"
 
-import { TimelineRenderer } from '@/Components/Feed/TimelineRenderer'
-import useTimelineFeed, { type TimelineFeed, type TimelineSubject } from '@/Feed/TimelineFeed'
-import useHistoryState from '@/Hooks/useHistoryState'
-import useWoT from '@/Hooks/useWoT'
-import { dedupeByPubkey } from '@/Utils'
+import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer"
+import useTimelineFeed, { type TimelineFeed, type TimelineSubject } from "@/Feed/TimelineFeed"
+import useHistoryState from "@/Hooks/useHistoryState"
+import useWoT from "@/Hooks/useWoT"
+import { dedupeByPubkey } from "@/Utils"
 
 export interface TimelineProps {
   postsOnly: boolean
   subject: TimelineSubject
-  method: 'TIME_RANGE' | 'LIMIT_UNTIL'
+  method: "TIME_RANGE" | "LIMIT_UNTIL"
   followDistance?: number
   ignoreModeration?: boolean
   window?: number
@@ -23,7 +23,7 @@ export interface TimelineProps {
  * A list of notes by "subject"
  */
 const Timeline = (props: TimelineProps) => {
-  const [openedAt] = useHistoryState(unixNow(), 'openedAt')
+  const [openedAt] = useHistoryState(unixNow(), "openedAt")
   const feedOptions = useMemo(
     () => ({
       method: props.method,
@@ -45,7 +45,7 @@ const Timeline = (props: TimelineProps) => {
         return followDistance === props.followDistance
       }
       return nts
-        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === 'e') : true))
+        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
         .filter(a => props.ignoreModeration || checkFollowDistance(a))
     },
     [props.postsOnly, props.ignoreModeration, props.followDistance, wot],
@@ -80,7 +80,7 @@ const Timeline = (props: TimelineProps) => {
       latest={latestAuthors}
       showLatest={t => onShowLatest(t)}
       loadMore={() => feed.loadMore()}
-      highlightText={props.subject.type === 'post_keyword' ? props.subject.items[0] : undefined}
+      highlightText={props.subject.type === "post_keyword" ? props.subject.items[0] : undefined}
     />
   )
 }

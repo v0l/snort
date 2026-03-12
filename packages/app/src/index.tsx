@@ -1,33 +1,33 @@
-import './index.css'
-import '@/assets/fonts/inter.css'
+import "./index.css"
+import "@/assets/fonts/inter.css"
 
-import { unixNow, unixNowMs } from '@snort/shared'
-import { EventBuilder } from '@snort/system'
-import { SnortContext } from '@snort/system-react'
-import { StrictMode } from 'react'
-import * as ReactDOM from 'react-dom/client'
-import { createBrowserRouter, type RouteObject, RouterProvider } from 'react-router-dom'
+import { unixNow, unixNowMs } from "@snort/shared"
+import { EventBuilder } from "@snort/system"
+import { SnortContext } from "@snort/system-react"
+import { StrictMode } from "react"
+import * as ReactDOM from "react-dom/client"
+import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router-dom"
 
-import { initRelayWorker, ProfilesCache, preload, Relay } from '@/Cache'
-import { IntlProvider } from '@/Components/IntlProvider/IntlProvider'
-import { addCachedMetadataToFuzzySearch } from '@/Db/FuzzySearch'
-import ErrorPage from '@/Pages/ErrorPage'
-import { OnboardingRoutes } from '@/Pages/onboarding/routes'
-import { RootRoutes } from '@/Pages/Root/RootRoutes'
-import SettingsRoutes from '@/Pages/settings/Routes'
-import { System } from '@/system'
-import { storeRefCode, unwrap } from '@/Utils'
-import { hasWasm, WasmPath, wasmInit } from '@/Utils/wasm'
-import { setupWebLNWalletConfig, Wallets } from '@/Wallet'
-import { SpotlightContextWrapper } from './Components/Spotlight/context'
-import { Day } from './Utils/Const'
-import { LoginStore } from './Utils/Login'
+import { initRelayWorker, ProfilesCache, preload, Relay } from "@/Cache"
+import { IntlProvider } from "@/Components/IntlProvider/IntlProvider"
+import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch"
+import ErrorPage from "@/Pages/ErrorPage"
+import { OnboardingRoutes } from "@/Pages/onboarding/routes"
+import { RootRoutes } from "@/Pages/Root/RootRoutes"
+import SettingsRoutes from "@/Pages/settings/Routes"
+import { System } from "@/system"
+import { storeRefCode, unwrap } from "@/Utils"
+import { hasWasm, WasmPath, wasmInit } from "@/Utils/wasm"
+import { setupWebLNWalletConfig, Wallets } from "@/Wallet"
+import { SpotlightContextWrapper } from "./Components/Spotlight/context"
+import { Day } from "./Utils/Const"
+import { LoginStore } from "./Utils/Login"
 
 async function initSite() {
   EventBuilder.ClientTag = [
-    'client',
+    "client",
     CONFIG.appNameCapitalized,
-    '31990:84de35e2584d2b144aae823c9ed0b0f3deda09648530b93d1a2a146d1dea9864:app-profile',
+    "31990:84de35e2584d2b144aae823c9ed0b0f3deda09648530b93d1a2a146d1dea9864:app-profile",
   ]
   storeRefCode()
   if (hasWasm) {
@@ -52,13 +52,13 @@ async function initSite() {
       try {
         addCachedMetadataToFuzzySearch(ev)
       } catch (e) {
-        console.error('Failed to handle metadata event from sql db', e)
+        console.error("Failed to handle metadata event from sql db", e)
       }
     }
   })
 
   // cleanup
-  Relay?.delete(['REQ', 'cleanup', { kinds: [1, 6, 7, 9735], until: unixNow() - Day * 30 }])
+  Relay?.delete(["REQ", "cleanup", { kinds: [1, 6, 7, 9735], until: unixNow() - Day * 30 }])
 
   return null
 }
@@ -67,93 +67,93 @@ let didInit = false
 const mainRoutes = [
   ...RootRoutes,
   {
-    path: '/cache-debug',
+    path: "/cache-debug",
     async lazy() {
-      const { DebugPage } = await import('@/Pages/CacheDebug')
+      const { DebugPage } = await import("@/Pages/CacheDebug")
       return { Component: DebugPage }
     },
   },
   {
-    path: '/help',
+    path: "/help",
     async lazy() {
-      const { default: HelpPage } = await import('@/Pages/HelpPage')
+      const { default: HelpPage } = await import("@/Pages/HelpPage")
       return { Component: HelpPage }
     },
   },
   {
-    path: '/e/:id',
+    path: "/e/:id",
     async lazy() {
-      const { ThreadRoute } = await import('@/Components/Event/Thread/ThreadRoute')
+      const { ThreadRoute } = await import("@/Components/Event/Thread/ThreadRoute")
       return { Component: ThreadRoute }
     },
   },
   {
-    path: '/p/:id',
+    path: "/p/:id",
     async lazy() {
-      const { default: ProfilePage } = await import('@/Pages/Profile/ProfilePage')
+      const { default: ProfilePage } = await import("@/Pages/Profile/ProfilePage")
       return { Component: ProfilePage }
     },
   },
   {
-    path: '/notifications',
+    path: "/notifications",
     async lazy() {
-      const { default: NotificationsPage } = await import('@/Pages/Notifications/Notifications')
+      const { default: NotificationsPage } = await import("@/Pages/Notifications/Notifications")
       return { Component: NotificationsPage }
     },
   },
   {
-    path: '/free-nostr-address',
+    path: "/free-nostr-address",
     async lazy() {
-      const { default: FreeNostrAddressPage } = await import('@/Pages/FreeNostrAddressPage')
+      const { default: FreeNostrAddressPage } = await import("@/Pages/FreeNostrAddressPage")
       return { Component: FreeNostrAddressPage }
     },
   },
   {
-    path: '/nostr-address',
+    path: "/nostr-address",
     async lazy() {
-      const { default: NostrAddressPage } = await import('@/Pages/NostrAddressPage')
+      const { default: NostrAddressPage } = await import("@/Pages/NostrAddressPage")
       return { Component: NostrAddressPage }
     },
   },
   {
-    path: '/messages/:id?',
+    path: "/messages/:id?",
     async lazy() {
-      const { default: MessagesPage } = await import('@/Pages/Messages/MessagesPage')
+      const { default: MessagesPage } = await import("@/Pages/Messages/MessagesPage")
       return { Component: MessagesPage }
     },
   },
   {
-    path: '/donate',
+    path: "/donate",
     async lazy() {
-      const { default: DonatePage } = await import('@/Pages/Donate/DonatePage')
+      const { default: DonatePage } = await import("@/Pages/Donate/DonatePage")
       return { Component: DonatePage }
     },
   },
   {
-    path: '/search/:keyword?',
+    path: "/search/:keyword?",
     async lazy() {
-      const { default: SearchPage } = await import('@/Pages/SearchPage')
+      const { default: SearchPage } = await import("@/Pages/SearchPage")
       return { Component: SearchPage }
     },
   },
   {
-    path: '/list-feed/:id',
+    path: "/list-feed/:id",
     async lazy() {
-      const { ListFeedPage } = await import('@/Pages/ListFeedPage')
+      const { ListFeedPage } = await import("@/Pages/ListFeedPage")
       return { Component: ListFeedPage }
     },
   },
   {
-    path: '/about',
+    path: "/about",
     async lazy() {
-      const { AboutPage } = await import('@/Pages/About')
+      const { AboutPage } = await import("@/Pages/About")
       return { Component: AboutPage }
     },
   },
   {
-    path: '/wallet',
+    path: "/wallet",
     async lazy() {
-      const { default: WalletPage } = await import('@/Pages/wallet')
+      const { default: WalletPage } = await import("@/Pages/wallet")
       const WalletPageWrapper = () => (
         <div className="px-3 py-2">
           <WalletPage showHistory={true} />
@@ -163,16 +163,16 @@ const mainRoutes = [
     },
   },
   {
-    path: '/wallet/send',
+    path: "/wallet/send",
     async lazy() {
-      const { WalletSendPage } = await import('@/Pages/wallet/send')
+      const { WalletSendPage } = await import("@/Pages/wallet/send")
       return { Component: WalletSendPage }
     },
   },
   {
-    path: '/wallet/receive',
+    path: "/wallet/receive",
     async lazy() {
-      const { WalletReceivePage } = await import('@/Pages/wallet/receive')
+      const { WalletReceivePage } = await import("@/Pages/wallet/receive")
       return { Component: WalletReceivePage }
     },
   },
@@ -182,9 +182,9 @@ const mainRoutes = [
 
 if (CONFIG.features.zapPool) {
   mainRoutes.push({
-    path: '/zap-pool',
+    path: "/zap-pool",
     async lazy() {
-      const { default: ZapPoolPage } = await import('@/Pages/ZapPool/ZapPool')
+      const { default: ZapPoolPage } = await import("@/Pages/ZapPool/ZapPool")
       return { Component: ZapPoolPage }
     },
   })
@@ -192,16 +192,16 @@ if (CONFIG.features.zapPool) {
 
 if (CONFIG.features.subscriptions) {
   mainRoutes.push({
-    path: '/subscribe',
+    path: "/subscribe",
     async lazy() {
-      const { SubscribePage } = await import('@/Pages/subscribe')
+      const { SubscribePage } = await import("@/Pages/subscribe")
       return { Component: SubscribePage }
     },
   })
   mainRoutes.push({
-    path: '/subscribe/manage',
+    path: "/subscribe/manage",
     async lazy() {
-      const { default: ManageSubscriptionPage } = await import('@/Pages/subscribe/ManageSubscription')
+      const { default: ManageSubscriptionPage } = await import("@/Pages/subscribe/ManageSubscription")
       return { Component: ManageSubscriptionPage }
     },
   })
@@ -209,9 +209,9 @@ if (CONFIG.features.subscriptions) {
 
 // add catch all route
 mainRoutes.push({
-  path: '/:link',
+  path: "/:link",
   async lazy() {
-    const { default: NostrLinkHandler } = await import('@/Pages/NostrLinkHandler')
+    const { default: NostrLinkHandler } = await import("@/Pages/NostrLinkHandler")
     return { Component: NostrLinkHandler }
   },
 })
@@ -219,7 +219,7 @@ mainRoutes.push({
 const routes = [
   {
     async lazy() {
-      const { default: Layout } = await import('@/Pages/Layout')
+      const { default: Layout } = await import("@/Pages/Layout")
       return { Component: Layout }
     },
     errorElement: <ErrorPage />,
@@ -233,7 +233,7 @@ const routes = [
     children: mainRoutes,
   },
   {
-    path: '/component-debug',
+    path: "/component-debug",
     loader: async () => {
       if (!didInit) {
         didInit = true
@@ -242,7 +242,7 @@ const routes = [
       return null
     },
     async lazy() {
-      const { default: ComponentDebugPage } = await import('@/Pages/ComponentDebug')
+      const { default: ComponentDebugPage } = await import("@/Pages/ComponentDebug")
       return { Component: ComponentDebugPage }
     },
   },
@@ -250,7 +250,7 @@ const routes = [
 
 const router = createBrowserRouter(routes)
 
-const root = ReactDOM.createRoot(unwrap(document.getElementById('root')))
+const root = ReactDOM.createRoot(unwrap(document.getElementById("root")))
 root.render(
   <StrictMode>
     <IntlProvider>

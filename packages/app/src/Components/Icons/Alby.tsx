@@ -71,5 +71,5 @@ export default function AlbyIcon(props: { size?: number }) {
         fill="white"
       />
     </svg>
-  );
+  )
 }

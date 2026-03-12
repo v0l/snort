@@ -1,50 +1,54 @@
-import { unixNowMs } from "@snort/shared";
-import { Link } from "react-router-dom";
+import { unixNowMs } from "@snort/shared"
+import { Link } from "react-router-dom"
 
-import Icon from "@/Components/Icons/Icon";
-import { mapPlanName } from "@/Pages/subscribe/utils";
-import { Birthday, Day } from "@/Utils/Const";
+import Icon from "@/Components/Icons/Icon"
+import { mapPlanName } from "@/Pages/subscribe/utils"
+import { Birthday, Day } from "@/Utils/Const"
 
-import useLogin from "../../Hooks/useLogin";
-import { isBirthday, isChristmas, isHalloween, isStPatricksDay } from "../../Utils";
-import { getCurrentSubscription } from "../../Utils/Subscription";
+import useLogin from "../../Hooks/useLogin"
+import { isBirthday, isChristmas, isHalloween, isStPatricksDay } from "../../Utils"
+import { getCurrentSubscription } from "../../Utils/Subscription"
 
 function ordinal_suffix_of(i: number) {
-  const j = i % 10;
-  const k = i % 100;
+  const j = i % 10
+  const k = i % 100
   if (j === 1 && k !== 11) {
-    return i + "st";
+    return i + "st"
   }
   if (j === 2 && k !== 12) {
-    return i + "nd";
+    return i + "nd"
   }
   if (j === 3 && k !== 13) {
-    return i + "rd";
+    return i + "rd"
   }
-  return i + "th";
+  return i + "th"
 }
 
 const getExtra = () => {
   if (isBirthday()) {
-    const age = Math.floor((unixNowMs() - Birthday.getTime()) / (Day * 365_000));
-    return <span className="text-sm" title={`${ordinal_suffix_of(age)} Birthday`}>{ordinal_suffix_of(age)} 🎂</span>;
+    const age = Math.floor((unixNowMs() - Birthday.getTime()) / (Day * 365_000))
+    return (
+      <span className="text-sm" title={`${ordinal_suffix_of(age)} Birthday`}>
+        {ordinal_suffix_of(age)} 🎂
+      </span>
+    )
   }
-  if (isHalloween()) return <span title="Happy Halloween!">🎃</span>;
-  if (isStPatricksDay()) return <span title="Happy St. Patrick's Day!">🍀</span>;
-  if (isChristmas()) return <span title="Merry Christmas!">🎄</span>;
-};
+  if (isHalloween()) return <span title="Happy Halloween!">🎃</span>
+  if (isStPatricksDay()) return <span title="Happy St. Patrick's Day!">🍀</span>
+  if (isChristmas()) return <span title="Merry Christmas!">🎄</span>
+}
 
 export function LogoHeader({ showText = false }: { showText: boolean }) {
-  const subscriptions = useLogin(s => s.subscriptions);
-  const currentSubscription = getCurrentSubscription(subscriptions);
+  const subscriptions = useLogin(s => s.subscriptions)
+  const currentSubscription = getCurrentSubscription(subscriptions)
 
-  const appName = CONFIG.appName === "iris" && isStPatricksDay() ? "Irish" : CONFIG.appName;
+  const appName = CONFIG.appName === "iris" && isStPatricksDay() ? "Irish" : CONFIG.appName
 
   const handleLogoClick = () => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  };
+    window.scrollTo({ top: 0, behavior: "instant" })
+  }
 
-  const extra = getExtra();
+  const extra = getExtra()
 
   return (
     <Link to="/" className="logo hover:no-underline" onClick={handleLogoClick}>
@@ -69,5 +73,5 @@ export function LogoHeader({ showText = false }: { showText: boolean }) {
         </div>
       )}
     </Link>
-  );
+  )
 }

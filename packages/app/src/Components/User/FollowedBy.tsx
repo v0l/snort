@@ -1,24 +1,24 @@
-import { Fragment, useMemo } from "react";
-import { FormattedMessage } from "react-intl";
+import { Fragment, useMemo } from "react"
+import { FormattedMessage } from "react-intl"
 
-import { AvatarGroup } from "@/Components/User/AvatarGroup";
-import DisplayName from "@/Components/User/DisplayName";
-import { ProfileLink } from "@/Components/User/ProfileLink";
-import useWoT from "@/Hooks/useWoT";
-import type { ProfileImageProps } from "./ProfileImage";
+import { AvatarGroup } from "@/Components/User/AvatarGroup"
+import DisplayName from "@/Components/User/DisplayName"
+import { ProfileLink } from "@/Components/User/ProfileLink"
+import useWoT from "@/Hooks/useWoT"
+import type { ProfileImageProps } from "./ProfileImage"
 
-const MAX_FOLLOWED_BY_FRIENDS = 3;
+const MAX_FOLLOWED_BY_FRIENDS = 3
 
 export default function FollowedBy({ pubkey, ...props }: { pubkey: string } & Omit<ProfileImageProps, "pubkey">) {
-  const wot = useWoT();
-  const followDistance = wot.followDistance(pubkey);
+  const wot = useWoT()
+  const followDistance = wot.followDistance(pubkey)
   const { followedByFriendsArray, totalFollowedByFriends } = useMemo(() => {
-    const followedByFriends = wot.followedBy(pubkey);
+    const followedByFriends = wot.followedBy(pubkey)
     return {
       followedByFriendsArray: Array.from(followedByFriends).slice(0, MAX_FOLLOWED_BY_FRIENDS),
       totalFollowedByFriends: followedByFriends.size,
-    };
-  }, [pubkey, followDistance]);
+    }
+  }, [pubkey, followDistance])
 
   const renderFollowedByFriendsLinks = () => {
     return followedByFriendsArray.map((a, index) => (
@@ -28,8 +28,8 @@ export default function FollowedBy({ pubkey, ...props }: { pubkey: string } & Om
         </ProfileLink>
         {index < followedByFriendsArray.length - 1 && ","}{" "}
       </Fragment>
-    ));
-  };
+    ))
+  }
 
   return (
     <div className="flex items-center gap-2">
@@ -62,5 +62,5 @@ export default function FollowedBy({ pubkey, ...props }: { pubkey: string } & Om
         </div>
       )}
     </div>
-  );
+  )
 }

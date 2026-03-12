@@ -1,23 +1,23 @@
-import { dedupe } from "@snort/shared";
-import { EventKind, NostrHashtagLink, RequestBuilder } from "@snort/system";
-import { useRequestBuilder } from "@snort/system-react";
-import classNames from "classnames";
-import { useMemo } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
-import { Link, useParams } from "react-router-dom";
+import { dedupe } from "@snort/shared"
+import { EventKind, NostrHashtagLink, RequestBuilder } from "@snort/system"
+import { useRequestBuilder } from "@snort/system-react"
+import classNames from "classnames"
+import { useMemo } from "react"
+import { FormattedMessage, FormattedNumber } from "react-intl"
+import { Link, useParams } from "react-router-dom"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import Timeline from "@/Components/Feed/Timeline";
-import ProfileImage from "@/Components/User/ProfileImage";
-import type { TimelineSubject } from "@/Feed/TimelineFeed";
-import useLogin from "@/Hooks/useLogin";
-import { formatShort } from "@/Utils/Number";
-import { AvatarGroup } from "@/Components/User/AvatarGroup";
-import useWoT from "@/Hooks/useWoT";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import Timeline from "@/Components/Feed/Timeline"
+import ProfileImage from "@/Components/User/ProfileImage"
+import type { TimelineSubject } from "@/Feed/TimelineFeed"
+import useLogin from "@/Hooks/useLogin"
+import { formatShort } from "@/Utils/Number"
+import { AvatarGroup } from "@/Components/User/AvatarGroup"
+import useWoT from "@/Hooks/useWoT"
 
 const HashTagsPage = () => {
-  const params = useParams();
-  const tag = (params.tag ?? "").toLowerCase();
+  const params = useParams()
+  const tag = (params.tag ?? "").toLowerCase()
   const subject = useMemo(
     () =>
       ({
@@ -26,7 +26,7 @@ const HashTagsPage = () => {
         discriminator: tag,
       }) as TimelineSubject,
     [tag],
-  );
+  )
 
   return (
     <>
@@ -35,25 +35,25 @@ const HashTagsPage = () => {
       </div>
       <Timeline key={tag} subject={subject} postsOnly={false} method={"TIME_RANGE"} />
     </>
-  );
-};
+  )
+}
 
-export default HashTagsPage;
+export default HashTagsPage
 
 export function HashTagHeader({ tag, events, className }: { tag: string; events?: number; className?: string }) {
-  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }));
+  const { state } = useLogin(s => ({ v: s.state.version, state: s.state }))
   const isFollowing = useMemo(() => {
-    return state.isOnList(EventKind.InterestsList, new NostrHashtagLink(tag));
-  }, [state, tag]);
+    return state.isOnList(EventKind.InterestsList, new NostrHashtagLink(tag))
+  }, [state, tag])
 
   const sub = useMemo(() => {
-    const rb = new RequestBuilder(`hashtag-counts:${tag}`);
-    rb.withFilter().kinds([EventKind.InterestsList]).tag("t", [tag.toLowerCase()]);
-    return rb;
-  }, [tag]);
-  const followsTag = useRequestBuilder(sub);
-  const wot = useWoT();
-  const pubkeys = wot.sortPubkeys(dedupe(followsTag.map(a => a.pubkey)));
+    const rb = new RequestBuilder(`hashtag-counts:${tag}`)
+    rb.withFilter().kinds([EventKind.InterestsList]).tag("t", [tag.toLowerCase()])
+    return rb
+  }, [tag])
+  const followsTag = useRequestBuilder(sub)
+  const wot = useWoT()
+  const pubkeys = wot.sortPubkeys(dedupe(followsTag.map(a => a.pubkey)))
 
   return (
     <div className={classNames("flex flex-col", className)}>
@@ -76,7 +76,8 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
         {isFollowing ? (
           <AsyncButton
             className="secondary"
-            onClick={() => state.removeFromList(EventKind.InterestsList, new NostrHashtagLink(tag), true)}>
+            onClick={() => state.removeFromList(EventKind.InterestsList, new NostrHashtagLink(tag), true)}
+          >
             <FormattedMessage defaultMessage="Unfollow" />
           </AsyncButton>
         ) : (
@@ -94,5 +95,5 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
         )}
       </div>
     </div>
-  );
+  )
 }

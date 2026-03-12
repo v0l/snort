@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
 
-import Icon from "@/Components/Icons/Icon";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
-import { subscribeToNotifications } from "@/Utils/Notifications";
+import Icon from "@/Components/Icons/Icon"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
+import { subscribeToNotifications } from "@/Utils/Notifications"
 
-import messages from "./messages";
+import messages from "./messages"
 
 interface StatusIndicatorProps {
-  status: boolean;
-  enabledMessage: React.ComponentProps<typeof FormattedMessage>;
-  disabledMessage: React.ComponentProps<typeof FormattedMessage>;
+  status: boolean
+  enabledMessage: React.ComponentProps<typeof FormattedMessage>
+  disabledMessage: React.ComponentProps<typeof FormattedMessage>
 }
 
 const StatusIndicator = ({ status, enabledMessage, disabledMessage }: StatusIndicatorProps) => {
@@ -25,57 +25,57 @@ const StatusIndicator = ({ status, enabledMessage, disabledMessage }: StatusIndi
       <Icon name="close" size={20} className="text-red-500 mr-2" />
       <FormattedMessage {...disabledMessage} />
     </div>
-  );
-};
+  )
+}
 
 const PreferencesPage = () => {
-  const login = useLogin();
-  const { publisher } = useEventPublisher();
-  const [serviceWorkerReady, setServiceWorkerReady] = useState(false);
-  const hasNotificationsApi = "Notification" in window;
+  const login = useLogin()
+  const { publisher } = useEventPublisher()
+  const [serviceWorkerReady, setServiceWorkerReady] = useState(false)
+  const hasNotificationsApi = "Notification" in window
   const [notificationsAllowed, setNotificationsAllowed] = useState(
     hasNotificationsApi && Notification.permission === "granted",
-  );
-  const [subscribedToPush, setSubscribedToPush] = useState(false);
-  const allGood = !login.readonly && hasNotificationsApi && notificationsAllowed && serviceWorkerReady;
+  )
+  const [subscribedToPush, setSubscribedToPush] = useState(false)
+  const allGood = !login.readonly && hasNotificationsApi && notificationsAllowed && serviceWorkerReady
 
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.ready.then(registration => {
         if (registration.active) {
-          setServiceWorkerReady(true);
+          setServiceWorkerReady(true)
         }
-      });
+      })
     }
-  }, []);
+  }, [])
 
   const trySubscribePush = async () => {
     try {
       if (allGood && publisher && !subscribedToPush) {
-        await subscribeToNotifications(publisher);
-        setSubscribedToPush(true);
+        await subscribeToNotifications(publisher)
+        setSubscribedToPush(true)
       }
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
-  };
+  }
 
   useEffect(() => {
-    trySubscribePush();
-  }, [allGood, publisher]);
+    trySubscribePush()
+  }, [allGood, publisher])
 
   const requestNotificationPermission = () => {
     Notification.requestPermission().then(permission => {
-      const allowed = permission === "granted";
-      setNotificationsAllowed(allowed);
+      const allowed = permission === "granted"
+      setNotificationsAllowed(allowed)
       if (!allowed) {
-        alert("Please allow notifications in your browser settings and try again.");
+        alert("Please allow notifications in your browser settings and try again.")
       }
-    });
-  };
+    })
+  }
 
   if (!login.publicKey) {
-    return null;
+    return null
   }
 
   return (
@@ -130,7 +130,7 @@ const PreferencesPage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PreferencesPage;
+export default PreferencesPage

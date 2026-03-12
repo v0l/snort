@@ -1,8 +1,8 @@
-import { dedupeBy, NostrPrefix } from "@snort/shared";
-import { type NostrEvent, NostrLink, type Thread, type EventBuilder, LinkScope, type TaggedNostrEvent } from "..";
-import { LRUCache } from "typescript-lru-cache";
+import { dedupeBy, NostrPrefix } from "@snort/shared"
+import { type NostrEvent, NostrLink, type Thread, type EventBuilder, LinkScope, type TaggedNostrEvent } from ".."
+import { LRUCache } from "typescript-lru-cache"
 
-const ThreadCache = new LRUCache<string, Thread | undefined>({ maxSize: 1000 });
+const ThreadCache = new LRUCache<string, Thread | undefined>({ maxSize: 1000 })
 
 /**
  * Utility class which exports functions used in NIP-10
@@ -12,42 +12,42 @@ export class Nip10 {
    * Reply to an event using NIP-10 tagging
    */
   static replyTo(ev: TaggedNostrEvent, eb: EventBuilder) {
-    const link = NostrLink.fromEvent(ev);
-    const thread = Nip10.parseThread(ev);
+    const link = NostrLink.fromEvent(ev)
+    const thread = Nip10.parseThread(ev)
     if (thread) {
       // get the root tag or the reply tag of the note you're replying to
       // some clients didnt add the root tag when replying directly to the root note
-      const rootOrReplyAsRoot = (thread.root || thread.replyTo)!;
-      eb.tag(Nip10.linkToTag(rootOrReplyAsRoot, LinkScope.Root));
-      eb.tag(Nip10.linkToTag(link, LinkScope.Reply));
+      const rootOrReplyAsRoot = (thread.root || thread.replyTo)!
+      eb.tag(Nip10.linkToTag(rootOrReplyAsRoot, LinkScope.Root))
+      eb.tag(Nip10.linkToTag(link, LinkScope.Reply))
 
       for (const pk of thread.pubKeys) {
         // skip own pubkey and authors pubkey
         // authors p tag will be added at the end
         if (pk.id === eb.pubkey || pk.id === ev.pubkey) {
-          continue;
+          continue
         }
-        eb.tag(Nip10.linkToTag(pk));
+        eb.tag(Nip10.linkToTag(pk))
       }
     } else {
-      eb.tag(Nip10.linkToTag(link, LinkScope.Root));
+      eb.tag(Nip10.linkToTag(link, LinkScope.Root))
     }
     // always tag the author of the event you're replying to
     if (ev.pubkey !== eb.pubkey) {
-      const authorLink = NostrLink.publicKey(ev.pubkey, ev.relays);
-      eb.tag(Nip10.linkToTag(authorLink));
+      const authorLink = NostrLink.publicKey(ev.pubkey, ev.relays)
+      eb.tag(Nip10.linkToTag(authorLink))
     }
   }
 
   static parseThread(ev: NostrEvent) {
-    const cached = ThreadCache.get(ev.id);
+    const cached = ThreadCache.get(ev.id)
     if (cached) {
-      return cached;
+      return cached
     }
-    const links = NostrLink.fromTags(ev.tags);
-    const ret = Nip10.fromLinks(links);
-    ThreadCache.set(ev.id, ret);
-    return ret;
+    const links = NostrLink.fromTags(ev.tags)
+    const ret = Nip10.fromLinks(links)
+    ThreadCache.set(ev.id, ret)
+    return ret
   }
 
   /**
@@ -58,44 +58,44 @@ export class Nip10 {
       kind: "nip10",
       mentions: [],
       pubKeys: [],
-    } as Thread;
+    } as Thread
 
     // NIP-10: Only e and a tags are used for thread structure (positional or marked)
-    const replyTags = links.filter(a => [NostrPrefix.Event, NostrPrefix.Note, NostrPrefix.Address].includes(a.type));
+    const replyTags = links.filter(a => [NostrPrefix.Event, NostrPrefix.Note, NostrPrefix.Address].includes(a.type))
     if (replyTags.length > 0) {
-      const marked = replyTags.some(a => a.scope);
+      const marked = replyTags.some(a => a.scope)
       if (!marked) {
-        ret.root = replyTags[0];
-        ret.root.scope = LinkScope.Root;
+        ret.root = replyTags[0]
+        ret.root.scope = LinkScope.Root
         if (replyTags.length > 1) {
-          ret.replyTo = replyTags[replyTags.length - 1];
-          ret.replyTo.scope = LinkScope.Reply;
+          ret.replyTo = replyTags[replyTags.length - 1]
+          ret.replyTo.scope = LinkScope.Reply
         }
         if (replyTags.length > 2) {
-          ret.mentions = replyTags.slice(1, -1);
-          ret.mentions.forEach(a => (a.scope = LinkScope.Mention));
+          ret.mentions = replyTags.slice(1, -1)
+          ret.mentions.forEach(a => (a.scope = LinkScope.Mention))
         }
       } else {
-        const root = replyTags.find(a => a.scope === LinkScope.Root);
-        const reply = replyTags.find(a => a.scope === LinkScope.Reply);
-        ret.root = root;
-        ret.replyTo = reply;
-        ret.mentions = replyTags.filter(a => a.scope === LinkScope.Mention);
+        const root = replyTags.find(a => a.scope === LinkScope.Root)
+        const reply = replyTags.find(a => a.scope === LinkScope.Reply)
+        ret.root = root
+        ret.replyTo = reply
+        ret.mentions = replyTags.filter(a => a.scope === LinkScope.Mention)
       }
 
       // if no root or reply, not a thread
       if (ret.root === undefined && ret.replyTo === undefined) {
-        return undefined;
+        return undefined
       }
 
       // extract all pubkey mentions from tags
-      const pubKeyLinks = links.filter(a => [NostrPrefix.PublicKey, NostrPrefix.Profile].includes(a.type));
+      const pubKeyLinks = links.filter(a => [NostrPrefix.PublicKey, NostrPrefix.Profile].includes(a.type))
       // remove duplicate pubkey mentions
-      ret.pubKeys = dedupeBy(pubKeyLinks, n => n.id);
+      ret.pubKeys = dedupeBy(pubKeyLinks, n => n.id)
 
-      return ret;
+      return ret
     } else {
-      return undefined;
+      return undefined
     }
   }
 
@@ -103,36 +103,36 @@ export class Nip10 {
    * Convert a link to an event tag
    */
   static linkToTag(link: NostrLink, withScope?: LinkScope) {
-    const suffix: Array<string> = [];
+    const suffix: Array<string> = []
     if (link.relays && link.relays.length > 0) {
-      suffix.push(link.relays[0]);
+      suffix.push(link.relays[0])
     }
-    const scope = withScope ?? link.scope;
-    const markerString = Nip10.scopeToMarker(scope);
+    const scope = withScope ?? link.scope
+    const markerString = Nip10.scopeToMarker(scope)
     if (markerString) {
       if (suffix[0] === undefined) {
-        suffix.push(""); // empty relay hint
+        suffix.push("") // empty relay hint
       }
-      suffix.push(markerString);
+      suffix.push(markerString)
     }
 
     if (link.type === NostrPrefix.PublicKey || link.type === NostrPrefix.Profile) {
-      return ["p", link.id, ...suffix];
+      return ["p", link.id, ...suffix]
     } else if (link.type === NostrPrefix.Note || link.type === NostrPrefix.Event) {
       if (link.author) {
         if (suffix[0] === undefined) {
-          suffix.push(""); // empty relay hint
+          suffix.push("") // empty relay hint
         }
         if (suffix[1] === undefined) {
-          suffix.push(""); // empty marker
+          suffix.push("") // empty marker
         }
-        suffix.push(link.author);
+        suffix.push(link.author)
       }
-      return ["e", link.id, ...suffix];
+      return ["e", link.id, ...suffix]
     } else if (link.type === NostrPrefix.Address) {
-      return ["a", `${link.kind}:${link.author}:${link.id}`, ...suffix];
+      return ["a", `${link.kind}:${link.author}:${link.id}`, ...suffix]
     }
-    throw new Error("Invalid link");
+    throw new Error("Invalid link")
   }
 
   /**
@@ -141,11 +141,11 @@ export class Nip10 {
   static scopeToMarker(scope?: LinkScope) {
     switch (scope) {
       case LinkScope.Root:
-        return "root" as const;
+        return "root" as const
       case LinkScope.Reply:
-        return "reply" as const;
+        return "reply" as const
       case LinkScope.Mention:
-        return "mention" as const;
+        return "mention" as const
     }
   }
 }

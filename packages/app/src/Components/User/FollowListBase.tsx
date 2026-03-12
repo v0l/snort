@@ -1,22 +1,22 @@
-import classNames from "classnames";
-import { type ReactNode, useMemo, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import classNames from "classnames"
+import { type ReactNode, useMemo, useState } from "react"
+import { FormattedMessage } from "react-intl"
 
-import ProfilePreview, { type ProfilePreviewProps } from "@/Components/User/ProfilePreview";
-import useFollowsControls from "@/Hooks/useFollowControls";
-import useLogin from "@/Hooks/useLogin";
-import useWoT from "@/Hooks/useWoT";
+import ProfilePreview, { type ProfilePreviewProps } from "@/Components/User/ProfilePreview"
+import useFollowsControls from "@/Hooks/useFollowControls"
+import useLogin from "@/Hooks/useLogin"
+import useWoT from "@/Hooks/useWoT"
 
-import AsyncButton from "../Button/AsyncButton";
+import AsyncButton from "../Button/AsyncButton"
 
 export interface FollowListBaseProps {
-  pubkeys: string[];
-  title?: ReactNode;
-  showFollowAll?: boolean;
-  className?: string;
-  actions?: ReactNode;
-  profilePreviewProps?: Omit<ProfilePreviewProps, "pubkey">;
-  pageSize?: number;
+  pubkeys: string[]
+  title?: ReactNode
+  showFollowAll?: boolean
+  className?: string
+  actions?: ReactNode
+  profilePreviewProps?: Omit<ProfilePreviewProps, "pubkey">
+  pageSize?: number
 }
 
 export default function FollowListBase({
@@ -28,25 +28,25 @@ export default function FollowListBase({
   profilePreviewProps,
   pageSize = 50,
 }: FollowListBaseProps) {
-  const control = useFollowsControls();
-  const readonly = useLogin(s => s.readonly);
-  const wot = useWoT();
-  const [currentPage, setCurrentPage] = useState(1);
+  const control = useFollowsControls()
+  const readonly = useLogin(s => s.readonly)
+  const wot = useWoT()
+  const [currentPage, setCurrentPage] = useState(1)
 
-  const sortedPubkeys = useMemo(() => wot.sortPubkeys(pubkeys), [pubkeys, wot]);
+  const sortedPubkeys = useMemo(() => wot.sortPubkeys(pubkeys), [pubkeys, wot])
 
-  const totalPages = Math.ceil(sortedPubkeys.length / pageSize);
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const currentPagePubkeys = sortedPubkeys.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(sortedPubkeys.length / pageSize)
+  const startIndex = (currentPage - 1) * pageSize
+  const endIndex = startIndex + pageSize
+  const currentPagePubkeys = sortedPubkeys.slice(startIndex, endIndex)
 
   async function followAll() {
-    await control.addFollow(pubkeys);
+    await control.addFollow(pubkeys)
   }
 
   const goToPage = (page: number) => {
-    setCurrentPage(Math.max(1, Math.min(page, totalPages)));
-  };
+    setCurrentPage(Math.max(1, Math.min(page, totalPages)))
+  }
 
   return (
     <>
@@ -81,5 +81,5 @@ export default function FollowListBase({
         </div>
       )}
     </>
-  );
+  )
 }

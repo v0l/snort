@@ -1,18 +1,18 @@
-import { fetchNip05Pubkey, LNURL, NostrPrefix } from '@snort/shared'
-import { type CachedMetadata, tryParseNostrLink } from '@snort/system'
-import { useUserProfile } from '@snort/system-react'
-import { use, useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { fetchNip05Pubkey, LNURL, NostrPrefix } from "@snort/shared"
+import { type CachedMetadata, tryParseNostrLink } from "@snort/system"
+import { useUserProfile } from "@snort/system-react"
+import { use, useEffect, useMemo, useState } from "react"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 
-import { ProxyImg } from '@/Components/ProxyImg'
-import { SpotlightContext } from '@/Components/Spotlight/context'
-import TabSelectors, { type Tab } from '@/Components/TabSelectors/TabSelectors'
-import FollowsList from '@/Components/User/FollowListBase'
-import MutedList from '@/Components/User/MutedList'
-import useFollowsFeed from '@/Feed/FollowsFeed'
-import useLogin from '@/Hooks/useLogin'
-import AvatarSection from '@/Pages/Profile/AvatarSection'
-import ProfileDetails from '@/Pages/Profile/ProfileDetails'
+import { ProxyImg } from "@/Components/ProxyImg"
+import { SpotlightContext } from "@/Components/Spotlight/context"
+import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors"
+import FollowsList from "@/Components/User/FollowListBase"
+import MutedList from "@/Components/User/MutedList"
+import useFollowsFeed from "@/Feed/FollowsFeed"
+import useLogin from "@/Hooks/useLogin"
+import AvatarSection from "@/Pages/Profile/AvatarSection"
+import ProfileDetails from "@/Pages/Profile/ProfileDetails"
 import {
   BookMarksTab,
   FollowersTab,
@@ -21,11 +21,11 @@ import {
   ReactionsTab,
   RelaysTab,
   ZapsProfileTab,
-} from '@/Pages/Profile/ProfileTabComponents'
-import ProfileTabSelectors from '@/Pages/Profile/ProfileTabSelectors'
-import { ProfileTabType } from '@/Pages/Profile/ProfileTabType'
-import { parseId, unwrap } from '@/Utils'
-import { EmailRegex } from '@/Utils/Const'
+} from "@/Pages/Profile/ProfileTabComponents"
+import ProfileTabSelectors from "@/Pages/Profile/ProfileTabSelectors"
+import { ProfileTabType } from "@/Pages/Profile/ProfileTabType"
+import { parseId, unwrap } from "@/Utils"
+import { EmailRegex } from "@/Utils/Const"
 
 interface ProfilePageProps {
   id?: string
@@ -46,11 +46,11 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
     readonly: s.readonly,
   }))
   const isMe = loginPubKey === id
-  const aboutText = user?.about || ''
+  const aboutText = user?.about || ""
 
   const lnurl = useMemo(() => {
     try {
-      return new LNURL(user?.lud16 || user?.lud06 || '')
+      return new LNURL(user?.lud16 || user?.lud06 || "")
     } catch {
       // ignored
     }
@@ -69,9 +69,9 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
     if (
       user?.nip05 &&
       user.nip05.endsWith(`@${CONFIG.nip05Domain}`) &&
-      (!('isNostrAddressValid' in user) || user.isNostrAddressValid)
+      (!("isNostrAddressValid" in user) || user.isNostrAddressValid)
     ) {
-      const [username] = user.nip05.split('@')
+      const [username] = user.nip05.split("@")
       navigate(`/${username}`, { replace: true })
     }
   }, [user, navigate])
@@ -80,17 +80,17 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   useEffect(() => {
     if (!id) {
       if (resolvedParamId?.match(EmailRegex)) {
-        const [name, domain] = resolvedParamId.split('@')
+        const [name, domain] = resolvedParamId.split("@")
         fetchNip05Pubkey(name, domain).then(a => {
           setId(a)
         })
       } else {
-        const nav = tryParseNostrLink(resolvedParamId ?? '')
+        const nav = tryParseNostrLink(resolvedParamId ?? "")
         if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
           setId(nav.id)
           setRelays(nav.relays)
         } else {
-          setId(parseId(resolvedParamId ?? ''))
+          setId(parseId(resolvedParamId ?? ""))
         }
       }
       setTab(ProfileTabSelectors.Notes)

@@ -1,13 +1,13 @@
-import { unixNowMs } from '@snort/shared'
-import debug from 'debug'
-import { EventEmitter } from 'eventemitter3'
-import WebSocket from 'isomorphic-ws'
-import type { ConnectionType, ConnectionTypeEvents } from './connection-pool'
-import { AuthTimeout, DefaultConnectTimeout } from './const'
-import { EventExt } from './event-ext'
-import EventKind from './event-kind'
-import { Nip11, type RelayInfoDocument } from './impl/nip11'
-import type { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from './nostr'
+import { unixNowMs } from "@snort/shared"
+import debug from "debug"
+import { EventEmitter } from "eventemitter3"
+import WebSocket from "isomorphic-ws"
+import type { ConnectionType, ConnectionTypeEvents } from "./connection-pool"
+import { AuthTimeout, DefaultConnectTimeout } from "./const"
+import { EventExt } from "./event-ext"
+import EventKind from "./event-kind"
+import { Nip11, type RelayInfoDocument } from "./impl/nip11"
+import type { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr"
 
 /**
  * Relay settings
@@ -53,7 +53,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     this.EventsCallback = new Map()
     this.AwaitingAuth = new Map()
     this.#ephemeral = ephemeral
-    this.#log = debug('Connection').extend(addr)
+    this.#log = debug("Connection").extend(addr)
   }
 
   get ephemeral() {
@@ -118,8 +118,8 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       this.Socket.onclose = e => this.#onClose(e)
       if (awaitOpen) {
         await new Promise((resolve, reject) => {
-          this.once('connected', resolve)
-          this.once('disconnect', reject)
+          this.once("connected", resolve)
+          this.once("disconnect", reject)
         })
       }
     } catch (e) {
@@ -141,13 +141,13 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     this.ConnectTimeout = DefaultConnectTimeout
     this.#log(`Open!`)
     this.#setupEphemeral()
-    this.emit('connected', wasReconnect)
+    this.emit("connected", wasReconnect)
     this.#sendPendingRaw()
   }
 
   #onClose(e: WebSocket.CloseEvent) {
     // Log close event details to console for debugging
-    const closeMsg = `[${this.address}] WebSocket closed - Code: ${e.code}${e.reason ? `, Reason: ${e.reason}` : ''} (wasUp=${this.#wasUp}, connecting=${this.#connectStarted}, closing=${this.#closing})`
+    const closeMsg = `[${this.address}] WebSocket closed - Code: ${e.code}${e.reason ? `, Reason: ${e.reason}` : ""} (wasUp=${this.#wasUp}, connecting=${this.#connectStarted}, closing=${this.#closing})`
     if (e.code !== 1000 && e.code !== 1001) {
       // Abnormal closure codes
       console.warn(closeMsg)
@@ -167,7 +167,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       }
     }
 
-    this.emit('disconnect', e.code)
+    this.emit("disconnect", e.code)
     this.#reset()
   }
 
@@ -195,40 +195,40 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       try {
         msg = JSON.parse(e.data as string) as Array<string | NostrEvent | boolean>
       } catch {
-        this.#log('Dropping malformed relay message (JSON parse error): %s', e.data)
+        this.#log("Dropping malformed relay message (JSON parse error): %s", e.data)
         return
       }
       const tag = msg[0] as string
       switch (tag) {
-        case 'AUTH': {
+        case "AUTH": {
           if (this.#expectAuth) {
             this.#onAuthAsync(msg[1] as string)
               .then(() => this.#sendPendingRaw())
               .catch(this.#log)
             // todo: stats events received
           } else {
-            this.#log('Ignoring unexpected AUTH request')
+            this.#log("Ignoring unexpected AUTH request")
           }
           break
         }
-        case 'EVENT': {
+        case "EVENT": {
           const ev = {
             ...(msg[2] as NostrEvent),
             relays: [this.address],
           } as TaggedNostrEvent
 
           if (!EventExt.isValid(ev)) {
-            this.#log('Rejecting invalid event %O', ev)
+            this.#log("Rejecting invalid event %O", ev)
             return
           }
-          this.emit('unverifiedEvent', msg[1] as string, ev)
+          this.emit("unverifiedEvent", msg[1] as string, ev)
           break
         }
-        case 'EOSE': {
-          this.emit('eose', msg[1] as string)
+        case "EOSE": {
+          this.emit("eose", msg[1] as string)
           break
         }
-        case 'OK': {
+        case "OK": {
           // feedback to broadcast call
           this.#log(`OK: %O`, msg)
           const id = msg[1] as string
@@ -239,18 +239,18 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
           }
           break
         }
-        case 'NOTICE': {
-          this.emit('notice', msg[1] as string)
+        case "NOTICE": {
+          this.emit("notice", msg[1] as string)
           this.#log(`NOTICE: ${msg[1]}`)
           break
         }
-        case 'CLOSED': {
-          this.emit('closed', msg[1] as string, msg[2] as string)
+        case "CLOSED": {
+          this.emit("closed", msg[1] as string, msg[2] as string)
           this.#log(`CLOSED: ${msg.slice(1)}`)
           break
         }
         default: {
-          this.emit('unknownMessage', msg)
+          this.emit("unknownMessage", msg)
           break
         }
       }
@@ -262,15 +262,15 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     // The close event will have more details (code and reason)
     if (e.error instanceof Error) {
       console.error(`[${this.address}] WebSocket error:`, e.error.message)
-      this.#log('Error with details: %O', e.error)
+      this.#log("Error with details: %O", e.error)
     } else {
       console.warn(
         `[${this.address}] WebSocket error occurred (close event will contain more details). ReadyState: ${this.Socket?.readyState}`,
       )
-      this.#log('Error event: %O', e)
+      this.#log("Error event: %O", e)
     }
-    this.emit('change')
-    this.emit('error')
+    this.emit("change")
+    this.emit("error")
   }
 
   /**
@@ -280,9 +280,9 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     if (!this.settings.write) {
       return
     }
-    this.#send(['EVENT', e])
+    this.#send(["EVENT", e])
     // todo: stats events send
-    this.emit('change')
+    this.emit("change")
   }
 
   /**
@@ -291,7 +291,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   async publish(e: NostrEvent, timeout = 5000) {
     return await new Promise<OkResponse>((resolve, reject) => {
       if (!this.settings.write) {
-        reject(new Error('Not a write relay'))
+        reject(new Error("Not a write relay"))
         return
       }
 
@@ -300,7 +300,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
           ok: false,
           id: e.id,
           relay: this.address,
-          message: 'Duplicate request',
+          message: "Duplicate request",
           event: e,
         })
         return
@@ -311,7 +311,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
           ok: false,
           id: e.id,
           relay: this.address,
-          message: 'Timeout waiting for OK response',
+          message: "Timeout waiting for OK response",
           event: e,
         })
       }, timeout)
@@ -328,9 +328,9 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
         })
       })
 
-      this.#send(['EVENT', e])
+      this.#send(["EVENT", e])
       // todo: stats events send
-      this.emit('change')
+      this.emit("change")
     })
   }
 
@@ -352,20 +352,20 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     const ExpectAuth = [EventKind.DirectMessage, EventKind.GiftWrap, 7000 as EventKind]
     if (ExpectAuth.some(a => requestKinds.has(a)) && !this.#expectAuth) {
       this.#expectAuth = true
-      this.#log('Setting expectAuth flag %o', requestKinds)
+      this.#log("Setting expectAuth flag %o", requestKinds)
     }
 
     this.#sendRequestCommand(cmd)
     cbSent?.()
-    this.emit('change')
+    this.emit("change")
   }
 
   closeRequest(id: string) {
     if (this.#activeRequests.has(id)) {
       this.#activeRequests.delete(id)
-      this.#send(['CLOSE', id])
-      this.emit('eose', id)
-      this.emit('change')
+      this.#send(["CLOSE", id])
+      this.emit("eose", id)
+      this.emit("change")
     }
   }
 
@@ -390,19 +390,19 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     // reset connection Id on disconnect, for query-tracking
     this.id = crypto.randomUUID()
     this.#expectAuth = false
-    this.#log('Reset active=%O, raw=%O', [...this.#activeRequests.keys()], [...this.PendingRaw])
+    this.#log("Reset active=%O, raw=%O", [...this.#activeRequests.keys()], [...this.PendingRaw])
     for (const [id] of this.#activeRequests) {
-      this.emit('closed', id, 'connection closed')
+      this.emit("closed", id, "connection closed")
     }
     for (const raw of this.PendingRaw) {
-      if (Array.isArray(raw) && raw[0] === 'REQ') {
-        this.emit('closed', raw[1], 'connection closed')
+      if (Array.isArray(raw) && raw[0] === "REQ") {
+        this.emit("closed", raw[1], "connection closed")
       }
     }
     this.#activeRequests.clear()
     this.PendingRaw = []
 
-    this.emit('change')
+    this.emit("change")
   }
 
   /**
@@ -450,17 +450,17 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     const authEvent = await new Promise<NostrEvent>((resolve, reject) => {
       const t = setTimeout(() => {
         authCleanup()
-        reject(new Error('AUTH handler timed out — no auth event provided'))
+        reject(new Error("AUTH handler timed out — no auth event provided"))
       }, AuthTimeout)
-      this.emit('auth', challenge, this.address, (ev: NostrEvent) => {
+      this.emit("auth", challenge, this.address, (ev: NostrEvent) => {
         clearTimeout(t)
         resolve(ev)
       })
     })
-    this.#log('Auth result: %o', authEvent)
+    this.#log("Auth result: %o", authEvent)
     if (!authEvent) {
       authCleanup()
-      throw new Error('No auth event')
+      throw new Error("No auth event")
     }
 
     return await new Promise(resolve => {
@@ -475,7 +475,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
         if (msg.length > 3 && msg[2] === true) {
           this.Authed = true
           // Resend all active requests after successful auth
-          this.#log('Auth successful, resending %d active requests', this.#activeRequests.size)
+          this.#log("Auth successful, resending %d active requests", this.#activeRequests.size)
           for (const [, cmd] of this.#activeRequests) {
             this.#sendOnWire(cmd)
           }
@@ -483,7 +483,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
         resolve()
       })
 
-      this.#sendOnWire(['AUTH', authEvent])
+      this.#sendOnWire(["AUTH", authEvent])
     })
   }
 
@@ -497,7 +497,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
         const lastActivity = unixNowMs() - this.#activity
         if (lastActivity > 10_000 && !this.#closing) {
           if (this.#activeRequests.size > 0) {
-            this.#log('Inactive connection has %d active requests! %O', this.#activeRequests.size, this.#activeRequests)
+            this.#log("Inactive connection has %d active requests! %O", this.#activeRequests.size, this.#activeRequests)
           } else {
             this.close()
           }

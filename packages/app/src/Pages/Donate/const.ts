@@ -1,5 +1,5 @@
-import { KieranPubKey } from "@/Utils/Const";
-import { bech32ToHex } from "@snort/shared";
+import { KieranPubKey } from "@/Utils/Const"
+import { bech32ToHex } from "@snort/shared"
 
 export const Contributors = [
   bech32ToHex(KieranPubKey),
@@ -16,7 +16,7 @@ export const Contributors = [
   bech32ToHex("npub1wh30wunfpkezx5s7edqu9g0s0raeetf5dgthzm0zw7sk8wqygmjqqfljgh"), // Fernando Porazzi
   bech32ToHex("npub1gm7tuvr9atc6u7q3gevjfeyfyvmrlul4y67k7u7hcxztz67ceexs078rf6"), // Giszmo - Master of bug reports
   bech32ToHex("npub1cz2ve34nk0ukn0ph4yq2qx3ud8rfy5e0ak4epx42dn8gha0sdgpsgra9kv"), // Kamal
-];
+]
 export const Translators = [
   bech32ToHex("npub1s8zws5frm94esxnp9v6zf7vk60m3hum3305n78sr73t78kleus7q8zpwna"), // middlingphys - JA
   bech32ToHex("npub1z0ykz6lp3y8rjjntenns0ee02062g2f0n55u49w44xdemw35vcpsda5jhh"), // noraglyphs - JA
@@ -46,5 +46,5 @@ export const Translators = [
   bech32ToHex("npub1p94p6d4p04mhjt2hdpkhhvkl93v7j7ada4w9lztj0y0fzg2m959sux5h5k"), // Jeremy - SV
 
   bech32ToHex("npub1dnvslq0vvrs8d603suykc4harv94yglcxwna9sl2xu8grt2afm3qgfh0tp"), // summoner001 - HU
-];
-export const DonateLNURL = "donate@snort.social";
+]
+export const DonateLNURL = "donate@snort.social"

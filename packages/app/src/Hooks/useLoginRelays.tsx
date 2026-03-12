@@ -1,8 +1,8 @@
-import type { RelaySettings, SystemInterface } from '@snort/system'
-import { useEffect } from 'react'
+import type { RelaySettings, SystemInterface } from "@snort/system"
+import { useEffect } from "react"
 
-import useEventPublisher from './useEventPublisher'
-import useRelays from './useRelays'
+import useEventPublisher from "./useEventPublisher"
+import useRelays from "./useRelays"
 
 export function useLoginRelays() {
   const relays = useRelays()

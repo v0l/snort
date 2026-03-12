@@ -1,35 +1,36 @@
-import React, { memo, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import React, { memo, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import type { NoteProps } from "@/Components/Event/EventComponent";
-import type { NoteTranslation } from "@/Components/Event/Note/types";
-import Reveal from "@/Components/Event/Reveal";
-import Text from "@/Components/Text/Text";
-import usePreferences from "@/Hooks/usePreferences";
+import type { NoteProps } from "@/Components/Event/EventComponent"
+import type { NoteTranslation } from "@/Components/Event/Note/types"
+import Reveal from "@/Components/Event/Reveal"
+import Text from "@/Components/Text/Text"
+import usePreferences from "@/Hooks/usePreferences"
 
-const TEXT_TRUNCATE_LENGTH = 400;
+const TEXT_TRUNCATE_LENGTH = 400
 export const NoteText = memo(function InnerContent(
   props: NoteProps & { translated: NoteTranslation | undefined; showTranslation?: boolean },
 ) {
-  const { data: ev, options, translated, showTranslation } = props;
-  const showContentWarningPosts = usePreferences(s => s.showContentWarningPosts);
-  const [showMore, setShowMore] = useState(false);
-  const body = translated && !translated.skipped && showTranslation ? translated.text : (ev?.content ?? "");
-  const id = translated && !translated.skipped && showTranslation ? `${ev.id}-translated` : ev.id;
-  const shouldTruncate = options?.truncate && body.length > TEXT_TRUNCATE_LENGTH;
+  const { data: ev, options, translated, showTranslation } = props
+  const showContentWarningPosts = usePreferences(s => s.showContentWarningPosts)
+  const [showMore, setShowMore] = useState(false)
+  const body = translated && !translated.skipped && showTranslation ? translated.text : (ev?.content ?? "")
+  const id = translated && !translated.skipped && showTranslation ? `${ev.id}-translated` : ev.id
+  const shouldTruncate = options?.truncate && body.length > TEXT_TRUNCATE_LENGTH
 
   const ToggleShowMore = () => (
     <a
       className="text-highlight"
       onClick={e => {
-        e.preventDefault();
-        e.stopPropagation();
-        setShowMore(!showMore);
-      }}>
+        e.preventDefault()
+        e.stopPropagation()
+        setShowMore(!showMore)
+      }}
+    >
       {showMore ? <FormattedMessage defaultMessage="Show less" /> : <FormattedMessage defaultMessage="Show more" />}
     </a>
-  );
+  )
 
   const innerContent = (
     <>
@@ -48,10 +49,10 @@ export const NoteText = memo(function InnerContent(
       />
       {shouldTruncate && !showMore && <ToggleShowMore />}
     </>
-  );
+  )
 
   if (!showContentWarningPosts) {
-    const contentWarning = ev.tags.find(a => a[0] === "content-warning");
+    const contentWarning = ev.tags.find(a => a[0] === "content-warning")
     if (contentWarning) {
       return (
         <Reveal
@@ -84,11 +85,12 @@ export const NoteText = memo(function InnerContent(
                 </i>
               </Link>
             </>
-          }>
+          }
+        >
           {innerContent}
         </Reveal>
-      );
+      )
     }
   }
-  return innerContent;
-});
+  return innerContent
+})

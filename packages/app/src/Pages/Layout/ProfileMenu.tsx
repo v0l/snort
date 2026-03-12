@@ -1,27 +1,27 @@
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import classNames from "classnames";
-import { FormattedMessage } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
+import classNames from "classnames"
+import { FormattedMessage } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import Icon from "@/Components/Icons/Icon";
-import ProfileImage from "@/Components/User/ProfileImage";
-import ProfilePreview from "@/Components/User/ProfilePreview";
-import useLogin from "@/Hooks/useLogin";
-import { useProfileLink } from "@/Hooks/useProfileLink";
-import useWindowSize from "@/Hooks/useWindowSize";
-import { LoginStore } from "@/Utils/Login";
+import Icon from "@/Components/Icons/Icon"
+import ProfileImage from "@/Components/User/ProfileImage"
+import ProfilePreview from "@/Components/User/ProfilePreview"
+import useLogin from "@/Hooks/useLogin"
+import { useProfileLink } from "@/Hooks/useProfileLink"
+import useWindowSize from "@/Hooks/useWindowSize"
+import { LoginStore } from "@/Utils/Login"
 
 export default function ProfileMenu({ className }: { className?: string }) {
   const { publicKey, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
     readonly: s.readonly,
-  }));
-  const logins = LoginStore.getSessions();
-  const navigate = useNavigate();
-  const link = useProfileLink(publicKey);
+  }))
+  const logins = LoginStore.getSessions()
+  const navigate = useNavigate()
+  const link = useProfileLink(publicKey)
 
-  const pageSize = useWindowSize();
-  const isNarrow = pageSize.width <= 1280; //xl
+  const pageSize = useWindowSize()
+  const isNarrow = pageSize.width <= 1280 //xl
   function profile() {
     return (
       <ProfilePreview
@@ -42,13 +42,13 @@ export default function ProfileMenu({ className }: { className?: string }) {
           ) : undefined,
         }}
       />
-    );
+    )
   }
 
   const itemClassName =
-    "px-6 py-2 text-base font-semibold bg-layer-2 light:bg-white hover:bg-layer-3 light:hover:bg-neutral-200 cursor-pointer outline-none";
+    "px-6 py-2 text-base font-semibold bg-layer-2 light:bg-white hover:bg-layer-3 light:hover:bg-neutral-200 cursor-pointer outline-none"
 
-  if (!publicKey) return;
+  if (!publicKey) return
   return (
     <div className={classNames("w-full cursor-pointer", className)}>
       <DropdownMenu.Root>
@@ -60,9 +60,10 @@ export default function ProfileMenu({ className }: { className?: string }) {
             <DropdownMenu.Item
               className={itemClassName}
               onClick={e => {
-                e.stopPropagation();
-                navigate(link);
-              }}>
+                e.stopPropagation()
+                navigate(link)
+              }}
+            >
               <div className="flex gap-2 items-center">
                 <Icon name="user" />
                 <FormattedMessage defaultMessage="Profile" />
@@ -82,8 +83,8 @@ export default function ProfileMenu({ className }: { className?: string }) {
                     showProfileCard={false}
                     showFollowDistance={false}
                     onClick={e => {
-                      e.stopPropagation();
-                      LoginStore.switchAccount(a.id);
+                      e.stopPropagation()
+                      LoginStore.switchAccount(a.id)
                     }}
                   />
                 </DropdownMenu.Item>
@@ -92,5 +93,5 @@ export default function ProfileMenu({ className }: { className?: string }) {
         </DropdownMenu.Portal>
       </DropdownMenu.Root>
     </div>
-  );
+  )
 }

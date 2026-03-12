@@ -1,24 +1,24 @@
-import debug from 'debug'
-import { EventEmitter } from 'eventemitter3'
-import { unixNowMs } from '@snort/shared'
+import debug from "debug"
+import { EventEmitter } from "eventemitter3"
+import { unixNowMs } from "@snort/shared"
 
-import type { ReqFilter, TaggedNostrEvent } from '.'
-import { NoteCollection } from './note-collection'
-import type { RequestBuilder } from './request-builder'
-import { eventMatchesFilter } from './request-matcher'
+import type { ReqFilter, TaggedNostrEvent } from "."
+import { NoteCollection } from "./note-collection"
+import type { RequestBuilder } from "./request-builder"
+import { eventMatchesFilter } from "./request-matcher"
 
 export enum QueryTraceState {
-  NEW = 'NEW', // New state, not used trace
-  QUEUED = 'QUEUED', // When first created
-  WAITING = 'WAITING', // Waiting for relay response (sent REQ to relay, will close on EOSE)
-  WAITING_STREAM = 'WAITING_STREAM', // Streaming (sent REQ to relay, will stay open after EOSE)
-  SYNC_WAITING = 'SYNC_WAITING', // Waiting for SYNC response (sent NEG-OPEN)
-  SYNC_FALLBACK = 'SYNC_FALLBACK', // SYNC not supported, falling back to REQ
-  EOSE = 'EOSE', // Server told us there are no more results
-  LOCAL_CLOSE = 'LOCAL_CLOSE', // We sent close to server
-  REMOTE_CLOSE = 'REMOTE_CLOSE', // Server closed the request
-  DROP = 'DROP', // Dropped due to disconnect
-  TIMEOUT = 'TIMEOUT', // Closed because taking too long
+  NEW = "NEW", // New state, not used trace
+  QUEUED = "QUEUED", // When first created
+  WAITING = "WAITING", // Waiting for relay response (sent REQ to relay, will close on EOSE)
+  WAITING_STREAM = "WAITING_STREAM", // Streaming (sent REQ to relay, will stay open after EOSE)
+  SYNC_WAITING = "SYNC_WAITING", // Waiting for SYNC response (sent NEG-OPEN)
+  SYNC_FALLBACK = "SYNC_FALLBACK", // SYNC not supported, falling back to REQ
+  EOSE = "EOSE", // Server told us there are no more results
+  LOCAL_CLOSE = "LOCAL_CLOSE", // We sent close to server
+  REMOTE_CLOSE = "REMOTE_CLOSE", // Server closed the request
+  DROP = "DROP", // Dropped due to disconnect
+  TIMEOUT = "TIMEOUT", // Closed because taking too long
 }
 
 export interface QueryTraceEvent {
@@ -61,7 +61,7 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
       return
     }
     this.#currentState = state
-    this.emit('stateChange', {
+    this.emit("stateChange", {
       id: this.id,
       relay: this.relay,
       connId: this.connId,
@@ -208,13 +208,13 @@ export class Query extends EventEmitter<QueryEvents> {
   /** Total number of duplicates produced by this query */
   #duplicates: number
 
-  #log = debug('Query')
+  #log = debug("Query")
 
   constructor(req: RequestBuilder) {
     super()
     this.id = req.id
     this.#feed = new NoteCollection()
-    this.#feed.on('event', evs => this.emit('event', evs))
+    this.#feed.on("event", evs => this.emit("event", evs))
     this.#builderInstances = new Set([])
     this.#leaveOpen = req.options?.leaveOpen ?? false
     this.skipCache = req.options?.skipCache ?? false
@@ -238,7 +238,7 @@ export class Query extends EventEmitter<QueryEvents> {
       this.#feed.add(req.options.extraEvents)
     }
     if (req.numFilters > 0) {
-      this.#log('Add query %O to %s', req, this.id)
+      this.#log("Add query %O to %s", req, this.id)
       this.requests.push(...req.buildRaw())
       this.#builderInstances.add(req.instance)
       return true
@@ -290,8 +290,8 @@ export class Query extends EventEmitter<QueryEvents> {
    */
   addTrace(trace: QueryTrace) {
     this.#tracing.set(trace.id, trace)
-    trace.on('stateChange', event => {
-      this.emit('trace', event)
+    trace.on("stateChange", event => {
+      this.emit("trace", event)
 
       // Check if done when reaching terminal state
       if (
@@ -303,9 +303,9 @@ export class Query extends EventEmitter<QueryEvents> {
           QueryTraceState.LOCAL_CLOSE,
         ].includes(event.state)
       ) {
-        this.#log('Trace state changed to %s, progress=%d', event.state, this.progress)
+        this.#log("Trace state changed to %s, progress=%d", event.state, this.progress)
         if (this.progress === 1) {
-          this.emit('eose')
+          this.emit("eose")
         }
       }
     })
@@ -323,7 +323,7 @@ export class Query extends EventEmitter<QueryEvents> {
    */
   addEvent(sub: string, e: TaggedNostrEvent) {
     const trace = this.#tracing.get(sub)
-    if (trace || sub === '*') {
+    if (trace || sub === "*") {
       const filters = trace ? trace.filters : this.filters
       if (filters.some(v => eventMatchesFilter(e, v))) {
         const added = this.feed.add(e)
@@ -331,11 +331,11 @@ export class Query extends EventEmitter<QueryEvents> {
           this.#duplicates++
           const ratio = this.#duplicates / this.feed.snapshot.length
           if (ratio > 2) {
-            this.#log('High number of duplicates for: ', this.id, ratio, this.feed.snapshot.length)
+            this.#log("High number of duplicates for: ", this.id, ratio, this.feed.snapshot.length)
           }
         }
       } else {
-        this.#log('Event did not match filter, rejecting %O', e)
+        this.#log("Event did not match filter, rejecting %O", e)
       }
     }
   }
@@ -356,7 +356,7 @@ export class Query extends EventEmitter<QueryEvents> {
       clearTimeout(this.#groupTimeout)
       this.#groupTimeout = undefined
     }
-    this.emit('end')
+    this.emit("end")
   }
 
   closeQuery() {
@@ -397,14 +397,14 @@ export class Query extends EventEmitter<QueryEvents> {
 
   async #emitFilters() {
     if (this.requests.length === 0) return
-    this.#log('Starting emit of %s', this.id)
+    this.#log("Starting emit of %s", this.id)
     const rawFilters = [...this.requests]
     this.requests = []
     if (this.#replaceable) {
       rawFilters.push(...this.filters)
     }
     if (rawFilters.length > 0) {
-      this.emit('request', this.id, rawFilters)
+      this.emit("request", this.id, rawFilters)
     }
   }
 }

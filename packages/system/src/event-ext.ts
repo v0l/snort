@@ -1,16 +1,16 @@
-import { schnorr } from '@noble/curves/secp256k1.js'
-import { bytesToHex, hexToBytes } from '@noble/hashes/utils.js'
-import { getPublicKey, sha256, unixNow, unwrap } from '@snort/shared'
-import { LRUCache } from 'typescript-lru-cache'
-import { EventKind, Nip10, Nip22, type NostrEvent, type NostrLink, type NotSignedNostrEvent, parseZap } from '.'
-import { minePow } from './pow-util'
-import { findTag } from './utils'
+import { schnorr } from "@noble/curves/secp256k1.js"
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js"
+import { getPublicKey, sha256, unixNow, unwrap } from "@snort/shared"
+import { LRUCache } from "typescript-lru-cache"
+import { EventKind, Nip10, Nip22, type NostrEvent, type NostrLink, type NotSignedNostrEvent, parseZap } from "."
+import { minePow } from "./pow-util"
+import { findTag } from "./utils"
 
 /**
  * Generic thread structure extracted from a note
  */
 export interface Thread {
-  kind: 'nip10' | 'nip22'
+  kind: "nip10" | "nip22"
   root?: NostrLink
   replyTo?: NostrLink
   mentions: Array<NostrLink>
@@ -44,7 +44,7 @@ export abstract class EventExt {
    */
   static getRootPubKey(e: NostrEvent): string {
     if (e.kind === EventKind.ZapReceipt) {
-      const bigP = findTag(e, 'P')
+      const bigP = findTag(e, "P")
       if (bigP) {
         return bigP
       }
@@ -112,10 +112,10 @@ export abstract class EventExt {
       pubkey: pk,
       kind: kind,
       created_at: unixNow(),
-      content: '',
+      content: "",
       tags: [],
-      id: '',
-      sig: '',
+      id: "",
+      sig: "",
     } as NostrEvent
   }
 
@@ -125,7 +125,7 @@ export abstract class EventExt {
     if (cached) return cached
 
     // parse thread as NIP-22 if there is E+K
-    if (ev.tags.some(a => a[0] === 'E') && ev.tags.some(a => a[0] === 'K')) {
+    if (ev.tags.some(a => a[0] === "E") && ev.tags.some(a => a[0] === "K")) {
       const v = Nip22.parseThread(ev)
       ThreadCache.set(cacheKey, v)
       return v
@@ -142,11 +142,11 @@ export abstract class EventExt {
   static fixupEvent(e: NostrEvent) {
     e.tags ??= []
     e.created_at ??= 0
-    e.content ??= ''
-    e.id ??= ''
+    e.content ??= ""
+    e.id ??= ""
     e.kind ??= 0
-    e.pubkey ??= ''
-    e.sig ??= ''
+    e.pubkey ??= ""
+    e.sig ??= ""
   }
 
   static getType(kind: number) {
@@ -184,7 +184,7 @@ export abstract class EventExt {
     if (!Array.isArray(ev.tags)) return false
     const type = EventExt.getType(ev.kind)
     if (type === EventType.Addressable) {
-      if (!findTag(ev, 'd')) return false
+      if (!findTag(ev, "d")) return false
     }
     return true
   }
@@ -210,7 +210,7 @@ export abstract class EventExt {
   static keyOf(e: NostrEvent) {
     switch (EventExt.getType(e.kind)) {
       case EventType.Addressable:
-        return `${e.kind}:${e.pubkey}:${unwrap(findTag(e, 'd'))}`
+        return `${e.kind}:${e.pubkey}:${unwrap(findTag(e, "d"))}`
       case EventType.Replaceable:
         return `${e.kind}:${e.pubkey}`
       default:

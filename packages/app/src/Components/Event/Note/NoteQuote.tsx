@@ -1,14 +1,14 @@
-import { dedupe, NostrPrefix, sanitizeRelayUrl } from "@snort/shared";
-import { NostrLink } from "@snort/system";
-import { useEventFeed } from "@snort/system-react";
-import { useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { dedupe, NostrPrefix, sanitizeRelayUrl } from "@snort/shared"
+import { NostrLink } from "@snort/system"
+import { useEventFeed } from "@snort/system-react"
+import { useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import Copy from "@/Components/Copy/Copy";
-import Note, { type NotePropsOptions } from "@/Components/Event/EventComponent";
-import Spinner from "@/Components/Icons/Spinner";
-import classNames from "classnames";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import Copy from "@/Components/Copy/Copy"
+import Note, { type NotePropsOptions } from "@/Components/Event/EventComponent"
+import Spinner from "@/Components/Icons/Spinner"
+import classNames from "classnames"
 
 export default function NoteQuote({
   link,
@@ -16,16 +16,16 @@ export default function NoteQuote({
   className,
   options,
 }: {
-  link: NostrLink;
-  depth?: number;
-  className?: string;
-  options?: NotePropsOptions;
+  link: NostrLink
+  depth?: number
+  className?: string
+  options?: NotePropsOptions
 }) {
-  const [tryLink, setLink] = useState<NostrLink>(link);
-  const [tryRelay, setTryRelay] = useState("");
-  const { formatMessage } = useIntl();
+  const [tryLink, setLink] = useState<NostrLink>(link)
+  const [tryRelay, setTryRelay] = useState("")
+  const { formatMessage } = useIntl()
 
-  const ev = useEventFeed(tryLink);
+  const ev = useEventFeed(tryLink)
   if (!ev)
     return (
       <div className={classNames("layer-2 flex flex-col gap-2", className)}>
@@ -45,10 +45,10 @@ export default function NoteQuote({
           />
           <AsyncButton
             onClick={() => {
-              const u = sanitizeRelayUrl(tryRelay);
+              const u = sanitizeRelayUrl(tryRelay)
               if (u) {
-                const relays = tryLink.relays ?? [];
-                relays.push(u);
+                const relays = tryLink.relays ?? []
+                relays.push(u)
                 setLink(
                   new NostrLink(
                     tryLink.type !== NostrPrefix.Address ? NostrPrefix.Event : NostrPrefix.Address,
@@ -58,15 +58,16 @@ export default function NoteQuote({
                     dedupe(relays),
                     tryLink.scope,
                   ),
-                );
-                setTryRelay("");
+                )
+                setTryRelay("")
               }
-            }}>
+            }}
+          >
             <FormattedMessage defaultMessage="Add" />
           </AsyncButton>
         </div>
       </div>
-    );
+    )
   return (
     <div className={className ?? "rounded-lg border"}>
       <Note
@@ -80,5 +81,5 @@ export default function NoteQuote({
         }
       />
     </div>
-  );
+  )
 }

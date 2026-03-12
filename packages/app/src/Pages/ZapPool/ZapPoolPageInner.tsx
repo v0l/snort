@@ -1,32 +1,32 @@
-import { SnortContext } from "@snort/system-react";
-import { use, useMemo, useSyncExternalStore } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
+import { SnortContext } from "@snort/system-react"
+import { use, useMemo, useSyncExternalStore } from "react"
+import { FormattedMessage, FormattedNumber } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import usePreferences from "@/Hooks/usePreferences";
-import { ZapPoolTarget } from "@/Pages/ZapPool/ZapPoolTarget";
-import { getRelayName, trackEvent, unwrap } from "@/Utils";
-import { SnortPubKey } from "@/Utils/Const";
-import { UploaderServices } from "@/Utils/Upload";
-import { ZapPoolController, ZapPoolRecipientType } from "@/Utils/ZapPoolController";
-import { useWallet } from "@/Wallet";
-import { bech32ToHex } from "@snort/shared";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import usePreferences from "@/Hooks/usePreferences"
+import { ZapPoolTarget } from "@/Pages/ZapPool/ZapPoolTarget"
+import { getRelayName, trackEvent, unwrap } from "@/Utils"
+import { SnortPubKey } from "@/Utils/Const"
+import { UploaderServices } from "@/Utils/Upload"
+import { ZapPoolController, ZapPoolRecipientType } from "@/Utils/ZapPoolController"
+import { useWallet } from "@/Wallet"
+import { bech32ToHex } from "@snort/shared"
 
 const DataProviders = [
   {
     name: "nostr.band",
     owner: bech32ToHex("npub1sx9rnd03vs34lp39fvfv5krwlnxpl90f3dzuk8y3cuwutk2gdhdqjz6g8m"),
   },
-];
+]
 
 export function ZapPoolPageInner() {
-  const defaultZapAmount = usePreferences(s => s.defaultZapAmount);
-  const system = use(SnortContext);
+  const defaultZapAmount = usePreferences(s => s.defaultZapAmount)
+  const system = use(SnortContext)
   const zapPool = useSyncExternalStore(
     c => unwrap(ZapPoolController).hook(c),
     () => unwrap(ZapPoolController).snapshot(),
-  );
-  const { wallet } = useWallet();
+  )
+  const { wallet } = useWallet()
 
   const relayConnections = useMemo(() => {
     return [...system.pool]
@@ -35,14 +35,14 @@ export function ZapPoolPageInner() {
           return {
             address: a.address,
             pubkey: a.info.pubkey,
-          };
+          }
         }
       })
       .filter(a => a !== undefined)
-      .map(unwrap);
-  }, []);
+      .map(unwrap)
+  }, [])
 
-  const sumPending = zapPool.reduce((acc, v) => acc + v.sum, 0);
+  const sumPending = zapPool.reduce((acc, v) => acc + v.sum, 0)
   return (
     <div className="zap-pool px-3 py-2">
       <h1>
@@ -108,9 +108,10 @@ export function ZapPoolPageInner() {
         {wallet && (
           <AsyncButton
             onClick={async () => {
-              trackEvent("ZapPool", { manual: true });
-              await ZapPoolController?.payout(wallet);
-            }}>
+              trackEvent("ZapPool", { manual: true })
+              await ZapPoolController?.payout(wallet)
+            }}
+          >
             <FormattedMessage defaultMessage="Payout Now" />
           </AsyncButton>
         )}
@@ -182,5 +183,5 @@ export function ZapPoolPageInner() {
         </div>
       ))}
     </div>
-  );
+  )
 }

@@ -1,8 +1,8 @@
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl"
 
-import Icon from "@/Components/Icons/Icon";
-import type { Tab } from "@/Components/TabSelectors/TabSelectors";
-import { ProfileTabType } from "@/Pages/Profile/ProfileTabType";
+import Icon from "@/Components/Icons/Icon"
+import type { Tab } from "@/Components/TabSelectors/TabSelectors"
+import { ProfileTabType } from "@/Pages/Profile/ProfileTabType"
 
 const ProfileTabSelectors = {
   Notes: {
@@ -77,6 +77,6 @@ const ProfileTabSelectors = {
     ),
     value: ProfileTabType.BOOKMARKS,
   },
-} as { [key: string]: Tab };
+} as { [key: string]: Tab }
 
-export default ProfileTabSelectors;
+export default ProfileTabSelectors

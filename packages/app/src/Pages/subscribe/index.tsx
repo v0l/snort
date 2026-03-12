@@ -1,35 +1,35 @@
-import "./index.css";
+import "./index.css"
 
-import classNames from "classnames";
-import { useState } from "react";
-import { FormattedMessage } from "react-intl";
-import type { RouteObject } from "react-router-dom";
+import classNames from "classnames"
+import { useState } from "react"
+import { FormattedMessage } from "react-intl"
+import type { RouteObject } from "react-router-dom"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import ZapModal from "@/Components/ZapModal/ZapModal";
-import SnortApi, { SubscriptionError } from "@/External/SnortApi";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import ManageSubscriptionPage from "@/Pages/subscribe/ManageSubscription";
-import { mapFeatureName, mapPlanName, mapSubscriptionErrorCode } from "@/Pages/subscribe/utils";
-import { getRefCode } from "@/Utils";
-import { formatShort } from "@/Utils/Number";
-import { Plans } from "@/Utils/Subscription";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import ZapModal from "@/Components/ZapModal/ZapModal"
+import SnortApi, { SubscriptionError } from "@/External/SnortApi"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import ManageSubscriptionPage from "@/Pages/subscribe/ManageSubscription"
+import { mapFeatureName, mapPlanName, mapSubscriptionErrorCode } from "@/Pages/subscribe/utils"
+import { getRefCode } from "@/Utils"
+import { formatShort } from "@/Utils/Number"
+import { Plans } from "@/Utils/Subscription"
 
 export function SubscribePage() {
-  const { publisher } = useEventPublisher();
-  const api = new SnortApi(undefined, publisher?.signer);
-  const [invoice, setInvoice] = useState("");
-  const [error, setError] = useState<SubscriptionError>();
+  const { publisher } = useEventPublisher()
+  const api = new SnortApi(undefined, publisher?.signer)
+  const [invoice, setInvoice] = useState("")
+  const [error, setError] = useState<SubscriptionError>()
 
   async function subscribe(type: number) {
-    setError(undefined);
+    setError(undefined)
     try {
-      const ref = getRefCode();
-      const rsp = await api.createSubscription(type, ref);
-      setInvoice(rsp.pr);
+      const ref = getRefCode()
+      const rsp = await api.createSubscription(type, ref)
+      setInvoice(rsp.pr)
     } catch (e) {
       if (e instanceof SubscriptionError) {
-        setError(e);
+        setError(e)
       }
     }
   }
@@ -38,7 +38,7 @@ export function SubscribePage() {
     <>
       <div className="flex subscribe-page">
         {Plans.map(a => {
-          const lower = Plans.filter(b => b.id < a.id);
+          const lower = Plans.filter(b => b.id < a.id)
           return (
             <div key={a.id} className={classNames("p flex flex-col gap-2", { disabled: a.disabled })}>
               <div className="grow">
@@ -82,13 +82,13 @@ export function SubscribePage() {
                 </AsyncButton>
               </div>
             </div>
-          );
+          )
         })}
       </div>
       {error && <b className="error">{mapSubscriptionErrorCode(error)}</b>}
       <ZapModal invoice={invoice} show={invoice !== ""} onClose={() => setInvoice("")} />
     </>
-  );
+  )
 }
 
 export const SubscribeRoutes = [
@@ -100,4 +100,4 @@ export const SubscribeRoutes = [
     path: "/subscribe/manage",
     element: <ManageSubscriptionPage />,
   },
-] as RouteObject[];
+] as RouteObject[]

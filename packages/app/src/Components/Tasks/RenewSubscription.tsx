@@ -1,17 +1,17 @@
-import type { CachedMetadata } from "@snort/system";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import type { CachedMetadata } from "@snort/system"
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import { BaseUITask } from "@/Components/Tasks/index";
-import type { LoginSession } from "@/Utils/Login";
-import { getCurrentSubscription } from "@/Utils/Subscription";
+import { BaseUITask } from "@/Components/Tasks/index"
+import type { LoginSession } from "@/Utils/Login"
+import { getCurrentSubscription } from "@/Utils/Subscription"
 
 export class RenewSubTask extends BaseUITask {
-  id = "renew-sub";
+  id = "renew-sub"
 
   check(user: CachedMetadata, session: LoginSession): boolean {
-    const sub = getCurrentSubscription(session.subscriptions);
-    return !sub && session.subscriptions.length > 0;
+    const sub = getCurrentSubscription(session.subscriptions)
+    return !sub && session.subscriptions.length > 0
   }
 
   render() {
@@ -30,6 +30,6 @@ export class RenewSubTask extends BaseUITask {
           <FormattedMessage defaultMessage="Renew" />
         </Link>
       </>
-    );
+    )
   }
 }

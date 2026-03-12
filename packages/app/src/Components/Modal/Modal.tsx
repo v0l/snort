@@ -1,6 +1,6 @@
-import type React from 'react'
-import { type ReactNode, useEffect, useLayoutEffect, useRef } from 'react'
-import { createPortal } from 'react-dom'
+import type React from "react"
+import { type ReactNode, useEffect, useLayoutEffect, useRef } from "react"
+import { createPortal } from "react-dom"
 
 export interface ModalProps {
   id: string
@@ -18,17 +18,17 @@ const getScrollbarWidth = () => {
     return scrollbarWidth
   }
 
-  const outer = document.createElement('div')
-  outer.style.visibility = 'hidden'
-  outer.style.width = '100px'
+  const outer = document.createElement("div")
+  outer.style.visibility = "hidden"
+  outer.style.width = "100px"
 
   document.body.appendChild(outer)
 
   const widthNoScroll = outer.offsetWidth
-  outer.style.overflow = 'scroll'
+  outer.style.overflow = "scroll"
 
-  const inner = document.createElement('div')
-  inner.style.width = '100%'
+  const inner = document.createElement("div")
+  inner.style.width = "100%"
   outer.appendChild(inner)
 
   const widthWithScroll = inner.offsetWidth
@@ -46,20 +46,20 @@ export default function Modal(props: ModalProps) {
   })
 
   useEffect(() => {
-    document.body.classList.add('scroll-lock')
+    document.body.classList.add("scroll-lock")
     document.body.style.paddingRight = `${getScrollbarWidth()}px`
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onCloseRef.current?.(e)
       }
     }
-    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener("keydown", handleKeyDown)
 
     return () => {
-      document.body.classList.remove('scroll-lock')
-      document.body.style.paddingRight = ''
-      document.removeEventListener('keydown', handleKeyDown)
+      document.body.classList.remove("scroll-lock")
+      document.body.style.paddingRight = ""
+      document.removeEventListener("keydown", handleKeyDown)
     }
   }, [])
 
@@ -71,9 +71,9 @@ export default function Modal(props: ModalProps) {
   return createPortal(
     <div
       className={
-        props.className === 'hidden'
+        props.className === "hidden"
           ? props.className
-          : `w-screen h-screen fixed top-0 left-0 bg-black/80 flex justify-center z-[42] overflow-y-auto ${props.className || ''}`
+          : `w-screen h-screen fixed top-0 left-0 bg-black/80 flex justify-center z-[42] overflow-y-auto ${props.className || ""}`
       }
       onMouseDown={handleBackdropClick}
       onClick={e => {
@@ -82,7 +82,7 @@ export default function Modal(props: ModalProps) {
     >
       <div
         className={
-          props.bodyClassName || 'layer-1 px-6 py-4 flex flex-col my-auto lg:w-[720px] max-w-full max-h-[80dvh]'
+          props.bodyClassName || "layer-1 px-6 py-4 flex flex-col my-auto lg:w-[720px] max-w-full max-h-[80dvh]"
         }
         onMouseDown={e => e.stopPropagation()}
         onClick={e => {

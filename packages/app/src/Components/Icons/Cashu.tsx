@@ -44,5 +44,5 @@ export default function CashuIcon(props: { size?: number }) {
         }}
       />
     </svg>
-  );
+  )
 }

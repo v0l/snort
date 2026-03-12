@@ -1,8 +1,8 @@
-import classNames from "classnames";
-import type { CSSProperties, ReactNode } from "react";
-import { createPortal } from "react-dom";
+import classNames from "classnames"
+import type { CSSProperties, ReactNode } from "react"
+import { createPortal } from "react-dom"
 
-import IconButton from "@/Components/Button/IconButton";
+import IconButton from "@/Components/Button/IconButton"
 
 export default function Flyout({
   show,
@@ -13,13 +13,13 @@ export default function Flyout({
   side,
   width,
 }: {
-  show: boolean;
-  title?: ReactNode;
-  actions?: ReactNode;
-  children?: ReactNode;
-  onClose: () => void;
-  side: "left" | "right";
-  width?: string;
+  show: boolean
+  title?: ReactNode
+  actions?: ReactNode
+  children?: ReactNode
+  onClose: () => void
+  side: "left" | "right"
+  width?: string
 }) {
   const styles = {
     "--flyout-w": width ?? "400px",
@@ -29,7 +29,7 @@ export default function Flyout({
       side === "right"
         ? `translate(${show ? "0" : "var(--flyout-w)"},0)`
         : `translate(${show ? "0" : "calc(-1 * var(--flyout-w))"},0)`,
-  } as CSSProperties;
+  } as CSSProperties
 
   return createPortal(
     <div
@@ -37,7 +37,8 @@ export default function Flyout({
         "pointer-events-none": !show,
         "right-0": side == "right",
         "left-0": side === "left",
-      })}>
+      })}
+    >
       <div className="layer-1 h-[100vh] top-0 overflow-hidden" style={styles}>
         <div className="flex justify-between items-center">
           {title}
@@ -50,5 +51,5 @@ export default function Flyout({
       </div>
     </div>,
     document.body,
-  ) as React.ReactNode;
+  ) as React.ReactNode
 }

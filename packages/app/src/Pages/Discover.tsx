@@ -1,17 +1,17 @@
-import { FormattedMessage } from "react-intl";
-import { BlindSpots } from "./Root/BlindSpots";
-import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors";
-import { type ReactNode, useState } from "react";
-import SuggestedProfiles from "@/Components/SuggestedProfiles";
-import { useNavigate } from "react-router-dom";
-import { FollowedByFriendsTab } from "./Root/FollowedByFriendsTab";
-import FollowSetsPage from "./Root/FollowSets";
+import { FormattedMessage } from "react-intl"
+import { BlindSpots } from "./Root/BlindSpots"
+import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors"
+import { type ReactNode, useState } from "react"
+import SuggestedProfiles from "@/Components/SuggestedProfiles"
+import { useNavigate } from "react-router-dom"
+import { FollowedByFriendsTab } from "./Root/FollowedByFriendsTab"
+import FollowSetsPage from "./Root/FollowSets"
 
 type DiscoverTab = Tab & {
-  subTitle?: ReactNode;
-};
+  subTitle?: ReactNode
+}
 export default function Discover() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const tabs = [
     {
       text: <FormattedMessage defaultMessage="Popular" />,
@@ -39,21 +39,21 @@ export default function Discover() {
       text: <FormattedMessage defaultMessage="Search" />,
       value: 1,
     },
-  ] as Array<DiscoverTab>;
-  const [tab, setTab] = useState<DiscoverTab>(tabs[0]);
+  ] as Array<DiscoverTab>
+  const [tab, setTab] = useState<DiscoverTab>(tabs[0])
 
   function renderTab() {
     switch (tab.value) {
       case 0:
-        return <BlindSpots />;
+        return <BlindSpots />
       case 1:
-        return <></>;
+        return <></>
       case 2:
-        return <SuggestedProfiles />;
+        return <SuggestedProfiles />
       case 3:
-        return <FollowedByFriendsTab />;
+        return <FollowedByFriendsTab />
       case 4:
-        return <FollowSetsPage />;
+        return <FollowSetsPage />
     }
   }
 
@@ -64,9 +64,9 @@ export default function Discover() {
         tabs={tabs}
         setTab={t => {
           if (t.value === 1) {
-            navigate("/search");
+            navigate("/search")
           } else {
-            setTab(t);
+            setTab(t)
           }
         }}
         className="px-3"
@@ -74,5 +74,5 @@ export default function Discover() {
       {tab.subTitle && <div className="text-sm text-neutral-500 px-3 my-2">{tab.subTitle}</div>}
       {renderTab()}
     </>
-  );
+  )
 }

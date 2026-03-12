@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
 const Hashtag = ({ tag }: { tag: string }) => {
   return (
@@ -7,7 +7,7 @@ const Hashtag = ({ tag }: { tag: string }) => {
         #{tag}
       </Link>
     </span>
-  );
-};
+  )
+}
 
-export default Hashtag;
+export default Hashtag

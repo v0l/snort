@@ -1,12 +1,12 @@
-import { fetchNip05Pubkey, NostrPrefix } from '@snort/shared'
-import { tryParseNostrLink } from '@snort/system'
-import { useCallback, useEffect, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
-import { useLocation, useParams } from 'react-router-dom'
+import { fetchNip05Pubkey, NostrPrefix } from "@snort/shared"
+import { tryParseNostrLink } from "@snort/system"
+import { useCallback, useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { useLocation, useParams } from "react-router-dom"
 
-import { ThreadRoute } from '@/Components/Event/Thread/ThreadRoute'
-import Spinner from '@/Components/Icons/Spinner'
-import ProfilePage from '@/Pages/Profile/ProfilePage'
+import { ThreadRoute } from "@/Components/Event/Thread/ThreadRoute"
+import Spinner from "@/Components/Icons/Spinner"
+import ProfilePage from "@/Pages/Profile/ProfilePage"
 
 export default function NostrLinkHandler() {
   const { state } = useLocation()

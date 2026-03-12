@@ -514,8 +514,7 @@
           ]
         },
         "one": {
-          "value": [
-          ]
+          "value": []
         },
         "other": {
           "value": [
@@ -2935,8 +2934,7 @@
       "value": "L'autore ha contrassegnato questa nota come argomento sensibile "
     },
     {
-      "children": [
-      ],
+      "children": [],
       "type": 8,
       "value": "i"
     }
@@ -4814,8 +4812,7 @@
       "offset": 0,
       "options": {
         "=0": {
-          "value": [
-          ]
+          "value": []
         },
         "=1": {
           "value": [

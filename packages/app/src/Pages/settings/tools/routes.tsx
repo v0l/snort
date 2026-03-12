@@ -1,9 +1,9 @@
-import { FormattedMessage } from "react-intl";
-import type { RouteObject } from "react-router-dom";
+import { FormattedMessage } from "react-intl"
+import type { RouteObject } from "react-router-dom"
 
-import { SettingsMenuComponent } from "@/Pages/settings/Menu/SettingsMenuComponent";
+import { SettingsMenuComponent } from "@/Pages/settings/Menu/SettingsMenuComponent"
 
-import type { SettingsMenuItems } from "../Menu/Menu";
+import type { SettingsMenuItems } from "../Menu/Menu"
 
 const ToolMenuItems = [
   {
@@ -34,7 +34,7 @@ const ToolMenuItems = [
       },
     ],
   },
-] as SettingsMenuItems;
+] as SettingsMenuItems
 
 export const ToolsPages = [
   {
@@ -51,22 +51,22 @@ export const ToolsPages = [
   {
     path: "prune-follows",
     async lazy() {
-      const { PruneFollowList } = await import("..");
-      return { Component: PruneFollowList };
+      const { PruneFollowList } = await import("..")
+      return { Component: PruneFollowList }
     },
   },
   {
     path: "follows-relay-health",
     async lazy() {
-      const { FollowsRelayHealth } = await import("..");
-      return { Component: FollowsRelayHealth };
+      const { FollowsRelayHealth } = await import("..")
+      return { Component: FollowsRelayHealth }
     },
   },
   {
     path: "sync-account",
     async lazy() {
-      const { SyncAccountTool } = await import("..");
-      return { Component: SyncAccountTool };
+      const { SyncAccountTool } = await import("..")
+      return { Component: SyncAccountTool }
     },
   },
-] as Array<RouteObject>;
+] as Array<RouteObject>

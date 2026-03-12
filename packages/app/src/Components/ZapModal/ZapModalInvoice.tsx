@@ -1,16 +1,16 @@
-import type { LNWallet, ZapTargetResult } from "@snort/wallet";
-import type { ReactNode } from "react";
-import { FormattedMessage } from "react-intl";
+import type { LNWallet, ZapTargetResult } from "@snort/wallet"
+import type { ReactNode } from "react"
+import { FormattedMessage } from "react-intl"
 
-import Copy from "@/Components/Copy/Copy";
-import QrCode from "@/Components/QrCode";
-import AsyncButton from "../Button/AsyncButton";
+import Copy from "@/Components/Copy/Copy"
+import QrCode from "@/Components/QrCode"
+import AsyncButton from "../Button/AsyncButton"
 
 export function ZapModalInvoice(props: {
-  invoice: Array<ZapTargetResult>;
-  wallet?: LNWallet;
-  notice?: ReactNode;
-  onInvoicePaid: () => void;
+  invoice: Array<ZapTargetResult>
+  wallet?: LNWallet
+  notice?: ReactNode
+  onInvoicePaid: () => void
 }) {
   return (
     <div className="flex flex-col items-center gap-2 txt-center">
@@ -27,5 +27,5 @@ export function ZapModalInvoice(props: {
         </>
       ))}
     </div>
-  );
+  )
 }

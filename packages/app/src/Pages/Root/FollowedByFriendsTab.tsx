@@ -1,14 +1,14 @@
-import Timeline from "@/Components/Feed/Timeline";
-import type { TimelineSubject } from "@/Feed/TimelineFeed";
-import useLogin from "@/Hooks/useLogin";
+import Timeline from "@/Components/Feed/Timeline"
+import type { TimelineSubject } from "@/Feed/TimelineFeed"
+import useLogin from "@/Hooks/useLogin"
 
 export const FollowedByFriendsTab = () => {
-  const { publicKey } = useLogin();
+  const { publicKey } = useLogin()
   const subject: TimelineSubject = {
     type: "global",
     items: [],
     discriminator: `followed-by-friends-${publicKey}`,
-  };
+  }
 
-  return <Timeline followDistance={2} subject={subject} postsOnly={true} method={"TIME_RANGE"} />;
-};
+  return <Timeline followDistance={2} subject={subject} postsOnly={true} method={"TIME_RANGE"} />
+}

@@ -5,7 +5,8 @@ const Spinner = (props: { width?: number; height?: number; className?: string })
     viewBox="0 0 20 20"
     xmlns="http://www.w3.org/2000/svg"
     stroke="currentColor"
-    {...props}>
+    {...props}
+  >
     <g className="origin-center animate-spin">
       <circle
         cx="10"
@@ -14,9 +15,10 @@ const Spinner = (props: { width?: number; height?: number; className?: string })
         fill="none"
         strokeWidth="3"
         strokeLinecap="round"
-        strokeDasharray="30 70"></circle>
+        strokeDasharray="30 70"
+      ></circle>
     </g>
   </svg>
-);
+)
 
-export default Spinner;
+export default Spinner

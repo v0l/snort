@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
+import { useMemo } from "react"
 
-import { useNotificationsView } from '@/Feed/WorkerRelayView'
-import useLogin from '@/Hooks/useLogin'
+import { useNotificationsView } from "@/Feed/WorkerRelayView"
+import useLogin from "@/Hooks/useLogin"
 
 export function HasNotificationsMarker() {
   const readNotifications = useLogin(s => s.readNotifications)

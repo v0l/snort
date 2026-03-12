@@ -12,10 +12,7 @@
   "scripts": {
     "build": "rm -rf dist && bunx --bun tsc"
   },
-  "files": [
-    "src",
-    "dist"
-  ],
+  "files": ["src", "dist"],
   "devDependencies": {
     "@peculiar/webcrypto": "^1.5.0",
     "@types/debug": "^4.1.12",

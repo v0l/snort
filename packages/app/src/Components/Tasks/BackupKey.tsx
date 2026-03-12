@@ -1,17 +1,17 @@
-import type { CachedMetadata } from "@snort/system";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import type { CachedMetadata } from "@snort/system"
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import Icon from "@/Components/Icons/Icon";
-import { BaseUITask } from "@/Components/Tasks/index";
-import type { LoginSession } from "@/Utils/Login";
+import Icon from "@/Components/Icons/Icon"
+import { BaseUITask } from "@/Components/Tasks/index"
+import type { LoginSession } from "@/Utils/Login"
 
 export class BackupKeyTask extends BaseUITask {
-  id = "backup-key";
-  noBaseStyle = true;
+  id = "backup-key"
+  noBaseStyle = true
 
   check(_: CachedMetadata, session: LoginSession): boolean {
-    return !this.state.muted && session.type == "private_key";
+    return !this.state.muted && session.type == "private_key"
   }
 
   render() {
@@ -42,6 +42,6 @@ export class BackupKeyTask extends BaseUITask {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }

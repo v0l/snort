@@ -1,39 +1,39 @@
-import { type ParsedFragment, tryParseNostrLink } from "@snort/system";
-import classNames from "classnames";
-import type React from "react";
+import { type ParsedFragment, tryParseNostrLink } from "@snort/system"
+import classNames from "classnames"
+import type React from "react"
 import { lazy, type ReactNode, Suspense, use } from "react"
 
-const CashuNuts = lazy(async () => await import("@/Components/Embed/CashuNuts"));
-import Hashtag from "@/Components/Embed/Hashtag";
-import HyperText from "@/Components/Embed/HyperText";
-import Invoice from "@/Components/Embed/Invoice";
-import { baseImageWidth, GRID_GAP, gridConfigMap, ROW_HEIGHT } from "@/Components/Text/const";
-import DisableMedia from "@/Components/Text/DisableMedia";
-import { useTextTransformer } from "@/Hooks/useTextTransformCache";
+const CashuNuts = lazy(async () => await import("@/Components/Embed/CashuNuts"))
+import Hashtag from "@/Components/Embed/Hashtag"
+import HyperText from "@/Components/Embed/HyperText"
+import Invoice from "@/Components/Embed/Invoice"
+import { baseImageWidth, GRID_GAP, gridConfigMap, ROW_HEIGHT } from "@/Components/Text/const"
+import DisableMedia from "@/Components/Text/DisableMedia"
+import { useTextTransformer } from "@/Hooks/useTextTransformCache"
 
-import RevealMedia, { type RevealMediaProps } from "../Event/RevealMedia";
-import { ProxyImg } from "../ProxyImg";
-import HighlightedText from "./HighlightedText";
-import Mention from "../Embed/Mention";
-import { SpotlightContext } from "../Spotlight/context";
-import NostrLink from "../Embed/NostrLink";
-import { magnetURIDecode } from "@/Utils";
-import MagnetLink from "../Embed/MagnetLink";
-import BlossomBlob from "../Embed/BlossomBlob";
+import RevealMedia, { type RevealMediaProps } from "../Event/RevealMedia"
+import { ProxyImg } from "../ProxyImg"
+import HighlightedText from "./HighlightedText"
+import Mention from "../Embed/Mention"
+import { SpotlightContext } from "../Spotlight/context"
+import NostrLink from "../Embed/NostrLink"
+import { magnetURIDecode } from "@/Utils"
+import MagnetLink from "../Embed/MagnetLink"
+import BlossomBlob from "../Embed/BlossomBlob"
 
 export interface TextProps {
-  id: string;
-  content: string;
-  creator: string;
-  tags: Array<Array<string>>;
-  disableMedia?: boolean;
-  disableGallery?: boolean;
-  disableLinkPreview?: boolean;
-  depth?: number;
-  truncate?: number;
-  className?: string;
-  highlightText?: string;
-  onClick?: (e: React.MouseEvent) => void;
+  id: string
+  content: string
+  creator: string
+  tags: Array<Array<string>>
+  disableMedia?: boolean
+  disableGallery?: boolean
+  disableLinkPreview?: boolean
+  depth?: number
+  truncate?: number
+  className?: string
+  highlightText?: string
+  onClick?: (e: React.MouseEvent) => void
 }
 
 export default function Text({
@@ -50,36 +50,36 @@ export default function Text({
   highlightText,
   onClick,
 }: TextProps) {
-  const spotlight = use(SpotlightContext);
-  const elements = useTextTransformer(id, content, tags);
+  const spotlight = use(SpotlightContext)
+  const elements = useTextTransformer(id, content, tags)
 
-  const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content);
+  const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content)
   const onMediaClick = (e: React.MouseEvent<HTMLImageElement>) => {
-    e.stopPropagation();
-    spotlight?.showImages(images);
-  };
+    e.stopPropagation()
+    spotlight?.showImages(images)
+  }
 
-  const textElementClasses = "whitespace-pre-wrap wrap-break-word";
+  const textElementClasses = "whitespace-pre-wrap wrap-break-word"
   const renderContent = () => {
-    let lenCtr = 0;
+    let lenCtr = 0
 
-    const chunks: Array<ReactNode> = [];
+    const chunks: Array<ReactNode> = []
     for (let i = 0; i < elements.length; i++) {
-      const element = elements[i];
+      const element = elements[i]
 
       if (truncate) {
         // If we've exceeded the limit after a link, stop rendering
         if (lenCtr > truncate) {
-          return chunks;
+          return chunks
         }
 
         // Return truncated text if on truncation boundry
         if (element.type === "text" && lenCtr + element.content.length > truncate) {
-          chunks.push(<span className={textElementClasses}>{element.content.slice(0, truncate - lenCtr)}...</span>);
-          return chunks;
+          chunks.push(<span className={textElementClasses}>{element.content.slice(0, truncate - lenCtr)}...</span>)
+          return chunks
         }
 
-        lenCtr += element.content.length;
+        lenCtr += element.content.length
       }
 
       switch (element.type) {
@@ -87,10 +87,10 @@ export default function Text({
           // image element
           if (element.mimeType?.startsWith("image")) {
             if (disableMedia ?? false) {
-              chunks.push(<DisableMedia content={element.content} />);
+              chunks.push(<DisableMedia content={element.content} />)
             } else {
-              const elementsGallery = elements.slice(i);
-              const gal = findGallery(elementsGallery);
+              const elementsGallery = elements.slice(i)
+              const gal = findGallery(elementsGallery)
               if (gal && !(disableGallery ?? false)) {
                 chunks.push(
                   buildGallery(
@@ -98,9 +98,9 @@ export default function Text({
                     onMediaClick,
                     creator,
                   ),
-                );
+                )
                 // skip to end of galary
-                i += elementsGallery.length;
+                i += elementsGallery.length
               } else {
                 chunks.push(
                   <RevealMedia
@@ -110,16 +110,16 @@ export default function Text({
                     creator={creator}
                     onMediaClick={onMediaClick}
                   />,
-                );
+                )
               }
             }
-            continue;
+            continue
           }
 
           // audo / video element
           if (element.mimeType?.startsWith("audio") || element.mimeType?.startsWith("video")) {
             if (disableMedia ?? false) {
-              chunks.push(<DisableMedia content={element.content} />);
+              chunks.push(<DisableMedia content={element.content} />)
             } else {
               chunks.push(
                 <RevealMedia
@@ -129,75 +129,75 @@ export default function Text({
                   creator={creator}
                   onMediaClick={onMediaClick}
                 />,
-              );
+              )
             }
-            continue;
+            continue
           }
 
           // unknown media (link)
-          chunks.push(<HyperText link={element.content} showLinkPreview={!(disableLinkPreview ?? false)} />);
-          break;
+          chunks.push(<HyperText link={element.content} showLinkPreview={!(disableLinkPreview ?? false)} />)
+          break
         }
         case "invoice": {
-          chunks.push(<Invoice invoice={element.content} />);
-          break;
+          chunks.push(<Invoice invoice={element.content} />)
+          break
         }
         case "hashtag": {
-          chunks.push(<Hashtag tag={element.content} />);
-          break;
+          chunks.push(<Hashtag tag={element.content} />)
+          break
         }
         case "cashu": {
           chunks.push(
             <Suspense>
               <CashuNuts token={element.content} />
             </Suspense>,
-          );
-          break;
+          )
+          break
         }
         case "link": {
           if (disableMedia ?? false) {
-            chunks.push(<DisableMedia content={element.content} />);
+            chunks.push(<DisableMedia content={element.content} />)
           } else {
-            chunks.push(<HyperText link={element.content} showLinkPreview={!(disableLinkPreview ?? false)} />);
+            chunks.push(<HyperText link={element.content} showLinkPreview={!(disableLinkPreview ?? false)} />)
           }
-          break;
+          break
         }
         case "mention": {
-          chunks.push(<NostrLink link={element.content} depth={depth} />);
-          break;
+          chunks.push(<NostrLink link={element.content} depth={depth} />)
+          break
         }
         case "magnet": {
-          const parsed = magnetURIDecode(element.content);
+          const parsed = magnetURIDecode(element.content)
           if (parsed) {
-            chunks.push(<MagnetLink magnet={parsed} />);
+            chunks.push(<MagnetLink magnet={parsed} />)
           } else {
-            chunks.push(element.content);
+            chunks.push(element.content)
           }
-          break;
+          break
         }
         case "blossom": {
-          chunks.push(<BlossomBlob link={element.content} creator={creator} />);
-          break;
+          chunks.push(<BlossomBlob link={element.content} creator={creator} />)
+          break
         }
         case "custom_emoji": {
-          chunks.push(<ProxyImg src={element.content} size={15} className="custom-emoji" />);
-          break;
+          chunks.push(<ProxyImg src={element.content} size={15} className="custom-emoji" />)
+          break
         }
         case "code_block": {
           chunks.push(
             <pre className="bg-layer-2 px-2 py-1 rounded-lg" lang={element.language}>
               {element.content}
             </pre>,
-          );
-          break;
+          )
+          break
         }
         case "inline_code": {
           chunks.push(
             <code className="bg-layer-2 px-1.5 py-0.5 rounded-lg" lang={element.language}>
               {element.content}
             </code>,
-          );
-          break;
+          )
+          break
         }
         default: {
           chunks.push(
@@ -208,19 +208,19 @@ export default function Text({
                 element.content
               )}
             </>,
-          );
-          break;
+          )
+          break
         }
       }
     }
-    return chunks;
-  };
+    return chunks
+  }
 
   return (
     <div dir="auto" className={classNames(textElementClasses, className)} onClick={onClick}>
       {renderContent()}
     </div>
-  );
+  )
 }
 
 /**
@@ -231,27 +231,27 @@ function findGallery(elements: Array<ParsedFragment>): [number, number] | undefi
   // we verify if the next elements are of the same type and mimeType and push to the galleryImages
   // Whenever one of the next elements is not longer of the type we are looking for, we break the loop
 
-  const isImage = (a: ParsedFragment) => a.type === "media" && a.mimeType?.startsWith("image");
-  const firstImage = elements.findIndex(isImage);
+  const isImage = (a: ParsedFragment) => a.type === "media" && a.mimeType?.startsWith("image")
+  const firstImage = elements.findIndex(isImage)
   if (firstImage === -1) {
-    return;
+    return
   }
 
   // from the first image in the array until the end
   for (let j = firstImage; j < elements.length; j++) {
-    const nextElement = elements[j];
+    const nextElement = elements[j]
 
     // skip over empty space
     if (nextElement.type === "text" && nextElement.content.trim().length === 0) {
-      continue;
+      continue
     }
 
     if (!isImage(nextElement)) {
-      return;
+      return
     }
   }
 
-  return [firstImage, elements.length - 1];
+  return [firstImage, elements.length - 1]
 }
 
 function buildGallery(
@@ -262,15 +262,15 @@ function buildGallery(
   if (elements.length === 1) {
     return (
       <RevealMedia src={elements[0].content} meta={elements[0].data} creator={creator} onMediaClick={onMediaClick} />
-    );
+    )
   } else {
     // We build a grid layout to render the grouped images
     const imagesWithGridConfig = elements.map((gi, index) => {
-      const config = gridConfigMap.get(elements.length);
-      let height = ROW_HEIGHT;
+      const config = gridConfigMap.get(elements.length)
+      let height = ROW_HEIGHT
 
       if (config && config[index][1] > 1) {
-        height = config[index][1] * ROW_HEIGHT + GRID_GAP;
+        height = config[index][1] * ROW_HEIGHT + GRID_GAP
       }
 
       return {
@@ -279,8 +279,8 @@ function buildGallery(
         gridColumn: config ? config[index][0] : 1,
         gridRow: config ? config[index][1] : 1,
         height,
-      };
-    });
+      }
+    })
     const gallery = (
       <div className="grid grid-cols-4 gap-0.5 place-items-start">
         {imagesWithGridConfig.map(img => (
@@ -298,7 +298,7 @@ function buildGallery(
           />
         ))}
       </div>
-    );
-    return gallery;
+    )
+    return gallery
   }
 }

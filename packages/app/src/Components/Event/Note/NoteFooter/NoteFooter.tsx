@@ -1,16 +1,16 @@
-import { EventKind, RequestFilterBuilder } from '@snort/system'
-import { SnortContext } from '@snort/system-react'
-import { WorkerRelayInterface } from '@snort/worker-relay'
-import classNames from 'classnames'
-import { use, useEffect, useState } from 'react'
-import { useNoteContext } from '@/Components/Event/Note/NoteContext'
-import { FooterZapButton } from '@/Components/Event/Note/NoteFooter/FooterZapButton'
-import { LikeButton } from '@/Components/Event/Note/NoteFooter/LikeButton'
-import { PowIcon } from '@/Components/Event/Note/NoteFooter/PowIcon'
-import { ReplyButton } from '@/Components/Event/Note/NoteFooter/ReplyButton'
-import { RepostButton } from '@/Components/Event/Note/NoteFooter/RepostButton'
-import useLogin from '@/Hooks/useLogin'
-import usePreferences from '@/Hooks/usePreferences'
+import { EventKind, RequestFilterBuilder } from "@snort/system"
+import { SnortContext } from "@snort/system-react"
+import { WorkerRelayInterface } from "@snort/worker-relay"
+import classNames from "classnames"
+import { use, useEffect, useState } from "react"
+import { useNoteContext } from "@/Components/Event/Note/NoteContext"
+import { FooterZapButton } from "@/Components/Event/Note/NoteFooter/FooterZapButton"
+import { LikeButton } from "@/Components/Event/Note/NoteFooter/LikeButton"
+import { PowIcon } from "@/Components/Event/Note/NoteFooter/PowIcon"
+import { ReplyButton } from "@/Components/Event/Note/NoteFooter/ReplyButton"
+import { RepostButton } from "@/Components/Event/Note/NoteFooter/RepostButton"
+import useLogin from "@/Hooks/useLogin"
+import usePreferences from "@/Hooks/usePreferences"
 
 export interface NoteFooterProps {
   replyCount?: number
@@ -36,12 +36,12 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (cacheRelay instanceof WorkerRelayInterface && !props.replyCount) {
       const fx = new RequestFilterBuilder().kinds([EventKind.TextNote, EventKind.Comment]).replyToLink([link])
 
-      cacheRelay.count(['REQ', '', fx.filter]).then(setReplyCount)
+      cacheRelay.count(["REQ", "", fx.filter]).then(setReplyCount)
     }
   }, [system, link, props.replyCount])
 
   return (
-    <div className={classNames('flex flex-row gap-4 overflow-hidden max-w-full h-6 items-center', props.className)}>
+    <div className={classNames("flex flex-row gap-4 overflow-hidden max-w-full h-6 items-center", props.className)}>
       <ReplyButton ev={ev} replyCount={props.replyCount ?? replyCount} readonly={readonly} />
       <RepostButton ev={ev} reposts={reposts} />
       {enableReactions && <LikeButton ev={ev} positiveReactions={positive} />}

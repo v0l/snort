@@ -1,58 +1,58 @@
-import { EventExt, type TaggedNostrEvent } from "@snort/system";
-import { type ReactNode, useCallback, use, useMemo, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import { EventExt, type TaggedNostrEvent } from "@snort/system"
+import { type ReactNode, useCallback, use, useMemo, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import BackButton from "@/Components/Button/BackButton";
-import Note from "@/Components/Event/EventComponent";
-import { ThreadContext, type ThreadContextState } from "@/Utils/Thread";
-import Modal from "@/Components/Modal/Modal";
-import JsonBlock from "@/Components/json";
-import Icon from "@/Components/Icons/Icon";
-import { getReplies } from "./util";
-import { Subthread } from "./Subthread";
-import { WarningNotice } from "@/Components/WarningNotice/WarningNotice";
+import BackButton from "@/Components/Button/BackButton"
+import Note from "@/Components/Event/EventComponent"
+import { ThreadContext, type ThreadContextState } from "@/Utils/Thread"
+import Modal from "@/Components/Modal/Modal"
+import JsonBlock from "@/Components/json"
+import Icon from "@/Components/Icons/Icon"
+import { getReplies } from "./util"
+import { Subthread } from "./Subthread"
+import { WarningNotice } from "@/Components/WarningNotice/WarningNotice"
 
 interface ThreadProps {
-  onBack?: () => void;
-  disableSpotlight?: boolean;
+  onBack?: () => void
+  disableSpotlight?: boolean
 }
 
 export function ThreadElement(props: ThreadProps) {
-  const thread = use(ThreadContext);
+  const thread = use(ThreadContext)
 
   if (!thread) {
     return (
       <WarningNotice>
         <FormattedMessage defaultMessage="Not a thread!" />
       </WarningNotice>
-    );
+    )
   }
 
-  return <ThreadInner {...props} thread={thread} />;
+  return <ThreadInner {...props} thread={thread} />
 }
 
 function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContextState }) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const rootOptions = useMemo(
     () => ({ showReactionsLink: true, showMediaSpotlight: !props.disableSpotlight, isRoot: true }),
     [props.disableSpotlight],
-  );
+  )
 
   const navigateThread = useCallback(
     (e: TaggedNostrEvent) => {
-      thread?.setCurrent(EventExt.keyOf(e));
+      thread?.setCurrent(EventExt.keyOf(e))
       // navigate(`/${NostrLink.fromEvent(e).encode()}`, { replace: true });
     },
     [thread],
-  );
+  )
 
   function renderChain(from: string): ReactNode {
     if (!from || thread.chains.size === 0) {
-      return;
+      return
     }
-    const replies = getReplies(from, thread.data, thread.chains);
+    const replies = getReplies(from, thread.data, thread.chains)
     if (replies.length > 0) {
       return (
         <Subthread
@@ -62,13 +62,13 @@ function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContext
           onNavigate={navigateThread}
           chains={thread.chains}
         />
-      );
+      )
     }
   }
 
   function renderCurrent() {
     if (thread.current) {
-      const note = thread.data.find(n => EventExt.keyOf(n) === thread.current);
+      const note = thread.data.find(n => EventExt.keyOf(n) === thread.current)
       if (note) {
         return (
           <Note
@@ -78,7 +78,7 @@ function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContext
             onClick={navigateThread}
             className="text-lg"
           />
-        );
+        )
       } else {
         return (
           <div className="px-3 py-2 break-all">
@@ -89,18 +89,18 @@ function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContext
               }}
             />
           </div>
-        );
+        )
       }
     }
   }
 
   function goBack() {
     if (thread.parent) {
-      thread.setCurrent(EventExt.keyOf(thread.parent));
+      thread.setCurrent(EventExt.keyOf(thread.parent))
     } else if (props.onBack) {
-      props.onBack();
+      props.onBack()
     } else {
-      navigate(-1);
+      navigate(-1)
     }
   }
 
@@ -143,23 +143,24 @@ function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContext
         <ThreadDebug />
       </div>
     </>
-  );
+  )
 }
 
 function ThreadDebug() {
-  const thread = use(ThreadContext);
-  const [show, setShow] = useState(false);
+  const thread = use(ThreadContext)
+  const [show, setShow] = useState(false)
 
-  if (!thread) return;
+  if (!thread) return
   if (!show)
     return (
       <div
         onClick={() => setShow(true)}
-        className="flex items-center justify-center gap-2 text-neutral-500 cursor-pointer select-none leading-12 border">
+        className="flex items-center justify-center gap-2 text-neutral-500 cursor-pointer select-none leading-12 border"
+      >
         <Icon name="json" size={16} />
         <FormattedMessage defaultMessage="Show Thread Data" />
       </div>
-    );
+    )
   return (
     <Modal id="thread-dump" onClose={() => setShow(false)}>
       <JsonBlock
@@ -169,5 +170,5 @@ function ThreadDebug() {
         }}
       />
     </Modal>
-  );
+  )
 }

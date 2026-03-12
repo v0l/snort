@@ -2931,8 +2931,7 @@
       "value": "L'auteur a marqué cette note comme étant un sujet sensible "
     },
     {
-      "children": [
-      ],
+      "children": [],
       "type": 8,
       "value": "i"
     }
@@ -4806,8 +4805,7 @@
       "offset": 0,
       "options": {
         "=0": {
-          "value": [
-          ]
+          "value": []
         },
         "=1": {
           "value": [

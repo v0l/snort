@@ -1,7 +1,7 @@
-import { EmailRegex } from "./const";
-import { bech32ToText, throwIfOffline, unwrap } from "./utils";
+import { EmailRegex } from "./const"
+import { bech32ToText, throwIfOffline, unwrap } from "./utils"
 
-const PayServiceTag = "payRequest";
+const PayServiceTag = "payRequest"
 
 export enum LNURLErrorCode {
   ServiceUnavailable = 1,
@@ -9,41 +9,41 @@ export enum LNURLErrorCode {
 }
 
 export class LNURLError extends Error {
-  code: LNURLErrorCode;
+  code: LNURLErrorCode
 
   constructor(code: LNURLErrorCode, msg: string) {
-    super(msg);
-    this.code = code;
+    super(msg)
+    this.code = code
   }
 }
 
 export class LNURL {
-  #url: URL;
-  #service?: LNURLService;
+  #url: URL
+  #service?: LNURLService
 
   /**
    * Setup LNURL service
    * @param lnurl bech32 lnurl / lightning address / https url
    */
   constructor(lnurl: string) {
-    lnurl = lnurl.toLowerCase().trim();
+    lnurl = lnurl.toLowerCase().trim()
     if (lnurl.startsWith("lnurl")) {
-      const decoded = bech32ToText(lnurl);
+      const decoded = bech32ToText(lnurl)
       if (!decoded.startsWith("http")) {
-        throw new LNURLError(LNURLErrorCode.InvalidLNURL, "Not a url");
+        throw new LNURLError(LNURLErrorCode.InvalidLNURL, "Not a url")
       }
-      this.#url = new URL(decoded);
+      this.#url = new URL(decoded)
     } else if (lnurl.match(EmailRegex)) {
-      const [handle, domain] = lnurl.split("@");
-      this.#url = new URL(`https://${domain}/.well-known/lnurlp/${handle}`);
+      const [handle, domain] = lnurl.split("@")
+      this.#url = new URL(`https://${domain}/.well-known/lnurlp/${handle}`)
     } else if (lnurl.startsWith("https:")) {
-      this.#url = new URL(lnurl);
+      this.#url = new URL(lnurl)
     } else if (lnurl.startsWith("lnurlp:")) {
-      const tmp = new URL(lnurl);
-      tmp.protocol = "https:";
-      this.#url = tmp;
+      const tmp = new URL(lnurl)
+      tmp.protocol = "https:"
+      this.#url = tmp
     } else {
-      throw new LNURLError(LNURLErrorCode.InvalidLNURL, "Could not determine service url");
+      throw new LNURLError(LNURLErrorCode.InvalidLNURL, "Could not determine service url")
     }
   }
 
@@ -51,7 +51,7 @@ export class LNURL {
    * URL of this payService
    */
   get url() {
-    return this.#url;
+    return this.#url
   }
 
   /**
@@ -59,9 +59,9 @@ export class LNURL {
    */
   get lnurl() {
     if (this.isLNAddress) {
-      return this.getLNAddress();
+      return this.getLNAddress()
     }
-    return this.#url.toString();
+    return this.#url.toString()
   }
 
   /**
@@ -70,34 +70,34 @@ export class LNURL {
   get name() {
     // LN Address formatted URL
     if (this.isLNAddress) {
-      return this.getLNAddress();
+      return this.getLNAddress()
     }
     // Generic LUD-06 url
-    return this.#url.hostname;
+    return this.#url.hostname
   }
 
   /**
    * Is this LNURL a LUD-16 Lightning Address
    */
   get isLNAddress() {
-    return this.#url.pathname.startsWith("/.well-known/lnurlp/");
+    return this.#url.pathname.startsWith("/.well-known/lnurlp/")
   }
 
   /**
    * Get the LN Address for this LNURL
    */
   getLNAddress() {
-    const pathParts = this.#url.pathname.split("/");
-    const username = pathParts[pathParts.length - 1];
-    return `${username}@${this.#url.hostname}`;
+    const pathParts = this.#url.pathname.split("/")
+    const username = pathParts[pathParts.length - 1]
+    return `${username}@${this.#url.hostname}`
   }
 
   async load() {
-    throwIfOffline();
-    const rsp = await fetch(this.#url);
+    throwIfOffline()
+    const rsp = await fetch(this.#url)
     if (rsp.ok) {
-      this.#service = await rsp.json();
-      this.#validateService();
+      this.#service = await rsp.json()
+      this.#validateService()
     }
   }
 
@@ -109,43 +109,43 @@ export class LNURL {
    * @returns
    */
   async getInvoice(amount: number, comment?: string, zap?: object) {
-    throwIfOffline();
-    const callback = new URL(unwrap(this.#service?.callback));
-    const query = new Map<string, string>();
+    throwIfOffline()
+    const callback = new URL(unwrap(this.#service?.callback))
+    const query = new Map<string, string>()
 
     if (callback.search.length > 0) {
       callback.search
         .slice(1)
         .split("&")
         .forEach(a => {
-          const pSplit = a.split("=");
-          query.set(pSplit[0], pSplit[1]);
-        });
+          const pSplit = a.split("=")
+          query.set(pSplit[0], pSplit[1])
+        })
     }
-    query.set("amount", Math.floor(amount * 1000).toString());
+    query.set("amount", Math.floor(amount * 1000).toString())
     if (comment && this.#service?.commentAllowed) {
-      query.set("comment", comment);
+      query.set("comment", comment)
     }
     if (this.#service?.nostrPubkey && zap) {
-      query.set("nostr", JSON.stringify(zap));
+      query.set("nostr", JSON.stringify(zap))
     }
 
-    const baseUrl = `${callback.protocol}//${callback.host}${callback.pathname}`;
-    const queryJoined = [...query.entries()].map(v => `${v[0]}=${encodeURIComponent(v[1])}`).join("&");
+    const baseUrl = `${callback.protocol}//${callback.host}${callback.pathname}`
+    const queryJoined = [...query.entries()].map(v => `${v[0]}=${encodeURIComponent(v[1])}`).join("&")
     try {
-      const rsp = await fetch(`${baseUrl}?${queryJoined}`);
+      const rsp = await fetch(`${baseUrl}?${queryJoined}`)
       if (rsp.ok) {
-        const data: LNURLInvoice = await rsp.json();
+        const data: LNURLInvoice = await rsp.json()
         if (data.status === "ERROR") {
-          throw new Error(data.reason);
+          throw new Error(data.reason)
         } else {
-          return data;
+          return data
         }
       } else {
-        throw new LNURLError(LNURLErrorCode.ServiceUnavailable, `Failed to fetch invoice (${rsp.statusText})`);
+        throw new LNURLError(LNURLErrorCode.ServiceUnavailable, `Failed to fetch invoice (${rsp.statusText})`)
       }
     } catch (e) {
-      throw new LNURLError(LNURLErrorCode.ServiceUnavailable, "Failed to load callback");
+      throw new LNURLError(LNURLErrorCode.ServiceUnavailable, "Failed to load callback")
     }
   }
 
@@ -153,68 +153,68 @@ export class LNURL {
    * Are zaps (NIP-57) supported
    */
   get canZap() {
-    return this.#service?.nostrPubkey ? true : false;
+    return this.#service?.nostrPubkey ? true : false
   }
 
   /**
    * Return pubkey of zap service
    */
   get zapperPubkey() {
-    return this.#service?.nostrPubkey;
+    return this.#service?.nostrPubkey
   }
 
   /**
    * Get the max allowed comment length
    */
   get maxCommentLength() {
-    return this.#service?.commentAllowed ?? 0;
+    return this.#service?.commentAllowed ?? 0
   }
 
   /**
    * Min sendable in milli-sats
    */
   get min() {
-    return this.#service?.minSendable ?? 1_000; // 1 sat
+    return this.#service?.minSendable ?? 1_000 // 1 sat
   }
 
   /**
    * Max sendable in milli-sats
    */
   get max() {
-    return this.#service?.maxSendable ?? 100e9; // 1 BTC in milli-sats
+    return this.#service?.maxSendable ?? 100e9 // 1 BTC in milli-sats
   }
 
   #validateService() {
     if (this.#service?.tag !== PayServiceTag) {
-      throw new LNURLError(LNURLErrorCode.InvalidLNURL, "Only LNURLp is supported");
+      throw new LNURLError(LNURLErrorCode.InvalidLNURL, "Only LNURLp is supported")
     }
     if (!this.#service?.callback) {
-      throw new LNURLError(LNURLErrorCode.InvalidLNURL, "No callback url");
+      throw new LNURLError(LNURLErrorCode.InvalidLNURL, "No callback url")
     }
   }
 }
 
 export interface LNURLService {
-  tag: string;
-  nostrPubkey?: string;
-  minSendable?: number;
-  maxSendable?: number;
-  metadata: string;
-  callback: string;
-  commentAllowed?: number;
+  tag: string
+  nostrPubkey?: string
+  minSendable?: number
+  maxSendable?: number
+  metadata: string
+  callback: string
+  commentAllowed?: number
 }
 
 export interface LNURLStatus {
-  status: "SUCCESS" | "ERROR";
-  reason?: string;
+  status: "SUCCESS" | "ERROR"
+  reason?: string
 }
 
 export interface LNURLInvoice extends LNURLStatus {
-  pr?: string;
-  successAction?: LNURLSuccessAction;
+  pr?: string
+  successAction?: LNURLSuccessAction
 }
 
 export interface LNURLSuccessAction {
-  description?: string;
-  url?: string;
+  description?: string
+  url?: string
 }

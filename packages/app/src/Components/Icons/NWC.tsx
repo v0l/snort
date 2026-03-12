@@ -32,11 +32,12 @@ export default function NWCIcon(props: { width?: number; height?: number }) {
           y1="10.4403"
           x2="123.656"
           y2="249.941"
-          gradientUnits="userSpaceOnUse">
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#FFCA4A" />
           <stop offset="1" stopColor="#F7931A" />
         </linearGradient>
       </defs>
     </svg>
-  );
+  )
 }

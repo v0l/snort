@@ -1,14 +1,14 @@
-import { unixNow } from '@snort/shared'
-import { EventKind, type NostrEvent, type RequestBuilder } from '@snort/system'
-import { type ReactNode, useCallback } from 'react'
+import { unixNow } from "@snort/shared"
+import { EventKind, type NostrEvent, type RequestBuilder } from "@snort/system"
+import { type ReactNode, useCallback } from "react"
 
-import useFollowsControls from '@/Hooks/useFollowControls'
-import useHistoryState from '@/Hooks/useHistoryState'
-import useTimelineChunks from '@/Hooks/useTimelineChunks'
-import { Hour } from '@/Utils/Const'
+import useFollowsControls from "@/Hooks/useFollowControls"
+import useHistoryState from "@/Hooks/useHistoryState"
+import useTimelineChunks from "@/Hooks/useTimelineChunks"
+import { Hour } from "@/Utils/Const"
 
-import { AutoLoadMore } from '../Event/LoadMore'
-import TimelineChunk from './TimelineChunk'
+import { AutoLoadMore } from "../Event/LoadMore"
+import TimelineChunk from "./TimelineChunk"
 
 export interface TimelineFollowsProps {
   id?: string
@@ -25,7 +25,7 @@ export interface TimelineFollowsProps {
  * A list of notes by your follows
  */
 const TimelineFollows = (props: TimelineFollowsProps) => {
-  const [openedAt] = useHistoryState(unixNow(), 'openedAt')
+  const [openedAt] = useHistoryState(unixNow(), "openedAt")
   const { isFollowing, followList } = useFollowsControls()
   const { chunks, showMore } = useTimelineChunks({
     now: openedAt,
@@ -45,8 +45,8 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const filterEvents = useCallback(
     (a: NostrEvent) =>
       (props.noteFilter?.(a) ?? true) &&
-      (props.postsOnly ? !a.tags.some(b => b[0] === 'e' || b[0] === 'a') : true) &&
-      (isFollowing(a.pubkey) || a.tags.filter(a => a[0] === 't').length < 5),
+      (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true) &&
+      (isFollowing(a.pubkey) || a.tags.filter(a => a[0] === "t").length < 5),
     [props.noteFilter, props.postsOnly, isFollowing],
   )
 
@@ -55,7 +55,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
       {chunks.map(c => (
         <TimelineChunk
           key={c.until}
-          id={`follows${props.id ? `:${props.id}` : ''}`}
+          id={`follows${props.id ? `:${props.id}` : ""}`}
           chunk={c}
           builder={builder}
           noteFilter={filterEvents}

@@ -1,24 +1,24 @@
-import { LNURL } from '@snort/shared'
-import { NostrLink, type ParsedZap, type TaggedNostrEvent } from '@snort/system'
-import { useUserProfile } from '@snort/system-react'
-import { useRef, useState } from 'react'
-import { FormattedMessage, FormattedNumber, useIntl } from 'react-intl'
+import { LNURL } from "@snort/shared"
+import { NostrLink, type ParsedZap, type TaggedNostrEvent } from "@snort/system"
+import { useUserProfile } from "@snort/system-react"
+import { useRef, useState } from "react"
+import { FormattedMessage, FormattedNumber, useIntl } from "react-intl"
 
-import Spinner from '@/Components/Icons/Spinner'
-import ZapModal from '@/Components/ZapModal/ZapModal'
-import useEventPublisher from '@/Hooks/useEventPublisher'
-import useLogin from '@/Hooks/useLogin'
-import usePreferences from '@/Hooks/usePreferences'
-import { unwrap } from '@/Utils'
-import { formatShort } from '@/Utils/Number'
-import { useWallet } from '@/Wallet'
+import Spinner from "@/Components/Icons/Spinner"
+import ZapModal from "@/Components/ZapModal/ZapModal"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
+import usePreferences from "@/Hooks/usePreferences"
+import { unwrap } from "@/Utils"
+import { formatShort } from "@/Utils/Number"
+import { useWallet } from "@/Wallet"
 
 interface PollProps {
   ev: TaggedNostrEvent
   zaps: Array<ParsedZap>
 }
 
-type PollTally = 'zaps' | 'pubkeys'
+type PollTally = "zaps" | "pubkeys"
 
 export default function Poll(props: PollProps) {
   const { formatMessage } = useIntl()
@@ -28,16 +28,16 @@ export default function Poll(props: PollProps) {
   const myPubKey = useLogin(s => s.publicKey)
   const pollRef = useRef<HTMLDivElement>(null)
   const pollerProfile = useUserProfile(props.ev.pubkey, pollRef)
-  const [tallyBy, setTallyBy] = useState<PollTally>('pubkeys')
-  const [error, setError] = useState('')
-  const [invoice, setInvoice] = useState('')
+  const [tallyBy, setTallyBy] = useState<PollTally>("pubkeys")
+  const [error, setError] = useState("")
+  const [invoice, setInvoice] = useState("")
   const [voting, setVoting] = useState<number>()
   const didVote = props.zaps?.some(a => a.sender === myPubKey)
   const isMyPoll = props.ev.pubkey === myPubKey
   const showResults = didVote || isMyPoll
 
   const options = props.ev.tags
-    ?.filter(a => a[0] === 'poll_option')
+    ?.filter(a => a[0] === "poll_option")
     .sort((a, b) => (Number(a[1]) > Number(b[1]) ? 1 : -1))
 
   async function zapVote(ev: React.MouseEvent, opt: number) {
@@ -51,7 +51,7 @@ export default function Poll(props: PollProps) {
           formatMessage(
             {
               defaultMessage: "Can't vote with {amount} sats, please set a different default zap amount",
-              id: 'NepkXH',
+              id: "NepkXH",
             },
             {
               amount,
@@ -68,10 +68,10 @@ export default function Poll(props: PollProps) {
         r ?? [],
         NostrLink.fromEvent(props.ev),
         undefined,
-        eb => eb.tag(['poll_option', opt.toString()]),
+        eb => eb.tag(["poll_option", opt.toString()]),
       )
 
-      const lnurl = props.ev.tags.find(a => a[0] === 'zap')?.[1] || pollerProfile?.lud16 || pollerProfile?.lud06
+      const lnurl = props.ev.tags.find(a => a[0] === "zap")?.[1] || pollerProfile?.lud16 || pollerProfile?.lud06
       if (!lnurl) return
 
       const svc = new LNURL(lnurl)
@@ -81,7 +81,7 @@ export default function Poll(props: PollProps) {
         throw new Error(
           formatMessage({
             defaultMessage: "Can't vote because LNURL service does not support zaps",
-            id: 'fOksnD',
+            id: "fOksnD",
           }),
         )
       }
@@ -98,8 +98,8 @@ export default function Poll(props: PollProps) {
       } else {
         setError(
           formatMessage({
-            defaultMessage: 'Failed to send vote',
-            id: 'g985Wp',
+            defaultMessage: "Failed to send vote",
+            id: "g985Wp",
           }),
         )
       }
@@ -110,9 +110,9 @@ export default function Poll(props: PollProps) {
 
   const totalVotes = (() => {
     switch (tallyBy) {
-      case 'zaps':
+      case "zaps":
         return props.zaps?.filter(a => a.pollOption !== undefined).reduce((acc, v) => (acc += v.amount), 0) ?? 0
-      case 'pubkeys':
+      case "pubkeys":
         return new Set(props.zaps?.filter(a => a.pollOption !== undefined).map(a => unwrap(a.sender)) ?? []).size
     }
   })()
@@ -129,13 +129,13 @@ export default function Poll(props: PollProps) {
             }}
           />
         </small>
-        <button type="button" onClick={() => setTallyBy(s => (s !== 'zaps' ? 'zaps' : 'pubkeys'))}>
+        <button type="button" onClick={() => setTallyBy(s => (s !== "zaps" ? "zaps" : "pubkeys"))}>
           <FormattedMessage
             defaultMessage="Votes by {type}"
             id="xIcAOU"
             values={{
               type:
-                tallyBy === 'zaps' ? (
+                tallyBy === "zaps" ? (
                   <FormattedMessage defaultMessage="zap" />
                 ) : (
                   <FormattedMessage defaultMessage="user" />
@@ -151,9 +151,9 @@ export default function Poll(props: PollProps) {
           const zapsOnOption = props.zaps?.filter(b => b.pollOption === opt) ?? []
           const total = (() => {
             switch (tallyBy) {
-              case 'zaps':
+              case "zaps":
                 return zapsOnOption.reduce((acc, v) => (acc += v.amount), 0)
-              case 'pubkeys':
+              case "pubkeys":
                 return new Set(zapsOnOption.map(a => unwrap(a.sender))).size
             }
           })()
@@ -176,7 +176,7 @@ export default function Poll(props: PollProps) {
         {error && <b className="error">{error}</b>}
       </div>
 
-      <ZapModal show={invoice !== ''} onClose={() => setInvoice('')} invoice={invoice} />
+      <ZapModal show={invoice !== ""} onClose={() => setInvoice("")} invoice={invoice} />
     </>
   )
 }

@@ -1,16 +1,16 @@
-import { removeUndefined, sanitizeRelayUrl } from '@snort/shared'
-import EventKind from './event-kind'
-import type { FullRelaySettings, NostrEvent } from './nostr'
+import { removeUndefined, sanitizeRelayUrl } from "@snort/shared"
+import EventKind from "./event-kind"
+import type { FullRelaySettings, NostrEvent } from "./nostr"
 
 export function parseRelayTag(tag: Array<string>) {
-  if (tag[0] !== 'r') return
+  if (tag[0] !== "r") return
   const url = sanitizeRelayUrl(tag[1])
   if (url) {
     return {
       url,
       settings: {
-        read: tag[2] === 'read' || tag[2] === undefined,
-        write: tag[2] === 'write' || tag[2] === undefined,
+        read: tag[2] === "read" || tag[2] === undefined,
+        write: tag[2] === "write" || tag[2] === undefined,
       },
     } as FullRelaySettings
   }
@@ -57,12 +57,12 @@ export function parseRelaysFromKind(ev: NostrEvent) {
  * Convert relay settings into NIP-65 relay tag
  */
 export function settingsToRelayTag(rx: FullRelaySettings) {
-  const rTag = ['r', rx.url]
+  const rTag = ["r", rx.url]
   if (rx.settings.read && !rx.settings.write) {
-    rTag.push('read')
+    rTag.push("read")
   }
   if (rx.settings.write && !rx.settings.read) {
-    rTag.push('write')
+    rTag.push("write")
   }
   if (rx.settings.read || rx.settings.write) {
     return rTag

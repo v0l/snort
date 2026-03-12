@@ -1,10 +1,10 @@
-import type { NostrLink } from "@snort/system";
-import { useUserProfile } from "@snort/system-react";
-import type { ZapTarget } from "@snort/wallet";
-import { useState } from "react";
+import type { NostrLink } from "@snort/system"
+import { useUserProfile } from "@snort/system-react"
+import type { ZapTarget } from "@snort/wallet"
+import { useState } from "react"
 
-import Icon from "@/Components/Icons/Icon";
-import ZapModal from "@/Components/ZapModal/ZapModal";
+import Icon from "@/Components/Icons/Icon"
+import ZapModal from "@/Components/ZapModal/ZapModal"
 
 const ZapButton = ({
   pubkey,
@@ -12,15 +12,15 @@ const ZapButton = ({
   children,
   event,
 }: {
-  pubkey: string;
-  lnurl?: string;
-  children?: React.ReactNode;
-  event?: NostrLink;
+  pubkey: string
+  lnurl?: string
+  children?: React.ReactNode
+  event?: NostrLink
 }) => {
-  const profile = useUserProfile(pubkey);
-  const [zap, setZap] = useState(false);
-  const service = lnurl ?? (profile?.lud16 || profile?.lud06);
-  if (!service) return null;
+  const profile = useUserProfile(pubkey)
+  const [zap, setZap] = useState(false)
+  const service = lnurl ?? (profile?.lud16 || profile?.lud06)
+  if (!service) return null
 
   return (
     <>
@@ -42,7 +42,7 @@ const ZapButton = ({
         onClose={() => setZap(false)}
       />
     </>
-  );
-};
+  )
+}
 
-export default ZapButton;
+export default ZapButton

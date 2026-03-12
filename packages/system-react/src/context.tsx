@@ -1,4 +1,4 @@
-import { createContext } from "react";
-import type { SystemInterface } from "@snort/system";
+import { createContext } from "react"
+import type { SystemInterface } from "@snort/system"
 
-export const SnortContext = createContext<SystemInterface>(undefined!);
+export const SnortContext = createContext<SystemInterface>(undefined!)

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from "react"
 
 export const useCopy = (timeout = 2000) => {
   const [error, setError] = useState(false)
@@ -17,13 +17,13 @@ export const useCopy = (timeout = 2000) => {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(text)
       } else {
-        const textArea = document.createElement('textarea')
+        const textArea = document.createElement("textarea")
         textArea.value = text
-        textArea.style.position = 'absolute'
-        textArea.style.opacity = '0'
+        textArea.style.position = "absolute"
+        textArea.style.opacity = "0"
         document.body.appendChild(textArea)
         textArea.select()
-        await document.execCommand('copy')
+        await document.execCommand("copy")
         textArea.remove()
       }
       setCopied(true)

@@ -1,24 +1,24 @@
-import { useMemo, useState } from "react";
-import { FormattedNumber } from "react-intl";
-import { Line, LineChart, ResponsiveContainer, Tooltip, type TooltipProps, XAxis, YAxis } from "recharts";
+import { useMemo, useState } from "react"
+import { FormattedNumber } from "react-intl"
+import { Line, LineChart, ResponsiveContainer, Tooltip, type TooltipProps, XAxis, YAxis } from "recharts"
 
-import { useRateHistory } from "@/Hooks/useRates";
+import { useRateHistory } from "@/Hooks/useRates"
 
-type TimeRange = "1D" | "1W" | "1M" | "3M" | "1Y" | "ALL";
+type TimeRange = "1D" | "1W" | "1M" | "3M" | "1Y" | "ALL"
 
 interface ChartData {
-  time: number;
-  ask: number;
-  bid: number;
+  time: number
+  ask: number
+  bid: number
 }
 
 function CustomTooltip({ active, payload }: TooltipProps<number, string>) {
   if (!active || !payload || payload.length === 0) {
-    return null;
+    return null
   }
 
-  const data = payload[0].payload as ChartData;
-  const date = new Date(data.time * 1000);
+  const data = payload[0].payload as ChartData
+  const date = new Date(data.time * 1000)
 
   return (
     <div className="bg-layer-2 px-3 py-2 rounded border border-neutral-700">
@@ -35,7 +35,7 @@ function CustomTooltip({ active, payload }: TooltipProps<number, string>) {
         <FormattedNumber value={data.ask} style="currency" currency="USD" />
       </div>
     </div>
-  );
+  )
 }
 
 const TIME_RANGES: Record<TimeRange, { interval: number; range: number }> = {
@@ -45,66 +45,66 @@ const TIME_RANGES: Record<TimeRange, { interval: number; range: number }> = {
   "3M": { interval: 3600 * 24, range: 3600 * 24 * 90 },
   "1Y": { interval: 3600 * 24 * 7, range: 3600 * 24 * 365 },
   ALL: { interval: 3600 * 24 * 7, range: 3600 * 24 * 365 * 5 },
-};
+}
 
 export default function PriceChart() {
-  const [selectedRange, setSelectedRange] = useState<TimeRange>("1D");
-  const { interval, range } = TIME_RANGES[selectedRange];
-  const history = useRateHistory("BTCUSD", range, true);
+  const [selectedRange, setSelectedRange] = useState<TimeRange>("1D")
+  const { interval, range } = TIME_RANGES[selectedRange]
+  const history = useRateHistory("BTCUSD", range, true)
 
   const reduced = useMemo(() => {
     if (history.length === 0) {
-      return { data: [], min: 0, max: 0, minAsk: 0, maxAsk: 0 };
+      return { data: [], min: 0, max: 0, minAsk: 0, maxAsk: 0 }
     }
 
-    let minAsk = Number.MAX_SAFE_INTEGER;
-    let maxAsk = 0;
+    let minAsk = Number.MAX_SAFE_INTEGER
+    let maxAsk = 0
 
     // Group data points by interval buckets
-    const buckets = new Map<number, { time: number; ask: number; bid: number }>();
+    const buckets = new Map<number, { time: number; ask: number; bid: number }>()
 
     for (const point of history) {
-      const bucketKey = Math.floor(point.time / interval) * interval;
+      const bucketKey = Math.floor(point.time / interval) * interval
 
       // Keep the most recent value in each bucket
       if (!buckets.has(bucketKey) || point.time > buckets.get(bucketKey)!.time) {
-        buckets.set(bucketKey, { time: bucketKey, ask: point.ask, bid: point.bid });
+        buckets.set(bucketKey, { time: bucketKey, ask: point.ask, bid: point.bid })
       }
 
-      if (point.ask > maxAsk) maxAsk = point.ask;
-      if (point.ask < minAsk) minAsk = point.ask;
+      if (point.ask > maxAsk) maxAsk = point.ask
+      if (point.ask < minAsk) minAsk = point.ask
     }
 
     // Convert to sorted array
-    const data = Array.from(buckets.values()).sort((a, b) => a.time - b.time);
-    const min = data[0]?.time ?? 0;
-    const max = data[data.length - 1]?.time ?? 0;
+    const data = Array.from(buckets.values()).sort((a, b) => a.time - b.time)
+    const min = data[0]?.time ?? 0
+    const max = data[data.length - 1]?.time ?? 0
 
-    return { data, min, max, minAsk, maxAsk };
-  }, [history, interval]);
+    return { data, min, max, minAsk, maxAsk }
+  }, [history, interval])
 
   const lastRate = useMemo(() => {
     return history.reduce(
       (acc, v) => {
         if (acc.time < v.time) {
-          acc = v;
+          acc = v
         }
-        return acc;
+        return acc
       },
       { time: 0, ask: 0, bid: 0 } as { time: number; ask: number; bid: number },
-    );
-  }, [history]);
+    )
+  }, [history])
 
   const priceChange = useMemo(() => {
     if (reduced.data.length < 2) {
-      return { absolute: 0, percentage: 0 };
+      return { absolute: 0, percentage: 0 }
     }
-    const firstPrice = reduced.data[0].ask;
-    const lastPrice = reduced.data[reduced.data.length - 1].ask;
-    const absolute = lastPrice - firstPrice;
-    const percentage = (absolute / firstPrice) * 100;
-    return { absolute, percentage };
-  }, [reduced.data]);
+    const firstPrice = reduced.data[0].ask
+    const lastPrice = reduced.data[reduced.data.length - 1].ask
+    const absolute = lastPrice - firstPrice
+    const percentage = (absolute / firstPrice) * 100
+    return { absolute, percentage }
+  }, [reduced.data])
 
   return (
     <>
@@ -116,7 +116,8 @@ export default function PriceChart() {
               onClick={() => setSelectedRange(rangeKey)}
               className={`px-3 py-1 rounded text-sm cursor-pointer ${
                 selectedRange === rangeKey ? "bg-primary text-white" : "bg-layer-2 text-neutral-400 hover:bg-layer-3"
-              }`}>
+              }`}
+            >
               {rangeKey}
             </div>
           ))}
@@ -149,5 +150,5 @@ export default function PriceChart() {
         </LineChart>
       </ResponsiveContainer>
     </>
-  );
+  )
 }

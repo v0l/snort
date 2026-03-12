@@ -12,10 +12,7 @@
   "scripts": {
     "build": "rm -rf dist && bunx --bun tsc"
   },
-  "files": [
-    "src",
-    "dist"
-  ],
+  "files": ["src", "dist"],
   "dependencies": {
     "@scure/base": "^2.0.0",
     "@snort/shared": "^2.0.0-pre.3",

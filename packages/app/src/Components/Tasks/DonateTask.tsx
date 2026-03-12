@@ -1,13 +1,13 @@
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import { BaseUITask } from "@/Components/Tasks/index";
+import { BaseUITask } from "@/Components/Tasks/index"
 
 export class DonateTask extends BaseUITask {
-  id = "donate";
+  id = "donate"
 
   check(): boolean {
-    return !this.state.muted;
+    return !this.state.muted
   }
 
   render() {
@@ -23,6 +23,6 @@ export class DonateTask extends BaseUITask {
           </button>
         </Link>
       </div>
-    );
+    )
   }
 }

@@ -1,22 +1,22 @@
-import "@webscopeio/react-textarea-autocomplete/style.css";
-import "./Textarea.css";
+import "@webscopeio/react-textarea-autocomplete/style.css"
+import "./Textarea.css"
 
-import { NostrLink } from "@snort/system";
-import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
-import { useIntl } from "react-intl";
-import TextareaAutosize from "react-textarea-autosize";
+import { NostrLink } from "@snort/system"
+import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete"
+import { useIntl } from "react-intl"
+import TextareaAutosize from "react-textarea-autosize"
 
-import Avatar from "@/Components/User/Avatar";
-import type { FuzzySearchResult } from "@/Db/FuzzySearch";
-import useProfileSearch from "@/Hooks/useProfileSearch";
-import searchEmoji from "@/Utils/emoji-search";
+import Avatar from "@/Components/User/Avatar"
+import type { FuzzySearchResult } from "@/Db/FuzzySearch"
+import useProfileSearch from "@/Hooks/useProfileSearch"
+import searchEmoji from "@/Utils/emoji-search"
 
-import messages from "../messages";
-import DisplayName from "../User/DisplayName";
+import messages from "../messages"
+import DisplayName from "../User/DisplayName"
 
 export interface EmojiItemProps {
-  name: string;
-  char: string;
+  name: string
+  char: string
 }
 
 const EmojiItem = ({ entity: { name, char } }: { entity: EmojiItemProps }) => {
@@ -25,8 +25,8 @@ const EmojiItem = ({ entity: { name, char } }: { entity: EmojiItemProps }) => {
       <div className="min-w-4">{char}</div>
       <div className="font-bold">{name}</div>
     </div>
-  );
-};
+  )
+}
 
 const UserItem = (metadata: FuzzySearchResult) => {
   return (
@@ -34,35 +34,35 @@ const UserItem = (metadata: FuzzySearchResult) => {
       <Avatar pubkey={metadata.pubkey} user={metadata} size={28} />
       <DisplayName pubkey={metadata.pubkey} user={metadata} />
     </div>
-  );
-};
-
-interface TextareaProps {
-  autoFocus: boolean;
-  className?: string;
-  placeholder?: string;
-  onChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void;
-  value: string;
-  onFocus(): void;
-  onKeyDown(ev: React.KeyboardEvent<HTMLTextAreaElement>): void;
-  onDragOver?(ev: React.DragEvent<HTMLTextAreaElement>): void;
-  onDragLeave?(ev: React.DragEvent<HTMLTextAreaElement>): void;
-  onDrop?(ev: React.DragEvent<HTMLTextAreaElement>): void;
+  )
 }
 
-type TriggerData = EmojiItemProps | FuzzySearchResult;
+interface TextareaProps {
+  autoFocus: boolean
+  className?: string
+  placeholder?: string
+  onChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void
+  value: string
+  onFocus(): void
+  onKeyDown(ev: React.KeyboardEvent<HTMLTextAreaElement>): void
+  onDragOver?(ev: React.DragEvent<HTMLTextAreaElement>): void
+  onDragLeave?(ev: React.DragEvent<HTMLTextAreaElement>): void
+  onDrop?(ev: React.DragEvent<HTMLTextAreaElement>): void
+}
+
+type TriggerData = EmojiItemProps | FuzzySearchResult
 
 const Textarea = (props: TextareaProps) => {
-  const { formatMessage } = useIntl();
-  const userSearch = useProfileSearch();
+  const { formatMessage } = useIntl()
+  const userSearch = useProfileSearch()
 
   const userDataProvider = (token: string) => {
-    return userSearch(token).slice(0, 10);
-  };
+    return userSearch(token).slice(0, 10)
+  }
 
   const emojiDataProvider = async (token: string) => {
-    return (await searchEmoji(token)).slice(0, 5).map(({ name, char }) => ({ name, char }));
-  };
+    return (await searchEmoji(token)).slice(0, 5).map(({ name, char }) => ({ name, char }))
+  }
 
   return (
     // @ts-expect-error 2769
@@ -86,7 +86,7 @@ const Textarea = (props: TextareaProps) => {
         },
       }}
     />
-  );
-};
+  )
+}
 
-export default Textarea;
+export default Textarea

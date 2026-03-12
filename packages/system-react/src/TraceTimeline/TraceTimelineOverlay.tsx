@@ -1,35 +1,25 @@
-import { createPortal } from "react-dom";
-import { TraceStatsView } from "./TraceStatsView";
-import "./TraceTimeline.css";
+import { createPortal } from "react-dom"
+import { TraceStatsView } from "./TraceStatsView"
+import "./TraceTimeline.css"
 
 interface TraceTimelineOverlayProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
-export function TraceTimelineOverlay({
-  isOpen,
-  onClose,
-}: TraceTimelineOverlayProps) {
-  if (!isOpen) return;
-  if (typeof document === "undefined") return null;
+export function TraceTimelineOverlay({ isOpen, onClose }: TraceTimelineOverlayProps) {
+  if (!isOpen) return
+  if (typeof document === "undefined") return null
 
   return createPortal(
     <div className="trace-timeline-overlay" onClick={onClose}>
-      <div
-        className="trace-timeline-modal"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="trace-timeline-modal" onClick={e => e.stopPropagation()}>
         {/* Modal header */}
         <div className="trace-timeline-modal-header">
           <h2 className="trace-timeline-modal-title">Query Statistics</h2>
 
           <div className="trace-timeline-modal-controls">
-            <button
-              className="trace-timeline-modal-control-btn"
-              onClick={onClose}
-              title="Close"
-            >
+            <button className="trace-timeline-modal-control-btn" onClick={onClose} title="Close">
               ✕
             </button>
           </div>
@@ -42,5 +32,5 @@ export function TraceTimelineOverlay({
       </div>
     </div>,
     document.body,
-  );
+  )
 }

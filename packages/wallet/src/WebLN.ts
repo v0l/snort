@@ -1,4 +1,4 @@
-import { barrierQueue, processWorkQueue, unwrap, type WorkQueueItem } from "@snort/shared";
+import { barrierQueue, processWorkQueue, unwrap, type WorkQueueItem } from "@snort/shared"
 
 import {
   type InvoiceRequest,
@@ -11,75 +11,75 @@ import {
   type WalletInfo,
   type WalletInvoice,
   WalletInvoiceState,
-} from ".";
-import EventEmitter from "eventemitter3";
+} from "."
+import EventEmitter from "eventemitter3"
 
-const WebLNQueue: Array<WorkQueueItem> = [];
-processWorkQueue(WebLNQueue);
+const WebLNQueue: Array<WorkQueueItem> = []
+processWorkQueue(WebLNQueue)
 
 export class WebLNWallet extends EventEmitter<WalletEvents> implements LNWallet {
   isReady(): boolean {
-    return window.webln !== undefined && window.webln !== null;
+    return window.webln !== undefined && window.webln !== null
   }
 
   canCreateInvoice() {
-    return true;
+    return true
   }
 
   canPayInvoice() {
-    return true;
+    return true
   }
 
   canGetInvoices() {
-    return false;
+    return false
   }
 
   canGetBalance() {
-    return window.webln?.getBalance !== undefined;
+    return window.webln?.getBalance !== undefined
   }
 
   canAutoLogin(): boolean {
-    return true;
+    return true
   }
 
   async getInfo(): Promise<WalletInfo> {
-    await this.login();
+    await this.login()
     if (this.isReady()) {
-      const rsp = await barrierQueue(WebLNQueue, async () => await window.webln?.getInfo());
+      const rsp = await barrierQueue(WebLNQueue, async () => await window.webln?.getInfo())
       if (rsp) {
         return {
           nodePubKey: rsp.node.pubkey,
           alias: rsp.node.alias,
-        } as WalletInfo;
+        } as WalletInfo
       } else {
-        throw new WalletError(WalletErrorCode.GeneralError, "Could not load wallet info");
+        throw new WalletError(WalletErrorCode.GeneralError, "Could not load wallet info")
       }
     }
-    throw new WalletError(WalletErrorCode.GeneralError, "WebLN not available");
+    throw new WalletError(WalletErrorCode.GeneralError, "WebLN not available")
   }
 
   async login(): Promise<boolean> {
     if (window.webln) {
-      await window.webln.enable();
+      await window.webln.enable()
     }
-    return true;
+    return true
   }
 
   close(): Promise<boolean> {
-    return Promise.resolve(true);
+    return Promise.resolve(true)
   }
 
   async getBalance(): Promise<Sats> {
-    await this.login();
+    await this.login()
     if (window.webln?.getBalance) {
-      const rsp = await barrierQueue(WebLNQueue, async () => await unwrap(window.webln?.getBalance).call(window.webln));
-      return rsp.balance;
+      const rsp = await barrierQueue(WebLNQueue, async () => await unwrap(window.webln?.getBalance).call(window.webln))
+      return rsp.balance
     }
-    return 0;
+    return 0
   }
 
   async createInvoice(req: InvoiceRequest): Promise<WalletInvoice> {
-    await this.login();
+    await this.login()
     if (this.isReady()) {
       const rsp = await barrierQueue(
         WebLNQueue,
@@ -88,40 +88,40 @@ export class WebLNWallet extends EventEmitter<WalletEvents> implements LNWallet 
             amount: req.amount,
             defaultMemo: req.memo,
           }),
-      );
+      )
       if (rsp) {
-        const invoice = prToWalletInvoice(rsp.paymentRequest);
+        const invoice = prToWalletInvoice(rsp.paymentRequest)
         if (!invoice) {
-          throw new WalletError(WalletErrorCode.InvalidInvoice, "Could not parse invoice");
+          throw new WalletError(WalletErrorCode.InvalidInvoice, "Could not parse invoice")
         }
-        return invoice;
+        return invoice
       }
     }
-    throw new WalletError(WalletErrorCode.GeneralError, "WebLN not available");
+    throw new WalletError(WalletErrorCode.GeneralError, "WebLN not available")
   }
 
   async payInvoice(pr: string): Promise<WalletInvoice> {
-    await this.login();
+    await this.login()
     if (this.isReady()) {
-      const invoice = prToWalletInvoice(pr);
+      const invoice = prToWalletInvoice(pr)
       if (!invoice) {
-        throw new WalletError(WalletErrorCode.InvalidInvoice, "Could not parse invoice");
+        throw new WalletError(WalletErrorCode.InvalidInvoice, "Could not parse invoice")
       }
-      const rsp = await barrierQueue(WebLNQueue, async () => await window.webln?.sendPayment(pr));
+      const rsp = await barrierQueue(WebLNQueue, async () => await window.webln?.sendPayment(pr))
       if (rsp) {
-        invoice.state = WalletInvoiceState.Paid;
-        invoice.preimage = rsp.preimage;
-        invoice.fees = "route" in rsp ? (rsp.route as { total_fees: number }).total_fees : 0;
-        return invoice;
+        invoice.state = WalletInvoiceState.Paid
+        invoice.preimage = rsp.preimage
+        invoice.fees = "route" in rsp ? (rsp.route as { total_fees: number }).total_fees : 0
+        return invoice
       } else {
-        invoice.state = WalletInvoiceState.Failed;
-        return invoice;
+        invoice.state = WalletInvoiceState.Failed
+        return invoice
       }
     }
-    throw new WalletError(WalletErrorCode.GeneralError, "WebLN not available");
+    throw new WalletError(WalletErrorCode.GeneralError, "WebLN not available")
   }
 
   getInvoices(): Promise<WalletInvoice[]> {
-    return Promise.resolve([]);
+    return Promise.resolve([])
   }
 }

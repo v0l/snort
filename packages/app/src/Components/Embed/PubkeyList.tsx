@@ -1,45 +1,45 @@
-import { hexToBech32, LNURL } from "@snort/shared";
-import type { NostrEvent } from "@snort/system";
-import { WalletInvoiceState } from "@snort/wallet";
-import { FormattedMessage, FormattedNumber } from "react-intl";
+import { hexToBech32, LNURL } from "@snort/shared"
+import type { NostrEvent } from "@snort/system"
+import { WalletInvoiceState } from "@snort/wallet"
+import { FormattedMessage, FormattedNumber } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import { Toastore } from "@/Components/Toaster/Toaster";
-import FollowListBase from "@/Components/User/FollowListBase";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import usePreferences from "@/Hooks/usePreferences";
-import { dedupe, findTag, getDisplayName } from "@/Utils";
-import { useWallet } from "@/Wallet";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import { Toastore } from "@/Components/Toaster/Toaster"
+import FollowListBase from "@/Components/User/FollowListBase"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import usePreferences from "@/Hooks/usePreferences"
+import { dedupe, findTag, getDisplayName } from "@/Utils"
+import { useWallet } from "@/Wallet"
 
-import { ProxyImg } from "../ProxyImg";
+import { ProxyImg } from "../ProxyImg"
 
 export default function PubkeyList({ ev, className }: { ev: NostrEvent; className?: string }) {
-  const wallet = useWallet();
-  const defaultZapAmount = usePreferences(s => s.defaultZapAmount);
-  const { publisher, system } = useEventPublisher();
-  const ids = dedupe(ev.tags.filter(a => a[0] === "p").map(a => a[1]));
+  const wallet = useWallet()
+  const defaultZapAmount = usePreferences(s => s.defaultZapAmount)
+  const { publisher, system } = useEventPublisher()
+  const ids = dedupe(ev.tags.filter(a => a[0] === "p").map(a => a[1]))
 
   async function zapAll() {
     for (const pk of ids) {
       try {
-        const profile = await system.config.profiles.get(pk);
-        const amtSend = defaultZapAmount;
-        const lnurl = profile?.lud16 || profile?.lud06;
+        const profile = await system.config.profiles.get(pk)
+        const amtSend = defaultZapAmount
+        const lnurl = profile?.lud16 || profile?.lud06
         if (lnurl) {
-          const svc = new LNURL(lnurl);
-          await svc.load();
+          const svc = new LNURL(lnurl)
+          await svc.load()
 
-          const relays = await system.requestRouter?.forReplyTo(pk);
+          const relays = await system.requestRouter?.forReplyTo(pk)
           const zap = await publisher?.zap(
             amtSend * 1000,
             pk,
             relays ?? [],
             undefined,
             `Zap from ${hexToBech32("note", ev.id)}`,
-          );
-          const invoice = await svc.getInvoice(amtSend, undefined, zap);
+          )
+          const invoice = await svc.getInvoice(amtSend, undefined, zap)
           if (invoice.pr) {
-            const rsp = await wallet.wallet?.payInvoice(invoice.pr);
+            const rsp = await wallet.wallet?.payInvoice(invoice.pr)
             if (rsp?.state === WalletInvoiceState.Paid) {
               Toastore.push({
                 element: (
@@ -53,17 +53,17 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
                   />
                 ),
                 icon: "zap",
-              });
+              })
             }
           }
         }
       } catch (e) {
-        console.debug("Failed to zap", pk, e);
+        console.debug("Failed to zap", pk, e)
       }
     }
   }
 
-  const picture = findTag(ev, "image");
+  const picture = findTag(ev, "image")
   return (
     <>
       {picture && <ProxyImg src={picture} className="rounded-lg max-h-44 w-full object-cover mb-4" />}
@@ -91,5 +91,5 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
         }}
       />
     </>
-  );
+  )
 }

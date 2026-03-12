@@ -1,24 +1,24 @@
-import { encodeTLVEntries, hexToBech32, type LNURL, NostrPrefix, TLVEntryType } from "@snort/shared";
-import { type CachedMetadata, NostrLink } from "@snort/system";
-import type { ZapTarget } from "@snort/wallet";
-import { use, useMemo, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-import { Link, useNavigate } from "react-router-dom";
+import { encodeTLVEntries, hexToBech32, type LNURL, NostrPrefix, TLVEntryType } from "@snort/shared"
+import { type CachedMetadata, NostrLink } from "@snort/system"
+import type { ZapTarget } from "@snort/wallet"
+import { use, useMemo, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { Link, useNavigate } from "react-router-dom"
 
-import { UserRelays } from "@/Cache";
-import AsyncButton from "@/Components/Button/AsyncButton";
-import IconButton from "@/Components/Button/IconButton";
-import Copy from "@/Components/Copy/Copy";
-import Modal from "@/Components/Modal/Modal";
-import QrCode from "@/Components/QrCode";
-import { SpotlightContext } from "@/Components/Spotlight/context";
-import Avatar from "@/Components/User/Avatar";
-import FollowButton from "@/Components/User/FollowButton";
-import MuteButton from "@/Components/User/MuteButton";
-import ProfileImage from "@/Components/User/ProfileImage";
-import ZapModal from "@/Components/ZapModal/ZapModal";
-import useModeration from "@/Hooks/useModeration";
-import { LoginSessionType, LoginStore } from "@/Utils/Login";
+import { UserRelays } from "@/Cache"
+import AsyncButton from "@/Components/Button/AsyncButton"
+import IconButton from "@/Components/Button/IconButton"
+import Copy from "@/Components/Copy/Copy"
+import Modal from "@/Components/Modal/Modal"
+import QrCode from "@/Components/QrCode"
+import { SpotlightContext } from "@/Components/Spotlight/context"
+import Avatar from "@/Components/User/Avatar"
+import FollowButton from "@/Components/User/FollowButton"
+import MuteButton from "@/Components/User/MuteButton"
+import ProfileImage from "@/Components/User/ProfileImage"
+import ZapModal from "@/Components/ZapModal/ZapModal"
+import useModeration from "@/Hooks/useModeration"
+import { LoginSessionType, LoginStore } from "@/Utils/Login"
 
 const AvatarSection = ({
   user,
@@ -27,40 +27,40 @@ const AvatarSection = ({
   readonly,
   lnurl,
 }: {
-  user?: CachedMetadata;
-  id?: string;
-  loginPubKey?: string;
-  lnurl?: LNURL;
-  readonly?: boolean;
+  user?: CachedMetadata
+  id?: string
+  loginPubKey?: string
+  lnurl?: LNURL
+  readonly?: boolean
 }) => {
-  const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
-  const spotlight = use(SpotlightContext);
-  const [showLnQr, setShowLnQr] = useState<boolean>(false);
-  const [prefix, setPrefix] = useState<NostrPrefix>(CONFIG.profileLinkPrefix);
+  const [showProfileQr, setShowProfileQr] = useState<boolean>(false)
+  const spotlight = use(SpotlightContext)
+  const [showLnQr, setShowLnQr] = useState<boolean>(false)
+  const [prefix, setPrefix] = useState<NostrPrefix>(CONFIG.profileLinkPrefix)
 
-  const { mute, unmute, isMuted } = useModeration();
-  const navigate = useNavigate();
-  const relays = UserRelays.getFromCache(id);
-  const isMe = loginPubKey === id;
-  const canWrite = !!loginPubKey && !readonly;
-  const intl = useIntl();
-  const muted = id ? isMuted(id) : false;
+  const { mute, unmute, isMuted } = useModeration()
+  const navigate = useNavigate()
+  const relays = UserRelays.getFromCache(id)
+  const isMe = loginPubKey === id
+  const canWrite = !!loginPubKey && !readonly
+  const intl = useIntl()
+  const muted = id ? isMuted(id) : false
 
   const profileId = useMemo(() => {
-    if (!id) return;
+    if (!id) return
 
     if (prefix === NostrPrefix.PublicKey) {
-      return hexToBech32(NostrPrefix.PublicKey, id);
+      return hexToBech32(NostrPrefix.PublicKey, id)
     } else if (prefix === NostrPrefix.Profile) {
       return NostrLink.profile(
         id,
         relays?.relays.filter(a => a.settings.write).map(a => a.url),
-      ).encode();
+      ).encode()
     }
-  }, [id, relays, prefix]);
+  }, [id, relays, prefix])
 
   const renderButtons = () => {
-    if (!id) return null;
+    if (!id) return null
 
     return (
       <>
@@ -114,9 +114,9 @@ const AvatarSection = ({
                 className={muted ? "bg-success" : "!bg-error"}
                 onClick={async () => {
                   if (muted) {
-                    await unmute(id);
+                    await unmute(id)
                   } else {
-                    await mute(id);
+                    await mute(id)
                   }
                 }}
                 icon={{ name: "mute", size: 16 }}
@@ -126,7 +126,7 @@ const AvatarSection = ({
               <IconButton
                 onClick={() => {
                   if (confirm(intl.formatMessage({ defaultMessage: "View as user?", id: "LBAnc7" }))) {
-                    LoginStore.loginWithPubkey(id, LoginSessionType.PublicKey);
+                    LoginStore.loginWithPubkey(id, LoginSessionType.PublicKey)
                   }
                 }}
                 icon={{ name: "openeye", size: 16, className: "translate-y-0.5" }}
@@ -135,8 +135,8 @@ const AvatarSection = ({
           </>
         )}
       </>
-    );
-  };
+    )
+  }
 
   return (
     <div className="flex justify-between">
@@ -145,7 +145,7 @@ const AvatarSection = ({
         user={user}
         onClick={() => {
           if (user?.picture) {
-            spotlight?.showImages([user?.picture]);
+            spotlight?.showImages([user?.picture])
           }
         }}
         className="pointer"
@@ -173,7 +173,7 @@ const AvatarSection = ({
         onClose={() => setShowLnQr(false)}
       />
     </div>
-  );
-};
+  )
+}
 
-export default AvatarSection;
+export default AvatarSection

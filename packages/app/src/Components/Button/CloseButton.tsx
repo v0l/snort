@@ -1,6 +1,6 @@
-import classNames from "classnames";
+import classNames from "classnames"
 
-import Icon from "@/Components/Icons/Icon";
+import Icon from "@/Components/Icons/Icon"
 
 export default function CloseButton({ onClick, className }: { onClick?: () => void; className?: string }) {
   return (
@@ -9,8 +9,9 @@ export default function CloseButton({ onClick, className }: { onClick?: () => vo
       className={classNames(
         "self-center rounded-full flex flex-shrink-0 flex-grow-0 items-center justify-center hover:opacity-80 bg-dark p-2 cursor-pointer",
         className,
-      )}>
+      )}
+    >
       <Icon name="close" size={12} />
     </div>
-  );
+  )
 }

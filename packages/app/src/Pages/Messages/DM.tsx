@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useInView } from 'react-intersection-observer'
-import { FormattedMessage, useIntl } from 'react-intl'
-import NoteTime from '@/Components/Event/Note/NoteTime'
-import messages from '@/Components/messages'
-import Text from '@/Components/Text/Text'
-import ProfileImage from '@/Components/User/ProfileImage'
-import { type Chat, type ChatMessage, ChatType } from '@/chat'
-import useEventPublisher from '@/Hooks/useEventPublisher'
-import useLogin from '@/Hooks/useLogin'
+import { useCallback, useEffect, useState } from "react"
+import { useInView } from "react-intersection-observer"
+import { FormattedMessage, useIntl } from "react-intl"
+import NoteTime from "@/Components/Event/Note/NoteTime"
+import messages from "@/Components/messages"
+import Text from "@/Components/Text/Text"
+import ProfileImage from "@/Components/User/ProfileImage"
+import { type Chat, type ChatMessage, ChatType } from "@/chat"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
 
 export interface DMProps {
   chat: Chat
@@ -27,7 +27,7 @@ export default function DM(props: DMProps) {
   const decrypt = useCallback(async () => {
     if (publisher) {
       const decrypted = await msg.decrypt(publisher)
-      setContent(decrypted || '<ERROR>')
+      setContent(decrypted || "<ERROR>")
       props.chat.markRead(msg.id)
     }
   }, [publisher, msg, props.chat])
@@ -53,16 +53,16 @@ export default function DM(props: DMProps) {
     <div
       className={
         isMe
-          ? 'self-end mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap align-self-end'
-          : 'mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap'
+          ? "self-end mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap align-self-end"
+          : "mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap"
       }
       ref={ref}
     >
       <div
         className={
           isMe
-            ? 'p-3 bg-[image:var(--dm-gradient)] rounded-tl-lg rounded-tr-lg rounded-bl-lg rounded-rounded-lg-none'
-            : 'p-3 bg-layer-1 rounded-tl-lg rounded-tr-lg rounded-br-none rounded-bl-none'
+            ? "p-3 bg-[image:var(--dm-gradient)] rounded-tl-lg rounded-tr-lg rounded-bl-lg rounded-rounded-lg-none"
+            : "p-3 bg-layer-1 rounded-tl-lg rounded-tr-lg rounded-br-none rounded-bl-none"
         }
       >
         {sender()}
@@ -72,7 +72,7 @@ export default function DM(props: DMProps) {
           <FormattedMessage defaultMessage="Loading..." />
         )}
       </div>
-      <div className={isMe ? 'text-end text-gray-400 text-sm mt-1' : 'text-gray-400 text-sm mt-1'}>
+      <div className={isMe ? "text-end text-gray-400 text-sm mt-1" : "text-gray-400 text-sm mt-1"}>
         <NoteTime from={msg.created_at * 1000} fallback={formatMessage(messages.JustNow)} />
       </div>
     </div>

@@ -1,17 +1,17 @@
-import type { ParsedZap } from "@snort/system";
-import { FormattedMessage } from "react-intl";
+import type { ParsedZap } from "@snort/system"
+import { FormattedMessage } from "react-intl"
 
-import Text from "@/Components/Text/Text";
-import ProfileImage from "@/Components/User/ProfileImage";
-import useLogin from "@/Hooks/useLogin";
-import { unwrap } from "@/Utils";
-import { formatShort } from "@/Utils/Number";
+import Text from "@/Components/Text/Text"
+import ProfileImage from "@/Components/User/ProfileImage"
+import useLogin from "@/Hooks/useLogin"
+import { unwrap } from "@/Utils"
+import { formatShort } from "@/Utils/Number"
 
-import messages from "../messages";
+import messages from "../messages"
 
 const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean }) => {
-  const { amount, content, sender, valid, receiver } = zap;
-  const pubKey = useLogin().publicKey;
+  const { amount, content, sender, valid, receiver } = zap
+  const pubKey = useLogin().publicKey
 
   return valid && sender ? (
     <div className="layer-1">
@@ -26,7 +26,7 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean 
         <Text id={zap.id} creator={sender} content={unwrap(content)} tags={[]} />
       )}
     </div>
-  ) : null;
-};
+  ) : null
+}
 
-export default Zap;
+export default Zap

@@ -1,56 +1,56 @@
-import type { TaggedNostrEvent } from "@snort/system";
-import { type ReactNode, useEffect, useRef } from "react";
-import { useInView } from "react-intersection-observer";
-import { FormattedMessage } from "react-intl";
+import type { TaggedNostrEvent } from "@snort/system"
+import { type ReactNode, useEffect, useRef } from "react"
+import { useInView } from "react-intersection-observer"
+import { FormattedMessage } from "react-intl"
 
-import ErrorBoundary from "@/Components/ErrorBoundary";
-import { AutoLoadMore } from "@/Components/Event/LoadMore";
-import { TimelineFragment } from "@/Components/Feed/TimelineFragment";
-import Icon from "@/Components/Icons/Icon";
-import { AvatarGroup } from "../User/AvatarGroup";
-import useWoT from "@/Hooks/useWoT";
+import ErrorBoundary from "@/Components/ErrorBoundary"
+import { AutoLoadMore } from "@/Components/Event/LoadMore"
+import { TimelineFragment } from "@/Components/Feed/TimelineFragment"
+import Icon from "@/Components/Icons/Icon"
+import { AvatarGroup } from "../User/AvatarGroup"
+import useWoT from "@/Hooks/useWoT"
 
 export interface TimelineRendererProps {
-  frags: Array<TimelineFragment> | TimelineFragment;
+  frags: Array<TimelineFragment> | TimelineFragment
   /**
    * List of pubkeys who have posted recently
    */
-  latest: Array<string>;
-  showLatest: (toTop: boolean) => void;
-  noteRenderer?: (ev: TaggedNostrEvent) => ReactNode;
-  noteOnClick?: (ev: TaggedNostrEvent) => void;
-  noteContext?: (ev: TaggedNostrEvent) => ReactNode;
-  loadMore?: () => void;
-  highlightText?: string;
+  latest: Array<string>
+  showLatest: (toTop: boolean) => void
+  noteRenderer?: (ev: TaggedNostrEvent) => ReactNode
+  noteOnClick?: (ev: TaggedNostrEvent) => void
+  noteContext?: (ev: TaggedNostrEvent) => ReactNode
+  loadMore?: () => void
+  highlightText?: string
 }
 
 export function TimelineRenderer(props: TimelineRendererProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const latestNotesFixedRef = useRef<HTMLDivElement | null>(null);
-  const { ref, inView } = useInView();
-  const wot = useWoT();
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const latestNotesFixedRef = useRef<HTMLDivElement | null>(null)
+  const { ref, inView } = useInView()
+  const wot = useWoT()
 
   const updateLatestNotesPosition = () => {
     if (containerRef.current && latestNotesFixedRef.current) {
-      const parentRect = containerRef.current.getBoundingClientRect();
-      const childWidth = latestNotesFixedRef.current.offsetWidth;
+      const parentRect = containerRef.current.getBoundingClientRect()
+      const childWidth = latestNotesFixedRef.current.offsetWidth
 
-      const leftPosition = parentRect.left + (parentRect.width - childWidth) / 2;
-      latestNotesFixedRef.current.style.left = `${leftPosition}px`;
+      const leftPosition = parentRect.left + (parentRect.width - childWidth) / 2
+      latestNotesFixedRef.current.style.left = `${leftPosition}px`
     }
-  };
+  }
 
   useEffect(() => {
-    updateLatestNotesPosition();
-    window.addEventListener("resize", updateLatestNotesPosition);
+    updateLatestNotesPosition()
+    window.addEventListener("resize", updateLatestNotesPosition)
 
     return () => {
-      window.removeEventListener("resize", updateLatestNotesPosition);
-    };
-  }, [inView, props.latest]);
+      window.removeEventListener("resize", updateLatestNotesPosition)
+    }
+  }, [inView, props.latest])
 
   const renderNotes = () => {
-    const frags = Array.isArray(props.frags) ? props.frags : [props.frags];
+    const frags = Array.isArray(props.frags) ? props.frags : [props.frags]
     return frags.map((frag, index) => (
       <ErrorBoundary key={frag.events[0]?.id + index}>
         <TimelineFragment
@@ -61,8 +61,8 @@ export function TimelineRenderer(props: TimelineRendererProps) {
           highlightText={props.highlightText}
         />
       </ErrorBoundary>
-    ));
-  };
+    ))
+  }
 
   function latestInner() {
     return (
@@ -77,7 +77,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
         />
         <Icon name="arrowUp" />
       </div>
-    );
+    )
   }
 
   return (
@@ -91,7 +91,8 @@ export function TimelineRenderer(props: TimelineRendererProps) {
             <div
               ref={latestNotesFixedRef}
               className="fixed top-[50px] z-3 opacity-90 shadow-md animate-fade-in"
-              onClick={() => props.showLatest(true)}>
+              onClick={() => props.showLatest(true)}
+            >
               {latestInner()}
             </div>
           )}
@@ -100,5 +101,5 @@ export function TimelineRenderer(props: TimelineRendererProps) {
       {renderNotes()}
       {props.loadMore && <AutoLoadMore className="mx-3 my-4" onClick={props.loadMore} />}
     </div>
-  );
+  )
 }

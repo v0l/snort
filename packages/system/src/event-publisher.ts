@@ -1,4 +1,4 @@
-import { unwrap } from '@snort/shared'
+import { unwrap } from "@snort/shared"
 
 import {
   EventKind,
@@ -15,14 +15,14 @@ import {
   type TaggedNostrEvent,
   type ToNostrEventTag,
   type UserMetadata,
-} from '.'
+} from "."
 
-import { EventBuilder } from './event-builder'
-import { Nip7Signer } from './impl/nip7'
-import { Nip10 } from './impl/nip10'
-import { Nip22 } from './impl/nip22'
-import { Nip25 } from './impl/nip25'
-import { findTag } from './utils'
+import { EventBuilder } from "./event-builder"
+import { Nip7Signer } from "./impl/nip7"
+import { Nip10 } from "./impl/nip10"
+import { Nip22 } from "./impl/nip22"
+import { Nip25 } from "./impl/nip25"
+import { findTag } from "./utils"
 
 type EventBuilderHook = (ev: EventBuilder) => EventBuilder
 
@@ -45,7 +45,7 @@ export class EventPublisher {
    * Create a NIP-07 EventPublisher
    */
   static async nip7() {
-    if ('nostr' in window) {
+    if ("nostr" in window) {
       const signer = new Nip7Signer()
       const pubkey = await signer.getPubKey()
       if (pubkey) {
@@ -99,8 +99,8 @@ export class EventPublisher {
 
   async nip42Auth(challenge: string, relay: string) {
     const eb = this.#eb(EventKind.Auth)
-    eb.tag(['relay', relay])
-    eb.tag(['challenge', challenge])
+    eb.tag(["relay", relay])
+    eb.tag(["challenge", challenge])
     return await this.#sign(eb)
   }
 
@@ -112,10 +112,10 @@ export class EventPublisher {
   async muted(pub: Array<string>, priv: Array<string>) {
     const eb = this.#eb(EventKind.MuteList)
     pub.forEach(p => {
-      eb.tag(['p', p])
+      eb.tag(["p", p])
     })
     if (priv.length > 0) {
-      const ps = priv.map(p => ['p', p])
+      const ps = priv.map(p => ["p", p])
       const plaintext = JSON.stringify(ps)
       eb.content(await this.#signer.nip44Encrypt(plaintext, this.#pubKey))
     }
@@ -178,14 +178,14 @@ export class EventPublisher {
     fnExtra?: EventBuilderHook,
   ) {
     const eb = this.#eb(EventKind.ZapRequest)
-    eb.content(msg?.trim() ?? '')
+    eb.content(msg?.trim() ?? "")
     if (note) {
       // HACK: remove relay tag, some zap services dont like relay tags
       eb.tag(unwrap(note.toEventTag()).slice(0, 2))
     }
-    eb.tag(['p', author])
-    eb.tag(['relays', ...relays.map(a => a.trim())])
-    eb.tag(['amount', amount.toString()])
+    eb.tag(["p", author])
+    eb.tag(["relays", ...relays.map(a => a.trim())])
+    eb.tag(["amount", amount.toString()])
     eb.processContent()
     fnExtra?.(eb)
     return await this.#sign(eb)
@@ -211,12 +211,12 @@ export class EventPublisher {
     return await this.#sign(eb)
   }
 
-  async react(evRef: NostrEvent, content = '+') {
+  async react(evRef: NostrEvent, content = "+") {
     const eb = this.#eb(EventKind.Reaction)
     eb.content(content)
     eb.tag(Nip25.reactToEvent(evRef))
-    eb.tag(['p', evRef.pubkey])
-    eb.tag(['k', evRef.kind.toString()])
+    eb.tag(["p", evRef.pubkey])
+    eb.tag(["k", evRef.kind.toString()])
     return await this.#sign(eb)
   }
 
@@ -251,7 +251,7 @@ export class EventPublisher {
    */
   async delete(id: string) {
     const eb = this.#eb(EventKind.Deletion)
-    eb.tag(['e', id])
+    eb.tag(["e", id])
     return await this.#sign(eb)
   }
 
@@ -261,7 +261,7 @@ export class EventPublisher {
   async repost(note: NostrEvent) {
     const eb = this.#eb(EventKind.Repost)
     eb.tag(unwrap(NostrLink.fromEvent(note).toEventTag()))
-    eb.tag(['p', note.pubkey])
+    eb.tag(["p", note.pubkey])
     return await this.#sign(eb)
   }
 
@@ -277,14 +277,14 @@ export class EventPublisher {
     ) {
       throw new Error("Can't decrypt, DM does not belong to this user")
     }
-    const otherPubKey = note.pubkey === this.#pubKey ? unwrap(note.tags.find(a => a[0] === 'p')?.[1]) : note.pubkey
+    const otherPubKey = note.pubkey === this.#pubKey ? unwrap(note.tags.find(a => a[0] === "p")?.[1]) : note.pubkey
     return await this.nip4Decrypt(note.content, otherPubKey)
   }
 
   async sendDm(content: string, to: string) {
     const eb = this.#eb(EventKind.DirectMessage)
     eb.content(await this.nip4Encrypt(content, to))
-    eb.tag(['p', to])
+    eb.tag(["p", to])
     return await this.#sign(eb)
   }
 
@@ -298,7 +298,7 @@ export class EventPublisher {
   async appData(data: object, id: string) {
     const eb = this.#eb(EventKind.AppData)
     eb.content(await this.#signer.nip44Encrypt(JSON.stringify(data), this.#pubKey))
-    eb.tag(['d', id])
+    eb.tag(["d", id])
     return await this.#sign(eb)
   }
 
@@ -308,13 +308,13 @@ export class EventPublisher {
   async giftWrap(inner: NostrEvent, explicitP?: string, powTarget?: number, powMiner?: PowMiner) {
     const signer = PrivateKeySigner.random()
 
-    const pTag = explicitP ?? findTag(inner, 'p')
-    if (!pTag) throw new Error('Inner event must have a p tag')
+    const pTag = explicitP ?? findTag(inner, "p")
+    if (!pTag) throw new Error("Inner event must have a p tag")
 
     const eb = new EventBuilder()
     eb.pubKey(signer.getPubKey())
     eb.kind(EventKind.GiftWrap)
-    eb.tag(['p', pTag])
+    eb.tag(["p", pTag])
     if (powTarget) {
       eb.pow(powTarget, powMiner)
     }
@@ -358,7 +358,7 @@ export class EventPublisher {
    * Unseal rumor
    */
   async unsealRumor(inner: NostrEvent) {
-    if (inner.kind !== EventKind.SealedRumor) throw new Error('Not a sealed rumor event')
+    if (inner.kind !== EventKind.SealedRumor) throw new Error("Not a sealed rumor event")
     const body = await this.#signer.nip44Decrypt(inner.content, inner.pubkey)
     try {
       return JSON.parse(body) as NostrEvent

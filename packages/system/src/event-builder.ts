@@ -1,26 +1,26 @@
-import type { EventKind, NostrEvent, EventSigner, PowMiner } from ".";
-import { HashtagRegex, MentionNostrEntityRegex } from "./const";
-import { getPublicKey, jitter, NostrPrefix, unixNow } from "@snort/shared";
-import { EventExt } from "./event-ext";
-import { type NostrLink, tryParseNostrLink } from "./nostr-link";
+import type { EventKind, NostrEvent, EventSigner, PowMiner } from "."
+import { HashtagRegex, MentionNostrEntityRegex } from "./const"
+import { getPublicKey, jitter, NostrPrefix, unixNow } from "@snort/shared"
+import { EventExt } from "./event-ext"
+import { type NostrLink, tryParseNostrLink } from "./nostr-link"
 
 export class EventBuilder {
   /**
    * Client tag to attach to all events
    */
-  static ClientTag: Array<string> | undefined = ["client", "snort_system"];
+  static ClientTag: Array<string> | undefined = ["client", "snort_system"]
 
-  #kind?: EventKind;
-  #content?: string;
-  #createdAt?: number;
-  #pubkey?: string;
-  #tags: Array<Array<string>> = [];
-  #pow?: number;
-  #powMiner?: PowMiner;
-  #jitter?: number;
+  #kind?: EventKind
+  #content?: string
+  #createdAt?: number
+  #pubkey?: string
+  #tags: Array<Array<string>> = []
+  #pow?: number
+  #powMiner?: PowMiner
+  #jitter?: number
 
   get pubkey() {
-    return this.#pubkey;
+    return this.#pubkey
   }
 
   /**
@@ -28,57 +28,57 @@ export class EventBuilder {
    */
   fromLink(link: NostrLink) {
     if (link.kind) {
-      this.#kind = link.kind;
+      this.#kind = link.kind
     }
     if (link.author) {
-      this.#pubkey = link.author;
+      this.#pubkey = link.author
     }
     if (link.type === NostrPrefix.Address && link.id) {
-      this.tag(["d", link.id]);
+      this.tag(["d", link.id])
     }
   }
 
   jitter(n: number) {
-    this.#jitter = n;
-    return this;
+    this.#jitter = n
+    return this
   }
 
   kind(k: EventKind) {
-    this.#kind = k;
-    return this;
+    this.#kind = k
+    return this
   }
 
   content(c: string) {
-    this.#content = c;
-    return this;
+    this.#content = c
+    return this
   }
 
   createdAt(n: number) {
-    this.#createdAt = n;
-    return this;
+    this.#createdAt = n
+    return this
   }
 
   pubKey(k: string) {
-    this.#pubkey = k;
-    return this;
+    this.#pubkey = k
+    return this
   }
 
   tag(t: Array<string>): EventBuilder {
-    const duplicate = this.#tags.some(a => a.length === t.length && a.every((b, i) => b !== a[i]));
-    if (duplicate) return this;
-    this.#tags.push(t);
-    return this;
+    const duplicate = this.#tags.some(a => a.length === t.length && a.every((b, i) => b !== a[i]))
+    if (duplicate) return this
+    this.#tags.push(t)
+    return this
   }
 
   pow(target: number, miner?: PowMiner) {
-    this.#pow = target;
+    this.#pow = target
     this.#powMiner = miner ?? {
       minePow: (ev, target) => {
-        EventExt.minePow(ev, target);
-        return Promise.resolve(ev);
+        EventExt.minePow(ev, target)
+        return Promise.resolve(ev)
       },
-    };
-    return this;
+    }
+    return this
   }
 
   /**
@@ -86,18 +86,18 @@ export class EventBuilder {
    */
   processContent() {
     if (this.#content) {
-      this.#content = this.#content.replace(MentionNostrEntityRegex, m => this.#replaceMention(m));
+      this.#content = this.#content.replace(MentionNostrEntityRegex, m => this.#replaceMention(m))
 
-      const hashTags = [...this.#content.matchAll(HashtagRegex)];
+      const hashTags = [...this.#content.matchAll(HashtagRegex)]
       hashTags.map(hashTag => {
-        this.#addHashtag(hashTag[0]);
-      });
+        this.#addHashtag(hashTag[0])
+      })
     }
-    return this;
+    return this
   }
 
   build() {
-    this.#validate();
+    this.#validate()
     const ev = {
       id: "",
       pubkey: this.#pubkey ?? "",
@@ -105,12 +105,12 @@ export class EventBuilder {
       kind: this.#kind,
       created_at: (this.#createdAt ?? unixNow()) - (this.#jitter ? Math.floor(jitter(this.#jitter)) : 0),
       tags: this.#tags.sort((a, b) => a[0].localeCompare(b[0])),
-    } as NostrEvent;
+    } as NostrEvent
     if (EventBuilder.ClientTag && EventBuilder.ClientTag[0] === "client" && EventBuilder.ClientTag.length > 1) {
-      ev.tags.push(EventBuilder.ClientTag);
+      ev.tags.push(EventBuilder.ClientTag)
     }
-    ev.id = EventExt.createId(ev);
-    return ev;
+    ev.id = EventExt.createId(ev)
+    return ev
   }
 
   /**
@@ -119,46 +119,46 @@ export class EventBuilder {
    */
   async buildAndSign(pk: string | EventSigner) {
     if (typeof pk === "string") {
-      const ev = this.pubKey(getPublicKey(pk)).build();
-      return EventExt.sign(await this.#mine(ev), pk);
+      const ev = this.pubKey(getPublicKey(pk)).build()
+      return EventExt.sign(await this.#mine(ev), pk)
     } else {
-      const ev = this.pubKey(await pk.getPubKey()).build();
-      return await pk.sign(await this.#mine(ev));
+      const ev = this.pubKey(await pk.getPubKey()).build()
+      return await pk.sign(await this.#mine(ev))
     }
   }
 
   async #mine(ev: NostrEvent) {
     if (this.#pow && this.#powMiner) {
-      const ret = await this.#powMiner.minePow(ev, this.#pow);
-      return ret;
+      const ret = await this.#powMiner.minePow(ev, this.#pow)
+      return ret
     }
-    return ev;
+    return ev
   }
 
   #validate() {
     if (this.#kind === undefined) {
-      throw new Error("Kind must be set");
+      throw new Error("Kind must be set")
     }
     if (this.#pubkey === undefined) {
-      throw new Error("Pubkey must be set");
+      throw new Error("Pubkey must be set")
     }
   }
 
   #replaceMention(match: string) {
-    const npub = match.slice(1);
-    const link = tryParseNostrLink(npub);
+    const npub = match.slice(1)
+    const link = tryParseNostrLink(npub)
     if (link) {
       if (link.type === NostrPrefix.Profile || link.type === NostrPrefix.PublicKey) {
-        this.tag(["p", link.id]);
+        this.tag(["p", link.id])
       }
-      return `nostr:${link.encode()}`;
+      return `nostr:${link.encode()}`
     } else {
-      return match;
+      return match
     }
   }
 
   #addHashtag(match: string) {
-    const tag = match.slice(1);
-    this.tag(["t", tag.toLowerCase()]);
+    const tag = match.slice(1)
+    this.tag(["t", tag.toLowerCase()])
   }
 }

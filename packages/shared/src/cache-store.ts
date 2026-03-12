@@ -6,30 +6,30 @@ export interface CacheStore<T = any> {
   /**
    * Get all keys in the store
    */
-  keys(): Promise<Array<string>>;
+  keys(): Promise<Array<string>>
 
   /**
    * Get a single item by key
    */
-  get(key: string): Promise<T | undefined>;
+  get(key: string): Promise<T | undefined>
 
   /**
    * Get multiple items by keys
    */
-  bulkGet(keys: Array<string>): Promise<Array<T | undefined>>;
+  bulkGet(keys: Array<string>): Promise<Array<T | undefined>>
 
   /**
    * Store a single item
    */
-  put(item: T): Promise<void>;
+  put(item: T): Promise<void>
 
   /**
    * Store multiple items
    */
-  bulkPut(items: readonly T[]): Promise<void>;
+  bulkPut(items: readonly T[]): Promise<void>
 
   /**
    * Clear all items from the store
    */
-  clear(): Promise<void>;
+  clear(): Promise<void>
 }

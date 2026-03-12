@@ -1,5 +1,5 @@
-import Progress from "@/Components/Progress/Progress";
-import type { UploadProgress } from "@/Utils/Upload";
+import Progress from "@/Components/Progress/Progress"
+import type { UploadProgress } from "@/Utils/Upload"
 
 export default function FileUploadProgress({ progress }: { progress: Array<UploadProgress> }) {
   return (
@@ -11,5 +11,5 @@ export default function FileUploadProgress({ progress }: { progress: Array<Uploa
         </div>
       ))}
     </div>
-  );
+  )
 }

@@ -1,30 +1,30 @@
-import { useUserProfile } from "@snort/system-react";
-import Lottie from "lottie-react";
-import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { Link, useNavigate } from "react-router-dom";
+import { useUserProfile } from "@snort/system-react"
+import Lottie from "lottie-react"
+import { useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { Link, useNavigate } from "react-router-dom"
 
-import SnortApi from "@/External/SnortApi";
-import Hugs from "@/hug.json";
-import { getCurrentRefCode, getDisplayName } from "@/Utils";
+import SnortApi from "@/External/SnortApi"
+import Hugs from "@/hug.json"
+import { getCurrentRefCode, getDisplayName } from "@/Utils"
 
-import Modal from "./Modal/Modal";
+import Modal from "./Modal/Modal"
 
 const InviteModal = () => {
-  const [pubkey, setPubkey] = useState("");
-  const code = getCurrentRefCode();
-  const navigate = useNavigate();
+  const [pubkey, setPubkey] = useState("")
+  const code = getCurrentRefCode()
+  const navigate = useNavigate()
   useEffect(() => {
     if (code) {
-      const api = new SnortApi();
-      api.getRefCodeInfo(code).then(a => setPubkey(a.pubkey));
+      const api = new SnortApi()
+      api.getRefCodeInfo(code).then(a => setPubkey(a.pubkey))
     }
-  }, []);
-  const profile = useUserProfile(pubkey);
-  if (!code) return;
+  }, [])
+  const profile = useUserProfile(pubkey)
+  if (!code) return
 
   function close() {
-    navigate("/");
+    navigate("/")
   }
   return (
     <Modal id="invite-modal" onClose={close}>
@@ -47,7 +47,7 @@ const InviteModal = () => {
         </Link>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default InviteModal;
+export default InviteModal

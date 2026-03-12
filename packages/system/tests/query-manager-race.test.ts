@@ -11,25 +11,25 @@
  * opens, the request is silently lost.
  */
 
-import { afterEach, beforeEach, describe, expect, test } from 'bun:test'
-import type { CachedTable } from '@snort/shared'
-import { EventEmitter } from 'eventemitter3'
-import { SocialGraph } from 'nostr-social-graph'
-import type { RelayInfoDocument, SystemInterface } from '../src'
-import type { CachedMetadata, UsersFollows } from '../src/cache'
-import type { CacheRelay } from '../src/cache-relay'
-import type { RelaySettings } from '../src/connection'
-import type { ConnectionPool, ConnectionPoolEvents, ConnectionType, ConnectionTypeEvents } from '../src/connection-pool'
-import type { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from '../src/nostr'
-import type { RelayMetadataLoader } from '../src/outbox'
-import type { ProfileLoaderService } from '../src/profile-cache'
-import { QueryTraceState } from '../src/query'
-import { QueryManager } from '../src/query-manager'
-import { DefaultOptimizer } from '../src/query-optimizer'
-import { RequestBuilder } from '../src/request-builder'
-import type { RequestRouter } from '../src/request-router'
-import type { SystemConfig, SystemSnapshot } from '../src/system'
-import type { TraceTimeline } from '../src/trace-timeline'
+import { afterEach, beforeEach, describe, expect, test } from "bun:test"
+import type { CachedTable } from "@snort/shared"
+import { EventEmitter } from "eventemitter3"
+import { SocialGraph } from "nostr-social-graph"
+import type { RelayInfoDocument, SystemInterface } from "../src"
+import type { CachedMetadata, UsersFollows } from "../src/cache"
+import type { CacheRelay } from "../src/cache-relay"
+import type { RelaySettings } from "../src/connection"
+import type { ConnectionPool, ConnectionPoolEvents, ConnectionType, ConnectionTypeEvents } from "../src/connection-pool"
+import type { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "../src/nostr"
+import type { RelayMetadataLoader } from "../src/outbox"
+import type { ProfileLoaderService } from "../src/profile-cache"
+import { QueryTraceState } from "../src/query"
+import { QueryManager } from "../src/query-manager"
+import { DefaultOptimizer } from "../src/query-optimizer"
+import { RequestBuilder } from "../src/request-builder"
+import type { RequestRouter } from "../src/request-router"
+import type { SystemConfig, SystemSnapshot } from "../src/system"
+import type { TraceTimeline } from "../src/trace-timeline"
 
 // ---------------------------------------------------------------------------
 // Minimal mock connection — starts in CONNECTING state, open on demand
@@ -66,7 +66,7 @@ class MockConnection extends EventEmitter<ConnectionTypeEvents> implements Conne
   }
 
   get activeSubscriptions() {
-    return this.sentRequests.filter(r => r[0] === 'REQ').length
+    return this.sentRequests.filter(r => r[0] === "REQ").length
   }
 
   get maxSubscriptions() {
@@ -76,7 +76,7 @@ class MockConnection extends EventEmitter<ConnectionTypeEvents> implements Conne
   async connect() {}
   close() {}
   async publish(_ev: NostrEvent): Promise<OkResponse> {
-    return { ok: true, id: '', message: '', relay: this.address, event: _ev }
+    return { ok: true, id: "", message: "", relay: this.address, event: _ev }
   }
 
   request(req: ReqCommand, cbSent?: () => void) {
@@ -100,8 +100,8 @@ class MockConnection extends EventEmitter<ConnectionTypeEvents> implements Conne
       this.sentRequests.push(req)
     }
     this.pendingRequests = []
-    this.emit('connected', false)
-    this.emit('change')
+    this.emit("connected", false)
+    this.emit("change")
   }
 }
 
@@ -131,7 +131,7 @@ class MockPool extends EventEmitter<ConnectionPoolEvents> implements ConnectionP
   }
 
   async broadcastTo(_address: string, _ev: NostrEvent): Promise<OkResponse> {
-    return { ok: true, id: '', message: '', relay: _address, event: _ev }
+    return { ok: true, id: "", message: "", relay: _address, event: _ev }
   }
 
   *[Symbol.iterator]() {
@@ -142,7 +142,7 @@ class MockPool extends EventEmitter<ConnectionPoolEvents> implements ConnectionP
 
   /** Simulate pool.on('connected') being fired when a connection opens */
   connectionOpened(conn: MockConnection) {
-    this.emit('connected', conn.address, false)
+    this.emit("connected", conn.address, false)
   }
 }
 
@@ -159,8 +159,8 @@ function makeSystem(pool: MockPool): SystemInterface {
     checkSigs: false,
     automaticOutboxModel: false,
     buildFollowGraph: false,
-    fallbackSync: 'since',
-    socialGraphInstance: new SocialGraph('00'.repeat(32)),
+    fallbackSync: "since",
+    socialGraphInstance: new SocialGraph("00".repeat(32)),
     disableSyncModule: true,
   }
 
@@ -178,7 +178,7 @@ function makeSystem(pool: MockPool): SystemInterface {
     async Init() {},
     GetQuery: () => undefined,
     Query: () => {
-      throw new Error('not used')
+      throw new Error("not used")
     },
     Fetch: () => Promise.resolve([]),
     async ConnectToRelay() {},
@@ -188,7 +188,7 @@ function makeSystem(pool: MockPool): SystemInterface {
       return []
     },
     async WriteOnceToRelay() {
-      return { ok: true, id: '', message: '', relay: '' }
+      return { ok: true, id: "", message: "", relay: "" }
     },
     takeSnapshot(): SystemSnapshot {
       return { queries: [] }
@@ -225,7 +225,7 @@ function makeRb(id: string) {
 // Tests
 // ---------------------------------------------------------------------------
 
-describe('QueryManager — relay connection race conditions', () => {
+describe("QueryManager — relay connection race conditions", () => {
   let pool: MockPool
   let system: SystemInterface
   let qm: QueryManager
@@ -251,12 +251,12 @@ describe('QueryManager — relay connection race conditions', () => {
    * Once the connection opens, `#retryPendingTraces` is not called for
    * this trace because it was never put into `#pendingTraces`.
    */
-  test('REQ is sent to relay that was still connecting when query was created', async () => {
-    const conn = new MockConnection('wss://relay.test')
+  test("REQ is sent to relay that was still connecting when query was created", async () => {
+    const conn = new MockConnection("wss://relay.test")
     pool.add(conn)
     // conn is NOT open yet — simulates page load before WebSocket handshake
 
-    const rb = makeRb('test-connecting')
+    const rb = makeRb("test-connecting")
     const q = qm.query(rb)
     q.start()
 
@@ -281,7 +281,7 @@ describe('QueryManager — relay connection race conditions', () => {
 
     // After fix: the trace should have been retried and sent
     expect(conn.sentRequests.length).toBeGreaterThanOrEqual(1)
-    expect(conn.sentRequests[0][0]).toBe('REQ')
+    expect(conn.sentRequests[0][0]).toBe("REQ")
     expect(q.traces[0].currentState).toBe(QueryTraceState.WAITING)
   })
 
@@ -292,13 +292,13 @@ describe('QueryManager — relay connection race conditions', () => {
    * Query is issued before any of them are open.
    * After they all open, every relay should have received the REQ.
    */
-  test('REQ is sent to all relays that were still connecting', async () => {
-    const conn1 = new MockConnection('wss://relay1.test')
-    const conn2 = new MockConnection('wss://relay2.test')
+  test("REQ is sent to all relays that were still connecting", async () => {
+    const conn1 = new MockConnection("wss://relay1.test")
+    const conn2 = new MockConnection("wss://relay2.test")
     pool.add(conn1)
     pool.add(conn2)
 
-    const rb = makeRb('test-multi-connecting')
+    const rb = makeRb("test-multi-connecting")
     const q = qm.query(rb)
     q.start()
 
@@ -331,19 +331,19 @@ describe('QueryManager — relay connection race conditions', () => {
    * Relay is already open when the query is issued (happy path).
    * Ensure the normal open-relay flow still works after the fix.
    */
-  test('REQ is sent immediately when relay is already open', async () => {
-    const conn = new MockConnection('wss://relay.test')
+  test("REQ is sent immediately when relay is already open", async () => {
+    const conn = new MockConnection("wss://relay.test")
     conn.open() // already open before query
     pool.add(conn)
 
-    const rb = makeRb('test-already-open')
+    const rb = makeRb("test-already-open")
     const q = qm.query(rb)
     q.start()
 
     await sleep(50)
 
     expect(conn.sentRequests.length).toBeGreaterThanOrEqual(1)
-    expect(conn.sentRequests[0][0]).toBe('REQ')
+    expect(conn.sentRequests[0][0]).toBe("REQ")
     expect(q.traces[0].currentState).toBe(QueryTraceState.WAITING)
   })
 
@@ -358,9 +358,9 @@ describe('QueryManager — relay connection race conditions', () => {
    * A future Option C fix ("re-query on connect") would address this by
    * re-running active queries against newly-connected relays.
    */
-  test.skip('pending trace is dispatched when relay is added after query started (known limitation)', async () => {
+  test.skip("pending trace is dispatched when relay is added after query started (known limitation)", async () => {
     // Start with no connections
-    const rb = makeRb('test-new-relay')
+    const rb = makeRb("test-new-relay")
     const q = qm.query(rb)
     q.start()
 
@@ -370,7 +370,7 @@ describe('QueryManager — relay connection race conditions', () => {
     expect(q.traces.length).toBe(0)
 
     // Now a relay is added and connects
-    const conn = new MockConnection('wss://relay-late.test')
+    const conn = new MockConnection("wss://relay-late.test")
     pool.add(conn)
 
     conn.open()

@@ -1,49 +1,49 @@
-import { isHex, sanitizeRelayUrl } from '@snort/shared'
-import type { EventSigner } from '../signer'
-import { EventBuilder } from '../event-builder'
-import type { NostrEvent, TaggedNostrEvent } from '../nostr'
-import type { SystemInterface } from '../system'
-import { RequestBuilder } from '../request-builder'
-import { NostrLink } from '../nostr-link'
-import { findTag } from '../utils'
-import debug from 'debug'
-import EventEmitter from 'eventemitter3'
+import { isHex, sanitizeRelayUrl } from "@snort/shared"
+import type { EventSigner } from "../signer"
+import { EventBuilder } from "../event-builder"
+import type { NostrEvent, TaggedNostrEvent } from "../nostr"
+import type { SystemInterface } from "../system"
+import { RequestBuilder } from "../request-builder"
+import { NostrLink } from "../nostr-link"
+import { findTag } from "../utils"
+import debug from "debug"
+import EventEmitter from "eventemitter3"
 
 export enum DVMJobState {
   /**
    * Job is new and never sent to any relays
    */
-  New = 'new',
+  New = "new",
 
   /**
    * Job was sent to relays
    */
-  Init = 'init',
+  Init = "init",
 
   /**
    * DVM server requested payment
    */
-  PaymentRequired = 'payment-required',
+  PaymentRequired = "payment-required",
 
   /**
    * DVM server is processing the request
    */
-  Processing = 'processing',
+  Processing = "processing",
 
   /**
    * DVM server was unable to process the request
    */
-  Error = 'error',
+  Error = "error",
 
   /**
    * DVM job was successful
    */
-  Success = 'success',
+  Success = "success",
 
   /**
    * The job was partially completed
    */
-  Partial = 'partial',
+  Partial = "partial",
 }
 
 /**
@@ -83,7 +83,7 @@ export interface DVMJobInput {
   /**
    * The way this argument should be interpreted
    */
-  inputType: 'url' | 'event' | 'job' | 'text'
+  inputType: "url" | "event" | "job" | "text"
 
   /**
    * If event or job input-type, the relay where the event/job was published, otherwise optional or empty string
@@ -100,7 +100,7 @@ export interface DVMJobInput {
  * Generic DVM job request class
  */
 export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
-  private log = debug('NIP-90')
+  private log = debug("NIP-90")
 
   /**
    * Internal instance ID
@@ -182,7 +182,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
 
   private set state(v: DVMJobState) {
     this.#state = v
-    this.emit('state', v)
+    this.emit("state", v)
   }
 
   /**
@@ -226,7 +226,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
    */
   setServiceProvider(p: string) {
     if (p.length !== 64 || !isHex(p)) {
-      throw new Error('Provider must be a hex pubkey')
+      throw new Error("Provider must be a hex pubkey")
     }
     this.serviceProvider = p
     return this
@@ -255,7 +255,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
     this.relays ??= new Set()
     const cleaned = sanitizeRelayUrl(relay)
     if (!cleaned) {
-      throw new Error('Invalid relay URL')
+      throw new Error("Invalid relay URL")
     }
     this.relays.add(cleaned)
     return this
@@ -278,7 +278,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
   async buildEvent(signer: EventSigner): Promise<NostrEvent> {
     const inputTags = []
     for (const input of this.input ?? []) {
-      const iTag = ['i', input.data, input.inputType]
+      const iTag = ["i", input.data, input.inputType]
       if (input.relay) {
         iTag.push(input.relay)
       }
@@ -288,26 +288,26 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
       inputTags.push(iTag)
     }
     for (const [k, v] of this.params?.entries() ?? []) {
-      inputTags.push(['param', k, v])
+      inputTags.push(["param", k, v])
     }
     const otherTags = []
     if (this.output) {
-      otherTags.push(['output', this.output])
+      otherTags.push(["output", this.output])
     }
     if (this.bid) {
-      otherTags.push(['bid', this.bid.toString()])
+      otherTags.push(["bid", this.bid.toString()])
     }
     if (this.relays && this.relays.size > 0) {
-      otherTags.push(['relays', ...this.relays])
+      otherTags.push(["relays", ...this.relays])
     }
     if (this.serviceProvider) {
-      otherTags.push(['p', this.serviceProvider])
+      otherTags.push(["p", this.serviceProvider])
     }
     if (this.encrypted) {
       if (!this.serviceProvider) {
-        throw new Error('Cannot encrypt job without service provider pubkey')
+        throw new Error("Cannot encrypt job without service provider pubkey")
       }
-      otherTags.push(['encrypted', '1'])
+      otherTags.push(["encrypted", "1"])
     }
 
     const pubkey = await signer.getPubKey()
@@ -328,29 +328,29 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
 
   #handleReplyEvents(evs: Array<TaggedNostrEvent>) {
     for (const e of evs) {
-      this.log('Processing response: %O', e)
+      this.log("Processing response: %O", e)
       if (e.kind === 7000) {
-        const status = findTag(e, 'status')
+        const status = findTag(e, "status")
         switch (status?.toLocaleLowerCase()) {
-          case 'error': {
+          case "error": {
             this.state = DVMJobState.Error
-            this.emit('error', 'Request failed')
+            this.emit("error", "Request failed")
             break
           }
-          case 'processing': {
+          case "processing": {
             this.state = DVMJobState.Processing
             break
           }
-          case 'partial': {
+          case "partial": {
             this.state = DVMJobState.Partial
             break
           }
-          case 'success': {
+          case "success": {
             this.state = DVMJobState.Success
             break
           }
           default: {
-            this.log('Unknown feedback status: %s', status)
+            this.log("Unknown feedback status: %s", status)
           }
         }
         return
@@ -361,7 +361,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
         const jobLink = NostrLink.fromEvent(this.#jobEvent!)
         if (jobLink.isReplyToThis(e)) {
           this.state = DVMJobState.Success
-          this.emit('result', e)
+          this.emit("result", e)
         }
       }
     }
@@ -375,7 +375,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
    */
   async request(signer: EventSigner, system: SystemInterface, relays?: Array<string>) {
     if (this.state !== DVMJobState.New) {
-      throw new Error('Invalid job state, cannot send request')
+      throw new Error("Invalid job state, cannot send request")
     }
     this.#jobEvent = await this.buildEvent(signer)
     this.state = DVMJobState.Init
@@ -383,7 +383,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
     // sub to replies first
     const rbReply = new RequestBuilder(`dvm-replies:${this.#jobEvent.id}`)
     rbReply.withOptions({ leaveOpen: true, skipCache: true, groupingDelay: 0 })
-    const f = rbReply.withFilter().kinds([this.responseKind, 7000]).tag('e', [this.#jobEvent.id])
+    const f = rbReply.withFilter().kinds([this.responseKind, 7000]).tag("e", [this.#jobEvent.id])
 
     // list for replies on the reply relays if specified
     if (this.relays && this.relays.size > 0) {
@@ -392,7 +392,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
 
     const q = system.Query(rbReply)
     q.uncancel() // might already exist so uncancel
-    q.on('event', evs => this.#handleReplyEvents(evs))
+    q.on("event", evs => this.#handleReplyEvents(evs))
     q.start()
 
     // send request
@@ -405,7 +405,7 @@ export class DVMJobRequest extends EventEmitter<DVMJobEvents> {
     }
 
     // abort self when resut
-    this.on('result', () => {
+    this.on("result", () => {
       q.cancel()
     })
     return q

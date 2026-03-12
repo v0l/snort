@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { useCallback, useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import { ErrorOrOffline } from '@/Components/ErrorOrOffline'
-import Nip05 from '@/Components/User/Nip05'
-import useEventPublisher from '@/Hooks/useEventPublisher'
-import { ApiHost } from '@/Utils/Const'
-import SnortServiceProvider, { type ManageHandle } from '@/Utils/Nip05/SnortServiceProvider'
+import { ErrorOrOffline } from "@/Components/ErrorOrOffline"
+import Nip05 from "@/Components/User/Nip05"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import { ApiHost } from "@/Utils/Const"
+import SnortServiceProvider, { type ManageHandle } from "@/Utils/Nip05/SnortServiceProvider"
 
 export default function ListHandles() {
   const { publisher } = useEventPublisher()

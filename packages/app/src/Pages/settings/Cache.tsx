@@ -1,18 +1,18 @@
-import type { CachedTable } from "@snort/shared";
-import { ConnectionCacheRelay } from "@snort/system";
-import { WorkerRelayInterface } from "@snort/worker-relay";
-import { type ReactNode, use, useEffect, useState, useSyncExternalStore } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import type { CachedTable } from "@snort/shared"
+import { ConnectionCacheRelay } from "@snort/system"
+import { WorkerRelayInterface } from "@snort/worker-relay"
+import { type ReactNode, use, useEffect, useState, useSyncExternalStore } from "react"
+import { FormattedMessage, FormattedNumber } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import { GiftsCache, Relay, tryUseLocalRelay, UserRelays } from "@/Cache";
-import AsyncButton from "@/Components/Button/AsyncButton";
-import useLogin from "@/Hooks/useLogin";
-import { SnortContext } from "@snort/system-react";
-import { CollapsedSection } from "@/Components/Collapsed";
+import { GiftsCache, Relay, tryUseLocalRelay, UserRelays } from "@/Cache"
+import AsyncButton from "@/Components/Button/AsyncButton"
+import useLogin from "@/Hooks/useLogin"
+import { SnortContext } from "@snort/system-react"
+import { CollapsedSection } from "@/Components/Collapsed"
 
 export function CacheSettings() {
-  const system = use(SnortContext);
+  const system = use(SnortContext)
   return (
     <div className="flex flex-col gap-2">
       <h3>
@@ -24,20 +24,20 @@ export function CacheSettings() {
       <CacheDetails cache={system.config.contactLists} name={<FormattedMessage defaultMessage="Follow Lists" />} />
       <CacheDetails cache={GiftsCache} name={<FormattedMessage defaultMessage="Gift Wraps" />} />
     </div>
-  );
+  )
 }
 
 function CacheDetails<T>({ cache, name }: { cache: CachedTable<T>; name: ReactNode }) {
-  const [snapshot, setSnapshot] = useState<Array<T>>(cache.snapshot());
+  const [snapshot, setSnapshot] = useState<Array<T>>(cache.snapshot())
   useEffect(() => {
     const h = () => {
-      setSnapshot(cache.snapshot());
-    };
-    cache.on("change", h);
+      setSnapshot(cache.snapshot())
+    }
+    cache.on("change", h)
     return () => {
-      cache.off("change", h);
-    };
-  }, [cache]);
+      cache.off("change", h)
+    }
+  }, [cache])
 
   return (
     <div className="flex justify-between layer-1">
@@ -59,29 +59,29 @@ function CacheDetails<T>({ cache, name }: { cache: CachedTable<T>; name: ReactNo
         </AsyncButton>
       </div>
     </div>
-  );
+  )
 }
 
 function RelayCacheStats() {
-  const [counts, setCounts] = useState<Record<string, number>>({});
-  const [myEvents, setMyEvents] = useState<number>(0);
-  const login = useLogin();
-  const navigate = useNavigate();
+  const [counts, setCounts] = useState<Record<string, number>>({})
+  const [myEvents, setMyEvents] = useState<number>(0)
+  const login = useLogin()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (Relay instanceof WorkerRelayInterface) {
-      Relay.summary().then(setCounts);
+      Relay.summary().then(setCounts)
       if (login.publicKey) {
-        Relay.count(["REQ", "my", { authors: [login.publicKey] }]).then(setMyEvents);
+        Relay.count(["REQ", "my", { authors: [login.publicKey] }]).then(setMyEvents)
       }
     }
-  }, []);
+  }, [])
 
   function relayType() {
     if (Relay instanceof WorkerRelayInterface) {
-      return <FormattedMessage defaultMessage="Browser" />;
+      return <FormattedMessage defaultMessage="Browser" />
     } else if (Relay instanceof ConnectionCacheRelay) {
-      return <FormattedMessage defaultMessage="Local" />;
+      return <FormattedMessage defaultMessage="Local" />
     }
   }
 
@@ -131,7 +131,7 @@ function RelayCacheStats() {
                         <FormattedNumber value={v} />
                       </td>
                     </tr>
-                  );
+                  )
                 })}
             </tbody>
           </table>
@@ -143,27 +143,29 @@ function RelayCacheStats() {
             <AsyncButton
               onClick={async () => {
                 if (Relay instanceof WorkerRelayInterface) {
-                  await Relay.wipe();
-                  window.location.reload();
+                  await Relay.wipe()
+                  window.location.reload()
                 }
-              }}>
+              }}
+            >
               <FormattedMessage defaultMessage="Clear" />
             </AsyncButton>
             <AsyncButton
               onClick={async () => {
-                const data = Relay instanceof WorkerRelayInterface ? await Relay.dump() : undefined;
+                const data = Relay instanceof WorkerRelayInterface ? await Relay.dump() : undefined
                 if (data) {
                   const url = URL.createObjectURL(
                     new File([data.buffer as ArrayBuffer], "snort.db", {
                       type: "application/octet-stream",
                     }),
-                  );
-                  const a = document.createElement("a");
-                  a.href = url;
-                  a.download = "snort.db";
-                  a.click();
+                  )
+                  const a = document.createElement("a")
+                  a.href = url
+                  a.download = "snort.db"
+                  a.click()
                 }
-              }}>
+              }}
+            >
               <FormattedMessage defaultMessage="Dump" />
             </AsyncButton>
           </>
@@ -176,15 +178,16 @@ function RelayCacheStats() {
           <AsyncButton
             onClick={async () => {
               if (await tryUseLocalRelay()) {
-                window.location.reload();
+                window.location.reload()
               } else {
-                alert("No local relay found");
+                alert("No local relay found")
               }
-            }}>
+            }}
+          >
             <FormattedMessage defaultMessage="Use Local Relay" />
           </AsyncButton>
         )}
       </div>
     </div>
-  );
+  )
 }

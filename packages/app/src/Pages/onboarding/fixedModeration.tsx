@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl"
 
 export const FixedModeration = {
   /*hateSpeech: {
@@ -102,4 +102,4 @@ export const FixedModeration = {
     ],
     canEdit: false,
   },
-};
+}

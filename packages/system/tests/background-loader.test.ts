@@ -8,11 +8,11 @@
  *   - UntrackKeys: removes from all priority sets
  */
 
-import { afterEach, beforeEach, describe, expect, mock, test } from 'bun:test'
-import type { CachedTable, CacheEvents } from '@snort/shared'
-import { EventEmitter } from 'eventemitter3'
-import type { RequestBuilder, SystemInterface, TaggedNostrEvent } from '../src'
-import { BackgroundLoader, type ProfilePriority } from '../src/background-loader'
+import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test"
+import type { CachedTable, CacheEvents } from "@snort/shared"
+import { EventEmitter } from "eventemitter3"
+import type { RequestBuilder, SystemInterface, TaggedNostrEvent } from "../src"
+import { BackgroundLoader, type ProfilePriority } from "../src/background-loader"
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -24,7 +24,7 @@ function sleep(ms: number) {
 
 /** Generate a valid 64-char hex pubkey */
 function pubkey(seed: number): string {
-  return seed.toString(16).padStart(64, '0')
+  return seed.toString(16).padStart(64, "0")
 }
 
 /** Generate 'count' unique pubkeys starting from offset */
@@ -60,7 +60,7 @@ class MemoryCache extends EventEmitter<CacheEvents<TestEntry>> implements Cached
 
   async set(obj: TestEntry) {
     this.#data.set(obj.pubkey, obj)
-    this.emit('change', [obj.pubkey])
+    this.emit("change", [obj.pubkey])
     this.#notifyKey(obj.pubkey)
   }
 
@@ -69,15 +69,15 @@ class MemoryCache extends EventEmitter<CacheEvents<TestEntry>> implements Cached
       this.#data.set(obj.pubkey, obj)
     }
     const keys = objs.map(o => o.pubkey)
-    this.emit('change', keys)
+    this.emit("change", keys)
     for (const k of keys) this.#notifyKey(k)
   }
 
   async update(m: TestEntry) {
     const existing = this.#data.get(m.pubkey)
-    if (existing && existing.created >= m.created) return 'no_change' as const
+    if (existing && existing.created >= m.created) return "no_change" as const
     await this.set(m)
-    return existing ? ('updated' as const) : ('new' as const)
+    return existing ? ("updated" as const) : ("new" as const)
   }
 
   async buffer(keys: string[]) {
@@ -145,7 +145,7 @@ class TestLoader extends BackgroundLoader<TestEntry> {
   }
 
   override name() {
-    return 'TestLoader'
+    return "TestLoader"
   }
   override onEvent(e: Readonly<TaggedNostrEvent>): TestEntry | undefined {
     return undefined
@@ -157,7 +157,7 @@ class TestLoader extends BackgroundLoader<TestEntry> {
   override buildSub(missing: string[]): RequestBuilder {
     // Return a minimal stub that satisfies the RequestBuilder shape used by #buildChunkSub
     return {
-      id: 'test-sub',
+      id: "test-sub",
       withOptions: () => ({}),
       withFilter: () => ({ kinds: () => ({ authors: () => ({}) }) }),
     } as unknown as RequestBuilder
@@ -187,7 +187,7 @@ function makeMockSystem(onFetch: (req: RequestBuilder, authors: string[]) => Pro
 // Tests
 // ---------------------------------------------------------------------------
 
-describe('BackgroundLoader — priority tiers', () => {
+describe("BackgroundLoader — priority tiers", () => {
   let cache: MemoryCache
   let fetchedBatches: string[][]
   let system: SystemInterface
@@ -210,7 +210,7 @@ describe('BackgroundLoader — priority tiers', () => {
     loader?.destroy()
   })
 
-  test('TrackKeys with high priority schedules flush within 50ms', async () => {
+  test("TrackKeys with high priority schedules flush within 50ms", async () => {
     let dispatched = false
     system = {
       Fetch: async (_req: RequestBuilder, cb?: FetchCallback) => {
@@ -221,7 +221,7 @@ describe('BackgroundLoader — priority tiers', () => {
     } as unknown as SystemInterface
 
     loader = new TestLoader(system, cache)
-    loader.TrackKeys(pubkey(1), 'high')
+    loader.TrackKeys(pubkey(1), "high")
 
     // Should not have dispatched immediately (debounced)
     expect(dispatched).toBe(false)
@@ -231,7 +231,7 @@ describe('BackgroundLoader — priority tiers', () => {
     expect(dispatched).toBe(true)
   })
 
-  test('TrackKeys with normal priority flushes after 500ms', async () => {
+  test("TrackKeys with normal priority flushes after 500ms", async () => {
     let dispatched = false
     system = {
       Fetch: async (_req: RequestBuilder, cb?: FetchCallback) => {
@@ -242,7 +242,7 @@ describe('BackgroundLoader — priority tiers', () => {
     } as unknown as SystemInterface
 
     loader = new TestLoader(system, cache)
-    loader.TrackKeys(pubkey(1), 'normal')
+    loader.TrackKeys(pubkey(1), "normal")
 
     // At 200ms the normal 500ms debounce should NOT have fired yet
     await sleep(200)
@@ -253,7 +253,7 @@ describe('BackgroundLoader — priority tiers', () => {
     expect(dispatched).toBe(true)
   })
 
-  test('multiple TrackKeys calls within debounce window collapse into one dispatch', async () => {
+  test("multiple TrackKeys calls within debounce window collapse into one dispatch", async () => {
     let fetchCount = 0
     system = {
       Fetch: async (_req: RequestBuilder, cb?: FetchCallback) => {
@@ -267,7 +267,7 @@ describe('BackgroundLoader — priority tiers', () => {
 
     // Add 5 keys in rapid succession — all within the 50ms high-priority window
     for (const pk of pubkeys(5)) {
-      loader.TrackKeys(pk, 'high')
+      loader.TrackKeys(pk, "high")
     }
 
     await sleep(100)
@@ -276,7 +276,7 @@ describe('BackgroundLoader — priority tiers', () => {
     expect(fetchCount).toBe(1)
   })
 
-  test('UntrackKeys removes key from all priority sets', async () => {
+  test("UntrackKeys removes key from all priority sets", async () => {
     const fetchedKeys: string[] = []
     const pk1 = pubkey(1)
     const pk2 = pubkey(2)
@@ -290,8 +290,8 @@ describe('BackgroundLoader — priority tiers', () => {
     }
 
     loader = new SpyLoader(system, cache)
-    loader.TrackKeys(pk1, 'high')
-    loader.TrackKeys(pk2, 'high')
+    loader.TrackKeys(pk1, "high")
+    loader.TrackKeys(pk2, "high")
     loader.UntrackKeys(pk1)
 
     await sleep(100)
@@ -300,7 +300,7 @@ describe('BackgroundLoader — priority tiers', () => {
     expect(fetchedKeys).toContain(pk2)
   })
 
-  test('destroy() prevents dispatch after being called', async () => {
+  test("destroy() prevents dispatch after being called", async () => {
     let fetchCount = 0
     system = {
       Fetch: async (_req: RequestBuilder, cb?: FetchCallback) => {
@@ -311,7 +311,7 @@ describe('BackgroundLoader — priority tiers', () => {
     } as unknown as SystemInterface
 
     loader = new TestLoader(system, cache)
-    loader.TrackKeys(pubkey(1), 'high')
+    loader.TrackKeys(pubkey(1), "high")
     loader.destroy()
 
     await sleep(100)
@@ -319,10 +319,10 @@ describe('BackgroundLoader — priority tiers', () => {
   })
 })
 
-describe('BackgroundLoader — chunking', () => {
+describe("BackgroundLoader — chunking", () => {
   afterEach(() => {})
 
-  test('101 keys produce 2 Fetch calls (chunks of 100)', async () => {
+  test("101 keys produce 2 Fetch calls (chunks of 100)", async () => {
     const cache = new MemoryCache()
     const fetchCalls: number[] = []
 
@@ -336,7 +336,7 @@ describe('BackgroundLoader — chunking', () => {
 
     class ChunkSpyLoader extends BackgroundLoader<TestEntry> {
       override name() {
-        return 'ChunkSpyLoader'
+        return "ChunkSpyLoader"
       }
       override onEvent() {
         return undefined
@@ -346,7 +346,7 @@ describe('BackgroundLoader — chunking', () => {
       }
       override buildSub(missing: string[]): RequestBuilder {
         return {
-          id: 'chunk-sub',
+          id: "chunk-sub",
           withOptions: () => ({}),
           withFilter: () => ({ kinds: () => ({ authors: () => ({}) }) }),
         } as unknown as RequestBuilder
@@ -355,7 +355,7 @@ describe('BackgroundLoader — chunking', () => {
 
     const loader = new ChunkSpyLoader(system, cache)
     // Track 101 keys — should produce 2 chunks (100 + 1)
-    loader.TrackKeys(pubkeys(101), 'high')
+    loader.TrackKeys(pubkeys(101), "high")
 
     await sleep(150)
     loader.destroy()
@@ -363,7 +363,7 @@ describe('BackgroundLoader — chunking', () => {
     expect(fetchCalls.length).toBe(2)
   })
 
-  test('100 keys produce exactly 1 Fetch call', async () => {
+  test("100 keys produce exactly 1 Fetch call", async () => {
     const cache = new MemoryCache()
     const fetchCalls: number[] = []
 
@@ -377,7 +377,7 @@ describe('BackgroundLoader — chunking', () => {
 
     class ChunkSpyLoader extends BackgroundLoader<TestEntry> {
       override name() {
-        return 'ChunkSpyLoader100'
+        return "ChunkSpyLoader100"
       }
       override onEvent() {
         return undefined
@@ -387,7 +387,7 @@ describe('BackgroundLoader — chunking', () => {
       }
       override buildSub(missing: string[]): RequestBuilder {
         return {
-          id: 'chunk-sub',
+          id: "chunk-sub",
           withOptions: () => ({}),
           withFilter: () => ({ kinds: () => ({ authors: () => ({}) }) }),
         } as unknown as RequestBuilder
@@ -395,7 +395,7 @@ describe('BackgroundLoader — chunking', () => {
     }
 
     const loader = new ChunkSpyLoader(system, cache)
-    loader.TrackKeys(pubkeys(100), 'high')
+    loader.TrackKeys(pubkeys(100), "high")
 
     await sleep(150)
     loader.destroy()
@@ -403,7 +403,7 @@ describe('BackgroundLoader — chunking', () => {
     expect(fetchCalls.length).toBe(1)
   })
 
-  test('each chunk gets a unique RequestBuilder ID', async () => {
+  test("each chunk gets a unique RequestBuilder ID", async () => {
     const cache = new MemoryCache()
     const seenIds = new Set<string>()
 
@@ -417,7 +417,7 @@ describe('BackgroundLoader — chunking', () => {
 
     class IdSpyLoader extends BackgroundLoader<TestEntry> {
       override name() {
-        return 'IdSpyLoader'
+        return "IdSpyLoader"
       }
       override onEvent() {
         return undefined
@@ -428,7 +428,7 @@ describe('BackgroundLoader — chunking', () => {
       override buildSub(_missing: string[]): RequestBuilder {
         // Return a mutable stub
         const stub = {
-          id: 'initial',
+          id: "initial",
           withOptions: () => stub,
           withFilter: () => ({ kinds: () => ({ authors: () => ({}) }) }),
         }
@@ -438,7 +438,7 @@ describe('BackgroundLoader — chunking', () => {
 
     const loader = new IdSpyLoader(system, cache)
     // 250 keys → 3 chunks
-    loader.TrackKeys(pubkeys(250), 'high')
+    loader.TrackKeys(pubkeys(250), "high")
 
     await sleep(150)
     loader.destroy()
@@ -448,8 +448,8 @@ describe('BackgroundLoader — chunking', () => {
   })
 })
 
-describe('BackgroundLoader — in-flight deduplication', () => {
-  test('a key being fetched is not included in a second concurrent dispatch', async () => {
+describe("BackgroundLoader — in-flight deduplication", () => {
+  test("a key being fetched is not included in a second concurrent dispatch", async () => {
     const cache = new MemoryCache()
     const fetchedBatches: string[][] = []
     let resolveFetch!: () => void
@@ -473,7 +473,7 @@ describe('BackgroundLoader — in-flight deduplication', () => {
 
     class InFlightSpyLoader extends BackgroundLoader<TestEntry> {
       override name() {
-        return 'InFlightSpyLoader'
+        return "InFlightSpyLoader"
       }
       override onEvent() {
         return undefined
@@ -484,7 +484,7 @@ describe('BackgroundLoader — in-flight deduplication', () => {
       override buildSub(missing: string[]): RequestBuilder {
         fetchedBatches.push([...missing])
         const stub = {
-          id: 'inflight-sub',
+          id: "inflight-sub",
           withOptions: () => stub,
           withFilter: () => ({ kinds: () => ({ authors: () => ({}) }) }),
         }
@@ -496,11 +496,11 @@ describe('BackgroundLoader — in-flight deduplication', () => {
     const pk = pubkey(42)
 
     // First TrackKeys — starts the first (hanging) fetch
-    loader.TrackKeys(pk, 'high')
+    loader.TrackKeys(pk, "high")
     await sleep(80) // let the 50ms debounce fire and first fetch start
 
     // Second TrackKeys — fires a second flush while first fetch is still in-flight
-    loader.TrackKeys(pk, 'high')
+    loader.TrackKeys(pk, "high")
     await sleep(80)
 
     // Release the latch so the first fetch can complete
@@ -517,8 +517,8 @@ describe('BackgroundLoader — in-flight deduplication', () => {
   })
 })
 
-describe('BackgroundLoader — fresh cache skip', () => {
-  test('a key loaded recently is not re-fetched', async () => {
+describe("BackgroundLoader — fresh cache skip", () => {
+  test("a key loaded recently is not re-fetched", async () => {
     const cache = new MemoryCache()
     let fetchCount = 0
 
@@ -532,7 +532,7 @@ describe('BackgroundLoader — fresh cache skip', () => {
 
     class FreshSkipLoader extends BackgroundLoader<TestEntry> {
       override name() {
-        return 'FreshSkipLoader'
+        return "FreshSkipLoader"
       }
       override onEvent() {
         return undefined
@@ -543,7 +543,7 @@ describe('BackgroundLoader — fresh cache skip', () => {
       }
       override buildSub(missing: string[]): RequestBuilder {
         const stub = {
-          id: 'fresh-sub',
+          id: "fresh-sub",
           withOptions: () => stub,
           withFilter: () => ({ kinds: () => ({ authors: () => ({}) }) }),
         }
@@ -556,7 +556,7 @@ describe('BackgroundLoader — fresh cache skip', () => {
     cache.seed(pk, Date.now(), 1)
 
     const loader = new FreshSkipLoader(system, cache)
-    loader.TrackKeys(pk, 'high')
+    loader.TrackKeys(pk, "high")
 
     await sleep(100)
     loader.destroy()
@@ -565,7 +565,7 @@ describe('BackgroundLoader — fresh cache skip', () => {
     expect(fetchCount).toBe(0)
   })
 
-  test('a key loaded before the expire cutoff IS re-fetched', async () => {
+  test("a key loaded before the expire cutoff IS re-fetched", async () => {
     const cache = new MemoryCache()
     let fetchCount = 0
 
@@ -579,7 +579,7 @@ describe('BackgroundLoader — fresh cache skip', () => {
 
     class ExpiredLoader extends BackgroundLoader<TestEntry> {
       override name() {
-        return 'ExpiredLoader'
+        return "ExpiredLoader"
       }
       override onEvent() {
         return undefined
@@ -590,7 +590,7 @@ describe('BackgroundLoader — fresh cache skip', () => {
       }
       override buildSub(missing: string[]): RequestBuilder {
         const stub = {
-          id: 'expired-sub',
+          id: "expired-sub",
           withOptions: () => stub,
           withFilter: () => ({ kinds: () => ({ authors: () => ({}) }) }),
         }
@@ -603,7 +603,7 @@ describe('BackgroundLoader — fresh cache skip', () => {
     cache.seed(pk, Date.now() - 2 * 60 * 60 * 1_000, 1)
 
     const loader = new ExpiredLoader(system, cache)
-    loader.TrackKeys(pk, 'high')
+    loader.TrackKeys(pk, "high")
 
     await sleep(100)
     loader.destroy()
@@ -612,8 +612,8 @@ describe('BackgroundLoader — fresh cache skip', () => {
   })
 })
 
-describe('BackgroundLoader — blacklisting', () => {
-  test('keys that return no results are not re-fetched in the same session', async () => {
+describe("BackgroundLoader — blacklisting", () => {
+  test("keys that return no results are not re-fetched in the same session", async () => {
     const cache = new MemoryCache()
     const fetchedBatches: string[][] = []
 
@@ -627,7 +627,7 @@ describe('BackgroundLoader — blacklisting', () => {
 
     class BlacklistSpyLoader extends BackgroundLoader<TestEntry> {
       override name() {
-        return 'BlacklistSpyLoader'
+        return "BlacklistSpyLoader"
       }
       override onEvent() {
         return undefined
@@ -638,7 +638,7 @@ describe('BackgroundLoader — blacklisting', () => {
       override buildSub(missing: string[]): RequestBuilder {
         fetchedBatches.push([...missing])
         const stub = {
-          id: 'bl-sub',
+          id: "bl-sub",
           withOptions: () => stub,
           withFilter: () => ({ kinds: () => ({ authors: () => ({}) }) }),
         }
@@ -650,13 +650,13 @@ describe('BackgroundLoader — blacklisting', () => {
     const loader = new BlacklistSpyLoader(system, cache)
 
     // First TrackKeys — key has no result → gets blacklisted
-    loader.TrackKeys(pk, 'high')
+    loader.TrackKeys(pk, "high")
     await sleep(100)
 
     const firstBatchCount = fetchedBatches.length
 
     // Second TrackKeys — key should be blacklisted, no second fetch
-    loader.TrackKeys(pk, 'high')
+    loader.TrackKeys(pk, "high")
     await sleep(100)
 
     loader.destroy()

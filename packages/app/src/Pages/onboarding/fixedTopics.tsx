@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl"
 
 export const FixedTopics = {
   life: {
@@ -246,4 +246,4 @@ export const FixedTopics = {
       "photographyart",
     ],
   },
-};
+}

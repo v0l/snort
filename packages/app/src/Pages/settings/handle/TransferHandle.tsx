@@ -1,31 +1,31 @@
-import { useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { ApiHost } from "@/Utils/Const";
-import type { ServiceError } from "@/Utils/Nip05/ServiceProvider";
-import SnortServiceProvider, { type ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import { ApiHost } from "@/Utils/Const"
+import type { ServiceError } from "@/Utils/Nip05/ServiceProvider"
+import SnortServiceProvider, { type ManageHandle } from "@/Utils/Nip05/SnortServiceProvider"
 
 export default function TransferHandle({ handle }: { handle: ManageHandle }) {
-  const { publisher } = useEventPublisher();
-  const navigate = useNavigate();
-  const { formatMessage } = useIntl();
+  const { publisher } = useEventPublisher()
+  const navigate = useNavigate()
+  const { formatMessage } = useIntl()
 
-  const [newKey, setNewKey] = useState("");
-  const [error, setError] = useState<Array<string>>([]);
+  const [newKey, setNewKey] = useState("")
+  const [error, setError] = useState<Array<string>>([])
 
   async function startTransfer() {
-    if (!newKey || !publisher) return;
-    const sp = new SnortServiceProvider(publisher, `${ApiHost}/api/v1/n5sp`);
-    setError([]);
-    const rsp = await sp.transfer(handle.id, newKey);
+    if (!newKey || !publisher) return
+    const sp = new SnortServiceProvider(publisher, `${ApiHost}/api/v1/n5sp`)
+    setError([])
+    const rsp = await sp.transfer(handle.id, newKey)
     if ("error" in rsp) {
-      setError((rsp as ServiceError).errors);
-      return;
+      setError((rsp as ServiceError).errors)
+      return
     }
-    navigate(-1);
+    navigate(-1)
   }
 
   return (
@@ -49,5 +49,5 @@ export default function TransferHandle({ handle }: { handle: ManageHandle }) {
       </div>
       {error && <b className="error">{error}</b>}
     </>
-  );
+  )
 }

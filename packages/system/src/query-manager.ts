@@ -1,6 +1,6 @@
-import { unixNowMs } from '@snort/shared'
-import debug from 'debug'
-import { EventEmitter } from 'eventemitter3'
+import { unixNowMs } from "@snort/shared"
+import debug from "debug"
+import { EventEmitter } from "eventemitter3"
 import {
   type BuiltRawReqFilter,
   Nips,
@@ -8,16 +8,16 @@ import {
   type RequestBuilder,
   type SystemInterface,
   type TaggedNostrEvent,
-} from '.'
-import type { ConnectionType } from './connection-pool'
-import { QueryFetchTimeout } from './const'
-import { EventExt } from './event-ext'
-import { NegentropyFlow } from './negentropy/negentropy-flow'
-import { NoteCollection } from './note-collection'
-import { Query, QueryTrace, type QueryTraceEvent } from './query'
-import { eventMatchesFilter, isRequestSatisfied } from './request-matcher'
-import { trimFilters } from './request-trim'
-import { RangeSync } from './sync/range-sync'
+} from "."
+import type { ConnectionType } from "./connection-pool"
+import { QueryFetchTimeout } from "./const"
+import { EventExt } from "./event-ext"
+import { NegentropyFlow } from "./negentropy/negentropy-flow"
+import { NoteCollection } from "./note-collection"
+import { Query, QueryTrace, type QueryTraceEvent } from "./query"
+import { eventMatchesFilter, isRequestSatisfied } from "./request-matcher"
+import { trimFilters } from "./request-trim"
+import { RangeSync } from "./sync/range-sync"
 
 interface QueryManagerEvents {
   change: () => void
@@ -36,7 +36,7 @@ interface PendingTrace {
  * Query manager handles sending requests to the nostr network
  */
 export class QueryManager extends EventEmitter<QueryManagerEvents> {
-  #log = debug('QueryManager')
+  #log = debug("QueryManager")
 
   /**
    * All active queries
@@ -91,7 +91,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
 
   #setupConnectionListeners() {
     // Listen for new connections to retry pending traces
-    this.#system.pool.on('connected', address => {
+    this.#system.pool.on("connected", address => {
       const conn = this.#system.pool.getConnection(address)
       if (conn) {
         this.#connectionListeners.delete(conn.id)
@@ -101,7 +101,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     })
 
     // Clean up traces when connection disconnects
-    this.#system.pool.on('disconnect', address => {
+    this.#system.pool.on("disconnect", address => {
       const conn = this.#system.pool.getConnection(address)
       if (conn) {
         this.#connectionListeners.delete(conn.id)
@@ -131,25 +131,25 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     if (existing) {
       if (existing.addRequest(req)) {
         existing.start() // start emit again
-        this.emit('change')
+        this.emit("change")
       }
       return existing
     } else {
       const q = new Query(req)
-      q.on('trace', e => {
-        this.emit('trace', e, req.id)
+      q.on("trace", e => {
+        this.emit("trace", e, req.id)
       })
-      q.on('request', (_id, fx) => {
+      q.on("request", (_id, fx) => {
         this.#send(q, fx)
       })
-      q.on('end', () => {
-        q.off('trace')
-        q.off('request')
+      q.on("end", () => {
+        q.off("trace")
+        q.off("request")
       })
 
       this.#queries.set(req.id, q)
       if (req.numFilters > 0) {
-        this.emit('change')
+        this.emit("change")
       }
       return q
     }
@@ -170,7 +170,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     const filters = req.buildRaw()
     const q = this.query(req)
     if (cb) {
-      q.on('event', cb)
+      q.on("event", cb)
     }
     const pDone = new Promise<void>((resolve, reject) => {
       const t = setTimeout(() => {
@@ -180,7 +180,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
           ),
         )
       }, QueryFetchTimeout)
-      q.once('eose', () => {
+      q.once("eose", () => {
         clearTimeout(t)
         resolve()
       })
@@ -190,7 +190,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     const results = q.feed.takeSnapshot()
     if (cb) {
       q.flush()
-      q.off('event', cb)
+      q.off("event", cb)
     }
     return results.filter(a => filters.some(b => eventMatchesFilter(a, b)))
   }
@@ -206,7 +206,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     filters = trimFilters(filters)
 
     if (filters.length === 0) {
-      this.#log('Dropping %s %o', q.id)
+      this.#log("Dropping %s %o", q.id)
       return
     }
 
@@ -220,10 +220,10 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     let syncFrom: Array<TaggedNostrEvent> | undefined
     // fetch results from cache first, flag qSend for sync
     if (this.#system.cacheRelay && !q.skipCache) {
-      const data = await this.#system.cacheRelay.query(['REQ', q.id, ...filters])
+      const data = await this.#system.cacheRelay.query(["REQ", q.id, ...filters])
       syncFrom = data
       if (data.length > 0) {
-        this.#log('Adding from cache %s %O', q.id, data)
+        this.#log("Adding from cache %s %O", q.id, data)
         q.feed.add(data)
       }
     }
@@ -233,14 +233,14 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       // only remove the "ids" filters
       const newFilters = filters.filter(a => !isRequestSatisfied(a, syncFrom!))
       if (newFilters.length !== filters.length) {
-        this.#log('Removing satisfied filters %o %o', newFilters, filters)
+        this.#log("Removing satisfied filters %o %o", newFilters, filters)
         filters = newFilters
       }
     }
 
     // nothing left to send
     if (filters.length === 0) {
-      this.#log('Dropping %s, all filters are satisfied', q.id)
+      this.#log("Dropping %s, all filters are satisfied", q.id)
       return
     }
 
@@ -250,7 +250,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
 
     const compressed = this.#system.optimizer.compress(filters).reduce(
       (acc, v) => {
-        for (const r of v.relays ?? ['']) {
+        for (const r of v.relays ?? [""]) {
           acc[r] ??= []
           acc[r].push(v)
         }
@@ -282,17 +282,17 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     }
     // cannot send unless relay is tagged on ephemeral relay connection
     if (!q.relay && c.ephemeral) {
-      this.#log('Cant send non-specific REQ to ephemeral connection %O %O %O', q, q.relay, c)
+      this.#log("Cant send non-specific REQ to ephemeral connection %O %O %O", q, q.relay, c)
       return false
     }
     // search not supported, cant send
     if (q.filters.some(a => a.search) && !c.info?.supported_nips?.includes(Nips.Search)) {
-      this.#log('Cant send REQ to non-search relay', c.address)
+      this.#log("Cant send REQ to non-search relay", c.address)
       return false
     }
     // query already closed, cant send
     if (query.canRemove()) {
-      this.#log('Cant send REQ when query is closed', query.id, q)
+      this.#log("Cant send REQ when query is closed", query.id, q)
       return false
     }
     return true
@@ -327,13 +327,13 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       }
     }
 
-    this.#system.pool.on('event', eventHandler)
-    connection.on('eose', eoseHandler)
-    connection.on('closed', closedHandler)
-    query.on('end', () => {
-      this.#system.pool.off('event', eventHandler)
-      connection.off('eose', eoseHandler)
-      connection.off('closed', closedHandler)
+    this.#system.pool.on("event", eventHandler)
+    connection.on("eose", eoseHandler)
+    connection.on("closed", closedHandler)
+    query.on("end", () => {
+      this.#system.pool.off("event", eventHandler)
+      connection.off("eose", eoseHandler)
+      connection.off("closed", closedHandler)
     })
 
     return trace
@@ -349,21 +349,21 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     // Queue if the connection is not yet open — will be retried on 'connected'
     if (!connection.isOpen) {
       this.#pendingTraces.push({ query, trace, connection, filters })
-      this.#log('Query queued for %s (not yet open): %O', connection.address, filters)
+      this.#log("Query queued for %s (not yet open): %O", connection.address, filters)
       return false
     }
 
     // Check if connection can handle more subscriptions
     if (connection.activeSubscriptions >= connection.maxSubscriptions) {
       this.#pendingTraces.push({ query, trace, connection, filters })
-      this.#log('Query queued for %s (at max subscriptions): %O', connection.address, filters)
+      this.#log("Query queued for %s (at max subscriptions): %O", connection.address, filters)
       return false
     }
 
     // Normalize filters
     const normalizedFilters = filters.filters.map(a => {
       const copy = { ...a }
-      delete copy['relays']
+      delete copy["relays"]
       return copy
     })
 
@@ -371,11 +371,11 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       // Handle SYNC command - use sync logic
       this.#handleSync(trace, connection, filters.syncFrom, normalizedFilters)
     } else {
-      connection.request(['REQ', trace.id, ...normalizedFilters], () => trace.sent())
+      connection.request(["REQ", trace.id, ...normalizedFilters], () => trace.sent())
     }
 
     this.#log(
-      'Sent query %s to %s %s (streaming=%s) %O',
+      "Sent query %s to %s %s (streaming=%s) %O",
       trace.id,
       connection.address,
       query.id,
@@ -397,16 +397,16 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     if ((connection.info?.negentropy ?? NaN) >= 1) {
       // Use negentropy sync
       const neg = new NegentropyFlow(trace.id, connection, eventSet, filters)
-      neg.once('finish', newFilters => {
+      neg.once("finish", newFilters => {
         if (newFilters.length > 0) {
           // Send request for missing event ids
-          connection.request(['REQ', trace.id, ...newFilters])
+          connection.request(["REQ", trace.id, ...newFilters])
         } else {
           // no results to query, emulate closed
-          connection.emit('closed', trace.id, 'Nothing to sync')
+          connection.emit("closed", trace.id, "Nothing to sync")
         }
       })
-      neg.once('error', () => {
+      neg.once("error", () => {
         this.#fallbackSync(trace, connection, eventSet, filters)
       })
       neg.start()
@@ -433,13 +433,13 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     // just send the filters directly
     const isReplaceableSync = filters.every(a => a.kinds?.every(b => EventExt.isReplaceable(b) ?? false))
     if (filters.some(a => a.since || a.until || a.ids || a.limit) || isReplaceableSync) {
-      connection.request(['REQ', trace.id, ...filters], () => trace.sent())
-    } else if (this.#system.config.fallbackSync === 'since') {
+      connection.request(["REQ", trace.id, ...filters], () => trace.sent())
+    } else if (this.#system.config.fallbackSync === "since") {
       this.#syncSince(trace, connection, eventSet, filters)
-    } else if (this.#system.config.fallbackSync === 'range-sync') {
+    } else if (this.#system.config.fallbackSync === "range-sync") {
       this.#syncRangeSync(trace, connection, eventSet, filters)
     } else {
-      throw new Error('No fallback sync method')
+      throw new Error("No fallback sync method")
     }
   }
 
@@ -460,7 +460,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         since: latest + 1,
       }
     })
-    connection.request(['REQ', trace.id, ...newFilters], () => trace.sent())
+    connection.request(["REQ", trace.id, ...newFilters], () => trace.sent())
   }
 
   /**
@@ -476,24 +476,24 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       return await new Promise((resolve, reject) => {
         const results = new NoteCollection()
         const f = rb.buildRaw()
-        connection.on('unverifiedEvent', (c, e) => {
+        connection.on("unverifiedEvent", (c, e) => {
           if (rb.id === c) {
             cb?.([e])
             results.add(e)
           }
         })
-        connection.on('eose', s => {
+        connection.on("eose", s => {
           if (s === rb.id) {
             resolve(results.takeSnapshot())
           }
         })
-        connection.request(['REQ', rb.id, ...f], undefined)
+        connection.request(["REQ", rb.id, ...f], undefined)
       })
     })
     const latest = eventSet.reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0)
     rs.setStartPoint(latest + 1)
-    rs.on('event', ev => {
-      ev.forEach(e => connection.emit('unverifiedEvent', trace.id, e))
+    rs.on("event", ev => {
+      ev.forEach(e => connection.emit("unverifiedEvent", trace.id, e))
     })
     for (const f of filters) {
       rs.sync(f)
@@ -527,10 +527,10 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
           this.sendTrace(q, trace, nc, qSend)
           return [trace]
         } else {
-          this.#log('Cannot send query to %s: validation failed', qSend.relay)
+          this.#log("Cannot send query to %s: validation failed", qSend.relay)
         }
       } else {
-        console.warn('Failed to connect to new relay for:', qSend.relay, q)
+        console.warn("Failed to connect to new relay for:", qSend.relay, q)
       }
     } else {
       const ret = []
@@ -542,14 +542,14 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
             this.sendTrace(q, trace, s, qSend)
             ret.push(trace)
           } else {
-            this.#log('Cannot send query to %s: validation failed', a)
+            this.#log("Cannot send query to %s: validation failed", a)
           }
         }
       }
       return ret
     }
 
-    this.emit('request', q.id, qSend)
+    this.emit("request", q.id, qSend)
   }
 
   #cleanup() {
@@ -558,7 +558,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       if (v.canRemove()) {
         v.closeQuery()
         this.#queries.delete(k)
-        this.#log('Deleted query %s', k)
+        this.#log("Deleted query %s", k)
         changed = true
       } else {
         const now = unixNowMs()
@@ -570,7 +570,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       }
     }
     if (changed) {
-      this.emit('change')
+      this.emit("change")
     }
   }
 }

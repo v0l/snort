@@ -1,7 +1,7 @@
-import debug from 'debug'
-import { EventEmitter } from 'eventemitter3'
-import type { CacheStore } from './cache-store'
-import { removeUndefined, unixNowMs } from './utils'
+import debug from "debug"
+import { EventEmitter } from "eventemitter3"
+import type { CacheStore } from "./cache-store"
+import { removeUndefined, unixNowMs } from "./utils"
 
 type HookFn = () => void
 
@@ -31,7 +31,7 @@ export type CachedTable<T> = {
    */
   update<TWithCreated extends T & { created: number; loaded: number }>(
     m: TWithCreated,
-  ): Promise<'new' | 'refresh' | 'updated' | 'no_change'>
+  ): Promise<"new" | "refresh" | "updated" | "no_change">
 
   /**
    * Loads a list of rows from disk cache
@@ -74,14 +74,14 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
     this.log = debug(name)
     setInterval(() => {
       this.log(
-        '%d loaded, %d on-disk, %d hooks, %d% hit',
+        "%d loaded, %d on-disk, %d hooks, %d% hit",
         this.cache.size,
         this.onTable.size,
-        this.listenerCount('change'),
+        this.listenerCount("change"),
         ((this.#hits / (this.#hits + this.#miss)) * 100).toFixed(1),
       )
     }, 30_000)
-    this.on('change', () => {
+    this.on("change", () => {
       this.#snapshot = this.takeSnapshot()
     })
   }
@@ -100,8 +100,8 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
         fn()
       }
     }
-    this.on('change', handle)
-    return () => this.off('change', handle)
+    this.on("change", handle)
+    return () => this.off("change", handle)
   }
 
   /**
@@ -157,7 +157,7 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
       const cached = await this.store.get(key)
       if (cached) {
         this.cache.set(this.key(cached), cached)
-        this.emit('change', [key])
+        this.emit("change", [key])
         return cached
       }
     }
@@ -188,7 +188,7 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
         console.error(e)
       }
     }
-    this.emit('change', [k])
+    this.emit("change", [k])
     this.#notifyKeyListeners(k)
   }
 
@@ -203,7 +203,7 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
     }
     obj.forEach(v => this.cache.set(this.key(v), v))
     this.emit(
-      'change',
+      "change",
       obj.map(a => this.key(a)),
     )
     for (const v of obj) {
@@ -216,18 +216,18 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
     const existing = this.getFromCache(k) as TCachedWithCreated
     const updateType = (() => {
       if (!existing) {
-        return 'new'
+        return "new"
       }
       if (existing.created < m.created) {
-        return 'updated'
+        return "updated"
       }
       if (existing && existing.loaded < m.loaded) {
-        return 'refresh'
+        return "refresh"
       }
-      return 'no_change'
+      return "no_change"
     })()
-    this.log('Updating %s %s %o', k, updateType, m)
-    if (updateType !== 'no_change') {
+    this.log("Updating %s %s %o", k, updateType, m)
+    if (updateType !== "no_change") {
       const updated = {
         ...existing,
         ...m,
@@ -258,7 +258,7 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents<TCache
           this.cache.set(this.key(a), a)
         })
         this.emit(
-          'change',
+          "change",
           fromCache.map(a => this.key(a)),
         )
         this.log(`Loaded %d/%d in %d ms`, fromCache.length, keys.length, (unixNowMs() - start).toLocaleString())

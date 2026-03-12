@@ -6,11 +6,7 @@
   "scripts": {
     "build": "wasm-pack build --release -t web -s snort && rm -f pkg/.gitignore"
   },
-  "files": [
-    "pkg/system_wasm_bg.wasm",
-    "pkg/system_wasm.js",
-    "pkg/system_wasm.d.ts"
-  ],
+  "files": ["pkg/system_wasm_bg.wasm", "pkg/system_wasm.js", "pkg/system_wasm.d.ts"],
   "module": "pkg/system_wasm.js",
   "types": "pkg/system_wasm.d.ts"
 }

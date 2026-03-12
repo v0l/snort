@@ -1,32 +1,32 @@
-import { FeedCache } from "@snort/shared";
-import type { NostrEvent } from "@snort/system";
+import { FeedCache } from "@snort/shared"
+import type { NostrEvent } from "@snort/system"
 
 export class ChatCache extends FeedCache<NostrEvent> {
   constructor() {
-    super("ChatCache");
+    super("ChatCache")
   }
 
   key(of: NostrEvent): string {
-    return of.id;
+    return of.id
   }
 
   override async preload(): Promise<void> {
-    await super.preload();
+    await super.preload()
     // load all dms to memory
-    await this.buffer([...this.onTable]);
+    await this.buffer([...this.onTable])
   }
 
   newest(): number {
-    let ret = 0;
-    this.cache.forEach(v => (ret = v.created_at > ret ? v.created_at : ret));
-    return ret;
+    let ret = 0
+    this.cache.forEach(v => (ret = v.created_at > ret ? v.created_at : ret))
+    return ret
   }
 
   takeSnapshot(): Array<NostrEvent> {
-    return [...this.cache.values()];
+    return [...this.cache.values()]
   }
 
   async search() {
-    return <Array<NostrEvent>>[];
+    return <Array<NostrEvent>>[]
   }
 }

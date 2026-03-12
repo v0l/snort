@@ -1,15 +1,15 @@
-import classNames from "classnames";
-import React, { type ForwardedRef } from "react";
+import classNames from "classnames"
+import React, { type ForwardedRef } from "react"
 
-import Spinner from "@/Components/Icons/Spinner";
-import useLoading from "@/Hooks/useLoading";
+import Spinner from "@/Components/Icons/Spinner"
+import useLoading from "@/Hooks/useLoading"
 
 export interface AsyncButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  onClick?: (e: React.MouseEvent) => Promise<void> | void;
+  onClick?: (e: React.MouseEvent) => Promise<void> | void
 }
 
 const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>((props, ref) => {
-  const { handle, loading } = useLoading(props.onClick, props.disabled);
+  const { handle, loading } = useLoading(props.onClick, props.disabled)
 
   return (
     <button
@@ -21,10 +21,12 @@ const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>((props
         "light:border light:border-border light:text-neutral-400 light:shadow-sm light:hover:shadow-md",
         props.className,
       )}
-      onClick={handle}>
+      onClick={handle}
+    >
       <span
         className="flex items-center justify-center gap-2 light:text-black"
-        style={{ visibility: loading ? "hidden" : "visible" }}>
+        style={{ visibility: loading ? "hidden" : "visible" }}
+      >
         {props.children}
       </span>
       {loading && (
@@ -35,9 +37,9 @@ const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>((props
         </span>
       )}
     </button>
-  );
-});
+  )
+})
 
-AsyncButton.displayName = "AsyncButton";
+AsyncButton.displayName = "AsyncButton"
 
-export default AsyncButton;
+export default AsyncButton

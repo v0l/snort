@@ -1,18 +1,18 @@
-import type { LNURL } from '@snort/shared'
-import type { CachedMetadata } from '@snort/system'
-import { useState } from 'react'
+import type { LNURL } from "@snort/shared"
+import type { CachedMetadata } from "@snort/system"
+import { useState } from "react"
 
-import Icon from '@/Components/Icons/Icon'
-import Text from '@/Components/Text/Text'
-import { ProfileBadges } from '@/Components/User/BadgeList'
-import DisplayName from '@/Components/User/DisplayName'
-import FollowedBy from '@/Components/User/FollowedBy'
-import FollowsYou from '@/Components/User/FollowsYou'
-import Nip05 from '@/Components/User/Nip05'
-import { UserWebsiteLink } from '@/Components/User/UserWebsiteLink'
-import ZapModal from '@/Components/ZapModal/ZapModal'
-import usePreferences from '@/Hooks/usePreferences'
-import { MusicStatus } from '@/Pages/Profile/MusicStatus'
+import Icon from "@/Components/Icons/Icon"
+import Text from "@/Components/Text/Text"
+import { ProfileBadges } from "@/Components/User/BadgeList"
+import DisplayName from "@/Components/User/DisplayName"
+import FollowedBy from "@/Components/User/FollowedBy"
+import FollowsYou from "@/Components/User/FollowsYou"
+import Nip05 from "@/Components/User/Nip05"
+import { UserWebsiteLink } from "@/Components/User/UserWebsiteLink"
+import ZapModal from "@/Components/ZapModal/ZapModal"
+import usePreferences from "@/Hooks/usePreferences"
+import { MusicStatus } from "@/Pages/Profile/MusicStatus"
 
 const ProfileDetails = ({
   user,
@@ -44,8 +44,8 @@ const ProfileDetails = ({
     <>
       <div className="flex flex-col gap-1">
         <h2 className="flex items-center gap-2">
-          <DisplayName user={user} pubkey={user?.pubkey ?? ''} />
-          <FollowsYou followsMe={user?.pubkey !== loginPubKey && follows.includes(loginPubKey ?? '')} />
+          <DisplayName user={user} pubkey={user?.pubkey ?? ""} />
+          <FollowsYou followsMe={user?.pubkey !== loginPubKey && follows.includes(loginPubKey ?? "")} />
         </h2>
         {user?.nip05 && <Nip05 pubkey={user.pubkey} showBadges={true} />}
       </div>
@@ -69,7 +69,7 @@ const ProfileDetails = ({
           lnurl?.lnurl && id
             ? [
                 {
-                  type: 'lnurl',
+                  type: "lnurl",
                   value: lnurl?.lnurl,
                   weight: 1,
                   name: user?.display_name || user?.name,
@@ -87,7 +87,7 @@ const ProfileDetails = ({
   const bio = () =>
     aboutText.length > 0 && (
       <Text
-        id={id ?? user?.pubkey ?? 'unknown-profile-about'}
+        id={id ?? user?.pubkey ?? "unknown-profile-about"}
         content={aboutText}
         tags={[]}
         creator={id!}

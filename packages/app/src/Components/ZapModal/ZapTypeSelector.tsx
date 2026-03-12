@@ -1,17 +1,17 @@
-import type React from "react";
-import { FormattedMessage } from "react-intl";
+import type React from "react"
+import { FormattedMessage } from "react-intl"
 
-import { ZapType } from "@/Components/ZapModal/ZapType";
-import useLogin from "@/Hooks/useLogin";
-import AsyncButton from "../Button/AsyncButton";
+import { ZapType } from "@/Components/ZapModal/ZapType"
+import useLogin from "@/Hooks/useLogin"
+import AsyncButton from "../Button/AsyncButton"
 
 export function ZapTypeSelector({ zapType, setZapType }: { zapType: ZapType; setZapType: (t: ZapType) => void }) {
-  const { readonly } = useLogin(s => ({ readonly: s.readonly }));
+  const { readonly } = useLogin(s => ({ readonly: s.readonly }))
   const makeTab = (t: ZapType, n: React.ReactNode) => (
     <AsyncButton className={zapType === t ? "!bg-neutral-400" : ""} onClick={() => setZapType(t)}>
       {n}
     </AsyncButton>
-  );
+  )
   return (
     <div className="flex flex-col gap-2">
       <div className="font-medium">
@@ -24,5 +24,5 @@ export function ZapTypeSelector({ zapType, setZapType }: { zapType: ZapType; set
         {makeTab(ZapType.NonZap, <FormattedMessage defaultMessage="Non-Zap" />)}
       </div>
     </div>
-  );
+  )
 }

@@ -1,37 +1,37 @@
-import type { NostrEvent, TaggedNostrEvent } from "@snort/system";
-import { SnortContext } from "@snort/system-react";
-import { use, useState } from "react";
+import type { NostrEvent, TaggedNostrEvent } from "@snort/system"
+import { SnortContext } from "@snort/system-react"
+import { use, useState } from "react"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
+import AsyncButton from "@/Components/Button/AsyncButton"
 
 export function DebugPage() {
-  const system = use(SnortContext);
-  const [filter, setFilter] = useState("");
-  const [event, setEvent] = useState("");
-  const [results, setResult] = useState<Array<TaggedNostrEvent>>([]);
+  const system = use(SnortContext)
+  const [filter, setFilter] = useState("")
+  const [event, setEvent] = useState("")
+  const [results, setResult] = useState<Array<TaggedNostrEvent>>([])
 
   async function search() {
     if (filter && system.cacheRelay) {
-      const r = await system.cacheRelay.query(["REQ", "test", JSON.parse(filter)]);
-      setResult(r.map(a => ({ ...a, relays: [] })));
+      const r = await system.cacheRelay.query(["REQ", "test", JSON.parse(filter)])
+      setResult(r.map(a => ({ ...a, relays: [] })))
     }
   }
 
   async function insert() {
     if (event && system.cacheRelay) {
-      const r = await system.cacheRelay.event(JSON.parse(event) as NostrEvent);
+      const r = await system.cacheRelay.event(JSON.parse(event) as NostrEvent)
       setResult([
         {
           content: JSON.stringify(r),
         } as unknown as TaggedNostrEvent,
-      ]);
+      ])
     }
   }
 
   async function removeEvents() {
     if (filter && system.cacheRelay) {
-      const r = await system.cacheRelay.delete(["REQ", "delete-events", JSON.parse(filter)]);
-      setResult(r.map(a => ({ id: a }) as TaggedNostrEvent));
+      const r = await system.cacheRelay.delete(["REQ", "delete-events", JSON.parse(filter)])
+      setResult(r.map(a => ({ id: a }) as TaggedNostrEvent))
     }
   }
   return (
@@ -55,5 +55,5 @@ export function DebugPage() {
         ))}
       </div>
     </div>
-  );
+  )
 }

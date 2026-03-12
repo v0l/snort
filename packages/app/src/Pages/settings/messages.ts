@@ -1,4 +1,4 @@
-import { defineMessages } from "react-intl";
+import { defineMessages } from "react-intl"
 
 export default defineMessages({
   Profile: { defaultMessage: "Profile", id: "itPgxd" },
@@ -76,4 +76,4 @@ export default defineMessages({
   ServiceWorkerNotRunning: { defaultMessage: "Service Worker Not Running", id: "RDha9y" },
   SubscribedToPush: { defaultMessage: "Subscribed to Push", id: "G3A56c" },
   NotSubscribedToPush: { defaultMessage: "Not Subscribed to Push", id: "d2ebEu" },
-});
+})

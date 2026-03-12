@@ -1,133 +1,133 @@
-import { EventBuilder, EventExt, type NostrEvent, NostrLink } from "@snort/system";
-import { NostrPrefix, bech32ToHex, sha256, unixNow } from "@snort/shared";
-import { useState } from "react";
+import { EventBuilder, EventExt, type NostrEvent, NostrLink } from "@snort/system"
+import { NostrPrefix, bech32ToHex, sha256, unixNow } from "@snort/shared"
+import { useState } from "react"
 
-import { KieranPubKey } from "@/Utils/Const";
+import { KieranPubKey } from "@/Utils/Const"
 
 // Button Components
-import AsyncButton from "@/Components/Button/AsyncButton";
-import BackButton from "@/Components/Button/BackButton";
-import CloseButton from "@/Components/Button/CloseButton";
-import IconButton from "@/Components/Button/IconButton";
-import LogoutButton from "@/Components/Button/LogoutButton";
-import NavLink from "@/Components/Button/NavLink";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import BackButton from "@/Components/Button/BackButton"
+import CloseButton from "@/Components/Button/CloseButton"
+import IconButton from "@/Components/Button/IconButton"
+import LogoutButton from "@/Components/Button/LogoutButton"
+import NavLink from "@/Components/Button/NavLink"
 
 // Icon Components
-import Icon from "@/Components/Icons/Icon";
-import Spinner from "@/Components/Icons/Spinner";
-import Alby from "@/Components/Icons/Alby";
-import Cashu from "@/Components/Icons/Cashu";
-import Nostrich from "@/Components/Icons/Nostrich";
-import BlueWallet from "@/Components/Icons/BlueWallet";
-import ECash from "@/Components/Icons/ECash";
-import NWC from "@/Components/Icons/NWC";
-import { ToggleSwitch } from "@/Components/Icons/Toggle";
+import Icon from "@/Components/Icons/Icon"
+import Spinner from "@/Components/Icons/Spinner"
+import Alby from "@/Components/Icons/Alby"
+import Cashu from "@/Components/Icons/Cashu"
+import Nostrich from "@/Components/Icons/Nostrich"
+import BlueWallet from "@/Components/Icons/BlueWallet"
+import ECash from "@/Components/Icons/ECash"
+import NWC from "@/Components/Icons/NWC"
+import { ToggleSwitch } from "@/Components/Icons/Toggle"
 
 // Text Components
-import Text from "@/Components/Text/Text";
-import HighlightedText from "@/Components/Text/HighlightedText";
+import Text from "@/Components/Text/Text"
+import HighlightedText from "@/Components/Text/HighlightedText"
 
 // User Components
-import Avatar from "@/Components/User/Avatar";
-import Username from "@/Components/User/Username";
-import DisplayName from "@/Components/User/DisplayName";
-import FollowButton from "@/Components/User/FollowButton";
-import FollowsYou from "@/Components/User/FollowsYou";
-import Nip05 from "@/Components/User/Nip05";
-import ProfileImage from "@/Components/User/ProfileImage";
-import { ProfileLink } from "@/Components/User/ProfileLink";
-import { AvatarGroup } from "@/Components/User/AvatarGroup";
-import MuteButton from "@/Components/User/MuteButton";
-import FollowDistanceIndicator from "@/Components/User/FollowDistanceIndicator";
+import Avatar from "@/Components/User/Avatar"
+import Username from "@/Components/User/Username"
+import DisplayName from "@/Components/User/DisplayName"
+import FollowButton from "@/Components/User/FollowButton"
+import FollowsYou from "@/Components/User/FollowsYou"
+import Nip05 from "@/Components/User/Nip05"
+import ProfileImage from "@/Components/User/ProfileImage"
+import { ProfileLink } from "@/Components/User/ProfileLink"
+import { AvatarGroup } from "@/Components/User/AvatarGroup"
+import MuteButton from "@/Components/User/MuteButton"
+import FollowDistanceIndicator from "@/Components/User/FollowDistanceIndicator"
 
 // Embed Components
-import Hashtag from "@/Components/Embed/Hashtag";
-import Mention from "@/Components/Embed/Mention";
-import Invoice from "@/Components/Embed/Invoice";
-import MagnetLink from "@/Components/Embed/MagnetLink";
+import Hashtag from "@/Components/Embed/Hashtag"
+import Mention from "@/Components/Embed/Mention"
+import Invoice from "@/Components/Embed/Invoice"
+import MagnetLink from "@/Components/Embed/MagnetLink"
 
 // Event Components
-import Note from "@/Components/Event/EventComponent";
-import NoteTime from "@/Components/Event/Note/NoteTime";
-import ZapButton from "@/Components/Event/ZapButton";
-import { ClientTag } from "@/Components/Event/Note/ClientTag";
-import Poll from "@/Components/Event/Poll";
-import { LongFormText } from "@/Components/Event/LongFormText";
-import { ZapGoal } from "@/Components/Event/ZapGoal";
-import { ZapsSummary } from "@/Components/Event/ZapsSummary";
-import NoteHeader from "@/Components/Event/Note/NoteHeader";
+import Note from "@/Components/Event/EventComponent"
+import NoteTime from "@/Components/Event/Note/NoteTime"
+import ZapButton from "@/Components/Event/ZapButton"
+import { ClientTag } from "@/Components/Event/Note/ClientTag"
+import Poll from "@/Components/Event/Poll"
+import { LongFormText } from "@/Components/Event/LongFormText"
+import { ZapGoal } from "@/Components/Event/ZapGoal"
+import { ZapsSummary } from "@/Components/Event/ZapsSummary"
+import NoteHeader from "@/Components/Event/Note/NoteHeader"
 
 // Other Components
-import Copy from "@/Components/Copy/Copy";
-import { ProxyImg } from "@/Components/ProxyImg";
-import QrCode from "@/Components/QrCode";
-import Collapsed, { CollapsedSection } from "@/Components/Collapsed";
-import Modal from "@/Components/Modal/Modal";
-import { WarningNotice } from "@/Components/WarningNotice/WarningNotice";
-import Progress from "@/Components/Progress/Progress";
-import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors";
-import PageSpinner from "@/Components/PageSpinner";
-import Toaster, { Toastore } from "@/Components/Toaster/Toaster";
-import { Markdown } from "@/Components/Event/Markdown";
+import Copy from "@/Components/Copy/Copy"
+import { ProxyImg } from "@/Components/ProxyImg"
+import QrCode from "@/Components/QrCode"
+import Collapsed, { CollapsedSection } from "@/Components/Collapsed"
+import Modal from "@/Components/Modal/Modal"
+import { WarningNotice } from "@/Components/WarningNotice/WarningNotice"
+import Progress from "@/Components/Progress/Progress"
+import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors"
+import PageSpinner from "@/Components/PageSpinner"
+import Toaster, { Toastore } from "@/Components/Toaster/Toaster"
+import { Markdown } from "@/Components/Event/Markdown"
 
 // Feed Components
-import LoadMore from "@/Components/Feed/LoadMore";
+import LoadMore from "@/Components/Feed/LoadMore"
 
 // Embed - Music & Video
-import SpotifyEmbed from "@/Components/Embed/SpotifyEmbed";
-import YoutubeEmbed from "@/Components/Embed/YoutubeEmbed";
-import TwitchEmbed from "@/Components/Embed/TwitchEmbed";
-import AppleMusicEmbed from "@/Components/Embed/AppleMusicEmbed";
-import TidalEmbed from "@/Components/Embed/TidalEmbed";
-import SoundCloudEmbed from "@/Components/Embed/SoundCloudEmded";
-import WavlakeEmbed from "@/Components/Embed/WavlakeEmbed";
-import MixCloudEmbed from "@/Components/Embed/MixCloudEmbed";
-import NostrNestsEmbed from "@/Components/Embed/NostrNestsEmbed";
-import CashuNuts from "@/Components/Embed/CashuNuts";
+import SpotifyEmbed from "@/Components/Embed/SpotifyEmbed"
+import YoutubeEmbed from "@/Components/Embed/YoutubeEmbed"
+import TwitchEmbed from "@/Components/Embed/TwitchEmbed"
+import AppleMusicEmbed from "@/Components/Embed/AppleMusicEmbed"
+import TidalEmbed from "@/Components/Embed/TidalEmbed"
+import SoundCloudEmbed from "@/Components/Embed/SoundCloudEmded"
+import WavlakeEmbed from "@/Components/Embed/WavlakeEmbed"
+import MixCloudEmbed from "@/Components/Embed/MixCloudEmbed"
+import NostrNestsEmbed from "@/Components/Embed/NostrNestsEmbed"
+import CashuNuts from "@/Components/Embed/CashuNuts"
 
 // More User Components
-import NoteToSelf from "@/Components/User/NoteToSelf";
-import BadgeList from "@/Components/User/BadgeList";
-import { UserWebsiteLink } from "@/Components/User/UserWebsiteLink";
-import FollowedBy from "@/Components/User/FollowedBy";
+import NoteToSelf from "@/Components/User/NoteToSelf"
+import BadgeList from "@/Components/User/BadgeList"
+import { UserWebsiteLink } from "@/Components/User/UserWebsiteLink"
+import FollowedBy from "@/Components/User/FollowedBy"
 
 // Relay Components
-import PaidRelayLabel from "@/Components/Relay/paid";
-import UptimeLabel from "@/Components/Relay/uptime-label";
+import PaidRelayLabel from "@/Components/Relay/paid"
+import UptimeLabel from "@/Components/Relay/uptime-label"
 
 // Trending Components
-import TrendingHashtags from "@/Components/Trending/TrendingHashtags";
-import TrendingUsers from "@/Components/Trending/TrendingUsers";
-import TrendingPosts from "@/Components/Trending/TrendingPosts";
+import TrendingHashtags from "@/Components/Trending/TrendingHashtags"
+import TrendingUsers from "@/Components/Trending/TrendingUsers"
+import TrendingPosts from "@/Components/Trending/TrendingPosts"
 
 // Other Components
-import KindName from "@/Components/kind-name";
-import SuggestedProfiles from "@/Components/SuggestedProfiles";
-import ZapAmountLabel from "@/Components/zap-amount";
+import KindName from "@/Components/kind-name"
+import SuggestedProfiles from "@/Components/SuggestedProfiles"
+import ZapAmountLabel from "@/Components/zap-amount"
 
-import { magnetURIDecode } from "@/Utils";
-import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
-import { setTheme } from "@/Hooks/useTheme";
-import { NoteProvider } from "@/Components/Event/Note/NoteContext";
+import { magnetURIDecode } from "@/Utils"
+import { LiveEvent } from "@/Components/LiveStream/LiveEvent"
+import { setTheme } from "@/Hooks/useTheme"
+import { NoteProvider } from "@/Components/Event/Note/NoteContext"
 
 // Sample data - Using Kieran's pubkey for examples
-const SAMPLE_HEX_PUBKEY = bech32ToHex(KieranPubKey);
+const SAMPLE_HEX_PUBKEY = bech32ToHex(KieranPubKey)
 // Additional sample pubkeys from DeveloperAccounts
-const SAMPLE_PUBKEY_2 = "4523be58d395b1b196a9b8c82b038b6895cb02b683d0c253a955068dba1facd0"; // Martti
-const SAMPLE_PUBKEY_3 = "7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194"; // verbiricha
+const SAMPLE_PUBKEY_2 = "4523be58d395b1b196a9b8c82b038b6895cb02b683d0c253a955068dba1facd0" // Martti
+const SAMPLE_PUBKEY_3 = "7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194" // verbiricha
 
 const SAMPLE_INVOICE =
-  "lnbc210n1p50yk0qpp5kdtjslgczmphsugxskskhf4l6090gjqs3v26zk38gk3yfqc2h5jqdqcv4uxzmtsd3jjq6twwehkjcm9cqzzsxqyz5vqsp5c0pv9plkvx5e9ddcm6rkvycvt4mc2540awcl4kyzl0khhkqn9tgs9qxpqysgqw5h7plfn0m26vxggs0jhakcnm45k3044q5wv5yrx8yeljtqdnmr439pzr397uqxef4eljm76ek0m2z9nm3kjustf7zkpxm78t8z2p5cqkds20e";
-const SAMPLE_YOUTUBE_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-const SAMPLE_SPOTIFY_URL = "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT";
-const SAMPLE_APPLE_MUSIC_URL = "https://music.apple.com/us/album/example";
-const SAMPLE_TIDAL_URL = "https://tidal.com/browse/track/111398735";
-const SAMPLE_SOUNDCLOUD_URL = "https://soundcloud.com/djgrooveteck/sidepiece-walking-on-a-dream-vip";
-const SAMPLE_WAVLAKE_URL = "https://wavlake.com/track/1079f9b0-e60a-4eba-87c4-c380aa795786";
-const SAMPLE_MIXCLOUD_URL = "https://www.mixcloud.com/johndigweed/transitions-with-john-digweed-and-adam-freeland";
-const SAMPLE_NOSTR_NESTS_URL = "https://nostrnests.com/example";
+  "lnbc210n1p50yk0qpp5kdtjslgczmphsugxskskhf4l6090gjqs3v26zk38gk3yfqc2h5jqdqcv4uxzmtsd3jjq6twwehkjcm9cqzzsxqyz5vqsp5c0pv9plkvx5e9ddcm6rkvycvt4mc2540awcl4kyzl0khhkqn9tgs9qxpqysgqw5h7plfn0m26vxggs0jhakcnm45k3044q5wv5yrx8yeljtqdnmr439pzr397uqxef4eljm76ek0m2z9nm3kjustf7zkpxm78t8z2p5cqkds20e"
+const SAMPLE_YOUTUBE_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+const SAMPLE_SPOTIFY_URL = "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT"
+const SAMPLE_APPLE_MUSIC_URL = "https://music.apple.com/us/album/example"
+const SAMPLE_TIDAL_URL = "https://tidal.com/browse/track/111398735"
+const SAMPLE_SOUNDCLOUD_URL = "https://soundcloud.com/djgrooveteck/sidepiece-walking-on-a-dream-vip"
+const SAMPLE_WAVLAKE_URL = "https://wavlake.com/track/1079f9b0-e60a-4eba-87c4-c380aa795786"
+const SAMPLE_MIXCLOUD_URL = "https://www.mixcloud.com/johndigweed/transitions-with-john-digweed-and-adam-freeland"
+const SAMPLE_NOSTR_NESTS_URL = "https://nostrnests.com/example"
 const SAMPLE_CASHU_TOKEN =
-  "cashuAeyJ0b2tlbiI6W3sibWludCI6Imh0dHBzOi8vbWludC5taW5pYml0cy5jYXNoL0JpdGNvaW4iLCJwcm9vZnMiOlt7ImFtb3VudCI6MTYsIkMiOiIwMjFlODY2YzMzNjYzNzQzMjMyMWYwNjRjYzQ3NTdlMTRjZmE0NDJlYjhlMTVmMjUwN2ExNmJhOGMyOGFmMDg0NWEiLCJpZCI6IjltbGZkNXZDemdHbCIsInNlY3JldCI6ImFlZjhhYmJkYzQzOTI4NWM3MDI1YzI3YzU5NjE1Y2Q1YjM0ODU0YjJmNmJlMzFlMDdlNzQ5YzQ5OWU0NzQ1MjIifSx7ImFtb3VudCI6NCwiQyI6IjAzOTMwYzFmNjg5NDY1ZTQwMWVmODU0YTg5MzdmYzJmMWIyNTRhOGYxNWIxZmU2ZmMyNDc2ODZmYTQyM2E4NmQ4ZCIsImlkIjoiOW1sZmQ1dkN6Z0dsIiwic2VjcmV0IjoiZGY3YmM1ZGFiNGM1YzUzZmQwNjgwNDRjMGYxM2NkNzA2MmNhYTBhOGY4NDA3ZDU4NGFkZTg0ZWQ1NTBhMTdkNSJ9LHsiYW1vdW50Ijo0LCJDIjoiMDI1ZWFhODE2ZGY3ZWZlYmY2MTZjYTM3NTg0ODIxMmE3OWFmZmEzNjY0NzA1ZGNhY2I3Y2FkMDY0ODgyYTU2NmRmIiwiaWQiOiI5bWxmZDV2Q3pnR2wiLCJzZWNyZXQiOiJiZTAwNGY5ZjYxOTk1NzY3NDliN2Q4YmQzMDJhYTZiYjlmYzJjOTFlYTAyZmVmZDk5MDZjOWE4MmJiY2E5ZDg0In0seyJhbW91bnQiOjEsIkMiOiIwMmRiZjg0YmYzNjg1ZTQ2MDUxMTM0MjMzNzJkZmE5MGY4OGE2YmU1ODEzOWIzMmM5MTc4MmY2ZWFjMWFkMmEzZjUiLCJpZCI6IjltbGZkNXZDemdHbCIsInNlY3JldCI6IjczMmNiYTVjYzFkNTQwOTdhMzM3NWJlNDg2NGM2OTUxNDZlNTZiOTJlOWU3MjU3ZmZiMWZjY2NhN2ZjZjA0N2YifV19XX0";
+  "cashuAeyJ0b2tlbiI6W3sibWludCI6Imh0dHBzOi8vbWludC5taW5pYml0cy5jYXNoL0JpdGNvaW4iLCJwcm9vZnMiOlt7ImFtb3VudCI6MTYsIkMiOiIwMjFlODY2YzMzNjYzNzQzMjMyMWYwNjRjYzQ3NTdlMTRjZmE0NDJlYjhlMTVmMjUwN2ExNmJhOGMyOGFmMDg0NWEiLCJpZCI6IjltbGZkNXZDemdHbCIsInNlY3JldCI6ImFlZjhhYmJkYzQzOTI4NWM3MDI1YzI3YzU5NjE1Y2Q1YjM0ODU0YjJmNmJlMzFlMDdlNzQ5YzQ5OWU0NzQ1MjIifSx7ImFtb3VudCI6NCwiQyI6IjAzOTMwYzFmNjg5NDY1ZTQwMWVmODU0YTg5MzdmYzJmMWIyNTRhOGYxNWIxZmU2ZmMyNDc2ODZmYTQyM2E4NmQ4ZCIsImlkIjoiOW1sZmQ1dkN6Z0dsIiwic2VjcmV0IjoiZGY3YmM1ZGFiNGM1YzUzZmQwNjgwNDRjMGYxM2NkNzA2MmNhYTBhOGY4NDA3ZDU4NGFkZTg0ZWQ1NTBhMTdkNSJ9LHsiYW1vdW50Ijo0LCJDIjoiMDI1ZWFhODE2ZGY3ZWZlYmY2MTZjYTM3NTg0ODIxMmE3OWFmZmEzNjY0NzA1ZGNhY2I3Y2FkMDY0ODgyYTU2NmRmIiwiaWQiOiI5bWxmZDV2Q3pnR2wiLCJzZWNyZXQiOiJiZTAwNGY5ZjYxOTk1NzY3NDliN2Q4YmQzMDJhYTZiYjlmYzJjOTFlYTAyZmVmZDk5MDZjOWE4MmJiY2E5ZDg0In0seyJhbW91bnQiOjEsIkMiOiIwMmRiZjg0YmYzNjg1ZTQ2MDUxMTM0MjMzNzJkZmE5MGY4OGE2YmU1ODEzOWIzMmM5MTc4MmY2ZWFjMWFkMmEzZjUiLCJpZCI6IjltbGZkNXZDemdHbCIsInNlY3JldCI6IjczMmNiYTVjYzFkNTQwOTdhMzM3NWJlNDg2NGM2OTUxNDZlNTZiOTJlOWU3MjU3ZmZiMWZjY2NhN2ZjZjA0N2YifV19XX0"
 
 // Sample events for complex components
 const SAMPLE_POLL_EVENT = {
@@ -142,8 +142,8 @@ const SAMPLE_POLL_EVENT = {
   ],
   content: "What's your favorite?",
   sig: "",
-} as NostrEvent;
-SAMPLE_POLL_EVENT.id = EventExt.createId(SAMPLE_POLL_EVENT);
+} as NostrEvent
+SAMPLE_POLL_EVENT.id = EventExt.createId(SAMPLE_POLL_EVENT)
 
 const SAMPLE_LONG_FORM_EVENT = {
   id: "",
@@ -159,8 +159,8 @@ const SAMPLE_LONG_FORM_EVENT = {
   content:
     "# Introduction\n\nThis is a sample long-form article to demonstrate the LongFormText component. It includes **markdown** formatting, _italic text_, and more.\n\n## Features\n\n- Read time calculation\n- Text-to-speech\n- Truncation support",
   sig: "",
-} as NostrEvent;
-SAMPLE_LONG_FORM_EVENT.id = EventExt.createId(SAMPLE_LONG_FORM_EVENT);
+} as NostrEvent
+SAMPLE_LONG_FORM_EVENT.id = EventExt.createId(SAMPLE_LONG_FORM_EVENT)
 
 const SAMPLE_ZAP_GOAL_EVENT = {
   id: "",
@@ -170,8 +170,8 @@ const SAMPLE_ZAP_GOAL_EVENT = {
   tags: [["amount", "100000"]],
   content: "Help support development!",
   sig: "",
-} as NostrEvent;
-SAMPLE_ZAP_GOAL_EVENT.id = EventExt.createId(SAMPLE_ZAP_GOAL_EVENT);
+} as NostrEvent
+SAMPLE_ZAP_GOAL_EVENT.id = EventExt.createId(SAMPLE_ZAP_GOAL_EVENT)
 
 // Sample text note (kind 1)
 const SAMPLE_TEXT_NOTE = {
@@ -183,8 +183,8 @@ const SAMPLE_TEXT_NOTE = {
   content:
     "This is a sample text note (kind 1) with some content. It can include #hashtags and links like https://snort.social",
   sig: "",
-} as NostrEvent;
-SAMPLE_TEXT_NOTE.id = EventExt.createId(SAMPLE_TEXT_NOTE);
+} as NostrEvent
+SAMPLE_TEXT_NOTE.id = EventExt.createId(SAMPLE_TEXT_NOTE)
 
 // Sample note with gallery (1 image)
 const SAMPLE_GALLERY_1_NOTE = {
@@ -195,8 +195,8 @@ const SAMPLE_GALLERY_1_NOTE = {
   tags: [],
   content: "Single image gallery\n\nhttps://picsum.photos/800/600.jpg",
   sig: "",
-} as NostrEvent;
-SAMPLE_GALLERY_1_NOTE.id = EventExt.createId(SAMPLE_GALLERY_1_NOTE);
+} as NostrEvent
+SAMPLE_GALLERY_1_NOTE.id = EventExt.createId(SAMPLE_GALLERY_1_NOTE)
 
 // Sample note with gallery (2 images)
 const SAMPLE_GALLERY_2_NOTE = {
@@ -207,8 +207,8 @@ const SAMPLE_GALLERY_2_NOTE = {
   tags: [],
   content: "Two images side by side\n\nhttps://picsum.photos/400/400.jpg\nhttps://picsum.photos/400/400.jpg",
   sig: "",
-} as NostrEvent;
-SAMPLE_GALLERY_2_NOTE.id = EventExt.createId(SAMPLE_GALLERY_2_NOTE);
+} as NostrEvent
+SAMPLE_GALLERY_2_NOTE.id = EventExt.createId(SAMPLE_GALLERY_2_NOTE)
 
 // Sample note with gallery (3 images)
 const SAMPLE_GALLERY_3_NOTE = {
@@ -220,8 +220,8 @@ const SAMPLE_GALLERY_3_NOTE = {
   content:
     "Three images - one big, two small\n\nhttps://picsum.photos/500/500.jpg\nhttps://picsum.photos/300/300.jpg\nhttps://picsum.photos/300/300.jpg",
   sig: "",
-} as NostrEvent;
-SAMPLE_GALLERY_3_NOTE.id = EventExt.createId(SAMPLE_GALLERY_3_NOTE);
+} as NostrEvent
+SAMPLE_GALLERY_3_NOTE.id = EventExt.createId(SAMPLE_GALLERY_3_NOTE)
 
 // Sample note with gallery (4 images)
 const SAMPLE_GALLERY_4_NOTE = {
@@ -233,8 +233,8 @@ const SAMPLE_GALLERY_4_NOTE = {
   content:
     "Four images in a grid\n\nhttps://picsum.photos/400/300.jpg\nhttps://picsum.photos/400/300.jpg\nhttps://picsum.photos/400/300.jpg\nhttps://picsum.photos/400/300.jpg",
   sig: "",
-} as NostrEvent;
-SAMPLE_GALLERY_4_NOTE.id = EventExt.createId(SAMPLE_GALLERY_4_NOTE);
+} as NostrEvent
+SAMPLE_GALLERY_4_NOTE.id = EventExt.createId(SAMPLE_GALLERY_4_NOTE)
 
 // Sample note with gallery (5 images)
 const SAMPLE_GALLERY_5_NOTE = {
@@ -246,8 +246,8 @@ const SAMPLE_GALLERY_5_NOTE = {
   content:
     "Five images mixed layout\n\nhttps://picsum.photos/450/300.jpg\nhttps://picsum.photos/450/300.jpg\nhttps://picsum.photos/450/300.jpg\nhttps://picsum.photos/250/300.jpg\nhttps://picsum.photos/250/300.jpg",
   sig: "",
-} as NostrEvent;
-SAMPLE_GALLERY_5_NOTE.id = EventExt.createId(SAMPLE_GALLERY_5_NOTE);
+} as NostrEvent
+SAMPLE_GALLERY_5_NOTE.id = EventExt.createId(SAMPLE_GALLERY_5_NOTE)
 
 // Sample note with gallery (6 images)
 const SAMPLE_GALLERY_6_NOTE = {
@@ -259,8 +259,8 @@ const SAMPLE_GALLERY_6_NOTE = {
   content:
     "Six images complex layout\n\nhttps://picsum.photos/500/500.jpg\nhttps://picsum.photos/250/250.jpg\nhttps://picsum.photos/250/250.jpg\nhttps://picsum.photos/500/500.jpg\nhttps://picsum.photos/250/250.jpg\nhttps://picsum.photos/250/250.jpg",
   sig: "",
-} as NostrEvent;
-SAMPLE_GALLERY_6_NOTE.id = EventExt.createId(SAMPLE_GALLERY_6_NOTE);
+} as NostrEvent
+SAMPLE_GALLERY_6_NOTE.id = EventExt.createId(SAMPLE_GALLERY_6_NOTE)
 
 // Sample repost (kind 6)
 const SAMPLE_REPOST = {
@@ -274,8 +274,8 @@ const SAMPLE_REPOST = {
   ],
   content: JSON.stringify(SAMPLE_TEXT_NOTE),
   sig: "",
-} as NostrEvent;
-SAMPLE_REPOST.id = EventExt.createId(SAMPLE_REPOST);
+} as NostrEvent
+SAMPLE_REPOST.id = EventExt.createId(SAMPLE_REPOST)
 
 // Sample reply (kind 1 with reply tags)
 const SAMPLE_REPLY = {
@@ -289,8 +289,8 @@ const SAMPLE_REPLY = {
   ],
   content: "This is a reply to another note!",
   sig: "",
-} as NostrEvent;
-SAMPLE_REPLY.id = EventExt.createId(SAMPLE_REPLY);
+} as NostrEvent
+SAMPLE_REPLY.id = EventExt.createId(SAMPLE_REPLY)
 
 const SAMPLE_LIVE_STREAM_EVENT = {
   kind: 30311,
@@ -323,10 +323,10 @@ const SAMPLE_LIVE_STREAM_EVENT = {
   ],
   content: "",
   sig: "6674b3d183da4c6208908f0e1118dee5682f5f635fd3b21141563a5986635d2f687d532686f4cf55bb2256cde561f3bb8c660a9d805c95d13443c8bf7bb2b75f",
-};
+}
 
 const ExampleMagnetLink =
-  "magnet:?xt=urn:btih:9065a82c1bb9e8e69ad14044ee4a4aba35cb17ea&dn=nostr.band%20snapshot&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Fexplodie.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker-udp.gbitt.info%3A80%2Fannounce&tr=https%3A%2F%2Ftracker.tamersunion.org%3A443%2Fannounce&tr=udp%3A%2F%2Ftracker2.dler.org%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker1.bt.moack.co.kr%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.theoks.net%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.ccp.ovh%3A6969%2Fannounce";
+  "magnet:?xt=urn:btih:9065a82c1bb9e8e69ad14044ee4a4aba35cb17ea&dn=nostr.band%20snapshot&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Fexplodie.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker-udp.gbitt.info%3A80%2Fannounce&tr=https%3A%2F%2Ftracker.tamersunion.org%3A443%2Fannounce&tr=udp%3A%2F%2Ftracker2.dler.org%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker1.bt.moack.co.kr%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.theoks.net%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.ccp.ovh%3A6969%2Fannounce"
 
 const TextExample = `Hello Nostr! This is a test message with #nostr and https://example.com 
 https://github.com/v0l/snort
@@ -335,28 +335,28 @@ ${ExampleMagnetLink}
 nostr:${NostrLink.fromEvent(SAMPLE_LIVE_STREAM_EVENT).encode()}
 ${SAMPLE_CASHU_TOKEN}
 ${SAMPLE_INVOICE}
-`;
+`
 
 export default function ComponentDebugPage() {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedTab, setSelectedTab] = useState<Tab>({ value: 0, text: "Tab 1" });
-  const [collapsed, setCollapsed] = useState(true);
-  const [toggleState, setToggleState] = useState(false);
-  const [isLightMode, setIsLightMode] = useState(false);
+  const [showModal, setShowModal] = useState(false)
+  const [selectedTab, setSelectedTab] = useState<Tab>({ value: 0, text: "Tab 1" })
+  const [collapsed, setCollapsed] = useState(true)
+  const [toggleState, setToggleState] = useState(false)
+  const [isLightMode, setIsLightMode] = useState(false)
 
   const tabs: Tab[] = [
     { value: 0, text: "Tab 1" },
     { value: 1, text: "Tab 2" },
     { value: 2, text: "Tab 3" },
     { value: 3, text: "Disabled", disabled: true },
-  ];
+  ]
 
-  const sampleNostrLink = new NostrLink(NostrPrefix.Profile, SAMPLE_HEX_PUBKEY);
+  const sampleNostrLink = new NostrLink(NostrPrefix.Profile, SAMPLE_HEX_PUBKEY)
 
   const toggleTheme = () => {
-    setIsLightMode(!isLightMode);
-    setTheme(!isLightMode ? "light" : "dark");
-  };
+    setIsLightMode(!isLightMode)
+    setTheme(!isLightMode ? "light" : "dark")
+  }
 
   return (
     <div className="max-w-[720px] mx-auto">
@@ -1017,8 +1017,9 @@ export default function ComponentDebugPage() {
         <div className="flex items-center gap-4 flex-wrap">
           <AsyncButton
             onClick={async () => {
-              Toastore.push({ element: <div className="text-xl">Example Notification</div> });
-            }}>
+              Toastore.push({ element: <div className="text-xl">Example Notification</div> })
+            }}
+          >
             Example Notification
           </AsyncButton>
         </div>
@@ -1519,5 +1520,5 @@ This example covers all major markdown features including:
         </div>
       </section>
     </div>
-  );
+  )
 }

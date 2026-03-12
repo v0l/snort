@@ -1,71 +1,71 @@
-import { unwrap } from "@snort/shared";
-import { EventKind, type NostrLink, parseZap, type TaggedNostrEvent } from "@snort/system";
-import { useUserProfile } from "@snort/system-react";
-import { useMemo } from "react";
-import { useInView } from "react-intersection-observer";
-import { FormattedMessage, useIntl } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import { unwrap } from "@snort/shared"
+import { EventKind, type NostrLink, parseZap, type TaggedNostrEvent } from "@snort/system"
+import { useUserProfile } from "@snort/system-react"
+import { useMemo } from "react"
+import { useInView } from "react-intersection-observer"
+import { FormattedMessage, useIntl } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import NoteTime from "@/Components/Event/Note/NoteTime";
-import Icon from "@/Components/Icons/Icon";
-import ProfileImage from "@/Components/User/ProfileImage";
-import useWoT from "@/Hooks/useWoT";
-import { dedupe, getDisplayName } from "@/Utils";
-import { formatShort } from "@/Utils/Number";
+import NoteTime from "@/Components/Event/Note/NoteTime"
+import Icon from "@/Components/Icons/Icon"
+import ProfileImage from "@/Components/User/ProfileImage"
+import useWoT from "@/Hooks/useWoT"
+import { dedupe, getDisplayName } from "@/Utils"
+import { formatShort } from "@/Utils/Number"
 
-import { getNotificationContext } from "./getNotificationContext";
-import { NotificationContext } from "./notificationContext";
-import { AvatarGroup } from "@/Components/User/AvatarGroup";
-import { WarningNotice } from "@/Components/WarningNotice/WarningNotice";
+import { getNotificationContext } from "./getNotificationContext"
+import { NotificationContext } from "./notificationContext"
+import { AvatarGroup } from "@/Components/User/AvatarGroup"
+import { WarningNotice } from "@/Components/WarningNotice/WarningNotice"
 
 export function NotificationGroup({
   evs,
   onClick,
 }: {
-  evs: Array<TaggedNostrEvent>;
-  onClick?: (link: NostrLink) => void;
+  evs: Array<TaggedNostrEvent>
+  onClick?: (link: NostrLink) => void
 }) {
-  const { ref, inView } = useInView({ triggerOnce: true });
-  const { formatMessage } = useIntl();
-  const wot = useWoT();
-  const kind = evs[0].kind;
-  const navigate = useNavigate();
+  const { ref, inView } = useInView({ triggerOnce: true })
+  const { formatMessage } = useIntl()
+  const wot = useWoT()
+  const kind = evs[0].kind
+  const navigate = useNavigate()
 
   const zaps = useMemo(() => {
-    return evs.filter(a => a.kind === EventKind.ZapReceipt).map(a => parseZap(a));
-  }, [evs]);
+    return evs.filter(a => a.kind === EventKind.ZapReceipt).map(a => parseZap(a))
+  }, [evs])
   const pubkeys = dedupe(
     evs.map(a => {
       if (a.kind === EventKind.ZapReceipt) {
-        const zap = unwrap(zaps.find(b => b.id === a.id));
-        return zap.anonZap ? "anon" : (zap.sender ?? a.pubkey);
+        const zap = unwrap(zaps.find(b => b.id === a.id))
+        return zap.anonZap ? "anon" : (zap.sender ?? a.pubkey)
       }
-      return a.pubkey;
+      return a.pubkey
     }),
-  );
-  const firstPubkey = pubkeys[0];
-  const firstPubkeyProfile = useUserProfile(inView ? (firstPubkey === "anon" ? "" : firstPubkey) : "");
-  const context = getNotificationContext(evs[0]);
-  const totalZaps = zaps.reduce((acc, v) => acc + v.amount, 0);
+  )
+  const firstPubkey = pubkeys[0]
+  const firstPubkeyProfile = useUserProfile(inView ? (firstPubkey === "anon" ? "" : firstPubkey) : "")
+  const context = getNotificationContext(evs[0])
+  const totalZaps = zaps.reduce((acc, v) => acc + v.amount, 0)
 
   const iconName = () => {
     switch (kind) {
       case EventKind.Reaction:
-        return "heart-solid";
+        return "heart-solid"
       case EventKind.ZapReceipt:
-        return "zap-solid";
+        return "zap-solid"
       case EventKind.Repost:
-        return "repeat";
+        return "repeat"
       case EventKind.TextNote:
-        return "reverse-left";
+        return "reverse-left"
     }
-    return "";
-  };
+    return ""
+  }
 
   const actionName = (n: number, name: string) => {
     switch (kind) {
       case EventKind.TextNote: {
-        return "";
+        return ""
       }
       case EventKind.Reaction: {
         return (
@@ -76,7 +76,7 @@ export function NotificationGroup({
               name,
             }}
           />
-        );
+        )
       }
       case EventKind.Repost: {
         return (
@@ -87,7 +87,7 @@ export function NotificationGroup({
               name,
             }}
           />
-        );
+        )
       }
       case EventKind.ZapReceipt: {
         return (
@@ -98,24 +98,25 @@ export function NotificationGroup({
               name,
             }}
           />
-        );
+        )
       }
     }
-    return `${kind}'d your post`;
-  };
+    return `${kind}'d your post`
+  }
 
   return (
     <div
       className="flex gap-2 py-4 pr-4 cursor-pointer w-full overflow-hidden border-b"
       ref={ref}
       onClick={() => {
-        if (!context) return;
+        if (!context) return
         if (onClick) {
-          onClick(context);
+          onClick(context)
         } else {
-          navigate(`/${context.encode(CONFIG.eventLinkPrefix)}`);
+          navigate(`/${context.encode(CONFIG.eventLinkPrefix)}`)
         }
-      }}>
+      }}
+    >
       {inView && (
         <>
           <div className="flex flex-col items-center gap-2 w-[64px] min-w-[64px]">
@@ -157,5 +158,5 @@ export function NotificationGroup({
         </>
       )}
     </div>
-  );
+  )
 }

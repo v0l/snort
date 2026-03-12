@@ -1,19 +1,19 @@
-import "./ZapstrEmbed.css";
+import "./ZapstrEmbed.css"
 
-import { type NostrEvent, NostrLink } from "@snort/system";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import { type NostrEvent, NostrLink } from "@snort/system"
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import { ProxyImg } from "@/Components/ProxyImg";
-import ProfileImage from "@/Components/User/ProfileImage";
+import { ProxyImg } from "@/Components/ProxyImg"
+import ProfileImage from "@/Components/User/ProfileImage"
 
 export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
-  const media = ev.tags.find(a => a[0] === "media");
-  const cover = ev.tags.find(a => a[0] === "cover");
-  const subject = ev.tags.find(a => a[0] === "subject");
-  const refPersons = ev.tags.filter(a => a[0] === "p");
+  const media = ev.tags.find(a => a[0] === "media")
+  const cover = ev.tags.find(a => a[0] === "cover")
+  const subject = ev.tags.find(a => a[0] === "subject")
+  const refPersons = ev.tags.filter(a => a[0] === "p")
 
-  const link = NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix);
+  const link = NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix)
   return (
     <>
       <div className="flex mb-2.5 layer-1">
@@ -36,5 +36,5 @@ export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
         </button>
       </Link>
     </>
-  );
+  )
 }

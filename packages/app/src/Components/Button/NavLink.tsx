@@ -1,21 +1,21 @@
-import { NavLink as RouterNavLink, type NavLinkProps, useLocation } from "react-router-dom";
+import { NavLink as RouterNavLink, type NavLinkProps, useLocation } from "react-router-dom"
 
 export default function NavLink(props: NavLinkProps) {
-  const { to, onClick, ...rest } = props;
-  const location = useLocation();
+  const { to, onClick, ...rest } = props
+  const location = useLocation()
 
-  const isActive = location.pathname === to.toString();
+  const isActive = location.pathname === to.toString()
 
   return (
     <RouterNavLink
       to={to}
       onClick={e => {
-        onClick?.(e);
+        onClick?.(e)
         if (isActive) {
-          window.scrollTo({ top: 0, behavior: "instant" });
+          window.scrollTo({ top: 0, behavior: "instant" })
         }
       }}
       {...rest}
     />
-  );
+  )
 }

@@ -1,12 +1,12 @@
-import { NostrLink, type TaggedNostrEvent } from '@snort/system'
-import { useEventReactions, useReactions } from '@snort/system-react'
-import { createContext, type ReactNode, use, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { LRUCache } from 'typescript-lru-cache'
-import SnortApi from '@/External/SnortApi'
-import useModeration from '@/Hooks/useModeration'
-import usePreferences from '@/Hooks/usePreferences'
-import ReactionsModal from './ReactionsModal'
-import type { NoteTranslation } from './types'
+import { NostrLink, type TaggedNostrEvent } from "@snort/system"
+import { useEventReactions, useReactions } from "@snort/system-react"
+import { createContext, type ReactNode, use, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { LRUCache } from "typescript-lru-cache"
+import SnortApi from "@/External/SnortApi"
+import useModeration from "@/Hooks/useModeration"
+import usePreferences from "@/Hooks/usePreferences"
+import ReactionsModal from "./ReactionsModal"
+import type { NoteTranslation } from "./types"
 
 const translationCache = new LRUCache<string, NoteTranslation>({ maxSize: 1_000 })
 
@@ -58,18 +58,18 @@ export function NoteProvider({ ev, children }: NoteProviderProps) {
   const translate = useCallback(async () => {
     const lang = window.navigator.language
     const langNames = new Intl.DisplayNames([...window.navigator.languages], {
-      type: 'language',
+      type: "language",
     })
 
     const api = new SnortApi()
-    const targetLang = lang.split('-')[0].toUpperCase()
+    const targetLang = lang.split("-")[0].toUpperCase()
     const result = await api.translate({
       text: [evContentRef.current],
       target_lang: targetLang,
     })
 
     if (
-      'translations' in result &&
+      "translations" in result &&
       result.translations.length > 0 &&
       targetLang !== result.translations[0].detected_source_language
     ) {
@@ -80,8 +80,8 @@ export function NoteProvider({ ev, children }: NoteProviderProps) {
       } as NoteTranslation)
     } else {
       setTranslatedState({
-        text: '',
-        fromLanguage: '',
+        text: "",
+        fromLanguage: "",
         confidence: 0,
         skipped: true,
       })
@@ -127,7 +127,7 @@ export function NoteProvider({ ev, children }: NoteProviderProps) {
 export function useNoteContext() {
   const context = use(NoteContext)
   if (!context) {
-    throw new Error('useNoteContext must be used within a NoteProvider')
+    throw new Error("useNoteContext must be used within a NoteProvider")
   }
   return context
 }

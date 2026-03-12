@@ -1,17 +1,17 @@
-import type { LNURLSuccessAction } from '@snort/shared'
-import { Zapper, type ZapTarget, type ZapTargetResult } from '@snort/wallet'
-import { type ReactNode, useEffect, useState } from 'react'
+import type { LNURLSuccessAction } from "@snort/shared"
+import { Zapper, type ZapTarget, type ZapTargetResult } from "@snort/wallet"
+import { type ReactNode, useEffect, useState } from "react"
 
-import CloseButton from '@/Components/Button/CloseButton'
-import Modal from '@/Components/Modal/Modal'
-import { SuccessAction } from '@/Components/ZapModal/SuccessAction'
-import { type SendSatsInputSelection, ZapModalInput } from '@/Components/ZapModal/ZapModalInput'
-import { ZapModalInvoice } from '@/Components/ZapModal/ZapModalInvoice'
-import { ZapModalTitle } from '@/Components/ZapModal/ZapModalTitle'
-import { ZapType } from '@/Components/ZapModal/ZapType'
-import useEventPublisher from '@/Hooks/useEventPublisher'
-import { debounce } from '@/Utils'
-import { useWallet } from '@/Wallet'
+import CloseButton from "@/Components/Button/CloseButton"
+import Modal from "@/Components/Modal/Modal"
+import { SuccessAction } from "@/Components/ZapModal/SuccessAction"
+import { type SendSatsInputSelection, ZapModalInput } from "@/Components/ZapModal/ZapModalInput"
+import { ZapModalInvoice } from "@/Components/ZapModal/ZapModalInvoice"
+import { ZapModalTitle } from "@/Components/ZapModal/ZapModalTitle"
+import { ZapType } from "@/Components/ZapModal/ZapType"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import { debounce } from "@/Utils"
+import { useWallet } from "@/Wallet"
 
 export interface SendSatsProps {
   onClose?: () => void
@@ -40,8 +40,8 @@ export default function ZapModal(props: SendSatsProps) {
     if (props.show) {
       const invoiceTarget = {
         target: {
-          type: 'lnurl',
-          value: '',
+          type: "lnurl",
+          value: "",
           weight: 1,
         },
         pr: props.invoice,

@@ -1,41 +1,41 @@
-import { unixNowMs } from "@snort/shared";
-import { type CacheRelay, EventKind, type NostrEvent, type UsersRelays, parseRelaysFromKind } from "@snort/system";
-import { WorkerBaseCache } from "./worker-cached";
+import { unixNowMs } from "@snort/shared"
+import { type CacheRelay, EventKind, type NostrEvent, type UsersRelays, parseRelaysFromKind } from "@snort/system"
+import { WorkerBaseCache } from "./worker-cached"
 
 export class RelaysWorkerCache extends WorkerBaseCache<UsersRelays> {
   constructor(relay: CacheRelay) {
-    super(EventKind.Relays, relay);
+    super(EventKind.Relays, relay)
   }
 
   name(): string {
-    return "Relays";
+    return "Relays"
   }
 
   maxSize(): number {
-    return 5_000;
+    return 5_000
   }
 
   mapper(ev: NostrEvent): UsersRelays | undefined {
-    const relays = parseRelaysFromKind(ev);
-    if (!relays) return;
+    const relays = parseRelaysFromKind(ev)
+    if (!relays) return
 
     return {
       pubkey: ev.pubkey,
       loaded: unixNowMs(),
       created: ev.created_at,
       relays: relays,
-    };
+    }
   }
 
   override async preload(follows?: Array<string>) {
-    await super.preload();
+    await super.preload()
 
     // load relay lists for follows
     if (follows) {
       await this.preloadTable(`${this.name()}-preload-follows`, {
         kinds: [EventKind.Relays],
         authors: follows,
-      });
+      })
     }
   }
 }

@@ -1,12 +1,12 @@
-import { useMemo, useState } from 'react'
-import { useIntl } from 'react-intl'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useMemo, useState } from "react"
+import { useIntl } from "react-intl"
+import { useNavigate, useParams } from "react-router-dom"
 
-import Timeline from '@/Components/Feed/Timeline'
-import TabSelectors, { type Tab } from '@/Components/TabSelectors/TabSelectors'
-import FollowListBase from '@/Components/User/FollowListBase'
-import type { TimelineSubject } from '@/Feed/TimelineFeed'
-import useProfileSearch from '@/Hooks/useProfileSearch'
+import Timeline from "@/Components/Feed/Timeline"
+import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors"
+import FollowListBase from "@/Components/User/FollowListBase"
+import type { TimelineSubject } from "@/Feed/TimelineFeed"
+import useProfileSearch from "@/Hooks/useProfileSearch"
 
 const NOTES = 0
 const PROFILES = 1
@@ -31,18 +31,18 @@ const Profiles = ({ keyword }: { keyword: string }) => {
 const SearchPage = () => {
   const params = useParams()
   const { formatMessage } = useIntl()
-  const [search, setSearch] = useState<string>(params.keyword ?? '')
+  const [search, setSearch] = useState<string>(params.keyword ?? "")
   // tabs
   const SearchTab = [
-    { text: formatMessage({ defaultMessage: 'Notes' }), value: NOTES },
-    { text: formatMessage({ defaultMessage: 'People' }), value: PROFILES },
+    { text: formatMessage({ defaultMessage: "Notes" }), value: NOTES },
+    { text: formatMessage({ defaultMessage: "People" }), value: PROFILES },
   ]
   const [tab, setTab] = useState<Tab>(SearchTab[0])
   const navigate = useNavigate()
 
   const subject = useMemo(() => {
     return {
-      type: 'post_keyword',
+      type: "post_keyword",
       items: [search],
       discriminator: search,
     } as TimelineSubject
@@ -50,14 +50,14 @@ const SearchPage = () => {
 
   const content = useMemo(() => {
     if (tab.value === PROFILES) {
-      return <Profiles keyword={params.keyword ?? ''} />
+      return <Profiles keyword={params.keyword ?? ""} />
     }
 
     if (!params.keyword) {
       return
     }
 
-    return <Timeline key={params.keyword} subject={subject} postsOnly={false} method={'LIMIT_UNTIL'} />
+    return <Timeline key={params.keyword} subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} />
   }, [params.keyword, tab, subject])
 
   return (
@@ -65,12 +65,12 @@ const SearchPage = () => {
       <div className="px-3 py-2 flex flex-col gap-2">
         <input
           type="search"
-          placeholder={formatMessage({ defaultMessage: 'Search...' })}
+          placeholder={formatMessage({ defaultMessage: "Search..." })}
           value={search}
           onChange={e => setSearch(e.target.value)}
           onSubmit={() => navigate(`/search/${encodeURIComponent(search)}`)}
           onKeyDown={k => {
-            if (k.key === 'Enter') {
+            if (k.key === "Enter") {
               navigate(`/search/${encodeURIComponent(search)}`)
             }
           }}

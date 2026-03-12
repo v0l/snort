@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from "react"
 
 function useHistoryState<T>(initialValue: T, key: string) {
   const currentHistoryState = globalThis.history.state ? globalThis.history.state[key] : undefined
@@ -9,7 +9,7 @@ function useHistoryState<T>(initialValue: T, key: string) {
 
   const setHistoryState = useCallback((value: T) => {
     const newHistoryState = { ...globalThis.history.state, [keyRef.current]: value }
-    globalThis.history.replaceState(newHistoryState, '')
+    globalThis.history.replaceState(newHistoryState, "")
     latestValue.current = value
   }, [])
 
@@ -17,7 +17,7 @@ function useHistoryState<T>(initialValue: T, key: string) {
     if (state !== latestValue.current) {
       setHistoryState(state)
       const newHistoryState = { ...globalThis.history.state, [key]: state }
-      globalThis.history.replaceState(newHistoryState, '')
+      globalThis.history.replaceState(newHistoryState, "")
       latestValue.current = state
     }
 
@@ -25,7 +25,7 @@ function useHistoryState<T>(initialValue: T, key: string) {
     return () => {
       if (state !== latestValue.current) {
         const newHistoryState = { ...globalThis.history.state, [key]: state }
-        globalThis.history.replaceState(newHistoryState, '') // Save the final state
+        globalThis.history.replaceState(newHistoryState, "") // Save the final state
       }
     }
   }, [state, key, setHistoryState])
@@ -41,9 +41,9 @@ function useHistoryState<T>(initialValue: T, key: string) {
         setState(event.state[keyRef.current])
       }
     }
-    window.addEventListener('popstate', handler)
+    window.addEventListener("popstate", handler)
     return () => {
-      window.removeEventListener('popstate', handler)
+      window.removeEventListener("popstate", handler)
     }
   }, [])
 

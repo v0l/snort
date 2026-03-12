@@ -1,42 +1,42 @@
-import { NotEncrypted } from "@snort/system";
-import { SnortContext } from "@snort/system-react";
-import { use, useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NotEncrypted } from "@snort/system"
+import { SnortContext } from "@snort/system-react"
+import { use, useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { useLocation, useNavigate } from "react-router-dom"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import AvatarEditor from "@/Components/User/AvatarEditor";
-import { trackEvent } from "@/Utils";
-import { generateNewLogin, generateNewLoginKeys } from "@/Utils/Login";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import AvatarEditor from "@/Components/User/AvatarEditor"
+import { trackEvent } from "@/Utils"
+import { generateNewLogin, generateNewLoginKeys } from "@/Utils/Login"
 
-import type { NewUserState } from ".";
+import type { NewUserState } from "."
 
 export default function Profile() {
-  const system = use(SnortContext);
-  const [keys, setNewKeys] = useState<{ entropy: Uint8Array; privateKey: string }>();
-  const [picture, setPicture] = useState<string>();
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-  const location = useLocation();
-  const state = location.state as NewUserState;
+  const system = use(SnortContext)
+  const [keys, setNewKeys] = useState<{ entropy: Uint8Array; privateKey: string }>()
+  const [picture, setPicture] = useState<string>()
+  const [error, setError] = useState("")
+  const navigate = useNavigate()
+  const location = useLocation()
+  const state = location.state as NewUserState
 
   useEffect(() => {
-    generateNewLoginKeys().then(setNewKeys);
-  }, []);
+    generateNewLoginKeys().then(setNewKeys)
+  }, [])
 
   async function loginNewKeys() {
     try {
-      if (!keys) return;
-      setError("");
+      if (!keys) return
+      setError("")
       await generateNewLogin(keys, system, key => Promise.resolve(new NotEncrypted(key)), {
         name: state.name,
         picture,
-      });
-      trackEvent("Login", { newAccount: true });
-      navigate("/login/sign-up/topics");
+      })
+      trackEvent("Login", { newAccount: true })
+      navigate("/login/sign-up/topics")
     } catch (e) {
       if (e instanceof Error) {
-        setError(e.message);
+        setError(e.message)
       }
     }
   }
@@ -52,5 +52,5 @@ export default function Profile() {
       </AsyncButton>
       {error && <b className="error">{error}</b>}
     </div>
-  );
+  )
 }

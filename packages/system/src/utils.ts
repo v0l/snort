@@ -1,19 +1,19 @@
-import { equalProp } from "@snort/shared";
-import type { FlatReqFilter } from "./query-optimizer";
-import type { NostrEvent, ReqFilter } from "./nostr";
+import { equalProp } from "@snort/shared"
+import type { FlatReqFilter } from "./query-optimizer"
+import type { NostrEvent, ReqFilter } from "./nostr"
 
 export function findTag(e: NostrEvent, tag: string) {
   const maybeTag = e.tags.find(evTag => {
-    return evTag[0] === tag;
-  });
-  return maybeTag && maybeTag[1];
+    return evTag[0] === tag
+  })
+  return maybeTag && maybeTag[1]
 }
 
 export function findWholeTag(e: NostrEvent, tag: string) {
   const maybeTag = e.tags.find(evTag => {
-    return evTag[0] === tag;
-  });
-  return maybeTag;
+    return evTag[0] === tag
+  })
+  return maybeTag
 }
 
 export function reqFilterEq(a: FlatReqFilter | ReqFilter, b: FlatReqFilter | ReqFilter): boolean {
@@ -30,7 +30,7 @@ export function reqFilterEq(a: FlatReqFilter | ReqFilter, b: FlatReqFilter | Req
     equalProp(a["#t"], b["#t"]) &&
     equalProp(a["#d"], b["#d"]) &&
     equalProp(a["#r"], b["#r"])
-  );
+  )
 }
 
 export function flatFilterEq(a: FlatReqFilter, b: FlatReqFilter): boolean {
@@ -48,44 +48,44 @@ export function flatFilterEq(a: FlatReqFilter, b: FlatReqFilter): boolean {
     a["#t"] === b["#t"] &&
     a["#d"] === b["#d"] &&
     a["#r"] === b["#r"]
-  );
+  )
 }
 
 export const UrlRegex =
-  /((?:http|ftp|https|nostr|web\+nostr|magnet|lnurl[p|w]?|blossom):\/?\/?(?:[\w+?.\w+])+(?:[\p{L}\p{N}~!@#$%^&*()_\-=+\\/?.:;',]*)?(?:[-a-z0-9+&@#/%=~()_|]))/giu;
+  /((?:http|ftp|https|nostr|web\+nostr|magnet|lnurl[p|w]?|blossom):\/?\/?(?:[\w+?.\w+])+(?:[\p{L}\p{N}~!@#$%^&*()_\-=+\\/?.:;',]*)?(?:[-a-z0-9+&@#/%=~()_|]))/giu
 
 export function splitByUrl(str: string) {
-  return str.split(UrlRegex);
+  return str.split(UrlRegex)
 }
 
 /**
  * Image file extensions
  */
-export const ImageExtensions = ["gif", "jpg", "jpeg", "jfif", "png", "bmp", "webp"];
+export const ImageExtensions = ["gif", "jpg", "jpeg", "jfif", "png", "bmp", "webp"]
 
 /**
  * Audio file extensions
  */
-export const AudioExtensions = ["wav", "mp3", "ogg", "m4a"];
+export const AudioExtensions = ["wav", "mp3", "ogg", "m4a"]
 
 /**
  * Video file extensions
  */
-export const VideoExtensions = ["mp4", "mov", "mkv", "avi", "m4v", "webm", "m3u8"];
+export const VideoExtensions = ["mp4", "mov", "mkv", "avi", "m4v", "webm", "m3u8"]
 
 /**
  * Converts a file extension into mime type string
  */
 export function extensionToMime(e: string) {
-  let ext = e.toLowerCase();
+  let ext = e.toLowerCase()
   if (ext.startsWith(".")) {
-    ext = ext.slice(1);
+    ext = ext.slice(1)
   }
   if (ImageExtensions.includes(ext)) {
-    return `image/${ext}`;
+    return `image/${ext}`
   } else if (AudioExtensions.includes(ext)) {
-    return `audio/${ext}`;
+    return `audio/${ext}`
   } else if (VideoExtensions.includes(ext)) {
-    return `video/${ext}`;
+    return `video/${ext}`
   }
 }

@@ -1,37 +1,37 @@
-import { removeUndefined } from "@snort/shared";
-import { useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { removeUndefined } from "@snort/shared"
+import { useState } from "react"
+import { FormattedMessage } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import Relay from "@/Components/Relay/Relay";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
-import useRelays from "@/Hooks/useRelays";
-import { saveRelays } from "@/Pages/settings/saveRelays";
-import { sanitizeRelayUrl } from "@/Utils";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import Relay from "@/Components/Relay/Relay"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
+import useRelays from "@/Hooks/useRelays"
+import { saveRelays } from "@/Pages/settings/saveRelays"
+import { sanitizeRelayUrl } from "@/Utils"
 
-import { DiscoverRelays } from "./relays/discover";
+import { DiscoverRelays } from "./relays/discover"
 
 const RelaySettingsPage = () => {
-  const { publisher, system } = useEventPublisher();
-  const relays = useRelays();
-  const { readonly, state } = useLogin(s => ({ v: s.state.version, state: s.state, readonly: s.readonly }));
-  const [newRelay, setNewRelay] = useState<string>();
+  const { publisher, system } = useEventPublisher()
+  const relays = useRelays()
+  const { readonly, state } = useLogin(s => ({ v: s.state.version, state: s.state, readonly: s.readonly }))
+  const [newRelay, setNewRelay] = useState<string>()
 
   async function addNewRelay() {
     const urls = removeUndefined(
       (newRelay?.trim()?.split("\n") ?? []).map(a => {
         if (!a.startsWith("wss://") && !a.startsWith("ws://")) {
-          a = `wss://${a}`;
+          a = `wss://${a}`
         }
-        return sanitizeRelayUrl(a);
+        return sanitizeRelayUrl(a)
       }),
-    );
+    )
     for (const url of urls) {
-      state.addRelay(url, { read: true, write: true });
+      state.addRelay(url, { read: true, write: true })
     }
     // Note: Not saving here - caller should handle persistence if needed
-    setNewRelay("");
+    setNewRelay("")
   }
 
   function addRelay() {
@@ -55,7 +55,7 @@ const RelaySettingsPage = () => {
           </AsyncButton>
         </div>
       </div>
-    );
+    )
   }
 
   function myRelays() {
@@ -100,7 +100,7 @@ const RelaySettingsPage = () => {
           </AsyncButton>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -109,7 +109,7 @@ const RelaySettingsPage = () => {
       {addRelay()}
       <DiscoverRelays />
     </div>
-  );
-};
+  )
+}
 
-export default RelaySettingsPage;
+export default RelaySettingsPage

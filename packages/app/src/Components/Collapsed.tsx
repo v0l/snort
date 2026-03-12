@@ -1,13 +1,13 @@
-import classNames from "classnames";
-import { type ReactNode, useState } from "react";
+import classNames from "classnames"
+import { type ReactNode, useState } from "react"
 
-import Icon from "@/Components/Icons/Icon";
+import Icon from "@/Components/Icons/Icon"
 
 interface CollapsedProps {
-  text?: ReactNode;
-  children: ReactNode;
-  collapsed: boolean;
-  setCollapsed(b: boolean): void;
+  text?: ReactNode
+  children: ReactNode
+  collapsed: boolean
+  setCollapsed(b: boolean): void
 }
 
 const Collapsed = ({ text, children, collapsed, setCollapsed }: CollapsedProps) => {
@@ -17,23 +17,23 @@ const Collapsed = ({ text, children, collapsed, setCollapsed }: CollapsedProps) 
     </div>
   ) : (
     <div className="uncollapsed">{children}</div>
-  );
-};
+  )
+}
 
 interface CollapsedIconProps {
-  icon: ReactNode;
-  collapsed: boolean;
+  icon: ReactNode
+  collapsed: boolean
 }
 
 interface CollapsedSectionProps {
-  title: ReactNode;
-  children: ReactNode;
-  className?: string;
-  startClosed?: boolean;
+  title: ReactNode
+  children: ReactNode
+  className?: string
+  startClosed?: boolean
 }
 
 export const CollapsedSection = ({ title, children, className, startClosed }: CollapsedSectionProps) => {
-  const [collapsed, setCollapsed] = useState(startClosed ?? true);
+  const [collapsed, setCollapsed] = useState(startClosed ?? true)
   return (
     <div>
       <div
@@ -42,13 +42,14 @@ export const CollapsedSection = ({ title, children, className, startClosed }: Co
           { "rounded-b-none": !collapsed },
           className,
         )}
-        onClick={() => setCollapsed(!collapsed)}>
+        onClick={() => setCollapsed(!collapsed)}
+      >
         {title}
         <Icon name="arrowFront" className={`transition-transform ${collapsed ? "rotate-90" : ""}`} />
       </div>
       {!collapsed && <div className="layer-2 rounded-t-none">{children}</div>}
     </div>
-  );
-};
+  )
+}
 
-export default Collapsed;
+export default Collapsed

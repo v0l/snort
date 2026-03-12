@@ -1,15 +1,15 @@
-import { EventKind, type NostrEvent, RequestBuilder, type TaggedNostrEvent } from '@snort/system'
-import { WorkerRelayInterface } from '@snort/worker-relay'
-import { memo, useCallback, useEffect, useMemo, useState } from 'react'
-import { useNavigationType } from 'react-router-dom'
+import { EventKind, type NostrEvent, RequestBuilder, type TaggedNostrEvent } from "@snort/system"
+import { WorkerRelayInterface } from "@snort/worker-relay"
+import { memo, useCallback, useEffect, useMemo, useState } from "react"
+import { useNavigationType } from "react-router-dom"
 
-import { Relay } from '@/Cache'
-import { TimelineRenderer } from '@/Components/Feed/TimelineRenderer'
-import useTimelineFeed, { type TimelineFeedOptions, type TimelineSubject } from '@/Feed/TimelineFeed'
-import useFollowsControls from '@/Hooks/useFollowControls'
-import useHistoryState from '@/Hooks/useHistoryState'
-import useLogin from '@/Hooks/useLogin'
-import { System } from '@/system'
+import { Relay } from "@/Cache"
+import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer"
+import useTimelineFeed, { type TimelineFeedOptions, type TimelineSubject } from "@/Feed/TimelineFeed"
+import useFollowsControls from "@/Hooks/useFollowControls"
+import useHistoryState from "@/Hooks/useHistoryState"
+import useLogin from "@/Hooks/useLogin"
+import { System } from "@/system"
 
 let forYouFeed = {
   events: [] as NostrEvent[],
@@ -20,19 +20,19 @@ let getForYouFeedPromise: Promise<NostrEvent[]> | null = null
 let reactionsRequested = false
 
 const getReactedByFollows = (follows: string[]) => {
-  const rb1 = new RequestBuilder('follows:reactions')
+  const rb1 = new RequestBuilder("follows:reactions")
   rb1.withFilter().kinds([EventKind.Reaction, EventKind.ZapReceipt]).authors(follows).limit(100)
   const q = System.Query(rb1)
   setTimeout(() => {
     q.cancel()
     const reactedIds = new Set<string>()
     q.snapshot.forEach((ev: TaggedNostrEvent) => {
-      const reactedTo = ev.tags.find((t: string[]) => t[0] === 'e')?.[1]
+      const reactedTo = ev.tags.find((t: string[]) => t[0] === "e")?.[1]
       if (reactedTo) {
         reactedIds.add(reactedTo)
       }
     })
-    const rb2 = new RequestBuilder('follows:reactedEvents')
+    const rb2 = new RequestBuilder("follows:reactedEvents")
     rb2.withFilter().ids(Array.from(reactedIds))
     System.Query(rb2)
   }, 500)
@@ -45,7 +45,7 @@ export const ForYouTab = memo(function ForYouTab() {
     tags: s.state.getList(EventKind.InterestSet),
   }))
   const navigationType = useNavigationType()
-  const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), 'openedAt')
+  const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt")
   const { followList } = useFollowsControls()
 
   if (!reactionsRequested && login.publicKey) {
@@ -57,7 +57,7 @@ export const ForYouTab = memo(function ForYouTab() {
   const subject = useMemo(
     () =>
       ({
-        type: 'pubkey',
+        type: "pubkey",
         items: followList,
         discriminator: login.publicKey?.slice(0, 12),
         extra: rb => {
@@ -69,12 +69,12 @@ export const ForYouTab = memo(function ForYouTab() {
     [login.publicKey, followList, login.tags],
   )
   // also get "follows" feed so data is loaded from relays and there's a fallback if "for you" feed is empty
-  const latestFeed = useTimelineFeed(subject, { method: 'TIME_RANGE', now: openedAt } as TimelineFeedOptions)
+  const latestFeed = useTimelineFeed(subject, { method: "TIME_RANGE", now: openedAt } as TimelineFeedOptions)
   const filteredLatestFeed = useMemo(() => {
     return (
       latestFeed.main?.filter((ev: NostrEvent) => {
         // no replies
-        return !ev.tags.some((tag: string[]) => tag[0] === 'e')
+        return !ev.tags.some((tag: string[]) => tag[0] === "e")
       }) ?? []
     )
   }, [latestFeed.main])
@@ -106,7 +106,7 @@ export const ForYouTab = memo(function ForYouTab() {
   useEffect(() => {
     if (
       forYouFeed.events.length < 10 ||
-      (navigationType !== 'POP' && Date.now() - forYouFeed.created_at > 1000 * 60 * 2)
+      (navigationType !== "POP" && Date.now() - forYouFeed.created_at > 1000 * 60 * 2)
     ) {
       getFeed()
     }
@@ -123,7 +123,7 @@ export const ForYouTab = memo(function ForYouTab() {
       // Insert approximately 1 event from `latestFeed` for every 4 events from `notes`
       if (count % 5 === 0 && j < (filteredLatestFeed.length ?? 0)) {
         const ev = filteredLatestFeed[j]
-        if (!seen.has(ev.id) && !ev.tags.some((a: string[]) => a[0] === 'e')) {
+        if (!seen.has(ev.id) && !ev.tags.some((a: string[]) => a[0] === "e")) {
           seen.add(ev.id)
           combined.push(ev)
         }

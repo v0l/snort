@@ -1,6 +1,6 @@
-import { formatShort } from "@/Utils/Number";
+import { formatShort } from "@/Utils/Number"
 
-import Icon from "./Icons/Icon";
+import Icon from "./Icons/Icon"
 
 export default function ZapAmount({ n }: { n: number }) {
   return (
@@ -8,5 +8,5 @@ export default function ZapAmount({ n }: { n: number }) {
       <Icon name="zap-solid" size={20} className="text-zap" />
       <span>{formatShort(n)}</span>
     </div>
-  );
+  )
 }

@@ -58,7 +58,7 @@ export const InlineCodeRegex = /(`[^`\n]+?`)/g
 /**
  * Public metadata relays
  */
-export const MetadataRelays = ['wss://purplepag.es/', 'wss://relay.nostr.band/', 'wss://relay.snort.social/']
+export const MetadataRelays = ["wss://purplepag.es/", "wss://relay.nostr.band/", "wss://relay.snort.social/"]
 
 /**
  * Timeout for relay AUTH challenge response (ms)

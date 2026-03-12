@@ -1,7 +1,7 @@
-import type { IconProps } from "./Icon";
+import type { IconProps } from "./Icon"
 
 export function ToggleSwitch(props: Omit<IconProps, "name">) {
-  const size = props.size || 20;
+  const size = props.size || 20
   return (
     <svg
       viewBox="0 0 33.015999 19.353487"
@@ -9,7 +9,8 @@ export function ToggleSwitch(props: Omit<IconProps, "name">) {
       width={size}
       height={props.height ?? size}
       className={props.className}
-      onClick={props.onClick}>
+      onClick={props.onClick}
+    >
       <path
         className="fill-neutral-600 transition-[fill] duration-500 [.active_&]:fill-success"
         fillRule="evenodd"
@@ -24,5 +25,5 @@ export function ToggleSwitch(props: Omit<IconProps, "name">) {
         d="m 10.118173,18.367375 c 4.8102,0 8.7097,-3.8995 8.7097,-8.7096999 0,-4.8101905 -3.8995,-8.7096505 -8.7097,-8.7096505 -4.8102196,0 -8.7096796,3.89946 -8.7096796,8.7096505 0,4.8101999 3.89946,8.7096999 8.7096796,8.7096999 z"
       />
     </svg>
-  );
+  )
 }

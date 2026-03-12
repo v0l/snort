@@ -1,29 +1,29 @@
-import { FeedCache } from "@snort/shared";
-import type { EventPublisher, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { FeedCache } from "@snort/shared"
+import type { EventPublisher, RequestBuilder, TaggedNostrEvent } from "@snort/system"
 
-import type { LoginSession } from "@/Utils/Login";
+import type { LoginSession } from "@/Utils/Login"
 
-export type TWithCreated<T> = (T | Readonly<T>) & { created_at: number };
+export type TWithCreated<T> = (T | Readonly<T>) & { created_at: number }
 
 export abstract class RefreshFeedCache<T> extends FeedCache<TWithCreated<T>> {
-  abstract buildSub(session: LoginSession, rb: RequestBuilder): void;
-  abstract onEvent(evs: Readonly<Array<TaggedNostrEvent>>, pubKey: string, pub?: EventPublisher): void;
+  abstract buildSub(session: LoginSession, rb: RequestBuilder): void
+  abstract onEvent(evs: Readonly<Array<TaggedNostrEvent>>, pubKey: string, pub?: EventPublisher): void
 
   /**
    * Get latest event
    */
   protected newest(filter?: (e: TWithCreated<T>) => boolean) {
-    let ret = 0;
+    let ret = 0
     this.cache.forEach(v => {
       if (!filter || filter(v)) {
-        ret = v.created_at > ret ? v.created_at : ret;
+        ret = v.created_at > ret ? v.created_at : ret
       }
-    });
-    return ret;
+    })
+    return ret
   }
 
   override async preload(): Promise<void> {
-    await super.preload();
-    await this.buffer([...this.onTable]);
+    await super.preload()
+    await this.buffer([...this.onTable])
   }
 }

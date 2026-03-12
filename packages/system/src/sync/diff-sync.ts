@@ -1,5 +1,5 @@
-import debug from 'debug'
-import { EventEmitter } from 'eventemitter3'
+import debug from "debug"
+import { EventEmitter } from "eventemitter3"
 import {
   decryptSigner,
   EventBuilder,
@@ -8,11 +8,11 @@ import {
   type NostrLink,
   type NotSignedNostrEvent,
   type SystemInterface,
-} from '..'
-import { SafeSync } from './safe-sync'
+} from ".."
+import { SafeSync } from "./safe-sync"
 
 interface TagDiff {
-  type: 'add' | 'remove' | 'replace' | 'update'
+  type: "add" | "remove" | "replace" | "update"
   tag: Array<string> | Array<Array<string>>
 }
 
@@ -24,7 +24,7 @@ interface DiffSyncTagsEvents {
  * Add/Remove tags from event
  */
 export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
-  #log = debug('DiffSyncTags')
+  #log = debug("DiffSyncTags")
   #sync: SafeSync
   #changes: Array<TagDiff> = []
   #changesEncrypted: Array<TagDiff> = []
@@ -56,7 +56,7 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
    * Get decrypted content
    */
   get encryptedTags() {
-    if (this.#decryptedContent && this.#decryptedContent.startsWith('[') && this.#decryptedContent.endsWith(']')) {
+    if (this.#decryptedContent && this.#decryptedContent.startsWith("[") && this.#decryptedContent.endsWith("]")) {
       try {
         const tags = JSON.parse(this.#decryptedContent) as Array<Array<string>>
         return tags
@@ -73,10 +73,10 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
    */
   add(tag: Array<string> | Array<Array<string>>, encrypted = false) {
     ;(encrypted ? this.#changesEncrypted : this.#changes).push({
-      type: 'add',
+      type: "add",
       tag,
     })
-    this.emit('change')
+    this.emit("change")
   }
 
   /**
@@ -84,10 +84,10 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
    */
   remove(tag: Array<string> | Array<Array<string>>, encrypted = false) {
     ;(encrypted ? this.#changesEncrypted : this.#changes).push({
-      type: 'remove',
+      type: "remove",
       tag,
     })
-    this.emit('change')
+    this.emit("change")
   }
 
   /**
@@ -95,10 +95,10 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
    */
   update(tag: Array<string> | Array<Array<string>>, encrypted = false) {
     ;(encrypted ? this.#changesEncrypted : this.#changes).push({
-      type: 'update',
+      type: "update",
       tag,
     })
-    this.emit('change')
+    this.emit("change")
   }
 
   /**
@@ -106,16 +106,16 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
    */
   replace(tag: Array<Array<string>>, encrypted = false) {
     ;(encrypted ? this.#changesEncrypted : this.#changes).push({
-      type: 'replace',
+      type: "replace",
       tag,
     })
-    this.emit('change')
+    this.emit("change")
   }
 
   async sync(signer: EventSigner | undefined, system: SystemInterface) {
     const isSync = await this.#sync.sync(system)
     await this.#afterSync(signer)
-    if (isSync) this.emit('change')
+    if (isSync) this.emit("change")
   }
 
   /**
@@ -139,20 +139,20 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
 
     // update decrypted content after internal sync update
     this.#decryptedContent = nextDecryptedContent
-    this.emit('change')
+    this.emit("change")
   }
 
   async #afterSync(signer: EventSigner | undefined) {
     if (this.#sync.value?.content && this.contentEncrypted && signer) {
       const decrypted = await decryptSigner(this.#sync.value.content, signer)
       this.#decryptedContent = decrypted
-      this.emit('change')
+      this.emit("change")
     }
   }
 
   #nextEvent(content?: string): NotSignedNostrEvent {
     if (content !== undefined && this.#changesEncrypted.length > 0) {
-      throw new Error('Cannot have both encrypted tags and explicit content')
+      throw new Error("Cannot have both encrypted tags and explicit content")
     }
     let isNew = false
     let next = this.#sync.value ? { ...this.#sync.value } : undefined
@@ -172,16 +172,16 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
       next.content = content
     }
 
-    this.#log('Built next event %O', next)
+    this.#log("Built next event %O", next)
     return next
   }
 
   #applyChanges(tags: Array<Array<string>>, changes: Array<TagDiff>) {
     for (const change of changes) {
-      if (change.tag.length === 0 && change.type !== 'replace') continue
+      if (change.tag.length === 0 && change.type !== "replace") continue
 
       switch (change.type) {
-        case 'add': {
+        case "add": {
           const changeTags = Array.isArray(change.tag[0])
             ? (change.tag as Array<Array<string>>)
             : [change.tag as Array<string>]
@@ -190,12 +190,12 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
             if (existing === -1) {
               tags.push(changeTag)
             } else {
-              this.#log('Tag already exists: %O', changeTag)
+              this.#log("Tag already exists: %O", changeTag)
             }
           }
           break
         }
-        case 'remove': {
+        case "remove": {
           const changeTags = Array.isArray(change.tag[0])
             ? (change.tag as Array<Array<string>>)
             : [change.tag as Array<string>]
@@ -204,12 +204,12 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
             if (existing !== -1) {
               tags.splice(existing, 1)
             } else {
-              this.#log('Could not find tag to remove: %O', changeTag)
+              this.#log("Could not find tag to remove: %O", changeTag)
             }
           }
           break
         }
-        case 'update': {
+        case "update": {
           const changeTags = Array.isArray(change.tag[0])
             ? (change.tag as Array<Array<string>>)
             : [change.tag as Array<string>]
@@ -218,12 +218,12 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
             if (existing !== -1) {
               tags[existing] = changeTag
             } else {
-              this.#log('Could not find tag to update: %O', changeTag)
+              this.#log("Could not find tag to update: %O", changeTag)
             }
           }
           break
         }
-        case 'replace': {
+        case "replace": {
           tags.splice(0, tags.length)
           tags.push(...(change.tag as Array<Array<string>>))
           break

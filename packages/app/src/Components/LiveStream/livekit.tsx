@@ -5,8 +5,8 @@ import {
   useEnsureRoom,
   useParticipantPermissions,
   useParticipants,
-} from '@livekit/components-react'
-import { unixNow } from '@snort/shared'
+} from "@livekit/components-react"
+import { unixNow } from "@snort/shared"
 import {
   EventKind,
   type EventPublisher,
@@ -15,25 +15,25 @@ import {
   RequestBuilder,
   type SystemInterface,
   type TaggedNostrEvent,
-} from '@snort/system'
-import { useRequestBuilder, useUserProfile } from '@snort/system-react'
-import classNames from 'classnames'
-import { LocalParticipant, type LocalTrackPublication, type RemoteParticipant, RoomEvent, Track } from 'livekit-client'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
+} from "@snort/system"
+import { useRequestBuilder, useUserProfile } from "@snort/system-react"
+import classNames from "classnames"
+import { LocalParticipant, type LocalTrackPublication, type RemoteParticipant, RoomEvent, Track } from "livekit-client"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
-import Text from '@/Components/Text/Text'
-import useEventPublisher from '@/Hooks/useEventPublisher'
-import { extractStreamInfo } from '@/Utils/stream'
+import Text from "@/Components/Text/Text"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import { extractStreamInfo } from "@/Utils/stream"
 
-import AsyncButton from '../Button/AsyncButton'
-import IconButton from '../Button/IconButton'
-import { ProxyImg } from '../ProxyImg'
-import Avatar from '../User/Avatar'
-import DisplayName from '../User/DisplayName'
-import ProfileImage from '../User/ProfileImage'
-import { NestsParticipants } from './nests-participants'
-import VuBar from './VU'
+import AsyncButton from "../Button/AsyncButton"
+import IconButton from "../Button/IconButton"
+import { ProxyImg } from "../ProxyImg"
+import Avatar from "../User/Avatar"
+import DisplayName from "../User/DisplayName"
+import ProfileImage from "../User/ProfileImage"
+import { NestsParticipants } from "./nests-participants"
+import VuBar from "./VU"
 
 enum RoomTab {
   Participants,
@@ -52,9 +52,9 @@ export default function LiveKitRoom({ ev, canJoin }: { ev: TaggedNostrEvent; can
     const url = `${service}/api/v1/nests/${id}`
     const auth = await publisher.generic(eb => {
       eb.kind(EventKind.HttpAuthentication)
-      eb.tag(['url', url])
-      eb.tag(['u', url])
-      eb.tag(['method', 'GET'])
+      eb.tag(["url", url])
+      eb.tag(["u", url])
+      eb.tag(["method", "GET"])
       return eb
     })
     const rsp = await fetch(url, {
@@ -76,7 +76,7 @@ export default function LiveKitRoom({ ev, canJoin }: { ev: TaggedNostrEvent; can
         return eb
           .kind(10_312 as EventKind)
           .tag(Nip10.linkToTag(link))
-          .tag(['expiration', (unixNow() + 60).toString()])
+          .tag(["expiration", (unixNow() + 60).toString()])
       })
       await sys.BroadcastEvent(e)
     },
@@ -116,7 +116,7 @@ export default function LiveKitRoom({ ev, canJoin }: { ev: TaggedNostrEvent; can
     )
   }
   return (
-    <LiveKitRoomContext token={token} serverUrl={stream?.replace('wss+livekit://', 'wss://')} connect={true}>
+    <LiveKitRoomContext token={token} serverUrl={stream?.replace("wss+livekit://", "wss://")} connect={true}>
       <RoomAudioRenderer volume={1} muted={false} />
       <RoomBody ev={ev} tab={tab} onSelectTab={setTab} />
     </LiveKitRoomContext>
@@ -160,16 +160,16 @@ function RoomBody({ ev, tab, onSelectTab }: { ev: TaggedNostrEvent; tab: RoomTab
       <MyControls />
       <div className="flex text-center items-center text-xl font-medium mb-2">
         <div
-          className={classNames('flex-1 py-2 cursor-pointer select-none border-b border-transparent', {
-            '!border-highlight': tab === RoomTab.Participants,
+          className={classNames("flex-1 py-2 cursor-pointer select-none border-b border-transparent", {
+            "!border-highlight": tab === RoomTab.Participants,
           })}
           onClick={() => onSelectTab(RoomTab.Participants)}
         >
           <FormattedMessage defaultMessage="Participants" />
         </div>
         <div
-          className={classNames('flex-1 py-2 cursor-pointer select-none border-b border-transparent', {
-            '!border-highlight': tab === RoomTab.Chat,
+          className={classNames("flex-1 py-2 cursor-pointer select-none border-b border-transparent", {
+            "!border-highlight": tab === RoomTab.Chat,
           })}
           onClick={() => onSelectTab(RoomTab.Chat)}
         >
@@ -204,12 +204,12 @@ function MyControls() {
       const handler = (lt: LocalTrackPublication) => {
         lt.mute()
       }
-      p.on('localTrackPublished', handler)
+      p.on("localTrackPublished", handler)
       if (permissions.canPublish && p.audioTrackPublications.size === 0) {
         p.setMicrophoneEnabled(true)
       }
       return () => {
-        p.off('localTrackPublished', handler)
+        p.off("localTrackPublished", handler)
       }
     }
   }, [p, permissions])
@@ -219,7 +219,7 @@ function MyControls() {
     <div className="flex gap-2 items-center mt-2">
       {p.permissions?.canPublish && (
         <IconButton
-          icon={{ name: !isMuted ? 'mic' : 'mic-off', size: 20 }}
+          icon={{ name: !isMuted ? "mic" : "mic-off", size: 20 }}
           onClick={async () => {
             if (isMuted) {
               await p.setMicrophoneEnabled(true)
@@ -268,7 +268,7 @@ function ChatMessage({ ev }: { ev: TaggedNostrEvent }) {
 
 function WriteChatMessage({ ev }: { ev: TaggedNostrEvent }) {
   const link = NostrLink.fromEvent(ev)
-  const [chat, setChat] = useState('')
+  const [chat, setChat] = useState("")
   const { publisher, system } = useEventPublisher()
   const { formatMessage } = useIntl()
 
@@ -276,7 +276,7 @@ function WriteChatMessage({ ev }: { ev: TaggedNostrEvent }) {
     if (!publisher || !system || chat.length < 2) return
     const eChat = await publisher.generic(eb => eb.kind(EventKind.LiveEventChat).tag(link.toEventTag()!).content(chat))
     await system.BroadcastEvent(eChat)
-    setChat('')
+    setChat("")
   }
 
   return (
@@ -284,22 +284,22 @@ function WriteChatMessage({ ev }: { ev: TaggedNostrEvent }) {
       <input
         type="text"
         value={chat}
-        placeholder={formatMessage({ defaultMessage: 'Write message' })}
+        placeholder={formatMessage({ defaultMessage: "Write message" })}
         onChange={e => setChat(e.target.value)}
         className="grow"
         onKeyDown={e => {
-          if (e.key === 'Enter') {
+          if (e.key === "Enter") {
             sendMessage()
           }
         }}
       />
-      <IconButton icon={{ name: 'arrow-right' }} onClick={sendMessage} />
+      <IconButton icon={{ name: "arrow-right" }} onClick={sendMessage} />
     </div>
   )
 }
 
 function LiveKitUser({ p }: { p: RemoteParticipant | LocalParticipant }) {
-  const pubkey = p.identity.startsWith('guest-') ? 'anon' : p.identity
+  const pubkey = p.identity.startsWith("guest-") ? "anon" : p.identity
   const profile = useUserProfile(pubkey)
   const mic = p.getTrackPublication(Track.Source.Microphone)
 
@@ -312,7 +312,7 @@ function LiveKitUser({ p }: { p: RemoteParticipant | LocalParticipant }) {
         <Avatar pubkey={pubkey} user={profile} size={40} className="absolute" />
       </div>
       <div>
-        <DisplayName pubkey={pubkey} user={pubkey === 'anon' ? { name: 'Anon' } : profile} />
+        <DisplayName pubkey={pubkey} user={pubkey === "anon" ? { name: "Anon" } : profile} />
         {p.permissions?.canPublish && <div className="text-highlight">Speaker</div>}
       </div>
     </div>

@@ -1,17 +1,17 @@
-import { unwrap } from '@snort/shared'
-import { EventKind, type NostrEvent, type NostrLink, type TaggedNostrEvent } from '@snort/system'
-import classNames from 'classnames'
-import { useEffect, useMemo, useState } from 'react'
+import { unwrap } from "@snort/shared"
+import { EventKind, type NostrEvent, type NostrLink, type TaggedNostrEvent } from "@snort/system"
+import classNames from "classnames"
+import { useEffect, useMemo, useState } from "react"
 
-import { AsyncIcon } from '@/Components/Button/AsyncIcon'
-import { AutoLoadMore } from '@/Components/Event/LoadMore'
-import { useNotificationsView } from '@/Feed/WorkerRelayView'
-import useLogin from '@/Hooks/useLogin'
-import useModeration from '@/Hooks/useModeration'
-import { markNotificationsRead } from '@/Utils/Login'
+import { AsyncIcon } from "@/Components/Button/AsyncIcon"
+import { AutoLoadMore } from "@/Components/Event/LoadMore"
+import { useNotificationsView } from "@/Feed/WorkerRelayView"
+import useLogin from "@/Hooks/useLogin"
+import useModeration from "@/Hooks/useModeration"
+import { markNotificationsRead } from "@/Utils/Login"
 
-import { getNotificationContext } from './getNotificationContext'
-import { NotificationGroup } from './NotificationGroup'
+import { getNotificationContext } from "./getNotificationContext"
+import { NotificationGroup } from "./NotificationGroup"
 
 enum NotificationSummaryFilter {
   Reactions = 1,
@@ -48,9 +48,9 @@ function FilterIcon({
   const active = hasFlag(filter, f)
   return (
     <AsyncIcon
-      className={classNames('button-icon-sm transparent', { active, [iconActiveClass]: active })}
+      className={classNames("button-icon-sm transparent", { active, [iconActiveClass]: active })}
       onClick={() => setFilter(v => v ^ f)}
-      name={''}
+      name={""}
       iconName={icon}
     />
   )
@@ -73,7 +73,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
     return notifications
       .sort((a, b) => (a.created_at > b.created_at ? -1 : 1))
       .slice(0, limit)
-      .filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === 'p' && b[1] === login.publicKey))
+      .filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey))
       .filter(a => {
         if (a.kind === EventKind.TextNote) {
           return hasFlag(filter, NotificationSummaryFilter.Mentions)

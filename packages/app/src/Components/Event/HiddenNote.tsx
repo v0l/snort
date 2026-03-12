@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { useState } from "react"
+import { FormattedMessage } from "react-intl"
 
-import usePreferences from "@/Hooks/usePreferences";
+import usePreferences from "@/Hooks/usePreferences"
 
 const HiddenNote = ({ children }: { children: React.ReactNode }) => {
-  const hideMutedNotes = usePreferences(s => s.hideMutedNotes);
-  const [show, setShow] = useState(false);
-  if (hideMutedNotes) return;
+  const hideMutedNotes = usePreferences(s => s.hideMutedNotes)
+  const [show, setShow] = useState(false)
+  if (hideMutedNotes) return
 
   return show ? (
     children
@@ -19,7 +19,7 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
         <FormattedMessage defaultMessage="Show" />
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default HiddenNote;
+export default HiddenNote

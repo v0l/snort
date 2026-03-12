@@ -1,12 +1,12 @@
-import { use } from "react";
+import { use } from "react"
 
-import Note, { type NoteProps } from "@/Components/Event/EventComponent";
-import { useArticles } from "@/Feed/ArticlesFeed";
-import { DeckContext } from "@/Pages/Deck/DeckLayout";
+import Note, { type NoteProps } from "@/Components/Event/EventComponent"
+import { useArticles } from "@/Feed/ArticlesFeed"
+import { DeckContext } from "@/Pages/Deck/DeckLayout"
 
 export default function Articles({ noteProps }: { noteProps?: Omit<NoteProps, "data"> }) {
-  const data = useArticles();
-  const deck = use(DeckContext);
+  const data = useArticles()
+  const deck = use(DeckContext)
 
   return (
     <>
@@ -20,11 +20,11 @@ export default function Articles({ noteProps }: { noteProps?: Omit<NoteProps, "d
             ...noteProps?.options,
           }}
           onClick={ev => {
-            deck?.setArticle(ev);
-            noteProps?.onClick?.(ev);
+            deck?.setArticle(ev)
+            noteProps?.onClick?.(ev)
           }}
         />
       ))}
     </>
-  );
+  )
 }

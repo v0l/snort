@@ -1,5 +1,5 @@
-import { FormattedMessage } from "react-intl";
-import { Link, Outlet, type RouteObject } from "react-router-dom";
+import { FormattedMessage } from "react-intl"
+import { Link, Outlet, type RouteObject } from "react-router-dom"
 
 function ManageHandlePage() {
   return (
@@ -11,7 +11,7 @@ function ManageHandlePage() {
       </Link>
       <Outlet />
     </>
-  );
+  )
 }
 
 export const ManageHandleRoutes = [
@@ -22,17 +22,17 @@ export const ManageHandleRoutes = [
       {
         index: true,
         async lazy() {
-          const { ListHandles } = await import("..");
-          return { Component: ListHandles };
+          const { ListHandles } = await import("..")
+          return { Component: ListHandles }
         },
       },
       {
         path: "manage",
         async lazy() {
-          const { ManageHandleIndex } = await import("..");
-          return { Component: ManageHandleIndex };
+          const { ManageHandleIndex } = await import("..")
+          return { Component: ManageHandleIndex }
         },
       },
     ],
   },
-] as Array<RouteObject>;
+] as Array<RouteObject>

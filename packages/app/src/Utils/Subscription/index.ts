@@ -1,4 +1,4 @@
-import { unixNow } from "@snort/shared";
+import { unixNow } from "@snort/shared"
 
 export enum SubscriptionType {
   Supporter = 0,
@@ -41,24 +41,24 @@ export const Plans = [
       LockedFeatures.EmailBridge,
     ],
   },
-];
+]
 
 export interface SubscriptionEvent {
-  id: string;
-  type: SubscriptionType;
-  start: number;
-  end: number;
+  id: string
+  type: SubscriptionType
+  start: number
+  end: number
 }
 
 export function getActiveSubscriptions(s: Array<SubscriptionEvent>) {
-  const now = unixNow();
-  return [...s].sort((a, b) => b.type - a.type).filter(a => a.start <= now && a.end > now);
+  const now = unixNow()
+  return [...s].sort((a, b) => b.type - a.type).filter(a => a.start <= now && a.end > now)
 }
 
 export function getCurrentSubscription(s: Array<SubscriptionEvent>) {
-  return getActiveSubscriptions(s).at(0);
+  return getActiveSubscriptions(s).at(0)
 }
 
 export function mostRecentSubscription(s: Array<SubscriptionEvent>) {
-  return [...s].sort((a, b) => (b.start > a.start ? -1 : 1)).at(0);
+  return [...s].sort((a, b) => (b.start > a.start ? -1 : 1)).at(0)
 }

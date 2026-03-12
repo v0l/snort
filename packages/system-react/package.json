@@ -11,10 +11,7 @@
   "scripts": {
     "build": "rm -rf dist && bunx --bun tsc"
   },
-  "files": [
-    "src",
-    "dist"
-  ],
+  "files": ["src", "dist"],
   "dependencies": {
     "@snort/shared": "^2.0.0-pre.3",
     "@snort/system": "^2.0.0-pre.9",

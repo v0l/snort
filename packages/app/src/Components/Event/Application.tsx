@@ -1,19 +1,19 @@
-import { mapEventToProfile, type TaggedNostrEvent } from "@snort/system";
-import { FormattedMessage } from "react-intl";
+import { mapEventToProfile, type TaggedNostrEvent } from "@snort/system"
+import { FormattedMessage } from "react-intl"
 
-import KindName from "../kind-name";
-import Avatar from "../User/Avatar";
-import DisplayName from "../User/DisplayName";
-import ProfileImage from "../User/ProfileImage";
-import Icon from "../Icons/Icon";
+import KindName from "../kind-name"
+import Avatar from "../User/Avatar"
+import DisplayName from "../User/DisplayName"
+import ProfileImage from "../User/ProfileImage"
+import Icon from "../Icons/Icon"
 
 export function ApplicationHandler({ ev }: { ev: TaggedNostrEvent }) {
-  const profile = mapEventToProfile(ev);
+  const profile = mapEventToProfile(ev)
   const kinds = ev.tags
     .filter(a => a[0] === "k")
     .map(a => Number(a[1]))
-    .sort((a, b) => a - b);
-  const sourceLink = ev.tags.find(a => a[0] === "r" && a[2] === "source")?.[1];
+    .sort((a, b) => a - b)
+  const sourceLink = ev.tags.find(a => a[0] === "r" && a[2] === "source")?.[1]
   return (
     <div className="px-3 py-2 flex gap-2 flex-col">
       <div className="flex items-center gap-2 text-xl">
@@ -43,5 +43,5 @@ export function ApplicationHandler({ ev }: { ev: TaggedNostrEvent }) {
         ))}
       </div>
     </div>
-  );
+  )
 }

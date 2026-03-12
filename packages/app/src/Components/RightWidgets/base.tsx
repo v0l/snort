@@ -1,13 +1,13 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from "react"
 
-import Icon from "../Icons/Icon";
+import Icon from "../Icons/Icon"
 
 export interface BaseWidgetProps {
-  title?: ReactNode;
-  icon?: string;
-  iconClassName?: string;
-  children?: ReactNode;
-  contextMenu?: ReactNode;
+  title?: ReactNode
+  icon?: string
+  iconClassName?: string
+  children?: ReactNode
+  contextMenu?: ReactNode
 }
 export function BaseWidget({ children, title, icon, iconClassName, contextMenu }: BaseWidgetProps) {
   return (
@@ -27,5 +27,5 @@ export function BaseWidget({ children, title, icon, iconClassName, contextMenu }
       )}
       {children}
     </div>
-  );
+  )
 }

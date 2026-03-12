@@ -1,14 +1,14 @@
-import classNames from 'classnames'
-import { useCallback, useEffect, useState } from 'react'
-import { FormattedMessage, FormattedNumber } from 'react-intl'
+import classNames from "classnames"
+import { useCallback, useEffect, useState } from "react"
+import { FormattedMessage, FormattedNumber } from "react-intl"
 
-import useEventPublisher from '@/Hooks/useEventPublisher'
-import useImgProxy from '@/Hooks/useImgProxy'
-import useLogin from '@/Hooks/useLogin'
-import { useMediaServerList } from '@/Hooks/useMediaServerList'
-import { type BlobDescriptor, Blossom } from '@/Utils/Upload/blossom'
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useImgProxy from "@/Hooks/useImgProxy"
+import useLogin from "@/Hooks/useLogin"
+import { useMediaServerList } from "@/Hooks/useMediaServerList"
+import { type BlobDescriptor, Blossom } from "@/Utils/Upload/blossom"
 
-import AsyncButton from '../Button/AsyncButton'
+import AsyncButton from "../Button/AsyncButton"
 
 export function MediaServerFileList({
   onPicked,
@@ -74,9 +74,9 @@ export function MediaServerFileList({
   return (
     <div>
       <div
-        className={classNames('grid gap-4 my-2', {
-          'grid-cols-2': cols === 2 || cols === undefined,
-          'grid-cols-6': cols === 6,
+        className={classNames("grid gap-4 my-2", {
+          "grid-cols-2": cols === 2 || cols === undefined,
+          "grid-cols-6": cols === 6,
         })}
       >
         {Object.entries(finalFileList).map(([k, v]) => (
@@ -97,7 +97,7 @@ function ServerFile({ file, checked, onClick }: { file: BlobDescriptor; checked:
   const { proxy } = useImgProxy()
 
   function backgroundImage() {
-    if (file.url && (file.type?.startsWith('image/') || file.type?.startsWith('video/'))) {
+    if (file.url && (file.type?.startsWith("image/") || file.type?.startsWith("video/"))) {
       return `url(${proxy(file.url, 512)})`
     }
   }
@@ -132,8 +132,8 @@ function ServerFile({ file, checked, onClick }: { file: BlobDescriptor; checked:
           <div>{file.uploaded && new Date(file.uploaded * 1000).toLocaleString()}</div>
         </div>
         <div
-          className={classNames('w-4 h-4 border-2 rounded-full right-1 top-1 absolute', {
-            'bg-zap': checked,
+          className={classNames("w-4 h-4 border-2 rounded-full right-1 top-1 absolute", {
+            "bg-zap": checked,
           })}
         />
       </div>

@@ -1,12 +1,12 @@
-import { EventKind, type ParsedFragment, readNip94TagsFromIMeta, type TaggedNostrEvent } from "@snort/system";
+import { EventKind, type ParsedFragment, readNip94TagsFromIMeta, type TaggedNostrEvent } from "@snort/system"
 
-import { transformTextCached } from "@/Hooks/useTextTransformCache";
+import { transformTextCached } from "@/Hooks/useTextTransformCache"
 
 export default function getEventMedia(event: TaggedNostrEvent) {
   // emulate parsed media from imeta kinds
-  const mediaKinds = [EventKind.Photo, EventKind.Video, EventKind.ShortVideo];
+  const mediaKinds = [EventKind.Photo, EventKind.Video, EventKind.ShortVideo]
   if (mediaKinds.includes(event.kind)) {
-    const meta = event.tags.filter(a => a[0] === "imeta").map(readNip94TagsFromIMeta);
+    const meta = event.tags.filter(a => a[0] === "imeta").map(readNip94TagsFromIMeta)
     return meta.map(
       a =>
         ({
@@ -14,10 +14,10 @@ export default function getEventMedia(event: TaggedNostrEvent) {
           mimeType: a.mimeType,
           content: a.url,
         }) as ParsedFragment,
-    );
+    )
   }
-  const parsed = transformTextCached(event.id, event.content, event.tags);
+  const parsed = transformTextCached(event.id, event.content, event.tags)
   return parsed.filter(
     a => a.type === "media" && (a.mimeType?.startsWith("image/") || a.mimeType?.startsWith("video/")),
-  );
+  )
 }

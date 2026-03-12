@@ -1,81 +1,81 @@
-import { Nip7Signer, Nip55Signer, NotEncrypted } from "@snort/system";
-import classNames from "classnames";
-import { useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-import { Link, useNavigate } from "react-router-dom";
+import { Nip7Signer, Nip55Signer, NotEncrypted } from "@snort/system"
+import classNames from "classnames"
+import { useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { Link, useNavigate } from "react-router-dom"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import Icon from "@/Components/Icons/Icon";
-import useLoginHandler from "@/Hooks/useLoginHandler";
-import { trackEvent } from "@/Utils";
-import { LoginSessionType, LoginStore } from "@/Utils/Login";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import Icon from "@/Components/Icons/Icon"
+import useLoginHandler from "@/Hooks/useLoginHandler"
+import { trackEvent } from "@/Utils"
+import { LoginSessionType, LoginStore } from "@/Utils/Login"
 
-import { Bech32Regex } from "@snort/shared";
+import { Bech32Regex } from "@snort/shared"
 
-const signer = new Nip55Signer();
+const signer = new Nip55Signer()
 
 export default function SignIn() {
-  const navigate = useNavigate();
-  const { formatMessage } = useIntl();
-  const [key, setKey] = useState("");
-  const [error, setError] = useState("");
-  const [useKey, setUseKey] = useState(false);
-  const loginHandler = useLoginHandler();
+  const navigate = useNavigate()
+  const { formatMessage } = useIntl()
+  const [key, setKey] = useState("")
+  const [error, setError] = useState("")
+  const [useKey, setUseKey] = useState(false)
+  const loginHandler = useLoginHandler()
 
-  const hasNip7 = "nostr" in window;
-  const hasNip55 = true;
+  const hasNip7 = "nostr" in window
+  const hasNip55 = true
 
   async function doNip07Login() {
-    const signer = new Nip7Signer();
-    const pubKey = await signer.getPubKey();
-    LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip7);
-    trackEvent("Login", { type: "NIP7" });
-    navigate("/");
+    const signer = new Nip7Signer()
+    const pubKey = await signer.getPubKey()
+    LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip7)
+    trackEvent("Login", { type: "NIP7" })
+    navigate("/")
   }
 
   async function doNip55Login() {
-    const pubKey = await signer.getPubKey();
-    LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip55);
-    trackEvent("Login", { type: "NIP55" });
-    navigate("/");
+    const pubKey = await signer.getPubKey()
+    LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip55)
+    trackEvent("Login", { type: "NIP55" })
+    navigate("/")
   }
 
   async function onSubmit(e: Event) {
-    e.preventDefault();
-    doLogin(key);
+    e.preventDefault()
+    doLogin(key)
   }
 
   async function doLogin(key: string) {
-    setError("");
+    setError("")
     try {
-      await loginHandler.doLogin(key, key => Promise.resolve(new NotEncrypted(key)));
-      trackEvent("Login", { type: "Key" });
-      navigate("/");
+      await loginHandler.doLogin(key, key => Promise.resolve(new NotEncrypted(key)))
+      trackEvent("Login", { type: "Key" })
+      navigate("/")
     } catch (e) {
       if (e instanceof Error) {
-        setError(e.message);
+        setError(e.message)
       } else {
         setError(
           formatMessage({
             defaultMessage: "Unknown login error",
             id: "OLEm6z",
           }),
-        );
+        )
       }
-      console.error(e);
+      console.error(e)
     }
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
+    const val = e.target.value
     if (val.match(Bech32Regex)) {
-      doLogin(val);
+      doLogin(val)
     } else {
-      setKey(val);
+      setKey(val)
     }
-  };
+  }
 
-  const signerExtLogin = (hasNip7 || hasNip55) && !useKey;
+  const signerExtLogin = (hasNip7 || hasNip55) && !useKey
   return (
     <div className="flex flex-col gap-6">
       <img src={CONFIG.icon} width={48} height={48} className="rounded-lg mr-auto ml-auto" />
@@ -137,5 +137,5 @@ export default function SignIn() {
         </AsyncButton>
       </div>
     </div>
-  );
+  )
 }

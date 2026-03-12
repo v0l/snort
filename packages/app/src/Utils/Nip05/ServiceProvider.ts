@@ -1,4 +1,4 @@
-import { throwIfOffline } from "@snort/shared";
+import { throwIfOffline } from "@snort/shared"
 
 export type ServiceErrorCode =
   | "UNKNOWN_ERROR"
@@ -14,70 +14,70 @@ export type ServiceErrorCode =
   | "NO_TOKEN"
   | "INVALID_TOKEN"
   | "NO_SUCH_PAYMENT"
-  | "INTERNAL_PAYMENT_CHECK_ERROR";
+  | "INTERNAL_PAYMENT_CHECK_ERROR"
 
 export interface ServiceError {
-  error: ServiceErrorCode;
-  errors: Array<string>;
+  error: ServiceErrorCode
+  errors: Array<string>
 }
 
 export interface ServiceConfig {
-  domains: DomainConfig[];
+  domains: DomainConfig[]
 }
 
 export type DomainConfig = {
-  name: string;
-  default: boolean;
-  length: [number, number];
-  regex: [string, string];
-  regexChars: [string, string];
-};
+  name: string
+  default: boolean
+  length: [number, number]
+  regex: [string, string]
+  regexChars: [string, string]
+}
 
 export type HandleAvailability = {
-  available: boolean;
-  why?: ServiceErrorCode;
-  reasonTag?: string | null;
-  quote?: HandleQuote;
-};
+  available: boolean
+  why?: ServiceErrorCode
+  reasonTag?: string | null
+  quote?: HandleQuote
+}
 
 export type HandleQuote = {
-  price: number;
-  data: HandleData;
-};
+  price: number
+  data: HandleData
+}
 
 export type HandleData = {
-  type: string | "premium" | "short";
-};
+  type: string | "premium" | "short"
+}
 
 export type HandleRegisterResponse = {
-  quote: HandleQuote;
-  paymentHash: string;
-  invoice: string;
-  token: string;
-};
+  quote: HandleQuote
+  paymentHash: string
+  invoice: string
+  token: string
+}
 
 export type CheckRegisterResponse = {
-  available: boolean;
-  paid: boolean;
-  password: string;
-};
+  available: boolean
+  paid: boolean
+  password: string
+}
 
 export class ServiceProvider {
-  readonly url: URL | string;
+  readonly url: URL | string
 
   constructor(url: URL | string) {
-    this.url = url;
+    this.url = url
   }
 
   async GetConfig(): Promise<ServiceConfig | ServiceError> {
-    return await this.getJson("/config.json");
+    return await this.getJson("/config.json")
   }
 
   async CheckAvailable(handle: string, domain: string): Promise<HandleAvailability | ServiceError> {
     return await this.getJson("/registration/availability", "POST", {
       name: handle,
       domain,
-    });
+    })
   }
 
   async RegisterHandle(handle: string, domain: string, pubkey: string): Promise<HandleRegisterResponse | ServiceError> {
@@ -86,13 +86,13 @@ export class ServiceProvider {
       domain,
       pk: pubkey,
       ref: "snort",
-    });
+    })
   }
 
   async CheckRegistration(token: string): Promise<CheckRegisterResponse | ServiceError> {
     return await this.getJson("/registration/register/check", "POST", undefined, {
       authorization: token,
-    });
+    })
   }
 
   protected async getJson<T>(
@@ -101,7 +101,7 @@ export class ServiceProvider {
     body?: unknown,
     headers?: { [key: string]: string },
   ): Promise<T | ServiceError> {
-    throwIfOffline();
+    throwIfOffline()
     try {
       const rsp = await fetch(`${this.url}${path}`, {
         method: method,
@@ -111,16 +111,16 @@ export class ServiceProvider {
           ...(body ? { "content-type": "application/json" } : {}),
           ...headers,
         },
-      });
+      })
 
-      const obj = await rsp.json();
+      const obj = await rsp.json()
       if ("error" in obj) {
-        return obj as ServiceError;
+        return obj as ServiceError
       }
-      return obj as T;
+      return obj as T
     } catch (e) {
-      console.warn(e);
+      console.warn(e)
     }
-    return { error: "UNKNOWN_ERROR", errors: [] };
+    return { error: "UNKNOWN_ERROR", errors: [] }
   }
 }

@@ -1,26 +1,26 @@
-import { FormattedMessage } from "react-intl";
-import type { EventKind } from "@snort/system";
+import { FormattedMessage } from "react-intl"
+import type { EventKind } from "@snort/system"
 
-import Modal from "@/Components/Modal/Modal";
-import useAppHandler from "@/Hooks/useAppHandler";
-import Avatar from "@/Components/User/Avatar";
-import DisplayName from "@/Components/User/DisplayName";
-import Icon from "@/Components/Icons/Icon";
+import Modal from "@/Components/Modal/Modal"
+import useAppHandler from "@/Hooks/useAppHandler"
+import Avatar from "@/Components/User/Avatar"
+import DisplayName from "@/Components/User/DisplayName"
+import Icon from "@/Components/Icons/Icon"
 
 interface DvmSelectorProps {
-  kind: number;
-  onClose: () => void;
-  onSelect: (pubkey: string) => void;
-  currentProvider?: string;
+  kind: number
+  onClose: () => void
+  onSelect: (pubkey: string) => void
+  currentProvider?: string
 }
 
 export default function DvmSelector({ kind, onClose, onSelect, currentProvider }: DvmSelectorProps) {
-  const apps = useAppHandler(kind as EventKind);
+  const apps = useAppHandler(kind as EventKind)
 
   const handleSelect = (providerPubkey: string) => {
-    onSelect(providerPubkey);
-    onClose();
-  };
+    onSelect(providerPubkey)
+    onClose()
+  }
 
   return (
     <Modal id="dvm-selector" onClose={onClose}>
@@ -44,13 +44,14 @@ export default function DvmSelector({ kind, onClose, onSelect, currentProvider }
             apps
               .sort((a, _) => (currentProvider === a.event.pubkey ? -1 : 0))
               .map(app => {
-                const isSelected = currentProvider === app.event.pubkey;
+                const isSelected = currentProvider === app.event.pubkey
 
                 return (
                   <div
                     key={app.event.id}
                     onClick={() => handleSelect(app.event.pubkey)}
-                    className={`flex items-start gap-3 layer-1-hover mr-1`}>
+                    className={`flex items-start gap-3 layer-1-hover mr-1`}
+                  >
                     <Avatar pubkey={app.event.pubkey} user={app.metadata} size={48} />
                     <div className="flex flex-col flex-1">
                       <div className="flex items-center gap-2">
@@ -69,11 +70,11 @@ export default function DvmSelector({ kind, onClose, onSelect, currentProvider }
                       {app.metadata?.about && <div className="text-sm text-neutral-400 mt-1">{app.metadata.about}</div>}
                     </div>
                   </div>
-                );
+                )
               })
           )}
         </div>
       </div>
     </Modal>
-  );
+  )
 }

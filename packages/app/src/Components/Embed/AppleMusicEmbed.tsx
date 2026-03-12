@@ -1,6 +1,6 @@
 const AppleMusicEmbed = ({ link }: { link: string }) => {
-  const convertedUrl = link.replace("music.apple.com", "embed.music.apple.com");
-  const isSongLink = /\?i=\d+$/.test(convertedUrl);
+  const convertedUrl = link.replace("music.apple.com", "embed.music.apple.com")
+  const isSongLink = /\?i=\d+$/.test(convertedUrl)
 
   return (
     <iframe
@@ -12,7 +12,7 @@ const AppleMusicEmbed = ({ link }: { link: string }) => {
       src={convertedUrl}
       loading="lazy"
     />
-  );
-};
+  )
+}
 
-export default AppleMusicEmbed;
+export default AppleMusicEmbed

@@ -1,4 +1,4 @@
-export const baseImageWidth = 910;
+export const baseImageWidth = 910
 export const gridConfigMap = new Map<number, number[][]>([
   [1, [[4, 3]]],
   [
@@ -46,6 +46,6 @@ export const gridConfigMap = new Map<number, number[][]>([
       [1, 1],
     ],
   ],
-]);
-export const ROW_HEIGHT = 200;
-export const GRID_GAP = 2;
+])
+export const ROW_HEIGHT = 200
+export const GRID_GAP = 2

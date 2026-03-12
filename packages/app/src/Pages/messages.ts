@@ -1,4 +1,4 @@
-import { defineMessages } from "react-intl";
+import { defineMessages } from "react-intl"
 
 export default defineMessages({
   Login: { defaultMessage: "Login", id: "AyGauy" },
@@ -44,4 +44,4 @@ export default defineMessages({
   Bookmarks: { defaultMessage: "Bookmarks", id: "nGBrvw" },
   BookmarksCount: { defaultMessage: "{n} Bookmarks", id: "2a2YiP" },
   KeyPlaceholder: { defaultMessage: "nsec, npub, nip-05, hex", id: "B6H7eJ" },
-});
+})

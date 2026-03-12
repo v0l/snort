@@ -1,48 +1,48 @@
-import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import Telegram from "@/assets/img/telegram.svg";
-import AsyncButton from "@/Components/Button/AsyncButton";
-import Copy from "@/Components/Copy/Copy";
-import ZapButton from "@/Components/Event/ZapButton";
-import Modal from "@/Components/Modal/Modal";
-import QrCode from "@/Components/QrCode";
-import ProfilePreview from "@/Components/User/ProfilePreview";
-import SnortApi, { type RevenueSplit, type RevenueToday } from "@/External/SnortApi";
-import { Contributors, DonateLNURL, Translators } from "@/Pages/Donate/const";
-import { ZapPoolDonateSection } from "@/Pages/Donate/ZapPoolDonateSection";
-import { SnortPubKey } from "@/Utils/Const";
-import { bech32ToHex } from "@snort/shared";
+import Telegram from "@/assets/img/telegram.svg"
+import AsyncButton from "@/Components/Button/AsyncButton"
+import Copy from "@/Components/Copy/Copy"
+import ZapButton from "@/Components/Event/ZapButton"
+import Modal from "@/Components/Modal/Modal"
+import QrCode from "@/Components/QrCode"
+import ProfilePreview from "@/Components/User/ProfilePreview"
+import SnortApi, { type RevenueSplit, type RevenueToday } from "@/External/SnortApi"
+import { Contributors, DonateLNURL, Translators } from "@/Pages/Donate/const"
+import { ZapPoolDonateSection } from "@/Pages/Donate/ZapPoolDonateSection"
+import { SnortPubKey } from "@/Utils/Const"
+import { bech32ToHex } from "@snort/shared"
 
 const DonatePage = () => {
-  const [splits, setSplits] = useState<RevenueSplit[]>([]);
-  const [today, setSumToday] = useState<RevenueToday>();
-  const [onChain, setOnChain] = useState("");
-  const api = new SnortApi();
+  const [splits, setSplits] = useState<RevenueSplit[]>([])
+  const [today, setSumToday] = useState<RevenueToday>()
+  const [onChain, setOnChain] = useState("")
+  const api = new SnortApi()
 
   async function getOnChainAddress() {
-    const { address } = await api.onChainDonation();
-    setOnChain(address);
+    const { address } = await api.onChainDonation()
+    setOnChain(address)
   }
 
   async function loadData() {
-    const rsp = await api.revenueSplits();
-    setSplits(rsp);
-    const rsp2 = await api.revenueToday();
-    setSumToday(rsp2);
+    const rsp = await api.revenueSplits()
+    setSplits(rsp)
+    const rsp2 = await api.revenueToday()
+    setSumToday(rsp2)
   }
 
   useEffect(() => {
-    loadData().catch(console.warn);
-  }, []);
+    loadData().catch(console.warn)
+  }, [])
 
   function actions(pk: string) {
-    const split = splits.find(a => bech32ToHex(a.pubKey) === pk);
+    const split = splits.find(a => bech32ToHex(a.pubKey) === pk)
     if (split) {
-      return <>{(100 * split.split).toLocaleString()}%</>;
+      return <>{(100 * split.split).toLocaleString()}%</>
     }
-    return <></>;
+    return <></>
   }
 
   return (
@@ -92,12 +92,13 @@ const DonatePage = () => {
                   return (
                     <AsyncButton
                       onClick={() => {
-                        window.open(a.value, "_blank", "noreferrer");
-                      }}>
+                        window.open(a.value, "_blank", "noreferrer")
+                      }}
+                    >
                       <img src={Telegram} width={24} height={24} />
                       <FormattedMessage defaultMessage="Telegram" />
                     </AsyncButton>
-                  );
+                  )
                 }
               }
             })}
@@ -156,7 +157,7 @@ const DonatePage = () => {
         <ProfilePreview pubkey={a} key={a} actions={actions(a)} />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default DonatePage;
+export default DonatePage

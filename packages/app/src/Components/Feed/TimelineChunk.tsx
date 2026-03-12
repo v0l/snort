@@ -1,17 +1,17 @@
-import { type NostrEvent, RequestBuilder } from "@snort/system";
-import { useRequestBuilder } from "@snort/system-react";
-import { type ReactNode, useMemo } from "react";
+import { type NostrEvent, RequestBuilder } from "@snort/system"
+import { useRequestBuilder } from "@snort/system-react"
+import { type ReactNode, useMemo } from "react"
 
-import type { WindowChunk } from "@/Hooks/useTimelineChunks";
-import { TimelineRenderer } from "./TimelineRenderer";
+import type { WindowChunk } from "@/Hooks/useTimelineChunks"
+import { TimelineRenderer } from "./TimelineRenderer"
 
 export interface TimelineChunkProps {
-  id: string;
-  chunk: WindowChunk;
-  builder: (rb: RequestBuilder) => void;
-  noteFilter?: (ev: NostrEvent) => boolean;
-  noteRenderer?: (ev: NostrEvent) => ReactNode;
-  noteOnClick?: (ev: NostrEvent) => void;
+  id: string
+  chunk: WindowChunk
+  builder: (rb: RequestBuilder) => void
+  noteFilter?: (ev: NostrEvent) => boolean
+  noteRenderer?: (ev: NostrEvent) => ReactNode
+  noteOnClick?: (ev: NostrEvent) => void
 }
 
 /**
@@ -19,15 +19,15 @@ export interface TimelineChunkProps {
  */
 export default function TimelineChunk(props: TimelineChunkProps) {
   const sub = useMemo(() => {
-    const rb = new RequestBuilder(`timeline-chunk:${props.id}:${props.chunk.since}-${props.chunk.until}`);
-    props.builder(rb);
+    const rb = new RequestBuilder(`timeline-chunk:${props.id}:${props.chunk.since}-${props.chunk.until}`)
+    props.builder(rb)
     for (const f of rb.filterBuilders) {
-      f.since(props.chunk.since).until(props.chunk.until);
+      f.since(props.chunk.since).until(props.chunk.until)
     }
-    return rb;
-  }, [props.id, props.chunk.until, props.builder]);
+    return rb
+  }, [props.id, props.chunk.until, props.builder])
 
-  const feed = useRequestBuilder(sub);
+  const feed = useRequestBuilder(sub)
 
   return (
     <TimelineRenderer
@@ -40,5 +40,5 @@ export default function TimelineChunk(props: TimelineChunkProps) {
       latest={[]}
       showLatest={() => {}}
     />
-  );
+  )
 }

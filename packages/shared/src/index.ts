@@ -1,14 +1,14 @@
-export * from "./external-store";
-export * from "./lnurl";
-export * from "./utils";
-export * from "./work-queue";
-export * from "./feed-cache";
-export * from "./invoices";
-export * from "./cache-store";
-export * from "./SortedMap/SortedMap";
-export * from "./const";
-export * from "./tlv";
-export * from "./imgproxy";
+export * from "./external-store"
+export * from "./lnurl"
+export * from "./utils"
+export * from "./work-queue"
+export * from "./feed-cache"
+export * from "./invoices"
+export * from "./cache-store"
+export * from "./SortedMap/SortedMap"
+export * from "./const"
+export * from "./tlv"
+export * from "./imgproxy"
 
 /**
  * Well-known nostr entity HRP's
@@ -29,5 +29,5 @@ export enum NostrPrefix {
  * Is the TLV encoded type 0 (special) a decoded hex string
  */
 export function isPrefixTlvIdHex(prefix: NostrPrefix) {
-  return [NostrPrefix.Event, NostrPrefix.Profile].includes(prefix);
+  return [NostrPrefix.Event, NostrPrefix.Profile].includes(prefix)
 }

@@ -1,6 +1,6 @@
-import type { EventPublisher, FullRelaySettings, RelaySettings, SystemInterface } from "@snort/system";
+import type { EventPublisher, FullRelaySettings, RelaySettings, SystemInterface } from "@snort/system"
 
-import { Blasters } from "@/Utils/Const";
+import { Blasters } from "@/Utils/Const"
 
 export async function saveRelays(
   system: SystemInterface,
@@ -8,8 +8,8 @@ export async function saveRelays(
   relays: Array<FullRelaySettings> | Record<string, RelaySettings>,
 ) {
   if (publisher) {
-    const ev = await publisher.relayList(relays);
-    system.BroadcastEvent(ev);
-    Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev)));
+    const ev = await publisher.relayList(relays)
+    system.BroadcastEvent(ev)
+    Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev)))
   }
 }

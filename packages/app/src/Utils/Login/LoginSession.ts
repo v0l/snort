@@ -1,14 +1,14 @@
-import type { KeyStorage, UserState } from "@snort/system";
+import type { KeyStorage, UserState } from "@snort/system"
 
-import type { UserPreferences } from "@/Utils/Login/index";
-import type { SubscriptionEvent } from "@/Utils/Subscription";
+import type { UserPreferences } from "@/Utils/Login/index"
+import type { SubscriptionEvent } from "@/Utils/Subscription"
 
 /**
  * Stores latest copy of an item
  */
 export interface Newest<T> {
-  item: T;
-  timestamp: number;
+  item: T
+  timestamp: number
 }
 
 export enum LoginSessionType {
@@ -21,73 +21,73 @@ export enum LoginSessionType {
 }
 
 export interface SnortAppData {
-  preferences: UserPreferences;
+  preferences: UserPreferences
 }
 
 export interface LoginSession {
   /**
    * Unique ID to identify this session
    */
-  id: string;
+  id: string
 
   /**
    * Type of login session
    */
-  type: LoginSessionType;
+  type: LoginSessionType
 
   /**
    * Current user private key
    * @deprecated Moving to pin encrypted storage
    */
-  privateKey?: string;
+  privateKey?: string
 
   /**
    * If this session cannot sign events
    */
-  readonly: boolean;
+  readonly: boolean
 
   /**
    * Encrypted private key
    */
-  privateKeyData?: KeyStorage;
+  privateKeyData?: KeyStorage
 
   /**
    * BIP39-generated, hex-encoded entropy
    */
-  generatedEntropy?: string;
+  generatedEntropy?: string
 
   /**
    * Current users public key
    */
-  publicKey?: string;
+  publicKey?: string
 
   /**
    * Login state for the current user
    */
-  state: UserState<SnortAppData>;
+  state: UserState<SnortAppData>
 
   /**
    * Timestamp of last read notification
    */
-  readNotifications: number;
+  readNotifications: number
 
   /**
    * Snort subscriptions licences
    */
-  subscriptions: Array<SubscriptionEvent>;
+  subscriptions: Array<SubscriptionEvent>
 
   /**
    * Remote signer relays (NIP-46)
    */
-  remoteSignerRelays?: Array<string>;
+  remoteSignerRelays?: Array<string>
 
   /**
    * A list of chats which we have joined (NIP-28/NIP-29)
    */
-  extraChats: Array<string>;
+  extraChats: Array<string>
 
   /**
    * Is login session in stalker mode
    */
-  stalker: boolean;
+  stalker: boolean
 }

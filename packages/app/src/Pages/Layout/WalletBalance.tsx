@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react";
-import { FormattedNumber } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react"
+import { FormattedNumber } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import Icon from "@/Components/Icons/Icon";
-import { getCurrency } from "@/Components/IntlProvider/IntlProviderUtils";
-import { useRates } from "@/Hooks/useRates";
-import { useWallet } from "@/Wallet";
+import Icon from "@/Components/Icons/Icon"
+import { getCurrency } from "@/Components/IntlProvider/IntlProviderUtils"
+import { useRates } from "@/Hooks/useRates"
+import { useWallet } from "@/Wallet"
 
 export const WalletBalance = () => {
-  const [balance, setBalance] = useState<number>();
-  const wallet = useWallet();
-  const localCurrency = getCurrency();
-  const rates = useRates(`BTC${localCurrency}`);
-  const navigate = useNavigate();
+  const [balance, setBalance] = useState<number>()
+  const wallet = useWallet()
+  const localCurrency = getCurrency()
+  const rates = useRates(`BTC${localCurrency}`)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    setBalance(undefined);
+    setBalance(undefined)
     if (wallet.wallet && wallet.wallet.canGetBalance()) {
-      wallet.wallet.getBalance().then(setBalance);
+      wallet.wallet.getBalance().then(setBalance)
     }
-  }, [wallet]);
+  }, [wallet])
 
   return (
     <div className="w-full flex flex-col max-xl:hidden pl-3 py-2 cursor-pointer" onClick={() => navigate("/wallet")}>
@@ -51,5 +51,5 @@ export const WalletBalance = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

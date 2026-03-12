@@ -1,12 +1,12 @@
-import ProfileImage, { type ProfileImageProps } from "@/Components/User/ProfileImage";
+import ProfileImage, { type ProfileImageProps } from "@/Components/User/ProfileImage"
 
 export function AvatarGroup({ ids, ...props }: { ids: string[] } & Omit<ProfileImageProps, "pubkey">) {
   // set defaults
-  props.showUsername ??= false;
-  props.link ??= "";
-  props.size ??= 24;
-  props.showFollowDistance ??= false;
-  props.showProfileCard ??= false;
+  props.showUsername ??= false
+  props.link ??= ""
+  props.size ??= 24
+  props.showFollowDistance ??= false
+  props.showProfileCard ??= false
 
   return (
     <div className="flex items-center">
@@ -16,5 +16,5 @@ export function AvatarGroup({ ids, ...props }: { ids: string[] } & Omit<ProfileI
         </div>
       ))}
     </div>
-  );
+  )
 }

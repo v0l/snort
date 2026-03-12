@@ -1,38 +1,38 @@
-import type { CachedMetadata } from ".";
-import { FeedCache, type CacheStore } from "@snort/shared";
+import type { CachedMetadata } from "."
+import { FeedCache, type CacheStore } from "@snort/shared"
 
 export class UserProfileCache extends FeedCache<CachedMetadata> {
   constructor(store?: CacheStore<CachedMetadata>) {
-    super("UserCache", store);
+    super("UserCache", store)
   }
 
   key(of: CachedMetadata): string {
-    return of.pubkey;
+    return of.pubkey
   }
 
   override async preload(follows?: Array<string>): Promise<void> {
-    await super.preload();
+    await super.preload()
     // load follows profiles
     if (follows) {
-      await this.buffer(follows);
+      await this.buffer(follows)
     }
   }
 
   async search(q: string): Promise<Array<CachedMetadata>> {
-    const lowerQ = q.toLowerCase();
+    const lowerQ = q.toLowerCase()
     return [...this.cache.values()]
       .filter(user => {
-        const profile = user as CachedMetadata;
+        const profile = user as CachedMetadata
         return (
           profile.name?.toLowerCase().includes(lowerQ) ||
           profile.display_name?.toLowerCase().includes(lowerQ) ||
           profile.nip05?.toLowerCase().includes(lowerQ)
-        );
+        )
       })
-      .slice(0, 5);
+      .slice(0, 5)
   }
 
   takeSnapshot(): CachedMetadata[] {
-    return [...this.cache.values()];
+    return [...this.cache.values()]
   }
 }

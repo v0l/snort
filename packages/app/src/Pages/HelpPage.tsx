@@ -1,8 +1,8 @@
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import { KieranPubKey } from "@/Utils/Const";
-import { bech32ToHex, encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/shared";
+import { KieranPubKey } from "@/Utils/Const"
+import { bech32ToHex, encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/shared"
 
 export default function HelpPage() {
   return (
@@ -21,7 +21,8 @@ export default function HelpPage() {
                   type: TLVEntryType.Author,
                   length: 64,
                   value: bech32ToHex(KieranPubKey),
-                })}`}>
+                })}`}
+              >
                 Kieran
               </Link>
             ),
@@ -29,5 +30,5 @@ export default function HelpPage() {
         />
       </p>
     </>
-  );
+  )
 }

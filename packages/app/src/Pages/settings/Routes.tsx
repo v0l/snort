@@ -1,9 +1,9 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom"
 
-import { ManageHandleRoutes } from "@/Pages/settings/handle/routes";
+import { ManageHandleRoutes } from "@/Pages/settings/handle/routes"
 
-import { ToolsPages } from "./tools/routes";
-import { WalletSettingsRoutes } from "./wallet/routes";
+import { ToolsPages } from "./tools/routes"
+import { WalletSettingsRoutes } from "./wallet/routes"
 
 export default [
   {
@@ -17,92 +17,92 @@ export default [
       {
         path: "",
         async lazy() {
-          const { Menu } = await import(".");
-          return { Component: Menu };
+          const { Menu } = await import(".")
+          return { Component: Menu }
         },
       },
       {
         path: "profile",
         async lazy() {
-          const { Profile } = await import(".");
-          return { Component: Profile };
+          const { Profile } = await import(".")
+          return { Component: Profile }
         },
       },
       {
         path: "relays",
         async lazy() {
-          const { Relay } = await import(".");
-          return { Component: Relay };
+          const { Relay } = await import(".")
+          return { Component: Relay }
         },
       },
       {
         path: "relays/:id",
         async lazy() {
-          const { RelayInfo } = await import(".");
-          return { Component: RelayInfo };
+          const { RelayInfo } = await import(".")
+          return { Component: RelayInfo }
         },
       },
       {
         path: "preferences",
         async lazy() {
-          const { Preferences } = await import(".");
-          return { Component: Preferences };
+          const { Preferences } = await import(".")
+          return { Component: Preferences }
         },
       },
       {
         path: "notifications",
         async lazy() {
-          const { Notifications } = await import(".");
-          return { Component: Notifications };
+          const { Notifications } = await import(".")
+          return { Component: Notifications }
         },
       },
       {
         path: "accounts",
         async lazy() {
-          const { AccountsPage } = await import(".");
-          return { Component: AccountsPage };
+          const { AccountsPage } = await import(".")
+          return { Component: AccountsPage }
         },
       },
       {
         path: "keys",
         async lazy() {
-          const { ExportKeys } = await import(".");
-          return { Component: ExportKeys };
+          const { ExportKeys } = await import(".")
+          return { Component: ExportKeys }
         },
       },
       {
         path: "moderation",
         async lazy() {
-          const { ModerationSettings } = await import(".");
-          return { Component: ModerationSettings };
+          const { ModerationSettings } = await import(".")
+          return { Component: ModerationSettings }
         },
       },
       {
         path: "cache",
         async lazy() {
-          const { CacheSettings } = await import(".");
-          return { Component: CacheSettings };
+          const { CacheSettings } = await import(".")
+          return { Component: CacheSettings }
         },
       },
       {
         path: "media",
         async lazy() {
-          const { MediaSettingsPage } = await import(".");
-          return { Component: MediaSettingsPage };
+          const { MediaSettingsPage } = await import(".")
+          return { Component: MediaSettingsPage }
         },
       },
       {
         path: "invite",
         async lazy() {
-          const { ReferralsPage } = await import(".");
-          return { Component: ReferralsPage };
+          const { ReferralsPage } = await import(".")
+          return { Component: ReferralsPage }
         },
       },
       {
         path: "tools",
         async lazy() {
-          const { ToolsPage } = await import(".");
-          return { Component: ToolsPage };
+          const { ToolsPage } = await import(".")
+          return { Component: ToolsPage }
         },
         children: ToolsPages,
       },
@@ -110,4 +110,4 @@ export default [
       ...WalletSettingsRoutes,
     ],
   },
-];
+]

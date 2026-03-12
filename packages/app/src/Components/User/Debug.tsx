@@ -1,13 +1,13 @@
-import { useUserProfile } from "@snort/system-react";
+import { useUserProfile } from "@snort/system-react"
 
-import { UserRelays } from "@/Cache";
-import useWoT from "@/Hooks/useWoT";
-import { getRelayName } from "@/Utils";
+import { UserRelays } from "@/Cache"
+import useWoT from "@/Hooks/useWoT"
+import { getRelayName } from "@/Utils"
 
 export function UserDebug({ pubkey }: { pubkey: string }) {
-  const profile = useUserProfile(pubkey);
-  const relays = UserRelays.getFromCache(pubkey);
-  const wot = useWoT();
+  const profile = useUserProfile(pubkey)
+  const relays = UserRelays.getFromCache(pubkey)
+  const wot = useWoT()
 
   return (
     <div className="text-xs">
@@ -17,17 +17,17 @@ export function UserDebug({ pubkey }: { pubkey: string }) {
           <div>{wot.followDistance(pubkey)}</div>
         </div>
         {Object.entries(profile ?? {}).map(([k, v]) => {
-          let vv = <div>{v}</div>;
+          let vv = <div>{v}</div>
 
-          if (k === "loaded") vv = <div>{new Date(Number(v)).toISOString()}</div>;
-          if (k === "created") vv = <div>{new Date(Number(v) * 1000).toISOString()}</div>;
-          if (k === "npub" || k === "pubkey") return;
+          if (k === "loaded") vv = <div>{new Date(Number(v)).toISOString()}</div>
+          if (k === "created") vv = <div>{new Date(Number(v) * 1000).toISOString()}</div>
+          if (k === "npub" || k === "pubkey") return
           return (
             <div key={`${pubkey}-${k}`} className="flex justify-between gap-1">
               <div>{k}</div>
               {vv}
             </div>
-          );
+          )
         })}
       </div>
       <hr />
@@ -42,5 +42,5 @@ export function UserDebug({ pubkey }: { pubkey: string }) {
         ))}
       </div>
     </div>
-  );
+  )
 }

@@ -1,14 +1,14 @@
-import type { CachedMetadata } from "@snort/system";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import type { CachedMetadata } from "@snort/system"
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import { BaseUITask } from "@/Components/Tasks/index";
+import { BaseUITask } from "@/Components/Tasks/index"
 
 export class Nip5Task extends BaseUITask {
-  id = "buy-nip5";
+  id = "buy-nip5"
 
   check(user: CachedMetadata): boolean {
-    return !this.state.muted && !user.nip05;
+    return !this.state.muted && !user.nip05
   }
 
   render() {
@@ -26,6 +26,6 @@ export class Nip5Task extends BaseUITask {
           }}
         />
       </p>
-    );
+    )
   }
 }

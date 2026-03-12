@@ -1,27 +1,27 @@
-import { EventExt, EventKind, type TaggedNostrEvent } from "@snort/system";
-import classNames from "classnames";
+import { EventExt, EventKind, type TaggedNostrEvent } from "@snort/system"
+import classNames from "classnames"
 
-import type { NotePropsOptions, NoteProps } from "@/Components/Event/EventComponent";
-import Poll from "@/Components/Event/Poll";
-import NoteHeader from "@/Components/Event/Note/NoteHeader";
-import { NoteText } from "@/Components/Event/Note/NoteText";
-import { TranslationInfo } from "@/Components/Event/Note/TranslationInfo";
-import NoteFooter from "@/Components/Event/Note/NoteFooter/NoteFooter";
-import { useNoteContext } from "@/Components/Event/Note/NoteContext";
+import type { NotePropsOptions, NoteProps } from "@/Components/Event/EventComponent"
+import Poll from "@/Components/Event/Poll"
+import NoteHeader from "@/Components/Event/Note/NoteHeader"
+import { NoteText } from "@/Components/Event/Note/NoteText"
+import { TranslationInfo } from "@/Components/Event/Note/TranslationInfo"
+import NoteFooter from "@/Components/Event/Note/NoteFooter/NoteFooter"
+import { useNoteContext } from "@/Components/Event/Note/NoteContext"
 
 interface NoteContentProps {
-  props: NoteProps;
-  options: NotePropsOptions;
-  goToEvent: (e: React.MouseEvent, eTarget: TaggedNostrEvent) => void;
-  setSeenAtRef: (node?: Element | null) => void;
-  waitUntilInView?: boolean;
-  inView: boolean;
+  props: NoteProps
+  options: NotePropsOptions
+  goToEvent: (e: React.MouseEvent, eTarget: TaggedNostrEvent) => void
+  setSeenAtRef: (node?: Element | null) => void
+  waitUntilInView?: boolean
+  inView: boolean
 }
 
 export function NoteContent({ props, options, goToEvent, setSeenAtRef, waitUntilInView, inView }: NoteContentProps) {
-  const { ev, translated, showTranslation } = useNoteContext();
+  const { ev, translated, showTranslation } = useNoteContext()
 
-  if (waitUntilInView && !inView) return null;
+  if (waitUntilInView && !inView) return null
 
   return (
     <>
@@ -37,5 +37,5 @@ export function NoteContent({ props, options, goToEvent, setSeenAtRef, waitUntil
         )}
       </div>
     </>
-  );
+  )
 }

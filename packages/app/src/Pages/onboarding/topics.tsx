@@ -1,21 +1,21 @@
-import { EventKind } from "@snort/system";
-import classNames from "classnames";
-import { type ReactNode, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import { EventKind } from "@snort/system"
+import classNames from "classnames"
+import { type ReactNode, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { FixedTopics } from "@/Pages/onboarding/fixedTopics";
-import { appendDedupe } from "@/Utils";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import { FixedTopics } from "@/Pages/onboarding/fixedTopics"
+import { appendDedupe } from "@/Utils"
 
 export default function Topics() {
-  const { publisher, system } = useEventPublisher();
-  const [topics, setTopics] = useState<Array<string>>([]);
-  const navigate = useNavigate();
+  const { publisher, system } = useEventPublisher()
+  const [topics, setTopics] = useState<Array<string>>([])
+  const navigate = useNavigate()
 
   function tab(name: string, text: ReactNode) {
-    const active = topics.includes(name);
+    const active = topics.includes(name)
     return (
       <div
         className={classNames(
@@ -25,10 +25,11 @@ export default function Topics() {
             "!bg-white !text-black": active,
           },
         )}
-        onClick={() => setTopics(s => (active ? s.filter(a => a !== name) : appendDedupe(s, [name])))}>
+        onClick={() => setTopics(s => (active ? s.filter(a => a !== name) : appendDedupe(s, [name])))}
+      >
         {text}
       </div>
-    );
+    )
   }
 
   return (
@@ -44,22 +45,23 @@ export default function Topics() {
         onClick={async () => {
           const tags = Object.entries(FixedTopics)
             .filter(([k]) => topics.includes(k))
-            .flatMap(([, v]) => v.tags);
+            .flatMap(([, v]) => v.tags)
 
           if (tags.length > 0) {
             const ev = await publisher?.generic(eb => {
-              eb.kind(EventKind.InterestsList);
-              tags.forEach(a => eb.tag(["t", a]));
-              return eb;
-            });
+              eb.kind(EventKind.InterestsList)
+              tags.forEach(a => eb.tag(["t", a]))
+              return eb
+            })
             if (ev) {
-              await system.BroadcastEvent(ev);
+              await system.BroadcastEvent(ev)
             }
           }
-          navigate("/login/sign-up/discover");
-        }}>
+          navigate("/login/sign-up/discover")
+        }}
+      >
         <FormattedMessage defaultMessage="Next" />
       </AsyncButton>
     </div>
-  );
+  )
 }

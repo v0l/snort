@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from "react"
 
 export default function useTimelineWindow(opt: { window?: number; now: number }) {
   const window = opt.window ?? 60 * 60 * 2

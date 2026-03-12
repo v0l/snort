@@ -1,18 +1,18 @@
 export interface WorkQueueItem {
-  next: () => Promise<unknown>;
-  resolve(v: unknown): void;
-  reject(e: unknown): void;
+  next: () => Promise<unknown>
+  resolve(v: unknown): void
+  reject(e: unknown): void
 }
 
 export async function processWorkQueue(queue?: Array<WorkQueueItem>) {
   while (queue && queue.length > 0) {
-    const v = queue.shift();
+    const v = queue.shift()
     if (v) {
       try {
-        const ret = await v.next();
-        v.resolve(ret);
+        const ret = await v.next()
+        v.resolve(ret)
       } catch (e) {
-        v.reject(e);
+        v.reject(e)
       }
     }
   }
@@ -24,6 +24,6 @@ export const barrierQueue = async <T>(queue: Array<WorkQueueItem>, then: () => P
       next: then,
       resolve,
       reject,
-    });
-  });
-};
+    })
+  })
+}

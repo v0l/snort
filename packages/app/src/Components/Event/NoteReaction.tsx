@@ -1,13 +1,13 @@
-import { NostrPrefix } from '@snort/shared'
-import { EventKind, NostrLink, type TaggedNostrEvent } from '@snort/system'
-import { useUserProfile } from '@snort/system-react'
-import { useCallback, useMemo, useRef } from 'react'
-import { useInView } from 'react-intersection-observer'
-import { FormattedMessage } from 'react-intl'
-import Icon from '@/Components/Icons/Icon'
-import useModeration from '@/Hooks/useModeration'
-import { getDisplayName } from '@/Utils'
-import NoteQuote from './Note/NoteQuote'
+import { NostrPrefix } from "@snort/shared"
+import { EventKind, NostrLink, type TaggedNostrEvent } from "@snort/system"
+import { useUserProfile } from "@snort/system-react"
+import { useCallback, useMemo, useRef } from "react"
+import { useInView } from "react-intersection-observer"
+import { FormattedMessage } from "react-intl"
+import Icon from "@/Components/Icons/Icon"
+import useModeration from "@/Hooks/useModeration"
+import { getDisplayName } from "@/Utils"
+import NoteQuote from "./Note/NoteQuote"
 
 export interface NoteReactionProps {
   data: TaggedNostrEvent
@@ -17,7 +17,7 @@ export interface NoteReactionProps {
 export default function NoteReaction(props: NoteReactionProps) {
   const { data: ev } = props
   const { isMuted } = useModeration()
-  const { inView, ref: inViewRef } = useInView({ triggerOnce: true, rootMargin: '2000px' })
+  const { inView, ref: inViewRef } = useInView({ triggerOnce: true, rootMargin: "2000px" })
   const rootRef = useRef<HTMLDivElement>(null)
   const profile = useUserProfile(ev.pubkey, rootRef)
 

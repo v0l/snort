@@ -1,10 +1,10 @@
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl"
 
-import type { Magnet } from "@/Utils";
-import Icon from "../Icons/Icon";
+import type { Magnet } from "@/Utils"
+import Icon from "../Icons/Icon"
 
 interface MagnetLinkProps {
-  magnet: Magnet;
+  magnet: Magnet
 }
 
 const MagnetLink = ({ magnet }: MagnetLinkProps) => {
@@ -18,7 +18,7 @@ const MagnetLink = ({ magnet }: MagnetLinkProps) => {
         {magnet.dn ?? magnet.infoHash}
       </a>
     </div>
-  );
-};
+  )
+}
 
-export default MagnetLink;
+export default MagnetLink

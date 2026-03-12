@@ -1,20 +1,20 @@
-import { useMemo } from "react";
-import { FormattedMessage } from "react-intl";
+import { useMemo } from "react"
+import { FormattedMessage } from "react-intl"
 
-import { type Chat, useChat } from "@/chat";
-import ProfileImage from "@/Components/User/ProfileImage";
-import DM from "@/Pages/Messages/DM";
-import WriteMessage from "@/Pages/Messages/WriteMessage";
+import { type Chat, useChat } from "@/chat"
+import ProfileImage from "@/Components/User/ProfileImage"
+import DM from "@/Pages/Messages/DM"
+import WriteMessage from "@/Pages/Messages/WriteMessage"
 
-import { ChatParticipantProfile } from "./ChatParticipant";
+import { ChatParticipantProfile } from "./ChatParticipant"
 
 export default function DmWindow({ id }: { id: string }) {
-  const chat = useChat(id);
+  const chat = useChat(id)
 
   function sender() {
-    if (!chat) return;
+    if (!chat) return
     if (chat.participants.length === 1) {
-      return <ChatParticipantProfile participant={chat.participants[0]} />;
+      return <ChatParticipantProfile participant={chat.participants[0]} />
     } else {
       return (
         <div className="flex -space-x-5 mb-2.5">
@@ -23,7 +23,7 @@ export default function DmWindow({ id }: { id: string }) {
           ))}
           {chat.title ?? <FormattedMessage defaultMessage="Secret Group Chat" />}
         </div>
-      );
+      )
     }
   }
 
@@ -33,17 +33,17 @@ export default function DmWindow({ id }: { id: string }) {
       <div className="overflow-y-auto hide-scrollbar p-2.5 flex-grow">{chat && <DmChatSelected chat={chat} />}</div>
       <div className="flex items-center gap-2.5 p-2.5">{chat && <WriteMessage chat={chat} />}</div>
     </div>
-  );
+  )
 }
 
 function DmChatSelected({ chat }: { chat: Chat }) {
   const sortedDms = useMemo(() => {
-    const myDms = chat?.messages;
+    const myDms = chat?.messages
     if (myDms) {
-      return [...myDms].sort((a, b) => (a.created_at > b.created_at ? -1 : 1));
+      return [...myDms].sort((a, b) => (a.created_at > b.created_at ? -1 : 1))
     }
-    return [];
-  }, [chat]);
+    return []
+  }, [chat])
 
   return (
     <div className="flex flex-col-reverse">
@@ -51,5 +51,5 @@ function DmChatSelected({ chat }: { chat: Chat }) {
         <DM data={a} key={a.id} chat={chat} />
       ))}
     </div>
-  );
+  )
 }

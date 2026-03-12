@@ -1,51 +1,51 @@
-import { useUserSearch } from "@snort/system-react";
-import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import { useUserSearch } from "@snort/system-react"
+import { useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import { ChatType, createChatLink } from "@/chat";
-import Icon from "@/Components/Icons/Icon";
-import Modal from "@/Components/Modal/Modal";
-import ProfileImage from "@/Components/User/ProfileImage";
-import ProfilePreview from "@/Components/User/ProfilePreview";
-import useFollowsControls from "@/Hooks/useFollowControls";
-import { appendDedupe, debounce } from "@/Utils";
+import { ChatType, createChatLink } from "@/chat"
+import Icon from "@/Components/Icons/Icon"
+import Modal from "@/Components/Modal/Modal"
+import ProfileImage from "@/Components/User/ProfileImage"
+import ProfilePreview from "@/Components/User/ProfilePreview"
+import useFollowsControls from "@/Hooks/useFollowControls"
+import { appendDedupe, debounce } from "@/Utils"
 
 export default function NewChatWindow() {
-  const [show, setShow] = useState(false);
-  const [newChat, setNewChat] = useState<Array<string>>([]);
-  const [results, setResults] = useState<Array<string>>([]);
-  const [term, setSearchTerm] = useState("");
-  const navigate = useNavigate();
-  const search = useUserSearch();
-  const { followList } = useFollowsControls();
+  const [show, setShow] = useState(false)
+  const [newChat, setNewChat] = useState<Array<string>>([])
+  const [results, setResults] = useState<Array<string>>([])
+  const [term, setSearchTerm] = useState("")
+  const navigate = useNavigate()
+  const search = useUserSearch()
+  const { followList } = useFollowsControls()
 
   useEffect(() => {
-    setNewChat([]);
-    setSearchTerm("");
-    setResults(followList.slice(0, 5));
-  }, [show]);
+    setNewChat([])
+    setSearchTerm("")
+    setResults(followList.slice(0, 5))
+  }, [show])
 
   useEffect(() => {
     return debounce(500, () => {
       if (term) {
-        search(term).then(setResults);
+        search(term).then(setResults)
       } else {
-        setResults(followList);
+        setResults(followList)
       }
-    });
-  }, [term]);
+    })
+  }, [term])
 
   function togglePubkey(a: string) {
-    setNewChat(c => (c.includes(a) ? c.filter(v => v !== a) : appendDedupe(c, [a])));
+    setNewChat(c => (c.includes(a) ? c.filter(v => v !== a) : appendDedupe(c, [a])))
   }
 
   function startChat() {
-    setShow(false);
+    setShow(false)
     if (newChat.length === 1) {
-      navigate(createChatLink(ChatType.PrivateDirectMessage, newChat[0]));
+      navigate(createChatLink(ChatType.PrivateDirectMessage, newChat[0]))
     } else {
-      navigate(createChatLink(ChatType.PrivateGroupChat, ...newChat));
+      navigate(createChatLink(ChatType.PrivateGroupChat, ...newChat))
     }
   }
 
@@ -105,7 +105,7 @@ export default function NewChatWindow() {
                       onClick={() => togglePubkey(a)}
                       className={newChat.includes(a) ? "active" : undefined}
                     />
-                  );
+                  )
                 })}
               </div>
             </div>
@@ -113,5 +113,5 @@ export default function NewChatWindow() {
         </Modal>
       )}
     </>
-  );
+  )
 }

@@ -1,23 +1,23 @@
-import { FormattedDate, FormattedMessage, FormattedNumber } from "react-intl";
+import { FormattedDate, FormattedMessage, FormattedNumber } from "react-intl"
 
-import Icon from "@/Components/Icons/Icon";
-import Nip5Service from "@/Components/Nip5Service";
-import Nip05 from "@/Components/User/Nip05";
-import type { Subscription } from "@/External/SnortApi";
-import { SnortNostrAddressService } from "@/Pages/settings/SnortNostrAddressService";
-import { mapPlanName } from "@/Pages/subscribe/utils";
+import Icon from "@/Components/Icons/Icon"
+import Nip5Service from "@/Components/Nip5Service"
+import Nip05 from "@/Components/User/Nip05"
+import type { Subscription } from "@/External/SnortApi"
+import { SnortNostrAddressService } from "@/Pages/settings/SnortNostrAddressService"
+import { mapPlanName } from "@/Pages/subscribe/utils"
 
-import { RenewSub } from "./RenewSub";
+import { RenewSub } from "./RenewSub"
 
 export default function SubscriptionCard({ sub }: { sub: Subscription }) {
-  const created = new Date(sub.created * 1000);
-  const expires = new Date(sub.expires * 1000);
-  const now = new Date();
-  const daysToExpire = Math.floor((expires.getTime() - now.getTime()) / 8.64e7);
-  const hoursToExpire = Math.floor((expires.getTime() - now.getTime()) / 3.6e6);
-  const isExpired = sub.state === "expired";
-  const isNew = sub.state === "new";
-  const isPaid = sub.state === "paid";
+  const created = new Date(sub.created * 1000)
+  const expires = new Date(sub.expires * 1000)
+  const now = new Date()
+  const daysToExpire = Math.floor((expires.getTime() - now.getTime()) / 8.64e7)
+  const hoursToExpire = Math.floor((expires.getTime() - now.getTime()) / 3.6e6)
+  const isExpired = sub.state === "expired"
+  const isNew = sub.state === "new"
+  const isPaid = sub.state === "paid"
 
   function subFeatures() {
     return (
@@ -40,7 +40,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
         )}
         {sub.handle && <Nip05 nip05={sub.handle} pubkey={""} forceVerified={true} />}
       </>
-    );
+    )
   }
 
   return (
@@ -103,5 +103,5 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
         {isPaid && subFeatures()}
       </div>
     </>
-  );
+  )
 }

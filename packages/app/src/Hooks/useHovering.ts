@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from "react"
 
 interface HoveringProps {
   enterTimeout?: number
@@ -45,11 +45,11 @@ export default function useHovering<T extends HTMLElement>(props?: HoveringProps
   useEffect(() => {
     const el = elmRef.current
     if (el) {
-      el.addEventListener('mouseenter', handleMouseEnter)
-      el.addEventListener('mouseleave', handleMouseLeave)
+      el.addEventListener("mouseenter", handleMouseEnter)
+      el.addEventListener("mouseleave", handleMouseLeave)
       return () => {
-        el.removeEventListener('mouseenter', handleMouseEnter)
-        el.removeEventListener('mouseleave', handleMouseLeave)
+        el.removeEventListener("mouseenter", handleMouseEnter)
+        el.removeEventListener("mouseleave", handleMouseLeave)
         if (hoverTimeoutRef.current) {
           clearTimeout(hoverTimeoutRef.current)
           hoverTimeoutRef.current = null

@@ -1,69 +1,69 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react"
 
-import Icon from "@/Components/Icons/Icon";
-import { ProxyImg } from "@/Components/ProxyImg";
-import useImgProxy from "@/Hooks/useImgProxy";
+import Icon from "@/Components/Icons/Icon"
+import { ProxyImg } from "@/Components/ProxyImg"
+import useImgProxy from "@/Hooks/useImgProxy"
 
 interface SpotlightMediaProps {
-  media: Array<string>;
-  idx: number;
-  className?: string;
-  onClose: () => void;
-  onNext?: () => void;
-  onPrev?: () => void;
+  media: Array<string>
+  idx: number
+  className?: string
+  onClose: () => void
+  onNext?: () => void
+  onPrev?: () => void
 }
 
-const videoSuffixes = ["mp4", "webm", "ogg", "mov", "avi", "mkv", "m3u8"];
+const videoSuffixes = ["mp4", "webm", "ogg", "mov", "avi", "mkv", "m3u8"]
 
 export function SpotlightMedia(props: SpotlightMediaProps) {
-  const { proxy } = useImgProxy();
-  const [idx, setIdx] = useState(props.idx);
+  const { proxy } = useImgProxy()
+  const [idx, setIdx] = useState(props.idx)
 
   const media = useMemo(() => {
-    return props.media.at(idx % props.media.length);
-  }, [idx, props]);
+    return props.media.at(idx % props.media.length)
+  }, [idx, props])
 
   const dec = useCallback(() => {
     if (idx === 0 && props.onPrev) {
-      props.onPrev();
+      props.onPrev()
     } else {
-      setIdx(s => (s - 1 + props.media.length) % props.media.length);
+      setIdx(s => (s - 1 + props.media.length) % props.media.length)
     }
-  }, [idx, props.onPrev, props.media.length]); // Add dependencies
+  }, [idx, props.onPrev, props.media.length]) // Add dependencies
 
   const inc = useCallback(() => {
     if (idx === props.media.length - 1 && props.onNext) {
-      props.onNext();
+      props.onNext()
     } else {
-      setIdx(s => (s + 1) % props.media.length);
+      setIdx(s => (s + 1) % props.media.length)
     }
-  }, [idx, props.onNext, props.media.length]); // Add dependencies
+  }, [idx, props.onNext, props.media.length]) // Add dependencies
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case "ArrowLeft":
         case "ArrowUp": {
-          e.preventDefault();
-          dec();
-          break;
+          e.preventDefault()
+          dec()
+          break
         }
         case "ArrowRight":
         case "ArrowDown": {
-          e.preventDefault();
-          inc();
-          break;
+          e.preventDefault()
+          inc()
+          break
         }
       }
-    };
+    }
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [dec, inc]); // Now dec and inc are stable
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [dec, inc]) // Now dec and inc are stable
 
   const isVideo = useMemo(() => {
-    return media && videoSuffixes.some(suffix => media.endsWith(suffix));
-  }, [media]);
+    return media && videoSuffixes.some(suffix => media.endsWith(suffix))
+  }, [media])
 
   const mediaEl = useMemo(() => {
     if (media && isVideo) {
@@ -76,30 +76,31 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
           controls={true}
           className="max-h-screen max-w-full w-full"
         />
-      );
+      )
     } else {
-      return <ProxyImg src={media} className="max-h-screen max-w-full w-full object-contain" />;
+      return <ProxyImg src={media} className="max-h-screen max-w-full w-full object-contain" />
     }
-  }, [media, isVideo]);
+  }, [media, isVideo])
 
   const onClickBg = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      props.onClose();
+      props.onClose()
     }
-  };
+  }
 
-  const hasMultiple = props.media.length > 1;
-  const hasPrev = hasMultiple || props.onPrev;
-  const hasNext = hasMultiple || props.onNext;
+  const hasMultiple = props.media.length > 1
+  const hasPrev = hasMultiple || props.onPrev
+  const hasNext = hasMultiple || props.onNext
 
-  const arrowClass = "absolute p-2 top-1/2 cursor-pointer bg-layer-1 md:opacity-20 hover:opacity-90 rounded-full";
+  const arrowClass = "absolute p-2 top-1/2 cursor-pointer bg-layer-1 md:opacity-20 hover:opacity-90 rounded-full"
   return (
     <div className="select-none relative h-screen flex items-center flex-1 justify-center" onClick={onClickBg}>
       {mediaEl}
       <div className="absolute flex flex-row items-center gap-4 left-0 top-0 p-4">
         <span
           className="p-2 bg-layer-1 rounded-full cursor-pointer opacity-80 hover:opacity-70"
-          onClick={props.onClose}>
+          onClick={props.onClose}
+        >
           <Icon name="x-close" size={24} />
         </span>
       </div>
@@ -110,9 +111,10 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
         <span
           className={`left-2 rotate-180 ${arrowClass}`}
           onClick={e => {
-            e.stopPropagation();
-            dec();
-          }}>
+            e.stopPropagation()
+            dec()
+          }}
+        >
           <Icon name="arrowFront" size={24} />
         </span>
       )}
@@ -120,12 +122,13 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
         <span
           className={`right-2 ${arrowClass}`}
           onClick={e => {
-            e.stopPropagation();
-            inc();
-          }}>
+            e.stopPropagation()
+            inc()
+          }}
+        >
           <Icon name="arrowFront" size={24} />
         </span>
       )}
     </div>
-  );
+  )
 }

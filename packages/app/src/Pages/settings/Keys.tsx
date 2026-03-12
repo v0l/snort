@@ -1,17 +1,17 @@
-import "./Keys.css";
+import "./Keys.css"
 
-import { KeyStorage } from "@snort/system";
-import { FormattedMessage } from "react-intl";
+import { KeyStorage } from "@snort/system"
+import { FormattedMessage } from "react-intl"
 
-import Copy from "@/Components/Copy/Copy";
-import useLogin from "@/Hooks/useLogin";
-import { seedToMnemonic } from "@/Utils/nip6";
-import { encodeTLV, hexToBech32, NostrPrefix } from "@snort/shared";
-import { hexToBytes } from "@noble/hashes/utils.js";
+import Copy from "@/Components/Copy/Copy"
+import useLogin from "@/Hooks/useLogin"
+import { seedToMnemonic } from "@/Utils/nip6"
+import { encodeTLV, hexToBech32, NostrPrefix } from "@snort/shared"
+import { hexToBytes } from "@noble/hashes/utils.js"
 
 export default function ExportKeys() {
-  const { publicKey, privateKeyData, generatedEntropy } = useLogin();
-  const copyClass = "p-3 rounded-lg border border-dashed";
+  const { publicKey, privateKeyData, generatedEntropy } = useLogin()
+  const copyClass = "p-3 rounded-lg border border-dashed"
   return (
     <div className="flex flex-col gap-3">
       <div className="text-xl">
@@ -57,5 +57,5 @@ export default function ExportKeys() {
         </>
       )}
     </div>
-  );
+  )
 }

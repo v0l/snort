@@ -1,6 +1,6 @@
-import { unwrap } from "@snort/shared";
-import type { NostrEvent, ReqFilter } from "./nostr";
-import type { FlatReqFilter } from "./query-optimizer";
+import { unwrap } from "@snort/shared"
+import type { NostrEvent, ReqFilter } from "./nostr"
+import type { FlatReqFilter } from "./query-optimizer"
 
 /**
  * Request router managed splitting of requests to one or more relays, and which relay to send events to.
@@ -13,7 +13,7 @@ export interface RequestRouter {
    * @param pickN Number of relays to pick per recipient
    * @returns
    */
-  forReplyTo(pk: string, pickN?: number): Promise<Array<string>>;
+  forReplyTo(pk: string, pickN?: number): Promise<Array<string>>
 
   /**
    * Pick relays to send an event to
@@ -22,7 +22,7 @@ export interface RequestRouter {
    * @param pickN Number of relays to pick per recipient
    * @returns
    */
-  forReply(ev: NostrEvent, pickN?: number): Promise<Array<string>>;
+  forReply(ev: NostrEvent, pickN?: number): Promise<Array<string>>
 
   /**
    * Split a request filter to one or more relays.
@@ -30,7 +30,7 @@ export interface RequestRouter {
    * @param pickN Number of relays to pick
    * @returns
    */
-  forRequest(filter: ReqFilter, pickN?: number): Array<ReqFilter>;
+  forRequest(filter: ReqFilter, pickN?: number): Array<ReqFilter>
 
   /**
    * Split a request filter to one or more relays.
@@ -38,20 +38,20 @@ export interface RequestRouter {
    * @param pickN Number of relays to pick
    * @returns
    */
-  forFlatRequest(filter: Array<FlatReqFilter>, pickN?: number): Array<FlatReqFilter>;
+  forFlatRequest(filter: Array<FlatReqFilter>, pickN?: number): Array<FlatReqFilter>
 
   /**
    * Same as forRequest, but merges the results
    * @param filters
    */
-  forAllRequest(filters: Array<ReqFilter>): Array<ReqFilter>;
+  forAllRequest(filters: Array<ReqFilter>): Array<ReqFilter>
 }
 
 export abstract class BaseRequestRouter implements RequestRouter {
-  abstract forReplyTo(pk: string, pickN?: number): Promise<Array<string>>;
-  abstract forReply(ev: NostrEvent, pickN?: number): Promise<Array<string>>;
-  abstract forRequest(filter: ReqFilter, pickN?: number): Array<ReqFilter>;
-  abstract forFlatRequest(filter: FlatReqFilter[], pickN?: number): Array<FlatReqFilter>;
+  abstract forReplyTo(pk: string, pickN?: number): Promise<Array<string>>
+  abstract forReply(ev: NostrEvent, pickN?: number): Promise<Array<string>>
+  abstract forRequest(filter: ReqFilter, pickN?: number): Array<ReqFilter>
+  abstract forFlatRequest(filter: FlatReqFilter[], pickN?: number): Array<FlatReqFilter>
 
   forAllRequest(filters: Array<ReqFilter>) {
     const allSplit = filters
@@ -59,17 +59,17 @@ export abstract class BaseRequestRouter implements RequestRouter {
       .reduce((acc, v) => {
         for (const vn of v) {
           for (const r of (vn.relays?.length ?? 0) > 0 ? unwrap(vn.relays) : [""]) {
-            const existing = acc.get(r);
+            const existing = acc.get(r)
             if (existing) {
-              existing.push(vn);
+              existing.push(vn)
             } else {
-              acc.set(r, [vn]);
+              acc.set(r, [vn])
             }
           }
         }
-        return acc;
-      }, new Map<string, Array<ReqFilter>>());
+        return acc
+      }, new Map<string, Array<ReqFilter>>())
 
-    return [...allSplit.values()].flat();
+    return [...allSplit.values()].flat()
   }
 }

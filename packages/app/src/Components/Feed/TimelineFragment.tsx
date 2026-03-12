@@ -1,25 +1,25 @@
-import type { TaggedNostrEvent } from "@snort/system";
-import type { ReactNode } from "react";
+import type { TaggedNostrEvent } from "@snort/system"
+import type { ReactNode } from "react"
 
-import Note from "@/Components/Event/EventComponent";
+import Note from "@/Components/Event/EventComponent"
 
 export interface TimelineFragment {
-  events: Array<TaggedNostrEvent>;
-  refTime: number;
-  title?: ReactNode;
+  events: Array<TaggedNostrEvent>
+  refTime: number
+  title?: ReactNode
 }
 
 export interface TimelineFragProps {
-  frag: TimelineFragment;
-  noteRenderer?: (ev: TaggedNostrEvent) => ReactNode;
-  noteOnClick?: (ev: TaggedNostrEvent) => void;
-  noteContext?: (ev: TaggedNostrEvent) => ReactNode;
-  highlightText?: string;
+  frag: TimelineFragment
+  noteRenderer?: (ev: TaggedNostrEvent) => ReactNode
+  noteOnClick?: (ev: TaggedNostrEvent) => void
+  noteContext?: (ev: TaggedNostrEvent) => ReactNode
+  highlightText?: string
 }
 
 const options = {
   truncate: true,
-};
+}
 
 export function TimelineFragment(props: TimelineFragProps) {
   return (
@@ -41,5 +41,5 @@ export function TimelineFragment(props: TimelineFragProps) {
           ),
       )}
     </>
-  );
+  )
 }

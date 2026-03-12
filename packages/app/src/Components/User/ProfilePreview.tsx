@@ -1,10 +1,10 @@
-import type { UserMetadata } from '@snort/system'
-import { useUserProfile } from '@snort/system-react'
-import classNames from 'classnames'
-import { forwardRef, type ReactNode, useRef } from 'react'
+import type { UserMetadata } from "@snort/system"
+import { useUserProfile } from "@snort/system-react"
+import classNames from "classnames"
+import { forwardRef, type ReactNode, useRef } from "react"
 
-import FollowButton from '@/Components/User/FollowButton'
-import ProfileImage, { type ProfileImageProps } from '@/Components/User/ProfileImage'
+import FollowButton from "@/Components/User/FollowButton"
+import ProfileImage, { type ProfileImageProps } from "@/Components/User/ProfileImage"
 
 export interface ProfilePreviewProps {
   pubkey: string
@@ -15,7 +15,7 @@ export interface ProfilePreviewProps {
   actions?: ReactNode
   className?: string
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
-  profileImageProps?: Omit<ProfileImageProps, 'pubkey' | 'profile'>
+  profileImageProps?: Omit<ProfileImageProps, "pubkey" | "profile">
 }
 const ProfilePreview = forwardRef<HTMLDivElement, ProfilePreviewProps>(function ProfilePreview(
   props: ProfilePreviewProps,
@@ -40,10 +40,10 @@ const ProfilePreview = forwardRef<HTMLDivElement, ProfilePreviewProps>(function 
   return (
     <>
       <div
-        className={classNames('flex items-center justify-between', props.className)}
+        className={classNames("flex items-center justify-between", props.className)}
         ref={el => {
           innerRef.current = el
-          if (typeof ref === 'function') ref(el)
+          if (typeof ref === "function") ref(el)
           else if (ref) ref.current = el
         }}
         onClick={handleClick}

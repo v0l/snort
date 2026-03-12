@@ -1,7 +1,7 @@
-import type { CachedMetadata, ProfilePriority } from '@snort/system'
-import type { RefObject } from 'react'
-import { use, useEffect, useRef, useSyncExternalStore } from 'react'
-import { SnortContext } from './context'
+import type { CachedMetadata, ProfilePriority } from "@snort/system"
+import type { RefObject } from "react"
+import { use, useEffect, useRef, useSyncExternalStore } from "react"
+import { SnortContext } from "./context"
 
 /**
  * Gets a profile from cache or requests it from the relays.
@@ -17,7 +17,7 @@ export function useUserProfile(pubKey?: string, ref?: RefObject<Element | null>)
 
   // Track the current priority in a ref so the IntersectionObserver callback
   // can update it without causing a re-render on its own.
-  const priorityRef = useRef<ProfilePriority>('normal')
+  const priorityRef = useRef<ProfilePriority>("normal")
 
   // Attach an IntersectionObserver when a ref is provided.
   // Promotes to "high" when the element enters the viewport, "normal" when it leaves.
@@ -30,7 +30,7 @@ export function useUserProfile(pubKey?: string, ref?: RefObject<Element | null>)
     const observer = new IntersectionObserver(
       entries => {
         const isVisible = entries.some(e => e.isIntersecting)
-        const nextPriority: ProfilePriority = isVisible ? 'high' : 'normal'
+        const nextPriority: ProfilePriority = isVisible ? "high" : "normal"
         if (priorityRef.current !== nextPriority) {
           priorityRef.current = nextPriority
           system.profileLoader.TrackKeys(pubKey, nextPriority)

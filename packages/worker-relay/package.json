@@ -13,10 +13,7 @@
     "build": "rm -rf dist && bunx --bun tsc && bun run build:esm",
     "build:esm": "bunx --bun esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs --loader:.wasm=copy --asset-names=\"[name]\""
   },
-  "files": [
-    "src",
-    "dist"
-  ],
+  "files": ["src", "dist"],
   "dependencies": {
     "@sqlite.org/sqlite-wasm": "^3.50.4-build1",
     "eventemitter3": "^5.0.1",

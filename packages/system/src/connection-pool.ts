@@ -1,9 +1,9 @@
-import { removeUndefined, sanitizeRelayUrl, unwrap } from '@snort/shared'
-import debug from 'debug'
-import { EventEmitter } from 'eventemitter3'
-import type { RelayInfoDocument, SystemInterface } from '.'
-import { Connection, type RelaySettings } from './connection'
-import type { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from './nostr'
+import { removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared"
+import debug from "debug"
+import { EventEmitter } from "eventemitter3"
+import type { RelayInfoDocument, SystemInterface } from "."
+import { Connection, type RelaySettings } from "./connection"
+import type { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "./nostr"
 
 /**
  * Events which the ConnectionType must emit
@@ -110,7 +110,7 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
   implements ConnectionPool
 {
   #system: SystemInterface
-  #log = debug('ConnectionPool')
+  #log = debug("ConnectionPool")
 
   /**
    * Track if a connection request has started
@@ -183,18 +183,18 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
         this.#sockets.set(addr, c)
 
         // This is where we do check sigs
-        c.on('unverifiedEvent', (s, e) => {
+        c.on("unverifiedEvent", (s, e) => {
           if (this.#system.checkSigs && !this.#system.optimizer.schnorrVerify(e)) {
-            this.#log('Reject invalid event %o', e)
+            this.#log("Reject invalid event %o", e)
             return
           }
-          this.emit('event', addr, s, e)
+          this.emit("event", addr, s, e)
         })
 
-        c.on('eose', s => this.emit('eose', addr, s))
-        c.on('disconnect', code => this.emit('disconnect', addr, code))
-        c.on('connected', r => this.emit('connected', addr, r))
-        c.on('auth', (cx, r, cb) => this.emit('auth', addr, cx, r, cb))
+        c.on("eose", s => this.emit("eose", addr, s))
+        c.on("disconnect", code => this.emit("disconnect", addr, code))
+        c.on("connected", r => this.emit("connected", addr, r))
+        c.on("auth", (cx, r, cb) => this.emit("auth", addr, cx, r, cb))
         await c.connect()
         return c
       } else {
@@ -212,8 +212,8 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
       }
     } catch (e) {
       console.error(e)
-      this.#log('%O', e)
-      this.emit('connectFailed', addr)
+      this.#log("%O", e)
+      this.emit("connectFailed", addr)
       this.#sockets.delete(addr)
     } finally {
       this.#connectStarted.delete(addr)
@@ -263,7 +263,7 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
   async broadcastTo(address: string, ev: NostrEvent): Promise<OkResponse> {
     const addrClean = sanitizeRelayUrl(address)
     if (!addrClean) {
-      throw new Error('Invalid relay address')
+      throw new Error("Invalid relay address")
     }
 
     const existing = this.#sockets.get(addrClean)
@@ -273,7 +273,7 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
       // Use internal connect method to avoid duplicate connections
       const c = await this.connect(address, { write: true, read: true }, true)
       if (!c) {
-        throw new Error('Failed to connect to relay')
+        throw new Error("Failed to connect to relay")
       }
       return await c.publish(ev)
     }

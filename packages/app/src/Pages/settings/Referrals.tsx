@@ -1,30 +1,30 @@
-import { useCallback } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
-import { Link } from "react-router-dom";
+import { useCallback } from "react"
+import { FormattedMessage, FormattedNumber } from "react-intl"
+import { Link } from "react-router-dom"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import { LeaderBadge } from "@/Components/CommunityLeaders/LeaderBadge";
-import Copy from "@/Components/Copy/Copy";
-import SnortApi, { type RefCodeResponse } from "@/External/SnortApi";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { useCached } from "@snort/system-react";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import { LeaderBadge } from "@/Components/CommunityLeaders/LeaderBadge"
+import Copy from "@/Components/Copy/Copy"
+import SnortApi, { type RefCodeResponse } from "@/External/SnortApi"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import { useCached } from "@snort/system-react"
 
 export function ReferralsPage() {
-  const { publisher } = useEventPublisher();
+  const { publisher } = useEventPublisher()
   const loader = useCallback(() => {
-    const api = new SnortApi(undefined, publisher?.signer);
-    return api.getRefCode();
-  }, [publisher]);
+    const api = new SnortApi(undefined, publisher?.signer)
+    return api.getRefCode()
+  }, [publisher])
   const { data: refCode, reloadNow } = useCached<RefCodeResponse>(
     publisher ? `ref:${publisher.pubKey}` : undefined,
     loader,
     60 * 60 * 24,
-  );
+  )
 
   async function applyNow() {
-    const api = new SnortApi(undefined, publisher?.signer);
-    await api.applyForLeader();
-    await reloadNow();
+    const api = new SnortApi(undefined, publisher?.signer)
+    await api.applyForLeader()
+    await reloadNow()
   }
 
   function becomeLeader() {
@@ -48,7 +48,7 @@ export function ReferralsPage() {
           </AsyncButton>
         </p>
       </>
-    );
+    )
   }
 
   function leaderPending() {
@@ -70,7 +70,7 @@ export function ReferralsPage() {
           <FormattedMessage defaultMessage="Your application is pending" />
         </h3>
       </>
-    );
+    )
   }
 
   function leaderInfo() {
@@ -93,7 +93,7 @@ export function ReferralsPage() {
           <FormattedMessage defaultMessage="Use your invite code to earn sats!" />
         </p>
       </>
-    );
+    )
   }
 
   return (
@@ -123,5 +123,5 @@ export function ReferralsPage() {
       {refCode?.leaderState === "pending" && leaderPending()}
       {refCode?.leaderState === "approved" && leaderInfo()}
     </>
-  );
+  )
 }

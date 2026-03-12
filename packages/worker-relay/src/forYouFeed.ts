@@ -1,5 +1,5 @@
-import { debugLog } from './debug'
-import type { NostrEvent, RelayHandler } from './types'
+import { debugLog } from "./debug"
+import type { NostrEvent, RelayHandler } from "./types"
 
 // import { parseZap } from "../../system/src/zaps";
 // placeholder:
@@ -7,33 +7,33 @@ const parseZap = (_zap: NostrEvent) => {
   return { event: null } as { event: null | NostrEvent }
 }
 
-const log = (msg: string, ...args: Array<any>) => debugLog('getForYouFeed', msg, ...args)
+const log = (msg: string, ...args: Array<any>) => debugLog("getForYouFeed", msg, ...args)
 
 export async function getForYouFeed(relay: RelayHandler, pubkey: string): Promise<NostrEvent[]> {
-  console.time('For You feed generation time')
+  console.time("For You feed generation time")
 
-  log('pubkey', pubkey)
+  log("pubkey", pubkey)
 
   // Get events reacted to by me
   const myReactedEventIds = await getMyReactedEvents(relay, pubkey)
-  log('my reacted events', myReactedEventIds)
+  log("my reacted events", myReactedEventIds)
 
   // Single query covers both getMyReactedAuthors and getOthersWhoReacted —
   // both needed the same "#e" lookup so we do it once and split in one pass.
   const { myReactedAuthors, othersWhoReacted } = await getReactionMaps(relay, myReactedEventIds, pubkey)
-  log('my reacted authors', myReactedAuthors)
+  log("my reacted authors", myReactedAuthors)
   // this tends to be small when the user has just logged in, we should maybe subscribe for more from relays
-  log('others who reacted', othersWhoReacted)
+  log("others who reacted", othersWhoReacted)
 
   // Get event ids reacted to by those others
   const reactedByOthers = await getEventIdsReactedByOthers(relay, othersWhoReacted, myReactedEventIds, pubkey)
-  log('reacted by others', reactedByOthers)
+  log("reacted by others", reactedByOthers)
 
   // Get full events in sorted order
   const feed = await getFeedEvents(relay, reactedByOthers, myReactedAuthors)
-  log('feed.length', feed.length)
+  log("feed.length", feed.length)
 
-  console.timeEnd('For You feed generation time')
+  console.timeEnd("For You feed generation time")
   return feed
 }
 
@@ -45,8 +45,8 @@ async function getReactionMaps(relay: RelayHandler, myReactedEventIds: Set<strin
   const myReactedAuthors = new Map<string, number>()
   const othersWhoReacted = new Map<string, number>()
 
-  const reactions = relay.req('getReactionMaps', {
-    '#e': Array.from(myReactedEventIds),
+  const reactions = relay.req("getReactionMaps", {
+    "#e": Array.from(myReactedEventIds),
   }) as NostrEvent[]
 
   reactions.forEach(reaction => {
@@ -62,13 +62,13 @@ async function getReactionMaps(relay: RelayHandler, myReactedEventIds: Set<strin
 async function getMyReactedEvents(relay: RelayHandler, pubkey: string) {
   const myReactedEventIds = new Set<string>()
 
-  const myEvents = relay.req('getMyReactedEventIds', {
+  const myEvents = relay.req("getMyReactedEventIds", {
     authors: [pubkey],
     kinds: [1, 6, 7, 9735],
   }) as NostrEvent[]
   myEvents.forEach(ev => {
     const targetEventId =
-      ev.kind === 9735 ? parseZap(ev).event?.id : ev.tags.find((tag: string[]) => tag[0] === 'e')?.[1]
+      ev.kind === 9735 ? parseZap(ev).event?.id : ev.tags.find((tag: string[]) => tag[0] === "e")?.[1]
     if (targetEventId) {
       myReactedEventIds.add(targetEventId)
     }
@@ -85,7 +85,7 @@ async function getEventIdsReactedByOthers(
 ) {
   const eventIdsReactedByOthers = new Map<string, number>()
 
-  const events = relay.req('getEventIdsReactedByOthers', {
+  const events = relay.req("getEventIdsReactedByOthers", {
     authors: [...othersWhoReacted.keys()],
     kinds: [1, 6, 7, 9735],
   }) as NostrEvent[]
@@ -96,7 +96,7 @@ async function getEventIdsReactedByOthers(
       return
     }
     event.tags.forEach((tag: string[]) => {
-      if (tag[0] === 'e') {
+      if (tag[0] === "e") {
         const score = Math.ceil(Math.sqrt(othersWhoReacted.get(event.pubkey) || 0))
         eventIdsReactedByOthers.set(tag[1], (eventIdsReactedByOthers.get(tag[1]) || 0) + score)
       }
@@ -114,15 +114,15 @@ async function getFeedEvents(
   const events = relay
     .sql(
       `select json from events where id in (${Array.from(reactedToIds.keys())
-        .map(() => '?')
-        .join(', ')}) and kind = 1 order by seen_at ASC, created DESC limit 1000`,
+        .map(() => "?")
+        .join(", ")}) and kind = 1 order by seen_at ASC, created DESC limit 1000`,
       Array.from(reactedToIds.keys()),
     )
     .map(row => JSON.parse(row[0] as string) as NostrEvent)
 
   const seen = new Set<string>(events.map(ev => ev.id))
 
-  log('reactedToAuthors', reactedToAuthors)
+  log("reactedToAuthors", reactedToAuthors)
 
   const favoriteAuthors = Array.from(reactedToAuthors.keys())
     .sort((a, b) => reactedToAuthors.get(b)! - reactedToAuthors.get(a)!)
@@ -131,8 +131,8 @@ async function getFeedEvents(
   const eventsByFavoriteAuthors = relay
     .sql(
       `select json from events where pubkey in (${favoriteAuthors
-        .map(() => '?')
-        .join(', ')}) and kind = 1 order by seen_at ASC, created DESC limit 100`,
+        .map(() => "?")
+        .join(", ")}) and kind = 1 order by seen_at ASC, created DESC limit 100`,
       favoriteAuthors,
     )
     .map(row => JSON.parse(row[0] as string) as NostrEvent)
@@ -144,7 +144,7 @@ async function getFeedEvents(
   })
 
   // Filter out replies
-  const filteredEvents = events.filter(ev => !ev.tags.some((tag: string[]) => tag[0] === 'e'))
+  const filteredEvents = events.filter(ev => !ev.tags.some((tag: string[]) => tag[0] === "e"))
 
   // Define constants for normalization
   // const recentnessWeight = -1;

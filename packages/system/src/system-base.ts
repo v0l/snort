@@ -1,22 +1,22 @@
-import type { CachedTable } from "@snort/shared";
-import type { CachedMetadata, UsersFollows } from "./cache";
-import type { CacheRelay } from "./cache-relay";
-import { UserFollowsCache } from "./cache/user-follows-lists";
-import { UserRelaysCache, UserProfileCache } from "./index";
-import { DefaultOptimizer, type Optimizer } from "./query-optimizer";
-import type { NostrSystemEvents, SystemConfig } from "./system";
-import { EventEmitter } from "eventemitter3";
-import { SocialGraph } from "nostr-social-graph";
+import type { CachedTable } from "@snort/shared"
+import type { CachedMetadata, UsersFollows } from "./cache"
+import type { CacheRelay } from "./cache-relay"
+import { UserFollowsCache } from "./cache/user-follows-lists"
+import { UserRelaysCache, UserProfileCache } from "./index"
+import { DefaultOptimizer, type Optimizer } from "./query-optimizer"
+import type { NostrSystemEvents, SystemConfig } from "./system"
+import { EventEmitter } from "eventemitter3"
+import { SocialGraph } from "nostr-social-graph"
 
 export abstract class SystemBase extends EventEmitter<NostrSystemEvents> {
-  #config: SystemConfig;
+  #config: SystemConfig
 
   get config() {
-    return this.#config;
+    return this.#config
   }
 
   constructor(props: Partial<SystemConfig>) {
-    super();
+    super()
 
     this.#config = {
       relays: props.relays ?? new UserRelaysCache(),
@@ -30,39 +30,39 @@ export abstract class SystemBase extends EventEmitter<NostrSystemEvents> {
       fallbackSync: props.fallbackSync ?? "since",
       socialGraphInstance: props.socialGraphInstance ?? new SocialGraph("00".repeat(32)),
       disableSyncModule: props.disableSyncModule ?? false,
-    };
+    }
   }
 
   /**
    * Storage class for user profiles
    */
   get profileCache(): CachedTable<CachedMetadata> {
-    return this.#config.profiles;
+    return this.#config.profiles
   }
 
   /**
    * Optimizer instance, contains optimized functions for processing data
    */
   get optimizer(): Optimizer {
-    return this.#config.optimizer;
+    return this.#config.optimizer
   }
 
   get userFollowsCache(): CachedTable<UsersFollows> {
-    return this.#config.contactLists;
+    return this.#config.contactLists
   }
 
   get cacheRelay(): CacheRelay | undefined {
-    return this.#config.cachingRelay;
+    return this.#config.cachingRelay
   }
 
   /**
    * Check event signatures (recommended)
    */
   get checkSigs(): boolean {
-    return this.#config.checkSigs;
+    return this.#config.checkSigs
   }
 
   set checkSigs(v: boolean) {
-    this.#config.checkSigs = v;
+    this.#config.checkSigs = v
   }
 }

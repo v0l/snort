@@ -1,6 +1,6 @@
-import { distance } from '@snort/shared'
-import type { ReqFilter } from '..'
-import type { FlatReqFilter } from '.'
+import { distance } from "@snort/shared"
+import type { ReqFilter } from ".."
+import type { FlatReqFilter } from "."
 
 export function canMergeFilters(a: FlatReqFilter | ReqFilter, b: FlatReqFilter | ReqFilter): boolean {
   if (a.resultSetId !== b.resultSetId) {
@@ -73,11 +73,11 @@ export function filterIncludes(bigger: ReqFilter, smaller: ReqFilter) {
     if (Array.isArray(v) && v.some(a => !(outside[k] as Array<string | number>).includes(a))) {
       return false
     }
-    if (typeof v === 'number') {
-      if (k === 'since' && (outside[k] as number) > v) {
+    if (typeof v === "number") {
+      if (k === "since" && (outside[k] as number) > v) {
         return false
       }
-      if (k === 'until' && (outside[k] as number) < v) {
+      if (k === "until" && (outside[k] as number) < v) {
         return false
       }
       // limit cannot be checked and is ignored
@@ -101,7 +101,7 @@ export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
       (acc, a) => {
         Object.entries(a).forEach(([k, v]) => {
           if (v === undefined) return
-          if (k === 'since' || k === 'until' || k === 'limit' || k === 'search' || k === 'resultSetId') {
+          if (k === "since" || k === "until" || k === "limit" || k === "search" || k === "resultSetId") {
             acc[k] = v as number | string
           } else {
             acc[k] ??= []

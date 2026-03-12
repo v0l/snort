@@ -1,21 +1,21 @@
-import { type ReactNode, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { type ReactNode, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import { AllLanguageCodes } from "@/Components/IntlProvider/IntlProviderUtils";
-import { useLocale } from "@/Components/IntlProvider/useLocale";
-import { useAllPreferences } from "@/Hooks/usePreferences";
-import { unwrap } from "@/Utils";
-import { DefaultImgProxy } from "@/Utils/Const";
-import type { UserPreferences } from "@/Utils/Login";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import { AllLanguageCodes } from "@/Components/IntlProvider/IntlProviderUtils"
+import { useLocale } from "@/Components/IntlProvider/useLocale"
+import { useAllPreferences } from "@/Hooks/usePreferences"
+import { unwrap } from "@/Utils"
+import { DefaultImgProxy } from "@/Utils/Const"
+import type { UserPreferences } from "@/Utils/Login"
 
-import messages from "./messages";
+import messages from "./messages"
 
 const PreferencesPage = () => {
-  const { formatMessage } = useIntl();
-  const { preferences: pref, update: setPref, save } = useAllPreferences();
-  const [error, setError] = useState("");
-  const { lang } = useLocale();
+  const { formatMessage } = useIntl()
+  const { preferences: pref, update: setPref, save } = useAllPreferences()
+  const [error, setError] = useState("")
+  const { lang } = useLocale()
 
   function row(title: ReactNode, description: ReactNode | undefined, control: ReactNode) {
     return (
@@ -26,7 +26,7 @@ const PreferencesPage = () => {
         </div>
         <div>{control}</div>
       </div>
-    );
+    )
   }
 
   return (
@@ -52,7 +52,8 @@ const PreferencesPage = () => {
               language: e.target.value,
             })
           }
-          style={{ textTransform: "capitalize" }}>
+          style={{ textTransform: "capitalize" }}
+        >
           {AllLanguageCodes.sort().map(a => (
             <option key={a} value={a}>
               {new Intl.DisplayNames([a], {
@@ -73,7 +74,8 @@ const PreferencesPage = () => {
               ...pref,
               theme: e.target.value,
             } as UserPreferences)
-          }>
+          }
+        >
           <option value="system">
             <FormattedMessage {...messages.System} />
           </option>
@@ -95,7 +97,8 @@ const PreferencesPage = () => {
               ...pref,
               defaultRootTab: e.target.value,
             } as UserPreferences)
-          }>
+          }
+        >
           <option value="for-you">
             <FormattedMessage defaultMessage="For you" />
           </option>
@@ -131,7 +134,8 @@ const PreferencesPage = () => {
               ...pref,
               autoLoadMedia: e.target.value,
             } as UserPreferences)
-          }>
+          }
+        >
           <option value="none">
             <FormattedMessage {...messages.None} />
           </option>
@@ -342,11 +346,11 @@ const PreferencesPage = () => {
           type="text"
           value={pref.reactionEmoji}
           onChange={e => {
-            const split = e.target.value.match(/[\p{L}\S]{1}/u);
+            const split = e.target.value.match(/[\p{L}\S]{1}/u)
             setPref({
               ...pref,
               reactionEmoji: split?.[0] ?? "",
-            });
+            })
           }}
         />,
       )}
@@ -386,6 +390,6 @@ const PreferencesPage = () => {
       </AsyncButton>
       {error && <b className="error">{error}</b>}
     </div>
-  );
-};
-export default PreferencesPage;
+  )
+}
+export default PreferencesPage

@@ -1,13 +1,13 @@
-import { dedupe } from '@snort/shared'
-import { OutboxModel } from '@snort/system'
-import { SnortContext } from '@snort/system-react'
-import { type ReactNode, use, useMemo } from 'react'
-import { FormattedMessage, FormattedNumber } from 'react-intl'
+import { dedupe } from "@snort/shared"
+import { OutboxModel } from "@snort/system"
+import { SnortContext } from "@snort/system-react"
+import { type ReactNode, use, useMemo } from "react"
+import { FormattedMessage, FormattedNumber } from "react-intl"
 
-import { CollapsedSection } from '@/Components/Collapsed'
-import ProfilePreview from '@/Components/User/ProfilePreview'
-import useFollowsControls from '@/Hooks/useFollowControls'
-import { getRelayName } from '@/Utils'
+import { CollapsedSection } from "@/Components/Collapsed"
+import ProfilePreview from "@/Components/User/ProfilePreview"
+import useFollowsControls from "@/Hooks/useFollowControls"
+import { getRelayName } from "@/Utils"
 
 export function FollowsRelayHealth({
   withTitle,
@@ -32,7 +32,7 @@ export function FollowsRelayHealth({
 
   const topWriteRelays = useMemo(() => {
     const outbox = OutboxModel.fromSystem(system)
-    return outbox.pickTopRelays(uniqueFollows, 1e31, 'write')
+    return outbox.pickTopRelays(uniqueFollows, 1e31, "write")
   }, [uniqueFollows, system])
 
   return (

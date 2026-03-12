@@ -1,8 +1,8 @@
-import type { ReactNode } from "react";
-import { FormattedNumber } from "react-intl";
+import type { ReactNode } from "react"
+import { FormattedNumber } from "react-intl"
 
 export default function Progress({ value, status }: { value: number; status?: ReactNode }) {
-  const v = Math.max(0.01, Math.min(1, value));
+  const v = Math.max(0.01, Math.min(1, value))
   return (
     <div className="relative h-4 rounded overflow-hidden bg-neutral-600">
       <div className="absolute bg-success h-full" style={{ width: `${v * 100}%` }}></div>
@@ -11,5 +11,5 @@ export default function Progress({ value, status }: { value: number; status?: Re
         <FormattedNumber value={v} style="percent" />
       </span>
     </div>
-  );
+  )
 }

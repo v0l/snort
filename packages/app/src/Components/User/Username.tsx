@@ -1,8 +1,8 @@
-import { useUserProfile } from '@snort/system-react'
-import { useRef } from 'react'
+import { useUserProfile } from "@snort/system-react"
+import { useRef } from "react"
 
-import DisplayName from './DisplayName'
-import { ProfileLink } from './ProfileLink'
+import DisplayName from "./DisplayName"
+import { ProfileLink } from "./ProfileLink"
 
 export default function Username({ pubkey, onLinkVisit }: { pubkey: string; onLinkVisit?(): void }) {
   const ref = useRef<HTMLSpanElement>(null)

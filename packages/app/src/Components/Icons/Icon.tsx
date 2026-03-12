@@ -1,19 +1,19 @@
-import { forwardRef, type HTMLProps } from "react";
+import { forwardRef, type HTMLProps } from "react"
 
-import IconsSvg from "@/Components/Icons/icons.svg";
+import IconsSvg from "@/Components/Icons/icons.svg"
 
 export type IconProps = {
-  name: string;
-  size?: number;
-} & Omit<HTMLProps<SVGSVGElement>, "src" | "href" | "width" | "height">;
+  name: string
+  size?: number
+} & Omit<HTMLProps<SVGSVGElement>, "src" | "href" | "width" | "height">
 
 const Icon = forwardRef<SVGSVGElement, IconProps>(({ name, size, ...props }, ref) => {
-  size ??= 20;
+  size ??= 20
   return (
     <svg ref={ref} {...props} width={size} height={size}>
       <use href={`${IconsSvg}#${name}`} />
     </svg>
-  );
-});
+  )
+})
 
-export default Icon;
+export default Icon

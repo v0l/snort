@@ -1,15 +1,15 @@
-import { EventExt, type TaggedNostrEvent } from "@snort/system";
+import { EventExt, type TaggedNostrEvent } from "@snort/system"
 
-import Note from "@/Components/Event/EventComponent";
-import { getReplies } from "@/Components/Event/Thread/util";
+import Note from "@/Components/Event/EventComponent"
+import { getReplies } from "@/Components/Event/Thread/util"
 
 export interface SubthreadProps {
-  isLastSubthread?: boolean;
-  active: string;
-  notes: readonly TaggedNostrEvent[];
-  allNotes: readonly TaggedNostrEvent[];
-  chains: Map<string, Array<string>>;
-  onNavigate: (e: TaggedNostrEvent) => void;
+  isLastSubthread?: boolean
+  active: string
+  notes: readonly TaggedNostrEvent[]
+  allNotes: readonly TaggedNostrEvent[]
+  chains: Map<string, Array<string>>
+  onNavigate: (e: TaggedNostrEvent) => void
 }
 
 export const Subthread = ({ active, notes, allNotes, chains, onNavigate }: SubthreadProps) => {
@@ -20,13 +20,13 @@ export const Subthread = ({ active, notes, allNotes, chains, onNavigate }: Subth
     depth: number,
     parentContinues: boolean,
   ): React.ReactNode => {
-    const noteKey = EventExt.keyOf(note);
-    const replies = getReplies(noteKey, allNotes, chains);
-    const hasReplies = replies.length > 0;
-    const isLast = idx === siblings.length - 1;
+    const noteKey = EventExt.keyOf(note)
+    const replies = getReplies(noteKey, allNotes, chains)
+    const hasReplies = replies.length > 0
+    const isLast = idx === siblings.length - 1
 
     // Pass to children: only pass true if this note isn't last (has siblings after it)
-    const continuesAfterThisNote = !isLast;
+    const continuesAfterThisNote = !isLast
 
     // Root level (depth 0): only show bottomLine to connect to nested replies
     // Depth 1 (direct replies to root): show bottomLine if has replies OR not last
@@ -44,7 +44,7 @@ export const Subthread = ({ active, notes, allNotes, chains, onNavigate }: Subth
             inset: "left-9",
             topLine: true,
             bottomLine: hasReplies || !isLast || (depth > 1 && parentContinues),
-          };
+          }
 
     return (
       <>
@@ -62,8 +62,8 @@ export const Subthread = ({ active, notes, allNotes, chains, onNavigate }: Subth
         />
         {replies.map((reply, y) => renderNote(reply, y, replies, depth + 1, continuesAfterThisNote))}
       </>
-    );
-  };
+    )
+  }
 
-  return <div>{notes.map((note, idx) => renderNote(note, idx, notes, 0, false))}</div>;
-};
+  return <div>{notes.map((note, idx) => renderNote(note, idx, notes, 0, false))}</div>
+}

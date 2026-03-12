@@ -1,13 +1,13 @@
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import ProfilePreview from "@/Components/User/ProfilePreview";
-import { LoginStore } from "@/Utils/Login";
-import { getActiveSubscriptions } from "@/Utils/Subscription";
+import ProfilePreview from "@/Components/User/ProfilePreview"
+import { LoginStore } from "@/Utils/Login"
+import { getActiveSubscriptions } from "@/Utils/Subscription"
 
 export default function AccountsPage() {
-  const logins = LoginStore.getSessions();
-  const sub = getActiveSubscriptions(LoginStore.allSubscriptions());
+  const logins = LoginStore.getSessions()
+  const sub = getActiveSubscriptions(LoginStore.allSubscriptions())
 
   return (
     <div className="flex flex-col gap-2">
@@ -43,5 +43,5 @@ export default function AccountsPage() {
         </Link>
       )}
     </div>
-  );
+  )
 }

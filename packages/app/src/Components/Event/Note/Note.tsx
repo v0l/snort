@@ -1,18 +1,18 @@
-import { EventKind, NostrLink, type TaggedNostrEvent } from "@snort/system";
-import { WorkerRelayInterface } from "@snort/worker-relay";
-import classNames from "classnames";
-import { useCallback, useEffect } from "react";
-import { useInView } from "react-intersection-observer";
-import { useNavigate } from "react-router-dom";
+import { EventKind, NostrLink, type TaggedNostrEvent } from "@snort/system"
+import { WorkerRelayInterface } from "@snort/worker-relay"
+import classNames from "classnames"
+import { useCallback, useEffect } from "react"
+import { useInView } from "react-intersection-observer"
+import { useNavigate } from "react-router-dom"
 
-import { Relay } from "@/Cache";
-import { NoteProvider } from "@/Components/Event/Note/NoteContext";
-import useModeration from "@/Hooks/useModeration";
+import { Relay } from "@/Cache"
+import { NoteProvider } from "@/Components/Event/Note/NoteContext"
+import useModeration from "@/Hooks/useModeration"
 
-import type { NoteProps, NotePropsOptions } from "../EventComponent";
-import HiddenNote from "../HiddenNote";
-import NoteAppHandler from "./NoteAppHandler";
-import { NoteContent } from "./NoteContent";
+import type { NoteProps, NotePropsOptions } from "../EventComponent"
+import HiddenNote from "../HiddenNote"
+import NoteAppHandler from "./NoteAppHandler"
+import { NoteContent } from "./NoteContent"
 
 const defaultOptions = {
   showHeader: true,
@@ -21,7 +21,7 @@ const defaultOptions = {
   canUnpin: false,
   canUnbookmark: false,
   showContextMenu: true,
-};
+}
 
 const canRenderAsTextNote = [
   EventKind.TextNote,
@@ -30,38 +30,38 @@ const canRenderAsTextNote = [
   EventKind.Video,
   EventKind.ShortVideo,
   EventKind.Comment,
-];
+]
 
 export function Note(props: NoteProps) {
-  const { data: ev, highlight, options: opt, ignoreModeration = false, waitUntilInView } = props;
-  const { isEventMuted } = useModeration();
-  const { ref, inView } = useInView({ triggerOnce: true });
-  const { ref: setSeenAtRef, inView: setSeenAtInView } = useInView({ rootMargin: "0px", threshold: 1 });
+  const { data: ev, highlight, options: opt, ignoreModeration = false, waitUntilInView } = props
+  const { isEventMuted } = useModeration()
+  const { ref, inView } = useInView({ triggerOnce: true })
+  const { ref: setSeenAtRef, inView: setSeenAtInView } = useInView({ rootMargin: "0px", threshold: 1 })
 
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>;
+    let timeout: ReturnType<typeof setTimeout>
     if (setSeenAtInView && Relay instanceof WorkerRelayInterface) {
-      const r = Relay as WorkerRelayInterface;
+      const r = Relay as WorkerRelayInterface
       timeout = setTimeout(() => {
-        r.setEventMetadata(ev.id, { seen_at: Math.round(Date.now() / 1000) });
-      }, 1000);
+        r.setEventMetadata(ev.id, { seen_at: Math.round(Date.now() / 1000) })
+      }, 1000)
     }
-    return () => clearTimeout(timeout);
-  }, [setSeenAtInView, ev.id]);
+    return () => clearTimeout(timeout)
+  }, [setSeenAtInView, ev.id])
 
-  const optionsMerged = { ...defaultOptions, ...opt };
-  const goToEvent = useGoToEvent(props, optionsMerged);
+  const optionsMerged = { ...defaultOptions, ...opt }
+  const goToEvent = useGoToEvent(props, optionsMerged)
 
   if (!canRenderAsTextNote.includes(ev.kind)) {
-    return <NoteAppHandler ev={ev} />;
+    return <NoteAppHandler ev={ev} />
   }
 
   function threadLines() {
-    if (!props.options?.threadLines) return;
-    const tl = props.options.threadLines;
-    const topLine = tl.topLine ?? false;
-    const bottomLine = tl.bottomLine ?? false;
-    if (!topLine && !bottomLine) return;
+    if (!props.options?.threadLines) return
+    const tl = props.options.threadLines
+    const topLine = tl.topLine ?? false
+    const bottomLine = tl.bottomLine ?? false
+    if (!topLine && !bottomLine) return
 
     return (
       <div
@@ -72,7 +72,7 @@ export function Note(props: NoteProps) {
           "h-4": !bottomLine,
         })}
       />
-    );
+    )
   }
 
   const noteElement = (
@@ -84,7 +84,8 @@ export function Note(props: NoteProps) {
             "hover:bg-neutral-950 light:hover:bg-neutral-50 cursor-pointer": !opt?.isRoot,
           })}
           onClick={e => goToEvent(e, ev)}
-          ref={ref}>
+          ref={ref}
+        >
           <NoteContent
             props={props}
             options={optionsMerged}
@@ -97,20 +98,20 @@ export function Note(props: NoteProps) {
         {threadLines()}
       </div>
     </NoteProvider>
-  );
+  )
 
-  return !ignoreModeration && isEventMuted(ev) ? <HiddenNote>{noteElement}</HiddenNote> : noteElement;
+  return !ignoreModeration && isEventMuted(ev) ? <HiddenNote>{noteElement}</HiddenNote> : noteElement
 }
 
 function useGoToEvent(props: NoteProps, options: NotePropsOptions) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return useCallback(
     (e: React.MouseEvent, eTarget: TaggedNostrEvent) => {
       if (options?.canClick === false) {
-        return;
+        return
       }
 
-      let target = e.target as HTMLElement | null;
+      let target = e.target as HTMLElement | null
       while (target) {
         if (
           target.tagName === "A" ||
@@ -118,33 +119,33 @@ function useGoToEvent(props: NoteProps, options: NotePropsOptions) {
           target.classList.contains("reaction-pill") ||
           target.classList.contains("szh-menu-container")
         ) {
-          return;
+          return
         }
-        target = target.parentElement;
+        target = target.parentElement
       }
 
-      e.stopPropagation();
+      e.stopPropagation()
 
       // prevent navigation if selecting text
-      const cellText = document.getSelection();
+      const cellText = document.getSelection()
       if (cellText?.type === "Range") {
-        return;
+        return
       }
 
       // custom onclick handler
       if (props.onClick) {
-        props.onClick(eTarget);
-        return;
+        props.onClick(eTarget)
+        return
       }
 
       // link to event
-      const link = NostrLink.fromEvent(eTarget);
+      const link = NostrLink.fromEvent(eTarget)
       if (e.metaKey) {
-        window.open(`/${link.encode(CONFIG.eventLinkPrefix)}`, "_blank");
+        window.open(`/${link.encode(CONFIG.eventLinkPrefix)}`, "_blank")
       } else {
-        navigate(`/${link.encode(CONFIG.eventLinkPrefix)}`, { state: eTarget });
+        navigate(`/${link.encode(CONFIG.eventLinkPrefix)}`, { state: eTarget })
       }
     },
     [navigate, props, options],
-  );
+  )
 }

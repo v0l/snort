@@ -1,12 +1,19 @@
-import { ExternalStore, getPublicKey, unwrap } from "@snort/shared";
-import { EventKind, EventPublisher, KeyStorage, type RelaySettings, UserState, type UserStateObject } from "@snort/system";
-import { v4 as uuid } from "uuid";
+import { ExternalStore, getPublicKey, unwrap } from "@snort/shared"
+import {
+  EventKind,
+  EventPublisher,
+  KeyStorage,
+  type RelaySettings,
+  UserState,
+  type UserStateObject,
+} from "@snort/system"
+import { v4 as uuid } from "uuid"
 
-import { createPublisher, type LoginSession, LoginSessionType, type SnortAppData } from "@/Utils/Login/index";
+import { createPublisher, type LoginSession, LoginSessionType, type SnortAppData } from "@/Utils/Login/index"
 
-import { DefaultPreferences, type UserPreferences } from "./Preferences";
+import { DefaultPreferences, type UserPreferences } from "./Preferences"
 
-const AccountStoreKey = "sessions";
+const AccountStoreKey = "sessions"
 const LoggedOut = {
   id: "default",
   type: "public_key",
@@ -47,41 +54,41 @@ const LoggedOut = {
     encryptAppdata: true,
     appdataId: "snort",
   }),
-} as LoginSession;
+} as LoginSession
 
 export class MultiAccountStore extends ExternalStore<LoginSession> {
-  #activeAccount?: string;
-  #saveDebounce?: ReturnType<typeof setTimeout>;
-  #accounts: Map<string, LoginSession> = new Map();
-  #publishers = new Map<string, EventPublisher>();
+  #activeAccount?: string
+  #saveDebounce?: ReturnType<typeof setTimeout>
+  #accounts: Map<string, LoginSession> = new Map()
+  #publishers = new Map<string, EventPublisher>()
 
   constructor() {
-    super();
+    super()
     if (typeof ServiceWorkerGlobalScope !== "undefined" && globalThis instanceof ServiceWorkerGlobalScope) {
       // return if sw. we might want to use localForage (idb) to share keys between sw and app
-      return;
+      return
     }
-    const existing = window.localStorage.getItem(AccountStoreKey);
+    const existing = window.localStorage.getItem(AccountStoreKey)
     if (existing) {
-      const logins = JSON.parse(existing);
-      this.#accounts = new Map((logins as Array<LoginSession>).map(a => [a.id, a]));
+      const logins = JSON.parse(existing)
+      this.#accounts = new Map((logins as Array<LoginSession>).map(a => [a.id, a]))
     } else {
-      this.#accounts = new Map();
+      this.#accounts = new Map()
     }
-    this.#migrate();
+    this.#migrate()
     if (!this.#activeAccount) {
-      this.#activeAccount = this.#accounts.keys().next().value;
+      this.#activeAccount = this.#accounts.keys().next().value
     }
     for (const [, v] of this.#accounts) {
       // reset readonly on load
       if (v.type === LoginSessionType.PrivateKey && v.readonly) {
-        v.readonly = false;
+        v.readonly = false
       }
-      v.extraChats ??= [];
+      v.extraChats ??= []
       if (v.privateKeyData) {
-        v.privateKeyData = KeyStorage.fromPayload(v.privateKeyData as object);
+        v.privateKeyData = KeyStorage.fromPayload(v.privateKeyData as object)
       }
-      const stateObj = v.state as unknown as UserStateObject<SnortAppData> | undefined;
+      const stateObj = v.state as unknown as UserStateObject<SnortAppData> | undefined
       const stateClass = new UserState<SnortAppData>(
         v.publicKey!,
         {
@@ -95,61 +102,61 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
           appdataId: "snort",
         },
         stateObj,
-      );
-      MultiAccountStore.enableStandardLists(stateClass);
-      stateClass.on("change", () => this.#save());
+      )
+      MultiAccountStore.enableStandardLists(stateClass)
+      stateClass.on("change", () => this.#save())
       if (v.state instanceof UserState) {
-        v.state.destroy();
+        v.state.destroy()
       }
-      console.debug("UserState assign = ", stateClass);
-      v.state = stateClass;
+      console.debug("UserState assign = ", stateClass)
+      v.state = stateClass
 
       // always activate signer
-      const signer = createPublisher(v);
+      const signer = createPublisher(v)
       if (signer) {
-        this.#publishers.set(v.id, signer);
+        this.#publishers.set(v.id, signer)
       }
     }
   }
 
   private static enableStandardLists<T>(state: UserState<T>) {
-    state.checkIsStandardList(EventKind.BlossomServerList); // track blossom list
-    state.checkIsStandardList(EventKind.PinList);
-    state.checkIsStandardList(EventKind.BookmarksList);
+    state.checkIsStandardList(EventKind.BlossomServerList) // track blossom list
+    state.checkIsStandardList(EventKind.PinList)
+    state.checkIsStandardList(EventKind.BookmarksList)
   }
 
   getSessions() {
     return [...this.#accounts.values()].map(v => ({
       pubkey: unwrap(v.publicKey),
       id: v.id,
-    }));
+    }))
   }
 
   get(id: string) {
-    const s = this.#accounts.get(id);
+    const s = this.#accounts.get(id)
     if (s) {
-      return { ...s };
+      return { ...s }
     }
   }
 
   allSubscriptions() {
-    return [...this.#accounts.values()].flatMap(a => a.subscriptions);
+    return [...this.#accounts.values()].flatMap(a => a.subscriptions)
   }
 
   switchAccount(id: string) {
     if (this.#accounts.has(id)) {
-      this.#activeAccount = id;
-      this.#save();
+      this.#activeAccount = id
+      this.#save()
     }
   }
 
   getPublisher(id: string) {
-    return this.#publishers.get(id);
+    return this.#publishers.get(id)
   }
 
   setPublisher(id: string, pub: EventPublisher) {
-    this.#publishers.set(id, pub);
-    this.notifyChange();
+    this.#publishers.set(id, pub)
+    this.notifyChange()
   }
 
   loginWithPubkey(
@@ -161,9 +168,9 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     stalker?: boolean,
   ) {
     if (this.#accounts.has(key)) {
-      throw new Error("Already logged in with this pubkey");
+      throw new Error("Already logged in with this pubkey")
     }
-    const initRelays = this.decideInitRelays(relays);
+    const initRelays = this.decideInitRelays(relays)
     const newSession = {
       ...LoggedOut,
       id: uuid(),
@@ -187,34 +194,34 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       remoteSignerRelays,
       privateKeyData: privateKey,
       stalker: stalker ?? false,
-    } as LoginSession;
+    } as LoginSession
 
-    MultiAccountStore.enableStandardLists(newSession.state);
-    newSession.state!.on("change", () => this.#save());
-    const pub = createPublisher(newSession);
+    MultiAccountStore.enableStandardLists(newSession.state)
+    newSession.state!.on("change", () => this.#save())
+    const pub = createPublisher(newSession)
     if (pub) {
-      this.#publishers.set(newSession.id, pub);
+      this.#publishers.set(newSession.id, pub)
     }
-    this.#accounts.set(newSession.id, newSession);
-    this.#activeAccount = newSession.id;
-    this.#save();
-    return newSession;
+    this.#accounts.set(newSession.id, newSession)
+    this.#activeAccount = newSession.id
+    this.#save()
+    return newSession
   }
 
   decideInitRelays(relays: Record<string, RelaySettings> | undefined): Record<string, RelaySettings> {
-    if (import.meta.env.VITE_SINGLE_RELAY) return { [import.meta.env.VITE_SINGLE_RELAY]: { read: true, write: true } };
+    if (import.meta.env.VITE_SINGLE_RELAY) return { [import.meta.env.VITE_SINGLE_RELAY]: { read: true, write: true } }
     if (relays && Object.keys(relays).length > 0) {
-      return relays;
+      return relays
     }
-    return CONFIG.defaultRelays;
+    return CONFIG.defaultRelays
   }
 
   loginWithPrivateKey(key: KeyStorage, entropy?: string, relays?: Record<string, RelaySettings>) {
-    const pubKey = getPublicKey(key.value);
+    const pubKey = getPublicKey(key.value)
     if (this.#accounts.has(pubKey)) {
-      throw new Error("Already logged in with this pubkey");
+      throw new Error("Already logged in with this pubkey")
     }
-    const initRelays = this.decideInitRelays(relays);
+    const initRelays = this.decideInitRelays(relays)
     const newSession = {
       ...LoggedOut,
       id: uuid(),
@@ -237,145 +244,145 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         encryptAppdata: true,
         appdataId: "snort",
       }),
-    } as LoginSession;
-    MultiAccountStore.enableStandardLists(newSession.state);
-    newSession.state!.on("change", () => this.#save());
+    } as LoginSession
+    MultiAccountStore.enableStandardLists(newSession.state)
+    newSession.state!.on("change", () => this.#save())
 
     if ("nostr_os" in window && window?.nostr_os) {
-      window?.nostr_os.saveKey(key.value);
-      newSession.type = LoginSessionType.Nip7os;
-      newSession.privateKeyData = undefined;
+      window?.nostr_os.saveKey(key.value)
+      newSession.type = LoginSessionType.Nip7os
+      newSession.privateKeyData = undefined
     }
-    const pub = EventPublisher.privateKey(key.value);
-    this.#publishers.set(newSession.id, pub);
+    const pub = EventPublisher.privateKey(key.value)
+    this.#publishers.set(newSession.id, pub)
 
-    this.#accounts.set(newSession.id, newSession);
-    this.#activeAccount = newSession.id;
-    this.#save();
-    return newSession;
+    this.#accounts.set(newSession.id, newSession)
+    this.#activeAccount = newSession.id
+    this.#save()
+    return newSession
   }
 
   updateSession(s: LoginSession) {
     if (this.#accounts.has(s.id)) {
-      this.#accounts.set(s.id, s);
-      this.#save();
+      this.#accounts.set(s.id, s)
+      this.#save()
     }
   }
 
   removeSession(id: string) {
     if (this.#accounts.delete(id)) {
       if (this.#activeAccount === id) {
-        this.#activeAccount = undefined;
+        this.#activeAccount = undefined
       }
-      this.#save();
+      this.#save()
     }
   }
 
   takeSnapshot(): LoginSession {
-    const s = this.#activeAccount ? this.#accounts.get(this.#activeAccount) : undefined;
-    if (!s) return LoggedOut;
+    const s = this.#activeAccount ? this.#accounts.get(this.#activeAccount) : undefined
+    if (!s) return LoggedOut
 
-    return { ...s };
+    return { ...s }
   }
 
   #migrate() {
-    let didMigrate = false;
+    let didMigrate = false
 
     // delete some old keys
     for (const [, acc] of this.#accounts) {
       if ("appData" in acc) {
-        delete acc["appData"];
-        didMigrate = true;
+        delete acc["appData"]
+        didMigrate = true
       }
       if ("contacts" in acc) {
-        delete acc["contacts"];
-        didMigrate = true;
+        delete acc["contacts"]
+        didMigrate = true
       }
       if ("follows" in acc) {
-        delete acc["follows"];
-        didMigrate = true;
+        delete acc["follows"]
+        didMigrate = true
       }
       if ("relays" in acc) {
-        delete acc["relays"];
-        didMigrate = true;
+        delete acc["relays"]
+        didMigrate = true
       }
       if ("blocked" in acc) {
-        delete acc["blocked"];
-        didMigrate = true;
+        delete acc["blocked"]
+        didMigrate = true
       }
       if ("bookmarked" in acc) {
-        delete acc["bookmarked"];
-        didMigrate = true;
+        delete acc["bookmarked"]
+        didMigrate = true
       }
       if ("muted" in acc) {
-        delete acc["muted"];
-        didMigrate = true;
+        delete acc["muted"]
+        didMigrate = true
       }
       if ("pinned" in acc) {
-        delete acc["pinned"];
-        didMigrate = true;
+        delete acc["pinned"]
+        didMigrate = true
       }
       if ("tags" in acc) {
-        delete acc["tags"];
-        didMigrate = true;
+        delete acc["tags"]
+        didMigrate = true
       }
       if (acc.state && acc.state.appdata) {
         if ("id" in acc.state.appdata) {
-          delete acc.state.appdata["id"];
-          didMigrate = true;
+          delete acc.state.appdata["id"]
+          didMigrate = true
         }
         if ("mutedWords" in acc.state.appdata) {
-          delete acc.state.appdata["mutedWords"];
-          didMigrate = true;
+          delete acc.state.appdata["mutedWords"]
+          didMigrate = true
         }
         if ("showContentWarningPosts" in acc.state.appdata) {
-          delete acc.state.appdata["showContentWarningPosts"];
-          didMigrate = true;
+          delete acc.state.appdata["showContentWarningPosts"]
+          didMigrate = true
         }
 
         if (acc.state.appdata.preferences) {
           if (!("muteWithWoT" in acc.state.appdata.preferences)) {
-            (acc.state.appdata.preferences as UserPreferences)["muteWithWoT"] = true;
-            didMigrate = true;
+            ;(acc.state.appdata.preferences as UserPreferences)["muteWithWoT"] = true
+            didMigrate = true
           }
         }
       }
     }
 
     if (didMigrate) {
-      console.debug("Finished migration in MultiAccountStore");
-      this.#save();
+      console.debug("Finished migration in MultiAccountStore")
+      this.#save()
     }
   }
 
   #save() {
     if (this.#saveDebounce !== undefined) {
-      clearTimeout(this.#saveDebounce);
+      clearTimeout(this.#saveDebounce)
     }
-    this.notifyChange();
+    this.notifyChange()
     this.#saveDebounce = setTimeout(() => {
       if (!this.#activeAccount && this.#accounts.size > 0) {
-        this.#activeAccount = this.#accounts.keys().next().value;
+        this.#activeAccount = this.#accounts.keys().next().value
       }
-      const toSave = [];
+      const toSave = []
       for (const v of this.#accounts.values()) {
         if (v.privateKeyData instanceof KeyStorage) {
           toSave.push({
             ...v,
             state: v.state instanceof UserState ? v.state.serialize() : v.state,
             privateKeyData: v.privateKeyData.toPayload(),
-          });
+          })
         } else {
           toSave.push({
             ...v,
             state: v.state instanceof UserState ? v.state.serialize() : v.state,
-          });
+          })
         }
       }
 
-      console.debug("Trying to save", toSave);
-      window.localStorage.setItem(AccountStoreKey, JSON.stringify(toSave));
-      this.#saveDebounce = undefined;
-    }, 2000);
+      console.debug("Trying to save", toSave)
+      window.localStorage.setItem(AccountStoreKey, JSON.stringify(toSave))
+      this.#saveDebounce = undefined
+    }, 2000)
   }
 }

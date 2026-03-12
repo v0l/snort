@@ -1,4 +1,4 @@
-import EventEmitter from "eventemitter3";
+import EventEmitter from "eventemitter3"
 import {
   EventExt,
   type EventSigner,
@@ -8,9 +8,9 @@ import {
   type NotSignedNostrEvent,
   RequestBuilder,
   type SystemInterface,
-} from "..";
-import { unixNow } from "@snort/shared";
-import debug from "debug";
+} from ".."
+import { unixNow } from "@snort/shared"
+import debug from "debug"
 
 /**
  * Safely sync replacable events to nostr
@@ -22,9 +22,9 @@ import debug from "debug";
  * 30078 (AppData)
  */
 export class SafeSync {
-  #log = debug("SafeSync");
-  #base: NostrEvent | undefined;
-  #didSync = false;
+  #log = debug("SafeSync")
+  #base: NostrEvent | undefined
+  #didSync = false
 
   constructor(readonly link: NostrLink) {}
 
@@ -32,11 +32,11 @@ export class SafeSync {
    * Return a copy of the internal value
    */
   get value() {
-    return this.#base ? { ...this.#base } : undefined;
+    return this.#base ? { ...this.#base } : undefined
   }
 
   get didSync() {
-    return this.#didSync;
+    return this.#didSync
   }
 
   /**
@@ -44,10 +44,10 @@ export class SafeSync {
    */
   async sync(system: SystemInterface) {
     if (this.link.kind === undefined || this.link.author === undefined) {
-      throw new Error("Kind must be set");
+      throw new Error("Kind must be set")
     }
 
-    return await this.#sync(system);
+    return await this.#sync(system)
   }
 
   /**
@@ -55,8 +55,8 @@ export class SafeSync {
    * @param ev
    */
   setBase(ev: NostrEvent) {
-    this.#checkForUpdate(ev, false);
-    this.#base = ev;
+    this.#checkForUpdate(ev, false)
+    this.#base = ev
   }
 
   /**
@@ -72,60 +72,60 @@ export class SafeSync {
     mustExist?: boolean,
   ) {
     if (!this.#didSync) {
-      throw new Error("Cannot update, please call sync() first");
+      throw new Error("Cannot update, please call sync() first")
     }
     if ("sig" in next) {
-      next.id = "";
-      next.sig = "";
+      next.id = ""
+      next.sig = ""
     }
-    const signed = await this.#signEvent(next, signer);
-    this.#checkForUpdate(signed, mustExist ?? true);
+    const signed = await this.#signEvent(next, signer)
+    this.#checkForUpdate(signed, mustExist ?? true)
 
-    await system.BroadcastEvent(signed);
-    this.#base = signed;
+    await system.BroadcastEvent(signed)
+    this.#base = signed
   }
 
   async #signEvent(next: NotSignedNostrEvent, signer: EventSigner) {
-    const toSign = { ...next, id: "", sig: "" } as NostrEvent;
-    toSign.created_at = unixNow();
-    toSign.id = EventExt.createId(toSign);
-    return await signer.sign(toSign);
+    const toSign = { ...next, id: "", sig: "" } as NostrEvent
+    toSign.created_at = unixNow()
+    toSign.id = EventExt.createId(toSign)
+    return await signer.sign(toSign)
   }
 
   async #sync(system: SystemInterface) {
-    const rb = new RequestBuilder("sync");
-    const f = rb.withFilter().link(this.link);
+    const rb = new RequestBuilder("sync")
+    const f = rb.withFilter().link(this.link)
     if (this.#base) {
-      f.since(this.#base.created_at);
+      f.since(this.#base.created_at)
     }
-    const results = await system.Fetch(rb);
-    const res = results.find(a => this.link.matchesEvent(a));
-    this.#log("Got result %O", res);
-    const isUpdate = res !== undefined && res.created_at > (this.#base?.created_at ?? 0);
+    const results = await system.Fetch(rb)
+    const res = results.find(a => this.link.matchesEvent(a))
+    this.#log("Got result %O", res)
+    const isUpdate = res !== undefined && res.created_at > (this.#base?.created_at ?? 0)
     if (isUpdate) {
-      this.#base = res;
+      this.#base = res
     }
-    this.#didSync = true;
-    return isUpdate;
+    this.#didSync = true
+    return isUpdate
   }
 
   #checkForUpdate(ev: NostrEvent, mustExist: boolean) {
     if (!this.#base) {
       if (mustExist) {
-        throw new Error("No previous version detected");
+        throw new Error("No previous version detected")
       } else {
-        return;
+        return
       }
     }
-    const prevTag = ev.tags.find(a => a[0] === "previous");
+    const prevTag = ev.tags.find(a => a[0] === "previous")
     if (prevTag && prevTag[1] !== this.#base.id) {
-      throw new Error("Previous tag does not match our version");
+      throw new Error("Previous tag does not match our version")
     }
     if (EventExt.getType(ev.kind) !== EventType.Replaceable && EventExt.getType(ev.kind) !== EventType.Addressable) {
-      throw new Error("Not a replacable event kind");
+      throw new Error("Not a replacable event kind")
     }
     if (this.#base.created_at >= ev.created_at) {
-      throw new Error("Same version, cannot update");
+      throw new Error("Same version, cannot update")
     }
   }
 }

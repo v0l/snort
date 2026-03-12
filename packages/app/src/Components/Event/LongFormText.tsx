@@ -1,18 +1,18 @@
-import type { TaggedNostrEvent } from '@snort/system'
-import classNames from 'classnames'
-import { useCallback, useMemo, useRef, useState } from 'react'
-import { FormattedMessage, FormattedNumber } from 'react-intl'
+import type { TaggedNostrEvent } from "@snort/system"
+import classNames from "classnames"
+import { useCallback, useMemo, useRef, useState } from "react"
+import { FormattedMessage, FormattedNumber } from "react-intl"
 
-import Text from '@/Components/Text/Text'
-import ProfilePreview from '@/Components/User/ProfilePreview'
-import useImgProxy from '@/Hooks/useImgProxy'
-import { findTag } from '@/Utils'
+import Text from "@/Components/Text/Text"
+import ProfilePreview from "@/Components/User/ProfilePreview"
+import useImgProxy from "@/Hooks/useImgProxy"
+import { findTag } from "@/Utils"
 
-import { Markdown } from './Markdown'
-import { NoteProvider } from './Note/NoteContext'
-import { NoteContextMenu } from './Note/NoteContextMenu'
-import NoteFooter from './Note/NoteFooter/NoteFooter'
-import NoteTime from './Note/NoteTime'
+import { Markdown } from "./Markdown"
+import { NoteProvider } from "./Note/NoteContext"
+import { NoteContextMenu } from "./Note/NoteContextMenu"
+import NoteFooter from "./Note/NoteFooter/NoteFooter"
+import NoteTime from "./Note/NoteTime"
 
 interface LongFormTextProps {
   ev: TaggedNostrEvent
@@ -24,9 +24,9 @@ interface LongFormTextProps {
 const TEXT_TRUNCATE_LENGTH = 400
 
 export function LongFormText(props: LongFormTextProps) {
-  const title = findTag(props.ev, 'title')
-  const summary = findTag(props.ev, 'summary')
-  const image = findTag(props.ev, 'image')
+  const title = findTag(props.ev, "title")
+  const summary = findTag(props.ev, "summary")
+  const image = findTag(props.ev, "image")
   const { proxy } = useImgProxy()
   const [reading, setReading] = useState(false)
   const readingRef = useRef(false)
@@ -70,12 +70,12 @@ export function LongFormText(props: LongFormTextProps) {
     if (ref.current && !readingRef.current) {
       readingRef.current = true
       setReading(true)
-      const paragraphs = ref.current.querySelectorAll('p,h1,h2,h3,h4,h5,h6')
+      const paragraphs = ref.current.querySelectorAll("p,h1,h2,h3,h4,h5,h6")
       for (const p of paragraphs) {
         if (p.textContent) {
-          p.classList.add('reading')
+          p.classList.add("reading")
           await readAsync(p.textContent)
-          p.classList.remove('reading')
+          p.classList.remove("reading")
         }
       }
       readingRef.current = false
@@ -86,8 +86,8 @@ export function LongFormText(props: LongFormTextProps) {
   const stopReading = () => {
     setReading(false)
     if (ref.current) {
-      const paragraphs = ref.current.querySelectorAll('p,h1,h2,h3,h4,h5,h6')
-      paragraphs.forEach(a => a.classList.remove('reading'))
+      const paragraphs = ref.current.querySelectorAll("p,h1,h2,h3,h4,h5,h6")
+      paragraphs.forEach(a => a.classList.remove("reading"))
       window.speechSynthesis.cancel()
     }
   }
@@ -147,8 +147,8 @@ export function LongFormText(props: LongFormTextProps) {
   return (
     <NoteProvider ev={props.ev}>
       <div
-        className={classNames('flex flex-col gap-4 p-4 break-words leading-6', {
-          'cursor-pointer': props.isPreview,
+        className={classNames("flex flex-col gap-4 p-4 break-words leading-6", {
+          "cursor-pointer": props.isPreview,
         })}
         onClick={props.onClick}
       >

@@ -1,22 +1,23 @@
-import { useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import { useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
 
-import CloseButton from "../Button/CloseButton";
-import Modal from "../Modal/Modal";
-import AwardIcon from "./Award";
+import CloseButton from "../Button/CloseButton"
+import Modal from "../Modal/Modal"
+import AwardIcon from "./Award"
 
 export function LeaderBadge() {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
   return (
     <>
       <div
         className="flex gap-1 p-1 pr-2 items-center border border-[#5B2CB3] rounded-full"
         onClick={e => {
-          e.preventDefault();
-          e.stopPropagation();
-          setShowModal(true);
-        }}>
+          e.preventDefault()
+          e.stopPropagation()
+          setShowModal(true)
+        }}
+      >
         <AwardIcon size={16} />
         <div className="text-xs font-medium text-[#AC88FF]">
           <FormattedMessage defaultMessage="Community Leader" />
@@ -42,5 +43,5 @@ export function LeaderBadge() {
         </Modal>
       )}
     </>
-  );
+  )
 }

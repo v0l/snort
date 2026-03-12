@@ -1,14 +1,14 @@
-import { countLeadingZeros, type TaggedNostrEvent } from "@snort/system";
-import { useIntl } from "react-intl";
+import { countLeadingZeros, type TaggedNostrEvent } from "@snort/system"
+import { useIntl } from "react-intl"
 
-import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon";
-import { findTag } from "@/Utils";
+import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon"
+import { findTag } from "@/Utils"
 
 export const PowIcon = ({ ev }: { ev: TaggedNostrEvent }) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage } = useIntl()
 
-  const powValue = findTag(ev, "nonce") ? countLeadingZeros(ev.id) : undefined;
-  if (!powValue) return null;
+  const powValue = findTag(ev, "nonce") ? countLeadingZeros(ev.id) : undefined
+  if (!powValue) return null
 
   return (
     <AsyncFooterIcon
@@ -17,5 +17,5 @@ export const PowIcon = ({ ev }: { ev: TaggedNostrEvent }) => {
       iconName="diamond"
       value={powValue}
     />
-  );
-};
+  )
+}

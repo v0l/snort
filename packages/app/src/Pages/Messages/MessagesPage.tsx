@@ -1,43 +1,43 @@
-import classNames from "classnames";
-import type React from "react";
-import { useMemo } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-import { useNavigate, useParams } from "react-router-dom";
+import classNames from "classnames"
+import type React from "react"
+import { useMemo } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { useNavigate, useParams } from "react-router-dom"
 
-import { type Chat, type ChatType, useChatSystems } from "@/chat";
-import { CollapsedSection } from "@/Components/Collapsed";
-import NoteTime from "@/Components/Event/Note/NoteTime";
-import NoteToSelf from "@/Components/User/NoteToSelf";
-import ProfileImage from "@/Components/User/ProfileImage";
-import useLogin from "@/Hooks/useLogin";
-import usePageDimensions from "@/Hooks/usePageDimensions";
-import useWoT from "@/Hooks/useWoT";
-import { ChatParticipantProfile } from "@/Pages/Messages/ChatParticipant";
-import DmWindow from "@/Pages/Messages/DmWindow";
-import NewChatWindow from "@/Pages/Messages/NewChatWindow";
-import UnreadCount from "@/Pages/Messages/UnreadCount";
+import { type Chat, type ChatType, useChatSystems } from "@/chat"
+import { CollapsedSection } from "@/Components/Collapsed"
+import NoteTime from "@/Components/Event/Note/NoteTime"
+import NoteToSelf from "@/Components/User/NoteToSelf"
+import ProfileImage from "@/Components/User/ProfileImage"
+import useLogin from "@/Hooks/useLogin"
+import usePageDimensions from "@/Hooks/usePageDimensions"
+import useWoT from "@/Hooks/useWoT"
+import { ChatParticipantProfile } from "@/Pages/Messages/ChatParticipant"
+import DmWindow from "@/Pages/Messages/DmWindow"
+import NewChatWindow from "@/Pages/Messages/NewChatWindow"
+import UnreadCount from "@/Pages/Messages/UnreadCount"
 
-const TwoCol = 768;
+const TwoCol = 768
 
 export default function MessagesPage() {
-  const login = useLogin();
-  const { formatMessage } = useIntl();
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const { width: pageWidth } = usePageDimensions();
+  const login = useLogin()
+  const { formatMessage } = useIntl()
+  const navigate = useNavigate()
+  const { id } = useParams()
+  const { width: pageWidth } = usePageDimensions()
 
-  const chats = useChatSystems();
-  const wot = useWoT();
-  const trustedChats = chats.filter(a => wot.followDistance(a.participants[0].id) <= 2);
-  const otherChats = chats.filter(a => wot.followDistance(a.participants[0].id) > 2);
+  const chats = useChatSystems()
+  const wot = useWoT()
+  const trustedChats = chats.filter(a => wot.followDistance(a.participants[0].id) <= 2)
+  const otherChats = chats.filter(a => wot.followDistance(a.participants[0].id) > 2)
 
-  const unreadTrustedCount = useMemo(() => trustedChats.reduce((p, c) => p + c.unread, 0), [trustedChats]);
-  const unreadOtherCount = useMemo(() => otherChats.reduce((p, c) => p + c.unread, 0), [otherChats]);
+  const unreadTrustedCount = useMemo(() => trustedChats.reduce((p, c) => p + c.unread, 0), [trustedChats])
+  const unreadOtherCount = useMemo(() => otherChats.reduce((p, c) => p + c.unread, 0), [otherChats])
 
   function openChat(e: React.MouseEvent<HTMLDivElement>, type: ChatType, id: string) {
-    e.stopPropagation();
-    e.preventDefault();
-    navigate(`/messages/${encodeURIComponent(id)}`);
+    e.stopPropagation()
+    e.preventDefault()
+    navigate(`/messages/${encodeURIComponent(id)}`)
   }
 
   function noteToSelf(chat: Chat) {
@@ -45,12 +45,12 @@ export default function MessagesPage() {
       <div className="flex px-3 py-2" key={chat.id} onClick={e => openChat(e, chat.type, chat.id)}>
         <NoteToSelf className="grow" />
       </div>
-    );
+    )
   }
 
   function conversationIdent(cx: Chat) {
     if (cx.participants.length === 1) {
-      return <ChatParticipantProfile participant={cx.participants[0]} />;
+      return <ChatParticipantProfile participant={cx.participants[0]} />
     } else {
       return (
         <div className="flex items-center grow pfp-overlap">
@@ -59,21 +59,22 @@ export default function MessagesPage() {
           ))}
           {cx.title ?? <FormattedMessage defaultMessage="Group Chat" />}
         </div>
-      );
+      )
     }
   }
 
   function conversation(cx: Chat) {
-    if (!login.publicKey) return null;
-    const participants = cx.participants.map(a => a.id);
-    if (participants.length === 1 && participants[0] === login.publicKey) return noteToSelf(cx);
+    if (!login.publicKey) return null
+    const participants = cx.participants.map(a => a.id)
+    if (participants.length === 1 && participants[0] === login.publicKey) return noteToSelf(cx)
 
-    const isActive = cx.id === id;
+    const isActive = cx.id === id
     return (
       <div
         className={classNames("flex items-center p cursor-pointer justify-between", { active: isActive })}
         key={cx.id}
-        onClick={e => openChat(e, cx.type, cx.id)}>
+        onClick={e => openChat(e, cx.type, cx.id)}
+      >
         {conversationIdent(cx)}
         <div className="whitespace-nowrap">
           <small>
@@ -85,16 +86,16 @@ export default function MessagesPage() {
           {cx.unread > 0 && <UnreadCount unread={cx.unread} />}
         </div>
       </div>
-    );
+    )
   }
 
   function sortMessages(a: Chat, b: Chat) {
-    const aSelf = a.participants.length === 1 && a.participants[0].id === login.publicKey;
-    const bSelf = b.participants.length === 1 && b.participants[0].id === login.publicKey;
+    const aSelf = a.participants.length === 1 && a.participants[0].id === login.publicKey
+    const bSelf = b.participants.length === 1 && b.participants[0].id === login.publicKey
     if (aSelf || bSelf) {
-      return aSelf ? -1 : 1;
+      return aSelf ? -1 : 1
     }
-    return b.lastMessage > a.lastMessage ? 1 : -1;
+    return b.lastMessage > a.lastMessage ? 1 : -1
   }
 
   return (
@@ -107,8 +108,9 @@ export default function MessagesPage() {
               type="button"
               className="text-sm font-semibold"
               onClick={() => {
-                chats.forEach(c => c.markRead());
-              }}>
+                chats.forEach(c => c.markRead())
+              }}
+            >
               <FormattedMessage defaultMessage="Mark all read" />
             </button>
             <NewChatWindow />
@@ -122,7 +124,8 @@ export default function MessagesPage() {
                     <FormattedMessage defaultMessage="Other Chats" />
                     {unreadOtherCount > 0 && <div className="has-unread" />}
                   </div>
-                }>
+                }
+              >
                 {otherChats.map(conversation)}
               </CollapsedSection>
             </>
@@ -131,5 +134,5 @@ export default function MessagesPage() {
       )}
       {id ? <DmWindow id={id} /> : pageWidth >= TwoCol && <div className="flex-1 rt-border"></div>}
     </div>
-  );
+  )
 }

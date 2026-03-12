@@ -1,114 +1,114 @@
-import { NostrLink, tryParseNostrLink } from "@snort/system";
-import { type ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NostrLink, tryParseNostrLink } from "@snort/system"
+import { type ChangeEvent, useEffect, useMemo, useRef, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { useLocation, useNavigate } from "react-router-dom"
 
-import Icon from "@/Components/Icons/Icon";
-import Spinner from "@/Components/Icons/Spinner";
-import ProfileImage from "@/Components/User/ProfileImage";
-import useProfileSearch from "@/Hooks/useProfileSearch";
-import { fetchNip05Pubkey } from "@snort/shared";
+import Icon from "@/Components/Icons/Icon"
+import Spinner from "@/Components/Icons/Spinner"
+import ProfileImage from "@/Components/User/ProfileImage"
+import useProfileSearch from "@/Hooks/useProfileSearch"
+import { fetchNip05Pubkey } from "@snort/shared"
 
-const MAX_RESULTS = 3;
+const MAX_RESULTS = 3
 
 export default function SearchBox() {
-  const { formatMessage } = useIntl();
-  const [search, setSearch] = useState("");
-  const [searching, setSearching] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const { formatMessage } = useIntl()
+  const [search, setSearch] = useState("")
+  const [searching, setSearching] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const [activeIndex, setActiveIndex] = useState<number>(-1);
-  const resultListRef = useRef<HTMLDivElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number>(-1)
+  const resultListRef = useRef<HTMLDivElement | null>(null)
 
-  const searchFn = useProfileSearch();
-  const results = useMemo(() => searchFn(search), [search, searchFn]);
+  const searchFn = useProfileSearch()
+  const results = useMemo(() => searchFn(search), [search, searchFn])
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setSearch("");
+        setSearch("")
       }
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        inputRef.current?.focus();
+        e.preventDefault()
+        inputRef.current?.focus()
       }
-    };
+    }
 
-    document.addEventListener("keydown", handleGlobalKeyDown);
+    document.addEventListener("keydown", handleGlobalKeyDown)
 
     return () => {
-      document.removeEventListener("keydown", handleGlobalKeyDown);
-    };
-  }, []);
+      document.removeEventListener("keydown", handleGlobalKeyDown)
+    }
+  }, [])
 
   useEffect(() => {
     // Close the search on navigation
-    setSearch("");
-    setActiveIndex(-1);
-  }, [location]);
+    setSearch("")
+    setActiveIndex(-1)
+  }, [location])
 
   const executeSearch = async () => {
     try {
-      setSearching(true);
-      const link = tryParseNostrLink(search);
+      setSearching(true)
+      const link = tryParseNostrLink(search)
       if (link) {
-        navigate(`/${link.encode()}`);
-        return;
+        navigate(`/${link.encode()}`)
+        return
       }
       if (search.includes("@")) {
-        const [handle, domain] = search.split("@");
-        const pk = await fetchNip05Pubkey(handle, domain);
+        const [handle, domain] = search.split("@")
+        const pk = await fetchNip05Pubkey(handle, domain)
         if (pk) {
-          navigate(`/${new NostrLink(CONFIG.profileLinkPrefix, pk).encode()}`);
-          return;
+          navigate(`/${new NostrLink(CONFIG.profileLinkPrefix, pk).encode()}`)
+          return
         }
       }
-      navigate(`/search/${encodeURIComponent(search)}`);
+      navigate(`/search/${encodeURIComponent(search)}`)
     } finally {
-      setSearching(false);
+      setSearching(false)
     }
-  };
+  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
+    const val = e.target.value
     if (val.match(/nsec1[a-zA-Z0-9]{20,65}/gi)) {
-      e.preventDefault();
+      e.preventDefault()
     } else if (val.trim().match(/^(npub|note|nevent|nprofile)1[a-zA-Z0-9]{20,200}$/gi)) {
-      navigate(`/${val.trim()}`);
-      e.preventDefault();
+      navigate(`/${val.trim()}`)
+      e.preventDefault()
     } else {
-      setSearch(val);
+      setSearch(val)
     }
-  };
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case "Enter":
         if (activeIndex === 0) {
-          navigate(`/search/${encodeURIComponent(search)}`);
+          navigate(`/search/${encodeURIComponent(search)}`)
         } else if (activeIndex > 0 && results) {
-          const selectedResult = results[activeIndex - 1];
-          navigate(`/${new NostrLink(CONFIG.profileLinkPrefix, selectedResult.pubkey).encode()}`);
-          inputRef.current?.blur();
+          const selectedResult = results[activeIndex - 1]
+          navigate(`/${new NostrLink(CONFIG.profileLinkPrefix, selectedResult.pubkey).encode()}`)
+          inputRef.current?.blur()
         } else {
-          executeSearch();
+          executeSearch()
         }
-        break;
+        break
       case "ArrowDown":
-        e.preventDefault();
-        setActiveIndex(prev => Math.min(prev + 1, Math.min(MAX_RESULTS, results ? results.length : 0)));
-        break;
+        e.preventDefault()
+        setActiveIndex(prev => Math.min(prev + 1, Math.min(MAX_RESULTS, results ? results.length : 0)))
+        break
       case "ArrowUp":
-        e.preventDefault();
-        setActiveIndex(prev => Math.max(prev - 1, 0));
-        break;
+        e.preventDefault()
+        setActiveIndex(prev => Math.max(prev - 1, 0))
+        break
       default:
-        break;
+        break
     }
-  };
+  }
 
   return (
     <div className="flex layer-1 relative">
@@ -131,11 +131,13 @@ export default function SearchBox() {
       {search && !searching && isFocused && (
         <div
           className="absolute top-full mt-2 w-full border bg-white dark:bg-black shadow-lg rounded-lg z-10 overflow-hidden"
-          ref={resultListRef}>
+          ref={resultListRef}
+        >
           <div
             className="cursor-pointer p-2 hover:bg-layer-2"
             onMouseEnter={() => setActiveIndex(0)}
-            onClick={() => navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })}>
+            onClick={() => navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })}
+          >
             <FormattedMessage defaultMessage="Search notes" />: <b>{search}</b>
           </div>
           {results?.slice(0, MAX_RESULTS).map((result, idx) => (
@@ -144,5 +146,5 @@ export default function SearchBox() {
         </div>
       )}
     </div>
-  );
+  )
 }

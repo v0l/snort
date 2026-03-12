@@ -1,34 +1,34 @@
-import { EventKind, NostrLink, type ParsedZap } from "@snort/system";
-import { useMemo } from "react";
-import { FormattedMessage } from "react-intl";
+import { EventKind, NostrLink, type ParsedZap } from "@snort/system"
+import { useMemo } from "react"
+import { FormattedMessage } from "react-intl"
 
-import { Note } from "@/Components/Event/Note/Note";
-import Timeline from "@/Components/Feed/Timeline";
-import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
-import Bookmarks from "@/Components/User/Bookmarks";
-import FollowsList from "@/Components/User/FollowListBase";
-import ProfilePreview from "@/Components/User/ProfilePreview";
-import ZapAmount from "@/Components/zap-amount";
-import useFollowersFeed from "@/Feed/FollowersFeed";
-import useFollowsFeed from "@/Feed/FollowsFeed";
-import useRelaysFeed from "@/Feed/RelaysFeed";
-import type { TimelineSubject } from "@/Feed/TimelineFeed";
-import useZapsFeed from "@/Feed/ZapsFeed";
-import { useBookmarkList, usePinList } from "@/Hooks/useLists";
-import { NostrPrefix } from "@snort/shared";
+import { Note } from "@/Components/Event/Note/Note"
+import Timeline from "@/Components/Feed/Timeline"
+import { RelayFavicon } from "@/Components/Relay/RelaysMetadata"
+import Bookmarks from "@/Components/User/Bookmarks"
+import FollowsList from "@/Components/User/FollowListBase"
+import ProfilePreview from "@/Components/User/ProfilePreview"
+import ZapAmount from "@/Components/zap-amount"
+import useFollowersFeed from "@/Feed/FollowersFeed"
+import useFollowsFeed from "@/Feed/FollowsFeed"
+import useRelaysFeed from "@/Feed/RelaysFeed"
+import type { TimelineSubject } from "@/Feed/TimelineFeed"
+import useZapsFeed from "@/Feed/ZapsFeed"
+import { useBookmarkList, usePinList } from "@/Hooks/useLists"
+import { NostrPrefix } from "@snort/shared"
 
 export function ZapsProfileTab({ id }: { id: string }) {
-  const zaps = useZapsFeed(new NostrLink(NostrPrefix.PublicKey, id));
-  const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
+  const zaps = useZapsFeed(new NostrLink(NostrPrefix.PublicKey, id))
+  const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
   const fromGrouped = zaps.reduce(
     (acc, v) => {
-      if (!v.sender) return acc;
-      acc[v.sender] ??= [];
-      acc[v.sender].push(v);
-      return acc;
+      if (!v.sender) return acc
+      acc[v.sender] ??= []
+      acc[v.sender].push(v)
+      return acc
     },
     {} as Record<string, Array<ParsedZap>>,
-  );
+  )
 
   return (
     <>
@@ -46,12 +46,13 @@ export function ZapsProfileTab({ id }: { id: string }) {
           zaps: a[1],
         }))
         .sort((a, b) => {
-          return b.total > a.total ? 1 : -1;
+          return b.total > a.total ? 1 : -1
         })
         .map(a => (
           <div
             className="px-4 py-1 hover:bg-neutral-800 cursor:pointer rounded-lg flex items-center justify-between"
-            key={a.pubkey}>
+            key={a.pubkey}
+          >
             <ProfilePreview
               pubkey={a.pubkey}
               profileImageProps={{
@@ -68,11 +69,11 @@ export function ZapsProfileTab({ id }: { id: string }) {
           </div>
         ))}
     </>
-  );
+  )
 }
 
 export function FollowersTab({ id }: { id: string }) {
-  const followers = useFollowersFeed(id);
+  const followers = useFollowersFeed(id)
   return (
     <FollowsList
       pubkeys={followers.map(a => a.pubkey)}
@@ -83,11 +84,11 @@ export function FollowersTab({ id }: { id: string }) {
         },
       }}
     />
-  );
+  )
 }
 
 export function FollowsTab({ id }: { id: string }) {
-  const follows = useFollowsFeed(id);
+  const follows = useFollowsFeed(id)
   return (
     <FollowsList
       pubkeys={follows}
@@ -98,11 +99,11 @@ export function FollowsTab({ id }: { id: string }) {
         },
       }}
     />
-  );
+  )
 }
 
 export function RelaysTab({ id }: { id: string }) {
-  const relays = useRelaysFeed(id);
+  const relays = useRelaysFeed(id)
   return (
     <div className="flex flex-col gap-1">
       {relays?.map(({ url, settings }) => {
@@ -115,15 +116,15 @@ export function RelaysTab({ id }: { id: string }) {
               {settings.write && <span>W</span>}
             </div>
           </div>
-        );
+        )
       })}
     </div>
-  );
+  )
 }
 
 export function BookMarksTab({ id }: { id: string }) {
-  const bookmarks = useBookmarkList(id);
-  return <Bookmarks pubkey={id} bookmarks={bookmarks} />;
+  const bookmarks = useBookmarkList(id)
+  return <Bookmarks pubkey={id} bookmarks={bookmarks} />
 }
 
 export function ReactionsTab({ id }: { id: string }) {
@@ -136,15 +137,15 @@ export function ReactionsTab({ id }: { id: string }) {
         kinds: [EventKind.Reaction],
       }) as TimelineSubject,
     [id],
-  );
+  )
   return (
     <Timeline subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} ignoreModeration={true} window={60 * 60 * 6} />
-  );
+  )
 }
 
 export function ProfileNotesTab({ id, relays, isMe }: { id: string; relays?: Array<string>; isMe: boolean }) {
-  const pinned = usePinList(id);
-  const options = useMemo(() => ({ showTime: false, showPinned: true, canUnpin: isMe }), [isMe]);
+  const pinned = usePinList(id)
+  const options = useMemo(() => ({ showTime: false, showPinned: true, canUnpin: isMe }), [isMe])
   const subject = useMemo(
     () =>
       ({
@@ -154,13 +155,13 @@ export function ProfileNotesTab({ id, relays, isMe }: { id: string; relays?: Arr
         relay: relays,
       }) as TimelineSubject,
     [id, relays],
-  );
+  )
   return (
     <>
       {pinned
         .filter(a => a.kind === EventKind.TextNote)
         .map(n => {
-          return <Note key={`pinned-${n.id}`} data={n} options={options} />;
+          return <Note key={`pinned-${n.id}`} data={n} options={options} />
         })}
       <Timeline
         key={id}
@@ -171,5 +172,5 @@ export function ProfileNotesTab({ id, relays, isMe }: { id: string; relays?: Arr
         window={60 * 60 * 6}
       />
     </>
-  );
+  )
 }

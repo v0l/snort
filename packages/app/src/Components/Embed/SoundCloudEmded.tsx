@@ -7,7 +7,7 @@ const SoundCloudEmbed = ({ link }: { link: string }) => {
       src={`https://w.soundcloud.com/player/?url=${link}`}
       loading="lazy"
     />
-  );
-};
+  )
+}
 
-export default SoundCloudEmbed;
+export default SoundCloudEmbed

@@ -8,7 +8,8 @@ export default function AwardIcon({ size }: { size?: number }) {
           y1="3.57143"
           x2="31"
           y2="58.4286"
-          gradientUnits="userSpaceOnUse">
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#5B2CB3" />
           <stop offset="1" stopColor="#811EFF" />
         </linearGradient>
@@ -18,7 +19,8 @@ export default function AwardIcon({ size }: { size?: number }) {
           y1="24.305"
           x2="46.433"
           y2="24.305"
-          gradientUnits="userSpaceOnUse">
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#AC88FF" />
           <stop offset="1" stopColor="#7234FF" />
         </linearGradient>
@@ -50,5 +52,5 @@ export default function AwardIcon({ size }: { size?: number }) {
         />
       </g>
     </svg>
-  );
+  )
 }

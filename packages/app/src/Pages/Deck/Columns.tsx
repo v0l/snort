@@ -1,14 +1,14 @@
-import { NostrLink, type TaggedNostrEvent } from "@snort/system";
-import { useCallback } from "react";
-import { FormattedMessage } from "react-intl";
-import { Outlet } from "react-router-dom";
+import { NostrLink, type TaggedNostrEvent } from "@snort/system"
+import { useCallback } from "react"
+import { FormattedMessage } from "react-intl"
+import { Outlet } from "react-router-dom"
 
-import { RootTabs } from "@/Components/Feed/RootTabs";
-import TimelineFollows from "@/Components/Feed/TimelineFollows";
-import Icon from "@/Components/Icons/Icon";
-import { transformTextCached } from "@/Hooks/useTextTransformCache";
-import Articles from "@/Pages/Deck/Articles";
-import NotificationsPage from "@/Pages/Notifications/Notifications";
+import { RootTabs } from "@/Components/Feed/RootTabs"
+import TimelineFollows from "@/Components/Feed/TimelineFollows"
+import Icon from "@/Components/Icons/Icon"
+import { transformTextCached } from "@/Hooks/useTextTransformCache"
+import Articles from "@/Pages/Deck/Articles"
+import NotificationsPage from "@/Pages/Notifications/Notifications"
 
 export function NotesCol() {
   return (
@@ -26,7 +26,7 @@ export function NotesCol() {
         <Outlet />
       </div>
     </div>
-  );
+  )
 }
 
 export function ArticlesCol() {
@@ -40,16 +40,16 @@ export function ArticlesCol() {
         <Articles />
       </div>
     </div>
-  );
+  )
 }
 
 export function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
   const noteOnClick = useCallback(
     (e: TaggedNostrEvent) => {
-      setThread(NostrLink.fromEvent(e));
+      setThread(NostrLink.fromEvent(e))
     },
     [setThread],
-  );
+  )
 
   return (
     <div>
@@ -60,14 +60,14 @@ export function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
       <TimelineFollows
         postsOnly={true}
         noteFilter={e => {
-          const parsed = transformTextCached(e.id, e.content, e.tags);
-          const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
-          return images.length > 0;
+          const parsed = transformTextCached(e.id, e.content, e.tags)
+          const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"))
+          return images.length > 0
         }}
         noteOnClick={noteOnClick}
       />
     </div>
-  );
+  )
 }
 
 export function NotificationsCol({ setThread }: { setThread: (e: NostrLink) => void }) {
@@ -81,5 +81,5 @@ export function NotificationsCol({ setThread }: { setThread: (e: NostrLink) => v
         <NotificationsPage onClick={setThread} />
       </div>
     </div>
-  );
+  )
 }

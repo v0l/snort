@@ -1,17 +1,17 @@
-import type { UserMetadata } from "@snort/system";
+import type { UserMetadata } from "@snort/system"
 
-import Text from "@/Components/Text/Text";
-import FollowedBy from "@/Components/User/FollowedBy";
+import Text from "@/Components/Text/Text"
+import FollowedBy from "@/Components/User/FollowedBy"
 
-import useLogin from "../../Hooks/useLogin";
-import { UserDebug } from "./Debug";
-import FollowButton from "./FollowButton";
-import ProfileImage from "./ProfileImage";
-import { UserWebsiteLink } from "./UserWebsiteLink";
+import useLogin from "../../Hooks/useLogin"
+import { UserDebug } from "./Debug"
+import FollowButton from "./FollowButton"
+import ProfileImage from "./ProfileImage"
+import { UserWebsiteLink } from "./UserWebsiteLink"
 
 export function ProfileCard({ pubkey, user }: { pubkey: string; user?: UserMetadata }) {
-  const { publicKey: myPublicKey } = useLogin(s => ({ publicKey: s.publicKey }));
-  const debug = Boolean(localStorage.getItem("debug"));
+  const { publicKey: myPublicKey } = useLogin(s => ({ publicKey: s.publicKey }))
+  const debug = Boolean(localStorage.getItem("debug"))
 
   return (
     <div className="w-[360px] layer-2 overflow-hidden">
@@ -50,5 +50,5 @@ export function ProfileCard({ pubkey, user }: { pubkey: string; user?: UserMetad
         {debug && <UserDebug pubkey={pubkey} />}
       </div>
     </div>
-  );
+  )
 }

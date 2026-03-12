@@ -1,4 +1,4 @@
-import { defineMessages } from "react-intl";
+import { defineMessages } from "react-intl"
 
 export default defineMessages({
   Cancel: { defaultMessage: "Cancel", id: "47FYwb" },
@@ -106,4 +106,4 @@ export default defineMessages({
   UserNameLengthError: { defaultMessage: "Name must be less than {limit} characters", id: "u9NoC1" },
   AboutLengthError: { defaultMessage: "About must be less than {limit} characters", id: "DrZqav" },
   InvalidLud16: { defaultMessage: "Invalid Lightning Address", id: "GqQeu/" },
-});
+})

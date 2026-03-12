@@ -1,26 +1,26 @@
-import { EventPublisher, type Nip94Tags, type NostrEvent } from "@snort/system";
+import { EventPublisher, type Nip94Tags, type NostrEvent } from "@snort/system"
 
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { useMediaServerList } from "@/Hooks/useMediaServerList";
-import { randomSample } from "@/Utils";
-import { KieranPubKey } from "@/Utils/Const";
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import { useMediaServerList } from "@/Hooks/useMediaServerList"
+import { randomSample } from "@/Utils"
+import { KieranPubKey } from "@/Utils/Const"
 
-import { Blossom } from "./blossom";
-import { bech32ToHex } from "@snort/shared";
+import { Blossom } from "./blossom"
+import { bech32ToHex } from "@snort/shared"
 
 export interface UploadResult {
-  url?: string;
-  error?: string;
+  url?: string
+  error?: string
 
   /**
    * NIP-94 File Header
    */
-  header?: NostrEvent;
+  header?: NostrEvent
 
   /**
    * Media metadata
    */
-  metadata?: Nip94Tags;
+  metadata?: Nip94Tags
 }
 
 /**
@@ -43,31 +43,31 @@ export const UploaderServices = [
     name: "nostrcheck.me",
     owner: bech32ToHex("npub138s5hey76qrnm2pmv7p8nnffhfddsm8sqzm285dyc0wy4f8a6qkqtzx624"),
   },
-];
+]
 
 export interface Uploader {
-  upload: (f: File | Blob, filename: string) => Promise<UploadResult>;
-  progress: Array<UploadProgress>;
+  upload: (f: File | Blob, filename: string) => Promise<UploadResult>
+  progress: Array<UploadProgress>
 }
 
 export interface UploadProgress {
-  id: string;
-  file: File | Blob;
-  progress: number;
-  stage: UploadStage;
+  id: string
+  file: File | Blob
+  progress: number
+  stage: UploadStage
 }
 
-export type UploadStage = "starting" | "hashing" | "uploading" | "done" | undefined;
+export type UploadStage = "starting" | "hashing" | "uploading" | "done" | undefined
 
 export default function useFileUpload(privKey?: string) {
-  const { publisher } = useEventPublisher();
-  const { servers } = useMediaServerList();
+  const { publisher } = useEventPublisher()
+  const { servers } = useMediaServerList()
 
-  const pub = privKey ? EventPublisher.privateKey(privKey) : publisher;
+  const pub = privKey ? EventPublisher.privateKey(privKey) : publisher
   if (servers.length > 0 && pub) {
-    const random = randomSample(servers, 1)[0];
-    return new Blossom(random, pub);
+    const random = randomSample(servers, 1)[0]
+    return new Blossom(random, pub)
   } else if (pub) {
-    return new Blossom("https://blossom.band", pub);
+    return new Blossom("https://blossom.band", pub)
   }
 }

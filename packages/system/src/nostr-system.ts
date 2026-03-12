@@ -1,10 +1,10 @@
-import debug from "debug";
+import debug from "debug"
 
-import { unixNowMs } from "@snort/shared";
-import type { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr";
-import type { RelaySettings } from "./connection";
-import type { RequestBuilder } from "./request-builder";
-import { TraceTimeline } from "./trace-timeline";
+import { unixNowMs } from "@snort/shared"
+import type { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr"
+import type { RelaySettings } from "./connection"
+import type { RequestBuilder } from "./request-builder"
+import { TraceTimeline } from "./trace-timeline"
 import {
   ProfileLoaderService,
   type SystemInterface,
@@ -13,52 +13,52 @@ import {
   OutboxModel,
   EventKind,
   type SystemConfig,
-} from ".";
-import { RelayMetadataLoader } from "./outbox";
-import { type ConnectionPool, DefaultConnectionPool } from "./connection-pool";
-import { QueryManager } from "./query-manager";
-import type { RequestRouter } from "./request-router";
-import { SystemBase } from "./system-base";
-import { SocialGraph } from "nostr-social-graph";
-import { base64 } from "@scure/base";
+} from "."
+import { RelayMetadataLoader } from "./outbox"
+import { type ConnectionPool, DefaultConnectionPool } from "./connection-pool"
+import { QueryManager } from "./query-manager"
+import type { RequestRouter } from "./request-router"
+import { SystemBase } from "./system-base"
+import { SocialGraph } from "nostr-social-graph"
+import { base64 } from "@scure/base"
 
 /**
  * Manages nostr content retrieval system
  */
 export class NostrSystem extends SystemBase implements SystemInterface {
-  #log = debug("System");
-  #queryManager: QueryManager;
+  #log = debug("System")
+  #queryManager: QueryManager
 
-  readonly profileLoader: ProfileLoaderService;
-  readonly pool: ConnectionPool;
-  readonly relayLoader: RelayMetadataLoader;
-  readonly requestRouter: RequestRouter | undefined;
-  readonly traceTimeline: TraceTimeline;
+  readonly profileLoader: ProfileLoaderService
+  readonly pool: ConnectionPool
+  readonly relayLoader: RelayMetadataLoader
+  readonly requestRouter: RequestRouter | undefined
+  readonly traceTimeline: TraceTimeline
 
   constructor(props: Partial<SystemConfig>) {
-    super(props);
+    super(props)
 
-    this.profileLoader = new ProfileLoaderService(this, this.config.profiles);
-    this.relayLoader = new RelayMetadataLoader(this, this.config.relays);
-    this.traceTimeline = new TraceTimeline();
-    this.pool = new DefaultConnectionPool(this);
+    this.profileLoader = new ProfileLoaderService(this, this.config.profiles)
+    this.relayLoader = new RelayMetadataLoader(this, this.config.relays)
+    this.traceTimeline = new TraceTimeline()
+    this.pool = new DefaultConnectionPool(this)
 
     // if automatic outbox model, setup request router as OutboxModel
     if (this.config.automaticOutboxModel) {
-      this.requestRouter = OutboxModel.fromSystem(this);
+      this.requestRouter = OutboxModel.fromSystem(this)
     }
 
     // Cache everything
     if (this.config.cachingRelay) {
       this.pool.on("event", async (_relay, _sub, ev) => {
-        await this.config.cachingRelay?.event(ev);
-      });
+        await this.config.cachingRelay?.event(ev)
+      })
     }
 
     // Hook on-event when building follow graph
     if (this.config.buildFollowGraph) {
-      let evBuf: Array<TaggedNostrEvent> = [];
-      let t: ReturnType<typeof setTimeout> | undefined;
+      let evBuf: Array<TaggedNostrEvent> = []
+      let t: ReturnType<typeof setTimeout> | undefined
       this.pool.on("event", (_relay, _sub, ev) => {
         if (ev.kind === EventKind.ContactList) {
           // fire&forget update
@@ -67,43 +67,43 @@ export class NostrSystem extends SystemBase implements SystemInterface {
             created: ev.created_at,
             pubkey: ev.pubkey,
             follows: ev.tags,
-          });
+          })
 
           // buffer social graph updates into 500ms window
-          evBuf.push(ev);
+          evBuf.push(ev)
           if (!t) {
             t = setTimeout(() => {
-              this.config.socialGraphInstance.handleEvent(evBuf);
-              evBuf = [];
-            }, 500);
+              this.config.socialGraphInstance.handleEvent(evBuf)
+              evBuf = []
+            }, 500)
           }
         }
-      });
+      })
     }
 
-    this.#queryManager = new QueryManager(this);
+    this.#queryManager = new QueryManager(this)
 
     // hook connection pool
     this.pool.on("connected", (id, _wasReconnect) => {
       // TODO: metrics
-    });
+    })
     this.pool.on("connectFailed", address => {
       // TODO: metrics
-    });
+    })
     this.pool.on("event", (_, _sub, ev) => {
       // TODO: metrics
-    });
+    })
     this.pool.on("disconnect", (id, code) => {
       // TODO: metrics
-    });
-    this.pool.on("auth", (_, c, r, cb) => this.emit("auth", c, r, cb));
+    })
+    this.pool.on("auth", (_, c, r, cb) => this.emit("auth", c, r, cb))
     this.pool.on("notice", (addr, msg) => {
-      this.#log("NOTICE: %s %s", addr, msg);
-    });
-    this.#queryManager.on("change", () => this.emit("change", this.takeSnapshot()));
+      this.#log("NOTICE: %s %s", addr, msg)
+    })
+    this.#queryManager.on("change", () => this.emit("change", this.takeSnapshot()))
     this.#queryManager.on("trace", (event, queryName) => {
-      this.traceTimeline.addTrace(event, queryName);
-    });
+      this.traceTimeline.addTrace(event, queryName)
+    })
   }
 
   async Init(follows?: Array<string>) {
@@ -111,31 +111,31 @@ export class NostrSystem extends SystemBase implements SystemInterface {
       this.config.relays.preload(follows),
       this.profileCache.preload(follows),
       this.userFollowsCache.preload(follows),
-    ];
-    await Promise.all(t);
-    await this.PreloadSocialGraph(follows);
+    ]
+    await Promise.all(t)
+    await this.PreloadSocialGraph(follows)
   }
 
   async PreloadSocialGraph(follows?: Array<string>, root?: string) {
     // Insert data to socialGraph from cache
     if (this.config.buildFollowGraph) {
-      const graphRoot = root ?? "00".repeat(32);
+      const graphRoot = root ?? "00".repeat(32)
       // load saved social graph
       if ("localStorage" in globalThis) {
-        const saved = localStorage.getItem("social-graph");
+        const saved = localStorage.getItem("social-graph")
         if (saved) {
           try {
-            const data = base64.decode(saved);
-            this.config.socialGraphInstance = await SocialGraph.fromBinary(graphRoot, data);
-            this.#log("Loaded social graph snapshot from LocalStorage %d bytes", data.length);
+            const data = base64.decode(saved)
+            this.config.socialGraphInstance = await SocialGraph.fromBinary(graphRoot, data)
+            this.#log("Loaded social graph snapshot from LocalStorage %d bytes", data.length)
           } catch (e) {
-            this.#log("Failed to load serialzied social-graph: %O", e);
-            localStorage.removeItem("social-graph");
+            this.#log("Failed to load serialzied social-graph: %O", e)
+            localStorage.removeItem("social-graph")
           }
         }
       }
-      await this.config.socialGraphInstance.setRoot(graphRoot);
-      const snapshot = this.userFollowsCache.snapshot().filter(a => !follows || follows.includes(a.pubkey));
+      await this.config.socialGraphInstance.setRoot(graphRoot)
+      const snapshot = this.userFollowsCache.snapshot().filter(a => !follows || follows.includes(a.pubkey))
       this.config.socialGraphInstance.handleEvent(
         snapshot.map(a => ({
           id: "",
@@ -146,47 +146,47 @@ export class NostrSystem extends SystemBase implements SystemInterface {
           created_at: a.created,
           tags: a.follows,
         })),
-      );
+      )
     }
   }
 
   async ConnectToRelay(address: string, options: RelaySettings) {
-    await this.pool.connect(address, options, false);
+    await this.pool.connect(address, options, false)
   }
 
   ConnectEphemeralRelay(address: string) {
-    return this.pool.connect(address, { read: true, write: true }, true);
+    return this.pool.connect(address, { read: true, write: true }, true)
   }
 
   DisconnectRelay(address: string) {
-    this.pool.disconnect(address);
+    this.pool.disconnect(address)
   }
 
   GetQuery(id: string): QueryLike | undefined {
-    return this.#queryManager.get(id);
+    return this.#queryManager.get(id)
   }
 
   Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
-    return this.#queryManager.fetch(req, cb);
+    return this.#queryManager.fetch(req, cb)
   }
 
   Query(req: RequestBuilder): QueryLike {
-    return this.#queryManager.query(req);
+    return this.#queryManager.query(req)
   }
 
   HandleEvent(subId: string, ev: TaggedNostrEvent) {
-    this.#queryManager.handleEvent(subId, ev);
-    this.config.cachingRelay?.event(ev);
+    this.#queryManager.handleEvent(subId, ev)
+    this.config.cachingRelay?.event(ev)
   }
 
   async BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]> {
-    this.HandleEvent("*", { ...ev, relays: [] });
-    return await this.pool.broadcast(ev, cb);
+    this.HandleEvent("*", { ...ev, relays: [] })
+    return await this.pool.broadcast(ev, cb)
   }
 
   async WriteOnceToRelay(address: string, ev: NostrEvent): Promise<OkResponse> {
-    this.HandleEvent("*", { ...ev, relays: [address] });
-    return await this.pool.broadcastTo(address, ev);
+    this.HandleEvent("*", { ...ev, relays: [address] })
+    return await this.pool.broadcastTo(address, ev)
   }
 
   takeSnapshot(): SystemSnapshot {
@@ -196,8 +196,8 @@ export class NostrSystem extends SystemBase implements SystemInterface {
           id: a.id,
           filters: a.filters,
           subFilters: [],
-        };
+        }
       }),
-    };
+    }
   }
 }

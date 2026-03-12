@@ -1,60 +1,60 @@
-import useBlossomServers from "@/Hooks/useBlossomServers";
-import { appendDedupe, dedupe, isHex, NostrPrefix, removeUndefined } from "@snort/shared";
-import { type NostrLink, tryParseNostrLink } from "@snort/system";
-import { randomSample } from "@/Utils";
-import RevealMedia from "../Event/RevealMedia";
-import Icon from "../Icons/Icon";
-import { useState } from "react";
-import Modal from "../Modal/Modal";
-import { FormattedMessage } from "react-intl";
-import ProfilePreview from "../User/ProfilePreview";
-import UrlStatusCheck from "./UrlStatusCheck";
+import useBlossomServers from "@/Hooks/useBlossomServers"
+import { appendDedupe, dedupe, isHex, NostrPrefix, removeUndefined } from "@snort/shared"
+import { type NostrLink, tryParseNostrLink } from "@snort/system"
+import { randomSample } from "@/Utils"
+import RevealMedia from "../Event/RevealMedia"
+import Icon from "../Icons/Icon"
+import { useState } from "react"
+import Modal from "../Modal/Modal"
+import { FormattedMessage } from "react-intl"
+import ProfilePreview from "../User/ProfilePreview"
+import UrlStatusCheck from "./UrlStatusCheck"
 
 interface BlossomLink {
-  hash: string;
-  extension: string;
-  authors?: Array<NostrLink>;
-  servers?: Array<string>;
-  size?: number;
+  hash: string
+  extension: string
+  authors?: Array<NostrLink>
+  servers?: Array<string>
+  size?: number
 }
 
 function parseBlossomLink(link: string) {
-  const url = new URL(link);
-  const [hash, extension] = url.pathname.split(".");
+  const url = new URL(link)
+  const [hash, extension] = url.pathname.split(".")
   if (!extension) {
-    throw new Error("Invalid blossom link, no extension set");
+    throw new Error("Invalid blossom link, no extension set")
   }
   if (!isHex(hash) || hash.length !== 64) {
-    throw new Error("Invalid blossom link, hash is not hex or has the wrong size");
+    throw new Error("Invalid blossom link, hash is not hex or has the wrong size")
   }
 
-  const q = new URLSearchParams(url.search);
-  const authors = removeUndefined(q.getAll("as").map(a => tryParseNostrLink(a, NostrPrefix.PublicKey)));
-  const servers = q.getAll("xs").map(a => (a.startsWith("http") ? a : `https://${a}`));
-  const size = Number(q.get("sz"));
+  const q = new URLSearchParams(url.search)
+  const authors = removeUndefined(q.getAll("as").map(a => tryParseNostrLink(a, NostrPrefix.PublicKey)))
+  const servers = q.getAll("xs").map(a => (a.startsWith("http") ? a : `https://${a}`))
+  const size = Number(q.get("sz"))
   return {
     hash,
     extension,
     authors: authors.length > 0 ? authors : undefined,
     servers: servers.length > 0 ? servers : undefined,
     size: isNaN(size) ? undefined : size,
-  } as BlossomLink;
+  } as BlossomLink
 }
 
 export default function BlossomBlob({ creator, link }: { creator: string; link: string }) {
-  const blob = parseBlossomLink(link);
-  const servers = useBlossomServers(blob.authors);
-  const [showModal, setShowModal] = useState(false);
+  const blob = parseBlossomLink(link)
+  const servers = useBlossomServers(blob.authors)
+  const [showModal, setShowModal] = useState(false)
 
   // convert into media element
   // random sample up to maxServers urls
-  const maxServers = 10;
-  const authorUrls = dedupe(Object.values(servers).flat());
-  const explicitUrls = dedupe(blob.servers ?? []);
+  const maxServers = 10
+  const authorUrls = dedupe(Object.values(servers).flat())
+  const explicitUrls = dedupe(blob.servers ?? [])
 
-  const mapBlobUrl = (a: string) => `${a}${a.endsWith("/") ? "" : "/"}${blob.hash}.${blob.extension}`;
-  const allUrls = appendDedupe(authorUrls.map(mapBlobUrl), explicitUrls.map(mapBlobUrl));
-  const urls = randomSample(allUrls, maxServers);
+  const mapBlobUrl = (a: string) => `${a}${a.endsWith("/") ? "" : "/"}${blob.hash}.${blob.extension}`
+  const allUrls = appendDedupe(authorUrls.map(mapBlobUrl), explicitUrls.map(mapBlobUrl))
+  const urls = randomSample(allUrls, maxServers)
   return (
     <div className="relative min-h-12 border">
       <RevealMedia
@@ -182,7 +182,8 @@ export default function BlossomBlob({ creator, link }: { creator: string; link: 
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline break-all">
+                      className="text-blue-500 hover:underline break-all"
+                    >
                       {url}
                     </a>
                   </div>
@@ -193,5 +194,5 @@ export default function BlossomBlob({ creator, link }: { creator: string; link: 
         </Modal>
       )}
     </div>
-  );
+  )
 }

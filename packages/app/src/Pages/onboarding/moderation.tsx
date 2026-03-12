@@ -1,18 +1,18 @@
-import { useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { useNavigate } from "react-router-dom"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import { ToggleSwitch } from "@/Components/Icons/Toggle";
-import useModeration from "@/Hooks/useModeration";
-import { FixedModeration } from "@/Pages/onboarding/fixedModeration";
-import { appendDedupe } from "@/Utils";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import { ToggleSwitch } from "@/Components/Icons/Toggle"
+import useModeration from "@/Hooks/useModeration"
+import { FixedModeration } from "@/Pages/onboarding/fixedModeration"
+import { appendDedupe } from "@/Utils"
 
 export default function Moderation() {
-  const [topics, setTopics] = useState<Array<string>>(Object.keys(FixedModeration));
-  const [extraTerms, setExtraTerms] = useState("");
-  const navigate = useNavigate();
-  const { addMutedWord } = useModeration();
+  const [topics, setTopics] = useState<Array<string>>(Object.keys(FixedModeration))
+  const [extraTerms, setExtraTerms] = useState("")
+  const navigate = useNavigate()
+  const { addMutedWord } = useModeration()
 
   return (
     <div className="flex flex-col gap-6">
@@ -76,14 +76,15 @@ export default function Moderation() {
                 .split(",")
                 .map(a => a.trim())
                 .filter(a => a.length > 1),
-            );
+            )
           if (words.length > 0) {
-            await addMutedWord(words);
+            await addMutedWord(words)
           }
-          navigate("/");
-        }}>
+          navigate("/")
+        }}
+      >
         <FormattedMessage defaultMessage="Finish" />
       </AsyncButton>
     </div>
-  );
+  )
 }

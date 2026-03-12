@@ -2931,8 +2931,7 @@
       "value": "Penulis telah menandai catatan ini sebagai topik sensitif "
     },
     {
-      "children": [
-      ],
+      "children": [],
       "type": 8,
       "value": "i"
     }
@@ -4802,8 +4801,7 @@
       "offset": 0,
       "options": {
         "=0": {
-          "value": [
-          ]
+          "value": []
         },
         "=1": {
           "value": [

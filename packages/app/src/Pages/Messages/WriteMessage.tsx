@@ -1,31 +1,31 @@
-import { useState } from "react";
+import { useState } from "react"
 
-import type { Chat } from "@/chat";
-import { AsyncIcon } from "@/Components/Button/AsyncIcon";
-import Textarea from "@/Components/Textarea/Textarea";
-import useEventPublisher from "@/Hooks/useEventPublisher";
+import type { Chat } from "@/chat"
+import { AsyncIcon } from "@/Components/Button/AsyncIcon"
+import Textarea from "@/Components/Textarea/Textarea"
+import useEventPublisher from "@/Hooks/useEventPublisher"
 
 export default function WriteMessage({ chat }: { chat: Chat }) {
-  const [msg, setMsg] = useState("");
-  const { publisher, system } = useEventPublisher();
+  const [msg, setMsg] = useState("")
+  const { publisher, system } = useEventPublisher()
 
   async function sendMessage() {
     if (msg && publisher && chat) {
-      const ev = await chat.createMessage(msg, publisher);
-      await chat.sendMessage(ev, system);
-      setMsg("");
+      const ev = await chat.createMessage(msg, publisher)
+      await chat.sendMessage(ev, system)
+      setMsg("")
     }
   }
 
   function onChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setMsg(e.target.value);
+    setMsg(e.target.value)
   }
 
   async function onEnter(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    const isEnter = e.code === "Enter";
+    const isEnter = e.code === "Enter"
     if (isEnter && !e.shiftKey) {
-      e.preventDefault();
-      await sendMessage();
+      e.preventDefault()
+      await sendMessage()
     }
   }
 
@@ -49,5 +49,5 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
         onClick={() => sendMessage()}
       />
     </>
-  );
+  )
 }

@@ -1,21 +1,21 @@
-import { LNURL } from '@snort/shared'
-import type { WalletInvoice } from '@snort/wallet'
-import { useState } from 'react'
-import { FormattedMessage, FormattedNumber, useIntl } from 'react-intl'
-import AsyncButton from '@/Components/Button/AsyncButton'
-import Icon from '@/Components/Icons/Icon'
-import { useWallet } from '@/Wallet'
+import { LNURL } from "@snort/shared"
+import type { WalletInvoice } from "@snort/wallet"
+import { useState } from "react"
+import { FormattedMessage, FormattedNumber, useIntl } from "react-intl"
+import AsyncButton from "@/Components/Button/AsyncButton"
+import Icon from "@/Components/Icons/Icon"
+import { useWallet } from "@/Wallet"
 
 export function WalletSendPage() {
   const wallets = useWallet()
   const { formatMessage } = useIntl()
-  const [invoice, setInvoice] = useState('')
-  const [error, setError] = useState('')
+  const [invoice, setInvoice] = useState("")
+  const [error, setError] = useState("")
   const [amount, setAmount] = useState(0)
-  const [comment, setComment] = useState('')
+  const [comment, setComment] = useState("")
   const [result, setResult] = useState<WalletInvoice>()
 
-  const lnurl = !invoice.startsWith('lnbc')
+  const lnurl = !invoice.startsWith("lnbc")
 
   return (
     <div className="px-3 py-2 flex flex-col gap-4">
@@ -34,7 +34,7 @@ export function WalletSendPage() {
       </p>
       <input
         type="text"
-        placeholder={formatMessage({ defaultMessage: 'Invoice / Lightning Address', id: 'EHqHsu' })}
+        placeholder={formatMessage({ defaultMessage: "Invoice / Lightning Address", id: "EHqHsu" })}
         value={invoice}
         onChange={e => setInvoice(e.target.value)}
       />
@@ -42,7 +42,7 @@ export function WalletSendPage() {
         <>
           <input
             type="text"
-            placeholder={formatMessage({ defaultMessage: 'Comment', id: 'LgbKvU' })}
+            placeholder={formatMessage({ defaultMessage: "Comment", id: "LgbKvU" })}
             value={comment}
             onChange={e => setComment(e.target.value)}
           />

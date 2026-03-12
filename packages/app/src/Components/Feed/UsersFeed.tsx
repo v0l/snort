@@ -1,10 +1,10 @@
-import type { TaggedNostrEvent } from "@snort/system";
-import { useCallback, useMemo } from "react";
+import type { TaggedNostrEvent } from "@snort/system"
+import { useCallback, useMemo } from "react"
 
-import PageSpinner from "@/Components/PageSpinner";
-import FollowListBase from "@/Components/User/FollowListBase";
-import useTimelineFeed, { type TimelineFeed } from "@/Feed/TimelineFeed";
-import useModeration from "@/Hooks/useModeration";
+import PageSpinner from "@/Components/PageSpinner"
+import FollowListBase from "@/Components/User/FollowListBase"
+import useTimelineFeed, { type TimelineFeed } from "@/Feed/TimelineFeed"
+import useModeration from "@/Hooks/useModeration"
 
 export default function UsersFeed({ keyword, sortPopular = true }: { keyword: string; sortPopular?: boolean }) {
   const feed: TimelineFeed = useTimelineFeed(
@@ -14,18 +14,18 @@ export default function UsersFeed({ keyword, sortPopular = true }: { keyword: st
       discriminator: keyword,
     },
     { method: "LIMIT_UNTIL" },
-  );
+  )
 
-  const { isEventMuted } = useModeration();
+  const { isEventMuted } = useModeration()
   const filterPosts = useCallback(
     (nts: readonly TaggedNostrEvent[]) => {
-      return nts.filter(a => !isEventMuted(a));
+      return nts.filter(a => !isEventMuted(a))
     },
     [isEventMuted],
-  );
-  const usersFeed = useMemo(() => filterPosts(feed.main ?? []).map(p => p.pubkey), [feed, filterPosts]);
+  )
+  const usersFeed = useMemo(() => filterPosts(feed.main ?? []).map(p => p.pubkey), [feed, filterPosts])
 
-  if (!usersFeed) return <PageSpinner />;
+  if (!usersFeed) return <PageSpinner />
 
   return (
     <FollowListBase
@@ -36,5 +36,5 @@ export default function UsersFeed({ keyword, sortPopular = true }: { keyword: st
         },
       }}
     />
-  );
+  )
 }

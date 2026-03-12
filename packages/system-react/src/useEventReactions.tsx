@@ -1,6 +1,6 @@
-import { useMemo } from "react";
-import { normalizeReaction, Reaction } from "@snort/shared";
-import { EventKind, type NostrLink, parseZap, type TaggedNostrEvent } from "@snort/system";
+import { useMemo } from "react"
+import { normalizeReaction, Reaction } from "@snort/shared"
+import { EventKind, type NostrLink, parseZap, type TaggedNostrEvent } from "@snort/system"
 
 /**
  * Parse reactions to a given event from a set of related events
@@ -13,34 +13,34 @@ export function useEventReactions(link: NostrLink, related: ReadonlyArray<Tagged
     return related.reduce(
       (acc, v) => {
         if (assumeRelated || link.isReplyToThis(v)) {
-          acc[v.kind.toString()] ??= [];
-          acc[v.kind.toString()].push(v);
+          acc[v.kind.toString()] ??= []
+          acc[v.kind.toString()].push(v)
         }
-        return acc;
+        return acc
       },
       {} as Record<string, Array<TaggedNostrEvent>>,
-    );
-  }, [related]);
+    )
+  }, [related])
 
   return useMemo(() => {
-    const deletions = reactionKinds[String(EventKind.Deletion)] ?? [];
-    const reactions = reactionKinds[String(EventKind.Reaction)] ?? [];
-    const reposts = reactionKinds[String(EventKind.Repost)] ?? [];
+    const deletions = reactionKinds[String(EventKind.Deletion)] ?? []
+    const reactions = reactionKinds[String(EventKind.Reaction)] ?? []
+    const reposts = reactionKinds[String(EventKind.Repost)] ?? []
 
     const groupReactions = reactions?.reduce(
       (acc, reaction) => {
-        const kind = normalizeReaction(reaction.content);
-        acc[kind] ??= [];
-        acc[kind].push(reaction);
-        return acc;
+        const kind = normalizeReaction(reaction.content)
+        acc[kind] ??= []
+        acc[kind].push(reaction)
+        return acc
       },
       {} as Record<Reaction, Array<TaggedNostrEvent>>,
-    );
+    )
 
     const zaps = (reactionKinds[String(EventKind.ZapReceipt)] ?? [])
       .map(a => parseZap(a))
       .filter(a => a.valid)
-      .sort((a, b) => b.amount - a.amount);
+      .sort((a, b) => b.amount - a.amount)
 
     return {
       deletions,
@@ -58,6 +58,6 @@ export function useEventReactions(link: NostrLink, related: ReadonlyArray<Tagged
             ![EventKind.Deletion, EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt].includes(Number(k)),
         ),
       ),
-    };
-  }, [reactionKinds]);
+    }
+  }, [reactionKinds])
 }

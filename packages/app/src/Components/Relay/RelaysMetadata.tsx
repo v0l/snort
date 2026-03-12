@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState } from "react"
 
-import Nostrich from "@/assets/img/nostrich.webp";
+import Nostrich from "@/assets/img/nostrich.webp"
 
 export const RelayFavicon = ({ url, size }: { url: string; size?: number }) => {
   const cleanUrl = url
     .replace(/^wss:\/\//, "https://")
     .replace(/^ws:\/\//, "http://")
-    .replace(/\/$/, "");
-  const [faviconUrl, setFaviconUrl] = useState(`${cleanUrl}/favicon.ico`);
+    .replace(/\/$/, "")
+  const [faviconUrl, setFaviconUrl] = useState(`${cleanUrl}/favicon.ico`)
   return (
     <img
       className="rounded-full object-cover"
@@ -17,5 +17,5 @@ export const RelayFavicon = ({ url, size }: { url: string; size?: number }) => {
       width={size ?? 20}
       height={size ?? 20}
     />
-  );
-};
+  )
+}

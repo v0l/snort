@@ -1,8 +1,8 @@
-import type { ReactNode } from "react";
-import { FormattedMessage } from "react-intl";
+import type { ReactNode } from "react"
+import { FormattedMessage } from "react-intl"
 
-import Icon from "@/Components/Icons/Icon";
-import type { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes";
+import Icon from "@/Components/Icons/Icon"
+import type { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes"
 
 export function rootTabItems(base: string, pubKey: string | undefined, tags: Array<string>) {
   const menuItems = [
@@ -106,10 +106,10 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       ),
     },
   ] as Array<{
-    tab: RootTabRoutePath;
-    path: string;
-    show: boolean;
-    element: ReactNode;
-  }>;
-  return menuItems;
+    tab: RootTabRoutePath
+    path: string
+    show: boolean
+    element: ReactNode
+  }>
+  return menuItems
 }

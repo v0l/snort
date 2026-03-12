@@ -65,4 +65,4 @@ enum EventKind {
   HttpAuthentication = 27235, // NIP 98 - HTTP Authentication
 }
 
-export default EventKind;
+export default EventKind

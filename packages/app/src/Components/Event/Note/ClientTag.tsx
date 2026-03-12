@@ -1,15 +1,15 @@
-import Icon from "@/Components/Icons/Icon";
-import { EventKind, type NostrEvent, NostrLink, type TaggedNostrEvent } from "@snort/system";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import Modal from "@/Components/Modal/Modal";
-import { FingerprintEngine, type FingerprintResult } from "./ClientFingerprinting";
+import Icon from "@/Components/Icons/Icon"
+import { EventKind, type NostrEvent, NostrLink, type TaggedNostrEvent } from "@snort/system"
+import { FormattedMessage } from "react-intl"
+import { Link } from "react-router-dom"
+import { useState } from "react"
+import Modal from "@/Components/Modal/Modal"
+import { FingerprintEngine, type FingerprintResult } from "./ClientFingerprinting"
 
 export function ClientTag({ ev }: { ev: TaggedNostrEvent }) {
-  const info = getClientInfo(ev);
+  const info = getClientInfo(ev)
 
-  if (!info) return;
+  if (!info) return
 
   return (
     <>
@@ -17,7 +17,7 @@ export function ClientTag({ ev }: { ev: TaggedNostrEvent }) {
         {info.fingerprintDetails ? <FingerprintClientTag info={info} /> : <ViaTag info={info} />}
       </span>
     </>
-  );
+  )
 }
 
 function ViaTag({ info }: { info: ClientInfo }) {
@@ -29,7 +29,8 @@ function ViaTag({ info }: { info: ClientInfo }) {
         client: (
           <span
             title={info.fingerprintDetails ? `Fingerprinted with score ${info.fingerprintDetails.score}` : undefined}
-            className={info.fingerprintDetails ? "cursor-pointer" : undefined}>
+            className={info.fingerprintDetails ? "cursor-pointer" : undefined}
+          >
             {info.link ? (
               <Link to={`/${info.link.encode()}`} onClick={e => e.stopPropagation()}>
                 {info.name}
@@ -42,22 +43,23 @@ function ViaTag({ info }: { info: ClientInfo }) {
         ),
       }}
     />
-  );
+  )
 }
 
 function FingerprintClientTag({ info }: { info: ClientInfo }) {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
 
-  if (!info.fingerprintDetails) return; //never should hit this
+  if (!info.fingerprintDetails) return //never should hit this
 
   return (
     <>
       <span
         onClick={e => {
-          e.preventDefault();
-          e.stopPropagation();
-          setShowModal(true);
-        }}>
+          e.preventDefault()
+          e.stopPropagation()
+          setShowModal(true)
+        }}
+      >
         <ViaTag info={info} />
       </span>
       {showModal && (
@@ -83,7 +85,8 @@ function FingerprintClientTag({ info }: { info: ClientInfo }) {
                     client.clientName === info.name
                       ? "border-primary bg-primary/5"
                       : "border-neutral-200 dark:border-neutral-700"
-                  }`}>
+                  }`}
+                >
                   <div className="flex justify-between items-center mb-2 font-semibold text-lg">
                     <div>{client.clientName}</div>
                     <div>{client.score}</div>
@@ -96,7 +99,8 @@ function FingerprintClientTag({ info }: { info: ClientInfo }) {
                           key={check.id}
                           className={`text-sm leading-6 flex items-start gap-2 ${
                             check.passed ? "text-green-600 dark:text-green-400" : "text-neutral-400"
-                          }`}>
+                          }`}
+                        >
                           <span className="w-6">{check.passed ? `+${check.weight}` : ""}</span>
                           <span>{check.description}</span>
                         </div>
@@ -108,35 +112,35 @@ function FingerprintClientTag({ info }: { info: ClientInfo }) {
         </Modal>
       )}
     </>
-  );
+  )
 }
 
-const fingerprintEngine = new FingerprintEngine();
+const fingerprintEngine = new FingerprintEngine()
 
 interface ClientInfo {
-  name: string;
-  link?: NostrLink;
-  fingerprintDetails?: FingerprintResult;
+  name: string
+  link?: NostrLink
+  fingerprintDetails?: FingerprintResult
 }
 
 export function getClientInfo(ev: NostrEvent): ClientInfo | undefined {
-  const tag = ev.tags.find(a => a[0] === "client");
+  const tag = ev.tags.find(a => a[0] === "client")
   if (tag) {
-    const link = tag[2] && tag[2].includes(":") ? NostrLink.tryFromTag(["a", tag[2]]) : undefined;
+    const link = tag[2] && tag[2].includes(":") ? NostrLink.tryFromTag(["a", tag[2]]) : undefined
     return {
       name: tag[1],
       link,
-    };
+    }
   }
 
   // try fingerprinting note when no client tag set
   if (!tag && ev.kind === EventKind.TextNote) {
-    const result = fingerprintEngine.fingerprint(ev);
+    const result = fingerprintEngine.fingerprint(ev)
     if (result) {
       return {
         name: result.name,
         fingerprintDetails: result,
-      };
+      }
     }
   }
 }

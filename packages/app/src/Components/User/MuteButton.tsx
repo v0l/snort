@@ -1,15 +1,15 @@
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl"
 
-import useModeration from "@/Hooks/useModeration";
+import useModeration from "@/Hooks/useModeration"
 
-import AsyncButton from "../Button/AsyncButton";
+import AsyncButton from "../Button/AsyncButton"
 
 interface MuteButtonProps {
-  pubkey: string;
+  pubkey: string
 }
 
 const MuteButton = ({ pubkey }: MuteButtonProps) => {
-  const { mute, unmute, isMuted } = useModeration();
+  const { mute, unmute, isMuted } = useModeration()
   return isMuted(pubkey) ? (
     <AsyncButton className="secondary" type="button" onClick={() => unmute(pubkey)}>
       <FormattedMessage defaultMessage="Unmute" />
@@ -18,7 +18,7 @@ const MuteButton = ({ pubkey }: MuteButtonProps) => {
     <AsyncButton type="button" onClick={() => mute(pubkey)}>
       <FormattedMessage defaultMessage="Mute" />
     </AsyncButton>
-  );
-};
+  )
+}
 
-export default MuteButton;
+export default MuteButton

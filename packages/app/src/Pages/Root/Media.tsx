@@ -1,7 +1,7 @@
-import { EventKind } from "@snort/system";
+import { EventKind } from "@snort/system"
 
-import TimelineFollows from "@/Components/Feed/TimelineFollows";
-import { Day } from "@/Utils/Const";
+import TimelineFollows from "@/Components/Feed/TimelineFollows"
+import { Day } from "@/Utils/Const"
 
 export default function MediaPosts() {
   return (
@@ -14,5 +14,5 @@ export default function MediaPosts() {
         windowSize={Day}
       />
     </div>
-  );
+  )
 }

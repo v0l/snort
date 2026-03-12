@@ -1,8 +1,8 @@
-import sqlite3InitModule, { type Database, type SAHPoolUtil, type Sqlite3Static } from '@sqlite.org/sqlite-wasm'
+import sqlite3InitModule, { type Database, type SAHPoolUtil, type Sqlite3Static } from "@sqlite.org/sqlite-wasm"
 // import wasm file directly, this needs to be copied from https://sqlite.org/download.html
-import SqlitePath from '@sqlite.org/sqlite-wasm/sqlite3.wasm?url'
-import { EventEmitter } from 'eventemitter3'
-import { debugLog } from '../debug'
+import SqlitePath from "@sqlite.org/sqlite-wasm/sqlite3.wasm?url"
+import { EventEmitter } from "eventemitter3"
+import { debugLog } from "../debug"
 import {
   type EventMetadata,
   type NostrEvent,
@@ -10,9 +10,9 @@ import {
   type RelayHandlerEvents,
   type ReqFilter,
   unixNowMs,
-} from '../types'
-import { runFixers } from './fixers'
-import migrate from './migrations'
+} from "../types"
+import { runFixers } from "./fixers"
+import migrate from "./migrations"
 
 // Maximum number of event IDs to keep in the in-memory dedup cache.
 // Each entry is a 64-char hex string (~64 bytes); 50k entries ≈ 3 MB.
@@ -22,7 +22,7 @@ const MAX_SEEN_INSERTS = 50_000
 
 export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements RelayHandler {
   #sqlite?: Sqlite3Static
-  #log = (msg: string, ...args: Array<any>) => debugLog('SqliteRelay', msg, ...args)
+  #log = (msg: string, ...args: Array<any>) => debugLog("SqliteRelay", msg, ...args)
   db?: Database
   #pool?: SAHPoolUtil
   #seenInserts = new Set<string>()
@@ -48,7 +48,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     if (this.#sqlite) return
     this.#sqlite = await sqlite3InitModule({
       locateFile: (path, prefix) => {
-        if (path === 'sqlite3.wasm') {
+        if (path === "sqlite3.wasm") {
           return SqlitePath
         }
         return prefix + path
@@ -69,7 +69,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
    * Open the database from its path
    */
   async #open(path: string) {
-    if (!this.#sqlite) throw new Error('Must call init first')
+    if (!this.#sqlite) throw new Error("Must call init first")
     if (this.db) return
 
     this.#pool = await this.#sqlite.installOpfsSAHPoolVfs({})
@@ -102,7 +102,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     if (this.#isDumping || !this.db) return false
     if (this.#insertEvent(this.db, ev)) {
       this.#log(`Inserted: kind=${ev.kind},authors=${ev.pubkey},id=${ev.id}`)
-      this.emit('event', [ev])
+      this.emit("event", [ev])
       return true
     }
     return false
@@ -128,14 +128,14 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     })
     if (eventsInserted.length > 0) {
       this.#log(`Inserted Batch: ${eventsInserted.length}/${evs.length}, ${(unixNowMs() - start).toLocaleString()}ms`)
-      this.emit('event', eventsInserted)
+      this.emit("event", eventsInserted)
     }
     return eventsInserted.length > 0
   }
 
   setEventMetadata(id: string, meta: EventMetadata) {
     if (meta.seen_at) {
-      this.db?.exec('update events set seen_at = ? where id = ?', {
+      this.db?.exec("update events set seen_at = ? where id = ?", {
         bind: [meta.seen_at, id],
       })
     }
@@ -150,7 +150,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     db.exec(`delete from search_content where id in (${this.#repeatParams(ids.length)})`, {
       bind: ids,
     })
-    this.#log('Deleted', ids, deleted)
+    this.#log("Deleted", ids, deleted)
   }
 
   #insertEvent(db: Database, ev: NostrEvent) {
@@ -161,7 +161,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     // handle deletes
     if (ev.kind === 5) {
       // delete using a request filter, take e/a tags for making a filter
-      const eTags = ev.tags.filter(a => a[0] === 'e').map(a => a[1])
+      const eTags = ev.tags.filter(a => a[0] === "e").map(a => a[1])
       const deletedE = this.delete({
         ids: eTags,
         authors: [ev.pubkey],
@@ -169,12 +169,12 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
 
       // a tags are harder to delete, just delete one-by-one to avoid multiple authors/kinds
       let aDeleted = 0
-      const aTags = ev.tags.filter(a => a[0] === 'a').map(a => a[1])
+      const aTags = ev.tags.filter(a => a[0] === "a").map(a => a[1])
       for (const t of aTags) {
-        const aSplit = t.split(':')
+        const aSplit = t.split(":")
         // check if the event author is the author of the a tag
         if (aSplit[1] !== ev.pubkey) {
-          this.#log('Skipping delete request for %s from %s, pubkey doesnt match', t, ev.pubkey)
+          this.#log("Skipping delete request for %s from %s, pubkey doesnt match", t, ev.pubkey)
           continue
         }
         const k = Number(aSplit[0])
@@ -184,7 +184,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
         aDeleted += this.delete({
           authors: [ev.pubkey],
           kinds: [k],
-          '#d': [aSplit[2]],
+          "#d": [aSplit[2]],
         }).length
       }
       return deletedE.length > 0 || aDeleted > 0
@@ -210,14 +210,14 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
 
     // Handle parameterized replaceable events (kinds 30000-39999)
     if (ev.kind >= 30_000 && ev.kind < 40_000) {
-      const dTag = ev.tags.find(a => a[0] === 'd')?.[1] ?? ''
+      const dTag = ev.tags.find(a => a[0] === "d")?.[1] ?? ""
 
       const oldEvents = db.selectValues(
         `SELECT e.id
          FROM events e
          JOIN tags t ON e.id = t.event_id
          WHERE e.kind = ? AND e.pubkey = ? AND t.key = ? AND t.value = ? AND created <= ?`,
-        [ev.kind, ev.pubkey, 'd', dTag, ev.created_at],
+        [ev.kind, ev.pubkey, "d", dTag, ev.created_at],
       ) as Array<string>
 
       if (oldEvents.includes(ev.id)) {
@@ -238,7 +238,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
       `INSERT OR IGNORE INTO events(id, pubkey, created, kind, json, relays) 
        VALUES(?,?,?,?,?,?)`,
       {
-        bind: [ev.id, ev.pubkey, ev.created_at, ev.kind, JSON.stringify(evInsert), (ev.relays ?? []).join(',')],
+        bind: [ev.id, ev.pubkey, ev.created_at, ev.kind, JSON.stringify(evInsert), (ev.relays ?? []).join(",")],
       },
     )
 
@@ -247,10 +247,10 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
       // Insert all tags in a single multi-row INSERT to avoid per-tag SQL roundtrips
       const tagRows = ev.tags.filter(a => a[0].length === 1)
       if (tagRows.length > 0) {
-        const placeholders = tagRows.map(() => '(?, ?, ?)').join(', ')
+        const placeholders = tagRows.map(() => "(?, ?, ?)").join(", ")
         const tagParams: Array<string> = []
         for (const t of tagRows) {
-          tagParams.push(ev.id, t[0], t[1] ?? '')
+          tagParams.push(ev.id, t[0], t[1] ?? "")
         }
         db.exec(`INSERT INTO tags(event_id, key, value) VALUES ${placeholders}`, {
           bind: tagParams,
@@ -270,8 +270,8 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
    * Append relays
    */
   #updateRelays(db: Database, ev: NostrEvent) {
-    const relays = db.selectArrays('select relays from events where id = ?', [ev.id])
-    const oldRelays = new Set((relays?.at(0)?.at(0) as string | null)?.split(',') ?? [])
+    const relays = db.selectArrays("select relays from events where id = ?", [ev.id])
+    const oldRelays = new Set((relays?.at(0)?.at(0) as string | null)?.split(",") ?? [])
     let hasNew = false
     for (const r of ev.relays ?? []) {
       if (!oldRelays.has(r)) {
@@ -280,8 +280,8 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
       }
     }
     if (hasNew) {
-      db.exec('update events set relays = ? where id = ?', {
-        bind: [[...oldRelays].join(','), ev.id],
+      db.exec("update events set relays = ? where id = ?", {
+        bind: [[...oldRelays].join(","), ev.id],
       })
     }
   }
@@ -302,7 +302,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
         const ev = JSON.parse(a[0] as string) as NostrEvent
         return {
           ...ev,
-          relays: (a[1] as string | null)?.split(','),
+          relays: (a[1] as string | null)?.split(","),
         }
       }) ?? []
     const time = unixNowMs() - start
@@ -318,7 +318,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     const [sql, params] = this.#buildQuery(req, true)
     const rows = this.db?.exec(sql, {
       bind: params,
-      returnValue: 'resultRows',
+      returnValue: "resultRows",
     })
     const results = (rows?.at(0)?.at(0) as number | undefined) ?? 0
     const time = unixNowMs() - start
@@ -332,7 +332,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
   delete(req: ReqFilter) {
     this.#log(`Starting delete of ${JSON.stringify(req)}`)
     const start = unixNowMs()
-    const for_delete = this.req('ids-for-delete', { ...req, ids_only: true }) as Array<string>
+    const for_delete = this.req("ids-for-delete", { ...req, ids_only: true }) as Array<string>
 
     const grouped = for_delete.reduce(
       (acc, v, i) => {
@@ -356,8 +356,8 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
    * Get a summary about events table
    */
   summary() {
-    const res = this.db?.exec('select kind, count(*) from events group by kind', {
-      returnValue: 'resultRows',
+    const res = this.db?.exec("select kind, count(*) from events group by kind", {
+      returnValue: "resultRows",
     })
     return Object.fromEntries(res?.map(a => [String(a[0]), a[1] as number]) ?? [])
   }
@@ -369,10 +369,10 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
    */
   async dump() {
     if (this.#isDumping) {
-      this.#log('dump() called while already dumping, skipping')
+      this.#log("dump() called while already dumping, skipping")
       return new Uint8Array()
     }
-    const filePath = String(this.db?.filename ?? '')
+    const filePath = String(this.db?.filename ?? "")
     if (this.db && this.#pool) {
       this.#isDumping = true
       try {
@@ -391,18 +391,18 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     const conditions: Array<string> = []
     const params: Array<any> = []
 
-    let resultType = 'json,relays'
+    let resultType = "json,relays"
     if (count) {
-      resultType = 'count(json)'
+      resultType = "count(json)"
     } else if (req.ids_only === true) {
-      resultType = 'id'
+      resultType = "id"
     }
     let operation = `select ${resultType}`
     if (remove) {
-      operation = 'delete'
+      operation = "delete"
     }
     let sql = `${operation} from events`
-    const orTags = Object.entries(req).filter(([k]) => k.startsWith('#'))
+    const orTags = Object.entries(req).filter(([k]) => k.startsWith("#"))
     let tx = 0
     for (const [key, values] of orTags) {
       const vArray = values as Array<string>
@@ -414,9 +414,9 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
       tx++
     }
     if (req.search) {
-      sql += ' inner join search_content on search_content.id = events.id'
-      conditions.push('search_content match ?')
-      params.push(req.search.replaceAll('.', '+').replaceAll('@', '+'))
+      sql += " inner join search_content on search_content.id = events.id"
+      conditions.push("search_content match ?")
+      params.push(req.search.replaceAll(".", "+").replaceAll("@", "+"))
     }
     if (req.ids) {
       conditions.push(`id in (${this.#repeatParams(req.ids.length)})`)
@@ -431,19 +431,19 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
       params.push(...req.kinds)
     }
     if (req.since) {
-      conditions.push('created >= ?')
+      conditions.push("created >= ?")
       params.push(req.since)
     }
     if (req.until) {
-      conditions.push('created < ?')
+      conditions.push("created < ?")
       params.push(req.until)
     }
     if (conditions.length > 0) {
-      sql += ` where ${conditions.join(' and ')}`
+      sql += ` where ${conditions.join(" and ")}`
     }
     // Always order by created DESC so queries are deterministic and indexes can be used.
     // Append LIMIT only when requested.
-    sql += ' order by created desc'
+    sql += " order by created desc"
     if (req.limit) {
       sql += ` limit ${req.limit}`
     }
@@ -453,13 +453,13 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
   #repeatParams(n: number) {
     const ret: Array<string> = []
     for (let x = 0; x < n; x++) {
-      ret.push('?')
+      ret.push("?")
     }
-    return ret.join(', ')
+    return ret.join(", ")
   }
 
   insertIntoSearchIndex(db: Database, ev: NostrEvent) {
-    let indexContent = ''
+    let indexContent = ""
     let shouldIndex = false
 
     // always index profiles
@@ -481,13 +481,13 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
           profile.website,
           profile.lud16,
           profile.nip05,
-        ].join(' ')
+        ].join(" ")
       }
     }
 
     // Check if this event kind has configured searchable tags
     const searchableTags = this.#searchableTagsByKind.get(ev.kind)
-    let searchableTagContent = ''
+    let searchableTagContent = ""
 
     if (searchableTags) {
       shouldIndex = true
@@ -495,17 +495,17 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
         .filter(tag => tag.length >= 2 && searchableTags.has(tag[0]))
         .map(tag => tag[1])
         .filter(value => value && value.trim().length > 0)
-        .join(' ')
+        .join(" ")
     }
 
     if (shouldIndex) {
       // Always include content + any searchable tag content
       const fullContent = [ev.content, indexContent, searchableTagContent]
         .filter(content => content && content.trim().length > 0)
-        .join(' ')
+        .join(" ")
 
       if (fullContent.trim().length > 0) {
-        db.exec('insert into search_content values(?,?)', {
+        db.exec("insert into search_content values(?,?)", {
           bind: [ev.id, fullContent],
         })
       }

@@ -1,18 +1,18 @@
-import { dedupe } from "@snort/shared";
-import { OutboxModel } from "@snort/system";
-import { SnortContext } from "@snort/system-react";
-import { use, useMemo } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
-import { Link } from "react-router-dom";
+import { dedupe } from "@snort/shared"
+import { OutboxModel } from "@snort/system"
+import { SnortContext } from "@snort/system-react"
+import { use, useMemo } from "react"
+import { FormattedMessage, FormattedNumber } from "react-intl"
+import { Link } from "react-router-dom"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import { CollapsedSection } from "@/Components/Collapsed";
-import { RelayFavicon } from "@/Components/Relay/RelaysMetadata";
-import RelayUptime from "@/Components/Relay/uptime";
-import Uptime from "@/Components/Relay/uptime";
-import { useCloseRelays } from "@/Hooks/useCloseRelays";
-import useLogin from "@/Hooks/useLogin";
-import { getRelayName } from "@/Utils";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import { CollapsedSection } from "@/Components/Collapsed"
+import { RelayFavicon } from "@/Components/Relay/RelaysMetadata"
+import RelayUptime from "@/Components/Relay/uptime"
+import Uptime from "@/Components/Relay/uptime"
+import { useCloseRelays } from "@/Hooks/useCloseRelays"
+import useLogin from "@/Hooks/useLogin"
+import { getRelayName } from "@/Utils"
 
 export function DiscoverRelays() {
   const { follows, relays, state } = useLogin(l => ({
@@ -20,15 +20,15 @@ export function DiscoverRelays() {
     relays: l.state.relays,
     v: l.state.version,
     state: l.state,
-  }));
-  const system = use(SnortContext);
+  }))
+  const system = use(SnortContext)
 
   const topWriteRelays = useMemo(() => {
-    const outbox = OutboxModel.fromSystem(system);
+    const outbox = OutboxModel.fromSystem(system)
     return outbox
       .pickTopRelays(follows ?? [], 1e31, "write")
-      .filter(a => !(relays?.some(b => b.url === a.key) ?? false));
-  }, [follows, relays]);
+      .filter(a => !(relays?.some(b => b.url === a.key) ?? false))
+  }, [follows, relays])
 
   // const metrics = useSyncExternalStore(
   //   c => RelayMetrics.hook(c, "*"),
@@ -55,7 +55,7 @@ export function DiscoverRelays() {
   //   [relays, metrics],
   // );
 
-  const closeRelays = useCloseRelays();
+  const closeRelays = useCloseRelays()
   return (
     <div className="flex flex-col gap-4">
       <CollapsedSection
@@ -63,7 +63,8 @@ export function DiscoverRelays() {
           <div className="text-xl">
             <FormattedMessage defaultMessage="Popular Relays" />
           </div>
-        }>
+        }
+      >
         <small>
           <FormattedMessage defaultMessage="Popular relays used by people you follow." />
         </small>
@@ -104,8 +105,9 @@ export function DiscoverRelays() {
                     <AsyncButton
                       className="!py-1 mb-1"
                       onClick={() => {
-                        state.addRelay(a.relay, { read: true, write: true });
-                      }}>
+                        state.addRelay(a.relay, { read: true, write: true })
+                      }}
+                    >
                       <FormattedMessage defaultMessage="Add" />
                     </AsyncButton>
                   </td>
@@ -167,7 +169,8 @@ export function DiscoverRelays() {
           <div className="text-xl">
             <FormattedMessage defaultMessage="Close Relays" />
           </div>
-        }>
+        }
+      >
         <small>
           <FormattedMessage defaultMessage="Relays close to your geographic location." />
         </small>
@@ -213,8 +216,9 @@ export function DiscoverRelays() {
                     <AsyncButton
                       className="!py-1 mb-1"
                       onClick={async () => {
-                        state.addRelay(a.addr, { read: true, write: true });
-                      }}>
+                        state.addRelay(a.addr, { read: true, write: true })
+                      }}
+                    >
                       <FormattedMessage defaultMessage="Add" />
                     </AsyncButton>
                   </td>
@@ -224,5 +228,5 @@ export function DiscoverRelays() {
         </table>
       </CollapsedSection>
     </div>
-  );
+  )
 }

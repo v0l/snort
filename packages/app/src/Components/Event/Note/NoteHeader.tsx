@@ -1,29 +1,29 @@
-import { EventKind, NostrLink } from "@snort/system";
-import type React from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { EventKind, NostrLink } from "@snort/system"
+import type React from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
-import type { NotePropsOptions } from "@/Components/Event/EventComponent";
-import { NoteContextMenu } from "@/Components/Event/Note/NoteContextMenu";
-import NoteTime from "@/Components/Event/Note/NoteTime";
-import ReplyTag from "@/Components/Event/Note/ReplyTag";
-import Icon from "@/Components/Icons/Icon";
-import messages from "@/Components/messages";
-import ProfileImage from "@/Components/User/ProfileImage";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
-import { useNoteContext } from "./NoteContext";
+import type { NotePropsOptions } from "@/Components/Event/EventComponent"
+import { NoteContextMenu } from "@/Components/Event/Note/NoteContextMenu"
+import NoteTime from "@/Components/Event/Note/NoteTime"
+import ReplyTag from "@/Components/Event/Note/ReplyTag"
+import Icon from "@/Components/Icons/Icon"
+import messages from "@/Components/messages"
+import ProfileImage from "@/Components/User/ProfileImage"
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
+import { useNoteContext } from "./NoteContext"
 
 export default function NoteHeader(props: { options: NotePropsOptions; context?: React.ReactNode }) {
-  const { options } = props;
-  const { formatMessage } = useIntl();
-  const { publisher } = useEventPublisher();
-  const { ev } = useNoteContext();
-  const login = useLogin();
+  const { options } = props
+  const { formatMessage } = useIntl()
+  const { publisher } = useEventPublisher()
+  const { ev } = useNoteContext()
+  const login = useLogin()
 
   async function unpin() {
     if (options.canUnpin && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnpin))) {
-        login.state.removeFromList(EventKind.PinList, NostrLink.fromEvent(ev));
+        login.state.removeFromList(EventKind.PinList, NostrLink.fromEvent(ev))
       }
     }
   }
@@ -31,7 +31,7 @@ export default function NoteHeader(props: { options: NotePropsOptions; context?:
   async function unbookmark() {
     if (options.canUnbookmark && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnbookmark))) {
-        login.state.removeFromList(EventKind.BookmarksList, NostrLink.fromEvent(ev));
+        login.state.removeFromList(EventKind.BookmarksList, NostrLink.fromEvent(ev))
       }
     }
   }
@@ -66,5 +66,5 @@ export default function NoteHeader(props: { options: NotePropsOptions; context?:
         {options.showContextMenu && <NoteContextMenu />}
       </div>
     </div>
-  );
+  )
 }

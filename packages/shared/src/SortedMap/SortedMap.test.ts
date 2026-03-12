@@ -1,81 +1,81 @@
-import { describe, expect, test } from "bun:test";
-import { SortedMap } from "./SortedMap.js";
+import { describe, expect, test } from "bun:test"
+import { SortedMap } from "./SortedMap.js"
 
 function runTestsForMap(MapConstructor: any, mapName: string) {
   describe(mapName, () => {
     test("should maintain order based on keys when no custom comparator is provided", () => {
-      const map = new MapConstructor();
-      map.set(5, "five");
-      map.set(3, "three");
-      map.set(8, "eight");
+      const map = new MapConstructor()
+      map.set(5, "five")
+      map.set(3, "three")
+      map.set(8, "eight")
 
-      const first = map.first();
-      const last = map.last();
+      const first = map.first()
+      const last = map.last()
 
-      expect(first).toEqual([3, "three"]);
-      expect(last).toEqual([8, "eight"]);
-    });
+      expect(first).toEqual([3, "three"])
+      expect(last).toEqual([8, "eight"])
+    })
 
     test("should maintain order based on custom comparator", () => {
-      const comparator = (a: [string, number], b: [string, number]) => a[1] - b[1];
-      const map = new MapConstructor(undefined, comparator);
+      const comparator = (a: [string, number], b: [string, number]) => a[1] - b[1]
+      const map = new MapConstructor(undefined, comparator)
 
-      map.set("a", 5);
-      map.set("b", 3);
-      map.set("c", 8);
+      map.set("a", 5)
+      map.set("b", 3)
+      map.set("c", 8)
 
-      const first = map.first();
-      const last = map.last();
+      const first = map.first()
+      const last = map.last()
 
-      expect(first).toEqual(["b", 3]);
-      expect(last).toEqual(["c", 8]);
-    });
+      expect(first).toEqual(["b", 3])
+      expect(last).toEqual(["c", 8])
+    })
 
     test("should get correct value by key", () => {
-      const map = new MapConstructor();
-      map.set(5, "five");
+      const map = new MapConstructor()
+      map.set(5, "five")
 
-      const value = map.get(5);
+      const value = map.get(5)
 
-      expect(value).toBe("five");
-    });
+      expect(value).toBe("five")
+    })
 
     test("should delete entry by key", () => {
-      const map = new MapConstructor();
-      map.set(5, "five");
-      expect(map.has(5)).toBe(true);
+      const map = new MapConstructor()
+      map.set(5, "five")
+      expect(map.has(5)).toBe(true)
 
-      map.delete(5);
-      expect(map.has(5)).toBe(false);
-    });
+      map.delete(5)
+      expect(map.has(5)).toBe(false)
+    })
 
     test("should iterate in order", () => {
-      const map = new MapConstructor();
-      map.set(5, "five");
-      map.set(3, "three");
-      map.set(8, "eight");
+      const map = new MapConstructor()
+      map.set(5, "five")
+      map.set(3, "three")
+      map.set(8, "eight")
 
-      const entries: [number, string][] = [];
+      const entries: [number, string][] = []
       for (const entry of map.entries()) {
-        entries.push(entry);
+        entries.push(entry)
       }
 
       expect(entries).toEqual([
         [3, "three"],
         [5, "five"],
         [8, "eight"],
-      ]);
-    });
+      ])
+    })
 
     test("should give correct size", () => {
-      const map = new MapConstructor();
-      map.set(5, "five");
-      map.set(3, "three");
+      const map = new MapConstructor()
+      map.set(5, "five")
+      map.set(3, "three")
 
-      expect(map.size).toBe(2);
-    });
-  });
+      expect(map.size).toBe(2)
+    })
+  })
 }
 
 // Run the tests for SortedMap.
-runTestsForMap(SortedMap, "SortedMap");
+runTestsForMap(SortedMap, "SortedMap")

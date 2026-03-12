@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { useState } from "react"
+import { FormattedMessage } from "react-intl"
 
-import AsyncButton from "@/Components/Button/AsyncButton";
-import useModeration from "@/Hooks/useModeration";
-import { useAllPreferences } from "@/Hooks/usePreferences";
+import AsyncButton from "@/Components/Button/AsyncButton"
+import useModeration from "@/Hooks/useModeration"
+import { useAllPreferences } from "@/Hooks/usePreferences"
 
 export default function ModerationSettingsPage() {
-  const { addMutedWord, removeMutedWord, getMutedWords } = useModeration();
-  const preferences = useAllPreferences();
-  const [muteWord, setMuteWord] = useState("");
+  const { addMutedWord, removeMutedWord, getMutedWords } = useModeration()
+  const preferences = useAllPreferences()
+  const [muteWord, setMuteWord] = useState("")
 
   return (
     <>
@@ -50,9 +50,10 @@ export default function ModerationSettingsPage() {
           />
           <AsyncButton
             onClick={async () => {
-              await addMutedWord(muteWord);
-              setMuteWord("");
-            }}>
+              await addMutedWord(muteWord)
+              setMuteWord("")
+            }}
+          >
             <FormattedMessage defaultMessage="Add" />
           </AsyncButton>
         </div>
@@ -66,5 +67,5 @@ export default function ModerationSettingsPage() {
         ))}
       </div>
     </>
-  );
+  )
 }

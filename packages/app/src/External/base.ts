@@ -1,8 +1,8 @@
-import { throwIfOffline, unwrap } from "@snort/shared";
-import { EventBuilder, EventKind, type EventSigner } from "@snort/system";
+import { throwIfOffline, unwrap } from "@snort/shared"
+import { EventBuilder, EventKind, type EventSigner } from "@snort/system"
 
 export abstract class JsonApi {
-  abstract url: string;
+  abstract url: string
   protected async getJsonAuthd<T>(
     path: string,
     signer: EventSigner,
@@ -14,12 +14,12 @@ export abstract class JsonApi {
       .kind(EventKind.HttpAuthentication)
       .tag(["url", `${this.url}${path}`])
       .tag(["method", method ?? "GET"])
-      .buildAndSign(signer);
+      .buildAndSign(signer)
 
     return this.getJson<T>(path, method, body, {
       ...headers,
       authorization: `Nostr ${window.btoa(JSON.stringify(auth))}`,
-    });
+    })
   }
 
   protected async getJson<T>(
@@ -28,7 +28,7 @@ export abstract class JsonApi {
     body?: object,
     headers?: { [key: string]: string },
   ): Promise<T> {
-    throwIfOffline();
+    throwIfOffline()
     const rsp = await fetch(`${this.url}${path}`, {
       method: method,
       body: body ? JSON.stringify(body) : undefined,
@@ -37,21 +37,21 @@ export abstract class JsonApi {
         ...(body ? { "content-type": "application/json" } : {}),
         ...headers,
       },
-    });
+    })
 
     if (rsp.ok) {
-      const text = (await rsp.text()) as string | null;
+      const text = (await rsp.text()) as string | null
       if ((text?.length ?? 0) > 0) {
-        const obj = JSON.parse(unwrap(text));
+        const obj = JSON.parse(unwrap(text))
         if ("error" in obj) {
-          throw new Error(obj.error, obj.code);
+          throw new Error(obj.error, obj.code)
         }
-        return obj as T;
+        return obj as T
       } else {
-        return {} as T;
+        return {} as T
       }
     } else {
-      throw new Error("Invalid response");
+      throw new Error("Invalid response")
     }
   }
 }

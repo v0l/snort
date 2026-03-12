@@ -1,30 +1,30 @@
-import { unwrap } from "@snort/shared";
-import { EventPublisher, InvalidPinError, PinEncrypted } from "@snort/system";
-import { type ReactNode, useRef, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { unwrap } from "@snort/shared"
+import { EventPublisher, InvalidPinError, PinEncrypted } from "@snort/system"
+import { type ReactNode, useRef, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
-import usePreferences from "@/Hooks/usePreferences";
-import { createPublisher, LoginStore, sessionNeedsPin } from "@/Utils/Login";
-import { GetPowWorker } from "@/Utils/wasm";
+import useEventPublisher from "@/Hooks/useEventPublisher"
+import useLogin from "@/Hooks/useLogin"
+import usePreferences from "@/Hooks/usePreferences"
+import { createPublisher, LoginStore, sessionNeedsPin } from "@/Utils/Login"
+import { GetPowWorker } from "@/Utils/wasm"
 
-import AsyncButton from "../Button/AsyncButton";
-import Modal from "../Modal/Modal";
+import AsyncButton from "../Button/AsyncButton"
+import Modal from "../Modal/Modal"
 
 export function PinPrompt({
   onResult,
   onCancel,
   subTitle,
 }: {
-  onResult: (v: string) => Promise<void>;
-  onCancel: () => void;
-  subTitle?: ReactNode;
+  onResult: (v: string) => Promise<void>
+  onCancel: () => void
+  subTitle?: ReactNode
 }) {
-  const [pin, setPin] = useState("");
-  const [error, setError] = useState("");
-  const { formatMessage } = useIntl();
-  const submitButtonRef = useRef<HTMLButtonElement>(null);
+  const [pin, setPin] = useState("")
+  const [error, setError] = useState("")
+  const { formatMessage } = useIntl()
+  const submitButtonRef = useRef<HTMLButtonElement>(null)
 
   async function submitPin() {
     if (pin.length < 4) {
@@ -33,27 +33,27 @@ export function PinPrompt({
           defaultMessage: "Pin too short",
           id: "LR1XjT",
         }),
-      );
-      return;
+      )
+      return
     }
-    setError("");
+    setError("")
 
     try {
-      await onResult(pin);
+      await onResult(pin)
     } catch (e) {
-      console.error(e);
+      console.error(e)
       if (e instanceof InvalidPinError) {
         setError(
           formatMessage({
             defaultMessage: "Incorrect pin",
             id: "qz9fty",
           }),
-        );
+        )
       } else if (e instanceof Error) {
-        setError(e.message);
+        setError(e.message)
       }
     } finally {
-      setPin("");
+      setPin("")
     }
   }
 
@@ -61,11 +61,12 @@ export function PinPrompt({
     <Modal id="pin" onClose={() => onCancel()}>
       <form
         onSubmit={e => {
-          e.preventDefault();
+          e.preventDefault()
           if (submitButtonRef.current) {
-            submitButtonRef.current.click();
+            submitButtonRef.current.click()
           }
-        }}>
+        }}
+      >
         <div className="flex flex-col gap-3">
           <h2>
             <FormattedMessage defaultMessage="Enter Pin" />
@@ -92,45 +93,45 @@ export function PinPrompt({
         </div>
       </form>
     </Modal>
-  );
+  )
 }
 
 export function LoginUnlock() {
-  const login = useLogin();
-  const pow = usePreferences(s => s.pow);
-  const { publisher } = useEventPublisher();
+  const login = useLogin()
+  const pow = usePreferences(s => s.pow)
+  const { publisher } = useEventPublisher()
 
   async function encryptMigration(pin: string) {
-    const k = unwrap(login.privateKey);
-    const newPin = await PinEncrypted.create(k, pin);
+    const k = unwrap(login.privateKey)
+    const newPin = await PinEncrypted.create(k, pin)
 
-    const pub = EventPublisher.privateKey(k);
+    const pub = EventPublisher.privateKey(k)
     if (pow) {
-      pub.pow(pow, GetPowWorker());
+      pub.pow(pow, GetPowWorker())
     }
-    LoginStore.setPublisher(login.id, pub);
+    LoginStore.setPublisher(login.id, pub)
     LoginStore.updateSession({
       ...login,
       readonly: false,
       privateKeyData: newPin,
       privateKey: undefined,
-    });
+    })
   }
 
   async function unlockSession(pin: string) {
-    const key = unwrap(login.privateKeyData);
-    await key.unlock(pin);
-    const pub = createPublisher(login);
+    const key = unwrap(login.privateKeyData)
+    await key.unlock(pin)
+    const pub = createPublisher(login)
     if (pub) {
       if (pow) {
-        pub.pow(pow, GetPowWorker());
+        pub.pow(pow, GetPowWorker())
       }
-      LoginStore.setPublisher(login.id, pub);
+      LoginStore.setPublisher(login.id, pub)
       LoginStore.updateSession({
         ...login,
         readonly: false,
         privateKeyData: key,
-      });
+      })
     }
   }
 
@@ -138,7 +139,7 @@ export function LoginUnlock() {
     LoginStore.updateSession({
       ...login,
       readonly: true,
-    });
+    })
   }
 
   if (login.publicKey && !publisher && sessionNeedsPin(login) && !login.readonly) {
@@ -161,7 +162,7 @@ export function LoginUnlock() {
             // nothing
           }}
         />
-      );
+      )
     }
     return (
       <PinPrompt
@@ -172,9 +173,9 @@ export function LoginUnlock() {
         }
         onResult={unlockSession}
         onCancel={() => {
-          makeSessionReadonly();
+          makeSessionReadonly()
         }}
       />
-    );
+    )
   }
 }

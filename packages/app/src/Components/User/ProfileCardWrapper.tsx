@@ -1,13 +1,13 @@
-import type { UserMetadata } from "@snort/system";
-import type { ReactNode } from "react";
-import * as HoverCard from "@radix-ui/react-hover-card";
+import type { UserMetadata } from "@snort/system"
+import type { ReactNode } from "react"
+import * as HoverCard from "@radix-ui/react-hover-card"
 
-import { ProfileCard } from "./ProfileCard";
+import { ProfileCard } from "./ProfileCard"
 
 interface ProfileCardWrapperProps {
-  pubkey: string;
-  user?: UserMetadata;
-  children: ReactNode;
+  pubkey: string
+  user?: UserMetadata
+  children: ReactNode
 }
 
 export function ProfileCardWrapper({ pubkey, user, children }: ProfileCardWrapperProps) {
@@ -20,5 +20,5 @@ export function ProfileCardWrapper({ pubkey, user, children }: ProfileCardWrappe
         </HoverCard.Content>
       </HoverCard.Portal>
     </HoverCard.Root>
-  );
+  )
 }

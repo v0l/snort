@@ -1,8 +1,8 @@
-import { YoutubeUrlRegex } from "@/Utils/Const";
+import { YoutubeUrlRegex } from "@/Utils/Const"
 
 export default function YoutubeEmbed({ link }: { link: string }) {
-  const m = link.match(YoutubeUrlRegex);
-  if (!m) return;
+  const m = link.match(YoutubeUrlRegex)
+  if (!m) return
 
   return (
     <iframe
@@ -13,5 +13,5 @@ export default function YoutubeEmbed({ link }: { link: string }) {
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowFullScreen={true}
     />
-  );
+  )
 }

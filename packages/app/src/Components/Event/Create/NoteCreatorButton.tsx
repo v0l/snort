@@ -1,15 +1,15 @@
-import classNames from "classnames";
-import { useMemo, useRef } from "react";
-import { FormattedMessage } from "react-intl";
-import { useLocation } from "react-router-dom";
+import classNames from "classnames"
+import { useMemo, useRef } from "react"
+import { FormattedMessage } from "react-intl"
+import { useLocation } from "react-router-dom"
 
-import Icon from "@/Components/Icons/Icon";
-import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
-import useLogin from "@/Hooks/useLogin";
-import { useNoteCreator } from "@/State/NoteCreator";
-import { isFormElement } from "@/Utils";
+import Icon from "@/Components/Icons/Icon"
+import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut"
+import useLogin from "@/Hooks/useLogin"
+import { useNoteCreator } from "@/State/NoteCreator"
+import { isFormElement } from "@/Utils"
 
-import { NoteCreator } from "./NoteCreator";
+import { NoteCreator } from "./NoteCreator"
 
 export const NoteCreatorButton = ({
   className,
@@ -17,31 +17,31 @@ export const NoteCreatorButton = ({
   showText,
   withModal,
 }: {
-  className?: string;
-  alwaysShow?: boolean;
-  showText?: boolean;
-  withModal: boolean;
+  className?: string
+  alwaysShow?: boolean
+  showText?: boolean
+  withModal: boolean
 }) => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const location = useLocation();
-  const { readonly } = useLogin(s => ({ readonly: s.readonly }));
-  const { show, replyTo, update } = useNoteCreator(v => ({ show: v.show, replyTo: v.replyTo, update: v.update }));
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const location = useLocation()
+  const { readonly } = useLogin(s => ({ readonly: s.readonly }))
+  const { show, replyTo, update } = useNoteCreator(v => ({ show: v.show, replyTo: v.replyTo, update: v.update }))
 
   useKeyboardShortcut("n", event => {
     // if event happened in a form element, do nothing, otherwise focus on search input
     if (event.target && !isFormElement(event.target as HTMLElement)) {
-      event.preventDefault();
+      event.preventDefault()
       if (buttonRef.current) {
-        buttonRef.current.click();
+        buttonRef.current.click()
       }
     }
-  });
+  })
 
   const shouldHideNoteCreator = useMemo(() => {
     if (alwaysShow) {
-      return false;
+      return false
     }
-    const isReply = replyTo && show;
+    const isReply = replyTo && show
     const hideOn = [
       "/settings",
       "/messages",
@@ -53,9 +53,9 @@ export const NoteCreatorButton = ({
       "/note1",
       "/naddr",
       "/subscribe",
-    ];
-    return (readonly || hideOn.some(a => location.pathname.startsWith(a))) && !isReply;
-  }, [location, readonly]);
+    ]
+    return (readonly || hideOn.some(a => location.pathname.startsWith(a))) && !isReply
+  }, [location, readonly])
 
   return (
     <>
@@ -69,10 +69,11 @@ export const NoteCreatorButton = ({
           )}
           onClick={() =>
             update(v => {
-              v.replyTo = undefined;
-              v.show = true;
+              v.replyTo = undefined
+              v.show = true
             })
-          }>
+          }
+        >
           <Icon name="plus" size={16} />
           {showText && (
             <span className="ml-2 hidden xl:inline">
@@ -83,5 +84,5 @@ export const NoteCreatorButton = ({
       )}
       {withModal && <NoteCreator key="global-note-creator" />}
     </>
-  );
-};
+  )
+}

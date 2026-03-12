@@ -1,2 +1,2 @@
-export * from "./NostrBand";
-export * from "./NostrServices";
+export * from "./NostrBand"
+export * from "./NostrServices"

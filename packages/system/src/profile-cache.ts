@@ -1,14 +1,14 @@
-import { unixNowMs } from '@snort/shared'
-import { EventKind, RequestBuilder, type TaggedNostrEvent } from '.'
-import { BackgroundLoader } from './background-loader'
-import { type CachedMetadata, mapEventToProfile } from './cache'
-import { ProfileCacheExpire } from './const'
+import { unixNowMs } from "@snort/shared"
+import { EventKind, RequestBuilder, type TaggedNostrEvent } from "."
+import { BackgroundLoader } from "./background-loader"
+import { type CachedMetadata, mapEventToProfile } from "./cache"
+import { ProfileCacheExpire } from "./const"
 
-export type { ProfilePriority } from './background-loader'
+export type { ProfilePriority } from "./background-loader"
 
 export class ProfileLoaderService extends BackgroundLoader<CachedMetadata> {
   override name(): string {
-    return 'ProfileLoaderService'
+    return "ProfileLoaderService"
   }
 
   override onEvent(e: Readonly<TaggedNostrEvent>): CachedMetadata | undefined {
