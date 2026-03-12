@@ -1,204 +1,187 @@
 /// <reference lib="webworker" />
 
-import { SqliteRelay } from "./sqlite/sqlite-relay";
-import { InMemoryRelay } from "./memory-relay";
-import { setLogging } from "./debug";
-import {
-  type NostrEvent,
-  type RelayHandler,
-  type ReqCommand,
-  type ReqFilter,
-  type WorkerMessage,
-  unixNowMs,
-  type EventMetadata,
-  type OkResponse,
-} from "./types";
-import { getForYouFeed } from "./forYouFeed";
+import { setLogging } from './debug'
+import { getForYouFeed } from './forYouFeed'
+import { InMemoryRelay } from './memory-relay'
+import { SqliteRelay } from './sqlite/sqlite-relay'
+import type { EventMetadata, NostrEvent, OkResponse, RelayHandler, ReqCommand, ReqFilter, WorkerMessage } from './types'
 
-let relay: RelayHandler | undefined;
-let insertBatchSize = 10;
+let relay: RelayHandler | undefined
 
-// Event inserter queue
-let eventWriteQueue: Array<NostrEvent> = [];
-async function insertBatch() {
-  // Only insert event batches when the command queue is empty
-  // This is to make req's execute first and not block them
-  if (eventWriteQueue.length > 0) {
-    const start = unixNowMs();
-    const timeLimit = 1000;
-    if (relay) {
-      while (eventWriteQueue.length > 0) {
-        if (unixNowMs() - start >= timeLimit) {
-          //console.debug("Yield insert, queue length: ", eventWriteQueue.length, ", cmds: ", cmdQueue.length);
-          break;
-        }
-        const batch = eventWriteQueue.splice(0, insertBatchSize);
-        eventWriteQueue = eventWriteQueue.slice(batch.length);
-        relay.eventBatch(batch);
-      }
-    }
+// Microtask-coalesced event batch.
+// Events received within the same message-loop tick are accumulated here and
+// flushed together in a single DB transaction via queueMicrotask, so we get
+// the same batching benefit as the old setTimeout queue without the 100ms
+// artificial delay or the false-ok responses.
+type PendingEvent = { ev: NostrEvent; resolve: (ok: OkResponse) => void }
+const pendingEvents: Array<PendingEvent> = []
+let flushScheduled = false
+
+function flushPendingEvents() {
+  flushScheduled = false
+  if (!relay || pendingEvents.length === 0) return
+  const batch = pendingEvents.splice(0)
+  const evs = batch.map(p => p.ev)
+  relay.eventBatch(evs)
+  for (const { ev, resolve } of batch) {
+    resolve({ ok: true, id: ev.id, relay: '', event: ev })
   }
-  setTimeout(() => insertBatch(), 100);
-}
-
-try {
-  setTimeout(() => insertBatch(), 100);
-} catch (e) {
-  console.error(e);
 }
 
 interface InitAargs {
-  databasePath: string;
-  insertBatchSize?: number;
+  databasePath: string
 }
 
 const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: MessageEvent) => {
   async function reply<T>(id: string, obj?: T) {
     port.postMessage({
       id,
-      cmd: "reply",
+      cmd: 'reply',
       args: obj,
-    } as WorkerMessage<T>);
+    } as WorkerMessage<T>)
   }
 
-  const msg = ev.data as WorkerMessage<any>;
+  const msg = ev.data as WorkerMessage<any>
   try {
     switch (msg.cmd) {
-      case "debug": {
-        setLogging(true);
-        reply(msg.id, true);
-        break;
+      case 'debug': {
+        setLogging(true)
+        reply(msg.id, true)
+        break
       }
-      case "init": {
-        const args = msg.args as InitAargs;
-        insertBatchSize = args.insertBatchSize ?? 10;
+      case 'init': {
+        const args = msg.args as InitAargs
         try {
-          if ("WebAssembly" in self) {
-            relay = new SqliteRelay();
+          if ('WebAssembly' in self) {
+            relay = new SqliteRelay()
           } else {
-            relay = new InMemoryRelay();
+            relay = new InMemoryRelay()
           }
-          await relay.init(args.databasePath);
+          await relay.init(args.databasePath)
         } catch (e) {
-          console.error("Fallback to InMemoryRelay", e);
-          relay = new InMemoryRelay();
-          await relay.init(args.databasePath);
+          console.error('Fallback to InMemoryRelay', e)
+          relay = new InMemoryRelay()
+          await relay.init(args.databasePath)
         }
-        reply(msg.id, true);
-        break;
+        reply(msg.id, true)
+        break
       }
-      case "event": {
-        const ev = msg.args as NostrEvent;
-        eventWriteQueue.push(ev);
-        reply(msg.id, {
-          ok: true,
-          id: ev.id,
-          relay: "",
-        } as OkResponse);
-        break;
+      case 'event': {
+        const ev = msg.args as NostrEvent
+        // Accumulate into the current tick's batch; the microtask will flush
+        // them all in one DB transaction once the current message handler returns.
+        const ok = await new Promise<OkResponse>(resolve => {
+          pendingEvents.push({ ev, resolve })
+          if (!flushScheduled) {
+            flushScheduled = true
+            queueMicrotask(flushPendingEvents)
+          }
+        })
+        reply(msg.id, ok)
+        break
       }
-      case "close": {
-        const res = relay!.close();
-        reply(msg.id, res);
-        break;
+      case 'close': {
+        const res = relay?.close()
+        reply(msg.id, res)
+        break
       }
-      case "req": {
-        const req = msg.args as ReqCommand;
-        const filters = req.slice(2) as Array<ReqFilter>;
-        const results: Array<string | NostrEvent> = [];
-        const ids = new Set<string>();
+      case 'req': {
+        const req = msg.args as ReqCommand
+        const filters = req.slice(2) as Array<ReqFilter>
+        const results: Array<string | NostrEvent> = []
+        const ids = new Set<string>()
         for (const r of filters) {
-          const rx = relay!.req(req[1], r);
+          const rx = relay?.req(req[1], r) ?? []
           for (const x of rx) {
-            if ((typeof x === "string" && ids.has(x)) || ids.has((x as NostrEvent).id)) {
-              continue;
+            if ((typeof x === 'string' && ids.has(x)) || ids.has((x as NostrEvent).id)) {
+              continue
             }
-            ids.add(typeof x === "string" ? x : (x as NostrEvent).id);
-            results.push(x);
+            ids.add(typeof x === 'string' ? x : (x as NostrEvent).id)
+            results.push(x)
           }
         }
-        reply(msg.id, results);
-        break;
+        reply(msg.id, results)
+        break
       }
-      case "count": {
-        const req = msg.args as ReqCommand;
-        let results = 0;
-        const filters = req.slice(2) as Array<ReqFilter>;
+      case 'count': {
+        const req = msg.args as ReqCommand
+        let results = 0
+        const filters = req.slice(2) as Array<ReqFilter>
         for (const r of filters) {
-          const c = relay!.count(r);
-          results += c;
+          const c = relay?.count(r) ?? 0
+          results += c
         }
-        reply(msg.id, results);
-        break;
+        reply(msg.id, results)
+        break
       }
-      case "delete": {
-        const req = msg.args as ReqCommand;
-        const results = [];
-        const filters = req.slice(2) as Array<ReqFilter>;
+      case 'delete': {
+        const req = msg.args as ReqCommand
+        const results = []
+        const filters = req.slice(2) as Array<ReqFilter>
         for (const r of filters) {
-          const c = relay!.delete(r);
-          results.push(...c);
+          const c = relay?.delete(r) ?? []
+          results.push(...c)
         }
-        reply(msg.id, results);
-        break;
+        reply(msg.id, results)
+        break
       }
-      case "summary": {
-        const res = relay!.summary();
-        reply(msg.id, res);
-        break;
+      case 'summary': {
+        const res = relay?.summary()
+        reply(msg.id, res)
+        break
       }
-      case "dumpDb": {
-        const res = await relay!.dump();
-        reply(msg.id, res);
-        break;
+      case 'dumpDb': {
+        const res = await relay?.dump()
+        reply(msg.id, res)
+        break
       }
-      case "wipe": {
-        await relay!.wipe();
-        reply(msg.id, true);
-        break;
+      case 'wipe': {
+        await relay?.wipe()
+        reply(msg.id, true)
+        break
       }
-      case "forYouFeed": {
-        const res = await getForYouFeed(relay!, msg.args as string);
-        reply(msg.id, res);
-        break;
+      case 'forYouFeed': {
+        const res = await getForYouFeed(relay!, msg.args as string)
+        reply(msg.id, res)
+        break
       }
-      case "setEventMetadata": {
-        const [id, metadata] = msg.args as [string, EventMetadata];
-        relay!.setEventMetadata(id, metadata);
-        reply(msg.id, true);
-        break;
+      case 'setEventMetadata': {
+        const [id, metadata] = msg.args as [string, EventMetadata]
+        relay?.setEventMetadata(id, metadata)
+        reply(msg.id, true)
+        break
       }
-      case "configureSearchIndex": {
-        const kindTagsMapping = msg.args as Record<number, string[]>;
-        relay!.configureSearchIndex(kindTagsMapping);
-        reply(msg.id, true);
-        break;
+      case 'configureSearchIndex': {
+        const kindTagsMapping = msg.args as Record<number, string[]>
+        relay?.configureSearchIndex(kindTagsMapping)
+        reply(msg.id, true)
+        break
       }
       default: {
-        reply(msg.id, { error: "Unknown command" });
-        break;
+        reply(msg.id, { error: 'Unknown command' })
+        break
       }
     }
   } catch (e) {
     if (e instanceof Error) {
-      reply(msg.id, { error: e.message });
-    } else if (typeof e === "string") {
-      reply(msg.id, { error: e });
+      reply(msg.id, { error: e.message })
+    } else if (typeof e === 'string') {
+      reply(msg.id, { error: e })
     } else {
-      reply(msg.id, "Unknown error");
+      reply(msg.id, 'Unknown error')
     }
   }
-};
-
-if ("SharedWorkerGlobalScope" in globalThis) {
-  onconnect = e => {
-    const port = e.ports[0];
-    port.onmessage = msg => handleMsg(port, msg);
-    port.start();
-  };
 }
-if ("DedicatedWorkerGlobalScope" in globalThis) {
+
+if ('SharedWorkerGlobalScope' in globalThis) {
+  onconnect = e => {
+    const port = e.ports[0]
+    port.onmessage = msg => handleMsg(port, msg)
+    port.start()
+  }
+}
+if ('DedicatedWorkerGlobalScope' in globalThis) {
   onmessage = e => {
-    handleMsg(self as DedicatedWorkerGlobalScope, e);
-  };
+    handleMsg(self as DedicatedWorkerGlobalScope, e)
+  }
 }
