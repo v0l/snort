@@ -28,6 +28,20 @@ function flushPendingEvents() {
   }
 }
 
+// Microtask-coalesced seen_at batch.
+// setSeenAt messages are fire-and-forget: no reply is sent, and all IDs that
+// arrive in the same tick are flushed as a single UPDATE in one DB roundtrip.
+const pendingSeenAt: Array<string> = []
+let seenAtFlushScheduled = false
+
+function flushPendingSeenAt() {
+  seenAtFlushScheduled = false
+  if (!relay || pendingSeenAt.length === 0) return
+  const ids = pendingSeenAt.splice(0)
+  const seen_at = Math.round(Date.now() / 1000)
+  relay.batchSetSeenAt(ids, seen_at)
+}
+
 interface InitAargs {
   databasePath: string
 }
@@ -145,7 +159,18 @@ const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: Mes
         reply(msg.id, res)
         break
       }
+      case "setSeenAt": {
+        // Fire-and-forget: no reply. Accumulate IDs and flush as one UPDATE per tick.
+        const id = msg.args as string
+        pendingSeenAt.push(id)
+        if (!seenAtFlushScheduled) {
+          seenAtFlushScheduled = true
+          queueMicrotask(flushPendingSeenAt)
+        }
+        break
+      }
       case "setEventMetadata": {
+        // Legacy path kept for backward compat; new callers should use setSeenAt.
         const [id, metadata] = msg.args as [string, EventMetadata]
         relay?.setEventMetadata(id, metadata)
         reply(msg.id, true)

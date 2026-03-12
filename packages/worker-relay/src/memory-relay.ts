@@ -1,13 +1,13 @@
 import { EventEmitter } from "eventemitter3"
+import { debugLog } from "./debug"
 import {
+  type EventMetadata,
+  eventMatchesFilter,
   type NostrEvent,
   type RelayHandler,
   type RelayHandlerEvents,
   type ReqFilter,
-  eventMatchesFilter,
-  type EventMetadata,
 } from "./types"
-import { debugLog } from "./debug"
 
 /**
  * A very simple dumb fallback relay using a flat table
@@ -101,6 +101,10 @@ export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements R
   }
 
   setEventMetadata(_id: string, _meta: EventMetadata) {
+    return
+  }
+
+  batchSetSeenAt(_ids: Array<string>, _seen_at: number) {
     return
   }
 

@@ -12,6 +12,7 @@ export type WorkerMessageCommand =
   | "emit-event"
   | "forYouFeed"
   | "setEventMetadata"
+  | "setSeenAt"
   | "debug"
   | "delete"
   | "wipe"
@@ -75,6 +76,7 @@ export interface RelayHandler extends EventEmitter<RelayHandlerEvents> {
   dump(): Promise<Uint8Array>
   delete(req: ReqFilter): Array<string>
   setEventMetadata(id: string, meta: EventMetadata): void
+  batchSetSeenAt(ids: Array<string>, seen_at: number): void
   wipe(): Promise<void>
   configureSearchIndex(kindTagsMapping: Record<number, string[]>): void
 }

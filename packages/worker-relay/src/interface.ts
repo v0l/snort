@@ -83,8 +83,10 @@ export class WorkerRelayInterface {
     return await this.#workerRpc<string, Array<NostrEvent>>("forYouFeed", pubkey)
   }
 
-  setEventMetadata(id: string, meta: EventMetadata) {
-    return this.#workerRpc<[string, EventMetadata], void>("setEventMetadata", [id, meta])
+  setEventMetadata(id: string, _meta: EventMetadata) {
+    // Fire-and-forget: post directly without UUID/promise/reply to avoid the
+    // per-note RPC round-trip cost. The worker batches these via microtask.
+    this.#worker.postMessage({ id: "", cmd: "setSeenAt", args: id } as WorkerMessage<string>)
   }
 
   async debug(v: string) {

@@ -1,10 +1,10 @@
 import { schnorr } from "@noble/curves/secp256k1.js"
+import { hexToBytes } from "@noble/hashes/utils.js"
+import { EventExt } from "../event-ext"
 import type { NostrEvent, ReqFilter } from "../nostr"
 import { expandFilter } from "./request-expander"
 import { flatMerge, mergeSimilar } from "./request-merger"
 import { diffFilters } from "./request-splitter"
-import { EventExt } from "../event-ext"
-import { hexToBytes } from "@noble/hashes/utils.js"
 
 export interface FlatReqFilter {
   keys: number
@@ -51,7 +51,11 @@ export const DefaultOptimizer = {
     return mergeSimilar(all)
   },
   schnorrVerify: ev => {
+    // Fast path: already verified (e.g. came through EventExt.verify earlier)
+    if (EventExt.isVerified(ev)) return true
     const id = EventExt.createId(ev)
-    return schnorr.verify(hexToBytes(ev.sig), hexToBytes(id), hexToBytes(ev.pubkey))
+    const ok = schnorr.verify(hexToBytes(ev.sig), hexToBytes(id), hexToBytes(ev.pubkey))
+    if (ok) EventExt.markVerified(ev)
+    return ok
   },
 } as Optimizer

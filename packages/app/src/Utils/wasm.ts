@@ -1,4 +1,5 @@
 import {
+  EventExt,
   type FlatReqFilter,
   type NostrEvent,
   type Optimizer,
@@ -12,12 +13,12 @@ import { unwrap } from "@/Utils/index"
 
 import {
   compress,
-  default as wasmInit,
   expand_filter,
   flat_merge,
   get_diff,
   pow,
   schnorr_verify_event,
+  default as wasmInit,
 } from "../../../system-wasm/pkg/system_wasm"
 import WasmPath from "../../../system-wasm/pkg/system_wasm_bg.wasm"
 
@@ -35,7 +36,11 @@ export const WasmOptimizer = {
     return compress(all) as Array<ReqFilter>
   },
   schnorrVerify: ev => {
-    return schnorr_verify_event(ev)
+    // Fast path: already verified (e.g. by a prior call in the same pipeline)
+    if (EventExt.isVerified(ev)) return true
+    const ok = schnorr_verify_event(ev) as boolean
+    if (ok) EventExt.markVerified(ev)
+    return ok
   },
 } as Optimizer
 

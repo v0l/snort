@@ -141,6 +141,17 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     }
   }
 
+  /**
+   * Set seen_at for a batch of events in a single UPDATE statement.
+   * All ids receive the same seen_at timestamp.
+   */
+  batchSetSeenAt(ids: Array<string>, seen_at: number) {
+    if (ids.length === 0 || !this.db) return
+    this.db.exec(`update events set seen_at = ? where id in (${this.#repeatParams(ids.length)})`, {
+      bind: [seen_at, ...ids],
+    })
+  }
+
   #deleteById(db: Database, ids: Array<string>) {
     if (ids.length === 0) return
     db.exec(`delete from events where id in (${this.#repeatParams(ids.length)})`, {

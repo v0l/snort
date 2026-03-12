@@ -31,6 +31,14 @@ const ThreadCache = new LRUCache<string, Thread | undefined>({
 })
 
 /**
+ * Set of events whose Schnorr signature has already been verified successfully.
+ * Using WeakSet so GC can reclaim events once they are no longer referenced elsewhere.
+ * This prevents double-verification when the same event passes through multiple
+ * pipeline stages (e.g. Connection.#onMessage → ConnectionPool "unverifiedEvent" handler).
+ */
+const VerifiedEvents = new WeakSet<NostrEvent>()
+
+/**
  * Helper class for parsing event data
  */
 export abstract class EventExt {
@@ -77,6 +85,9 @@ export abstract class EventExt {
    * @returns True only if the event is cryptographically authentic.
    */
   static verify(e: NostrEvent) {
+    // Fast path: already verified in this session
+    if (VerifiedEvents.has(e)) return true
+
     // Schnorr sig = 64 bytes = 128 hex chars; pubkey = 32 bytes = 64 hex chars
     if (!e.sig || e.sig.length !== 128 || !/^[0-9a-f]+$/i.test(e.sig)) return false
     if (!e.pubkey || e.pubkey.length !== 64 || !/^[0-9a-f]+$/i.test(e.pubkey)) return false
@@ -86,10 +97,29 @@ export abstract class EventExt {
     if (e.id !== id) return false
 
     try {
-      return schnorr.verify(hexToBytes(e.sig), hexToBytes(id), hexToBytes(e.pubkey))
+      const ok = schnorr.verify(hexToBytes(e.sig), hexToBytes(id), hexToBytes(e.pubkey))
+      if (ok) VerifiedEvents.add(e)
+      return ok
     } catch {
       return false
     }
+  }
+
+  /**
+   * Returns true if this event object has already been verified in the current session.
+   * Cheaper than re-running the full Schnorr check.
+   */
+  static isVerified(e: NostrEvent) {
+    return VerifiedEvents.has(e)
+  }
+
+  /**
+   * Mark an event as verified. Call this after an external verifier (e.g. WASM)
+   * has confirmed the signature so that subsequent EventExt.verify() calls skip
+   * the JS Schnorr check.
+   */
+  static markVerified(e: NostrEvent) {
+    VerifiedEvents.add(e)
   }
 
   static createId(e: NostrEvent | NotSignedNostrEvent) {

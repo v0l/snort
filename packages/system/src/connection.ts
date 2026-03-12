@@ -217,8 +217,8 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
             relays: [this.address],
           } as TaggedNostrEvent
 
-          if (!EventExt.isValid(ev)) {
-            this.#log("Rejecting invalid event %O", ev)
+          if (!EventExt.isWellFormed(ev)) {
+            this.#log("Rejecting malformed event %O", ev)
             return
           }
           this.emit("unverifiedEvent", msg[1] as string, ev)
