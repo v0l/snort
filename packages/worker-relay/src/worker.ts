@@ -8,29 +8,26 @@ import type { EventMetadata, NostrEvent, OkResponse, RelayHandler, ReqCommand, R
 
 let relay: RelayHandler | undefined
 
-// Microtask-coalesced event batch.
-// Events received within the same message-loop tick are accumulated here and
-// flushed together in a single DB transaction via queueMicrotask, so we get
-// the same batching benefit as the old setTimeout queue without the 100ms
-// artificial delay or the false-ok responses.
-type PendingEvent = { ev: NostrEvent; resolve: (ok: OkResponse) => void }
-const pendingEvents: Array<PendingEvent> = []
+// Timer-windowed event batch.
+// Events are accumulated for up to BATCH_WINDOW_MS before being flushed
+// together in a single DB transaction, reducing the number of SQLite writes
+// when many events arrive in quick succession (e.g. initial relay sync).
+// Callers receive an optimistic ok reply immediately; the actual write is
+// fire-and-forget from the caller's perspective.
+const BATCH_WINDOW_MS = 50
+const pendingEvents: Array<NostrEvent> = []
 let flushScheduled = false
 
 function flushPendingEvents() {
   flushScheduled = false
   if (!relay || pendingEvents.length === 0) return
-  const batch = pendingEvents.splice(0)
-  const evs = batch.map(p => p.ev)
+  const evs = pendingEvents.splice(0)
   relay.eventBatch(evs)
-  for (const { ev, resolve } of batch) {
-    resolve({ ok: true, id: ev.id, relay: "", event: ev })
-  }
 }
 
-// Microtask-coalesced seen_at batch.
+// Timer-windowed seen_at batch.
 // setSeenAt messages are fire-and-forget: no reply is sent, and all IDs that
-// arrive in the same tick are flushed as a single UPDATE in one DB roundtrip.
+// arrive within BATCH_WINDOW_MS are flushed as a single UPDATE in one DB roundtrip.
 const pendingSeenAt: Array<string> = []
 let seenAtFlushScheduled = false
 
@@ -82,16 +79,15 @@ const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: Mes
       }
       case "event": {
         const ev = msg.args as NostrEvent
-        // Accumulate into the current tick's batch; the microtask will flush
-        // them all in one DB transaction once the current message handler returns.
-        const ok = await new Promise<OkResponse>(resolve => {
-          pendingEvents.push({ ev, resolve })
-          if (!flushScheduled) {
-            flushScheduled = true
-            queueMicrotask(flushPendingEvents)
-          }
-        })
-        reply(msg.id, ok)
+        // Reply immediately (optimistic ok) so the caller is not blocked waiting
+        // for the DB flush. Events are accumulated and written in a single
+        // SQLite transaction once the BATCH_WINDOW_MS timer fires.
+        pendingEvents.push(ev)
+        if (!flushScheduled) {
+          flushScheduled = true
+          setTimeout(flushPendingEvents, BATCH_WINDOW_MS)
+        }
+        reply(msg.id, { ok: true, id: ev.id, relay: "", event: ev } as OkResponse)
         break
       }
       case "close": {
@@ -165,7 +161,7 @@ const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: Mes
         pendingSeenAt.push(id)
         if (!seenAtFlushScheduled) {
           seenAtFlushScheduled = true
-          queueMicrotask(flushPendingSeenAt)
+          setTimeout(flushPendingSeenAt, BATCH_WINDOW_MS)
         }
         break
       }
