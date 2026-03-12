@@ -1,16 +1,18 @@
+use std::collections::HashSet;
+
 use crate::FlatReqFilter;
-use itertools::Itertools;
 
-pub fn diff_filter(prev: &Vec<FlatReqFilter>, next: &Vec<FlatReqFilter>) -> Vec<FlatReqFilter> {
-    let mut added: Vec<FlatReqFilter> = vec![];
-
-    for n in next.iter() {
-        if !prev.iter().contains(&n) {
-            added.push(n.clone())
-        }
-    }
-
-    added
+/// Return the filters in `next` that are not present in `prev`.
+///
+/// Previously used `itertools::Itertools::contains` which is O(n*m). Building
+/// a `HashSet` from `prev` reduces this to O(n + m) — critical when both slices
+/// can be very large (e.g. 50 pubkeys × 5 kinds = 250 entries each side).
+pub fn diff_filter(prev: &[FlatReqFilter], next: &[FlatReqFilter]) -> Vec<FlatReqFilter> {
+    let prev_set: HashSet<&FlatReqFilter> = prev.iter().collect();
+    next.iter()
+        .filter(|n| !prev_set.contains(n))
+        .cloned()
+        .collect()
 }
 
 #[cfg(test)]

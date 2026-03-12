@@ -182,13 +182,40 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
         const c = await this.#connectionBuilder(addr, options, ephemeral)
         this.#sockets.set(addr, c)
 
-        // This is where we do check sigs
-        c.on("unverifiedEvent", (s, e) => {
-          if (this.#system.checkSigs && !this.#system.optimizer.schnorrVerify(e)) {
-            this.#log("Reject invalid event %o", e)
+        // This is where we do check sigs.
+        // Events from a relay tend to arrive in bursts (one WebSocket frame per
+        // message, but many frames queued in the same microtask turn).  We
+        // accumulate them with queueMicrotask so that a single batchVerify call
+        // covers the whole burst, amortising the JS→WASM boundary overhead.
+        let pendingBatch: Array<{ sub: string; ev: TaggedNostrEvent }> = []
+        let batchScheduled = false
+
+        const flushBatch = () => {
+          batchScheduled = false
+          const batch = pendingBatch
+          pendingBatch = []
+
+          if (!this.#system.checkSigs) {
+            for (const { sub, ev } of batch) this.emit("event", addr, sub, ev)
             return
           }
-          this.emit("event", addr, s, e)
+
+          const results = this.#system.optimizer.batchVerify(batch.map(b => b.ev))
+          for (let i = 0; i < batch.length; i++) {
+            if (results[i]) {
+              this.emit("event", addr, batch[i].sub, batch[i].ev)
+            } else {
+              this.#log("Reject invalid event %o", batch[i].ev)
+            }
+          }
+        }
+
+        c.on("unverifiedEvent", (s, e) => {
+          pendingBatch.push({ sub: s, ev: e })
+          if (!batchScheduled) {
+            batchScheduled = true
+            queueMicrotask(flushBatch)
+          }
         })
 
         c.on("eose", s => this.emit("eose", addr, s))

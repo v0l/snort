@@ -1,9 +1,9 @@
 use crate::filter::CanMerge;
 
 pub fn merge<'a, T, Z>(all: Vec<&'a T>) -> Vec<Z>
-    where
-        T: CanMerge,
-        for<'b> Z: CanMerge + From<Vec<&'a T>> + From<Vec<&'b Z>>,
+where
+    T: CanMerge,
+    for<'b> Z: CanMerge + From<Vec<&'a T>> + From<Vec<&'b Z>>,
 {
     let mut ret: Vec<Z> = merge_once(all);
     loop {
@@ -17,9 +17,9 @@ pub fn merge<'a, T, Z>(all: Vec<&'a T>) -> Vec<Z>
 }
 
 fn merge_once<'a, T, Z>(all: Vec<&'a T>) -> Vec<Z>
-    where
-        T: CanMerge,
-        Z: From<Vec<&'a T>>,
+where
+    T: CanMerge,
+    Z: From<Vec<&'a T>>,
 {
     let mut ret: Vec<Z> = vec![];
     if all.is_empty() {

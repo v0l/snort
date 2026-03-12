@@ -17,6 +17,7 @@ import {
   flat_merge,
   get_diff,
   pow,
+  schnorr_verify_batch,
   schnorr_verify_event,
   default as wasmInit,
 } from "../../../system-wasm/pkg/system_wasm"
@@ -41,6 +42,28 @@ export const WasmOptimizer = {
     const ok = schnorr_verify_event(ev) as boolean
     if (ok) EventExt.markVerified(ev)
     return ok
+  },
+  batchVerify: evs => {
+    // Filter to only the events that need verification, preserving their index.
+    const unverified: Array<{ idx: number; ev: NostrEvent }> = []
+    const results = new Array<boolean>(evs.length)
+    for (let i = 0; i < evs.length; i++) {
+      if (EventExt.isVerified(evs[i])) {
+        results[i] = true
+      } else {
+        unverified.push({ idx: i, ev: evs[i] })
+      }
+    }
+    if (unverified.length > 0) {
+      // One JS→WASM call for all unverified events; returns Uint8Array (1=valid, 0=invalid).
+      const raw = schnorr_verify_batch(unverified.map(u => u.ev)) as Uint8Array
+      for (let j = 0; j < unverified.length; j++) {
+        const ok = raw[j] === 1
+        results[unverified[j].idx] = ok
+        if (ok) EventExt.markVerified(unverified[j].ev)
+      }
+    }
+    return results
   },
 } as Optimizer
 

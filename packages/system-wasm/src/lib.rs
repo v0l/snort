@@ -3,13 +3,13 @@ extern crate console_error_panic_hook;
 use crate::filter::{FlatReqFilter, ReqFilter};
 use secp256k1::{XOnlyPublicKey, SECP256K1};
 use serde::{Deserialize, Serialize};
-use serde_json::json;
 use wasm_bindgen::prelude::*;
 
 pub mod diff;
 pub mod filter;
 pub mod merge;
 pub mod pow;
+pub mod verify;
 
 #[derive(PartialEq, Clone, Serialize, Deserialize)]
 pub struct Event {
@@ -46,20 +46,10 @@ pub fn get_diff(prev: JsValue, next: JsValue) -> Result<JsValue, JsValue> {
     console_error_panic_hook::set_once();
     let prev_parsed: Vec<ReqFilter> = serde_wasm_bindgen::from_value(prev)?;
     let next_parsed: Vec<ReqFilter> = serde_wasm_bindgen::from_value(next)?;
-    let expanded_prev: Vec<FlatReqFilter> = prev_parsed
-        .iter()
-        .flat_map(|v| {
-            let vec: Vec<FlatReqFilter> = v.into();
-            vec
-        })
-        .collect();
-    let expanded_next: Vec<FlatReqFilter> = next_parsed
-        .iter()
-        .flat_map(|v| {
-            let vec: Vec<FlatReqFilter> = v.into();
-            vec
-        })
-        .collect();
+    let expanded_prev: Vec<FlatReqFilter> =
+        prev_parsed.iter().flat_map(|v| filter::expand(v)).collect();
+    let expanded_next: Vec<FlatReqFilter> =
+        next_parsed.iter().flat_map(|v| filter::expand(v)).collect();
     let result = diff::diff_filter(&expanded_prev, &expanded_next);
     Ok(serde_wasm_bindgen::to_value(&result)?)
 }
@@ -89,6 +79,11 @@ pub fn pow(val: JsValue, target: JsValue) -> Result<JsValue, JsValue> {
     Ok(serde_wasm_bindgen::to_value(&val_parsed)?)
 }
 
+/// Verify a raw Schnorr signature given the message hash, signature, and
+/// x-only public key — all as hex strings.
+///
+/// Returns a `JsValue` error (rather than panicking) if any hex value is
+/// malformed or the wrong length.
 #[wasm_bindgen]
 pub fn schnorr_verify(hash: JsValue, sig: JsValue, pub_key: JsValue) -> Result<bool, JsValue> {
     console_error_panic_hook::set_once();
@@ -96,36 +91,58 @@ pub fn schnorr_verify(hash: JsValue, sig: JsValue, pub_key: JsValue) -> Result<b
     let sig_hex: String = serde_wasm_bindgen::from_value(sig)?;
     let pub_key_hex: String = serde_wasm_bindgen::from_value(pub_key)?;
 
-    let key = XOnlyPublicKey::from_slice(&hex::decode(pub_key_hex).unwrap()).unwrap();
-    let sig = secp256k1::schnorr::Signature::from_slice(&hex::decode(sig_hex).unwrap()).unwrap();
-    Ok(SECP256K1
-        .verify_schnorr(&sig, &hex::decode(msg_hex).unwrap(), &key)
-        .is_ok())
+    let key_bytes = hex::decode(&pub_key_hex).map_err(|e| JsValue::from_str(&e.to_string()))?;
+    let sig_bytes = hex::decode(&sig_hex).map_err(|e| JsValue::from_str(&e.to_string()))?;
+    let msg_bytes = hex::decode(&msg_hex).map_err(|e| JsValue::from_str(&e.to_string()))?;
+
+    let key =
+        XOnlyPublicKey::from_slice(&key_bytes).map_err(|e| JsValue::from_str(&e.to_string()))?;
+    let sig = secp256k1::schnorr::Signature::from_slice(&sig_bytes)
+        .map_err(|e| JsValue::from_str(&e.to_string()))?;
+
+    Ok(SECP256K1.verify_schnorr(&sig, &msg_bytes, &key).is_ok())
 }
 
+/// Verify a single Nostr event.
+///
+/// Computes the canonical event ID from scratch (does not trust `event.id`)
+/// then checks the Schnorr signature.  Returns `false` for any malformed
+/// field rather than throwing — preserving existing call-site behaviour.
 #[wasm_bindgen]
 pub fn schnorr_verify_event(event: JsValue) -> Result<bool, JsValue> {
     console_error_panic_hook::set_once();
     let event_obj: Event = serde_wasm_bindgen::from_value(event)?;
-
-    let json = json!([
-        0,
-        event_obj.pubkey,
-        event_obj.created_at,
-        event_obj.kind,
-        event_obj.tags,
-        event_obj.content
-    ]);
-    let id = sha256::digest(json.to_string().as_bytes());
-
-    let key = XOnlyPublicKey::from_slice(&hex::decode(&event_obj.pubkey).unwrap()).unwrap();
-    let sig =
-        secp256k1::schnorr::Signature::from_slice(&hex::decode(&event_obj.sig.unwrap()).unwrap())
-            .unwrap();
-    Ok(SECP256K1
-        .verify_schnorr(&sig, &hex::decode(id).unwrap(), &key)
-        .is_ok())
+    Ok(verify::verify_event(&event_obj, false).unwrap_or(false))
 }
+
+/// Verify a batch of Nostr events in a single JS→WASM call.
+///
+/// This is the primary performance optimisation for bulk verification.
+/// Crossing the JS/WASM boundary has fixed overhead (serialisation, memory
+/// copies); calling `schnorr_verify_event` N times pays that cost N times.
+/// `schnorr_verify_batch` pays it once regardless of N, then runs the
+/// cryptographic work entirely inside WASM.
+///
+/// Returns a `Uint8Array` (one byte per event: `1` = valid, `0` = invalid)
+/// rather than `Array<boolean>` — typed arrays cross the WASM boundary
+/// without per-element boxing overhead.
+///
+/// Call-site example (TypeScript):
+/// ```ts
+/// const results = schnorr_verify_batch(events)  // Uint8Array
+/// const valid = Array.from(results).map(b => b === 1)
+/// ```
+#[wasm_bindgen]
+pub fn schnorr_verify_batch(events: JsValue) -> Result<Box<[u8]>, JsValue> {
+    console_error_panic_hook::set_once();
+    let events_parsed: Vec<Event> = serde_wasm_bindgen::from_value(events)?;
+    let results: Vec<u8> = verify::verify_batch(&events_parsed)
+        .into_iter()
+        .map(|b| b as u8)
+        .collect();
+    Ok(results.into_boxed_slice())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -169,10 +186,7 @@ mod tests {
 
         let expanded: Vec<FlatReqFilter> = input
             .iter()
-            .flat_map(|v| {
-                let r: Vec<FlatReqFilter> = v.into();
-                r
-            })
+            .flat_map(|v| filter::expand(v))
             .sorted_by(|_, _| {
                 if rand::random() {
                     Ordering::Less

@@ -58,4 +58,13 @@ export const DefaultOptimizer = {
     if (ok) EventExt.markVerified(ev)
     return ok
   },
+  batchVerify: evs => {
+    return evs.map(ev => {
+      if (EventExt.isVerified(ev)) return true
+      const id = EventExt.createId(ev)
+      const ok = schnorr.verify(hexToBytes(ev.sig), hexToBytes(id), hexToBytes(ev.pubkey))
+      if (ok) EventExt.markVerified(ev)
+      return ok
+    })
+  },
 } as Optimizer

@@ -8,6 +8,16 @@ export function compress(val: any): any
 export function pow(val: any, target: any): any
 export function schnorr_verify(hash: any, sig: any, pub_key: any): boolean
 export function schnorr_verify_event(event: any): boolean
+/**
+ * Verify a batch of Nostr events in a single JS→WASM call.
+ *
+ * Returns a `Uint8Array` with one byte per event: `1` = valid, `0` = invalid.
+ *
+ * @example
+ * const results = schnorr_verify_batch(events)     // Uint8Array
+ * const valid   = Array.from(results, b => b === 1) // boolean[]
+ */
+export function schnorr_verify_batch(events: any): Uint8Array
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module
 
