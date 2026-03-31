@@ -62,7 +62,8 @@
     "build:client": "bunx vite build",
     "build:ssr": "bunx vite build --mode ssr",
     "serve": "bunx --bun vite preview",
-    "server": "bun run build && bun --watch server.ts",
+    "server": "bun run build && bun --watch server/prod.ts",
+    "server:prod": "bun run build && bun server/prod.ts",
     "intl-extract": "bunx --bun formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file src/lang.json --flatten true",
     "intl-compile": "bunx --bun formatjs compile src/lang.json --ast --out-file src/translations/en.json",
     "eslint": "bunx --bun eslint ."
