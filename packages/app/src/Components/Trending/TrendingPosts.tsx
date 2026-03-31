@@ -52,6 +52,7 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
     if (data.length === 0) return <PageSpinner />
     return filteredAndLimitedPosts.map((e: any, index) => {
       // Show invoice for DVM payment-required events in non-small view
+      // Once paid, the DVM processes the request and returns results via NIP-90 responses
       if (!small && isDVMPaymentRequired(e)) {
         const invoice = getDVMInvoice(e)
         if (invoice) {
