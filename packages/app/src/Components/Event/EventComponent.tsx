@@ -5,6 +5,7 @@ import PubkeyList from "@/Components/Embed/PubkeyList"
 import ZapstrEmbed from "@/Components/Embed/ZapstrEmbed"
 import ErrorBoundary from "@/Components/ErrorBoundary"
 import { ApplicationHandler } from "@/Components/Event/Application"
+import DVMJobFeedback from "@/Components/Event/DVMJobFeedback"
 import { LongFormText } from "@/Components/Event/LongFormText"
 import { NostrFileElement } from "@/Components/Event/NostrFileHeader"
 import { Note } from "@/Components/Event/Note/Note"
@@ -106,6 +107,8 @@ export default function EventComponent(props: NoteProps) {
             truncate={props.options?.truncate}
           />
         )
+      case 7000: // DVM Job Feedback (NIP-90)
+        return <DVMJobFeedback ev={ev} />
       default:
         return <Note {...props} />
     }
