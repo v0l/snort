@@ -1,8 +1,18 @@
-snort:
-  android:
-    repository: https://github.com/v0l/snort
-    name: Snort
-    artifacts:
-      - snort-arm64-v8a-v%v.apk
-      - snort-armeabi-v7a-v%v.apk
-      - snort-x86_64-v%v.apk
+# Source code repository
+repository: https://github.com/v0l/snort
+
+# App metadata (from nap.yaml)
+name: Snort
+id: social.snort.app
+description: Nostr social client
+icon: https://snort.social/nostrich_256.png
+images:
+  - https://snort.social/nostrich_512.png
+
+# License
+license: MIT
+
+# Tags
+tags:
+  - social
+  - twitter
