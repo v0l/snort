@@ -99,6 +99,26 @@ pub fn verify_batch(events: &[Event]) -> Vec<bool> {
         .collect()
 }
 
+/// Verify a batch of events, logging detailed errors for each failure.
+/// Returns a Vec<bool> where true means valid, false means invalid/error.
+pub fn verify_batch_with_errors(events: &[Event]) -> Vec<bool> {
+    events
+        .iter()
+        .enumerate()
+        .map(|(idx, ev)| match verify_event(ev, false) {
+            Ok(true) => true,
+            Ok(false) => {
+                eprintln!("batch[{}]: signature verification failed", idx);
+                false
+            }
+            Err(e) => {
+                eprintln!("batch[{}]: verification error: {:?}", idx, e);
+                false
+            }
+        })
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -185,5 +205,58 @@ mod tests {
     #[test]
     fn batch_verify_empty() {
         assert_eq!(verify_batch(&[]), Vec::<bool>::new());
+    }
+
+    #[test]
+    fn batch_verify_events_with_special_content() {
+        let profile_with_newlines = Event::deserialize(json!({
+          "content": "{\"about\":\"mar - the main character, might be a girl\\n\\ncatoshi - the black cat, definitely a cat\",\"banner\":\"https://mar101xy.com/images/mar101xy-profile-cover.jpg\",\"bot\":false,\"display_name\":\"mar\",\"lud16\":\"mar101xy@walletofsatoshi.com\",\"nip05\":\"mar@mar101xy.com\",\"picture\":\"https://mar101xy.com/images/avatar.jpg\",\"displayName\":\"mar\",\"fields\":[[\"test\",\"testing ditto\"],[\"gender\",\"testing gender\"]],\"name\":\"mar\"}",
+          "created_at": 1775155758,
+          "id": "053516868fe8f94fa180835d3b0be4042aaaddc514c6e6d6d8e0fa9694d3442d",
+          "kind": 0,
+          "pubkey": "c7acabf1fed201a53185e4dc5e0c6bae2bc5db19d73abf840535f305d8f05180",
+          "sig": "c8de210d80a2ad92e1145e9c52177ab077f862acd9857f7e8b6ae24645893b0d81bf585814ececb17b0ecd17529135b39cdd9aaf2a84626509c11c6f0c6ed62f",
+          "tags": [["client","Ditto"]]
+        })).unwrap();
+
+        let profile_with_escaped_backslash = Event::deserialize(json!({
+          "content": "{\"name\":\"TheGrinder\",\"about\":\"Sovereign, creator of bitcoins, future owner of Mars and grinder of many things...\\n0863F34D0311FC550226F06A376B54D5650980FB\",\"picture\":\"https://i.nostr.build/TghNVYXqMe7knx7P.jpg\",\"banner\":\"https://nostr.build/i/094828ef504cb05424a9680db23d37db3cf02f05ede1d33528c5c5f9872db66e.jpg\",\"displayName\":\"TheGrinder\",\"lud16\":\"thegrinder@rizful.com\",\"display_name\":\"TheGrinder\",\"website\":\"https://zap.stream/thegrinder\",\"nip05\":\"thegrinder@nostrplebs.com\"}",
+          "created_at": 1774868231,
+          "id": "2dc93fea65b858e864520687927bb8e83374fff8eeb592c9cfaa8b470fc7b2db",
+          "kind": 0,
+          "pubkey": "6e75f7972397ca3295e0f4ca0fbc6eb9cc79be85bafdd56bd378220ca8eee74e",
+          "sig": "4b2c21ff288b2e4e900f88429a0b4a8c3d6c248cab175b8e984d3251cf67578626583379cef99c73e85df3fc35407f292499df7124c3d854bfbf6ac0421a03ee",
+          "tags": [["client","noStrudel","31990:266815e0c9210dfa324c6cba3573b14bee49da4209a9456f9484e5106cd408a5:1686066542546"]]
+        })).unwrap();
+
+        let plain = make_valid_event();
+
+        let results = verify_batch(&[profile_with_newlines, profile_with_escaped_backslash, plain]);
+        assert_eq!(results, vec![true, true, true]);
+    }
+
+    #[test]
+    fn batch_verify_user_event() {
+        let ev = Event::deserialize(json!({
+          "kind": 1,
+          "id": "c55e31fe1c93705558d58c8ad309b0b27c2f21dae92f72bfbc8869de872a2616",
+          "pubkey": "06639a386c9c1014217622ccbcf40908c4f1a0c33e23f8d6d68f4abf655f8f71",
+          "created_at": 1774961298,
+          "tags": [
+            ["e", "507c11d1cdb2130c751ff05e7afa0a47079025ba39ef099ae1a25c53c03ae99e", "wss://pyramid.fiatjaf.com/", "root", "63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed"],
+            ["e", "0468572f697fa7e399f7a99b0d7f1d640a10ceeab17d31e68e11af37be444b26", "wss://nos.lol/", "reply", "63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed"],
+            ["p", "63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed"]
+          ],
+          "content": "I'm interested to try it.\nLocally I have qwen3.5 8B running with ollama on a RK1 32GB compute module.",
+          "sig": "c07c9757ebb3e0808077d5876d5c670c0e788d9f92326ff21aae4766e026e722d017c2e9c1229eece8861c308732d920f1bdbb30ceddd4342d2c4c95f4c5fa05"
+        })).unwrap();
+
+        let computed_id = crate::pow::make_id(&ev);
+        println!("computed_id: {}", computed_id);
+        println!("event id: {:?}", ev.id);
+
+        let results = verify_batch(&[ev]);
+        println!("verify result: {:?}", results);
+        assert_eq!(results, vec![true]);
     }
 }

@@ -149,7 +149,7 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
    * Get object from cache or fetch if missing
    */
   async fetch(key: string, timeoutMs = 30_000) {
-    const existing = this.cache.get(key)
+    const existing = await this.cache.get(key)
     if (existing) {
       return existing
     } else {

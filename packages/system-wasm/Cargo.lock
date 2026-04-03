@@ -740,6 +740,7 @@ dependencies = [
  "sha256",
  "wasm-bindgen",
  "wasm-bindgen-test",
+ "web-sys",
 ]
 
 [[package]]

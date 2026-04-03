@@ -103,6 +103,10 @@ pub fn schnorr_verify(hash: JsValue, sig: JsValue, pub_key: JsValue) -> Result<b
     Ok(SECP256K1.verify_schnorr(&sig, &msg_bytes, &key).is_ok())
 }
 
+fn log_error(msg: &str, err: &str) {
+    web_sys::console::error_2(&JsValue::from_str(msg), &JsValue::from_str(err));
+}
+
 /// Verify a single Nostr event.
 ///
 /// Computes the canonical event ID from scratch (does not trust `event.id`)
@@ -112,35 +116,25 @@ pub fn schnorr_verify(hash: JsValue, sig: JsValue, pub_key: JsValue) -> Result<b
 pub fn schnorr_verify_event(event: JsValue) -> Result<bool, JsValue> {
     console_error_panic_hook::set_once();
     let event_obj: Event = serde_wasm_bindgen::from_value(event)?;
-    Ok(verify::verify_event(&event_obj, false).unwrap_or(false))
+    match verify::verify_event(&event_obj, false) {
+        Ok(result) => Ok(result),
+        Err(e) => {
+            log_error("schnorr_verify_event failed", &format!("{:?}", e));
+            Ok(false)
+        }
+    }
 }
 
-/// Verify a batch of Nostr events in a single JS→WASM call.
-///
-/// This is the primary performance optimisation for bulk verification.
-/// Crossing the JS/WASM boundary has fixed overhead (serialisation, memory
-/// copies); calling `schnorr_verify_event` N times pays that cost N times.
-/// `schnorr_verify_batch` pays it once regardless of N, then runs the
-/// cryptographic work entirely inside WASM.
-///
-/// Returns a `Uint8Array` (one byte per event: `1` = valid, `0` = invalid)
-/// rather than `Array<boolean>` — typed arrays cross the WASM boundary
-/// without per-element boxing overhead.
-///
-/// Call-site example (TypeScript):
-/// ```ts
-/// const results = schnorr_verify_batch(events)  // Uint8Array
-/// const valid = Array.from(results).map(b => b === 1)
-/// ```
 #[wasm_bindgen]
 pub fn schnorr_verify_batch(events: JsValue) -> Result<Box<[u8]>, JsValue> {
     console_error_panic_hook::set_once();
     let events_parsed: Vec<Event> = serde_wasm_bindgen::from_value(events)?;
-    let results: Vec<u8> = verify::verify_batch(&events_parsed)
+    let results: Vec<bool> = verify::verify_batch_with_errors(&events_parsed);
+    Ok(results
         .into_iter()
         .map(|b| b as u8)
-        .collect();
-    Ok(results.into_boxed_slice())
+        .collect::<Vec<_>>()
+        .into_boxed_slice())
 }
 
 #[cfg(test)]

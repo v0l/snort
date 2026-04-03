@@ -95,23 +95,6 @@ export function schnorr_verify(hash, sig, pub_key) {
 }
 
 /**
- * Verify a batch of Nostr events in a single JS→WASM call.
- *
- * This is the primary performance optimisation for bulk verification.
- * Crossing the JS/WASM boundary has fixed overhead (serialisation, memory
- * copies); calling `schnorr_verify_event` N times pays that cost N times.
- * `schnorr_verify_batch` pays it once regardless of N, then runs the
- * cryptographic work entirely inside WASM.
- *
- * Returns a `Uint8Array` (one byte per event: `1` = valid, `0` = invalid)
- * rather than `Array<boolean>` — typed arrays cross the WASM boundary
- * without per-element boxing overhead.
- *
- * Call-site example (TypeScript):
- * ```ts
- * const results = schnorr_verify_batch(events)  // Uint8Array
- * const valid = Array.from(results).map(b => b === 1)
- * ```
  * @param {any} events
  * @returns {Uint8Array}
  */
@@ -235,6 +218,9 @@ function __wbg_get_imports() {
             } finally {
                 wasm.__wbindgen_free(deferred0_0, deferred0_1, 1);
             }
+        },
+        __wbg_error_cfce0f619500de52: function(arg0, arg1) {
+            console.error(arg0, arg1);
         },
         __wbg_get_326e41e095fb2575: function() { return handleError(function (arg0, arg1) {
             const ret = Reflect.get(arg0, arg1);

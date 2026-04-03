@@ -6,6 +6,7 @@ import {
   type PowMiner,
   PowWorker,
   type ReqFilter,
+  type TaggedNostrEvent,
 } from "@snort/system"
 import PowWorkerURL from "@snort/system/src/pow-worker.ts?worker&url"
 
@@ -37,9 +38,9 @@ export const WasmOptimizer = {
     return compress(all) as Array<ReqFilter>
   },
   schnorrVerify: ev => {
-    // Fast path: already verified (e.g. by a prior call in the same pipeline)
     if (EventExt.isVerified(ev)) return true
-    const ok = schnorr_verify_event(ev) as boolean
+    const { relays, ...clean } = ev as TaggedNostrEvent
+    const ok = schnorr_verify_event(clean) as boolean
     if (ok) EventExt.markVerified(ev)
     return ok
   },
@@ -56,7 +57,9 @@ export const WasmOptimizer = {
     }
     if (unverified.length > 0) {
       // One JS→WASM call for all unverified events; returns Uint8Array (1=valid, 0=invalid).
-      const raw = schnorr_verify_batch(unverified.map(u => u.ev)) as Uint8Array
+      const raw = schnorr_verify_batch(
+        unverified.map(u => u.ev),
+      ) as Uint8Array
       for (let j = 0; j < unverified.length; j++) {
         const ok = raw[j] === 1
         results[unverified[j].idx] = ok

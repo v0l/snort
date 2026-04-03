@@ -28,7 +28,7 @@ export class WorkerRelayInterface {
       this.#worker = new Worker(sp, { type: "module" })
     }
     this.#worker.onerror = e => {
-      console.error(e.message, e)
+      console.error("Worker Error:", e)
     }
     this.#worker.onmessageerror = e => {
       console.error(e)
