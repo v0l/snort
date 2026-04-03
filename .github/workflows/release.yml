@@ -53,7 +53,7 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "33.0.0"
+          BUILD_TOOLS_VERSION: "35.0.0"
       - name: Sign APK
         uses: r0adkll/sign-android-release@v1
         with:
@@ -63,7 +63,7 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "33.0.0"
+          BUILD_TOOLS_VERSION: "35.0.0"
       - name: Rename files
         run: |-
           mkdir -p snort_android/app/release
