@@ -1,6 +1,9 @@
 # Source code repository
 repository: https://github.com/v0l/snort
 
+# Match arm64 APKs (zsp prefers arm64-v8a by default)
+match: ".*arm64.*\\.apk$"
+
 # App metadata (from nap.yaml)
 name: Snort
 id: social.snort.app
