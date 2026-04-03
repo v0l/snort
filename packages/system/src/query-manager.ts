@@ -3,6 +3,7 @@ import debug from "debug"
 import { EventEmitter } from "eventemitter3"
 import {
   type BuiltRawReqFilter,
+  DefaultRelays,
   Nips,
   type ReqFilter,
   type RequestBuilder,
@@ -543,6 +544,21 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
             ret.push(trace)
           } else {
             this.#log("Cannot send query to %s: validation failed", a)
+          }
+        }
+      }
+      // If no relays in pool, connect to default relays
+      if (ret.length === 0) {
+        this.#log("No relays connected, using defaults")
+        for (const relayUrl of DefaultRelays) {
+          const nc = await this.#system.pool.connect(relayUrl, { read: true, write: false }, true)
+          if (nc) {
+            if (this.#canSendQuery(nc, qSend, q)) {
+              const trace = this.createTrace(q, nc, qSend)
+              q.addTrace(trace)
+              this.sendTrace(q, trace, nc, qSend)
+              ret.push(trace)
+            }
           }
         }
       }

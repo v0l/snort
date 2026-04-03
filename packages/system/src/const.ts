@@ -61,6 +61,17 @@ export const InlineCodeRegex = /(`[^`\n]+?`)/g
 export const MetadataRelays = ["wss://purplepag.es/", "wss://relay.nostr.band/", "wss://relay.snort.social/"]
 
 /**
+ * Default public relays used when user has no configured relays
+ */
+export const DefaultRelays = [
+  "wss://relay.damus.io",
+  "wss://nos.lol",
+  "wss://relay.nostr.band",
+  "wss://relay.snort.social",
+  "wss://nostr.wine",
+]
+
+/**
  * Timeout for relay AUTH challenge response (ms)
  */
 export const AuthTimeout = 10_000
