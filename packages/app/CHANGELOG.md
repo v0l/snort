@@ -1,3 +1,69 @@
+# v0.5.0
+
+`+196,739,-43,235`
+
+## Highlights
+
+- **Security Hardening**: Comprehensive audit fixes including Schnorr signature verification, NIP-46 relay message forgery protection, PIN encryption improvements, and NIP-26 delegation trust removal
+- **Performance**: Batched Schnorr verification in WASM, lazy-loaded routes, pre-compiled translations, worker-relay batch optimizations, and eliminated double verification per event
+- **Stability**: Fixed multiple React render loops, hook dependency arrays, stale closures, and lifecycle/memory leaks across the app
+
+## Added
+
+- Comprehensive request processing path tests
+- Priority profile loader with batch loading, priority tiers, and chunking
+- DVM kind:7000 payment-required invoice display (#618)
+- Default relays fallback when pool is empty
+- Zapstore manifest migration (nap.yaml → zapstore.yaml)
+
+## Changed
+
+- Batch event verification in system-wasm for improved throughput
+- Profile loader rewritten with priority tiers, chunking, and O(1) notifications
+- NoteCollection clear() emission and ghost-timer fixes
+- Trace-timeline terminal state runtime tracking improvements
+- Replaced uuid with crypto.randomUUID()
+- All useSyncExternalStore calls now include getServerSnapshot for SSR compatibility (#615)
+- Switched quote style to double quotes (Biome formatting)
+
+## Fixed
+
+- **Security**: Real Schnorr signature verification in isValid (#607)
+- **Security**: PIN encryption security issues (#606)
+- **Security**: NIP-46 hardened against forged relay messages and secret leakage (#609)
+- **Security**: Removed unverified NIP-26 delegation trust in getRootPubKey (#608)
+- **Security**: Wrapped all dangerous JSON.parse calls in try/catch (#610)
+- **Security**: Added timeouts to all hanging promises (#611)
+- **Security**: Added lifecycle management and fixed timer/memory leaks (#612)
+- Render loop in NoteReaction from unstable inline ref callback
+- Render loop on profile page pinned notes
+- Notifications render loop from unstable login object dependency
+- NoteContext render loop from unstable ev/link/translate deps
+- React hook dependency arrays and stale closures across components
+- NoteStore lazy snapshot and OutboxModel input mutation (#614)
+- Queue traces for connecting relays with query system edge-case tests
+- Batch verify in WASM with error logging
+- Build-tools version updated to 35.0.0
+- APK artifact matching patterns
+
+## PRs
+
+* Fix #617: Display DVM kind:7000 payment-required invoices to users (#618)
+* Add getServerSnapshot to all useSyncExternalStore calls for SSR compatibility (#615)
+* Lazy snapshot in NoteStore, type safety improvements, fix OutboxModel input mutation (#614)
+* Replace uuid with crypto.randomUUID(), remove uuid dependency (#613)
+* Add lifecycle management and fix timer/memory leaks (#612)
+* Add timeouts to all hanging promises (#611)
+* Wrap all dangerous JSON.parse calls in try/catch (#610)
+* Harden NIP-46 against forged relay messages and secret leakage (#609)
+* Remove unverified NIP-26 delegation trust in getRootPubKey (#608)
+* Add real Schnorr signature verification to isValid (#607)
+* Fix PIN encryption security issues (#606)
+
+**Full Changelog**: https://github.com/v0l/snort/compare/v0.4.0...v0.5.0
+
+---
+
 # v0.4.0
 
 `+21,991,-31,914`
