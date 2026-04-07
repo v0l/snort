@@ -44,12 +44,7 @@ const MENU_ITEMS = [
     icon: "deck",
     link: "/deck",
   },
-  {
-    label: <FormattedMessage defaultMessage="About" />,
-    icon: "info",
-    link: "/donate",
-    nonLoggedIn: true,
-  },
+
   {
     label: <FormattedMessage defaultMessage="Settings" />,
     icon: "settings",

@@ -123,7 +123,7 @@ const mainRoutes = [
     },
   },
   {
-    path: "/donate",
+    path: "/about",
     async lazy() {
       const { default: DonatePage } = await import("@/Pages/Donate/DonatePage")
       return { Component: DonatePage }
@@ -144,7 +144,7 @@ const mainRoutes = [
     },
   },
   {
-    path: "/about",
+    path: "/changelog",
     async lazy() {
       const { AboutPage } = await import("@/Pages/About")
       return { Component: AboutPage }

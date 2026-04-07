@@ -73,7 +73,7 @@ const DonatePage = () => {
           defaultMessage="To see a full list of changes you can view the changelog {here}"
           values={{
             here: (
-              <Link to="/about" className="highlight underline">
+              <Link to="/changelog" className="highlight underline">
                 <FormattedMessage defaultMessage="here" />
               </Link>
             ),

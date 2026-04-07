@@ -17,7 +17,7 @@ export class DonateTask extends BaseUITask {
           defaultMessage="Thanks for using {site}, please consider donating if you can."
           values={{ site: CONFIG.appNameCapitalized }}
         />
-        <Link to="/donate">
+        <Link to="/about">
           <button>
             <FormattedMessage defaultMessage="Donate" />
           </button>

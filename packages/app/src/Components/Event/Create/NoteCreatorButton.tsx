@@ -47,7 +47,7 @@ export const NoteCreatorButton = ({
       "/messages",
       "/new",
       "/login",
-      "/donate",
+      "/about",
       "/e",
       "/nevent",
       "/note1",

@@ -140,7 +140,7 @@ const SettingsIndex = () => {
           icon: "heart",
           iconBg: "bg-purple-500",
           message: <FormattedMessage defaultMessage="Donate" />,
-          path: "/donate",
+          path: "/about",
         },
         ...(CONFIG.features.subscriptions
           ? [
