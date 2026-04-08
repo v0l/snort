@@ -18,7 +18,7 @@ export default function FollowedBy({ pubkey, ...props }: { pubkey: string } & Om
       followedByFriendsArray: Array.from(followedByFriends).slice(0, MAX_FOLLOWED_BY_FRIENDS),
       totalFollowedByFriends: followedByFriends.size,
     }
-  }, [pubkey, followDistance])
+  }, [pubkey, wot.followedBy])
 
   const renderFollowedByFriendsLinks = () => {
     return followedByFriendsArray.map((a, index) => (

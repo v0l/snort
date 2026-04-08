@@ -47,7 +47,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
     return () => {
       window.removeEventListener("resize", updateLatestNotesPosition)
     }
-  }, [inView, props.latest])
+  }, [updateLatestNotesPosition])
 
   const renderNotes = () => {
     const frags = Array.isArray(props.frags) ? props.frags : [props.frags]

@@ -1,4 +1,4 @@
-import { EventKind, NostrEvent, parseIMeta, type TaggedNostrEvent } from "@snort/system"
+import { EventKind, parseIMeta, type TaggedNostrEvent } from "@snort/system"
 import type { ReactNode } from "react"
 
 import PubkeyList from "@/Components/Embed/PubkeyList"
@@ -92,7 +92,7 @@ export default function EventComponent(props: NoteProps) {
         // in the content
         const urls = Object.entries(media ?? {}).map(([k]) => k)
         if (!urls.every(u => ev.content.includes(u))) {
-          const newContent = ev.content + " " + urls.join("\n")
+          const newContent = `${ev.content} ${urls.join("\n")}`
           props.data.content = newContent
         }
         return <Note {...props} />

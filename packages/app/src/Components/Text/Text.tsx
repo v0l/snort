@@ -1,4 +1,4 @@
-import { type ParsedFragment, tryParseNostrLink } from "@snort/system"
+import type { ParsedFragment, } from "@snort/system"
 import classNames from "classnames"
 import type React from "react"
 import { lazy, type ReactNode, Suspense, use } from "react"
@@ -14,7 +14,6 @@ import { useTextTransformer } from "@/Hooks/useTextTransformCache"
 import RevealMedia, { type RevealMediaProps } from "../Event/RevealMedia"
 import { ProxyImg } from "../ProxyImg"
 import HighlightedText from "./HighlightedText"
-import Mention from "../Embed/Mention"
 import { SpotlightContext } from "../Spotlight/context"
 import NostrLink from "../Embed/NostrLink"
 import { magnetURIDecode } from "@/Utils"
@@ -201,13 +200,11 @@ export default function Text({
         }
         default: {
           chunks.push(
-            <>
-              {highlightText ? (
+            highlightText ? (
                 <HighlightedText content={element.content} textToHighlight={highlightText} />
               ) : (
                 element.content
-              )}
-            </>,
+              ),
           )
           break
         }

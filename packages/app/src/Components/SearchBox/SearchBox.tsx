@@ -17,7 +17,7 @@ export default function SearchBox() {
   const [searching, setSearching] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
   const navigate = useNavigate()
-  const location = useLocation()
+  const _location = useLocation()
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const [activeIndex, setActiveIndex] = useState<number>(-1)
@@ -48,7 +48,7 @@ export default function SearchBox() {
     // Close the search on navigation
     setSearch("")
     setActiveIndex(-1)
-  }, [location])
+  }, [])
 
   const executeSearch = async () => {
     try {
@@ -140,7 +140,7 @@ export default function SearchBox() {
           >
             <FormattedMessage defaultMessage="Search notes" />: <b>{search}</b>
           </div>
-          {results?.slice(0, MAX_RESULTS).map((result, idx) => (
+          {results?.slice(0, MAX_RESULTS).map((result, _idx) => (
             <ProfileImage pubkey={result.pubkey} showProfileCard={false} className="p-2 hover:bg-layer-2" />
           ))}
         </div>

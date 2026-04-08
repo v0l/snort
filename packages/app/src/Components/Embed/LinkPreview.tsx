@@ -12,7 +12,7 @@ async function fetchUrlPreviewInfo(url: string) {
   const api = new NostrServices()
   try {
     return await api.linkPreview(url.endsWith(")") ? url.slice(0, -1) : url)
-  } catch (e) {
+  } catch (_e) {
     console.warn(`Failed to load link preview`, url)
   }
 }

@@ -4,7 +4,7 @@ import { MixCloudRegex } from "@/Utils/Const"
 const MixCloudEmbed = ({ link }: { link: string }) => {
   const match = link.match(MixCloudRegex)
   if (!match) return
-  const feedPath = match[1] + "%2F" + match[2]
+  const feedPath = `${match[1]}%2F${match[2]}`
 
   const theme = usePreferences(s => s.theme)
   const lightParams = theme === "light" ? "light=1" : "light=0"

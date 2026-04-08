@@ -145,7 +145,7 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef, tags: Array<
 const Markdown = forwardRef<HTMLDivElement, MarkdownProps>((props: MarkdownProps, ref) => {
   const parsed = useMemo(() => {
     return marked.use(markedFootnote()).lexer(props.content)
-  }, [props.content, props.tags])
+  }, [props.content])
 
   return (
     <div className={props.className} ref={ref}>

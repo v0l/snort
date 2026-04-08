@@ -11,7 +11,7 @@ export function RelayName({ url }: { url: string }) {
     if (!info) {
       Nip11.loadRelayDocument(url).then(setInfo).catch(console.error)
     }
-  }, [info])
+  }, [info, url])
 
   return info?.name ?? getRelayName(url)
 }

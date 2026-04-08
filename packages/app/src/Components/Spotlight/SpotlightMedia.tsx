@@ -80,7 +80,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
     } else {
       return <ProxyImg src={media} className="max-h-screen max-w-full w-full object-contain" />
     }
-  }, [media, isVideo])
+  }, [media, isVideo, proxy])
 
   const onClickBg = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {

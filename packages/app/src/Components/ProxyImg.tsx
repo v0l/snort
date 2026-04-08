@@ -30,7 +30,7 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
     if (src) {
       setImgSrc(proxy(src, size, sha256))
     }
-  }, [src, size, sha256])
+  }, [src, size, sha256, proxy])
 
   if (loadFailed && !bypass && (promptToLoadDirectly ?? true)) {
     return (

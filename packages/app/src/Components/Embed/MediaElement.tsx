@@ -41,10 +41,10 @@ const ImageElement = ({ src, meta, onMediaClick, size, onFallback, ...props }: I
   const [alternatives, setAlternatives] = useState<Array<string>>(meta?.fallback ?? [])
   const [currentUrl, setCurrentUrl] = useState(src)
   if ("creator" in props) {
-    delete props["creator"]
+    delete props.creator
   }
   if ("mime" in props) {
-    delete props["mime"]
+    delete props.mime
   }
   return (
     <ProxyImg
@@ -85,7 +85,7 @@ const VideoElement = ({ src }: VideoElementProps) => {
     } else {
       videoRef.current.pause()
     }
-  }, [inView])
+  }, [inView, isMobile])
 
   return (
     <div

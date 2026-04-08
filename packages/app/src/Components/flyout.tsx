@@ -35,7 +35,7 @@ export default function Flyout({
     <div
       className={classNames("absolute top-0 overflow-hidden z-50", {
         "pointer-events-none": !show,
-        "right-0": side == "right",
+        "right-0": side === "right",
         "left-0": side === "left",
       })}
     >

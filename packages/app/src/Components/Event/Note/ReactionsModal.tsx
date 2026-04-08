@@ -26,9 +26,9 @@ const ReactionsModal = ({ onClose, initialTab = 0 }: ReactionsModalProps) => {
 
   const { sortEvents } = useWoT()
 
-  const likes = useMemo(() => sortEvents([...positive]), [positive])
-  const dislikes = useMemo(() => sortEvents([...negative]), [negative])
-  const sortedReposts = useMemo(() => sortEvents([...reposts]), [reposts])
+  const likes = useMemo(() => sortEvents([...positive]), [positive, sortEvents])
+  const dislikes = useMemo(() => sortEvents([...negative]), [negative, sortEvents])
+  const sortedReposts = useMemo(() => sortEvents([...reposts]), [reposts, sortEvents])
 
   const total = positive.length + negative.length + zaps.length + reposts.length
 
@@ -47,7 +47,7 @@ const ReactionsModal = ({ onClose, initialTab = 0 }: ReactionsModalProps) => {
     ]
 
     return dislikes.length !== 0 ? baseTabs.concat(createTab(messages.Dislikes, dislikes.length, 3)) : baseTabs
-  }, [likes.length, zaps.length, reposts.length, dislikes.length, formatMessage])
+  }, [likes.length, zaps.length, reposts.length, dislikes.length, createTab])
 
   const [tab, setTab] = useState(tabs[initialTab])
 

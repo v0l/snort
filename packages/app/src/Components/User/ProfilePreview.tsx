@@ -38,8 +38,7 @@ const ProfilePreview = forwardRef<HTMLDivElement, ProfilePreviewProps>(function 
   }
 
   return (
-    <>
-      <div
+    <div
         className={classNames("flex items-center justify-between", props.className)}
         ref={el => {
           innerRef.current = el
@@ -67,7 +66,6 @@ const ProfilePreview = forwardRef<HTMLDivElement, ProfilePreviewProps>(function 
           </div>
         )}
       </div>
-    </>
   )
 })
 

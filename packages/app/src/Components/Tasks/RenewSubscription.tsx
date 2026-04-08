@@ -9,7 +9,7 @@ import { getCurrentSubscription } from "@/Utils/Subscription"
 export class RenewSubTask extends BaseUITask {
   id = "renew-sub"
 
-  check(user: CachedMetadata, session: LoginSession): boolean {
+  check(_user: CachedMetadata, session: LoginSession): boolean {
     const sub = getCurrentSubscription(session.subscriptions)
     return !sub && session.subscriptions.length > 0
   }

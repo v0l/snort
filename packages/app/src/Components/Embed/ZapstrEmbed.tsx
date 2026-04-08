@@ -25,7 +25,7 @@ export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
           <audio src={media?.[1] ?? ""} controls={true} className="m-0 h-8" />
           <div className="zapstr">
             {refPersons.map(a => (
-              <ProfileImage key={a[1]} pubkey={a[1]} subHeader={<>{a[2] ?? ""}</>} className="pfp" defaultNip=" " />
+              <ProfileImage key={a[1]} pubkey={a[1]} subHeader={a[2] ?? ""} className="pfp" defaultNip=" " />
             ))}
           </div>
         </div>

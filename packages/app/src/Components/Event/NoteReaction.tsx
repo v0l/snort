@@ -21,7 +21,7 @@ export default function NoteReaction(props: NoteReactionProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const profile = useUserProfile(ev.pubkey, rootRef)
 
-  const opt = useMemo(
+  const _opt = useMemo(
     () => ({
       showHeader: ev?.kind === EventKind.Repost || ev?.kind === EventKind.TextNote,
       showFooter: false,

@@ -53,7 +53,7 @@ export function ZapModalInput(props: {
     if (props.onChange) {
       props.onChange(getValue())
     }
-  }, [amount, comment, zapType])
+  }, [getValue, props.onChange])
 
   function renderAmounts() {
     const min = props.zapper.minAmount() / 1000
@@ -93,7 +93,7 @@ export function ZapModalInput(props: {
           className="grow"
           placeholder={formatMessage(messages.Custom)}
           value={customAmount}
-          onChange={e => setCustomAmount(parseInt(e.target.value))}
+          onChange={e => setCustomAmount(parseInt(e.target.value, 10))}
         />
         <button
           className="secondary"
@@ -116,15 +116,13 @@ export function ZapModalInput(props: {
         {renderAmounts()}
         {custom()}
         {props.zapper.maxComment() > 0 && (
-          <>
-            <input
+          <input
               type="text"
               placeholder={formatMessage(messages.Comment)}
               className="grow"
               maxLength={props.zapper.maxComment()}
               onChange={e => setComment(e.target.value)}
             />
-          </>
         )}
       </div>
       <ZapTypeSelector zapType={zapType} setZapType={setZapType} />

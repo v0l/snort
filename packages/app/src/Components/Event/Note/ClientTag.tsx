@@ -12,11 +12,9 @@ export function ClientTag({ ev }: { ev: TaggedNostrEvent }) {
   if (!info) return
 
   return (
-    <>
-      <span className="text-xs text-neutral-400 light:text-neutral-500">
+    <span className="text-xs text-neutral-400 light:text-neutral-500">
         {info.fingerprintDetails ? <FingerprintClientTag info={info} /> : <ViaTag info={info} />}
       </span>
-    </>
   )
 }
 
@@ -126,7 +124,7 @@ interface ClientInfo {
 export function getClientInfo(ev: NostrEvent): ClientInfo | undefined {
   const tag = ev.tags.find(a => a[0] === "client")
   if (tag) {
-    const link = tag[2] && tag[2].includes(":") ? NostrLink.tryFromTag(["a", tag[2]]) : undefined
+    const link = tag[2]?.includes(":") ? NostrLink.tryFromTag(["a", tag[2]]) : undefined
     return {
       name: tag[1],
       link,

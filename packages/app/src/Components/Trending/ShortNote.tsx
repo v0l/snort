@@ -19,7 +19,7 @@ export default function TrendingNote({ event }: { event: TaggedNostrEvent }) {
         <NoteTime from={event.created_at * 1000} />
       </div>
       <Text
-        id={event.id + "short"}
+        id={`${event.id}short`}
         tags={event.tags}
         creator={event.pubkey}
         content={content}

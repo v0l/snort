@@ -30,7 +30,7 @@ export function AutoLoadMore({ text, onClick, className }: ShowMoreProps) {
       // TODO improve feed performance. Something in image grid makes it slow when feed size grows.
       return debounce(100, onClick)
     }
-  }, [inView, height])
+  }, [inView, onClick])
 
   return (
     <div ref={ref}>

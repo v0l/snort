@@ -76,7 +76,6 @@ export function PinPrompt({
             type="number"
             onChange={e => setPin(e.target.value)}
             value={pin}
-            autoFocus={true}
             maxLength={20}
             minLength={4}
             className="border px-4 py-3 text-[80px] h-[1em] rounded-lg"

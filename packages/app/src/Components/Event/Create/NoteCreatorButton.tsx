@@ -55,7 +55,7 @@ export const NoteCreatorButton = ({
       "/subscribe",
     ]
     return (readonly || hideOn.some(a => location.pathname.startsWith(a))) && !isReply
-  }, [location, readonly])
+  }, [location, readonly, alwaysShow, replyTo, show])
 
   return (
     <>

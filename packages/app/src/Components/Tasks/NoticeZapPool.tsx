@@ -13,8 +13,7 @@ export class NoticeZapPoolDefault extends BaseUITask {
 
   render() {
     return (
-      <>
-        <p>
+      <p>
           <FormattedMessage
             defaultMessage="A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}"
             id="dmsiLv"
@@ -35,7 +34,6 @@ export class NoticeZapPoolDefault extends BaseUITask {
             }}
           />
         </p>
-      </>
     )
   }
 }

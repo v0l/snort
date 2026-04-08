@@ -14,7 +14,6 @@ interface ToastNotification {
 
 class ToasterSlots extends ExternalStore<Array<ToastNotification>> {
   #stack: Array<ToastNotification> = []
-  #cleanup = setInterval(() => this.#eatToast(), 1000)
 
   push(n: ToastNotification) {
     n.expire ??= unixNow() + 10
@@ -30,15 +29,6 @@ class ToasterSlots extends ExternalStore<Array<ToastNotification>> {
   remove(id?: string) {
     this.#stack = this.#stack.filter(a => a.id !== id)
     this.notifyChange()
-  }
-
-  #eatToast() {
-    const now = unixNow()
-    const newStack = this.#stack.filter(a => (a.expire ?? 0) > now)
-    if (newStack.length !== this.#stack.length) {
-      this.#stack = newStack
-      this.notifyChange()
-    }
   }
 }
 

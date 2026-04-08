@@ -30,11 +30,11 @@ const Avatar = forwardRef<
       if ((image?.length ?? 0) > 0) return image
       if ((user?.picture?.length ?? 0) > 0) return user?.picture
       return defaultImg
-    }, [user, image, pubkey])
+    }, [user, image, defaultImg])
 
     size ??= 120
 
-    const domain = user?.nip05 && user.nip05.split("@")[1]
+    const domain = user?.nip05?.split("@")[1]
     return (
       <div
         ref={ref}
