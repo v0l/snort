@@ -8,7 +8,7 @@ import { AutoLoadMore } from "@/Components/Event/LoadMore"
 import { useNotificationsView } from "@/Feed/WorkerRelayView"
 import useLogin from "@/Hooks/useLogin"
 import useModeration from "@/Hooks/useModeration"
-import { markNotificationsRead } from "@/Utils/Login"
+import { markNotificationsRead, LoginStore } from "@/Utils/Login"
 
 import { getNotificationContext } from "./getNotificationContext"
 import { NotificationGroup } from "./NotificationGroup"
@@ -58,14 +58,11 @@ function FilterIcon({
 
 export default function NotificationsPage({ onClick }: { onClick?: (link: NostrLink) => void }) {
   const login = useLogin()
-  const { isMuted } = useModeration()
-  const [limit, setLimit] = useState(100)
-  const [filter, setFilter] = useState(NotificationSummaryFilter.All)
 
   useEffect(() => {
-    markNotificationsRead(login)
-    // biome-ignore lint/correctness/useExhaustiveDependencies: login.publicKey is the stable identity; full login object changes reference every render
-  }, [login.publicKey, login])
+    markNotificationsRead(LoginStore.snapshot())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [login.publicKey])
 
   const notifications = useNotificationsView()
 
@@ -102,48 +99,48 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
 
   return (
     <div>
-        <div className="flex justify-between items-center mx-1">
-          <div></div>
-          <div className="flex items-center gap-2">
-            <FilterIcon
-              f={NotificationSummaryFilter.Reactions}
-              icon="heart-solid"
-              iconActiveClass="text-heart"
-              filter={filter}
-              setFilter={setFilter}
-            />
-            <FilterIcon
-              f={NotificationSummaryFilter.Zaps}
-              icon="zap-solid"
-              iconActiveClass="text-zap"
-              filter={filter}
-              setFilter={setFilter}
-            />
-            <FilterIcon
-              f={NotificationSummaryFilter.Reposts}
-              icon="repeat"
-              iconActiveClass="text-repost"
-              filter={filter}
-              setFilter={setFilter}
-            />
-            <FilterIcon
-              f={NotificationSummaryFilter.Mentions}
-              icon="at-sign"
-              iconActiveClass="text-mention"
-              filter={filter}
-              setFilter={setFilter}
-            />
-          </div>
+      <div className="flex justify-between items-center mx-1">
+        <div></div>
+        <div className="flex items-center gap-2">
+          <FilterIcon
+            f={NotificationSummaryFilter.Reactions}
+            icon="heart-solid"
+            iconActiveClass="text-heart"
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <FilterIcon
+            f={NotificationSummaryFilter.Zaps}
+            icon="zap-solid"
+            iconActiveClass="text-zap"
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <FilterIcon
+            f={NotificationSummaryFilter.Reposts}
+            icon="repeat"
+            iconActiveClass="text-repost"
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <FilterIcon
+            f={NotificationSummaryFilter.Mentions}
+            icon="at-sign"
+            iconActiveClass="text-mention"
+            filter={filter}
+            setFilter={setFilter}
+          />
         </div>
-
-        {login.publicKey &&
-          [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
-
-        <AutoLoadMore
-          onClick={() => {
-            setLimit(l => l + 100)
-          }}
-        />
       </div>
+
+      {login.publicKey &&
+        [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
+
+      <AutoLoadMore
+        onClick={() => {
+          setLimit(l => l + 100)
+        }}
+      />
+    </div>
   )
 }
