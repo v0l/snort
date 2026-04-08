@@ -34,8 +34,7 @@ const RelayInfo = () => {
   }, [params.id])
 
   return (
-    <>
-      <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <div className="flex gap-4 items-center">
             <RelayFavicon url={params.id ?? ""} size={80} />
@@ -202,7 +201,6 @@ const RelayInfo = () => {
           </CollapsedSection>
         )}
       </div>
-    </>
   )
 }
 

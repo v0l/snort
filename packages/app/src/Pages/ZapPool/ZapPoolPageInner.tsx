@@ -40,7 +40,7 @@ export function ZapPoolPageInner() {
       })
       .filter(a => a !== undefined)
       .map(unwrap)
-  }, [])
+  }, [system.pool])
 
   const sumPending = zapPool.reduce((acc, v) => acc + v.sum, 0)
   return (

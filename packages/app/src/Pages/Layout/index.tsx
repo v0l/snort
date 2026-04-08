@@ -62,7 +62,7 @@ export default function Index() {
     if (CONFIG.features.analytics && (telemetry ?? true)) {
       trackEvent("pageview")
     }
-  }, [location])
+  }, [telemetry])
 
   useKeyboardShortcut(".", handleKeyboardShortcut)
   useKeyboardShortcut("t", handleTraceTimelineShortcut)

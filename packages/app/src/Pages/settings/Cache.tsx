@@ -1,11 +1,11 @@
 import type { CachedTable } from "@snort/shared"
 import { ConnectionCacheRelay } from "@snort/system"
 import { WorkerRelayInterface } from "@snort/worker-relay"
-import { type ReactNode, use, useEffect, useState, useSyncExternalStore } from "react"
+import { type ReactNode, use, useEffect, useState, } from "react"
 import { FormattedMessage, FormattedNumber } from "react-intl"
 import { useNavigate } from "react-router-dom"
 
-import { GiftsCache, Relay, tryUseLocalRelay, UserRelays } from "@/Cache"
+import { GiftsCache, Relay, tryUseLocalRelay, } from "@/Cache"
 import AsyncButton from "@/Components/Button/AsyncButton"
 import useLogin from "@/Hooks/useLogin"
 import { SnortContext } from "@snort/system-react"
@@ -75,7 +75,7 @@ function RelayCacheStats() {
         Relay.count(["REQ", "my", { authors: [login.publicKey] }]).then(setMyEvents)
       }
     }
-  }, [])
+  }, [login.publicKey])
 
   function relayType() {
     if (Relay instanceof WorkerRelayInterface) {

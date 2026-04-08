@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom"
 
 import NoteTime from "@/Components/Event/Note/NoteTime"
 import Icon from "@/Components/Icons/Icon"
-import ProfileImage from "@/Components/User/ProfileImage"
 import useWoT from "@/Hooks/useWoT"
 import { dedupe, getDisplayName } from "@/Utils"
 import { formatShort } from "@/Utils/Number"

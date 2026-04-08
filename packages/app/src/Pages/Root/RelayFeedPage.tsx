@@ -23,7 +23,7 @@ export default function RelayFeedPage() {
         discriminator: `relays:${relayParam}`,
         relay: relay ? [relay] : undefined,
       }) as TimelineSubject,
-    [relay],
+    [relay, relayParam],
   )
 
   return <Timeline postsOnly={false} subject={subject} method={"LIMIT_UNTIL"} />

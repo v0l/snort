@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import type React from "react"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -45,7 +45,7 @@ export default function MessagesPage() {
   const unreadTrustedCount = useMemo(() => trustedChats.reduce((p, c) => p + c.unread, 0), [trustedChats])
   const unreadOtherCount = useMemo(() => otherChats.reduce((p, c) => p + c.unread, 0), [otherChats])
 
-  function openChat(e: React.MouseEvent<HTMLDivElement>, type: ChatType, id: string) {
+  function openChat(e: React.MouseEvent<HTMLDivElement>, _type: ChatType, id: string) {
     e.stopPropagation()
     e.preventDefault()
     navigate(`/messages/${encodeURIComponent(id)}`)

@@ -44,8 +44,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
   }
 
   return (
-    <>
-      <div className="px-3 py-2 subtier">
+    <div className="px-3 py-2 subtier">
         <div className="flex">
           <Icon name="badge" className="mr5" size={25} />
           {mapPlanName(sub.type)}
@@ -102,6 +101,5 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
         {(isExpired || isNew) && <RenewSub sub={sub} />}
         {isPaid && subFeatures()}
       </div>
-    </>
   )
 }

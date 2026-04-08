@@ -14,7 +14,7 @@ import messages from "./messages"
 const PreferencesPage = () => {
   const { formatMessage } = useIntl()
   const { preferences: pref, update: setPref, save } = useAllPreferences()
-  const [error, setError] = useState("")
+  const [error, _setError] = useState("")
   const { lang } = useLocale()
 
   function row(title: ReactNode, description: ReactNode | undefined, control: ReactNode) {
@@ -196,7 +196,7 @@ const PreferencesPage = () => {
           defaultValue={pref.pow}
           min={0}
           className="w-20"
-          onChange={e => setPref({ ...pref, pow: parseInt(e.target.value || "0") })}
+          onChange={e => setPref({ ...pref, pow: parseInt(e.target.value || "0", 10) })}
         />,
       )}
 
@@ -208,7 +208,7 @@ const PreferencesPage = () => {
           defaultValue={pref.defaultZapAmount}
           min={1}
           className="w-20"
-          onChange={e => setPref({ ...pref, defaultZapAmount: parseInt(e.target.value || "0") })}
+          onChange={e => setPref({ ...pref, defaultZapAmount: parseInt(e.target.value || "0", 10) })}
         />,
       )}
 

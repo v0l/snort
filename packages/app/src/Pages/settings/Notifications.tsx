@@ -62,7 +62,7 @@ const PreferencesPage = () => {
 
   useEffect(() => {
     trySubscribePush()
-  }, [allGood, publisher])
+  }, [trySubscribePush])
 
   const requestNotificationPermission = () => {
     Notification.requestPermission().then(permission => {

@@ -67,7 +67,7 @@ export default function PriceChart() {
       const bucketKey = Math.floor(point.time / interval) * interval
 
       // Keep the most recent value in each bucket
-      if (!buckets.has(bucketKey) || point.time > buckets.get(bucketKey)!.time) {
+      if (!buckets.has(bucketKey) || point.time > buckets.get(bucketKey)?.time) {
         buckets.set(bucketKey, { time: bucketKey, ask: point.ask, bid: point.bid })
       }
 

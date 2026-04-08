@@ -128,8 +128,7 @@ function NoteTitle({ link }: { link: NostrLink }) {
   }
   const title = findTag(ev, "title")
   return (
-    <>
-      <FormattedMessage
+    <FormattedMessage
         defaultMessage="{note_type} by {name}{title}"
         values={{
           note_type: <KindName kind={ev.kind} />,
@@ -137,6 +136,5 @@ function NoteTitle({ link }: { link: NostrLink }) {
           title: title ? ` - ${title}` : "",
         }}
       />
-    </>
   )
 }

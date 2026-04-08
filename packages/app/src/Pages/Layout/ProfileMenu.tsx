@@ -27,7 +27,7 @@ export default function ProfileMenu({ className }: { className?: string }) {
       <ProfilePreview
         pubkey={publicKey!}
         className={isNarrow ? "!justify-center" : ""}
-        actions={<>{!isNarrow && <Icon name="arrowFront" className="rotate-90 align-end" size={14} />}</>}
+        actions={!isNarrow && <Icon name="arrowFront" className="rotate-90 align-end" size={14} />}
         profileImageProps={{
           size: 40,
           link: "",
