@@ -35,7 +35,7 @@ const DonatePage = () => {
 
   useEffect(() => {
     loadData().catch(console.warn)
-  }, [loadData])
+  }, [])
 
   function actions(pk: string) {
     const split = splits.find(a => bech32ToHex(a.pubKey) === pk)

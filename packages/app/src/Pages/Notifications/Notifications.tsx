@@ -61,7 +61,6 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
 
   useEffect(() => {
     markNotificationsRead(LoginStore.snapshot())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [login.publicKey])
 
   const notifications = useNotificationsView()
