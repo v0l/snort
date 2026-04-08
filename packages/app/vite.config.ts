@@ -10,7 +10,7 @@ import tailwindcss from "@tailwindcss/vite"
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    basicSsl(),
+    //basicSsl(),
     react({
       babel: {
         configFile: true,
@@ -43,7 +43,7 @@ export default defineConfig({
       },
     }),
     visualizer({
-      open: true,
+      open: false,
       gzipSize: true,
       filename: "build/stats.html",
     }),

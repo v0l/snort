@@ -35,6 +35,7 @@ interface QueueObj {
 
 interface Nip46Events {
   oauth: (url: string) => void
+  ready: () => void
 }
 
 export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigner {
@@ -125,6 +126,8 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
             since: Math.floor(Date.now() / 1000 - 10),
           },
         ])
+
+        this.emit("ready")
 
         if (autoConnect) {
           if (this.isBunker) {
@@ -261,10 +264,23 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
         unwrap(this.#remotePubkey),
       )
       id = "connect"
+    } else if (!this.#remotePubkey) {
+      // nostrconnect flow: signer sends a response to an implicit connect
+      this.#remotePubkey = e.pubkey
+      await this.#sendCommand(
+        {
+          id: reply.id,
+          result: "ack",
+          error: "",
+        },
+        e.pubkey,
+      )
+      id = "connect"
     }
     const pending = this.#commandQueue.get(id)
     if (!pending) {
-      throw new Error("No pending command found")
+      this.#log("No pending command for id=%s, ignoring", id)
+      return
     }
 
     if ("result" in reply && reply.result === "auth_url") {
