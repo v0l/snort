@@ -58,6 +58,9 @@ function FilterIcon({
 
 export default function NotificationsPage({ onClick }: { onClick?: (link: NostrLink) => void }) {
   const login = useLogin()
+  const { isMuted } = useModeration()
+  const [limit, setLimit] = useState(100)
+  const [filter, setFilter] = useState(NotificationSummaryFilter.All)
 
   useEffect(() => {
     markNotificationsRead(LoginStore.snapshot())
