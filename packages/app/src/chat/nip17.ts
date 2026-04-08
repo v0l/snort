@@ -74,11 +74,11 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     }
 
     return [...chatMap.entries()].map(([id, chatMessages]) => {
-      return Nip17ChatSystem.createChatObj(id, chatMessages)
+      return Nip17ChatSystem.createChatObj(id, chatMessages, this.#cache)
     })
   }
 
-  static createChatObj(id: string, messages: Array<UnwrappedGift>) {
+  static createChatObj(id: string, messages: Array<UnwrappedGift>, cache?: GiftWrapCache) {
     const last = lastReadInChat(id)
     const participants = decodeTLV(id)
       .filter(v => v.type === TLVEntryType.Author)
@@ -134,7 +134,13 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
         }
         outMessages.push(pub.giftWrap(await pub.sealRumor(gossip, pub.pubKey), pub.pubKey, powTarget, GetPowWorker()))
         const ret = await Promise.all(outMessages)
-        Nip17Chats.notifyChange()
+        if (cache) {
+          await cache.onEvent(
+            ret.map(a => ({ ...a, relays: [] })),
+            "",
+            pub,
+          )
+        }
         return ret
       },
       sendMessage: (ev: Array<NostrEvent>, system: { BroadcastEvent: (e: NostrEvent) => void }) => {

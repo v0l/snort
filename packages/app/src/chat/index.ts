@@ -126,7 +126,7 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
 
 export function createEmptyChatObject(id: string) {
   if (id.startsWith("nchat17")) {
-    return Nip17ChatSystem.createChatObj(id, [])
+    return Nip17ChatSystem.createChatObj(id, [], GiftsCache)
   }
   throw new Error("Cant create new empty chat, unknown id")
 }
@@ -186,5 +186,5 @@ export function useChatSystems() {
 }
 
 export function useChat(id: string) {
-  return useChatSystem(Nip17Chats).find(a => a.id === id)
+  return useChatSystem(Nip17Chats).find(a => a.id === id) ?? createEmptyChatObject(id)
 }

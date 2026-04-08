@@ -28,8 +28,19 @@ export default function MessagesPage() {
 
   const chats = useChatSystems()
   const wot = useWoT()
-  const trustedChats = chats.filter(a => wot.followDistance(a.participants[0].id) <= 2)
-  const otherChats = chats.filter(a => wot.followDistance(a.participants[0].id) > 2)
+  const myPubkey = login.publicKey
+  const trustedChats = chats.filter(a => {
+    const p = a.participants[0]
+    if (!p) return false
+    if (p.id === myPubkey) return true
+    return wot.followDistance(p.id) <= 2
+  })
+  const otherChats = chats.filter(a => {
+    const p = a.participants[0]
+    if (!p) return false
+    if (p.id === myPubkey) return false
+    return wot.followDistance(p.id) > 2
+  })
 
   const unreadTrustedCount = useMemo(() => trustedChats.reduce((p, c) => p + c.unread, 0), [trustedChats])
   const unreadOtherCount = useMemo(() => otherChats.reduce((p, c) => p + c.unread, 0), [otherChats])
@@ -71,7 +82,7 @@ export default function MessagesPage() {
     const isActive = cx.id === id
     return (
       <div
-        className={classNames("flex items-center p cursor-pointer justify-between", { active: isActive })}
+        className={classNames("flex items-center px-3 py-2 cursor-pointer justify-between", { active: isActive })}
         key={cx.id}
         onClick={e => openChat(e, cx.type, cx.id)}
       >
@@ -108,7 +119,7 @@ export default function MessagesPage() {
               type="button"
               className="text-sm font-semibold"
               onClick={() => {
-                chats.forEach(c => c.markRead())
+                for (const c of chats) c.markRead()
               }}
             >
               <FormattedMessage defaultMessage="Mark all read" />
@@ -117,18 +128,16 @@ export default function MessagesPage() {
           </div>
           {trustedChats.sort(sortMessages).map(conversation)}
           {otherChats.sort(sortMessages).length > 0 && (
-            <>
-              <CollapsedSection
-                title={
-                  <div className="text-xl flex items-center gap-4">
-                    <FormattedMessage defaultMessage="Other Chats" />
-                    {unreadOtherCount > 0 && <div className="has-unread" />}
-                  </div>
-                }
-              >
-                {otherChats.map(conversation)}
-              </CollapsedSection>
-            </>
+            <CollapsedSection
+              title={
+                <div className="text-xl flex items-center gap-4">
+                  <FormattedMessage defaultMessage="Other Chats" />
+                  {unreadOtherCount > 0 && <div className="has-unread" />}
+                </div>
+              }
+            >
+              {otherChats.map(conversation)}
+            </CollapsedSection>
           )}
         </div>
       )}
