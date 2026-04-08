@@ -27,7 +27,7 @@ export const useCopy = (timeout = 2000) => {
         textArea.remove()
       }
       setCopied(true)
-    } catch (error) {
+    } catch (_error) {
       setError(true)
     }
 

@@ -18,7 +18,7 @@ export function useRates(symbol: string, leaveOpen = true) {
       .tag("d", [symbol])
       .limit(1)
     return rb
-  }, [symbol])
+  }, [symbol, leaveOpen])
 
   const feed = useRequestBuilder(sub)
   const ev = getNewest(feed)
@@ -44,7 +44,7 @@ export function useRateHistory(symbol: string, size: number, leaveOpen = false) 
       .tag("d", [symbol])
       .since(unixNow() - size)
     return rb
-  }, [symbol, size])
+  }, [symbol, size, leaveOpen])
 
   const feed = useRequestBuilder(sub)
 

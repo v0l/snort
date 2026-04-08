@@ -107,7 +107,7 @@ export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
       const toPersist = good.filter(u => !this.#persistedIds.has(u.id))
       if (toPersist.length > 0) {
         try {
-          await Promise.all(toPersist.map(u => this.#relay!.event(u.raw)))
+          await Promise.all(toPersist.map(u => this.#relay?.event(u.raw)))
           for (const u of toPersist) {
             this.#persistedIds.add(u.id)
           }

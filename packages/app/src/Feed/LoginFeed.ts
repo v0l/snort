@@ -34,7 +34,7 @@ export default function useLoginFeed() {
         System.config.socialGraphInstance.size(),
       )
     }
-  }, [pubKey])
+  }, [pubKey, system.config.socialGraphInstance.setRoot])
 
   useEffect(() => {
     login.state.init(publisher?.signer, system).catch(console.error)

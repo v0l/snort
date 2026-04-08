@@ -39,6 +39,6 @@ export function useMediaServerList() {
         state?.removeFromList(EventKind.BlossomServerList, new UnknownTag(["server", u]), true)
       },
     }),
-    [servers],
+    [servers, publisher, state?.addToList, state?.removeFromList],
   )
 }

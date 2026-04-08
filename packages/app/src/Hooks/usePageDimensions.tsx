@@ -20,7 +20,7 @@ export default function usePageDimensions() {
 
       return () => observer.disconnect()
     }
-  }, [ref])
+  }, [])
 
   return dimensions
 }

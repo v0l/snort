@@ -48,7 +48,7 @@ export default function useLoginHandler() {
       const pubkey = json.names[match]
 
       if (json.nip46) {
-        const bunkerRelays = json.nip46[json.names["_"]]
+        const bunkerRelays = json.nip46[json.names._]
         const nip46 = new Nip46Signer(`bunker://${pubkey}?relay=${encodeURIComponent(bunkerRelays[0])}`)
         nip46.on("oauth", url => {
           window.open(url, CONFIG.appNameCapitalized, "width=600,height=800,popup=yes")

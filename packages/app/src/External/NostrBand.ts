@@ -20,10 +20,6 @@ export default class NostrBandApi extends JsonApi {
   url = "https://api.nostr.band"
   readonly #supportedLangs = ["en", "de", "ja", "zh", "th", "pt", "es", "fr"]
 
-  constructor() {
-    super()
-  }
-
   async trendingProfiles() {
     return await this.getJson<TrendingProfilesResponse>("/v0/trending/profiles")
   }
