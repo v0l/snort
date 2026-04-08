@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import type React from "react"
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -25,6 +25,23 @@ export default function MessagesPage() {
   const navigate = useNavigate()
   const { id } = useParams()
   const { width: pageWidth } = usePageDimensions()
+  const [height, setHeight] = useState<number | undefined>()
+
+  useEffect(() => {
+    const update = () => {
+      const header = document.querySelector("header")
+      const headerH = header?.getBoundingClientRect().height ?? 0
+      const isMobile = window.innerWidth < TwoCol
+      if (isMobile && headerH > 0) {
+        setHeight(window.innerHeight - headerH)
+      } else {
+        setHeight(window.innerHeight)
+      }
+    }
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
+  }, [])
 
   const chats = useChatSystems()
   const wot = useWoT()
@@ -110,7 +127,7 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="flex flex-1 min-h-0 overflow-hidden">
+    <div className="flex flex-1 overflow-hidden" style={height ? { height: `${height}px` } : undefined}>
       {(pageWidth >= TwoCol || !id) && (
         <div className="overflow-y-auto md:h-screen p-2 w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
           <div className="flex items-center justify-between">

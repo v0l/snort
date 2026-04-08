@@ -72,12 +72,12 @@ export default function Index() {
   return (
     <ErrorBoundary>
       <ScrollToTop />
-      <div className="flex justify-center h-[100dvh]">
-        <div className="w-full max-w-screen-xl h-full">
-          <div className="flex h-full">
+      <div className="flex justify-center">
+        <div className="w-full max-w-screen-xl">
+          <div className="flex">
             <NavSidebar />
             <div
-              className={`flex flex-1 flex-col min-h-0 w-full md:w-1/3${shouldHideFooter ? "" : " pb-safe-area-plus-footer"}`}
+              className={`flex flex-1 flex-col w-full md:w-1/3${shouldHideFooter ? "" : " pb-safe-area-plus-footer"}`}
             >
               {!shouldHideHeader && <Header />}
               <ErrorBoundary>
