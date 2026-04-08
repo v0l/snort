@@ -278,6 +278,17 @@ export function isOffline() {
   return !("navigator" in globalThis && globalThis.navigator.onLine)
 }
 
+import { v4 as uuidV4 } from "uuid"
+
+if (typeof globalThis.crypto?.randomUUID !== "function") {
+  const randomUUID: typeof crypto.randomUUID = () => uuidV4() as ReturnType<typeof crypto.randomUUID>
+  if (globalThis.crypto) {
+    globalThis.crypto.randomUUID = randomUUID
+  } else {
+    globalThis.crypto = { randomUUID } as unknown as Crypto
+  }
+}
+
 export function isHex(s?: string) {
   if (!s) return false
   // 48-57 = 0-9

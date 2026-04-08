@@ -18,7 +18,8 @@
     "@scure/base": "^2.0.0",
     "debug": "^4.4.3",
     "eventemitter3": "^5.0.1",
-    "light-bolt11-decoder": "^3.2.0"
+    "light-bolt11-decoder": "^3.2.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
