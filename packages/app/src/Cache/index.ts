@@ -80,6 +80,9 @@ export const UserRelays = Relay ? new RelaysWorkerCache(Relay) : new UserRelaysC
 export const UserFollows = Relay ? new UserFollowsWorker(Relay) : new UserFollowsCache()
 export const ProfilesCache = Relay ? new ProfileCacheRelayWorker(Relay) : new UserProfileCache()
 export const GiftsCache = new GiftWrapCache()
+if (Relay) {
+  GiftsCache.setRelay(Relay)
+}
 
 export async function preload(follows?: Array<string>) {
   const preloads = [
