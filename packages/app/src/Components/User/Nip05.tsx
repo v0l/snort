@@ -39,6 +39,14 @@ export default function Nip05({ nip05, pubkey, forceVerified, showBadges, classN
   const isSpecialDomain =
     domain?.toLowerCase() === "snort.social" || domain?.toLowerCase() === CONFIG.nip05Domain.toLowerCase()
 
+  const setRefs = useCallback(
+    (el: HTMLSpanElement | null) => {
+      spanRef.current = el
+      inViewRef(el)
+    },
+    [inViewRef],
+  )
+
   return (
     <span
       className={classNames(
@@ -46,10 +54,7 @@ export default function Nip05({ nip05, pubkey, forceVerified, showBadges, classN
         { "opacity-50": !isVerified },
         className,
       )}
-      ref={el => {
-        spanRef.current = el
-        inViewRef(el)
-      }}
+      ref={setRefs}
       title={error?.message}
     >
       {!isDefaultUser && <span className="nick">{`${name}@`}</span>}
