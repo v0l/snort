@@ -127,9 +127,9 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="flex flex-1 overflow-hidden" style={height ? { height: `${height}px` } : undefined}>
+    <div className="flex flex-1 h-full overflow-hidden" style={height ? { height: `${height}px` } : undefined}>
       {(pageWidth >= TwoCol || !id) && (
-        <div className="overflow-y-auto md:h-screen p-2 w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
+        <div className="overflow-y-auto p-2 w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <button
               disabled={unreadTrustedCount <= 0}
