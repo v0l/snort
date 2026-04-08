@@ -1,7 +1,6 @@
 import {
   encodeTLVEntries,
   type ExternalStore,
-  NostrPrefix,
   type TLVEntry,
   TLVEntryType,
   unixNow,
@@ -106,7 +105,7 @@ export function selfChat(e: NostrEvent, myPk: string) {
 
 export function lastReadInChat(id: string) {
   const k = `dm:seen:${id}`
-  return parseInt(window.localStorage.getItem(k) ?? "0")
+  return parseInt(window.localStorage.getItem(k) ?? "0", 10)
 }
 
 export function setLastReadIn(id: string, time?: number) {
@@ -155,13 +154,13 @@ export function createEmptyChatObject(id: string) {
 export function useChatSystem<T extends ChatSystem & ExternalStore<Array<Chat>>>(sys: T) {
   const login = useLogin()
   const { publisher } = useEventPublisher()
-  const chat = useSyncExternalStore(
+  const _chat = useSyncExternalStore(
     s => sys.hook(s),
     () => sys.snapshot(),
   )
   const sub = useMemo(() => {
     return sys.subscription(login)
-  }, [login])
+  }, [login, sys.subscription])
   const data = useRequestBuilder(sub)
   const { isMuted } = useModeration()
 
@@ -169,7 +168,7 @@ export function useChatSystem<T extends ChatSystem & ExternalStore<Array<Chat>>>
     if (publisher) {
       sys.processEvents(publisher, data)
     }
-  }, [data, publisher])
+  }, [data, publisher, sys.processEvents])
 
   return useMemo(() => {
     if (login.publicKey) {
@@ -179,7 +178,7 @@ export function useChatSystem<T extends ChatSystem & ExternalStore<Array<Chat>>>
       )
     }
     return []
-  }, [chat, login, data, isMuted])
+  }, [login, data, isMuted, sys.listChats])
 }
 
 export function useChatSystems() {

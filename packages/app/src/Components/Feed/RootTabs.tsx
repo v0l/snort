@@ -20,7 +20,7 @@ export function RootTabs({ base = "/" }: { base: string }) {
   const defaultRootTab = usePreferences(s => s.defaultRootTab)
 
   const hashTags = tags.filter(a => a.toEventTag()?.[0] === "t").map(a => unwrap(a.toEventTag())[1])
-  const menuItems = useMemo(() => rootTabItems(base, pubKey, hashTags), [base, pubKey, tags])
+  const menuItems = useMemo(() => rootTabItems(base, pubKey, hashTags), [base, pubKey, hashTags])
 
   let defaultTab: RootTabRoutePath
   if (pubKey) {

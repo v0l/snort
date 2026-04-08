@@ -1,6 +1,7 @@
 export default function ECashIcon(props: { width?: number; height?: number }) {
   return (
     <svg viewBox="0 0 30 39" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <title>ecash</title>
       <g id="Group 47711">
         <path
           id="Rectangle 585"

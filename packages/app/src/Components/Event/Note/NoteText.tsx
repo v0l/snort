@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react"
+import { memo, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { Link } from "react-router-dom"
 
@@ -20,8 +20,9 @@ export const NoteText = memo(function InnerContent(
   const shouldTruncate = options?.truncate && body.length > TEXT_TRUNCATE_LENGTH
 
   const ToggleShowMore = () => (
-    <a
-      className="text-highlight"
+    <button
+      type="button"
+      className="text-highlight bg-transparent border-0 p-0 m-0"
       onClick={e => {
         e.preventDefault()
         e.stopPropagation()
@@ -29,7 +30,7 @@ export const NoteText = memo(function InnerContent(
       }}
     >
       {showMore ? <FormattedMessage defaultMessage="Show less" /> : <FormattedMessage defaultMessage="Show more" />}
-    </a>
+    </button>
   )
 
   const innerContent = (

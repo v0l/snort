@@ -18,7 +18,11 @@ export class ChatCache extends FeedCache<NostrEvent> {
 
   newest(): number {
     let ret = 0
-    this.cache.forEach(v => (ret = v.created_at > ret ? v.created_at : ret))
+    for (const v of this.cache.values()) {
+      if (v.created_at > ret) {
+        ret = v.created_at
+      }
+    }
     return ret
   }
 

@@ -25,7 +25,7 @@ export default function TimelineChunk(props: TimelineChunkProps) {
       f.since(props.chunk.since).until(props.chunk.until)
     }
     return rb
-  }, [props.id, props.chunk.until, props.builder])
+  }, [props.id, props.chunk.until, props.builder, props.chunk.since])
 
   const feed = useRequestBuilder(sub)
 

@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite"
 import basicSsl from "@vitejs/plugin-basic-ssl"
 import react from "@vitejs/plugin-react"
 import appConfig from "config"
@@ -5,7 +6,6 @@ import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 import { VitePWA } from "vite-plugin-pwa"
 import { vitePluginVersionMark } from "vite-plugin-version-mark"
-import tailwindcss from "@tailwindcss/vite"
 
 export default defineConfig({
   plugins: [
@@ -43,7 +43,7 @@ export default defineConfig({
       },
     }),
     visualizer({
-      open: true,
+      open: false,
       gzipSize: true,
       filename: "build/stats.html",
     }),

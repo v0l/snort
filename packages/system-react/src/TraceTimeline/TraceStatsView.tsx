@@ -56,7 +56,7 @@ export function TraceStatsView() {
       if (!traceGroups.has(traceId)) {
         traceGroups.set(traceId, [])
       }
-      traceGroups.get(traceId)!.push(entry)
+      traceGroups.get(traceId)?.push(entry)
     }
 
     // Calculate response time for each trace
@@ -127,7 +127,7 @@ export function TraceStatsView() {
     }
 
     // Add timing statistics per relay using the traceGroups already calculated above
-    for (const [traceId, traceEntries] of traceGroups) {
+    for (const [_traceId, traceEntries] of traceGroups) {
       // Sort by timestamp to ensure correct order
       traceEntries.sort((a, b) => a.event.timestamp - b.event.timestamp)
 
@@ -154,7 +154,7 @@ export function TraceStatsView() {
     }
 
     // Finalize averages
-    for (const [relay, stat] of relayStats) {
+    for (const [_relay, stat] of relayStats) {
       stat.avgRuntime = stat.completedCount > 0 ? stat.avgRuntime / stat.completedCount : 0
       if (stat.minRuntime === Infinity) stat.minRuntime = 0
     }

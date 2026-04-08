@@ -11,7 +11,7 @@ export class BackupKeyTask extends BaseUITask {
   noBaseStyle = true
 
   check(_: CachedMetadata, session: LoginSession): boolean {
-    return !this.state.muted && session.type == "private_key"
+    return !this.state.muted && session.type === "private_key"
   }
 
   render() {

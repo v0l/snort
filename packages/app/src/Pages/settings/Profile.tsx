@@ -73,7 +73,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           setNip05AddressValid(false)
           setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
         }
-      } catch (e) {
+      } catch (_e) {
         setNip05AddressValid(false)
         setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
       }
@@ -88,7 +88,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           await new LNURL(lud16).load()
           setLud16Valid(true)
           setInvalidLud16Message("")
-        } catch (e) {
+        } catch (_e) {
           setLud16Valid(false)
           setInvalidLud16Message(formatMessage(messages.InvalidLud16))
         }
@@ -127,13 +127,13 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       nip05,
       lud16,
     } as Record<string, string | number | undefined | boolean>
-    delete userCopy["loaded"]
-    delete userCopy["created"]
-    delete userCopy["pubkey"]
-    delete userCopy["npub"]
-    delete userCopy["deleted"]
-    delete userCopy["zapService"]
-    delete userCopy["isNostrAddressValid"]
+    delete userCopy.loaded
+    delete userCopy.created
+    delete userCopy.pubkey
+    delete userCopy.npub
+    delete userCopy.deleted
+    delete userCopy.zapService
+    delete userCopy.isNostrAddressValid
     console.debug(userCopy)
 
     if (publisher) {
@@ -172,7 +172,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     }
   }
 
-  async function setNewAvatar() {
+  async function _setNewAvatar() {
     const rsp = await uploadFile()
     if (rsp) {
       setPicture(rsp)
@@ -283,7 +283,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
                 </button>
               </Link>
               {/* <Link to="/free-nostr-address">
-                <button className="secondary">
+                <button type="button" className="secondary">
                   <FormattedMessage defaultMessage="Get a free one" />
                 </button>
               </Link> */}

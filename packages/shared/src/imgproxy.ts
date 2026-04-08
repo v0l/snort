@@ -25,7 +25,7 @@ export function proxyImg(url: string, settings?: ImgProxySettings, resize?: numb
     return urlSafe(base64.encode(result))
   }
   if (!settings) return url
-  if (url.startsWith("data:") || url.startsWith("blob:") || url.length == 0) return url
+  if (url.startsWith("data:") || url.startsWith("blob:") || url.length === 0) return url
   const opts = []
   if (sha256) {
     opts.push(`hs:sha256:${sha256}`)

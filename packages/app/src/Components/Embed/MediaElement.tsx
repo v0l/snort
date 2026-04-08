@@ -33,7 +33,11 @@ export type ImageElementProps = ProxyImgProps & {
 }
 
 const AudioElement = ({ src }: AudioElementProps) => {
-  return <audio key={src} src={src} controls />
+  return (
+    <audio key={src} src={src} controls aria-label="Audio Player">
+      <track kind="captions" />
+    </audio>
+  )
 }
 
 const ImageElement = ({ src, meta, onMediaClick, size, onFallback, ...props }: ImageElementProps) => {
@@ -41,10 +45,10 @@ const ImageElement = ({ src, meta, onMediaClick, size, onFallback, ...props }: I
   const [alternatives, setAlternatives] = useState<Array<string>>(meta?.fallback ?? [])
   const [currentUrl, setCurrentUrl] = useState(src)
   if ("creator" in props) {
-    delete props["creator"]
+    delete props.creator
   }
   if ("mime" in props) {
-    delete props["mime"]
+    delete props.mime
   }
   return (
     <ProxyImg
@@ -85,7 +89,7 @@ const VideoElement = ({ src }: VideoElementProps) => {
     } else {
       videoRef.current.pause()
     }
-  }, [inView])
+  }, [inView, isMobile])
 
   return (
     <div

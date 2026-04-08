@@ -43,7 +43,7 @@ class TestWorkerCache extends WorkerBaseCache<TestEntry> {
     return 1000
   }
 
-  mapper(ev: NostrEvent): TestEntry | undefined {
+  mapper(_ev: NostrEvent): TestEntry | undefined {
     return undefined
   }
 }

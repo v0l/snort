@@ -15,13 +15,13 @@ export function useStatusFeed(id?: string, leaveOpen = false) {
         .authors([id])
     }
     return rb
-  }, [id])
+  }, [id, leaveOpen])
 
   const status = useRequestBuilder(sub)
 
   const statusFiltered = status.filter(a => {
     const exp = Number(findTag(a, "expiration"))
-    return isNaN(exp) || exp >= unixNow()
+    return Number.isNaN(exp) || exp >= unixNow()
   })
   const general = statusFiltered?.find(a => findTag(a, "d") === "general")
   const music = statusFiltered?.find(a => findTag(a, "d") === "music")

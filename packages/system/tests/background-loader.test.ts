@@ -8,11 +8,11 @@
  *   - UntrackKeys: removes from all priority sets
  */
 
-import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test"
+import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 import type { CachedTable, CacheEvents } from "@snort/shared"
 import { EventEmitter } from "eventemitter3"
 import type { RequestBuilder, SystemInterface, TaggedNostrEvent } from "../src"
-import { BackgroundLoader, type ProfilePriority } from "../src/background-loader"
+import { BackgroundLoader, } from "../src/background-loader"
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -140,21 +140,17 @@ class TestLoader extends BackgroundLoader<TestEntry> {
   // Return Fetch call index → authors
   subIds: string[] = []
 
-  constructor(system: SystemInterface, cache: CachedTable<TestEntry>) {
-    super(system, cache)
-  }
-
   override name() {
     return "TestLoader"
   }
-  override onEvent(e: Readonly<TaggedNostrEvent>): TestEntry | undefined {
+  override onEvent(_e: Readonly<TaggedNostrEvent>): TestEntry | undefined {
     return undefined
   }
   override getExpireCutoff() {
     return Date.now() - 1
   } // anything not loaded in the last ms is "expired"
 
-  override buildSub(missing: string[]): RequestBuilder {
+  override buildSub(_missing: string[]): RequestBuilder {
     // Return a minimal stub that satisfies the RequestBuilder shape used by #buildChunkSub
     return {
       id: "test-sub",
@@ -170,9 +166,9 @@ class TestLoader extends BackgroundLoader<TestEntry> {
 
 type FetchCallback = (evs: TaggedNostrEvent[]) => Promise<void>
 
-function makeMockSystem(onFetch: (req: RequestBuilder, authors: string[]) => Promise<TestEntry[]>) {
+function _makeMockSystem(_onFetch: (req: RequestBuilder, authors: string[]) => Promise<TestEntry[]>) {
   return {
-    Fetch: async (req: RequestBuilder, cb?: FetchCallback) => {
+    Fetch: async (_req: RequestBuilder, cb?: FetchCallback) => {
       // Extract the authors the loader put into the filter — we capture them from
       // the stub filter built in TestLoader.buildSub above; instead, we read
       // the req.id which embeds the chunk index, and the test records authors
@@ -189,13 +185,13 @@ function makeMockSystem(onFetch: (req: RequestBuilder, authors: string[]) => Pro
 
 describe("BackgroundLoader — priority tiers", () => {
   let cache: MemoryCache
-  let fetchedBatches: string[][]
+  let _fetchedBatches: string[][]
   let system: SystemInterface
   let loader: TestLoader
 
   beforeEach(() => {
     cache = new MemoryCache()
-    fetchedBatches = []
+    _fetchedBatches = []
 
     // Intercept Fetch calls by overriding buildSub to record authors
     system = {
@@ -344,7 +340,7 @@ describe("BackgroundLoader — chunking", () => {
       override getExpireCutoff() {
         return Date.now() - 1
       }
-      override buildSub(missing: string[]): RequestBuilder {
+      override buildSub(_missing: string[]): RequestBuilder {
         return {
           id: "chunk-sub",
           withOptions: () => ({}),
@@ -385,7 +381,7 @@ describe("BackgroundLoader — chunking", () => {
       override getExpireCutoff() {
         return Date.now() - 1
       }
-      override buildSub(missing: string[]): RequestBuilder {
+      override buildSub(_missing: string[]): RequestBuilder {
         return {
           id: "chunk-sub",
           withOptions: () => ({}),
@@ -541,7 +537,7 @@ describe("BackgroundLoader — fresh cache skip", () => {
       override getExpireCutoff() {
         return Date.now() - 60 * 60 * 1_000
       }
-      override buildSub(missing: string[]): RequestBuilder {
+      override buildSub(_missing: string[]): RequestBuilder {
         const stub = {
           id: "fresh-sub",
           withOptions: () => stub,
@@ -588,7 +584,7 @@ describe("BackgroundLoader — fresh cache skip", () => {
       override getExpireCutoff() {
         return Date.now() - 60 * 60 * 1_000
       }
-      override buildSub(missing: string[]): RequestBuilder {
+      override buildSub(_missing: string[]): RequestBuilder {
         const stub = {
           id: "expired-sub",
           withOptions: () => stub,

@@ -197,7 +197,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     } as LoginSession
 
     MultiAccountStore.enableStandardLists(newSession.state)
-    newSession.state!.on("change", () => this.#save())
+    newSession.state?.on("change", () => this.#save())
     const pub = createPublisher(newSession)
     if (pub) {
       this.#publishers.set(newSession.id, pub)
@@ -246,7 +246,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       }),
     } as LoginSession
     MultiAccountStore.enableStandardLists(newSession.state)
-    newSession.state!.on("change", () => this.#save())
+    newSession.state?.on("change", () => this.#save())
 
     if ("nostr_os" in window && window?.nostr_os) {
       window?.nostr_os.saveKey(key.value)
@@ -291,58 +291,58 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     // delete some old keys
     for (const [, acc] of this.#accounts) {
       if ("appData" in acc) {
-        delete acc["appData"]
+        delete acc.appData
         didMigrate = true
       }
       if ("contacts" in acc) {
-        delete acc["contacts"]
+        delete acc.contacts
         didMigrate = true
       }
       if ("follows" in acc) {
-        delete acc["follows"]
+        delete acc.follows
         didMigrate = true
       }
       if ("relays" in acc) {
-        delete acc["relays"]
+        delete acc.relays
         didMigrate = true
       }
       if ("blocked" in acc) {
-        delete acc["blocked"]
+        delete acc.blocked
         didMigrate = true
       }
       if ("bookmarked" in acc) {
-        delete acc["bookmarked"]
+        delete acc.bookmarked
         didMigrate = true
       }
       if ("muted" in acc) {
-        delete acc["muted"]
+        delete acc.muted
         didMigrate = true
       }
       if ("pinned" in acc) {
-        delete acc["pinned"]
+        delete acc.pinned
         didMigrate = true
       }
       if ("tags" in acc) {
-        delete acc["tags"]
+        delete acc.tags
         didMigrate = true
       }
-      if (acc.state && acc.state.appdata) {
+      if (acc.state?.appdata) {
         if ("id" in acc.state.appdata) {
-          delete acc.state.appdata["id"]
+          delete acc.state.appdata.id
           didMigrate = true
         }
         if ("mutedWords" in acc.state.appdata) {
-          delete acc.state.appdata["mutedWords"]
+          delete acc.state.appdata.mutedWords
           didMigrate = true
         }
         if ("showContentWarningPosts" in acc.state.appdata) {
-          delete acc.state.appdata["showContentWarningPosts"]
+          delete acc.state.appdata.showContentWarningPosts
           didMigrate = true
         }
 
         if (acc.state.appdata.preferences) {
           if (!("muteWithWoT" in acc.state.appdata.preferences)) {
-            ;(acc.state.appdata.preferences as UserPreferences)["muteWithWoT"] = true
+            ;(acc.state.appdata.preferences as UserPreferences).muteWithWoT = true
             didMigrate = true
           }
         }

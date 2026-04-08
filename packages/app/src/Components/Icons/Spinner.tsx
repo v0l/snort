@@ -7,6 +7,7 @@ const Spinner = (props: { width?: number; height?: number; className?: string })
     stroke="currentColor"
     {...props}
   >
+    <title>Loading</title>
     <g className="origin-center animate-spin">
       <circle
         cx="10"

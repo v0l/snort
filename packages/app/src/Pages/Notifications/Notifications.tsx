@@ -65,7 +65,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
   useEffect(() => {
     markNotificationsRead(login)
     // biome-ignore lint/correctness/useExhaustiveDependencies: login.publicKey is the stable identity; full login object changes reference every render
-  }, [login.publicKey])
+  }, [login.publicKey, login])
 
   const notifications = useNotificationsView()
 
@@ -101,8 +101,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
   }, [myNotifications])
 
   return (
-    <>
-      <div>
+    <div>
         <div className="flex justify-between items-center mx-1">
           <div></div>
           <div className="flex items-center gap-2">
@@ -146,6 +145,5 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
           }}
         />
       </div>
-    </>
   )
 }

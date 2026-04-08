@@ -14,19 +14,23 @@ export function ZapGoal({ ev }: { ev: NostrEvent }) {
   const [zap, setZap] = useState(false)
   const zaps = useZapsFeed(NostrLink.fromEvent(ev))
   const target = Number(findTag(ev, "amount"))
-  const amount = zaps.reduce((acc, v) => (acc += v.amount * 1000), 0)
+  let amount = 0
+  for (const v of zaps) {
+    amount += v.amount * 1000
+  }
   const progress = amount / target
 
   return (
     <div className="layer-1">
       <div className="flex items-center justify-between">
         <h2 className="leading-[1em]">{ev.content}</h2>
-        <div
-          className="text-[var(--bg-color)] bg-highlight px-2 py-1 rounded-lg cursor-pointer flex"
+        <button
+          type="button"
+          className="text-[var(--bg-color)] bg-highlight px-2 py-1 rounded-lg cursor-pointer flex bg-transparent border-0 p-0 m-0"
           onClick={() => setZap(true)}
         >
           <Icon name="zap" size={15} />
-        </div>
+        </button>
         <ZapModal targets={Zapper.fromEvent(ev)} show={zap} onClose={() => setZap(false)} />
       </div>
 

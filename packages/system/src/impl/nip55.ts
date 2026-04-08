@@ -6,7 +6,6 @@ import type { EventSigner } from "../signer"
 
 export class Nip55Signer implements EventSigner {
   #log = debug("NIP-55")
-  #queue: Array<{ id: string; resolve: (o: any) => void; reject: () => void }> = []
 
   init(): Promise<void> {
     // nothing here
@@ -53,7 +52,7 @@ export class Nip55Signer implements EventSigner {
     otherParams?: Map<string, string>,
   ) {
     const id = crypto.randomUUID()
-    const objString = typeof obj === "string" ? obj : obj != undefined ? JSON.stringify(obj) : undefined
+    const objString = typeof obj === "string" ? obj : obj !== undefined ? JSON.stringify(obj) : undefined
 
     const params = new URLSearchParams()
     params.append("compressionType", "none")

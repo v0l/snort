@@ -46,7 +46,7 @@ export function decodeInvoice(pr: string): InvoiceDetails | undefined {
       expired: false,
     }
     if (ret.expire) {
-      ret.expired = ret.expire < new Date().getTime() / 1000
+      ret.expired = ret.expire < Date.now()/ 1000
     }
     return ret
   } catch (e) {

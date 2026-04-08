@@ -10,7 +10,7 @@ export default function ScrollToTop() {
       window.scrollTo(0, 0)
     }
     // Only scrolls to top on PUSH or REPLACE, not on POP
-  }, [pathname, navigationType])
+  }, [navigationType])
 
   return null
 }

@@ -159,22 +159,36 @@ function RoomBody({ ev, tab, onSelectTab }: { ev: TaggedNostrEvent; tab: RoomTab
       <RoomHeader ev={ev} />
       <MyControls />
       <div className="flex text-center items-center text-xl font-medium mb-2">
-        <div
+        <button
+          type="button"
           className={classNames("flex-1 py-2 cursor-pointer select-none border-b border-transparent", {
             "!border-highlight": tab === RoomTab.Participants,
           })}
           onClick={() => onSelectTab(RoomTab.Participants)}
+          onKeyDown={e => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault()
+              onSelectTab(RoomTab.Participants)
+            }
+          }}
         >
           <FormattedMessage defaultMessage="Participants" />
-        </div>
-        <div
+        </button>
+        <button
+          type="button"
           className={classNames("flex-1 py-2 cursor-pointer select-none border-b border-transparent", {
             "!border-highlight": tab === RoomTab.Chat,
           })}
           onClick={() => onSelectTab(RoomTab.Chat)}
+          onKeyDown={e => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault()
+              onSelectTab(RoomTab.Chat)
+            }
+          }}
         >
           <FormattedMessage defaultMessage="Chat" />
-        </div>
+        </button>
       </div>
       {tab === RoomTab.Participants && (
         <div className="grid grid-cols-4">

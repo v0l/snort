@@ -122,8 +122,7 @@ export function SnortDeckLayout() {
             />
           )}
           {deckState.article && (
-            <>
-              <Modal
+            <Modal
                 id="deck-article"
                 onClose={() => setDeckState({})}
                 className="long-form"
@@ -133,7 +132,6 @@ export function SnortDeckLayout() {
                   <LongFormText ev={deckState.article} isPreview={false} />
                 </div>
               </Modal>
-            </>
           )}
           <Toaster />
         </ErrorBoundary>

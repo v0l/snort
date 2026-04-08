@@ -16,7 +16,7 @@ export function NestsParticipants({ ev }: { ev: TaggedNostrEvent }) {
       .kinds([10_312 as EventKind])
       .since(unixNow() - 600)
     return sub
-  }, [link.tagKey])
+  }, [link.tagKey, link])
 
   const presense = useRequestBuilder(sub)
   const filteredPresence = presense.filter(ev => ev.created_at > unixNow() - 600)

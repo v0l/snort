@@ -1,7 +1,5 @@
 import { decodeInvoice } from "@snort/shared"
-import classNames from "classnames"
-import { useState } from "react"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import Icon from "@/Components/Icons/Icon"
@@ -50,7 +48,7 @@ export default function Invoice(props: InvoiceProps) {
       try {
         await wallet.payInvoice(invoice)
         setIsPaid(true)
-      } catch (error) {
+      } catch (_error) {
         setShowInvoice(true)
       }
     } else {
@@ -59,8 +57,7 @@ export default function Invoice(props: InvoiceProps) {
   }
 
   return (
-    <>
-      <div className="border rounded-lg p-6 flex-col items-start relative bg-[image:var(--invoice-gradient)]">
+    <div className="border rounded-lg p-6 flex-col items-start relative bg-[image:var(--invoice-gradient)]">
         <div>{header()}</div>
 
         <p className="font-normal text-[37px] leading-[45px] mb-4">
@@ -90,6 +87,5 @@ export default function Invoice(props: InvoiceProps) {
           )}
         </div>
       </div>
-    </>
   )
 }

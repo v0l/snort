@@ -62,7 +62,7 @@ export class Negentropy {
     const protocolVersion = getByte(query)
     if (protocolVersion < 96 || protocolVersion > 111) throw Error("invalid negentropy protocol version byte")
     if (protocolVersion !== PROTOCOL_VERSION) {
-      if (this.#isInitiator) throw Error("unsupported negentropy protocol version requested: " + (protocolVersion - 96))
+      if (this.#isInitiator) throw Error(`unsupported negentropy protocol version requested: ${protocolVersion - 96}`)
       else return [this.#renderOutput(fullOutput), haveIds, needIds]
     }
 

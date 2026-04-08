@@ -8,9 +8,6 @@ import { bytesToHex, hexToBytes, randomBytes, utf8ToBytes } from "@noble/hashes/
 import { base64 } from "@scure/base"
 
 export class InvalidPinError extends Error {
-  constructor() {
-    super()
-  }
 }
 
 export abstract class KeyStorage {
@@ -160,7 +157,7 @@ export class NotEncrypted extends KeyStorage {
     return false
   }
 
-  override unlock(code: string): Promise<void> {
+  override unlock(_code: string): Promise<void> {
     throw new Error("Method not implemented.")
   }
 

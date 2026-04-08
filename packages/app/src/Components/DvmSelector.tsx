@@ -1,11 +1,10 @@
-import { FormattedMessage } from "react-intl"
 import type { EventKind } from "@snort/system"
-
+import { FormattedMessage } from "react-intl"
+import Icon from "@/Components/Icons/Icon"
 import Modal from "@/Components/Modal/Modal"
-import useAppHandler from "@/Hooks/useAppHandler"
 import Avatar from "@/Components/User/Avatar"
 import DisplayName from "@/Components/User/DisplayName"
-import Icon from "@/Components/Icons/Icon"
+import useAppHandler from "@/Hooks/useAppHandler"
 
 interface DvmSelectorProps {
   kind: number
@@ -47,10 +46,11 @@ export default function DvmSelector({ kind, onClose, onSelect, currentProvider }
                 const isSelected = currentProvider === app.event.pubkey
 
                 return (
-                  <div
+                  <button
+                    type="button"
                     key={app.event.id}
                     onClick={() => handleSelect(app.event.pubkey)}
-                    className={`flex items-start gap-3 layer-1-hover mr-1`}
+                    className={`flex items-start gap-3 layer-1-hover mr-1 bg-transparent border-0 p-0 m-0`}
                   >
                     <Avatar pubkey={app.event.pubkey} user={app.metadata} size={48} />
                     <div className="flex flex-col flex-1">
@@ -69,7 +69,7 @@ export default function DvmSelector({ kind, onClose, onSelect, currentProvider }
                       </div>
                       {app.metadata?.about && <div className="text-sm text-neutral-400 mt-1">{app.metadata.about}</div>}
                     </div>
-                  </div>
+                  </button>
                 )
               })
           )}

@@ -4,6 +4,7 @@ const AppleMusicEmbed = ({ link }: { link: string }) => {
 
   return (
     <iframe
+      title="Apple Music Embed"
       allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
       frameBorder="0"
       height={isSongLink ? 175 : 450}

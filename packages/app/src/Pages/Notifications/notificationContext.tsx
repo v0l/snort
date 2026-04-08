@@ -14,9 +14,7 @@ export function NotificationContext({ link }: { link: NostrLink }) {
   }
   if (!ev)
     return (
-      <>
-        <FormattedMessage defaultMessage="Loading context..." />
-      </>
+      <FormattedMessage defaultMessage="Loading context..." />
     )
   if (ev.kind === EventKind.LiveEvent) {
     return <LiveEvent ev={ev} />

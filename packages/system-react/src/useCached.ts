@@ -100,7 +100,7 @@ export function useCached<T>(key: string | undefined, loader: () => Promise<T>, 
     if (cached === undefined || cached.cached < now - expires) {
       loadNow()
     }
-  }, [key, loading, error, data, loader, expires])
+  }, [key, loading, data, expires, loadNow])
 
   return {
     data: data?.object,

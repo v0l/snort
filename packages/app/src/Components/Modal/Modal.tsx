@@ -68,8 +68,16 @@ export default function Modal(props: ModalProps) {
     props.onClose?.(e)
   }
 
+  const handleBackdropKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      handleBackdropClick(e as unknown as React.MouseEvent)
+    }
+  }
+
   return createPortal(
-    <div
+    <button
+      type="button"
       className={
         props.className === "hidden"
           ? props.className
@@ -78,7 +86,9 @@ export default function Modal(props: ModalProps) {
       onMouseDown={handleBackdropClick}
       onClick={e => {
         e.stopPropagation()
+        props.onClose?.(e)
       }}
+      onKeyDown={handleBackdropKeyDown}
     >
       <div
         className={
@@ -87,12 +97,11 @@ export default function Modal(props: ModalProps) {
         onMouseDown={e => e.stopPropagation()}
         onClick={e => {
           e.stopPropagation()
-          props.onClick?.(e)
         }}
       >
         {props.children}
       </div>
-    </div>,
+    </button>,
     document.body,
   )
 }

@@ -10,8 +10,9 @@ export function LeaderBadge() {
   const [showModal, setShowModal] = useState(false)
   return (
     <>
-      <div
-        className="flex gap-1 p-1 pr-2 items-center border border-[#5B2CB3] rounded-full"
+      <button
+        type="button"
+        className="flex gap-1 p-1 pr-2 items-center border border-[#5B2CB3] rounded-full bg-transparent m-0 cursor-pointer hover:opacity-90"
         onClick={e => {
           e.preventDefault()
           e.stopPropagation()
@@ -22,7 +23,7 @@ export function LeaderBadge() {
         <div className="text-xs font-medium text-[#AC88FF]">
           <FormattedMessage defaultMessage="Community Leader" />
         </div>
-      </div>
+      </button>
       {showModal && (
         <Modal onClose={() => setShowModal(false)} id="leaders">
           <div className="flex flex-col gap-4 items-center relative">
@@ -35,7 +36,7 @@ export function LeaderBadge() {
               <FormattedMessage defaultMessage="Community leaders are individuals who grow the nostr ecosystem by being active in their local communities and helping onboard new users. Anyone can become a community leader, but few hold the current honorary title." />
             </p>
             <Link to="/settings/invite">
-              <button className="primary">
+              <button type="button" className="primary">
                 <FormattedMessage defaultMessage="Become a leader" />
               </button>
             </Link>

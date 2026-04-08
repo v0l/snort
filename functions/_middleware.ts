@@ -11,7 +11,7 @@ export const onRequest: PagesFunction<Env> = async context => {
   );
   const nostrAddress = u.pathname.match(/^\/([a-zA-Z0-9_]+)$/i);
   const next = await context.next();
-  if (u.pathname != "/" && (isEntityPath || nostrAddress)) {
+  if (u.pathname !== "/" && (isEntityPath || nostrAddress)) {
     //console.log("Handeling path: ", u.pathname, isEntityPath, nostrAddress[1]);
     try {
       let id = u.pathname.split("/").at(-1);

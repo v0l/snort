@@ -1,17 +1,17 @@
 import { EventExt, type TaggedNostrEvent } from "@snort/system"
-import { type ReactNode, useCallback, use, useMemo, useState } from "react"
+import { type ReactNode, use, useCallback, useMemo, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router-dom"
 
 import BackButton from "@/Components/Button/BackButton"
 import Note from "@/Components/Event/EventComponent"
-import { ThreadContext, type ThreadContextState } from "@/Utils/Thread"
-import Modal from "@/Components/Modal/Modal"
-import JsonBlock from "@/Components/json"
 import Icon from "@/Components/Icons/Icon"
-import { getReplies } from "./util"
-import { Subthread } from "./Subthread"
+import JsonBlock from "@/Components/json"
+import Modal from "@/Components/Modal/Modal"
 import { WarningNotice } from "@/Components/WarningNotice/WarningNotice"
+import { ThreadContext, type ThreadContextState } from "@/Utils/Thread"
+import { Subthread } from "./Subthread"
+import { getReplies } from "./util"
 
 interface ThreadProps {
   onBack?: () => void
@@ -153,13 +153,14 @@ function ThreadDebug() {
   if (!thread) return
   if (!show)
     return (
-      <div
+      <button
+        type="button"
         onClick={() => setShow(true)}
         className="flex items-center justify-center gap-2 text-neutral-500 cursor-pointer select-none leading-12 border"
       >
         <Icon name="json" size={16} />
         <FormattedMessage defaultMessage="Show Thread Data" />
-      </div>
+      </button>
     )
   return (
     <Modal id="thread-dump" onClose={() => setShow(false)}>

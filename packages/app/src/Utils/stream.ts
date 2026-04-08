@@ -38,23 +38,53 @@ export function extractStreamInfo(ev?: TaggedNostrEvent) {
   }
 
   for (const t of ev?.tags ?? []) {
-    matchTag(t, "d", v => (ret.id = v))
-    matchTag(t, "title", v => (ret.title = v))
-    matchTag(t, "summary", v => (ret.summary = v))
-    matchTag(t, "image", v => (ret.image = v))
-    matchTag(t, "thumbnail", v => (ret.thumbnail = v))
-    matchTag(t, "status", v => (ret.status = v as StreamState))
+    matchTag(t, "d", v => {
+      ret.id = v
+    })
+    matchTag(t, "title", v => {
+      ret.title = v
+    })
+    matchTag(t, "summary", v => {
+      ret.summary = v
+    })
+    matchTag(t, "image", v => {
+      ret.image = v
+    })
+    matchTag(t, "thumbnail", v => {
+      ret.thumbnail = v
+    })
+    matchTag(t, "status", v => {
+      ret.status = v as StreamState
+    })
     if (t[0] === "streaming") {
-      matchTag(t, "streaming", v => (ret.stream = v))
+      matchTag(t, "streaming", v => {
+        ret.stream = v
+      })
     }
-    matchTag(t, "recording", v => (ret.recording = v))
-    matchTag(t, "url", v => (ret.recording = v))
-    matchTag(t, "content-warning", v => (ret.contentWarning = v))
-    matchTag(t, "current_participants", v => (ret.participants = v))
-    matchTag(t, "goal", v => (ret.goal = v))
-    matchTag(t, "starts", v => (ret.starts = v))
-    matchTag(t, "ends", v => (ret.ends = v))
-    matchTag(t, "service", v => (ret.service = v))
+    matchTag(t, "recording", v => {
+      ret.recording = v
+    })
+    matchTag(t, "url", v => {
+      ret.recording = v
+    })
+    matchTag(t, "content-warning", v => {
+      ret.contentWarning = v
+    })
+    matchTag(t, "current_participants", v => {
+      ret.participants = v
+    })
+    matchTag(t, "goal", v => {
+      ret.goal = v
+    })
+    matchTag(t, "starts", v => {
+      ret.starts = v
+    })
+    matchTag(t, "ends", v => {
+      ret.ends = v
+    })
+    matchTag(t, "service", v => {
+      ret.service = v
+    })
   }
   const { regularTags } = sortStreamTags(ev?.tags ?? [])
   ret.tags = regularTags

@@ -24,7 +24,7 @@ export class ConnectionCacheRelay implements CacheRelay {
 
   query(req: ReqCommand): Promise<Array<TaggedNostrEvent>> {
     const id = crypto.randomUUID()
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
       const results = new NoteCollection()
       const evh = (s: string, e: TaggedNostrEvent) => {
         if (s === id) {
@@ -47,7 +47,7 @@ export class ConnectionCacheRelay implements CacheRelay {
     })
   }
 
-  delete(req: ReqCommand): Promise<string[]> {
+  delete(_req: ReqCommand): Promise<string[]> {
     // ignored
     return Promise.resolve([])
   }

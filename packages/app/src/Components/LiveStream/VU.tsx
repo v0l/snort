@@ -71,7 +71,7 @@ export default function VuBar({
         audioContext.close()
       }
     }
-  }, [ref, track, full])
+  }, [track, full])
 
   return <canvas ref={ref} width={width ?? 200} height={height ?? 10} className={className}></canvas>
 }

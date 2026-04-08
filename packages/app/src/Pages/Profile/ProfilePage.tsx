@@ -67,8 +67,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
 
   useEffect(() => {
     if (
-      user?.nip05 &&
-      user.nip05.endsWith(`@${CONFIG.nip05Domain}`) &&
+      user?.nip05?.endsWith(`@${CONFIG.nip05Domain}`) &&
       (!("isNostrAddressValid" in user) || user.isNostrAddressValid)
     ) {
       const [username] = user.nip05.split("@")

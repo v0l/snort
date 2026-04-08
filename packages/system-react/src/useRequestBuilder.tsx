@@ -1,4 +1,4 @@
-import { use, useEffect, useMemo, useSyncExternalStore } from "react"
+import { use, useMemo, useSyncExternalStore } from "react"
 import { EmptySnapshot, type RequestBuilder, type TaggedNostrEvent } from "@snort/system"
 import { SnortContext } from "./context"
 
@@ -40,7 +40,7 @@ export function useRequestBuilderAdvanced(rb: RequestBuilder) {
   const q = useMemo(() => {
     const q = system.Query(rb)
     return q
-  }, [rb])
+  }, [rb, system.Query])
 
   return q
 }

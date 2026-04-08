@@ -62,9 +62,9 @@ export class JsonEventSync<T> extends EventEmitter<JsonEventSyncEvents> {
     if (res) {
       if (this.encrypt) {
         if (!signer) return
-        this.#json = JSON.parse(await decryptSigner(this.#sync.value!.content, signer)) as T
+        this.#json = JSON.parse(await decryptSigner(this.#sync.value?.content, signer)) as T
       } else {
-        this.#json = JSON.parse(this.#sync.value!.content) as T
+        this.#json = JSON.parse(this.#sync.value?.content) as T
       }
     }
 

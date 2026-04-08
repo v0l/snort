@@ -20,7 +20,7 @@ export function eventMatchesFilter(ev: NostrEvent, filter: ReqFilter) {
 }
 
 export function isRequestSatisfied(filter: ReqFilter, results: Array<TaggedNostrEvent>) {
-  if (filter.ids && filter.ids.every(a => results.some(b => b.id === a))) {
+  if (filter.ids?.every(a => results.some(b => b.id === a))) {
     return true
   }
 }

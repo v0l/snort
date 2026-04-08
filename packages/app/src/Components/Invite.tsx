@@ -19,7 +19,7 @@ const InviteModal = () => {
       const api = new SnortApi()
       api.getRefCodeInfo(code).then(a => setPubkey(a.pubkey))
     }
-  }, [])
+  }, [code])
   const profile = useUserProfile(pubkey)
   if (!code) return
 
@@ -41,7 +41,7 @@ const InviteModal = () => {
           />
         </p>
         <Link to="/login/sign-up">
-          <button className="primary">
+          <button type="button" className="primary">
             <FormattedMessage defaultMessage="Sign Up" />
           </button>
         </Link>

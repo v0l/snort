@@ -4,7 +4,8 @@ import Icon from "@/Components/Icons/Icon"
 
 export default function CloseButton({ onClick, className }: { onClick?: () => void; className?: string }) {
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
       className={classNames(
         "self-center rounded-full flex flex-shrink-0 flex-grow-0 items-center justify-center hover:opacity-80 bg-dark p-2 cursor-pointer",
@@ -12,6 +13,6 @@ export default function CloseButton({ onClick, className }: { onClick?: () => vo
       )}
     >
       <Icon name="close" size={12} />
-    </div>
+    </button>
   )
 }

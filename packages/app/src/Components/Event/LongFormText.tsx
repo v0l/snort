@@ -87,14 +87,17 @@ export function LongFormText(props: LongFormTextProps) {
     setReading(false)
     if (ref.current) {
       const paragraphs = ref.current.querySelectorAll("p,h1,h2,h3,h4,h5,h6")
-      paragraphs.forEach(a => a.classList.remove("reading"))
+      for (const p of paragraphs) {
+        p.classList.remove("reading")
+      }
       window.speechSynthesis.cancel()
     }
   }
 
   const ToggleShowMore = () => (
-    <a
-      className="highlight cursor-pointer"
+    <button
+      type="button"
+      className="highlight cursor-pointer bg-transparent border-0 p-0 m-0"
       onClick={e => {
         e.preventDefault()
         e.stopPropagation()
@@ -102,7 +105,7 @@ export function LongFormText(props: LongFormTextProps) {
       }}
     >
       {showMore ? <FormattedMessage defaultMessage="Show less" /> : <FormattedMessage defaultMessage="Show more" />}
-    </a>
+    </button>
   )
 
   const shouldTruncate = props.truncate && props.ev.content.length > TEXT_TRUNCATE_LENGTH
@@ -124,14 +127,22 @@ export function LongFormText(props: LongFormTextProps) {
           </div>
           <div>‧</div>
           {!reading && (
-            <div className="cursor-pointer" onClick={() => readArticle()}>
+            <button
+              type="button"
+              className="cursor-pointer bg-transparent border-0 p-0 m-0"
+              onClick={() => readArticle()}
+            >
               <FormattedMessage defaultMessage="Listen to this article" />
-            </div>
+            </button>
           )}
           {reading && (
-            <div className="cursor-pointer" onClick={() => stopReading()}>
+            <button
+              type="button"
+              className="cursor-pointer bg-transparent border-0 p-0 m-0"
+              onClick={() => stopReading()}
+            >
               <FormattedMessage defaultMessage="Stop listening" />
-            </div>
+            </button>
           )}
         </div>
         <hr className="h-px my-1" />
@@ -146,7 +157,8 @@ export function LongFormText(props: LongFormTextProps) {
 
   return (
     <NoteProvider ev={props.ev}>
-      <div
+      <button
+        type="button"
         className={classNames("flex flex-col gap-4 p-4 break-words leading-6", {
           "cursor-pointer": props.isPreview,
         })}
@@ -168,7 +180,7 @@ export function LongFormText(props: LongFormTextProps) {
         <small className="">{summary}</small>
         {image && <div className="h-[360px] bg-center bg-cover" style={{ backgroundImage: `url(${proxy(image)})` }} />}
         {props.isPreview ? previewText() : fullText()}
-      </div>
+      </button>
     </NoteProvider>
   )
 }

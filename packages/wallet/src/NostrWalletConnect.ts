@@ -324,7 +324,7 @@ export class NostrConnectWallet extends EventEmitter<WalletEvents> implements LN
       {
         kinds: [23195 as EventKind],
         authors: [this.#config.walletPubkey],
-        ["#e"]: [evCommand.id],
+        "#e": [evCommand.id],
       },
     ])
     await this.#conn.publish(evCommand)

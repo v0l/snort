@@ -1,13 +1,13 @@
 import { EventExt, EventKind, type TaggedNostrEvent } from "@snort/system"
 import classNames from "classnames"
 
-import type { NotePropsOptions, NoteProps } from "@/Components/Event/EventComponent"
-import Poll from "@/Components/Event/Poll"
+import type { NoteProps, NotePropsOptions } from "@/Components/Event/EventComponent"
+import { useNoteContext } from "@/Components/Event/Note/NoteContext"
+import NoteFooter from "@/Components/Event/Note/NoteFooter/NoteFooter"
 import NoteHeader from "@/Components/Event/Note/NoteHeader"
 import { NoteText } from "@/Components/Event/Note/NoteText"
 import { TranslationInfo } from "@/Components/Event/Note/TranslationInfo"
-import NoteFooter from "@/Components/Event/Note/NoteFooter/NoteFooter"
-import { useNoteContext } from "@/Components/Event/Note/NoteContext"
+import Poll from "@/Components/Event/Poll"
 
 interface NoteContentProps {
   props: NoteProps
@@ -26,7 +26,12 @@ export function NoteContent({ props, options, goToEvent, setSeenAtRef, waitUntil
   return (
     <>
       {options.showHeader && <NoteHeader options={options} />}
-      <div onClick={e => goToEvent(e, ev)} className={classNames("min-h-0", props.inset)} ref={setSeenAtRef}>
+      <button
+        type="button"
+        onClick={e => goToEvent(e, ev)}
+        className={classNames("min-h-0 bg-transparent border-0 p-0 m-0 cursor-pointer", props.inset)}
+        ref={setSeenAtRef}
+      >
         <NoteText {...props} translated={translated} showTranslation={showTranslation} />
         {translated && <TranslationInfo />}
         {ev.kind === EventKind.Polls && <Poll ev={ev} zaps={[]} />}
@@ -35,7 +40,7 @@ export function NoteContent({ props, options, goToEvent, setSeenAtRef, waitUntil
             <NoteFooter replyCount={props.threadChains?.get(EventExt.keyOf(ev))?.length} />
           </div>
         )}
-      </div>
+      </button>
     </>
   )
 }

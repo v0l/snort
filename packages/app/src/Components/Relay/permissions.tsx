@@ -7,8 +7,9 @@ export default function RelayPermissions({ conn }: { conn: ConnectionType }) {
   const { state } = useLogin(s => ({ v: s.state.version, state: s.state }))
 
   return (
-    <div className="flex gap-2 cursor-pointer select-none">
-      <div
+    <div className="flex gap-2">
+      <button
+        type="button"
         className={conn.settings.read ? "" : "text-gray"}
         onClick={() =>
           state.updateRelay(conn.address, {
@@ -16,10 +17,20 @@ export default function RelayPermissions({ conn }: { conn: ConnectionType }) {
             write: conn.settings.write,
           })
         }
+        onKeyDown={e => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault()
+            state.updateRelay(conn.address, {
+              read: !conn.settings.read,
+              write: conn.settings.write,
+            })
+          }
+        }}
       >
         <FormattedMessage defaultMessage="Read" />
-      </div>
-      <div
+      </button>
+      <button
+        type="button"
         className={conn.settings.write ? "" : "text-gray"}
         onClick={() =>
           state.updateRelay(conn.address, {
@@ -27,9 +38,18 @@ export default function RelayPermissions({ conn }: { conn: ConnectionType }) {
             write: !conn.settings.write,
           })
         }
+        onKeyDown={e => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault()
+            state.updateRelay(conn.address, {
+              read: conn.settings.read,
+              write: !conn.settings.write,
+            })
+          }
+        }}
       >
         <FormattedMessage defaultMessage="Write" />
-      </div>
+      </button>
     </div>
   )
 }

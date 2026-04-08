@@ -30,7 +30,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     window: options.window,
     now: options.now ?? unixNow(),
   })
-  const autoShowLatest = usePreferences(s => s.autoShowLatest)
+  const _autoShowLatest = usePreferences(s => s.autoShowLatest)
   const { isEventMuted } = useModeration()
 
   const createBuilder = useCallback(() => {
@@ -114,7 +114,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       filter.limit(1).since(now)
     }
     return rb
-  }, [autoShowLatest, createBuilder])
+  }, [createBuilder, now])
 
   const latestQuery = useRequestBuilderAdvanced(subRealtime)
   const latest = useSyncExternalStore(

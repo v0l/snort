@@ -1,6 +1,7 @@
 export default function AwardIcon({ size }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 62 62" fill="none" className="award">
+      <title>Community Leader Award</title>
       <defs>
         <linearGradient
           id="paint0_linear_2660_40043"

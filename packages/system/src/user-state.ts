@@ -197,7 +197,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     }
 
     // Check app data for pending changes
-    if (this.#appdata && this.#appdata.hasPendingChanges) {
+    if (this.#appdata?.hasPendingChanges) {
       count++
     }
 
@@ -357,7 +357,7 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
     }
 
     // Save app data if there are changes
-    if (this.#appdata && this.#appdata.hasPendingChanges) {
+    if (this.#appdata?.hasPendingChanges) {
       tasks.push(this.#appdata.persist(this.#signer!, this.#system!))
     }
 

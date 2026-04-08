@@ -30,16 +30,23 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
     if (src) {
       setImgSrc(proxy(src, size, sha256))
     }
-  }, [src, size, sha256])
+  }, [src, size, sha256, proxy])
 
   if (loadFailed && !bypass && (promptToLoadDirectly ?? true)) {
     return (
-      <div
+      <button
+        type="button"
         className="text-error"
         title={src}
         onClick={e => {
           e.stopPropagation()
           setBypass(true)
+        }}
+        onKeyDown={e => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault()
+            setBypass(true)
+          }
         }}
       >
         <FormattedMessage
@@ -48,7 +55,8 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
             host: getUrlHostname(src),
           }}
         />
-      </div>
+        <Icon name="link" className="ml-1" />
+      </button>
     )
   }
 
@@ -70,6 +78,7 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
 
   return (
     <img
+      alt={props.alt ?? "Image"}
       {...props}
       ref={ref}
       src={(bypassProxy ?? false) ? src : imgSrc}

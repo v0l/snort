@@ -15,7 +15,7 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
       <div className="text-sm text-neutral-400">
         <FormattedMessage defaultMessage="This note has been muted" />
       </div>
-      <button className="btn btn-sm btn-neutral" onClick={() => setShow(true)}>
+      <button type="button" className="btn btn-sm btn-neutral" onClick={() => setShow(true)}>
         <FormattedMessage defaultMessage="Show" />
       </button>
     </div>

@@ -1,6 +1,7 @@
 export default function NostrIcon(props: { width?: number; height?: number }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 116.446 84.924" {...props}>
+      <title>Nostr</title>
       <path
         fill="currentColor"
         clipRule="evenodd"

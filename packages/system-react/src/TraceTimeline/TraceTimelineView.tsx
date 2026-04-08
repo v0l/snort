@@ -27,8 +27,8 @@ export function TraceTimelineView() {
 
   const emptyTimeline = { entries: [] as TimelineEntry[], enabled: false }
   const timeline = useSyncExternalStore(
-    c => system.traceTimeline!.hook(c),
-    () => system.traceTimeline!.snapshot(),
+    c => system.traceTimeline?.hook(c),
+    () => system.traceTimeline?.snapshot(),
     () => emptyTimeline,
   )
 
@@ -67,7 +67,7 @@ export function TraceTimelineView() {
       if (!lanes.has(relay)) {
         lanes.set(relay, [])
       }
-      lanes.get(relay)!.push(entry)
+      lanes.get(relay)?.push(entry)
     }
 
     return Array.from(lanes.entries()).map(([relay, entries]) => {
@@ -91,7 +91,7 @@ export function TraceTimelineView() {
         if (!traceGroups.has(traceId)) {
           traceGroups.set(traceId, [])
         }
-        traceGroups.get(traceId)!.push(entry)
+        traceGroups.get(traceId)?.push(entry)
       }
 
       // Track which level each trace ID is assigned to

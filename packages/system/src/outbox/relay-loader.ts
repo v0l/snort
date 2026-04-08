@@ -18,7 +18,7 @@ export class RelayMetadataLoader extends BackgroundLoader<UsersRelays> {
         created: e.created_at,
         loaded: unixNowMs(),
       }
-    } catch (e) {
+    } catch (_e) {
       // ignored
     }
   }

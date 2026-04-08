@@ -1,13 +1,12 @@
+import { fetchNip05Pubkey } from "@snort/shared"
 import { NostrLink, tryParseNostrLink } from "@snort/system"
 import { type ChangeEvent, useEffect, useMemo, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useLocation, useNavigate } from "react-router-dom"
-
 import Icon from "@/Components/Icons/Icon"
 import Spinner from "@/Components/Icons/Spinner"
 import ProfileImage from "@/Components/User/ProfileImage"
 import useProfileSearch from "@/Hooks/useProfileSearch"
-import { fetchNip05Pubkey } from "@snort/shared"
 
 const MAX_RESULTS = 3
 
@@ -17,7 +16,7 @@ export default function SearchBox() {
   const [searching, setSearching] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
   const navigate = useNavigate()
-  const location = useLocation()
+  const _location = useLocation()
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const [activeIndex, setActiveIndex] = useState<number>(-1)
@@ -48,7 +47,7 @@ export default function SearchBox() {
     // Close the search on navigation
     setSearch("")
     setActiveIndex(-1)
-  }, [location])
+  }, [])
 
   const executeSearch = async () => {
     try {
@@ -133,14 +132,21 @@ export default function SearchBox() {
           className="absolute top-full mt-2 w-full border bg-white dark:bg-black shadow-lg rounded-lg z-10 overflow-hidden"
           ref={resultListRef}
         >
-          <div
+          <button
+            type="button"
             className="cursor-pointer p-2 hover:bg-layer-2"
             onMouseEnter={() => setActiveIndex(0)}
             onClick={() => navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })}
+            onKeyDown={e => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault()
+                navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })
+              }
+            }}
           >
             <FormattedMessage defaultMessage="Search notes" />: <b>{search}</b>
-          </div>
-          {results?.slice(0, MAX_RESULTS).map((result, idx) => (
+          </button>
+          {results?.slice(0, MAX_RESULTS).map((result, _idx) => (
             <ProfileImage pubkey={result.pubkey} showProfileCard={false} className="p-2 hover:bg-layer-2" />
           ))}
         </div>

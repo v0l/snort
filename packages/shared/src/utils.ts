@@ -24,7 +24,7 @@ export function unixNow() {
 }
 
 export function unixNowMs() {
-  return new Date().getTime()
+  return  Date.now()
 }
 
 export function jitter(n: number) {
@@ -51,7 +51,7 @@ export function deepEqual(x: any, y: any): boolean {
 
 export function countMembers(a: any) {
   let ret = 0
-  for (const [k, v] of Object.entries(a)) {
+  for (const [_k, v] of Object.entries(a)) {
     if (Array.isArray(v)) {
       ret += v.length
     }
@@ -284,7 +284,7 @@ export function isHex(s?: string) {
   // 65-70 = A-F
   // 97-102 = a-f
   return (
-    s.length % 2 == 0 &&
+    s.length % 2 === 0 &&
     [...s].map(v => v.charCodeAt(0)).every(v => (v >= 48 && v <= 57) || (v >= 65 && v <= 70) || (v >= 97 && v <= 102))
   )
 }

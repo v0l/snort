@@ -23,10 +23,6 @@ export class TraceTimeline extends ExternalStore<TraceTimelineSnapshot> {
   // Track start timestamp for each trace ID to compute total elapsed time
   #startTimestamp: Map<string, number> = new Map()
 
-  constructor() {
-    super()
-  }
-
   /**
    * Enable/disable timeline collection
    */

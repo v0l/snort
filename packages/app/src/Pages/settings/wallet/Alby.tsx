@@ -44,7 +44,7 @@ export default function AlbyOAuth() {
         })
       }
     }
-  }, [location])
+  }, [location, setupWallet])
 
   if (!location.search) return
   return (

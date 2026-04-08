@@ -159,8 +159,8 @@ export default function Poll(props: PollProps) {
           })()
           const weight = totalVotes === 0 ? 0 : total / totalVotes
           return (
-            <div key={a[1]} className="flex" onClick={e => zapVote(e, opt)}>
-              <div className="grow">{opt === voting ? <Spinner /> : <>{desc}</>}</div>
+            <button type="button" key={a[1]} className="flex" onClick={e => zapVote(e, opt)}>
+              <div className="grow">{opt === voting ? <Spinner /> : desc}</div>
               {showResults && (
                 <>
                   <div className="flex">
@@ -170,7 +170,7 @@ export default function Poll(props: PollProps) {
                   <div style={{ width: `${weight * 100}%` }} className="progress"></div>
                 </>
               )}
-            </div>
+            </button>
           )
         })}
         {error && <b className="error">{error}</b>}

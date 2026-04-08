@@ -33,7 +33,7 @@ export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements R
 
   summary(): Record<string, number> {
     const ret = {} as Record<string, number>
-    for (const [k, v] of this.#events) {
+    for (const [_k, v] of this.#events) {
       ret[v.kind.toString()] ??= 0
       ret[v.kind.toString()]++
     }
@@ -75,11 +75,11 @@ export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements R
     return false
   }
 
-  sql(sql: string, params: (string | number)[]): (string | number)[][] {
+  sql(_sql: string, _params: (string | number)[]): (string | number)[][] {
     return []
   }
 
-  req(id: string, filter: ReqFilter) {
+  req(_id: string, filter: ReqFilter) {
     const ret = []
     for (const [, e] of this.#events) {
       if (eventMatchesFilter(e, filter)) {

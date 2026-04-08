@@ -14,7 +14,7 @@ export function useArticles(limit = 10) {
       rb.withFilter().kinds([EventKind.LongFormTextNote]).authors(followList).limit(limit)
     }
     return rb
-  }, [followList])
+  }, [followList, limit])
 
   return useRequestBuilder(sub)
 }
@@ -29,7 +29,7 @@ export function useCachedArticles(limit = 10) {
       rb.withFilter().kinds([EventKind.LongFormTextNote]).authors(followList).limit(limit)
     }
     return rb
-  }, [followList])
+  }, [followList, limit])
 
   const loader = useCallback(async () => {
     return await system.Fetch(sub)

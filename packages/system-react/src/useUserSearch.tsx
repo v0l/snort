@@ -10,7 +10,7 @@ export function useUserSearch() {
   const search = useCallback(
     async (input: string): Promise<Array<string>> => {
       // try exact match first
-      if (input.length === 64 && [...input].every(c => !isNaN(parseInt(c, 16)))) {
+      if (input.length === 64 && [...input].every(c => !Number.isNaN(parseInt(c, 16)))) {
         return [input]
       }
 

@@ -6,7 +6,7 @@ export function findTag(e: NostrEvent, tag: string) {
   const maybeTag = e.tags.find(evTag => {
     return evTag[0] === tag
   })
-  return maybeTag && maybeTag[1]
+  return maybeTag?.[1]
 }
 
 export function findWholeTag(e: NostrEvent, tag: string) {

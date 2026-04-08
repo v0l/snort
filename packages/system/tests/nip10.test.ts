@@ -297,12 +297,12 @@ describe("Nip10", () => {
       // First should be the root tag
       const rootTag = eTags.find(t => t[3] === "root")
       expect(rootTag).toBeDefined()
-      expect(rootTag![1]).toBe("aaaa000000000000000000000000000000000000000000000000000000000001")
+      expect(rootTag?.[1]).toBe("aaaa000000000000000000000000000000000000000000000000000000000001")
 
       // Second should be the reply tag (to the note we're replying to)
       const replyTag = eTags.find(t => t[3] === "reply")
       expect(replyTag).toBeDefined()
-      expect(replyTag![1]).toBe("dddd000000000000000000000000000000000000000000000000000000000004")
+      expect(replyTag?.[1]).toBe("dddd000000000000000000000000000000000000000000000000000000000004")
     })
 
     test("should add replyTo pubkey for note author when replying to threaded note with p-tags", () => {

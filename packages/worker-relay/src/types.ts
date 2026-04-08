@@ -86,7 +86,7 @@ export interface RelayHandlerEvents {
 }
 
 export function unixNowMs() {
-  return new Date().getTime()
+  return  Date.now()
 }
 
 export function eventMatchesFilter(ev: NostrEvent, filter: ReqFilter) {

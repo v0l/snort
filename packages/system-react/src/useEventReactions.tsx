@@ -20,7 +20,7 @@ export function useEventReactions(link: NostrLink, related: ReadonlyArray<Tagged
       },
       {} as Record<string, Array<TaggedNostrEvent>>,
     )
-  }, [related])
+  }, [related, assumeRelated, link.isReplyToThis])
 
   return useMemo(() => {
     const deletions = reactionKinds[String(EventKind.Deletion)] ?? []

@@ -32,15 +32,14 @@ export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: Tagged
   }
 
   return (
-    <>
-      <Modal id="broadcaster" onClose={onClose}>
+    <Modal id="broadcaster" onClose={onClose}>
         <div className="flex flex-col gap-4">
           <div className="text-xl font-medium">
             <FormattedMessage defaultMessage="Broadcast Event" />
           </div>
           {Object.keys(relays)
             .filter(el => relays[el].write)
-            .map((r, i, a) => (
+            .map((r, _i, a) => (
               <div key={r} className="flex justify-between">
                 <div className="flex flex-col gap-1">
                   <div>{r}</div>
@@ -72,6 +71,5 @@ export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: Tagged
           </div>
         </div>
       </Modal>
-    </>
   )
 }

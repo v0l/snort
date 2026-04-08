@@ -31,7 +31,7 @@ export default function ManageSubscriptionPage() {
   }
   useEffect(() => {
     loadSubs()
-  }, [])
+  }, [loadSubs])
 
   if (!(error instanceof SubscriptionError) && error instanceof Error)
     return <ErrorOrOffline error={error} onRetry={loadSubs} className="px-3 py-2" />

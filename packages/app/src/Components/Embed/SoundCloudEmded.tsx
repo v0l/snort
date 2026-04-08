@@ -1,6 +1,7 @@
 const SoundCloudEmbed = ({ link }: { link: string }) => {
   return (
     <iframe
+      title="SoundCloud Embed"
       width="100%"
       height="166"
       allow="autoplay"

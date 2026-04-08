@@ -37,7 +37,7 @@ function parseBlossomLink(link: string) {
     extension,
     authors: authors.length > 0 ? authors : undefined,
     servers: servers.length > 0 ? servers : undefined,
-    size: isNaN(size) ? undefined : size,
+    size: Number.isNaN(size) ? undefined : size,
   } as BlossomLink
 }
 

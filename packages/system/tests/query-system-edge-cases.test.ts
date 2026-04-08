@@ -7,7 +7,7 @@
  *   - QueryManager (dedup, destroy cleanup, canSendQuery branches)
  */
 
-import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test"
+import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 import type { CachedTable } from "@snort/shared"
 import { EventEmitter } from "eventemitter3"
 import { SocialGraph } from "nostr-social-graph"
@@ -16,7 +16,7 @@ import type { CachedMetadata, UsersFollows } from "../src/cache"
 import type { RelaySettings } from "../src/connection"
 import type { ConnectionPool, ConnectionPoolEvents, ConnectionType, ConnectionTypeEvents } from "../src/connection-pool"
 import type { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "../src/nostr"
-import { KeyedReplaceableNoteStore, NoteCollection } from "../src/note-collection"
+import { NoteCollection } from "../src/note-collection"
 import type { RelayMetadataLoader } from "../src/outbox"
 import type { ProfileLoaderService } from "../src/profile-cache"
 import { Query, QueryTraceState } from "../src/query"
@@ -359,7 +359,7 @@ describe("NoteCollection", () => {
     test("takeSnapshot() is always fresh, independent of cached snapshot", () => {
       const c = new NoteCollection()
       c.add(ev("a", 1, 100))
-      const cached = c.snapshot
+      const _cached = c.snapshot
       c.add(ev("b", 1, 200))
       // cached is stale (still just 'a') — snapshot gets recomputed
       const fresh = c.takeSnapshot()
@@ -858,7 +858,7 @@ describe("Query lifecycle", () => {
 
   test("QueryTrace same-state transition is a no-op (no event emitted)", async () => {
     const rb = makeRb("test")
-    const q = new Query(rb)
+    const _q = new Query(rb)
 
     const { QueryTrace } = await import("../src/query")
     const trace = new QueryTrace("wss://r.test", [], "conn1", false)

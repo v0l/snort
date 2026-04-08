@@ -374,7 +374,7 @@ export class Query extends EventEmitter<QueryEvents> {
   get progress() {
     const traces = [...this.#tracing.values()]
     const thisProgress = traces.reduce((acc, v) => (acc += v.finished ? 1 : 0), 0) / traces.length
-    if (isNaN(thisProgress)) {
+    if (Number.isNaN(thisProgress)) {
       return 0
     }
     return thisProgress

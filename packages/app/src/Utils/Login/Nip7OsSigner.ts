@@ -34,11 +34,11 @@ export class Nip7OsSigner implements EventSigner {
     return Promise.resolve(this.#interface.nip04_decrypt(content, otherKey))
   }
 
-  nip44Encrypt(content: string, key: string): Promise<string> {
+  nip44Encrypt(_content: string, _key: string): Promise<string> {
     throw new Error("Method not implemented.")
   }
 
-  nip44Decrypt(content: string, otherKey: string): Promise<string> {
+  nip44Decrypt(_content: string, _otherKey: string): Promise<string> {
     throw new Error("Method not implemented.")
   }
 

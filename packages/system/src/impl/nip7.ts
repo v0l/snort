@@ -64,7 +64,7 @@ export class Nip7Signer implements EventSigner {
     return await barrierQueue(Nip7Queue, async () => {
       const nostr = globalThis.window.nostr
       if (!nostr) throw new Error("Nostr signer not found")
-      return await nostr.nip44!.encrypt(key, content)
+      return await nostr.nip44?.encrypt(key, content)
     })
   }
 
@@ -75,7 +75,7 @@ export class Nip7Signer implements EventSigner {
     return await barrierQueue(Nip7Queue, async () => {
       const nostr = globalThis.window.nostr
       if (!nostr) throw new Error("Nostr signer not found")
-      return await nostr.nip44!.decrypt(otherKey, content)
+      return await nostr.nip44?.decrypt(otherKey, content)
     })
   }
 

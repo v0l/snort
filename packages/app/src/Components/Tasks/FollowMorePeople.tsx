@@ -14,8 +14,7 @@ export class FollowMorePeopleTask extends BaseUITask {
 
   render() {
     return (
-      <>
-        <p>
+      <p>
           <FormattedMessage
             defaultMessage="It looks like you dont follow enough people, take a look at {newUsersPage} to discover people to follow!"
             values={{
@@ -27,7 +26,6 @@ export class FollowMorePeopleTask extends BaseUITask {
             }}
           />
         </p>
-      </>
     )
   }
 }

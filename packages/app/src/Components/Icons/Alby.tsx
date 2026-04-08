@@ -1,6 +1,7 @@
 export default function AlbyIcon(props: { size?: number }) {
   return (
     <svg width={props.size ?? 400} height={props.size ?? 578} viewBox="0 0 400 578" fill="none">
+      <title>Alby</title>
       <path
         opacity="0.1"
         d="M201.283 577.511C255.405 577.511 299.281 569.411 299.281 559.419C299.281 549.427 255.405 541.327 201.283 541.327C147.16 541.327 103.285 549.427 103.285 559.419C103.285 569.411 147.16 577.511 201.283 577.511Z"

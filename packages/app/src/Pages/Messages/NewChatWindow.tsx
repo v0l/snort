@@ -24,7 +24,7 @@ export default function NewChatWindow() {
     setNewChat([])
     setSearchTerm("")
     setResults(followList.slice(0, 5))
-  }, [show])
+  }, [followList.slice])
 
   useEffect(() => {
     return debounce(500, () => {
@@ -34,7 +34,7 @@ export default function NewChatWindow() {
         setResults(followList)
       }
     })
-  }, [term])
+  }, [term, followList, search])
 
   function togglePubkey(a: string) {
     setNewChat(c => (c.includes(a) ? c.filter(v => v !== a) : appendDedupe(c, [a])))

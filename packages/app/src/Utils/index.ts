@@ -19,7 +19,7 @@ export async function openFile(): Promise<File | undefined> {
       lock = true
       const elm = e.target as HTMLInputElement
       if ((elm.files?.length ?? 0) > 0) {
-        resolve(elm.files![0])
+        resolve(elm.files?.[0])
       } else {
         resolve(undefined)
       }
@@ -52,7 +52,7 @@ export function parseId(id: string) {
     if (hrp.some(a => id.startsWith(a))) {
       return bech32ToHex(id)
     }
-  } catch (e) {
+  } catch (_e) {
     // Ignore the error.
   }
   return id
@@ -313,18 +313,25 @@ export function magnetURIDecode(uri: string): Magnet | undefined {
     })
 
     // Convenience properties for parity with `parse-torrent-file` module
-    let m
+    const m: RegExpMatchArray | null = null
     if (result.xt) {
       const xts = Array.isArray(result.xt) ? result.xt : [result.xt]
       xts.forEach(xt => {
         if (typeof xt === "string") {
-          if ((m = xt.match(/^urn:btih:(.{40})/))) {
-            result.infoHash = [m[1].toLowerCase()]
-          } else if ((m = xt.match(/^urn:btih:(.{32})/))) {
-            const decodedStr = base32hex.decode(m[1])
-            result.infoHash = [bytesToHex(decodedStr)]
-          } else if ((m = xt.match(/^urn:btmh:1220(.{64})/))) {
-            result.infoHashV2 = [m[1].toLowerCase()]
+          const m1 = xt.match(/^urn:btih:(.{40})/)
+          if (m1) {
+            result.infoHash = [m1[1].toLowerCase()]
+          } else {
+            const m2 = xt.match(/^urn:btih:(.{32})/)
+            if (m2) {
+              const decodedStr = base32hex.decode(m2[1])
+              result.infoHash = [bytesToHex(decodedStr)]
+            } else {
+              const m3 = xt.match(/^urn:btmh:1220(.{64})/)
+              if (m3) {
+                result.infoHashV2 = [m3[1].toLowerCase()]
+              }
+            }
           }
         }
       })
@@ -333,11 +340,14 @@ export function magnetURIDecode(uri: string): Magnet | undefined {
     if (result.xs) {
       const xss = Array.isArray(result.xs) ? result.xs : [result.xs]
       xss.forEach(xs => {
-        if (typeof xs === "string" && (m = xs.match(/^urn:btpk:(.{64})/))) {
-          if (!result.publicKey) {
-            result.publicKey = []
+        if (typeof xs === "string") {
+          const m = xs.match(/^urn:btpk:(.{64})/)
+          if (m) {
+            if (!result.publicKey) {
+              result.publicKey = []
+            }
+            ;(result.publicKey as string[]).push(m[1].toLowerCase())
           }
-          ;(result.publicKey as string[]).push(m[1].toLowerCase())
         }
       })
     }
@@ -373,7 +383,7 @@ export function findTag(e: NostrEvent, tag: string) {
   const maybeTag = e.tags.find(evTag => {
     return evTag[0] === tag
   })
-  return maybeTag && maybeTag[1]
+  return maybeTag?.[1]
 }
 
 export function getRelayName(url: string) {

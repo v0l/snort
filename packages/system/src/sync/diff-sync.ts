@@ -4,7 +4,6 @@ import {
   decryptSigner,
   EventBuilder,
   type EventSigner,
-  NostrEvent,
   type NostrLink,
   type NotSignedNostrEvent,
   type SystemInterface,
@@ -56,7 +55,7 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
    * Get decrypted content
    */
   get encryptedTags() {
-    if (this.#decryptedContent && this.#decryptedContent.startsWith("[") && this.#decryptedContent.endsWith("]")) {
+    if (this.#decryptedContent?.startsWith("[") && this.#decryptedContent.endsWith("]")) {
       try {
         const tags = JSON.parse(this.#decryptedContent) as Array<Array<string>>
         return tags

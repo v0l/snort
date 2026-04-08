@@ -247,13 +247,13 @@ select {
 button.primary {
   background: rgb(239, 150, 68);
   background: var(--primary);
-  color: #fff !important;
-  border: none !important;
+  color: #fff;
+  border: none;
 }
 
 button.primary:hover {
-  box-shadow: 0px 0px 10px var(--primary) !important;
-  background: var(--primary) !important;
+  box-shadow: 0px 0px 10px var(--primary);
+  background: var(--primary);
 }
 
 button:disabled {
@@ -538,15 +538,15 @@ svg.repeat {
 
 .light button:hover,
 .light button.secondary:hover {
-  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px !important;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
 }
 
 .light button.primary:hover {
-  box-shadow: 0px 0px 10px var(--primary) !important;
+  box-shadow: 0px 0px 10px var(--primary);
 }
 
 .light .modal button.secondary:hover {
-  background: #fff !important;
+  background: #fff;
 }
 
 @utility hide-scrollbar {

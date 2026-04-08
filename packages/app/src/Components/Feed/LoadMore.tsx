@@ -14,17 +14,17 @@ export default function LoadMore({
   children?: React.ReactNode
 }) {
   const { ref, inView } = useInView({ rootMargin: "2000px" })
-  const [tick, setTick] = useState<number>(0)
+  const [_tick, setTick] = useState<number>(0)
 
   useEffect(() => {
     if (inView === true && shouldLoadMore === true) {
       onLoadMore()
     }
-  }, [inView, shouldLoadMore, tick])
+  }, [inView, shouldLoadMore, onLoadMore])
 
   useEffect(() => {
     const t = setInterval(() => {
-      setTick(x => (x += 1))
+      setTick(tick => tick + 1)
     }, 500)
     return () => clearInterval(t)
   }, [])

@@ -78,7 +78,8 @@ export function Note(props: NoteProps) {
   const noteElement = (
     <NoteProvider ev={ev}>
       <div className="relative border-b">
-        <div
+        <button
+          type="button"
           className={classNames("min-h-[110px] flex flex-col gap-4 px-3 py-2", {
             "outline-highlight outline-2": highlight,
             "hover:bg-neutral-950 light:hover:bg-neutral-50 cursor-pointer": !opt?.isRoot,
@@ -94,7 +95,7 @@ export function Note(props: NoteProps) {
             waitUntilInView={waitUntilInView}
             inView={inView}
           />
-        </div>
+        </button>
         {threadLines()}
       </div>
     </NoteProvider>

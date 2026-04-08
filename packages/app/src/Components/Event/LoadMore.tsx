@@ -2,7 +2,6 @@ import { useEffect } from "react"
 import { useInView } from "react-intersection-observer"
 import { FormattedMessage } from "react-intl"
 
-import usePageDimensions from "@/Hooks/usePageDimensions"
 import { debounce } from "@/Utils"
 
 interface ShowMoreProps {
@@ -23,14 +22,13 @@ export default LoadMore
 
 export function AutoLoadMore({ text, onClick, className }: ShowMoreProps) {
   const { ref, inView } = useInView({ rootMargin: "1000px" })
-  const { height } = usePageDimensions()
 
   useEffect(() => {
     if (inView) {
       // TODO improve feed performance. Something in image grid makes it slow when feed size grows.
       return debounce(100, onClick)
     }
-  }, [inView, height])
+  }, [inView, onClick])
 
   return (
     <div ref={ref}>

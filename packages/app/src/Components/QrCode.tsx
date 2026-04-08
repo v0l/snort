@@ -44,7 +44,7 @@ export default function QrCode(props: QrCodeProps) {
     } else if (qrRef.current) {
       qrRef.current.innerHTML = ""
     }
-  }, [props.data, props.link])
+  }, [props.data, props.link, props.avatar, props.height, props.width])
 
   return <div className={`qr${props.className ?? ""}`} ref={qrRef}></div>
 }

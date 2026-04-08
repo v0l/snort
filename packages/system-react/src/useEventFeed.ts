@@ -13,7 +13,7 @@ export function useEventFeed(link: NostrLink) {
 }
 
 export function useEventsFeed(id: string, links: Array<NostrLink>) {
-  const linksKey = useMemo(
+  const _linksKey = useMemo(
     () =>
       links
         .map(l => l.encode())
@@ -26,7 +26,7 @@ export function useEventsFeed(id: string, links: Array<NostrLink>) {
     const b = new RequestBuilder(`events:${id}`)
     links.forEach(v => b.withFilter().link(v))
     return b
-  }, [id, linksKey])
+  }, [id, links.forEach])
 
   return useRequestBuilder(sub)
 }

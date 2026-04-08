@@ -1,4 +1,4 @@
-import { type MessageEncryptor, MessageEncryptorVersion } from ".."
+import type { MessageEncryptor, } from ".."
 import { secp256k1 } from "@noble/curves/secp256k1.js"
 import { hexToBytes } from "@noble/hashes/utils.js"
 import { base64 } from "@scure/base"
@@ -11,7 +11,7 @@ export class Nip4WebCryptoEncryptor implements MessageEncryptor {
   ) {}
 
   getSharedSecret(privateKey: string, publicKey: string) {
-    const sharedPoint = secp256k1.getSharedSecret(hexToBytes(privateKey), hexToBytes("02" + publicKey))
+    const sharedPoint = secp256k1.getSharedSecret(hexToBytes(privateKey), hexToBytes(`02${publicKey}`))
     const sharedX = sharedPoint.slice(1, 33)
     return sharedX
   }

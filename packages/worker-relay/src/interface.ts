@@ -116,7 +116,7 @@ export class WorkerRelayInterface {
           }),
         )
       }, this.timeout)
-      this.#commandQueue.set(id, (v, port) => {
+      this.#commandQueue.set(id, (v, _port) => {
         clearTimeout(t)
         const cmdReply = v as WorkerMessage<R & { error?: any }>
         if (cmdReply.args.error) {

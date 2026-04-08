@@ -53,7 +53,6 @@ export default function SignUp() {
       <form onSubmit={onSubmit} className="flex flex-col gap-4">
         <input
           type="text"
-          autoFocus={true}
           placeholder={formatMessage({
             defaultMessage: "Name or nym",
             id: "aHje0o",

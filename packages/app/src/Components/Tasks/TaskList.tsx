@@ -3,7 +3,6 @@ import { useUserProfile } from "@snort/system-react"
 import { Fragment, useSyncExternalStore } from "react"
 
 import CloseButton from "@/Components/Button/CloseButton"
-import Icon from "@/Components/Icons/Icon"
 import type { UITask } from "@/Components/Tasks/index"
 import useLogin from "@/Hooks/useLogin"
 

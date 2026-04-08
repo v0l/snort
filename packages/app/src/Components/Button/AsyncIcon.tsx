@@ -2,7 +2,7 @@ import Icon from "@/Components/Icons/Icon"
 import Spinner from "@/Components/Icons/Spinner"
 import useLoading from "@/Hooks/useLoading"
 
-export type AsyncIconProps = React.HTMLProps<HTMLDivElement> & {
+export type AsyncIconProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   iconName: string
   iconSize?: number
   onClick?: (e: React.MouseEvent) => Promise<void> | void
@@ -11,14 +11,11 @@ export type AsyncIconProps = React.HTMLProps<HTMLDivElement> & {
 export function AsyncIcon(props: AsyncIconProps) {
   const { loading, handle } = useLoading(props.onClick, props.disabled)
 
-  const mergedProps = { ...props } as Record<string, unknown>
-  delete mergedProps["iconName"]
-  delete mergedProps["iconSize"]
-  delete mergedProps["loading"]
+  const { iconName, iconSize, ...mergedProps } = props
   return (
-    <div {...mergedProps} onClick={handle} className={props.className}>
+    <button type="button" {...mergedProps} onClick={handle} className={props.className}>
       {loading ? <Spinner /> : <Icon name={props.iconName} size={props.iconSize} />}
       {props.children}
-    </div>
+    </button>
   )
 }

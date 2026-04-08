@@ -16,7 +16,7 @@ export const WalletBalance = () => {
 
   useEffect(() => {
     setBalance(undefined)
-    if (wallet.wallet && wallet.wallet.canGetBalance()) {
+    if (wallet.wallet?.canGetBalance()) {
       wallet.wallet.getBalance().then(setBalance)
     }
   }, [wallet])

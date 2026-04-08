@@ -36,5 +36,5 @@ export default function useFollowsControls() {
       followList: follows ?? [],
       pubkey: state.pubkey,
     }
-  }, [v])
+  }, [state.follow, state.follows, state.pubkey, state.replaceFollows, state.saveContacts, state.unfollow])
 }

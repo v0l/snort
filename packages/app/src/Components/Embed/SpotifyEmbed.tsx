@@ -3,6 +3,7 @@ const SpotifyEmbed = ({ link }: { link: string }) => {
 
   return (
     <iframe
+      title="Spotify Embed"
       style={{ borderRadius: 12 }}
       src={convertedUrl}
       width="100%"

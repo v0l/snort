@@ -27,7 +27,8 @@ export default function NoteAppHandler({ ev }: { ev: TaggedNostrEvent }) {
           }}
         />
       </small>
-      <div
+      <button
+        type="button"
         className="flex justify-between items-center cursor-pointer"
         onClick={() => {
           window.open(`nostr:${link.encode()}`, "_blank")
@@ -38,9 +39,10 @@ export default function NoteAppHandler({ ev }: { ev: TaggedNostrEvent }) {
           <FormattedMessage defaultMessage="Native App" />
         </div>
         <Icon name="link" />
-      </div>
+      </button>
       {profiles.map(a => (
-        <div
+        <button
+          type="button"
           className="flex justify-between items-center cursor-pointer"
           key={a.event.id}
           onClick={() => {
@@ -57,7 +59,7 @@ export default function NoteAppHandler({ ev }: { ev: TaggedNostrEvent }) {
             </div>
           </div>
           <Icon name="link" />
-        </div>
+        </button>
       ))}
     </div>
   )

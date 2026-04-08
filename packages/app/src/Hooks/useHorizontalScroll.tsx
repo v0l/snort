@@ -1,4 +1,4 @@
-import { Ref, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 
 function useHorizontalScroll() {
   const elRef = useRef<HTMLDivElement>(null)
@@ -6,7 +6,7 @@ function useHorizontalScroll() {
     const el = elRef.current
     if (el) {
       const onWheel = (ev: WheelEvent) => {
-        if (ev.deltaY == 0) return
+        if (ev.deltaY === 0) return
         ev.preventDefault()
         el.scrollTo({ left: el.scrollLeft + ev.deltaY, behavior: "smooth" })
       }

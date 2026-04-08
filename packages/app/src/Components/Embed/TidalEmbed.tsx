@@ -43,7 +43,7 @@ const TidalEmbed = ({ link }: { link: string }) => {
         setSource(data.source || undefined)
         setHeight(data.height)
       })
-      .catch(console.error)
+      .catch(e => console.debug("Tidal embed failed:", e))
   }, [link])
 
   if (!source) {

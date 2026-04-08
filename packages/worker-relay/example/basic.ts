@@ -17,12 +17,12 @@ await workerRelay.init({
 })
 
 // Query worker relay with regular nostr REQ command
-const results = await workerRelay.query(["REQ", "1", { kinds: [1], limit: 10 }])
+const _results = await workerRelay.query(["REQ", "1", { kinds: [1], limit: 10 }])
 
 // publish a new event to the relay
 const myEvent = {
   kind: 1,
-  created_at: Math.floor(new Date().getTime() / 1000),
+  created_at: Math.floor(Date.now()/ 1000),
   content: "test",
   tags: [],
 }

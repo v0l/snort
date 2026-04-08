@@ -1,4 +1,4 @@
-import { dedupe, dedupeBy, NostrPrefix } from "@snort/shared"
+import { dedupeBy, NostrPrefix } from "@snort/shared"
 import { findTag } from "../utils"
 import { type EventBuilder, LinkScope, type NostrEvent, NostrLink, type Thread } from "../index"
 
@@ -69,8 +69,8 @@ export class Nip22 {
       if (ret.root) {
         const kTag = findTag(ev, "K")
         if (kTag && ret.root.kind === undefined) {
-          const kind = parseInt(kTag)
-          if (!isNaN(kind)) {
+          const kind = parseInt(kTag, 10)
+          if (!Number.isNaN(kind)) {
             ret.root.kind = kind
           }
         }
@@ -80,8 +80,8 @@ export class Nip22 {
       if (ret.replyTo) {
         const kTag = findTag(ev, "k")
         if (kTag && ret.replyTo.kind === undefined) {
-          const kind = parseInt(kTag)
-          if (!isNaN(kind)) {
+          const kind = parseInt(kTag, 10)
+          if (!Number.isNaN(kind)) {
             ret.replyTo.kind = kind
           }
         }
@@ -107,7 +107,7 @@ export class Nip22 {
   /**
    * Create a NIP-22 tag from an object link
    */
-  static linkToTag(link: NostrLink) {
+  static linkToTag(_link: NostrLink) {
     // TODO: implement
   }
 }

@@ -34,7 +34,7 @@ export default function MessagesPage() {
   const unreadTrustedCount = useMemo(() => trustedChats.reduce((p, c) => p + c.unread, 0), [trustedChats])
   const unreadOtherCount = useMemo(() => otherChats.reduce((p, c) => p + c.unread, 0), [otherChats])
 
-  function openChat(e: React.MouseEvent<HTMLDivElement>, type: ChatType, id: string) {
+  function openChat(e: React.MouseEvent<HTMLDivElement>, _type: ChatType, id: string) {
     e.stopPropagation()
     e.preventDefault()
     navigate(`/messages/${encodeURIComponent(id)}`)
@@ -117,8 +117,7 @@ export default function MessagesPage() {
           </div>
           {trustedChats.sort(sortMessages).map(conversation)}
           {otherChats.sort(sortMessages).length > 0 && (
-            <>
-              <CollapsedSection
+            <CollapsedSection
                 title={
                   <div className="text-xl flex items-center gap-4">
                     <FormattedMessage defaultMessage="Other Chats" />
@@ -128,7 +127,6 @@ export default function MessagesPage() {
               >
                 {otherChats.map(conversation)}
               </CollapsedSection>
-            </>
           )}
         </div>
       )}

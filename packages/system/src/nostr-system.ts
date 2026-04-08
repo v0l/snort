@@ -84,16 +84,16 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     this.#queryManager = new QueryManager(this)
 
     // hook connection pool
-    this.pool.on("connected", (id, _wasReconnect) => {
+    this.pool.on("connected", (_id, _wasReconnect) => {
       // TODO: metrics
     })
-    this.pool.on("connectFailed", address => {
+    this.pool.on("connectFailed", _address => {
       // TODO: metrics
     })
-    this.pool.on("event", (_, _sub, ev) => {
+    this.pool.on("event", (_, _sub, _ev) => {
       // TODO: metrics
     })
-    this.pool.on("disconnect", (id, code) => {
+    this.pool.on("disconnect", (_id, _code) => {
       // TODO: metrics
     })
     this.pool.on("auth", (_, c, r, cb) => this.emit("auth", c, r, cb))

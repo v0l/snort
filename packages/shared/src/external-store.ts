@@ -24,7 +24,7 @@ export abstract class ExternalStore<TSnapshot> extends EventEmitter<ExternalStor
     return this.#snapshot
   }
 
-  protected notifyChange(sn?: TSnapshot) {
+  protected notifyChange(_sn?: TSnapshot) {
     this.#changed = true
     this.emit("change")
   }

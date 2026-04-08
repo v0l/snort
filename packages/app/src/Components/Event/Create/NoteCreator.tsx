@@ -24,7 +24,7 @@ import { AsyncIcon } from "@/Components/Button/AsyncIcon"
 import CloseButton from "@/Components/Button/CloseButton"
 import IconButton from "@/Components/Button/IconButton"
 import { sendEventToRelays } from "@/Components/Event/Create/util"
-import Note, { NoteProps, type NotePropsOptions } from "@/Components/Event/EventComponent"
+import Note, { type NotePropsOptions } from "@/Components/Event/EventComponent"
 import Flyout from "@/Components/flyout"
 import Icon from "@/Components/Icons/Icon"
 import { ToggleSwitch } from "@/Components/Icons/Toggle"
@@ -77,7 +77,7 @@ export function NoteCreator() {
     if (draft) {
       note.update(n => (n.note = draft))
     }
-  }, [])
+  }, [note.update])
 
   async function buildNote() {
     try {
@@ -223,7 +223,7 @@ export function NoteCreator() {
       }
       if (ev.tags.find(a => a[0] === "poll_option")) {
         props ??= {}
-        props["poll"] = true
+        props.poll = true
       }
       if (ev.tags.find(a => a[0] === "zap")) {
         props ??= {}
@@ -231,13 +231,13 @@ export function NoteCreator() {
       }
       if (note.hashTags.length > 0) {
         props ??= {}
-        props["hashtags"] = true
+        props.hashtags = true
       }
       if (props) {
         props["content-warning"] ??= false
-        props["poll"] ??= false
+        props.poll ??= false
         props["zap-split"] ??= false
-        props["hashtags"] ??= false
+        props.hashtags ??= false
       }
       trackEvent("PostNote", props)
 
@@ -380,7 +380,7 @@ export function NoteCreator() {
         {Object.entries(relays)
           .filter(el => el[1].write)
           .map(a => a[0])
-          .map((r, i, a) => (
+          .map((r, _i, a) => (
             <div className="px-3 py-2 flex items-center justify-between bg-neutral-600 rounded-lg" key={r}>
               <div>{r}</div>
               <div>
@@ -394,7 +394,7 @@ export function NoteCreator() {
                           // set false if all relays selected
                           e.target.checked &&
                           note.selectedCustomRelays &&
-                          note.selectedCustomRelays.length == a.length - 1
+                          note.selectedCustomRelays.length === a.length - 1
                             ? undefined
                             : // otherwise return selectedCustomRelays with target relay added / removed
                               a.filter(el =>
@@ -721,17 +721,13 @@ export function NoteCreator() {
               <FormattedMessage defaultMessage="Attach Media" />
             </div>
           }
-          actions={
-            <>
-              <IconButton
+          actions=<IconButton
                 className="max-lg:!hidden"
                 icon={{
                   name: "expand",
                 }}
                 onClick={() => note.update(n => (n.filePicker = n.filePicker === "wide" ? "compact" : "wide"))}
               />
-            </>
-          }
         >
           <div className="overflow-y-auto h-[calc(100%-2rem)]">
             {note.filePicker !== "hidden" && (

@@ -363,7 +363,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     // Normalize filters
     const normalizedFilters = filters.filters.map(a => {
       const copy = { ...a }
-      delete copy["relays"]
+      delete copy.relays
       return copy
     })
 
@@ -473,7 +473,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     filters: Array<ReqFilter>,
   ) {
     const rs = RangeSync.forFetcher(async (rb, cb) => {
-      return await new Promise((resolve, reject) => {
+      return await new Promise((resolve, _reject) => {
         const results = new NoteCollection()
         const f = rb.buildRaw()
         connection.on("unverifiedEvent", (c, e) => {

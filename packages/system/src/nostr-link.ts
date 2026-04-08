@@ -274,7 +274,7 @@ export class NostrLink implements ToNostrEventTag {
   static tryFromTag(tag: Array<string>, author?: string, kind?: number) {
     try {
       return NostrLink.fromTag(tag, author, kind)
-    } catch (e) {
+    } catch (_e) {
       // ignored
     }
   }
@@ -321,7 +321,7 @@ export class NostrLink implements ToNostrEventTag {
     // extract the relay tags from the event to use in linking to this event
     const eventRelays = removeUndefined(
       ev.tags
-        .filter(a => a[0] === "relays" || a[0] === "relay" || (a[0] === "r" && ev.kind == EventKind.Relays))
+        .filter(a => a[0] === "relays" || a[0] === "relay" || (a[0] === "r" && ev.kind === EventKind.Relays))
         .flatMap(a => a.slice(1).map(b => sanitizeRelayUrl(b))),
     )
     relays = appendDedupe(relays, eventRelays)

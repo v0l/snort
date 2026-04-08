@@ -3,7 +3,7 @@ import { EventExt } from "./event-ext"
 import { Nip4WebCryptoEncryptor } from "./impl/nip4"
 import { Nip44Encryptor } from "./impl/nip44"
 import type { NostrEvent, NotSignedNostrEvent } from "./nostr"
-import { bytesToHex, randomBytes } from "@noble/hashes/utils.js"
+import { bytesToHex, } from "@noble/hashes/utils.js"
 import { schnorr } from "@noble/curves/secp256k1.js"
 
 export type SignerSupports = "nip04" | "nip44" | string

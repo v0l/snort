@@ -147,7 +147,7 @@ export function addSubscription(state: LoginSession, ...subs: SubscriptionEvent[
 }
 
 export function sessionNeedsPin(l: LoginSession) {
-  return l.privateKeyData && l.privateKeyData.shouldUnlock()
+  return l.privateKeyData?.shouldUnlock()
 }
 
 export function createPublisher(l: LoginSession) {

@@ -28,7 +28,7 @@ export function DiscoverRelays() {
     return outbox
       .pickTopRelays(follows ?? [], 1e31, "write")
       .filter(a => !(relays?.some(b => b.url === a.key) ?? false))
-  }, [follows, relays])
+  }, [follows, relays, system])
 
   // const metrics = useSyncExternalStore(
   //   c => RelayMetrics.hook(c, "*"),
@@ -191,7 +191,7 @@ export function DiscoverRelays() {
           </thead>
           <tbody>
             {closeRelays
-              .filter(a => !isNaN(a.distance))
+              .filter(a => !Number.isNaN(a.distance))
               .slice(0, 100)
               .map(a => (
                 <tr key={a.addr}>

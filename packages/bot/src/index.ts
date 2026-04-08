@@ -199,7 +199,7 @@ export class SnortBot extends EventEmitter<BotEvents> {
     rb.withFilter()
       .kinds([1311 as EventKind])
       .replyToLink(links)
-      .since(Math.floor(new Date().getTime() / 1000))
+      .since(Math.floor(Date.now()/ 1000))
     const q = this.system.Query(rb)
     q.start()
 

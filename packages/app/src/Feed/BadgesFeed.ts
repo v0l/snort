@@ -1,8 +1,7 @@
-import { EventKind, NostrLink, RequestBuilder } from "@snort/system"
-import { useEventFeed, useEventsFeed, useRequestBuilder } from "@snort/system-react"
+import { EventKind, NostrLink, } from "@snort/system"
+import { useEventFeed, useEventsFeed, } from "@snort/system-react"
 import { useMemo } from "react"
 
-import { findTag, unwrap } from "@/Utils"
 import { NostrPrefix, removeUndefined } from "@snort/shared"
 
 type BadgeAwards = {
@@ -29,6 +28,6 @@ export default function useProfileBadges(pubkey: string) {
       return awardEvent !== undefined
     })
     return wasAwardedByAuthorBadges
-  }, [links, linkedEvents])
+  }, [links, linkedEvents, pubkey])
   return removeUndefined(validBadgeAwards.map(a => linkedEvents.find(b => a.matchesEvent(b))))
 }

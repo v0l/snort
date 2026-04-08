@@ -3,7 +3,6 @@ import {
   dedupe,
   encodeTLVEntries,
   ExternalStore,
-  NostrPrefix,
   removeUndefined,
   type TLVEntry,
   TLVEntryType,

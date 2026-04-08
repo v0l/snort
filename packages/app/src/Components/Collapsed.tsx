@@ -12,17 +12,16 @@ interface CollapsedProps {
 
 const Collapsed = ({ text, children, collapsed, setCollapsed }: CollapsedProps) => {
   return collapsed ? (
-    <div className="text-nostr-purple px-4 pb-3 cursor-pointer hover:underline" onClick={() => setCollapsed(false)}>
+    <button
+      type="button"
+      className="text-nostr-purple px-4 pb-3 cursor-pointer hover:underline bg-transparent border-0 p-0 m-0"
+      onClick={() => setCollapsed(false)}
+    >
       {text}
-    </div>
+    </button>
   ) : (
     <div className="uncollapsed">{children}</div>
   )
-}
-
-interface CollapsedIconProps {
-  icon: ReactNode
-  collapsed: boolean
 }
 
 interface CollapsedSectionProps {
@@ -36,9 +35,10 @@ export const CollapsedSection = ({ title, children, className, startClosed }: Co
   const [collapsed, setCollapsed] = useState(startClosed ?? true)
   return (
     <div>
-      <div
+      <button
+        type="button"
         className={classNames(
-          "flex gap-4 items-center justify-between cursor-pointer layer-1 select-none",
+          "flex gap-4 items-center justify-between cursor-pointer layer-1 select-none bg-transparent border-0 p-0 m-0",
           { "rounded-b-none": !collapsed },
           className,
         )}
@@ -46,7 +46,7 @@ export const CollapsedSection = ({ title, children, className, startClosed }: Co
       >
         {title}
         <Icon name="arrowFront" className={`transition-transform ${collapsed ? "rotate-90" : ""}`} />
-      </div>
+      </button>
       {!collapsed && <div className="layer-2 rounded-t-none">{children}</div>}
     </div>
   )

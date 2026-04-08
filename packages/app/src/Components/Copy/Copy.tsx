@@ -20,8 +20,9 @@ export default function Copy({ text, maxSize = 32, className, showText, mask }: 
       : displayText
 
   return (
-    <span
-      className={classNames("flex cursor-pointer gap-2 items-center", className)}
+    <button
+      type="button"
+      className={classNames("flex cursor-pointer gap-2 items-center bg-transparent border-0 p-0 m-0", className)}
       onClick={e => {
         e.stopPropagation()
         copy(text)
@@ -31,6 +32,6 @@ export default function Copy({ text, maxSize = 32, className, showText, mask }: 
       <span className="icon" style={{ color: copied ? "var(--success)" : "var(--highlight)" }}>
         {copied ? <Icon name="check" size={14} /> : <Icon name="copy-solid" size={14} />}
       </span>
-    </span>
+    </button>
   )
 }

@@ -9,7 +9,7 @@ export function ReviewSummary({ link }: { link: NostrLink }) {
       .kinds([1986 as EventKind])
       .replyToLink([link])
     return rb
-  }, [link.id])
+  }, [link.id, link])
 
   const data = useRequestBuilder(sub)
   return <pre>{JSON.stringify(data, undefined, 2)}</pre>

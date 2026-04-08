@@ -1,4 +1,4 @@
-import { TextEncoder, TextDecoder } from "util"
+import { TextEncoder, TextDecoder } from "node:util"
 import { Crypto } from "@peculiar/webcrypto"
 
 Object.assign(global, { TextDecoder, TextEncoder })

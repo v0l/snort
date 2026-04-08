@@ -4,7 +4,7 @@ import Icon from "@/Components/Icons/Icon"
 
 export function UserWebsiteLink({ user }: { user?: CachedMetadata | UserMetadata }) {
   const website_url =
-    user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || ""
+    user?.website && !user.website.startsWith("http") ? `https://${user.website}` : user?.website || ""
 
   function tryFormatWebsite(url: string) {
     try {

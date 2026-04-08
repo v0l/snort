@@ -271,7 +271,7 @@ function extractTagRefs(fragments: Fragment[], tags: Array<Array<string>>) {
           return {
             content: `nostr:${NostrLink.fromTag(tag).encode()}`,
           }
-        } catch (e) {
+        } catch (_e) {
           // If NostrLink.fromTag fails, treat as text
           return undefined
         }

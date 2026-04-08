@@ -21,7 +21,7 @@ export default function useFollowersFeed(pubkey?: string) {
       a => a.kind === EventKind.ContactList && a.tags.some(b => b[0] === "p" && b[1] === pubkey),
     )
     return wot.sortEvents(contactLists)
-  }, [followersFeed, pubkey])
+  }, [followersFeed, pubkey, wot.sortEvents])
 
   return followers
 }

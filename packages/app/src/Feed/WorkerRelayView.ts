@@ -16,6 +16,6 @@ export function useNotificationsView() {
       rb.withFilter().kinds(kinds).tag("p", [publicKey]).limit(100)
     }
     return rb
-  }, [publicKey])
+  }, [publicKey, kinds])
   return useRequestBuilder(req)
 }

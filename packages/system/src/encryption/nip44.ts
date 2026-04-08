@@ -20,7 +20,7 @@ const u = {
   },
 
   getConversationKey(privkeyA: string, pubkeyB: string): Uint8Array {
-    const sharedX = secp256k1.getSharedSecret(hexToBytes(privkeyA), hexToBytes("02" + pubkeyB)).subarray(1, 33)
+    const sharedX = secp256k1.getSharedSecret(hexToBytes(privkeyA), hexToBytes(`02${pubkeyB}`)).subarray(1, 33)
     return hkdf_extract(sha256, sharedX, utf8ToBytes("nip44-v2"))
   },
 
@@ -85,7 +85,7 @@ const u = {
   decodePayload(payload: string) {
     if (typeof payload !== "string") throw new Error("payload must be a valid string")
     const plen = payload.length
-    if (plen < 132 || plen > 87472) throw new Error("invalid payload length: " + plen)
+    if (plen < 132 || plen > 87472) throw new Error(`invalid payload length: ${plen}`)
     if (payload[0] === "#") throw new Error("unknown encryption version")
     if (payload.startsWith("{") && payload.endsWith("}")) {
       throw new Error("invalid base64: JSON string in content")
@@ -94,10 +94,10 @@ const u = {
     try {
       data = base64.decode(payload)
     } catch (error) {
-      throw new Error("invalid base64: " + (error as any).message)
+      throw new Error(`invalid base64: ${(error as any).message}`)
     }
     const dlen = data.length
-    if (dlen < 99 || dlen > 65603) throw new Error("invalid data length: " + dlen)
+    if (dlen < 99 || dlen > 65603) throw new Error(`invalid data length: ${dlen}`)
     const vers = data[0]
     return {
       version: vers,
@@ -132,7 +132,7 @@ export const nip44 = {
   utils: u,
   v1: {
     getConversationKey: (privKey: string, pubKey: string) => {
-      const key = secp256k1.getSharedSecret(hexToBytes(privKey), hexToBytes("02" + pubKey))
+      const key = secp256k1.getSharedSecret(hexToBytes(privKey), hexToBytes(`02${pubKey}`))
       return sha256(key.slice(1, 33))
     },
     decrypt: decrypt_v1,

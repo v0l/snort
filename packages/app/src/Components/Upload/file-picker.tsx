@@ -41,7 +41,7 @@ export function MediaServerFileList({
   function toggleFile(b: BlobDescriptor) {
     setPickedFiles(a => {
       if (a.includes(b.sha256)) {
-        return a.filter(a => a != b.sha256)
+        return a.filter(a => a !== b.sha256)
       } else {
         return [...a, b.sha256]
       }

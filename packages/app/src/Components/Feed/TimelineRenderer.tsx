@@ -1,5 +1,5 @@
 import type { TaggedNostrEvent } from "@snort/system"
-import { type ReactNode, useEffect, useRef } from "react"
+import { type ReactNode, useCallback, useEffect, useRef } from "react"
 import { useInView } from "react-intersection-observer"
 import { FormattedMessage } from "react-intl"
 
@@ -7,8 +7,8 @@ import ErrorBoundary from "@/Components/ErrorBoundary"
 import { AutoLoadMore } from "@/Components/Event/LoadMore"
 import { TimelineFragment } from "@/Components/Feed/TimelineFragment"
 import Icon from "@/Components/Icons/Icon"
-import { AvatarGroup } from "../User/AvatarGroup"
 import useWoT from "@/Hooks/useWoT"
+import { AvatarGroup } from "../User/AvatarGroup"
 
 export interface TimelineRendererProps {
   frags: Array<TimelineFragment> | TimelineFragment
@@ -26,11 +26,11 @@ export interface TimelineRendererProps {
 
 export function TimelineRenderer(props: TimelineRendererProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const latestNotesFixedRef = useRef<HTMLDivElement | null>(null)
+  const latestNotesFixedRef = useRef<HTMLButtonElement | null>(null)
   const { ref, inView } = useInView()
   const wot = useWoT()
 
-  const updateLatestNotesPosition = () => {
+  const updateLatestNotesPosition = useCallback(() => {
     if (containerRef.current && latestNotesFixedRef.current) {
       const parentRect = containerRef.current.getBoundingClientRect()
       const childWidth = latestNotesFixedRef.current.offsetWidth
@@ -38,7 +38,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
       const leftPosition = parentRect.left + (parentRect.width - childWidth) / 2
       latestNotesFixedRef.current.style.left = `${leftPosition}px`
     }
-  }
+  }, [])
 
   useEffect(() => {
     updateLatestNotesPosition()
@@ -47,21 +47,24 @@ export function TimelineRenderer(props: TimelineRendererProps) {
     return () => {
       window.removeEventListener("resize", updateLatestNotesPosition)
     }
-  }, [inView, props.latest])
+  }, [updateLatestNotesPosition])
 
   const renderNotes = () => {
     const frags = Array.isArray(props.frags) ? props.frags : [props.frags]
-    return frags.map((frag, index) => (
-      <ErrorBoundary key={frag.events[0]?.id + index}>
-        <TimelineFragment
-          frag={frag}
-          noteRenderer={props.noteRenderer}
-          noteOnClick={props.noteOnClick}
-          noteContext={props.noteContext}
-          highlightText={props.highlightText}
-        />
-      </ErrorBoundary>
-    ))
+    return frags.map((frag, index) => {
+      const id = frag.events[0]?.id ?? index
+      return (
+        <ErrorBoundary key={id}>
+          <TimelineFragment
+            frag={frag}
+            noteRenderer={props.noteRenderer}
+            noteOnClick={props.noteOnClick}
+            noteContext={props.noteContext}
+            highlightText={props.highlightText}
+          />
+        </ErrorBoundary>
+      )
+    })
   }
 
   function latestInner() {
@@ -84,17 +87,17 @@ export function TimelineRenderer(props: TimelineRendererProps) {
     <div ref={containerRef}>
       {props.latest.length > 0 && (
         <>
-          <div className="flex justify-center" onClick={() => props.showLatest(false)} ref={ref}>
+          <button type="button" className="flex justify-center" onClick={() => props.showLatest(false)} ref={ref}>
             {latestInner()}
-          </div>
+          </button>
           {!inView && (
-            <div
-              ref={latestNotesFixedRef}
+            <button
+              type="button"
               className="fixed top-[50px] z-3 opacity-90 shadow-md animate-fade-in"
               onClick={() => props.showLatest(true)}
             >
               {latestInner()}
-            </div>
+            </button>
           )}
         </>
       )}

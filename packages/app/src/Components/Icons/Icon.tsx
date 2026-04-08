@@ -11,6 +11,7 @@ const Icon = forwardRef<SVGSVGElement, IconProps>(({ name, size, ...props }, ref
   size ??= 20
   return (
     <svg ref={ref} {...props} width={size} height={size}>
+      <title>{name}</title>
       <use href={`${IconsSvg}#${name}`} />
     </svg>
   )

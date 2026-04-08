@@ -20,8 +20,13 @@ export default function NoteReaction(props: NoteReactionProps) {
   const { inView, ref: inViewRef } = useInView({ triggerOnce: true, rootMargin: "2000px" })
   const rootRef = useRef<HTMLDivElement>(null)
   const profile = useUserProfile(ev.pubkey, rootRef)
+  const isOpMuted = useMemo(() => {
+    const links = NostrLink.fromTags(ev.tags)
+    const refEvent = links.find(a => [NostrPrefix.Event, NostrPrefix.Note, NostrPrefix.Address].includes(a.type))
+    return refEvent?.author && isMuted(refEvent.author)
+  }, [ev, isMuted])
 
-  const opt = useMemo(
+  const _opt = useMemo(
     () => ({
       showHeader: ev?.kind === EventKind.Repost || ev?.kind === EventKind.TextNote,
       showFooter: false,
@@ -29,14 +34,8 @@ export default function NoteReaction(props: NoteReactionProps) {
     }),
     [ev],
   )
-  const links = NostrLink.fromTags(ev.tags)
-  const refEvent = links.find(a => [NostrPrefix.Event, NostrPrefix.Note, NostrPrefix.Address].includes(a.type))
-  const isOpMuted = refEvent?.author && isMuted(refEvent.author)
-  if (isOpMuted) {
-    return
-  }
 
-  function action() {
+  const action = useMemo(() => {
     switch (ev.kind) {
       case EventKind.Repost: {
         return (
@@ -62,12 +61,16 @@ export default function NoteReaction(props: NoteReactionProps) {
         )
       }
     }
-  }
+    return null
+  }, [ev, profile])
 
   function inner() {
+    const refEvent = NostrLink.fromTags(ev.tags).find(a =>
+      [NostrPrefix.Event, NostrPrefix.Note, NostrPrefix.Address].includes(a.type),
+    )
     return (
       <>
-        <div className="flex gap-1 text-base font-semibold px-3 py-2 border-b">{action()}</div>
+        <div className="flex gap-1 text-base font-semibold px-3 py-2 border-b">{action}</div>
         {refEvent && (
           <NoteQuote
             link={refEvent}
@@ -90,6 +93,10 @@ export default function NoteReaction(props: NoteReactionProps) {
     },
     [inViewRef],
   )
+
+  if (isOpMuted) {
+    return
+  }
 
   return (
     <div className="flex flex-col gap-2" ref={setRef}>

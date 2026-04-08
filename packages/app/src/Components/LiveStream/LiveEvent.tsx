@@ -78,7 +78,7 @@ function LiveStreamEvent({ ev }: { ev: TaggedNostrEvent }) {
         if (findTag(ev, "recording")) {
           return (
             <Link to={link} target="_blank">
-              <button className="whitespace-nowrap">
+              <button type="button" className="whitespace-nowrap">
                 <FormattedMessage defaultMessage="Watch Replay" />
               </button>
             </Link>

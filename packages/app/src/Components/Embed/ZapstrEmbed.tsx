@@ -22,16 +22,18 @@ export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
           <div>
             <h3>{subject?.[1] ?? ""}</h3>
           </div>
-          <audio src={media?.[1] ?? ""} controls={true} className="m-0 h-8" />
+          <audio src={media?.[1] ?? ""} controls={true} className="m-0 h-8" aria-label="Audio Player">
+            <track kind="captions" />
+          </audio>
           <div className="zapstr">
             {refPersons.map(a => (
-              <ProfileImage key={a[1]} pubkey={a[1]} subHeader={<>{a[2] ?? ""}</>} className="pfp" defaultNip=" " />
+              <ProfileImage key={a[1]} pubkey={a[1]} subHeader={a[2] ?? ""} className="pfp" defaultNip=" " />
             ))}
           </div>
         </div>
       </div>
       <Link to={`https://zapstr.live/?track=${link}`} target="_blank">
-        <button>
+        <button type="button">
           <FormattedMessage defaultMessage="Open on Zapstr" />
         </button>
       </Link>

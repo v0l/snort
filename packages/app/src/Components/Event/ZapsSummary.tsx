@@ -27,9 +27,13 @@ export const ZapsSummary = ({ zaps, onClick }: ZapsSummaryProps) => {
   }
 
   return (
-    <div className="flex items-center cursor-pointer" onClick={myOnClick}>
+    <button
+      type="button"
+      className="flex items-center cursor-pointer bg-transparent border-0 p-0 m-0"
+      onClick={myOnClick}
+    >
       <AvatarGroup ids={sortedZappers} onClick={() => {}} showUsername={false} size={24} showFollowDistance={false} />
       {zaps.length > 3 && <div className="hidden md:inline-flex">+{zaps.length - 3}</div>}
-    </div>
+    </button>
   )
 }

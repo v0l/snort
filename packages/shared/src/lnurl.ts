@@ -144,7 +144,7 @@ export class LNURL {
       } else {
         throw new LNURLError(LNURLErrorCode.ServiceUnavailable, `Failed to fetch invoice (${rsp.statusText})`)
       }
-    } catch (e) {
+    } catch (_e) {
       throw new LNURLError(LNURLErrorCode.ServiceUnavailable, "Failed to load callback")
     }
   }
@@ -153,7 +153,7 @@ export class LNURL {
    * Are zaps (NIP-57) supported
    */
   get canZap() {
-    return this.#service?.nostrPubkey ? true : false
+    return !!this.#service?.nostrPubkey
   }
 
   /**
