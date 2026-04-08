@@ -44,7 +44,7 @@ function replaceTagsWithUser(ev: TaggedNostrEvent, users: CachedMetadata[]) {
     .map(match => {
       const matchTag = match.match(/#\[(\d+)\]/)
       if (matchTag && matchTag.length === 2) {
-        const idx = parseInt(matchTag[1])
+        const idx = parseInt(matchTag[1], 10)
         const ref = ev.tags[idx]
         if (ref && ref[0] === "p" && ref.length > 1) {
           const u = users.find(a => a.pubkey === ref[1])

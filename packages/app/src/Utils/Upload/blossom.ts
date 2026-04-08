@@ -95,7 +95,7 @@ export class Blossom {
     if (Array.isArray(r.nip94)) return
     // blossom.band invalid response
     if (r.nip94 && "tags" in r.nip94) {
-      r.nip94 = r.nip94["tags"]
+      r.nip94 = r.nip94.tags
       return
     }
     r.nip94 = Object.entries(r.nip94 as Record<string, string>)

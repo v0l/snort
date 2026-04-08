@@ -1,10 +1,9 @@
-import { dedupeBy, unwrap } from "@snort/shared"
+
 import {
   EventExt,
   EventKind,
   type NostrLink,
   NoteCollection,
-  NoteStore,
   RequestBuilder,
   type TaggedNostrEvent,
 } from "@snort/system"
@@ -38,7 +37,7 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
       }
     }
     return sub
-  }, [primary, link])
+  }, [primary, link, parsedThread])
 
   const rootReplies = useRequestBuilder(subReplies)
 
@@ -111,7 +110,7 @@ function useFilteredThread(notes: Array<TaggedNostrEvent>) {
       if (!chains.has(replyTo)) {
         chains.set(replyTo, [vk])
       } else {
-        chains.get(replyTo)!.push(vk)
+        chains.get(replyTo)?.push(vk)
       }
     }
   })

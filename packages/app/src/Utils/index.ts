@@ -19,7 +19,7 @@ export async function openFile(): Promise<File | undefined> {
       lock = true
       const elm = e.target as HTMLInputElement
       if ((elm.files?.length ?? 0) > 0) {
-        resolve(elm.files![0])
+        resolve(elm.files?.[0])
       } else {
         resolve(undefined)
       }
@@ -52,7 +52,7 @@ export function parseId(id: string) {
     if (hrp.some(a => id.startsWith(a))) {
       return bech32ToHex(id)
     }
-  } catch (e) {
+  } catch (_e) {
     // Ignore the error.
   }
   return id
@@ -373,7 +373,7 @@ export function findTag(e: NostrEvent, tag: string) {
   const maybeTag = e.tags.find(evTag => {
     return evTag[0] === tag
   })
-  return maybeTag && maybeTag[1]
+  return maybeTag?.[1]
 }
 
 export function getRelayName(url: string) {

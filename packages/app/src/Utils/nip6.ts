@@ -12,7 +12,7 @@ export function generateBip39Entropy(mnemonic?: string) {
   try {
     const mn = mnemonic ?? bip39.generateMnemonic(wordlist, 256)
     return bip39.mnemonicToEntropy(mn, wordlist)
-  } catch (e) {
+  } catch (_e) {
     throw new Error("INVALID MNEMONIC PHRASE")
   }
 }
