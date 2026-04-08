@@ -53,6 +53,7 @@ export default function DmWindow({ id }: { id: string }) {
 }
 
 function DmChatSelected({ chat }: { chat: Chat }) {
+  const scrollRef = useRef<HTMLDivElement>(null)
   const sortedDms = useMemo(() => {
     const myDms = chat?.messages
     if (myDms) {
@@ -61,8 +62,15 @@ function DmChatSelected({ chat }: { chat: Chat }) {
     return []
   }, [chat])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: sortedDms is the trigger for scrolling to bottom
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }
+  }, [sortedDms])
+
   return (
-    <div className="flex flex-col-reverse">
+    <div ref={scrollRef} className="flex flex-col-reverse">
       {sortedDms.map(a => (
         <DM data={a} key={a.id} chat={chat} />
       ))}
