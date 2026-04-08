@@ -37,10 +37,8 @@ export default function RightColumn() {
         //RightColumnWidget.LiveStreams,
         RightColumnWidget.TrendingNotes,
         RightColumnWidget.LatestArticls,
-        RightColumnWidget.TrendingPeople,
-        RightColumnWidget.TrendingHashtags,
       ]
-    : [RightColumnWidget.TrendingPeople, RightColumnWidget.TrendingHashtags]
+    : []
 
   const getWidget = (t: RightColumnWidget) => {
     switch (t) {
