@@ -58,7 +58,10 @@ export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
   override async onEvent(evs: Readonly<Array<TaggedNostrEvent>>, _: string, pub?: EventPublisher) {
     if (!pub) return
 
-    const valid = evs.filter(v => isValidNip44Content(v.content))
+    const fresh = evs.filter(v => !this.#persistedIds.has(v.id) && !this.cache.has(v.id))
+    if (fresh.length === 0) return
+
+    const valid = fresh.filter(v => isValidNip44Content(v.content))
 
     const unwrapped = (
       await Promise.all(
@@ -104,8 +107,8 @@ export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
       const toPersist = good.filter(u => !this.#persistedIds.has(u.id))
       if (toPersist.length > 0) {
         try {
+          await Promise.all(toPersist.map(u => this.#relay!.event(u.raw)))
           for (const u of toPersist) {
-            await this.#relay.event(u.raw)
             this.#persistedIds.add(u.id)
           }
         } catch (e) {
