@@ -28,7 +28,7 @@ export default function DmWindow({ id }: { id: string }) {
   }
 
   return (
-    <div className="flex flex-1 flex-col h-full w-full md:h-screen">
+    <div className="flex flex-1 flex-col h-[100dvh] md:h-screen w-full">
       <div className="p-3">{sender()}</div>
       <div className="overflow-y-auto hide-scrollbar p-2.5 flex-grow">{chat && <DmChatSelected chat={chat} />}</div>
       <div className="flex items-center gap-2.5 p-2.5">{chat && <WriteMessage chat={chat} />}</div>
