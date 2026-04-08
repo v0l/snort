@@ -76,7 +76,9 @@ export default function Index() {
         <div className="w-full max-w-screen-xl">
           <div className="flex">
             <NavSidebar />
-            <div className="flex flex-1 flex-col pb-safe-area-plus-footer w-full md:w-1/3">
+            <div
+              className={`flex flex-1 flex-col w-full md:w-1/3${shouldHideFooter ? "" : " pb-safe-area-plus-footer"}`}
+            >
               {!shouldHideHeader && <Header />}
               <ErrorBoundary>
                 <Outlet />

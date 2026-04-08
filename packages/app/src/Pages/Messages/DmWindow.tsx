@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 import { type Chat, useChat } from "@/chat"
@@ -10,6 +10,29 @@ import { ChatParticipantProfile } from "./ChatParticipant"
 
 export default function DmWindow({ id }: { id: string }) {
   const chat = useChat(id)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [topOffset, setTopOffset] = useState(0)
+
+  useEffect(() => {
+    const update = () => {
+      const header = document.querySelector("header")
+      setTopOffset(header?.getBoundingClientRect().height ?? 0)
+    }
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
+  }, [])
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: scroll to bottom when messages change
+  useEffect(() => {
+    if (scrollRef.current) {
+      requestAnimationFrame(() => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+        }
+      })
+    }
+  }, [chat?.messages])
 
   function sender() {
     if (!chat) return
@@ -28,10 +51,15 @@ export default function DmWindow({ id }: { id: string }) {
   }
 
   return (
-    <div className="flex flex-1 flex-col h-full w-full md:h-screen">
+    <div
+      className="flex flex-1 flex-col min-h-0 min-w-0 w-full fixed left-0 right-0 bottom-0 md:relative md:left-auto md:right-auto md:bottom-auto md:h-screen z-10 md:z-auto bg-background overflow-hidden"
+      style={{ top: `${topOffset}px` }}
+    >
       <div className="p-3">{sender()}</div>
-      <div className="overflow-y-auto hide-scrollbar p-2.5 flex-grow">{chat && <DmChatSelected chat={chat} />}</div>
-      <div className="flex items-center gap-2.5 p-2.5">{chat && <WriteMessage chat={chat} />}</div>
+      <div ref={scrollRef} className="overflow-y-auto hide-scrollbar p-2.5 flex-grow min-w-0">
+        {chat && <DmChatSelected chat={chat} />}
+      </div>
+      <div className="flex items-center gap-2.5 p-2.5 shrink-0">{chat && <WriteMessage chat={chat} />}</div>
     </div>
   )
 }
@@ -40,13 +68,13 @@ function DmChatSelected({ chat }: { chat: Chat }) {
   const sortedDms = useMemo(() => {
     const myDms = chat?.messages
     if (myDms) {
-      return [...myDms].sort((a, b) => (a.created_at > b.created_at ? -1 : 1))
+      return [...myDms].sort((a, b) => (a.created_at > b.created_at ? 1 : -1))
     }
     return []
   }, [chat])
 
   return (
-    <div className="flex flex-col-reverse">
+    <div className="flex flex-col">
       {sortedDms.map(a => (
         <DM data={a} key={a.id} chat={chat} />
       ))}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import { FormattedMessage, useIntl } from "react-intl"
 import NoteTime from "@/Components/Event/Note/NoteTime"
@@ -6,6 +6,7 @@ import messages from "@/Components/messages"
 import Text from "@/Components/Text/Text"
 import ProfileImage from "@/Components/User/ProfileImage"
 import { type Chat, type ChatMessage, ChatType } from "@/chat"
+import { getCachedDecryptedContent, setCachedDecryptedContent } from "@/Cache/GiftWrapCache"
 import useEventPublisher from "@/Hooks/useEventPublisher"
 import useLogin from "@/Hooks/useLogin"
 
@@ -18,19 +19,25 @@ export default function DM(props: DMProps) {
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }))
   const { publisher } = useEventPublisher()
   const msg = props.data
-  const [content, setContent] = useState<string>()
+  const [content, setContent] = useState<string>(() => getCachedDecryptedContent(msg.id))
   const { ref, inView } = useInView({ triggerOnce: true })
   const { formatMessage } = useIntl()
   const isMe = msg.from === publicKey
   const otherPubkey = isMe ? publicKey : msg.from
+  const msgRef = useRef(msg)
+  msgRef.current = msg
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: uses refs for stability
   const decrypt = useCallback(async () => {
-    if (publisher) {
-      const decrypted = await msg.decrypt(publisher)
-      setContent(decrypted || "<ERROR>")
-      props.chat.markRead(msg.id)
+    const m = msgRef.current
+    if (publisher && !getCachedDecryptedContent(m.id)) {
+      const decrypted = await m.decrypt(publisher)
+      const result = decrypted || "<ERROR>"
+      setCachedDecryptedContent(m.id, result)
+      setContent(result)
+      props.chat.markRead(m.id)
     }
-  }, [publisher, msg, props.chat])
+  }, [publisher])
 
   function sender() {
     const isGroup = props.chat.type === ChatType.PrivateGroupChat || props.chat.type === ChatType.PublicGroupChat
@@ -39,15 +46,16 @@ export default function DM(props: DMProps) {
     }
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only inView and content are real triggers
   useEffect(() => {
-    if (inView) {
+    if (inView && !content) {
       if (msg.needsDecryption) {
         decrypt().catch(console.error)
       } else {
         setContent(msg.content)
       }
     }
-  }, [inView, msg, decrypt])
+  }, [inView, content])
 
   return (
     <div

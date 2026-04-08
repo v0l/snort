@@ -1,12 +1,4 @@
-import {
-  encodeTLVEntries,
-  type ExternalStore,
-  NostrPrefix,
-  type TLVEntry,
-  TLVEntryType,
-  unixNow,
-  unwrap,
-} from "@snort/shared"
+import { encodeTLVEntries, type ExternalStore, type TLVEntry, TLVEntryType, unixNow, unwrap } from "@snort/shared"
 import {
   EventKind,
   type EventPublisher,
@@ -17,11 +9,12 @@ import {
   type UserMetadata,
 } from "@snort/system"
 import { useRequestBuilder } from "@snort/system-react"
-import { useEffect, useMemo, useSyncExternalStore } from "react"
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react"
 
 import useEventPublisher from "@/Hooks/useEventPublisher"
 import useLogin from "@/Hooks/useLogin"
 import useModeration from "@/Hooks/useModeration"
+import { GiftsCache } from "@/Cache"
 import { findTag } from "@/Utils"
 import type { LoginSession } from "@/Utils/Login"
 
@@ -63,25 +56,11 @@ export interface Chat {
 }
 
 export interface ChatSystem {
-  /**
-   * Create a request for this system to get updates
-   */
   subscription(session: LoginSession): RequestBuilder
-
-  /**
-   * Create a list of chats for a given pubkey and set of events
-   */
   listChats(pk: string, evs: Array<TaggedNostrEvent>): Array<Chat>
-
-  /**
-   * Process events received from the subscription
-   */
   processEvents(pub: EventPublisher, evs: Array<TaggedNostrEvent>): Promise<void>
 }
 
-/**
- * Extract the P tag of the event
- */
 export function chatTo(e: NostrEvent) {
   if (e.kind === EventKind.DirectMessage) {
     return unwrap(findTag(e, "p"))
@@ -106,7 +85,7 @@ export function selfChat(e: NostrEvent, myPk: string) {
 
 export function lastReadInChat(id: string) {
   const k = `dm:seen:${id}`
-  return parseInt(window.localStorage.getItem(k) ?? "0")
+  return parseInt(window.localStorage.getItem(k) ?? "0", 10)
 }
 
 export function setLastReadIn(id: string, time?: number) {
@@ -147,7 +126,7 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
 
 export function createEmptyChatObject(id: string) {
   if (id.startsWith("nchat17")) {
-    return Nip17ChatSystem.createChatObj(id, [])
+    return Nip17ChatSystem.createChatObj(id, [], GiftsCache)
   }
   throw new Error("Cant create new empty chat, unknown id")
 }
@@ -159,18 +138,37 @@ export function useChatSystem<T extends ChatSystem & ExternalStore<Array<Chat>>>
     s => sys.hook(s),
     () => sys.snapshot(),
   )
+  // biome-ignore lint/correctness/useExhaustiveDependencies: sys is a stable singleton
   const sub = useMemo(() => {
     return sys.subscription(login)
   }, [login])
   const data = useRequestBuilder(sub)
   const { isMuted } = useModeration()
 
+  const processTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const dataRef = useRef(data)
+  dataRef.current = data
+  const loadedPersisted = useRef(false)
+
   useEffect(() => {
-    if (publisher) {
-      sys.processEvents(publisher, data)
+    if (!publisher || loadedPersisted.current) return
+    loadedPersisted.current = true
+    GiftsCache.loadPersistedAndDecrypt(publisher)
+  }, [publisher])
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: data is used as trigger, dataRef for latest value
+  useEffect(() => {
+    if (!publisher) return
+    if (processTimerRef.current) clearTimeout(processTimerRef.current)
+    processTimerRef.current = setTimeout(() => {
+      sys.processEvents(publisher, dataRef.current)
+    }, 100)
+    return () => {
+      if (processTimerRef.current) clearTimeout(processTimerRef.current)
     }
   }, [data, publisher])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: sys is a stable singleton, chat intentionally triggers re-derive
   return useMemo(() => {
     if (login.publicKey) {
       return sys.listChats(
@@ -184,11 +182,9 @@ export function useChatSystem<T extends ChatSystem & ExternalStore<Array<Chat>>>
 
 export function useChatSystems() {
   const nip17 = useChatSystem(Nip17Chats)
-
   return nip17
 }
 
 export function useChat(id: string) {
-  const ret = useChatSystem(Nip17Chats).find(a => a.id === id)
-  return ret
+  return useChatSystem(Nip17Chats).find(a => a.id === id) ?? createEmptyChatObject(id)
 }
