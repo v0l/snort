@@ -110,7 +110,7 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="flex flex-1 h-[100dvh] md:h-screen overflow-hidden">
+    <div className="flex flex-1 min-h-0 overflow-hidden">
       {(pageWidth >= TwoCol || !id) && (
         <div className="overflow-y-auto md:h-screen p-2 w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
           <div className="flex items-center justify-between">
