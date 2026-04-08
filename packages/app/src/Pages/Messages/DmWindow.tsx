@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 import { type Chat, useChat } from "@/chat"
@@ -10,6 +10,18 @@ import { ChatParticipantProfile } from "./ChatParticipant"
 
 export default function DmWindow({ id }: { id: string }) {
   const chat = useChat(id)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [topOffset, setTopOffset] = useState(0)
+
+  useEffect(() => {
+    const update = () => {
+      const header = document.querySelector("header")
+      setTopOffset(header?.getBoundingClientRect().height ?? 0)
+    }
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
+  }, [])
 
   function sender() {
     if (!chat) return
@@ -28,7 +40,11 @@ export default function DmWindow({ id }: { id: string }) {
   }
 
   return (
-    <div className="flex flex-1 flex-col min-h-0 w-full">
+    <div
+      ref={containerRef}
+      className="flex flex-1 flex-col min-h-0 w-full fixed left-0 right-0 bottom-0 md:relative md:left-auto md:right-auto md:bottom-auto z-10 md:z-auto bg-background"
+      style={{ top: `${topOffset}px` }}
+    >
       <div className="p-3">{sender()}</div>
       <div className="overflow-y-auto hide-scrollbar p-2.5 flex-grow">{chat && <DmChatSelected chat={chat} />}</div>
       <div className="flex items-center gap-2.5 p-2.5">{chat && <WriteMessage chat={chat} />}</div>
