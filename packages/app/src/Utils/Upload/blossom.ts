@@ -55,9 +55,19 @@ export class Blossom {
   }
 
   async mirror(url: string) {
-    const rsp = await this.#req("mirror", "PUT", "mirror", JSON.stringify({ url }), undefined, {
-      "content-type": "application/json",
-    })
+    const rsp = await this.#req(
+      "mirror",
+      "PUT",
+      "mirror",
+      JSON.stringify({ url }),
+      [
+        ["t", "upload"],
+        ["t", "mirror"],
+      ],
+      {
+        "content-type": "application/json",
+      },
+    )
     if (rsp.ok) {
       const ret = (await rsp.json()) as BlobDescriptor
       this.#fixTags(ret)
