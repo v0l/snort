@@ -43,14 +43,8 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
       sendStarted: false,
       filePicker: "hidden",
       hashTags: [],
-      reset: () => {
-        this.#reset(this.#data)
-        this.notifyChange(this.#data)
-      },
-      update: (fn: (v: NoteCreatorDataSnapshot) => void) => {
-        fn(this.#data)
-        this.notifyChange(this.#data)
-      },
+      reset: this.#resetFn,
+      update: this.#updateFn,
     }
   }
 
@@ -76,16 +70,21 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
     d.attachments = undefined
   }
 
+  #resetFn = () => {
+    this.#reset(this.#data)
+    this.notifyChange(this.#data)
+  }
+
+  #updateFn = (fn: (v: NoteCreatorDataSnapshot) => void) => {
+    fn(this.#data)
+    this.notifyChange(this.#data)
+  }
+
   takeSnapshot(): NoteCreatorDataSnapshot {
     const sn = {
       ...this.#data,
-      reset: () => {
-        this.#reset(this.#data)
-      },
-      update: (fn: (v: NoteCreatorDataSnapshot) => void) => {
-        fn(this.#data)
-        this.notifyChange(this.#data)
-      },
+      reset: this.#resetFn,
+      update: this.#updateFn,
     } as NoteCreatorDataSnapshot
     return sn
   }
