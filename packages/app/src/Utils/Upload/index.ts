@@ -65,9 +65,47 @@ export default function useFileUpload(privKey?: string) {
 
   const pub = privKey ? EventPublisher.privateKey(privKey) : publisher
   if (servers.length > 0 && pub) {
-    const random = randomSample(servers, 1)[0]
-    return new Blossom(random, pub)
+    const sampled = randomSample(servers, 3)
+    const primary = sampled[0]
+    const mirrors = sampled.slice(1)
+    return new MultiServerBlossom(primary, mirrors, pub)
   } else if (pub) {
     return new Blossom("https://blossom.band", pub)
+  }
+}
+
+class MultiServerBlossom {
+  constructor(
+    private primary: string,
+    private mirrors: string[],
+    private publisher: EventPublisher,
+  ) {}
+
+  async upload(file: File | Blob) {
+    const blossom = new Blossom(this.primary, this.publisher)
+    const result = await blossom.upload(file instanceof Blob ? new File([file], "blob") : file)
+
+    const mirrorUrls = []
+    for (const server of this.mirrors) {
+      try {
+        if (result.url) {
+          const mirrorResult = await new Blossom(server, this.publisher).mirror(result.url)
+          if (mirrorResult.url) {
+            mirrorUrls.push(mirrorResult.url)
+          }
+        }
+      } catch (e) {
+        console.warn("Mirror upload failed for", server, e)
+      }
+    }
+
+    if (mirrorUrls.length > 0) {
+      result.nip94 ??= []
+      for (const url of mirrorUrls) {
+        result.nip94.push(["fallback", url])
+      }
+    }
+
+    return result
   }
 }
