@@ -99,11 +99,9 @@ class MultiServerBlossom {
       }
     }
 
-    if (mirrorUrls.length > 0) {
-      result.nip94 ??= []
-      for (const url of mirrorUrls) {
-        result.nip94.push(["fallback", url])
-      }
+    result.nip94 ??= []
+    for (const url of mirrorUrls) {
+      result.nip94.push(["fallback", url])
     }
 
     return result
