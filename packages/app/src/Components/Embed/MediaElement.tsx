@@ -6,6 +6,7 @@ import { useInView } from "react-intersection-observer"
 
 import { ProxyImg, type ProxyImgProps } from "@/Components/ProxyImg"
 import useImgProxy from "@/Hooks/useImgProxy"
+import { randomSample } from "@/Utils"
 
 export interface MediaElementProps {
   mime: string
@@ -38,8 +39,9 @@ const AudioElement = ({ src }: AudioElementProps) => {
 
 const ImageElement = ({ src, meta, onMediaClick, size, onFallback, ...props }: ImageElementProps) => {
   const imageRef = useRef<HTMLImageElement | null>(null)
-  const [alternatives, setAlternatives] = useState<Array<string>>(meta?.fallback ?? [])
-  const [currentUrl, setCurrentUrl] = useState(src)
+  const allUrls = randomSample([src, ...(meta?.fallback ?? [])], 10)
+  const [alternatives, setAlternatives] = useState<Array<string>>(allUrls.slice(1))
+  const [currentUrl, setCurrentUrl] = useState(allUrls[0])
   if ("creator" in props) {
     delete props.creator
   }
