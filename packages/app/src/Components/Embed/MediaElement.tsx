@@ -1,7 +1,7 @@
 import type { Nip94Tags } from "@snort/system"
 import classNames from "classnames"
 import type React from "react"
-import { type CSSProperties, useEffect, useRef, useState } from "react"
+import { type CSSProperties, useEffect, useMemo, useRef, useState } from "react"
 import { useInView } from "react-intersection-observer"
 
 import { ProxyImg, type ProxyImgProps } from "@/Components/ProxyImg"
@@ -39,7 +39,7 @@ const AudioElement = ({ src }: AudioElementProps) => {
 
 const ImageElement = ({ src, meta, onMediaClick, size, onFallback, ...props }: ImageElementProps) => {
   const imageRef = useRef<HTMLImageElement | null>(null)
-  const allUrls = randomSample([src, ...(meta?.fallback ?? [])], 10)
+  const allUrls = useMemo(() => randomSample([src, ...(meta?.fallback ?? [])], 10), [src, meta?.fallback])
   const [alternatives, setAlternatives] = useState<Array<string>>(allUrls.slice(1))
   const [currentUrl, setCurrentUrl] = useState(allUrls[0])
   if ("creator" in props) {
