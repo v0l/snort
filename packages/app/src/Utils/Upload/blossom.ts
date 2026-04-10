@@ -55,19 +55,11 @@ export class Blossom {
   }
 
   async mirror(url: string) {
-    const rsp = await this.#req(
-      "mirror",
-      "PUT",
-      "mirror",
-      JSON.stringify({ url }),
-      [
-        ["t", "upload"],
-        ["t", "mirror"],
-      ],
-      {
-        "content-type": "application/json",
-      },
-    )
+    const body = JSON.stringify({ url })
+    const rsp = await this.#req("mirror", "PUT", "mirror", body, [["t", "upload"], ["t", "mirror"]], {
+      "content-type": "application/json",
+      "content-length": body.length.toString(),
+    })
     if (rsp.ok) {
       const ret = (await rsp.json()) as BlobDescriptor
       this.#fixTags(ret)
@@ -76,6 +68,7 @@ export class Blossom {
       const text = await rsp.text()
       throw new Error(text)
     }
+  }
   }
 
   async list(pk: string) {
