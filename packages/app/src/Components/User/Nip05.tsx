@@ -36,6 +36,7 @@ export default function Nip05({ nip05, pubkey, forceVerified, showBadges, classN
 
   const canVerify = pubkey !== undefined
   const isVerified = (forceVerified ?? false) || (data === pubkey && canVerify)
+  const isNamecoinDomain = domain?.toLowerCase().endsWith(".bit") ?? false
   const isSpecialDomain =
     domain?.toLowerCase() === "snort.social" || domain?.toLowerCase() === CONFIG.nip05Domain.toLowerCase()
 
@@ -58,8 +59,16 @@ export default function Nip05({ nip05, pubkey, forceVerified, showBadges, classN
       title={error?.message}
     >
       {!isDefaultUser && <span className="nick">{`${name}@`}</span>}
-      <span className={`${isSpecialDomain && isVerified ? "text-snort-gradient" : "text-neutral-400"}`}>{domain}</span>
-      {(showBadges ?? false) && !isVerified && (
+      <span className={`${isSpecialDomain && isVerified ? "text-snort-gradient" : isNamecoinDomain && isVerified ? "text-amber-500" : "text-neutral-400"}`}>{domain}</span>
+      {isNamecoinDomain && isVerified && (
+        <span
+          className="ml-0.5 text-amber-500"
+          title="Verified via Namecoin blockchain — decentralised identity"
+        >
+          ⛓
+        </span>
+      )}
+      {(showBadges ?? false) && !isVerified && !isNamecoinDomain && (
         <Icon
           size={13}
           name={isVerified ? "check" : "x"}

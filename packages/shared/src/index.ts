@@ -9,6 +9,7 @@ export * from "./SortedMap/SortedMap"
 export * from "./const"
 export * from "./tlv"
 export * from "./imgproxy"
+export * from "./namecoin"
 
 /**
  * Well-known nostr entity HRP's

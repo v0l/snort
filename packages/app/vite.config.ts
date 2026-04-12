@@ -6,9 +6,11 @@ import { defineConfig } from "vite"
 import { VitePWA } from "vite-plugin-pwa"
 import { vitePluginVersionMark } from "vite-plugin-version-mark"
 import tailwindcss from "@tailwindcss/vite"
+import namecoinProxy from "../../proxy/vite-plugin-namecoin.mjs"
 
 export default defineConfig({
   plugins: [
+    namecoinProxy(),
     tailwindcss(),
     //basicSsl(),
     react({
