@@ -5,72 +5,29 @@
  * to Nostr public keys, enabling decentralised NIP-05-style identity
  * verification without relying on HTTP servers.
  *
+ * Architecture:
+ *   The browser connects directly to ElectrumX servers over WebSocket
+ *   (ws:// or wss://) — no backend proxy or middleware needed.
+ *   Works as a fully static web app.
+ *
  * Ported from Amethyst's Kotlin implementation and Coracle's TypeScript port:
  *   https://github.com/vitorpamplona/amethyst
  *   https://github.com/coracle-social/coracle/pull/662
  *
- * Architecture:
- *   Browsers cannot make raw TCP/TLS connections to ElectrumX servers.
- *   Instead, the browser makes simple HTTP requests to a lightweight
- *   proxy that bridges HTTP → ElectrumX JSON-RPC over TCP.
- *
- *   The proxy handles all ElectrumX protocol details (scripthash
- *   computation, transaction fetching, NAME_UPDATE script parsing).
- *   The browser only needs to parse the returned JSON value.
- *
- *   In development, Vite serves the proxy at /api/namecoin/*.
- *   In production, a hosted proxy URL is configured via VITE_NAMECOIN_PROXY_URL.
+ * WebSocket approach based on hzrd149/nostrudel#352
  *
  * Copyright (c) 2025 – MIT License
  */
 
-// ── Types ──────────────────────────────────────────────────────────────
-
-export interface NamecoinNostrResult {
-  /** Hex-encoded 32-byte Schnorr public key */
-  pubkey: string
-  /** Optional relay URLs where this user can be found */
-  relays: string[]
-  /** The Namecoin name that was resolved (e.g. "d/example") */
-  namecoinName: string
-  /** The local-part that was matched (e.g. "alice" or "_") */
-  localPart: string
-}
-
-export interface NameShowResult {
-  name: string
-  value: string
-  txid?: string
-  height?: number
-  expiresIn?: number
-}
-
-export interface NamecoinSettings {
-  enabled: boolean
-  proxyUrl: string
-}
+import type { NamecoinNostrResult, ParsedIdentifier, NameShowResult } from "./types"
+import { Namespace } from "./types"
+import { nameShowWithFallback } from "./electrumx-ws"
 
 // ── Constants ──────────────────────────────────────────────────────────
 
 const HEX_PUBKEY_REGEX = /^[0-9a-fA-F]{64}$/
 
-export const DEFAULT_NAMECOIN_SETTINGS: NamecoinSettings = {
-  enabled: true,
-  proxyUrl: "",
-}
-
 // ── Identifier Parsing ─────────────────────────────────────────────────
-
-enum Namespace {
-  DOMAIN = "DOMAIN",
-  IDENTITY = "IDENTITY",
-}
-
-interface ParsedIdentifier {
-  namecoinName: string
-  localPart: string
-  namespace: Namespace
-}
 
 /**
  * Check whether an identifier should be routed to Namecoin
@@ -162,10 +119,6 @@ function extractRelays(nostrObj: Record<string, any>, pubkey: string): string[] 
 
 /**
  * Extract Nostr data from a `d/` domain value.
- *
- * Supports:
- *   { "nostr": "hex-pubkey" }                           → simple form
- *   { "nostr": { "names": { "alice": "hex" }, ... } }   → extended NIP-05-like form
  */
 function extractFromDomainValue(
   value: Record<string, any>,
@@ -235,7 +188,6 @@ function extractFromIdentityValue(
   const nostrField = value.nostr
   if (nostrField === undefined || nostrField === null) return null
 
-  // Simple: "nostr": "hex-pubkey"
   if (typeof nostrField === "string") {
     if (isValidPubkey(nostrField)) {
       return {
@@ -247,7 +199,6 @@ function extractFromIdentityValue(
     }
   }
 
-  // Object form: "nostr": { "pubkey": "hex", "relays": [...] }
   if (typeof nostrField === "object" && !Array.isArray(nostrField)) {
     const pubkey = nostrField.pubkey
     if (typeof pubkey === "string" && isValidPubkey(pubkey)) {
@@ -264,55 +215,6 @@ function extractFromIdentityValue(
   }
 
   return null
-}
-
-// ── Proxy URL Resolution ───────────────────────────────────────────────
-
-function resolveProxyUrl(explicitUrl?: string): string {
-  if (explicitUrl) return explicitUrl.replace(/\/+$/, "")
-  if (typeof import.meta !== "undefined") {
-    try {
-      const envUrl = (import.meta as any).env?.VITE_NAMECOIN_PROXY_URL
-      if (envUrl) return envUrl.replace(/\/+$/, "")
-    } catch {
-      // not in Vite context
-    }
-  }
-  // Default: Vite dev server middleware path
-  return "/api/namecoin"
-}
-
-/**
- * Perform a name_show lookup via the HTTP proxy.
- */
-async function nameShowViaProxy(
-  identifier: string,
-  proxyUrl: string,
-): Promise<NameShowResult | null> {
-  const url = `${proxyUrl}/name/${encodeURIComponent(identifier)}`
-  const response = await fetch(url, {
-    headers: { Accept: "application/json" },
-    signal: AbortSignal.timeout(15_000),
-  })
-
-  if (!response.ok) {
-    if (response.status === 404) {
-      throw { type: "name_not_found", name: identifier }
-    }
-    throw new Error(`Proxy error: ${response.status}`)
-  }
-
-  const data = await response.json()
-  if (data.error) {
-    throw { type: data.error, name: identifier }
-  }
-  return {
-    name: data.name || identifier,
-    value: typeof data.value === "string" ? data.value : JSON.stringify(data.value),
-    txid: data.txid,
-    height: data.height,
-    expiresIn: data.expires_in ?? data.expiresIn,
-  }
 }
 
 // ── Cache ──────────────────────────────────────────────────────────────
@@ -353,12 +255,10 @@ function setCache(identifier: string, result: NamecoinNostrResult | null): void 
 
 async function performLookup(
   parsed: ParsedIdentifier,
-  proxyUrl?: string,
 ): Promise<NamecoinNostrResult | null> {
   try {
-    const url = resolveProxyUrl(proxyUrl)
-    const nameResult = await nameShowViaProxy(parsed.namecoinName, url)
-    if (!nameResult) return null
+    const nameResult = await nameShowWithFallback(parsed.namecoinName)
+    if (!nameResult || nameResult.expired) return null
 
     let valueJson: Record<string, any>
     try {
@@ -378,20 +278,23 @@ async function performLookup(
 /**
  * Resolve a user-supplied identifier to a Nostr pubkey via Namecoin.
  *
+ * Connects directly to ElectrumX via WebSocket from the browser.
+ * No backend proxy or middleware required.
+ *
  * @param identifier User input, e.g. "alice@example.bit", "id/alice", "example.bit"
- * @param proxyUrl HTTP proxy URL (resolved automatically if not provided)
+ * @param _proxyUrl Deprecated — ignored. Kept for API compatibility.
  * @param timeoutMs Maximum time to wait
  */
 export async function resolveNamecoin(
   identifier: string,
-  proxyUrl?: string,
+  _proxyUrl?: string,
   timeoutMs = 20_000,
 ): Promise<NamecoinNostrResult | null> {
   const parsed = parseNamecoinIdentifier(identifier)
   if (!parsed) return null
 
   return Promise.race([
-    performLookup(parsed, proxyUrl),
+    performLookup(parsed),
     new Promise<null>(resolve => setTimeout(() => resolve(null), timeoutMs)),
   ])
 }
@@ -401,12 +304,12 @@ export async function resolveNamecoin(
  */
 export async function resolveNamecoinCached(
   identifier: string,
-  proxyUrl?: string,
+  _proxyUrl?: string,
 ): Promise<NamecoinNostrResult | null> {
   const cached = getCached(identifier)
   if (cached !== undefined) return cached
 
-  const result = await resolveNamecoin(identifier, proxyUrl)
+  const result = await resolveNamecoin(identifier)
   setCache(identifier, result)
   return result
 }
@@ -418,10 +321,10 @@ export async function resolveNamecoinCached(
 export async function verifyNamecoinNip05(
   nip05Address: string,
   expectedPubkeyHex: string,
-  proxyUrl?: string,
+  _proxyUrl?: string,
 ): Promise<boolean> {
   if (!isNamecoinIdentifier(nip05Address)) return false
-  const result = await resolveNamecoinCached(nip05Address, proxyUrl)
+  const result = await resolveNamecoinCached(nip05Address)
   if (!result) return false
   return result.pubkey.toLowerCase() === expectedPubkeyHex.toLowerCase()
 }

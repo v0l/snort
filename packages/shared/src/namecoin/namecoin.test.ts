@@ -6,7 +6,7 @@
  * NamecoinNameResolverTest.kt and the Coracle PR #662.
  */
 import { describe, it, expect } from "vitest"
-import { isNamecoinIdentifier, parseNamecoinIdentifier } from "./namecoin"
+import { isNamecoinIdentifier, parseNamecoinIdentifier } from "./index"
 
 // ── isNamecoinIdentifier ───────────────────────────────────────────────
 

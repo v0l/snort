@@ -1,3 +1,6 @@
+// Kept for reference — the browser now connects directly via WebSocket.
+// See packages/shared/src/namecoin/electrumx-ws.ts
+
 /**
  * Vite plugin that serves /api/namecoin/* during development.
  *

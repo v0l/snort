@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// Kept for reference — the browser now connects directly via WebSocket.
+// See packages/shared/src/namecoin/electrumx-ws.ts
+
 /**
  * Namecoin ElectrumX HTTP Proxy
  *
