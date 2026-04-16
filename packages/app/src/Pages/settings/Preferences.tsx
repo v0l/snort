@@ -340,6 +340,30 @@ const PreferencesPage = () => {
       )}
 
       {row(
+        <FormattedMessage {...messages.AgentUrl} />,
+        <FormattedMessage defaultMessage="URL for AI Agent service" />,
+        <input
+          type="text"
+          value={pref.agentUrl ?? ""}
+          placeholder="https://example.com/v1"
+          onChange={e => setPref({ ...pref, agentUrl: e.target.value })}
+          className="w-64"
+        />,
+      )}
+
+      {row(
+        <FormattedMessage {...messages.AgentKey} />,
+        <FormattedMessage defaultMessage="API key for AI Agent service" />,
+        <input
+          type="password"
+          value={pref.agentKey ?? ""}
+          placeholder="sk-..."
+          onChange={e => setPref({ ...pref, agentKey: e.target.value })}
+          className="w-64"
+        />,
+      )}
+
+      {row(
         <FormattedMessage {...messages.ReactionEmoji} />,
         <FormattedMessage {...messages.ReactionEmojiHelp} />,
         <input

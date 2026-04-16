@@ -1,14 +1,25 @@
 import { useRef, useCallback } from "react"
-import { Agent, Runner, tool, setTracingDisabled, OpenAIChatCompletionsModel, type ModelProvider, RunItemStreamEvent, RunToolCallItem, RunToolCallOutputItem, Session, MemorySession, FunctionCallItem } from "@openai/agents"
+import {
+  Agent,
+  Runner,
+  tool,
+  setTracingDisabled,
+  OpenAIChatCompletionsModel,
+  type ModelProvider,
+  RunItemStreamEvent,
+  RunToolCallItem,
+  RunToolCallOutputItem,
+  Session,
+  MemorySession,
+  FunctionCallItem,
+} from "@openai/agents"
 import OpenAI from "openai"
 import { z } from "zod"
-import {
-  RequestBuilder,
-  type UserMetadata,
-} from "@snort/system"
+import { RequestBuilder, type UserMetadata } from "@snort/system"
 import { SnortSystemPrompt } from "@/Agent/system-prompt"
 import useEventPublisher from "./useEventPublisher"
 import useProfileSearch from "./useProfileSearch"
+import usePreferences from "./usePreferences"
 
 class CustomModelProvider implements ModelProvider {
   private client: OpenAI
@@ -35,12 +46,11 @@ const AI_CONFIG = {
 }
 
 export type AiStreamEvent =
-  { type: "done" }
+  | { type: "done" }
   | { type: "text"; content: string }
   | { type: "thinking"; content: string }
   | { type: "tool_call"; name: string; args: object | undefined }
   | { type: "tool_result"; name: string; result: object | undefined }
-
 
 export interface ChatHistoryItem {
   role: "user" | "assistant"
@@ -48,24 +58,29 @@ export interface ChatHistoryItem {
 }
 
 interface AgentInstance {
-  agent: Agent,
-  runner: Runner,
+  agent: Agent
+  runner: Runner
   session: Session
 }
 
-export function useAiAgent(
-) {
-  const agentRef = useRef<AgentInstance | null>(null);
-  const { publisher, system } = useEventPublisher();
-  const search = useProfileSearch();
+export function useAiAgent() {
+  const agentRef = useRef<AgentInstance | null>(null)
+  const { publisher, system } = useEventPublisher()
+  const search = useProfileSearch()
+  const agentConfig = usePreferences(s => ({
+    url: s.agentUrl,
+    key: s.agentKey,
+  }))
 
   const getOrCreate = useCallback(() => {
-    if (agentRef.current) return agentRef.current;
+    if (agentRef.current) return agentRef.current
 
     setTracingDisabled(true)
 
-    const modelProvider = new CustomModelProvider(AI_CONFIG.apiUrl, AI_CONFIG.apiKey, AI_CONFIG.model)
-    const runner = new Runner({ modelProvider });
+    const apiUrl = agentConfig.url || AI_CONFIG.apiUrl
+    const apiKey = agentConfig.key || AI_CONFIG.apiKey
+    const modelProvider = new CustomModelProvider(apiUrl, apiKey, AI_CONFIG.model)
+    const runner = new Runner({ modelProvider })
 
     const tools = [
       tool({
@@ -74,29 +89,29 @@ export function useAiAgent(
         parameters: z.object().describe("Unsigned nostr event"),
         execute: async input => {
           try {
-            const event = await publisher?.generic((eb) => {
+            const event = await publisher?.generic(eb => {
               for (const [k, v] of Object.entries(input)) {
                 switch (k) {
                   case "content": {
                     if (typeof v === "string") {
-                      eb.content(v);
+                      eb.content(v)
                     } else {
-                      throw "Content must be a string";
+                      throw "Content must be a string"
                     }
                   }
                   case "tags": {
                     if (Array.isArray(v) && (v as Array<never>).every(b => Array.isArray(b))) {
-                      for (const t of (v as Array<Array<string>>)) {
-                        eb.tag(t);
+                      for (const t of v as Array<Array<string>>) {
+                        eb.tag(t)
                       }
                     } else {
-                      throw "Tags must be 2d array of strings, each entry must have at least 2 items (k,v)";
+                      throw "Tags must be 2d array of strings, each entry must have at least 2 items (k,v)"
                     }
                   }
                 }
               }
-              return eb;
-            });
+              return eb
+            })
             return JSON.stringify(event)
           } catch (error) {
             return `Error creating post: ${error instanceof Error ? error.message : String(error)}`
@@ -146,7 +161,7 @@ export function useAiAgent(
             if (input.avatarUrl) profile.picture = input.avatarUrl
             if (input.bannerUrl) profile.banner = input.bannerUrl
             if (input.website) profile.website = input.website
-            const event = await publisher.metadata(profile);
+            const event = await publisher.metadata(profile)
             return JSON.stringify(event)
           } catch (error) {
             return `Error updating profile: ${error instanceof Error ? error.message : String(error)}`
@@ -205,9 +220,9 @@ export function useAiAgent(
       }),
     ]
 
-    let systemPrompt = SnortSystemPrompt;
+    let systemPrompt = SnortSystemPrompt
     if (publisher?.pubKey) {
-      systemPrompt += `\nThe currently logged in user pubkey is ${publisher.pubKey}`;
+      systemPrompt += `\nThe currently logged in user pubkey is ${publisher.pubKey}`
     }
     const agent = new Agent({
       name: "Snort AI Assistant",
@@ -217,12 +232,12 @@ export function useAiAgent(
     const newAgent = {
       agent,
       runner,
-      session: new MemorySession()
+      session: new MemorySession(),
     }
-    agentRef.current = newAgent;
+    agentRef.current = newAgent
 
     return newAgent
-  }, [publisher, system])
+  }, [publisher, system, agentConfig])
 
   const runStream = useCallback(
     async function* (message: string): AsyncGenerator<AiStreamEvent> {
@@ -248,38 +263,42 @@ export function useAiAgent(
             }
           }
         } else if (event instanceof RunItemStreamEvent) {
-          console.debug("RAW AGENT MSG:", event);
+          console.debug("RAW AGENT MSG:", event)
           switch (event.name) {
             case "tool_called": {
-              const toolCall = event.item as RunToolCallItem;
+              const toolCall = event.item as RunToolCallItem
               if ("name" in toolCall.rawItem && "arguments" in toolCall.rawItem) {
-                let args = {};
+                let args = {}
                 try {
                   args = JSON.parse(toolCall.rawItem.arguments as string)
-                } catch { }
+                } catch {}
                 yield { type: "tool_call", name: toolCall.rawItem.name, args }
               } else {
-                debugger;
+                debugger
               }
-              break;
+              break
             }
             case "tool_output": {
-              const toolOutput = event.item as RunToolCallOutputItem;
-              let result: object | undefined = undefined;
+              const toolOutput = event.item as RunToolCallOutputItem
+              let result: object | undefined = undefined
               if (toolOutput.output) {
                 if (typeof toolOutput.output === "string") {
                   try {
                     result = JSON.parse(toolOutput.output)
-                  } catch { }
+                  } catch {}
                 } else {
-                  result = toolOutput.output;
+                  result = toolOutput.output
                 }
               }
-              yield { type: "tool_result", name: "name" in event.item.rawItem ? event.item.rawItem.name as string : event.item.rawItem.id!, result: result }
-              break;
+              yield {
+                type: "tool_result",
+                name: "name" in event.item.rawItem ? (event.item.rawItem.name as string) : event.item.rawItem.id!,
+                result: result,
+              }
+              break
             }
             default: {
-              console.warn("Unhandeled event item", event);
+              console.warn("Unhandeled event item", event)
             }
           }
         }

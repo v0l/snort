@@ -142,7 +142,7 @@ export default function AgentPage() {
   useEffect(() => {
     if (
       messagesRef.current.snapshot().length === 0 &&
-      state.initialMessage &&
+      state?.initialMessage &&
       typeof state.initialMessage === "string"
     ) {
       sendChat(state.initialMessage)

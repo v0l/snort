@@ -112,6 +112,16 @@ export interface UserPreferences {
    * Selected DVM provider pubkey for trending notes (kind 5300)
    */
   trendingDvmPubkey?: string
+
+  /**
+   * AI Agent service URL
+   */
+  agentUrl?: string
+
+  /**
+   * AI Agent API key
+   */
+  agentKey?: string
 }
 
 export const DefaultPreferences = {

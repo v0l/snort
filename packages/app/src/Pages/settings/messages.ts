@@ -76,4 +76,6 @@ export default defineMessages({
   ServiceWorkerNotRunning: { defaultMessage: "Service Worker Not Running", id: "RDha9y" },
   SubscribedToPush: { defaultMessage: "Subscribed to Push", id: "G3A56c" },
   NotSubscribedToPush: { defaultMessage: "Not Subscribed to Push", id: "d2ebEu" },
+  AgentUrl: { defaultMessage: "Agent URL", id: "AgentUrl1" },
+  AgentKey: { defaultMessage: "Agent Key", id: "AgentKey1" },
 })
