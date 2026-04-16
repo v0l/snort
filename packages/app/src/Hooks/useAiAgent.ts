@@ -89,6 +89,7 @@ export function useAiAgent() {
     key: s.agentKey,
     model: s.agentModel,
   }))
+  const memoryRef = useRef(new MemorySession());
 
   useEffect(() => {
     // reset agent on config change
@@ -288,12 +289,12 @@ export function useAiAgent() {
       provider: modelProvider,
       agent,
       runner,
-      session: new MemorySession(),
+      session: memoryRef.current
     }
     agentRef.current = newAgent
 
     return newAgent
-  }, [publisher, system, agentConfig])
+  }, [publisher, system, agentConfig, memoryRef])
 
   const runStream = useCallback(
     async function* (message: string): AsyncGenerator<AiStreamEvent> {
@@ -336,7 +337,7 @@ export function useAiAgent() {
             }
             case "tool_output": {
               const toolOutput = event.item as RunToolCallOutputItem
-              let result: object | string | undefined 
+              let result: object | string | undefined
               if (toolOutput.output) {
                 if (typeof toolOutput.output === "string") {
                   try {
