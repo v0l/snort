@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect, useSyncExternalStore } from "react"
+import { useState, useRef, useCallback, useEffect, useSyncExternalStore, use } from "react"
 import { AiStreamEvent, useAiAgent } from "@/Hooks/useAiAgent"
 import { Markdown } from "@/Components/Event/Markdown"
 import { FixedPage } from "../FixedPage"
@@ -7,6 +7,10 @@ import Spinner from "@/Components/Icons/Spinner"
 import { ExternalStore, unixNow } from "@snort/shared"
 import { AvatarGroup } from "@/Components/User/AvatarGroup"
 import { useLocation } from "react-router-dom"
+import { Note } from "@/Components/Event/Note/Note"
+import { NostrEvent, TaggedNostrEvent } from "@snort/system"
+import AsyncButton from "@/Components/Button/AsyncButton"
+import { SnortContext } from "@snort/system-react"
 
 interface ChatMessage {
   id: string
@@ -75,6 +79,7 @@ export default function AgentPage() {
   const { formatMessage } = useIntl()
   const { state } = useLocation()
   const { runStream } = useAiAgent()
+  const system = use(SnortContext);
 
   const messages = useSyncExternalStore(
     c => messagesRef.current.hook(c),
@@ -201,11 +206,23 @@ export default function AgentPage() {
               )
             }
           }
+          case "create_event": {
+            return (
+              <div key={`tool-result-${i}`} className="p-2 bg-neutral-900 rounded-lg">
+                <Note data={seg.result as TaggedNostrEvent} />
+                <AsyncButton onClick={async () => {
+                  await system.BroadcastEvent(seg.result as NostrEvent)
+                }}>
+                  <FormattedMessage defaultMessage="Post Event" />
+                </AsyncButton>
+              </div>
+            )
+          }
         }
 
         return (
           <span key={`tool-result-${i}`} className="text-xs text-gray-300 block">
-            ← {seg.name}: {JSON.stringify(seg.result)}
+            ← {seg.name}: {typeof seg.result === "string" ? seg.result : JSON.stringify(seg.result)}
           </span>
         )
       }
@@ -248,9 +265,8 @@ export default function AgentPage() {
               return (
                 <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div
-                    className={`max-w-[90%] rounded-lg p-3 ${
-                      msg.role === "user" ? "bg-primary text-white" : "bg-layer-2 text-gray-100"
-                    }`}
+                    className={`max-w-[90%] rounded-lg p-3 ${msg.role === "user" ? "bg-primary text-white" : "bg-layer-2 text-gray-100"
+                      }`}
                   >
                     <div className="overflow-auto">
                       {renderSegments(msg)}

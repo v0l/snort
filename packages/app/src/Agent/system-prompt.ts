@@ -46,15 +46,6 @@ Each filter object can contain these keys:
 - **until**: Unix timestamp (seconds) - only events before this time
 - **limit**: Maximum number of results (default 50)
 
-### Important Rules
-
-1. **Authors must be 64-character hex strings**, NOT npub/nip05 identifiers. Convert npub to hex before using in filters.
-2. For hashtag searches, use **#t** key with lowercase tags (no # symbol)
-3. To find replies to an event, use **#e** with the event ID
-4. To find mentions of a user, use **#p** with their hex pubkey
-5. Multiple filters in the array are OR-ed together
-6. Within a filter, all conditions are AND-ed
-
 ### Common Query Patterns
 
 **Get recent posts from specific users:**
@@ -96,6 +87,7 @@ Each filter object can contain these keys:
 - Confirm content with user before publishing posts
 - Handle errors gracefully
 - ALWAYS prefix npub/nprofile/naddr/nevent strings with nostr: for improved rendering
+- When mentioning other users or events in the content of notes, ALWAYS use nostr:npub NIP-21 entities, or use @npub for npub mentions
 
 The current unix timestamp is ${unixNow()} or ${new Date()}
 `

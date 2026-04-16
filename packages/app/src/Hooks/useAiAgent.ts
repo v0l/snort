@@ -10,8 +10,7 @@ import {
   RunToolCallItem,
   RunToolCallOutputItem,
   Session,
-  MemorySession,
-  FunctionCallItem,
+  MemorySession
 } from "@openai/agents"
 import OpenAI from "openai"
 import { z } from "zod"
@@ -20,6 +19,7 @@ import { SnortSystemPrompt } from "@/Agent/system-prompt"
 import useEventPublisher from "./useEventPublisher"
 import useProfileSearch from "./useProfileSearch"
 import usePreferences from "./usePreferences"
+import { hexToBech32 } from "@snort/shared"
 
 class CustomModelProvider implements ModelProvider {
   private client: OpenAI
@@ -50,7 +50,7 @@ export type AiStreamEvent =
   | { type: "text"; content: string }
   | { type: "thinking"; content: string }
   | { type: "tool_call"; name: string; args: object | undefined }
-  | { type: "tool_result"; name: string; result: object | undefined }
+  | { type: "tool_result"; name: string; result: object | string | undefined }
 
 export interface ChatHistoryItem {
   role: "user" | "assistant"
@@ -86,23 +86,48 @@ export function useAiAgent() {
       tool({
         name: "create_event",
         description: "Create a new Nostr event",
-        parameters: z.object().describe("Unsigned nostr event"),
+        parameters: z.object({
+          content: z.string().describe("The content of the event"),
+          kind: z.number().describe("The event kind number"),
+          tags: z.array(z.array(z.string())).optional().describe("Nostr tags, for referencing other events / users, optional"),
+          created_at: z.number().optional().describe("Created timestamp as unix seconds, optional")
+        }).describe("Unsigned nostr event"),
         execute: async input => {
           try {
-            const event = await publisher?.generic(eb => {
+            const es = await publisher?.generic(eb => {
               for (const [k, v] of Object.entries(input)) {
                 switch (k) {
+                  case "created_at": {
+                    if (typeof v === "number") {
+                      eb.createdAt(v);
+                      break;
+                    } else {
+                      throw "Created at must be a number"
+                    }
+                  }
+                  case "kind": {
+                    if (typeof v === "number") {
+                      eb.kind(v);
+                      break;
+                    } else {
+                      throw "Kind must be a number"
+                    }
+                  }
                   case "content": {
                     if (typeof v === "string") {
                       eb.content(v)
+                      break;
                     } else {
                       throw "Content must be a string"
                     }
                   }
                   case "tags": {
-                    if (Array.isArray(v) && (v as Array<never>).every(b => Array.isArray(b))) {
-                      for (const t of v as Array<Array<string>>) {
-                        eb.tag(t)
+                    if (Array.isArray(v)) {
+                      if (v.length === 0) break;
+                      if ((v as Array<never>).every(b => Array.isArray(b))) {
+                        for (const t of v as Array<Array<string>>) {
+                          eb.tag(t)
+                        }
                       }
                     } else {
                       throw "Tags must be 2d array of strings, each entry must have at least 2 items (k,v)"
@@ -112,7 +137,7 @@ export function useAiAgent() {
               }
               return eb
             })
-            return JSON.stringify(event)
+            return JSON.stringify(es)
           } catch (error) {
             return `Error creating post: ${error instanceof Error ? error.message : String(error)}`
           }
@@ -135,6 +160,7 @@ export function useAiAgent() {
               name: p.display_name || p.name || "Unknown",
               nip05: p.nip05 || "no nip05",
               pubkey: p.pubkey,
+              npub: hexToBech32("npub", p.pubkey)
             }))
             return JSON.stringify(formatted)
           } catch (error) {
@@ -271,7 +297,7 @@ export function useAiAgent() {
                 let args = {}
                 try {
                   args = JSON.parse(toolCall.rawItem.arguments as string)
-                } catch {}
+                } catch { }
                 yield { type: "tool_call", name: toolCall.rawItem.name, args }
               } else {
                 debugger
@@ -280,12 +306,14 @@ export function useAiAgent() {
             }
             case "tool_output": {
               const toolOutput = event.item as RunToolCallOutputItem
-              let result: object | undefined = undefined
+              let result: object | string | undefined = undefined
               if (toolOutput.output) {
                 if (typeof toolOutput.output === "string") {
                   try {
                     result = JSON.parse(toolOutput.output)
-                  } catch {}
+                  } catch {
+                    result = toolOutput.output
+                  }
                 } else {
                   result = toolOutput.output
                 }
