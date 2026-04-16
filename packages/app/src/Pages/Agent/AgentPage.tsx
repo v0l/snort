@@ -18,51 +18,51 @@ interface ChatMessage {
 }
 
 class MessageStore extends ExternalStore<Array<ChatMessage>> {
-  private messages: Array<ChatMessage> = [];
+  private messages: Array<ChatMessage> = []
 
   addMessage(msg: ChatMessage) {
-    this.messages.push(msg);
-    this.notifyChange();
+    this.messages.push(msg)
+    this.notifyChange()
   }
 
   addStreamChunk(msgId: string, event: AiStreamEvent) {
     // Convertes the streamed raw chunks into single accumilated chunks for better UX
-    let acc = this.messages.find(a => a.id === msgId);
+    let acc = this.messages.find(a => a.id === msgId)
     if (!acc) {
-      console.warn("AGENT: Dropping new segment, agent message not found: ", event);
-      return;
+      console.warn("AGENT: Dropping new segment, agent message not found: ", event)
+      return
     }
     if (event.type === "done") {
-      acc.done = true;
-      this.notifyChange();
-      return;
+      acc.done = true
+      this.notifyChange()
+      return
     }
     if (acc.segments.length > 0 && acc.segments[acc.segments.length - 1].type === event.type) {
-      const lastSeg = acc.segments[acc.segments.length - 1];
+      const lastSeg = acc.segments[acc.segments.length - 1]
       if ("content" in lastSeg && "content" in event) {
-        lastSeg.content += event.content;
+        lastSeg.content += event.content
       } else {
         // Skip empty new segments (like '\n\n' at the start)
         if ("content" in event && event.content.trim().length > 0) {
-          acc.segments.push(event);
+          acc.segments.push(event)
         }
       }
     } else {
-      acc.segments.push(event);
+      acc.segments.push(event)
     }
-    this.notifyChange();
+    this.notifyChange()
   }
 
   updateMessage(msgId: string, fnUpdate: (old: ChatMessage) => void) {
-    const old = this.messages.find(a => a.id === msgId);
+    const old = this.messages.find(a => a.id === msgId)
     if (old) {
-      fnUpdate(old);
-      this.notifyChange();
+      fnUpdate(old)
+      this.notifyChange()
     }
   }
 
   takeSnapshot(p?: any): ChatMessage[] {
-    return [...this.messages];
+    return [...this.messages]
   }
 }
 
@@ -71,10 +71,15 @@ export default function AgentPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const messagesRef = useRef(new MessageStore())
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const { formatMessage } = useIntl();
-  const { state } = useLocation();
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const { formatMessage } = useIntl()
+  const { state } = useLocation()
   const { runStream } = useAiAgent()
+
+  const messages = useSyncExternalStore(
+    c => messagesRef.current.hook(c),
+    () => messagesRef.current.snapshot(),
+  )
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: scroll to bottom when messages change
   useEffect(() => {
@@ -85,10 +90,10 @@ export default function AgentPage() {
         }
       })
       return () => {
-        cancelAnimationFrame(t);
+        cancelAnimationFrame(t)
       }
     }
-  }, [scrollRef])
+  }, [messages, scrollRef])
 
   const sendChat = useCallback(
     async (e: string) => {
@@ -103,7 +108,7 @@ export default function AgentPage() {
         role: "user",
         created: unixNow(),
         segments: [{ type: "text", content: trimmed }],
-        done: true
+        done: true,
       }
 
       const assistantId = `assistant-${Date.now()}`
@@ -113,16 +118,16 @@ export default function AgentPage() {
         role: "assistant",
         segments: [],
         thinkingExpanded: false,
-        done: false
+        done: false,
       }
-      messagesRef.current.addMessage(userMsg);
-      messagesRef.current.addMessage(assistantMsg);
+      messagesRef.current.addMessage(userMsg)
+      messagesRef.current.addMessage(assistantMsg)
       setIsLoading(true)
 
       try {
         const stream = runStream(trimmed)
         for await (const event of stream) {
-          messagesRef.current.addStreamChunk(assistantId, event);
+          messagesRef.current.addStreamChunk(assistantId, event)
         }
       } catch (err) {
         console.error("AI stream error:", err)
@@ -134,9 +139,12 @@ export default function AgentPage() {
     [input, runStream, messagesRef],
   )
 
-
   useEffect(() => {
-    if (messagesRef.current.snapshot().length === 0 && state.initialMessage && typeof state.initialMessage === "string") {
+    if (
+      messagesRef.current.snapshot().length === 0 &&
+      state.initialMessage &&
+      typeof state.initialMessage === "string"
+    ) {
       sendChat(state.initialMessage)
     }
   }, [state, messagesRef, sendChat])
@@ -144,21 +152,21 @@ export default function AgentPage() {
   const renderSegments = (msg: ChatMessage) => {
     return msg.segments.map((seg, i) => {
       if (seg.type === "thinking") {
-        return <div className="text-xs text-gray-400 italic border-l-2 border-gray-500 pl-2 mb-2">
-          <span
-            onClick={() => {
-              messagesRef.current.updateMessage(msg.id, o => {
-                o.thinkingExpanded = !o.thinkingExpanded;
-              })
-            }}
-            className={`cursor-pointer hover:text-gray-300 transition-colors${msg.done ? "" : " animate-pulse"}`}
-          >
-            <span className="font-semibold">Thinking:</span> {msg.thinkingExpanded ? "▼" : "▶"}
-          </span>
-          {msg.thinkingExpanded && (
-            <Markdown key={`${msg.id}-thinking-${i}`} content={seg.content} />
-          )}
-        </div>;
+        return (
+          <div className="text-xs text-gray-400 italic border-l-2 border-gray-500 pl-2 mb-2">
+            <span
+              onClick={() => {
+                messagesRef.current.updateMessage(msg.id, o => {
+                  o.thinkingExpanded = !o.thinkingExpanded
+                })
+              }}
+              className={`cursor-pointer hover:text-gray-300 transition-colors${msg.done ? "" : " animate-pulse"}`}
+            >
+              <span className="font-semibold">Thinking:</span> {msg.thinkingExpanded ? "▼" : "▶"}
+            </span>
+            {msg.thinkingExpanded && <Markdown key={`${msg.id}-thinking-${i}`} content={seg.content} />}
+          </div>
+        )
       }
       if (seg.type === "text") {
         return <Markdown key={`${msg.id}-text-${i}`} content={seg.content} />
@@ -175,18 +183,22 @@ export default function AgentPage() {
         switch (seg.name) {
           case "query_nostr": {
             if (Array.isArray(seg.result)) {
-              return <span key={`tool-result-${i}`} className="text-xs text-gray-300 block">
-                <FormattedMessage defaultMessage="Found {n} events!" values={{ n: seg.result.length }} />
-              </span>
+              return (
+                <span key={`tool-result-${i}`} className="text-xs text-gray-300 block">
+                  <FormattedMessage defaultMessage="Found {n} events!" values={{ n: seg.result.length }} />
+                </span>
+              )
             }
           }
           case "search_username": {
             if (Array.isArray(seg.result)) {
-              const results = seg.result as Array<{ pubkey: string }>;
-              return <span key={`tool-result-${i}`} className="text-xs text-gray-300 block">
-                <FormattedMessage defaultMessage="Results:" />
-                <AvatarGroup ids={[...results].reverse().map(a => a.pubkey)} />
-              </span>
+              const results = seg.result as Array<{ pubkey: string }>
+              return (
+                <span key={`tool-result-${i}`} className="text-xs text-gray-300 block">
+                  <FormattedMessage defaultMessage="Results:" />
+                  <AvatarGroup ids={[...results].reverse().map(a => a.pubkey)} />
+                </span>
+              )
             }
           }
         }
@@ -201,7 +213,6 @@ export default function AgentPage() {
     })
   }
 
-  const messages = useSyncExternalStore(c => messagesRef.current.hook(c), () => messagesRef.current.snapshot());
   return (
     <FixedPage className="flex flex-col">
       <div className="px-4 border-b border-gray-700">
@@ -209,7 +220,10 @@ export default function AgentPage() {
           <FormattedMessage defaultMessage="Agent" />
         </h2>
         <p className="text-sm text-gray-400">
-          <FormattedMessage defaultMessage="Ask me anything about Nostr or {appName}" values={{ appName: CONFIG.appNameCapitalized }} />
+          <FormattedMessage
+            defaultMessage="Ask me anything about Nostr or {appName}"
+            values={{ appName: CONFIG.appNameCapitalized }}
+          />
         </p>
       </div>
 
@@ -219,27 +233,33 @@ export default function AgentPage() {
             <FormattedMessage defaultMessage="👋 Welcome to AI Chat!" />
           </p>
           <p>
-            <FormattedMessage defaultMessage="Ask me to post, reply, search, or help you navigate {appName}" values={{ appName: CONFIG.appNameCapitalized }} />
+            <FormattedMessage
+              defaultMessage="Ask me to post, reply, search, or help you navigate {appName}"
+              values={{ appName: CONFIG.appNameCapitalized }}
+            />
           </p>
         </div>
       )}
       <div ref={scrollRef} className="overflow-y-auto p-4 space-y-4 flex-1">
         <div className="flex flex-col gap-2">
-          {messages.sort((a, b) => a.created - b.created).map(msg => {
-            return (
-              <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[90%] rounded-lg p-3 ${msg.role === "user" ? "bg-primary text-white" : "bg-layer-2 text-gray-100"
+          {messages
+            .sort((a, b) => a.created - b.created)
+            .map(msg => {
+              return (
+                <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-[90%] rounded-lg p-3 ${
+                      msg.role === "user" ? "bg-primary text-white" : "bg-layer-2 text-gray-100"
                     }`}
-                >
-                  <div className="overflow-auto">
-                    {renderSegments(msg)}
-                    {!msg.done && msg.role === "assistant" && <Spinner height={14} />}
+                  >
+                    <div className="overflow-auto">
+                      {renderSegments(msg)}
+                      {!msg.done && msg.role === "assistant" && <Spinner height={14} />}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
 
           {error && (
             <div className="text-center text-red-400 p-2">
@@ -249,10 +269,13 @@ export default function AgentPage() {
         </div>
       </div>
 
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        sendChat(input)
-      }} className="p-4 border-t border-gray-700">
+      <form
+        onSubmit={e => {
+          e.preventDefault()
+          sendChat(input)
+        }}
+        className="p-4 border-t border-gray-700"
+      >
         <div className="flex gap-2">
           <input
             type="text"
