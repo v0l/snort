@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react"
+import { type ReactNode, useEffect, useState } from "react"
 
 export function FixedPage({ children, className }: { children?: ReactNode, className?: string }) {
     const [topOffset, setTopOffset] = useState(0)

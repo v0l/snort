@@ -363,6 +363,26 @@ const PreferencesPage = () => {
         />,
       )}
 
+      {pref.agentUrl && (
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <div>
+              <FormattedMessage defaultMessage="Agent Model" />
+            </div>
+            <input
+              type="text"
+              value={pref.agentModel ?? ""}
+              placeholder="Model name (e.g., code)"
+              onChange={e => setPref({ ...pref, agentModel: e.target.value })}
+              className="w-64"
+            />
+          </div>
+          <small className="text-gray-500">
+            <FormattedMessage defaultMessage="Leave empty to use default model from agent service" />
+          </small>
+        </div>
+      )}
+
       {row(
         <FormattedMessage {...messages.ReactionEmoji} />,
         <FormattedMessage {...messages.ReactionEmojiHelp} />,

@@ -122,6 +122,11 @@ export interface UserPreferences {
    * AI Agent API key
    */
   agentKey?: string
+
+  /**
+   * AI Agent model to use
+   */
+  agentModel?: string
 }
 
 export const DefaultPreferences = {

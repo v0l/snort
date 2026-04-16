@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react"
+import { useRef, useCallback, useEffect } from "react"
 import {
   Agent,
   Runner,
@@ -7,10 +7,10 @@ import {
   OpenAIChatCompletionsModel,
   type ModelProvider,
   RunItemStreamEvent,
-  RunToolCallItem,
-  RunToolCallOutputItem,
-  Session,
-  MemorySession
+  type RunToolCallItem,
+  type RunToolCallOutputItem,
+  type Session,
+  MemorySession,
 } from "@openai/agents"
 import OpenAI from "openai"
 import { z } from "zod"
@@ -37,6 +37,16 @@ class CustomModelProvider implements ModelProvider {
   async getModel(modelName?: string) {
     return new OpenAIChatCompletionsModel(this.client, modelName || this.modelName)
   }
+
+  async listModels(): Promise<Array<{ id: string }>> {
+    try {
+      const response = await this.client.models.list()
+      return response.data
+    } catch (error) {
+      console.error("Error listing models:", error)
+      return []
+    }
+  }
 }
 
 const AI_CONFIG = {
@@ -45,8 +55,14 @@ const AI_CONFIG = {
   apiKey: "sk-215c78cfd59ec07b-a1f9a1-59a9fe61",
 }
 
+export interface ModelInfo {
+  id: string
+  name: string
+}
+
 export type AiStreamEvent =
   | { type: "done" }
+  | { type: "error", error: Error | string }
   | { type: "text"; content: string }
   | { type: "thinking"; content: string }
   | { type: "tool_call"; name: string; args: object | undefined }
@@ -58,6 +74,7 @@ export interface ChatHistoryItem {
 }
 
 interface AgentInstance {
+  provider: CustomModelProvider
   agent: Agent
   runner: Runner
   session: Session
@@ -70,7 +87,13 @@ export function useAiAgent() {
   const agentConfig = usePreferences(s => ({
     url: s.agentUrl,
     key: s.agentKey,
+    model: s.agentModel,
   }))
+
+  useEffect(() => {
+    // reset agent on config change
+    agentRef.current = null;
+  }, [agentConfig, agentRef])
 
   const getOrCreate = useCallback(() => {
     if (agentRef.current) return agentRef.current
@@ -79,19 +102,25 @@ export function useAiAgent() {
 
     const apiUrl = agentConfig.url || AI_CONFIG.apiUrl
     const apiKey = agentConfig.key || AI_CONFIG.apiKey
-    const modelProvider = new CustomModelProvider(apiUrl, apiKey, AI_CONFIG.model)
+    const modelName = agentConfig.model || AI_CONFIG.model
+    const modelProvider = new CustomModelProvider(apiUrl, apiKey, modelName)
     const runner = new Runner({ modelProvider })
 
     const tools = [
       tool({
         name: "create_event",
         description: "Create a new Nostr event",
-        parameters: z.object({
-          content: z.string().describe("The content of the event"),
-          kind: z.number().describe("The event kind number"),
-          tags: z.array(z.array(z.string())).optional().describe("Nostr tags, for referencing other events / users, optional"),
-          created_at: z.number().optional().describe("Created timestamp as unix seconds, optional")
-        }).describe("Unsigned nostr event"),
+        parameters: z
+          .object({
+            content: z.string().describe("The content of the event"),
+            kind: z.number().describe("The event kind number"),
+            tags: z
+              .array(z.array(z.string()))
+              .optional()
+              .describe("Nostr tags, for referencing other events / users, optional"),
+            created_at: z.number().optional().describe("Created timestamp as unix seconds, optional"),
+          })
+          .describe("Unsigned nostr event"),
         execute: async input => {
           try {
             const es = await publisher?.generic(eb => {
@@ -99,16 +128,16 @@ export function useAiAgent() {
                 switch (k) {
                   case "created_at": {
                     if (typeof v === "number") {
-                      eb.createdAt(v);
-                      break;
+                      eb.createdAt(v)
+                      break
                     } else {
                       throw "Created at must be a number"
                     }
                   }
                   case "kind": {
                     if (typeof v === "number") {
-                      eb.kind(v);
-                      break;
+                      eb.kind(v)
+                      break
                     } else {
                       throw "Kind must be a number"
                     }
@@ -116,14 +145,14 @@ export function useAiAgent() {
                   case "content": {
                     if (typeof v === "string") {
                       eb.content(v)
-                      break;
+                      break
                     } else {
                       throw "Content must be a string"
                     }
                   }
                   case "tags": {
                     if (Array.isArray(v)) {
-                      if (v.length === 0) break;
+                      if (v.length === 0) break
                       if ((v as Array<never>).every(b => Array.isArray(b))) {
                         for (const t of v as Array<Array<string>>) {
                           eb.tag(t)
@@ -160,7 +189,7 @@ export function useAiAgent() {
               name: p.display_name || p.name || "Unknown",
               nip05: p.nip05 || "no nip05",
               pubkey: p.pubkey,
-              npub: hexToBech32("npub", p.pubkey)
+              npub: hexToBech32("npub", p.pubkey),
             }))
             return JSON.stringify(formatted)
           } catch (error) {
@@ -256,6 +285,7 @@ export function useAiAgent() {
       tools,
     })
     const newAgent = {
+      provider: modelProvider,
       agent,
       runner,
       session: new MemorySession(),
@@ -306,7 +336,7 @@ export function useAiAgent() {
             }
             case "tool_output": {
               const toolOutput = event.item as RunToolCallOutputItem
-              let result: object | string | undefined = undefined
+              let result: object | string | undefined 
               if (toolOutput.output) {
                 if (typeof toolOutput.output === "string") {
                   try {
@@ -338,5 +368,11 @@ export function useAiAgent() {
     [getOrCreate],
   )
 
-  return { runStream }
+  return {
+    runStream,
+    models: useCallback(async () => {
+      const { provider } = getOrCreate();
+      return await provider.listModels()
+    }, [getOrCreate])
+  }
 }

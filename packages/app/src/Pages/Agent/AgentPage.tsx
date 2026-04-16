@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect, useSyncExternalStore, use } from "react"
-import { AiStreamEvent, useAiAgent } from "@/Hooks/useAiAgent"
+import { type AiStreamEvent, useAiAgent } from "@/Hooks/useAiAgent"
 import { Markdown } from "@/Components/Event/Markdown"
 import { FixedPage } from "../FixedPage"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -8,9 +8,12 @@ import { ExternalStore, unixNow } from "@snort/shared"
 import { AvatarGroup } from "@/Components/User/AvatarGroup"
 import { useLocation } from "react-router-dom"
 import { Note } from "@/Components/Event/Note/Note"
-import { NostrEvent, TaggedNostrEvent } from "@snort/system"
+import type { NostrEvent, TaggedNostrEvent } from "@snort/system"
 import AsyncButton from "@/Components/Button/AsyncButton"
 import { SnortContext } from "@snort/system-react"
+import usePreferences from "@/Hooks/usePreferences"
+import { setPreference, } from "@/Utils/Login"
+import Icon from "@/Components/Icons/Icon"
 
 interface ChatMessage {
   id: string
@@ -31,7 +34,7 @@ class MessageStore extends ExternalStore<Array<ChatMessage>> {
 
   addStreamChunk(msgId: string, event: AiStreamEvent) {
     // Convertes the streamed raw chunks into single accumilated chunks for better UX
-    let acc = this.messages.find(a => a.id === msgId)
+    const acc = this.messages.find(a => a.id === msgId)
     if (!acc) {
       console.warn("AGENT: Dropping new segment, agent message not found: ", event)
       return
@@ -74,17 +77,26 @@ export default function AgentPage() {
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [models, setModels] = useState<Array<{ id: string }>>([])
   const messagesRef = useRef(new MessageStore())
   const scrollRef = useRef<HTMLDivElement>(null)
   const { formatMessage } = useIntl()
   const { state } = useLocation()
-  const { runStream } = useAiAgent()
-  const system = use(SnortContext);
+  const { runStream, models: listModels } = useAiAgent()
+  const system = use(SnortContext)
+  const { agentModel } = usePreferences(s => ({
+    agentModel: s.agentModel
+  }))
 
   const messages = useSyncExternalStore(
     c => messagesRef.current.hook(c),
     () => messagesRef.current.snapshot(),
   )
+
+  // Fetch models when agent URL changes
+  useEffect(() => {
+    listModels().then(setModels)
+  }, [])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: scroll to bottom when messages change
   useEffect(() => {
@@ -136,7 +148,10 @@ export default function AgentPage() {
         }
       } catch (err) {
         console.error("AI stream error:", err)
-        setError(err instanceof Error ? err.message : "Failed to get AI response")
+        messagesRef.current.updateMessage(assistantId, c => {
+          c.segments = [{ "type": "error", error: err as Error | string }];
+          c.done = true
+        })
       } finally {
         setIsLoading(false)
       }
@@ -176,6 +191,12 @@ export default function AgentPage() {
       if (seg.type === "text") {
         return <Markdown key={`${msg.id}-text-${i}`} content={seg.content} />
       }
+      if (seg.type === "error") {
+        return <span className="text-error font-bold flex gap-2 items-center">
+          <Icon name="x" />
+          {seg.error instanceof Error ? seg.error.message : seg.error}
+        </span>
+      }
       if (seg.type === "tool_call") {
         const argsStr = typeof seg.args === "object" && seg.args !== null ? JSON.stringify(seg.args) : String(seg.args)
         return (
@@ -210,9 +231,11 @@ export default function AgentPage() {
             return (
               <div key={`tool-result-${i}`} className="p-2 bg-neutral-900 rounded-lg">
                 <Note data={seg.result as TaggedNostrEvent} />
-                <AsyncButton onClick={async () => {
-                  await system.BroadcastEvent(seg.result as NostrEvent)
-                }}>
+                <AsyncButton
+                  onClick={async () => {
+                    await system.BroadcastEvent(seg.result as NostrEvent)
+                  }}
+                >
                   <FormattedMessage defaultMessage="Post Event" />
                 </AsyncButton>
               </div>
@@ -233,9 +256,32 @@ export default function AgentPage() {
   return (
     <FixedPage className="flex flex-col">
       <div className="px-4 border-b border-gray-700">
-        <h2 className="text-lg font-semibold">
-          <FormattedMessage defaultMessage="Agent" />
-        </h2>
+        <div className="flex items-center py-2">
+          <div className="text-lg font-semibold flex-1">
+            <FormattedMessage defaultMessage="Agent" />
+          </div>
+          {/* Model Selector */}
+          {models.length > 1 && (
+            <div className="flex items-center gap-2 flex-1">
+              <label className="text-xs text-gray-500 block mb-1">
+                <FormattedMessage defaultMessage="Model" />
+              </label>
+              <select
+                value={agentModel || ""}
+                onChange={(e) => {
+                  setPreference({ agentModel: e.target.value })
+                }}
+                className="w-full bg-layer-2 text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                {models.map(m => (
+                  <option key={m.id} value={m.id}>
+                    {m.id}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
         <p className="text-sm text-gray-400">
           <FormattedMessage
             defaultMessage="Ask me anything about Nostr or {appName}"

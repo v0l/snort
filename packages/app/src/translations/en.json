@@ -179,6 +179,12 @@
       "value": "Generic LNDHub wallet (BTCPayServer / Alby / LNBits)"
     }
   ],
+  "0PtoZq": [
+    {
+      "type": 0,
+      "value": "URL for AI Agent service"
+    }
+  ],
   "0jOEtS": [
     {
       "type": 0,
@@ -479,6 +485,12 @@
     {
       "type": 0,
       "value": "Profiles"
+    }
+  ],
+  "3/w0Mr": [
+    {
+      "type": 0,
+      "value": "Post Event"
     }
   ],
   "39AHJm": [
@@ -1211,6 +1223,12 @@
       "value": "Parent"
     }
   ],
+  "AKrsKF": [
+    {
+      "type": 0,
+      "value": "API key for AI Agent service"
+    }
+  ],
   "AN0Z7Q": [
     {
       "type": 0,
@@ -1227,6 +1245,18 @@
     {
       "type": 0,
       "value": "Create or update a product"
+    }
+  ],
+  "AgentKey1": [
+    {
+      "type": 0,
+      "value": "Agent Key"
+    }
+  ],
+  "AgentUrl1": [
+    {
+      "type": 0,
+      "value": "Agent URL"
     }
   ],
   "AkCxS/": [
@@ -2087,6 +2117,12 @@
     {
       "type": 0,
       "value": " to always load media from everybody."
+    }
+  ],
+  "HirEqa": [
+    {
+      "type": 0,
+      "value": "Leave empty to use default model from agent service"
     }
   ],
   "HpAmQZ": [
@@ -5343,6 +5379,12 @@
       "value": "Read Only"
     }
   ],
+  "n19OA3": [
+    {
+      "type": 0,
+      "value": "Agent Model"
+    }
+  ],
   "n1Whvj": [
     {
       "type": 0,
@@ -5761,6 +5803,12 @@
     {
       "type": 0,
       "value": "(Default)"
+    }
+  ],
+  "rhSI1/": [
+    {
+      "type": 0,
+      "value": "Model"
     }
   ],
   "rkM7l8": [

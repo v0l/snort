@@ -83,6 +83,9 @@
   "0MndVW": {
     "defaultMessage": "Generic LNDHub wallet (BTCPayServer / Alby / LNBits)"
   },
+  "0PtoZq": {
+    "defaultMessage": "URL for AI Agent service"
+  },
   "0jOEtS": {
     "defaultMessage": "Invalid LNURL"
   },
@@ -206,6 +209,9 @@
   },
   "2zJXeA": {
     "defaultMessage": "Profiles"
+  },
+  "3/w0Mr": {
+    "defaultMessage": "Post Event"
   },
   "39AHJm": {
     "defaultMessage": "Sign Up"
@@ -520,6 +526,9 @@
     "defaultMessage": "Parent",
     "description": "Link to parent note in thread"
   },
+  "AKrsKF": {
+    "defaultMessage": "API key for AI Agent service"
+  },
   "AN0Z7Q": {
     "defaultMessage": "Muted Words"
   },
@@ -528,6 +537,12 @@
   },
   "AedFVZ": {
     "defaultMessage": "Create or update a product"
+  },
+  "AgentKey1": {
+    "defaultMessage": "Agent Key"
+  },
+  "AgentUrl1": {
+    "defaultMessage": "Agent URL"
   },
   "AkCxS/": {
     "defaultMessage": "Reason"
@@ -894,6 +909,9 @@
   },
   "HhcAVH": {
     "defaultMessage": "You don't follow this person, click here to load media from <i>{link}</i>, or update <a><i>your preferences</i></a> to always load media from everybody."
+  },
+  "HirEqa": {
+    "defaultMessage": "Leave empty to use default model from agent service"
   },
   "HpAmQZ": {
     "defaultMessage": "Relay reviews"
@@ -2161,6 +2179,9 @@
   "mmPSWH": {
     "defaultMessage": "Read Only"
   },
+  "n19OA3": {
+    "defaultMessage": "Agent Model"
+  },
   "n1Whvj": {
     "defaultMessage": "Switch"
   },
@@ -2340,6 +2361,9 @@
   },
   "rfuMjE": {
     "defaultMessage": "(Default)"
+  },
+  "rhSI1/": {
+    "defaultMessage": "Model"
   },
   "rkM7l8": {
     "defaultMessage": "Encrypted Direct Message"
