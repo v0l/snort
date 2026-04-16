@@ -24,7 +24,7 @@ export function unixNow() {
 }
 
 export function unixNowMs() {
-  return new Date().getTime()
+  return Date.now()
 }
 
 export function jitter(n: number) {

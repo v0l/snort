@@ -7,21 +7,11 @@ import DM from "@/Pages/Messages/DM"
 import WriteMessage from "@/Pages/Messages/WriteMessage"
 
 import { ChatParticipantProfile } from "./ChatParticipant"
+import { FixedPage } from "../FixedPage"
 
 export default function DmWindow({ id }: { id: string }) {
   const chat = useChat(id)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [topOffset, setTopOffset] = useState(0)
-
-  useEffect(() => {
-    const update = () => {
-      const header = document.querySelector("header")
-      setTopOffset(header?.getBoundingClientRect().height ?? 0)
-    }
-    update()
-    window.addEventListener("resize", update)
-    return () => window.removeEventListener("resize", update)
-  }, [])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: scroll to bottom when messages change
   useEffect(() => {
@@ -51,16 +41,13 @@ export default function DmWindow({ id }: { id: string }) {
   }
 
   return (
-    <div
-      className="flex flex-1 flex-col min-h-0 min-w-0 w-full fixed left-0 right-0 bottom-0 md:relative md:left-auto md:right-auto md:bottom-auto md:h-screen z-10 md:z-auto bg-background overflow-hidden"
-      style={{ top: `${topOffset}px` }}
-    >
+    <FixedPage className="flex flex-1 flex-col" >
       <div className="p-3">{sender()}</div>
       <div ref={scrollRef} className="overflow-y-auto hide-scrollbar p-2.5 flex-grow min-w-0">
         {chat && <DmChatSelected chat={chat} />}
       </div>
       <div className="flex items-center gap-2.5 p-2.5 shrink-0">{chat && <WriteMessage chat={chat} />}</div>
-    </div>
+    </FixedPage>
   )
 }
 

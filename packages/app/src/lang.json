@@ -117,6 +117,9 @@
   "1GvBMj": {
     "defaultMessage": "internal reference"
   },
+  "1Ia8qN": {
+    "defaultMessage": "Processing"
+  },
   "1Mo59U": {
     "defaultMessage": "Are you sure you want to remove this note from bookmarks?"
   },
@@ -309,6 +312,9 @@
   "5dfmvv": {
     "defaultMessage": "Zap Goal"
   },
+  "5h6Dks": {
+    "defaultMessage": "Ask me anything about Nostr or {appName}"
+  },
   "5qEWCr": {
     "defaultMessage": "File Metadata"
   },
@@ -462,11 +468,17 @@
   "9+Ddtu": {
     "defaultMessage": "Next"
   },
+  "90OuKH": {
+    "defaultMessage": "Sign in with Nostr Connect"
+  },
   "92gdbw": {
     "defaultMessage": "Relay Discovery"
   },
   "9HU8vw": {
     "defaultMessage": "Reply"
+  },
+  "9O+VX8": {
+    "defaultMessage": "Partial"
   },
   "9RNiUn": {
     "defaultMessage": "View Feed"
@@ -491,6 +503,9 @@
   },
   "9pMqYs": {
     "defaultMessage": "Nostr Address"
+  },
+  "9qtLJC": {
+    "defaultMessage": "Payment Required"
   },
   "9wO4wJ": {
     "defaultMessage": "Lightning Invoice"
@@ -782,6 +797,9 @@
   "FvanT6": {
     "defaultMessage": "Accounts"
   },
+  "FvzcUF": {
+    "defaultMessage": "👋 Welcome to AI Chat!"
+  },
   "FzbSGg": {
     "defaultMessage": "You dont have any media servers, try adding some."
   },
@@ -943,9 +961,6 @@
   "J2Q92B": {
     "defaultMessage": "Emoji sets"
   },
-  "J6N9xl": {
-    "defaultMessage": "Sign in with Android signer"
-  },
   "JCOqRK": {
     "defaultMessage": "P-tag with non-standard marker (nickname)"
   },
@@ -1002,6 +1017,9 @@
   },
   "KJryGq": {
     "defaultMessage": "Live Chat Message"
+  },
+  "KN7zKn": {
+    "defaultMessage": "Error"
   },
   "KQvWvD": {
     "defaultMessage": "Deleted"
@@ -1208,11 +1226,17 @@
   "Pe0ogR": {
     "defaultMessage": "Theme"
   },
+  "PlfdcA": {
+    "defaultMessage": "Ask {appName} AI"
+  },
   "PrsIg7": {
     "defaultMessage": "Reactions will be shown on every page, if disabled no reactions will be shown"
   },
   "QDFTjG": {
     "defaultMessage": "{n} Relays"
+  },
+  "QGVI63": {
+    "defaultMessage": "Agent"
   },
   "QJfhKt": {
     "defaultMessage": "The private key is like a password, but it cannot be reset. Guard it carefully and never show it to anyone. Once someone has your private key, they will have access to your account forever."
@@ -1433,6 +1457,9 @@
   },
   "V20Og0": {
     "defaultMessage": "Labeling"
+  },
+  "V2dZY9": {
+    "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
   },
   "V93INS": {
     "defaultMessage": "<dark>Created by</dark> {name}"
@@ -1750,6 +1777,9 @@
   "dmsiLv": {
     "defaultMessage": "A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}"
   },
+  "do3Om+": {
+    "defaultMessage": "Ask me anything..."
+  },
   "e5x8FT": {
     "defaultMessage": "Kind"
   },
@@ -1857,6 +1887,9 @@
   },
   "gPxSgn": {
     "defaultMessage": "Follow Sets"
+  },
+  "gQP3HJ": {
+    "defaultMessage": "Found {n} events!"
   },
   "gSqFQf": {
     "defaultMessage": "Double newlines before quoted notes"
@@ -1972,9 +2005,6 @@
   "iNWbVV": {
     "defaultMessage": "Handle"
   },
-  "iXPL0Z": {
-    "defaultMessage": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead"
-  },
   "iYc3Ld": {
     "defaultMessage": "Payments"
   },
@@ -2016,6 +2046,9 @@
   },
   "jiAVXu": {
     "defaultMessage": "Video Event"
+  },
+  "jvC7xj": {
+    "defaultMessage": "Ask me to post, reply, search, or help you navigate {appName}"
   },
   "jvo0vs": {
     "defaultMessage": "Save"
@@ -2401,6 +2434,9 @@
   "u9NoC1": {
     "defaultMessage": "Name must be less than {limit} characters"
   },
+  "uBjtbB": {
+    "defaultMessage": "Try: Summarize my timeline"
+  },
   "uCk8r+": {
     "defaultMessage": "Already have an account?"
   },
@@ -2442,9 +2478,6 @@
   },
   "vN5UH8": {
     "defaultMessage": "Profile Image"
-  },
-  "vOKedj": {
-    "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
   },
   "vU/Q5i": {
     "defaultMessage": "This tool will search for the last event published by all of your follows and remove those who have not posted in 6 months"
@@ -2503,6 +2536,9 @@
   "wvoA3H": {
     "defaultMessage": "Picture"
   },
+  "wyAr3x": {
+    "defaultMessage": "Results:"
+  },
   "x+3fl6": {
     "defaultMessage": "My Relays"
   },
@@ -2535,6 +2571,9 @@
   },
   "xmcVZ0": {
     "defaultMessage": "Search"
+  },
+  "xrKHS6": {
+    "defaultMessage": "Success"
   },
   "xybOUv": {
     "defaultMessage": "FAN"

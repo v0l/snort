@@ -6,4 +6,5 @@ export enum RightColumnWidget {
   LatestArticls,
   LiveStreams,
   InviteFriends,
+  AskSnort,
 }

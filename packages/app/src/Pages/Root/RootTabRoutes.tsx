@@ -130,4 +130,11 @@ export const RootTabRoutes: RootTabRoute[] = [
       return { Component: SuggestedProfiles }
     },
   },
+  {
+    path: "agent",
+    async lazy() {
+      const { default: AgentPage } = await import("@/Pages/Agent/AgentPage")
+      return { Component: AgentPage }
+    },
+  },
 ]

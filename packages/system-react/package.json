@@ -16,10 +16,11 @@
     "@snort/shared": "^2.0.0-pre.4",
     "@snort/system": "^2.0.0-pre.11",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react-dom": "^19.2.5"
   },
   "devDependencies": {
     "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "typescript": "^5.9.3"
   }
 }

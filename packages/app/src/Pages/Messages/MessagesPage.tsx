@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import type React from "react"
-import { useMemo, } from "react"
+import { useMemo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -110,9 +110,9 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="flex flex-1 md:h-screen overflow-hidden">
+    <div className="flex flex-1 min-h-0 overflow-hidden">
       {(pageWidth >= TwoCol || !id) && (
-        <div className="overflow-y-auto p-2 w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2 md:h-screen">
+        <div className="overflow-y-auto p-2 w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <button
               disabled={unreadTrustedCount <= 0}
