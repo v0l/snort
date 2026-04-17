@@ -12,7 +12,7 @@ import type { NostrEvent, TaggedNostrEvent } from "@snort/system"
 import AsyncButton from "@/Components/Button/AsyncButton"
 import { SnortContext } from "@snort/system-react"
 import usePreferences from "@/Hooks/usePreferences"
-import { setPreference, } from "@/Utils/Login"
+import { setPreference } from "@/Utils/Login"
 import Icon from "@/Components/Icons/Icon"
 
 interface ChatMessage {
@@ -85,7 +85,7 @@ export default function AgentPage() {
   const { runStream, models: listModels } = useAiAgent()
   const system = use(SnortContext)
   const { agentModel } = usePreferences(s => ({
-    agentModel: s.agentModel
+    agentModel: s.agentModel,
   }))
 
   const messages = useSyncExternalStore(
@@ -149,7 +149,7 @@ export default function AgentPage() {
       } catch (err) {
         console.error("AI stream error:", err)
         messagesRef.current.updateMessage(assistantId, c => {
-          c.segments = [{ "type": "error", error: err as Error | string }];
+          c.segments = [{ type: "error", error: err as Error | string }]
           c.done = true
         })
       } finally {
@@ -192,17 +192,21 @@ export default function AgentPage() {
         return <Markdown key={`${msg.id}-text-${i}`} content={seg.content} />
       }
       if (seg.type === "error") {
-        return <span className="text-error font-bold flex gap-2 items-center">
-          <Icon name="x" />
-          {seg.error instanceof Error ? seg.error.message : seg.error}
-        </span>
+        return (
+          <span className="text-error font-bold flex gap-2 items-center">
+            <Icon name="x" />
+            {seg.error instanceof Error ? seg.error.message : seg.error}
+          </span>
+        )
       }
       if (seg.type === "tool_call") {
-        const argsStr = typeof seg.args === "object" && seg.args !== null ? JSON.stringify(seg.args) : String(seg.args)
+        const argsStr =
+          typeof seg.args === "object" && seg.args !== null ? JSON.stringify(seg.args, null, 2) : String(seg.args)
         return (
-          <span key={`tool-call-${i}`} className="text-xs text-gray-400 block mt-1">
-            → {seg.name} {argsStr}
-          </span>
+          <div key={`tool-call-${i}`} className="text-xs text-gray-400 block mt-1">
+            → {seg.name}
+            <pre className="text-[10px] bg-layer-3 p-2 rounded overflow-auto max-h-64">{argsStr}</pre>
+          </div>
         )
       }
       if (seg.type === "tool_result") {
@@ -210,9 +214,69 @@ export default function AgentPage() {
           case "query_nostr": {
             if (Array.isArray(seg.result)) {
               return (
-                <span key={`tool-result-${i}`} className="text-xs text-gray-300 block">
-                  <FormattedMessage defaultMessage="Found {n} events!" values={{ n: seg.result.length }} />
-                </span>
+                <div key={`tool-result-${i}`} className="text-xs text-gray-300 block">
+                  <div className="mb-1 text-green-400">
+                    <FormattedMessage defaultMessage="Found {n} events!" values={{ n: seg.result.length }} />
+                  </div>
+                  <pre className="text-[10px] bg-layer-3 p-2 rounded overflow-auto max-h-64">
+                    {JSON.stringify(seg.result, null, 2)}
+                  </pre>
+                </div>
+              )
+            }
+            if (typeof seg.result === "string" && seg.result.startsWith("Error")) {
+              return (
+                <div key={`tool-result-${i}`} className="text-xs text-red-400 block">
+                  {seg.result}
+                </div>
+              )
+            }
+            // Handle JSON string result (like from prepare_event_filter)
+            if (typeof seg.result === "string") {
+              try {
+                const parsed = JSON.parse(seg.result)
+                return (
+                  <div key={`tool-result-${i}`} className="text-xs text-gray-300 block">
+                    {parsed.note && <div className="mb-1">{parsed.note}</div>}
+                    <pre className="text-[10px] bg-layer-3 p-2 rounded overflow-auto max-h-64">
+                      {JSON.stringify(parsed, null, 2)}
+                    </pre>
+                  </div>
+                )
+              } catch {
+                return (
+                  <div key={`tool-result-${i}`} className="text-xs text-gray-300 block">
+                    {seg.result}
+                  </div>
+                )
+              }
+            }
+          }
+          case "prepare_event_filter": {
+            if (typeof seg.result === "string" && !seg.result.startsWith("Error")) {
+              try {
+                const parsed = JSON.parse(seg.result)
+                return (
+                  <div key={`tool-result-${i}`} className="text-xs text-gray-300 block">
+                    {parsed.note && <div className="mb-1">{parsed.note}</div>}
+                    <pre className="text-[10px] bg-layer-3 p-2 rounded overflow-auto max-h-64">
+                      {JSON.stringify(parsed, null, 2)}
+                    </pre>
+                  </div>
+                )
+              } catch {
+                return (
+                  <div key={`tool-result-${i}`} className="text-xs text-gray-300 block">
+                    {seg.result}
+                  </div>
+                )
+              }
+            }
+            if (typeof seg.result === "string" && seg.result.startsWith("Error")) {
+              return (
+                <div key={`tool-result-${i}`} className="text-xs text-red-400 block">
+                  {seg.result}
+                </div>
               )
             }
           }
@@ -226,6 +290,7 @@ export default function AgentPage() {
                 </span>
               )
             }
+            break
           }
           case "create_event": {
             return (
@@ -241,11 +306,35 @@ export default function AgentPage() {
               </div>
             )
           }
+          default:
+            break
+        }
+
+        // Default fallback for other tool results
+        let resultDisplay: React.ReactNode = String(seg.result ?? "")
+        if (typeof seg.result === "string") {
+          try {
+            const parsed = JSON.parse(seg.result)
+            resultDisplay = (
+              <pre className="text-[10px] bg-layer-3 p-2 rounded overflow-auto max-h-64">
+                {JSON.stringify(parsed, null, 2)}
+              </pre>
+            )
+          } catch {
+            // Not JSON, display as-is
+            resultDisplay = seg.result
+          }
+        } else if (typeof seg.result === "object" && seg.result !== null) {
+          resultDisplay = (
+            <pre className="text-[10px] bg-layer-3 p-2 rounded overflow-auto max-h-64">
+              {JSON.stringify(seg.result, null, 2)}
+            </pre>
+          )
         }
 
         return (
           <span key={`tool-result-${i}`} className="text-xs text-gray-300 block">
-            ← {seg.name}: {typeof seg.result === "string" ? seg.result : JSON.stringify(seg.result)}
+            ← {seg.name}: {resultDisplay}
           </span>
         )
       }
@@ -268,7 +357,7 @@ export default function AgentPage() {
               </label>
               <select
                 value={agentModel || ""}
-                onChange={(e) => {
+                onChange={e => {
                   setPreference({ agentModel: e.target.value })
                 }}
                 className="w-full bg-layer-2 text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
@@ -311,8 +400,9 @@ export default function AgentPage() {
               return (
                 <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div
-                    className={`max-w-[90%] rounded-lg p-3 ${msg.role === "user" ? "bg-primary text-white" : "bg-layer-2 text-gray-100"
-                      }`}
+                    className={`max-w-[90%] rounded-lg p-3 ${
+                      msg.role === "user" ? "bg-primary text-white" : "bg-layer-2 text-gray-100"
+                    }`}
                   >
                     <div className="overflow-auto">
                       {renderSegments(msg)}

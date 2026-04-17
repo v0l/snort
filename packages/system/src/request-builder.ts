@@ -122,6 +122,16 @@ export class RequestBuilder {
     return this
   }
 
+  /**
+   * Set relays for all filters in this builder
+   */
+  withRelays(relays: Array<string>) {
+    for (const builder of this.#builders) {
+      builder.relay(relays)
+    }
+    return this
+  }
+
   buildRaw(): Array<ReqFilter> {
     return this.#builders.map(f => f.filter)
   }

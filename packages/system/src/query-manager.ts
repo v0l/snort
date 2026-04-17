@@ -173,6 +173,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     if (cb) {
       q.on("event", cb)
     }
+
     const pDone = new Promise<void>((resolve, reject) => {
       const t = setTimeout(() => {
         reject(
@@ -186,6 +187,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         resolve()
       })
     })
+
     q.start()
     await pDone
     const results = q.feed.takeSnapshot()
@@ -242,6 +244,8 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     // nothing left to send
     if (filters.length === 0) {
       this.#log("Dropping %s, all filters are satisfied", q.id)
+      // Emit EOSE to unblock any pending fetch() calls
+      q.emit("eose")
       return
     }
 

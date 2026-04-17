@@ -8,8 +8,14 @@ import Avatar from "@/Components/User/Avatar"
 import DisplayName from "@/Components/User/DisplayName"
 import useAppHandler from "@/Hooks/useAppHandler"
 
-export default function NoteAppHandler({ ev }: { ev: TaggedNostrEvent }) {
-  const apps = useAppHandler(ev.kind)
+export default function NoteAppHandler({ ev }: { ev: TaggedNostrEvent | undefined }) {
+  const kind = ev?.kind
+  const apps = useAppHandler(kind)
+
+  if (!ev || !ev.id || !ev.pubkey) {
+    return <div className="text-gray-500 text-sm">Invalid event</div>
+  }
+
   const link = NostrLink.fromEvent(ev)
 
   const profiles = apps
@@ -27,10 +33,15 @@ export default function NoteAppHandler({ ev }: { ev: TaggedNostrEvent }) {
           }}
         />
       </small>
-      <div
-        className="flex justify-between items-center cursor-pointer"
+      <button
+        className="flex justify-between items-center cursor-pointer bg-transparent border-none p-0 w-full"
         onClick={() => {
           window.open(`nostr:${link.encode()}`, "_blank")
+        }}
+        onKeyUp={e => {
+          if (e.key === "Enter" || e.key === " ") {
+            window.open(`nostr:${link.encode()}`, "_blank")
+          }
         }}
       >
         <div className="flex items-center gap-2">
@@ -38,14 +49,20 @@ export default function NoteAppHandler({ ev }: { ev: TaggedNostrEvent }) {
           <FormattedMessage defaultMessage="Native App" />
         </div>
         <Icon name="link" />
-      </div>
+      </button>
       {profiles.map(a => (
-        <div
-          className="flex justify-between items-center cursor-pointer"
+        <button
           key={a.event.id}
+          className="flex justify-between items-center cursor-pointer bg-transparent border-none p-0 w-full"
           onClick={() => {
             const webHandler = a.event.tags.find(a => a[0] === "web" && a[2] === "nevent")?.[1]
             if (webHandler) {
+              window.open(webHandler.replace("<bech32>", link.encode()), "_blank")
+            }
+          }}
+          onKeyUp={e => {
+            const webHandler = a.event.tags.find(a => a[0] === "web" && a[2] === "nevent")?.[1]
+            if (webHandler && (e.key === "Enter" || e.key === " ")) {
               window.open(webHandler.replace("<bech32>", link.encode()), "_blank")
             }
           }}
@@ -57,7 +74,7 @@ export default function NoteAppHandler({ ev }: { ev: TaggedNostrEvent }) {
             </div>
           </div>
           <Icon name="link" />
-        </div>
+        </button>
       ))}
     </div>
   )

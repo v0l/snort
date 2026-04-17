@@ -14,12 +14,12 @@ import {
 } from "@openai/agents"
 import OpenAI from "openai"
 import { z } from "zod"
-import { RequestBuilder, type UserMetadata } from "@snort/system"
+import { RequestBuilder, type UserMetadata, NostrLink, tryParseNostrLink } from "@snort/system"
 import { SnortSystemPrompt } from "@/Agent/system-prompt"
 import useEventPublisher from "./useEventPublisher"
 import useProfileSearch from "./useProfileSearch"
 import usePreferences from "./usePreferences"
-import { hexToBech32 } from "@snort/shared"
+import { hexToBech32, NostrPrefix } from "@snort/shared"
 
 class CustomModelProvider implements ModelProvider {
   private client: OpenAI
@@ -62,7 +62,7 @@ export interface ModelInfo {
 
 export type AiStreamEvent =
   | { type: "done" }
-  | { type: "error", error: Error | string }
+  | { type: "error"; error: Error | string }
   | { type: "text"; content: string }
   | { type: "thinking"; content: string }
   | { type: "tool_call"; name: string; args: object | undefined }
@@ -89,11 +89,11 @@ export function useAiAgent() {
     key: s.agentKey,
     model: s.agentModel,
   }))
-  const memoryRef = useRef(new MemorySession());
+  const memoryRef = useRef(new MemorySession())
 
   useEffect(() => {
     // reset agent on config change
-    agentRef.current = null;
+    agentRef.current = null
   }, [agentConfig, agentRef])
 
   const getOrCreate = useCallback(() => {
@@ -227,12 +227,12 @@ export function useAiAgent() {
       tool({
         name: "query_nostr",
         description:
-          "Query the local relay for Nostr events using REQ filters. IMPORTANT: authors must be 64-char hex pubkeys, NOT npub/nip05. Use 'search' for names.",
+          "Query the local relay for Nostr events using REQ filters. IMPORTANT: authors must be 64-char hex pubkeys, NOT npub/nip05. Use 'search_username' for names. For fetching a specific event by nevent/naddr link, use 'prepare_event_filter' first to get the correct filter with relay hints.",
         parameters: z.object({
           filters: z
             .array(z.record(z.string(), z.any()))
             .describe(
-              "Array of Nostr REQ filter objects with keys: authors (hex only!), kinds, ids, #e, #p, #t, search, since, until",
+              "Array of Nostr REQ filter objects. Each filter can have: authors (64-char hex only), kinds, ids, #e, #p, #t, #a, search, since, until, and relays (array of URLs). IMPORTANT: If you have a nevent/naddr link, first call 'prepare_event_filter' to get a properly formatted filter with relay hints.",
             ),
           timeout: z
             .union([z.number(), z.string()])
@@ -242,24 +242,86 @@ export function useAiAgent() {
         }),
         execute: async input => {
           try {
+            if (!input.filters || !Array.isArray(input.filters) || input.filters.length === 0) {
+              return "Error: filters must be a non-empty array of filter objects"
+            }
+
             const req = new RequestBuilder(`ai-query-${Date.now()}`)
-            const timeout = (input.timeout as number | string) || 10000
+            let timeout = (input.timeout as number | string) || 10000
+            if (typeof timeout === "string" && !isNaN(parseInt(timeout, 10))) {
+              timeout = parseInt(timeout, 10)
+            }
             req.withOptions({ timeout: typeof timeout === "string" ? parseInt(timeout, 10) : timeout })
+
+            // Build filters - relays should be inside the filter object, not as a separate parameter
             for (const f of input.filters) {
               req.withBareFilter(f)
             }
+
             const events = await system.Fetch(req)
             const count = events ? events.length : 0
-            if (count === 0)
+
+            if (count === 0) {
               return JSON.stringify({
                 type: "query",
                 filters: input.filters,
                 count: 0,
-                note: "No events found matching your query",
+                note: "No events found matching your query (either no events exist or relays timed out)",
               })
+            }
             return JSON.stringify(events)
           } catch (error) {
             return `Error querying Nostr: ${error instanceof Error ? error.message : String(error)}`
+          }
+        },
+      }),
+      tool({
+        name: "prepare_event_filter",
+        description:
+          "Take a nevent or naddr link and return the properly formatted filter object with relay hints. Use this before calling 'query_nostr' when you have a specific event link. Returns a filter object ready to be passed to query_nostr.",
+        parameters: z.object({
+          link: z.string().describe("nevent or naddr link (e.g., 'nevent1...' or 'naddr1...')"),
+        }),
+        execute: async input => {
+          try {
+            const link = tryParseNostrLink(input.link)
+            if (!link) {
+              return `Failed to parse link: ${input.link}`
+            }
+
+            const filter: Record<string, any> = {}
+
+            if (link.type === "nevent" || link.type === "note") {
+              filter.ids = [link.id]
+            } else if (link.type === "naddr") {
+              filter["#a"] = [`${link.kind}:${link.author}:${link.id}`]
+            } else {
+              return `Unsupported link type: ${link.type}`
+            }
+
+            // Add relay hint if available (included in filter object)
+            if (link.relays && link.relays.length > 0) {
+              filter.relays = link.relays
+            }
+
+            // Add author hint if available
+            if (link.author) {
+              if (link.type === "nevent" || link.type === "naddr") {
+                filter.authors = [link.author]
+              }
+            }
+
+            // Add kind hint if available
+            if (link.kind) {
+              filter.kinds = [link.kind]
+            }
+
+            return JSON.stringify({
+              filter,
+              note: "Pass the 'filter' object above directly to query_nostr's filters parameter",
+            })
+          } catch (error) {
+            return `Error preparing filter: ${error instanceof Error ? error.message : String(error)}`
           }
         },
       }),
@@ -273,6 +335,78 @@ export function useAiAgent() {
           showNsfw: z.boolean().nullable().describe("Show NSFW content"),
         }),
         execute: async () => JSON.stringify({ type: "preferences", note: "not yet implemented" }),
+      }),
+      tool({
+        name: "decode_nostr_link",
+        description:
+          "Decode a Nostr link string (npub, nprofile, nevent, naddr, note, nsec) into its component parts. Returns the type, id, kind (if applicable), author, relays, and scope.",
+        parameters: z.object({
+          linkString: z
+            .string()
+            .describe("Nostr link string to decode (e.g., 'npub1...', 'nprofile1...', 'nevent1...', 'naddr1...')"),
+        }),
+        execute: async input => {
+          try {
+            const link = tryParseNostrLink(input.linkString)
+            if (!link) {
+              return `Failed to parse NostrLink: ${input.linkString}`
+            }
+            return JSON.stringify({
+              type: link.type,
+              id: link.id,
+              kind: link.kind,
+              author: link.author,
+              relays: link.relays,
+              scope: link.scope,
+            })
+          } catch (error) {
+            return `Error decoding NostrLink: ${error instanceof Error ? error.message : String(error)}`
+          }
+        },
+      }),
+      tool({
+        name: "encode_nostr_link",
+        description:
+          "Encode a Nostr link into its bech32 representation (npub, nprofile, nevent, naddr, note, nsec). Requires linkType and linkId at minimum.",
+        parameters: z.object({
+          linkType: z.enum(["npub", "nprofile", "nevent", "naddr", "note", "nsec"]).describe("Type of link to encode"),
+          linkId: z.string().describe("ID (hex for events/profiles, string for others)"),
+          linkKind: z.number().optional().describe("Kind number (required for naddr)"),
+          linkAuthor: z.string().optional().describe("Author pubkey hex (for nprofile/nevent/naddr)"),
+          linkRelays: z.array(z.string()).optional().describe("Relay URLs (optional)"),
+        }),
+        execute: async input => {
+          try {
+            // Map linkType to NostrPrefix
+            let prefix: NostrPrefix
+            switch (input.linkType) {
+              case "npub":
+                prefix = NostrPrefix.PublicKey
+                break
+              case "nprofile":
+                prefix = NostrPrefix.Profile
+                break
+              case "nevent":
+                prefix = NostrPrefix.Event
+                break
+              case "naddr":
+                prefix = NostrPrefix.Address
+                break
+              case "note":
+                prefix = NostrPrefix.Note
+                break
+              case "nsec":
+                prefix = NostrPrefix.PrivateKey
+                break
+              default:
+                return `Invalid linkType: ${input.linkType}`
+            }
+            const link = new NostrLink(prefix, input.linkId, input.linkKind, input.linkAuthor, input.linkRelays)
+            return JSON.stringify({ encoded: link.encode() })
+          } catch (error) {
+            return `Error encoding NostrLink: ${error instanceof Error ? error.message : String(error)}`
+          }
+        },
       }),
     ]
 
@@ -289,7 +423,7 @@ export function useAiAgent() {
       provider: modelProvider,
       agent,
       runner,
-      session: memoryRef.current
+      session: memoryRef.current,
     }
     agentRef.current = newAgent
 
@@ -328,7 +462,7 @@ export function useAiAgent() {
                 let args = {}
                 try {
                   args = JSON.parse(toolCall.rawItem.arguments as string)
-                } catch { }
+                } catch {}
                 yield { type: "tool_call", name: toolCall.rawItem.name, args }
               } else {
                 debugger
@@ -372,8 +506,8 @@ export function useAiAgent() {
   return {
     runStream,
     models: useCallback(async () => {
-      const { provider } = getOrCreate();
+      const { provider } = getOrCreate()
       return await provider.listModels()
-    }, [getOrCreate])
+    }, [getOrCreate]),
   }
 }
