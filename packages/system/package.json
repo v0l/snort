@@ -18,6 +18,7 @@
     "@types/debug": "^4.1.12",
     "@types/node": "^24.8.1",
     "@types/ws": "^8.18.1",
+    "nostr-tools": "^2.23.3",
     "typescript": "^5.9.3"
   },
   "dependencies": {

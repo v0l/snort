@@ -52,8 +52,20 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
 
   /**
    * Start NIP-46 connection
-   * @param config bunker/nostrconnect://{npub/hex-pubkey}?relay={websocket-url}#{token-hex}
-   * @param insideSigner
+   *
+   * Connection formats:
+   * - bunker://: bunker://<remote-signer-pubkey>?relay=<ws-url>&secret=<secret>
+   *   (NIP-46 "Direct connection initiated by remote-signer")
+   * - nostrconnect://: nostrconnect://<client-pubkey>?relay=<ws-url>&secret=<secret>&perms=<perms>
+   *   (NIP-46 "Direct connection initiated by the client")
+   *
+   * Note: For nostrconnect:// flow, the `secret` parameter is REQUIRED per NIP-46 to prevent
+   * connection spoofing. The client MUST validate the `secret` returned by the connect response.
+   *
+   * @param config bunker:// or nostrconnect:// URL
+   * @param insideSigner Optional signer for encrypting/decrypting messages
+   *
+   * @see https://github.com/nostr-protocol/nips/blob/master/46.md#initiating-a-connection
    */
   constructor(config: string, insideSigner?: EventSigner) {
     super()
@@ -73,6 +85,9 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     this.#relay = unwrap(u.searchParams.get("relay"))
     this.#insideSigner = insideSigner ?? new PrivateKeySigner(secp256k1.keygen().secretKey)
 
+    // For bunker:// flow, the remote signer pubkey is in the URL
+    // For nostrconnect:// flow, the remote signer pubkey is discovered from the connect response
+    // See NIP-46: https://github.com/nostr-protocol/nips/blob/master/46.md#initiating-a-connection
     if (this.isBunker) {
       this.#remotePubkey = this.#localPubkey
     }
@@ -98,9 +113,14 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   }
 
   /**
-   * Connect to the bunker relay
-   * @param autoConnect Start connect flow for pubkey
-   * @returns
+   * Connect to the remote signer relay and establish the NIP-46 connection.
+   *
+   * For bunker:// flow: sends connect request to the remote signer.
+   * For nostrconnect:// flow: waits for the remote signer to send a connect response,
+   * from which the remote signer's pubkey is discovered (per NIP-46 spec).
+   *
+   * @param autoConnect Automatically initiate the connect flow
+   * @see https://github.com/nostr-protocol/nips/blob/master/46.md#initiating-a-connection
    */
   async init(autoConnect = true) {
     this.#localPubkey = await this.#insideSigner.getPubKey()
@@ -169,11 +189,17 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     return JSON.parse(rsp.result) as Array<string>
   }
 
+  /**
+   * Get the user's public key from the remote signer.
+   * Per NIP-46 Overview step 5, client must call get_public_key after connect
+   * to learn the user-pubkey (which may differ from remote-signer-pubkey).
+   *
+   * @see https://github.com/nostr-protocol/nips/blob/master/46.md#overview
+   */
   async getPubKey() {
-    //const rsp = await this.#rpc("get_public_key", []);
-    //return rsp.result as string;
     if (!this.#remotePubkey) throw new Error("Remote pubkey not yet known; call init() first")
-    return this.#remotePubkey
+    const rsp = await this.#rpc("get_public_key", [])
+    return rsp.result as string
   }
 
   async nip4Encrypt(content: string, otherKey: string) {
@@ -232,6 +258,15 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     return await this.#rpc("connect", connectParams)
   }
 
+  /**
+   * Handle incoming NIP-46 event from relay
+   *
+   * For nostrconnect:// flow, the remote signer's pubkey is discovered from the
+   * first response event's author (e.pubkey), as per NIP-46:
+   * "Client discovers remote-signer-pubkey from connect response author."
+   *
+   * @see https://github.com/nostr-protocol/nips/blob/master/46.md#initiating-a-connection
+   */
   async #onReply(e: NostrEvent) {
     if (e.kind !== NIP46_KIND) {
       throw new Error("Unknown event kind")
@@ -254,7 +289,17 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
       this.#log("Recv response id=%s error=%s", reply.id, reply.error || "(none)")
     }
     if ("method" in reply && reply.method === "connect") {
-      this.#remotePubkey = reply.params[0]
+      // For nostrconnect:// flow, the signer should send a connect RESPONSE (not request).
+      // Per NIP-46: "Client discovers remote-signer-pubkey from connect response author."
+      // We use e.pubkey (the cryptographically verified event author) as the signer's pubkey,
+      // regardless of whether the signer sends a request or response. This ensures we always
+      // trust the verified pubkey over potentially incorrect params.
+      // See: https://github.com/nostr-protocol/nips/blob/master/46.md#initiating-a-connection
+      if (!this.isBunker) {
+        this.#remotePubkey = e.pubkey
+      } else {
+        this.#remotePubkey = reply.params[0]
+      }
       await this.#sendCommand(
         {
           id: reply.id,
@@ -265,7 +310,8 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
       )
       id = "connect"
     } else if (!this.#remotePubkey) {
-      // nostrconnect flow: signer sends a response to an implicit connect
+      // nostrconnect:// flow: signer sends a response (not a connect request)
+      // Discover remote signer pubkey from event author per NIP-46 spec
       this.#remotePubkey = e.pubkey
       await this.#sendCommand(
         {
