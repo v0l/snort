@@ -1,6 +1,6 @@
 {
   "name": "@snort/system",
-  "version": "2.0.0-pre.13",
+  "version": "2.0.0",
   "description": "Snort nostr system package",
   "type": "module",
   "main": "dist/index.js",
@@ -32,7 +32,7 @@
     "@noble/curves": "^2.0.1",
     "@noble/hashes": "^2.0.1",
     "@scure/base": "^2.0.0",
-    "@snort/shared": "^2.0.0-pre.4",
+    "@snort/shared": "^2.0.0",
     "debug": "^4.4.3",
     "eventemitter3": "^5.0.1",
     "isomorphic-ws": "^5.0.0",
