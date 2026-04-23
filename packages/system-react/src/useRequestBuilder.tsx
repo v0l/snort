@@ -1,4 +1,4 @@
-import { use, useEffect, useMemo, useSyncExternalStore } from "react"
+import { use, useMemo, useSyncExternalStore } from "react"
 import { EmptySnapshot, type RequestBuilder, type TaggedNostrEvent } from "@snort/system"
 import { SnortContext } from "./context"
 
@@ -7,10 +7,12 @@ import { SnortContext } from "./context"
  */
 export function useRequestBuilder(rb: RequestBuilder): Array<TaggedNostrEvent> {
   const system = use(SnortContext)
+  // Eagerly create the query so it exists during SSR.
+  // On the client the same query is reused; on the server it registers
+  // the request and makes data available after a FetchAll() pass.
+  const q = useMemo(() => system.Query(rb), [system, rb])
   return useSyncExternalStore(
     v => {
-      const q = system.Query(rb)
-      // race condition here
       q.on("event", v)
       q.uncancel()
       q.start()
@@ -20,21 +22,8 @@ export function useRequestBuilder(rb: RequestBuilder): Array<TaggedNostrEvent> {
         q.cancel()
       }
     },
-    () => {
-      const q = system.GetQuery(rb.id)
-      if (q) {
-        return q.snapshot
-      } else {
-        return EmptySnapshot
-      }
-    },
-    () => {
-      const q = system.GetQuery(rb.id)
-      if (q) {
-        return q.snapshot
-      }
-      return EmptySnapshot
-    },
+    () => q.snapshot,
+    () => q.snapshot,
   )
 }
 

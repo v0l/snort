@@ -142,6 +142,12 @@ export interface SystemInterface {
   Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void): Promise<Array<TaggedNostrEvent>>
 
   /**
+   * Wait for all active queries to reach EOSE.
+   * Useful for SSR: render once to discover queries, call FetchAll(), then re-render.
+   */
+  FetchAll(): Promise<void>
+
+  /**
    * Create a new permanent connection to a relay
    * @param address Relay URL
    * @param options Read/Write settings

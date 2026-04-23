@@ -381,6 +381,32 @@ export class Query extends EventEmitter<QueryEvents> {
   }
 
   /**
+   * Wait for all traces to reach a finished state.
+   * Returns a promise that resolves when all traces are finished.
+   */
+  waitFinished(): Promise<void> {
+    return new Promise((resolve) => {
+      const checkDone = () => {
+        if (this.traces.length > 0 && this.traces.every((tr) => tr.finished)) {
+          this.off("trace", onTrace)
+          resolve()
+        }
+      }
+
+      const onTrace = () => {
+        checkDone()
+      }
+
+      // Check immediately in case already finished
+      if (this.traces.length > 0 && this.traces.every((tr) => tr.finished)) {
+        resolve()
+      } else {
+        this.on("trace", onTrace)
+      }
+    })
+  }
+
+  /**
    * Start filter emit
    */
   start() {

@@ -198,6 +198,40 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     return results.filter(a => filters.some(b => eventMatchesFilter(a, b)))
   }
 
+  /**
+   * Wait for all active queries to reach EOSE.
+   * Useful for SSR: render once to trigger subscriptions, then await this
+   * before re-rendering with populated data.
+   */
+  async fetchAll(): Promise<void> {
+    const queries = [...this.#queries.values()].filter(q => !q.leaveOpen)
+    if (queries.length === 0) return
+
+    const promises = queries.map(q => {
+      return new Promise<void>((resolve, reject) => {
+        const t = setTimeout(() => {
+          reject(new Error(`fetchAll() timed out after ${QueryFetchTimeout}ms for query "${q.id}"`))
+        }, QueryFetchTimeout)
+
+        // Check immediately in case already finished
+        if (q.traces.length > 0 && q.traces.every(tr => tr.finished)) {
+          clearTimeout(t)
+          resolve()
+          return
+        }
+
+        q.waitFinished()
+          .then(() => {
+            clearTimeout(t)
+            resolve()
+          })
+          .catch(reject)
+      })
+    })
+
+    await Promise.all(promises)
+  }
+
   *[Symbol.iterator]() {
     for (const kv of this.#queries) {
       yield kv

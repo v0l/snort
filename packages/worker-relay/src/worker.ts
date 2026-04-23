@@ -206,3 +206,5 @@ if ("DedicatedWorkerGlobalScope" in globalThis) {
     handleMsg(self as DedicatedWorkerGlobalScope, e)
   }
 }
+
+export default {}

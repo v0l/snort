@@ -19,3 +19,5 @@ globalThis.onmessage = ev => {
     })
   }
 }
+
+export default {}

@@ -170,6 +170,10 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     return this.#queryManager.fetch(req, cb)
   }
 
+  FetchAll(): Promise<void> {
+    return this.#queryManager.fetchAll()
+  }
+
   Query(req: RequestBuilder): QueryLike {
     return this.#queryManager.query(req)
   }
