@@ -200,4 +200,22 @@ export class NostrSystem extends SystemBase implements SystemInterface {
       }),
     }
   }
+
+  hydrateQuery(id: string, events: Array<TaggedNostrEvent>): void {
+    const q = this.#queryManager.get(id)
+    if (q) {
+      q.feed.add(events)
+    }
+  }
+
+  getHydrationData(): Record<string, Array<TaggedNostrEvent>> {
+    const data: Record<string, Array<TaggedNostrEvent>> = {}
+    for (const [, q] of this.#queryManager) {
+      const snapshot = q.snapshot
+      if (snapshot.length > 0) {
+        data[q.id] = snapshot
+      }
+    }
+    return data
+  }
 }

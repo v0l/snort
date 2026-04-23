@@ -28,7 +28,13 @@ export function useRequestBuilder(rb: RequestBuilder): Array<TaggedNostrEvent> {
         return EmptySnapshot
       }
     },
-    () => EmptySnapshot,
+    () => {
+      const q = system.GetQuery(rb.id)
+      if (q) {
+        return q.snapshot
+      }
+      return EmptySnapshot
+    },
   )
 }
 

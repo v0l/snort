@@ -1,6 +1,6 @@
 {
   "name": "@snort/system-react",
-  "version": "2.0.0-pre.16",
+  "version": "2.0.0-pre.17",
   "description": "React hooks for @snort/system",
   "main": "dist/index.js",
   "module": "src/index.ts",
@@ -14,7 +14,7 @@
   "files": ["src", "dist"],
   "dependencies": {
     "@snort/shared": "^2.0.0-pre.4",
-    "@snort/system": "^2.0.0-pre.12",
+    "@snort/system": "^2.0.0-pre.13",
     "react": "^19.2.3",
     "react-dom": "^19.2.5"
   },

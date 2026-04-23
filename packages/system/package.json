@@ -1,18 +1,24 @@
 {
   "name": "@snort/system",
-  "version": "2.0.0-pre.12",
+  "version": "2.0.0-pre.13",
   "description": "Snort nostr system package",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "src/index.ts",
-  "repository": "https://git.v0l.io/Kieran/snort",
+  "repository": {
+    "type": "git",
+    "url": "https://git.v0l.io/Kieran/snort"
+  },
   "author": "v0l",
   "license": "MIT",
   "scripts": {
     "build": "rm -rf dist && bunx --bun tsc"
   },
-  "files": ["src", "dist"],
+  "files": [
+    "src",
+    "dist"
+  ],
   "devDependencies": {
     "@peculiar/webcrypto": "^1.5.0",
     "@types/debug": "^4.1.12",

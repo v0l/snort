@@ -217,6 +217,16 @@ export interface SystemInterface {
    * Get internal system config
    */
   get config(): SystemConfig
+
+  /**
+   * Hydrate a query with pre-loaded events (for SSR)
+   */
+  hydrateQuery(id: string, events: Array<TaggedNostrEvent>): void
+
+  /**
+   * Get hydration data for all queries (for SSR output)
+   */
+  getHydrationData(): Record<string, Array<TaggedNostrEvent>>
 }
 
 export interface SystemSnapshot {
