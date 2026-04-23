@@ -1,4 +1,5 @@
 import { TraceTimelineOverlay } from "@snort/system-react"
+import "@snort/system-react/dist/TraceTimeline/TraceTimeline.css"
 import { useCallback, useEffect } from "react"
 import { Outlet, useLocation } from "react-router-dom"
 

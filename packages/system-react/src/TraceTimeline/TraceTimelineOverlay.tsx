@@ -1,6 +1,5 @@
 import { createPortal } from "react-dom"
 import { TraceStatsView } from "./TraceStatsView"
-import "./TraceTimeline.css"
 
 interface TraceTimelineOverlayProps {
   isOpen: boolean

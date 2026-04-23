@@ -1,6 +1,6 @@
 {
   "name": "@snort/system-react",
-  "version": "2.0.0-pre.15",
+  "version": "2.0.0-pre.16",
   "description": "React hooks for @snort/system",
   "main": "dist/index.js",
   "module": "src/index.ts",
@@ -9,7 +9,7 @@
   "author": "Kieran",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist && bunx --bun tsc"
+    "build": "rm -rf dist && bunx --bun tsc && cp src/TraceTimeline/TraceTimeline.css dist/TraceTimeline/"
   },
   "files": ["src", "dist"],
   "dependencies": {

@@ -1,5 +1,4 @@
 import { QueryTraceState, type TimelineEntry } from "@snort/system"
-import "./TraceTimeline.css"
 
 interface TraceTimelineDetailPopupProps {
   selectedEntry: TimelineEntry

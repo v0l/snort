@@ -2,7 +2,6 @@
 import { QueryTraceState, type TimelineEntry } from "@snort/system"
 import { use, useMemo, useState, useSyncExternalStore } from "react"
 import { SnortContext } from "../context"
-import "./TraceTimeline.css"
 import { TraceTimelineDetailPopup } from "./TraceTimelineDetailPopup"
 
 export function TraceTimelineView() {
