@@ -176,6 +176,8 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       q.on("event", cb)
     }
 
+    q.start()
+
     // Wait for the query-level eose (fires after grace period)
     await new Promise<void>((resolve, reject) => {
       const hardTimeout = setTimeout(() => {
@@ -192,7 +194,6 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       })
     })
 
-    q.start()
     const results = q.feed.takeSnapshot()
     if (cb) {
       q.flush()
