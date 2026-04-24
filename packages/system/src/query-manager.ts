@@ -211,6 +211,11 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     const queries = [...this.#queries.values()].filter(q => !q.leaveOpen)
     if (queries.length === 0) return
 
+    // During SSR, queries may have been created (via system.Query) but never
+    // started because useSyncExternalStore's subscribe callback isn't invoked.
+    // Force-start them so FetchAll has traces to wait on.
+    queries.forEach(q => q.start())
+
     const promises = queries.map(q => {
       return new Promise<void>((resolve, reject) => {
         // Already finished?
