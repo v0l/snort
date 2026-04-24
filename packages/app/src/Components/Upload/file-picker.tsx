@@ -6,7 +6,7 @@ import useEventPublisher from "@/Hooks/useEventPublisher"
 import useImgProxy from "@/Hooks/useImgProxy"
 import useLogin from "@/Hooks/useLogin"
 import { useMediaServerList } from "@/Hooks/useMediaServerList"
-import { type BlobDescriptor, Blossom } from "@/Utils/Upload/blossom"
+import { type BlobDescriptor, blossomList } from "@/Utils/Upload/blossom"
 
 import AsyncButton from "../Button/AsyncButton"
 
@@ -28,8 +28,7 @@ export function MediaServerFileList({
     if (!publisher) return
     for (const s of servers.servers) {
       try {
-        const sx = new Blossom(s, publisher)
-        const files = await sx.list(state.pubkey)
+        const files = await blossomList(s, publisher, state.pubkey)
         res.push(...files)
       } catch (e) {
         console.error(e)

@@ -1,26 +1,20 @@
-import { EventPublisher, type Nip94Tags, type NostrEvent } from "@snort/system"
+import { EventPublisher } from "@snort/system"
 
 import useEventPublisher from "@/Hooks/useEventPublisher"
 import { useMediaServerList } from "@/Hooks/useMediaServerList"
 import { randomSample } from "@/Utils"
 import { KieranPubKey } from "@/Utils/Const"
 
-import { Blossom } from "./blossom"
+import { type BlobDescriptor, blossomMirror, blossomUpload } from "./blossom"
 import { bech32ToHex } from "@snort/shared"
 
 export interface UploadResult {
-  url?: string
-  error?: string
-
-  /**
-   * NIP-94 File Header
-   */
-  header?: NostrEvent
-
-  /**
-   * Media metadata
-   */
-  metadata?: Nip94Tags
+  url: string
+  sha256: string
+  size: number
+  type?: string
+  uploaded?: number
+  nip94?: Array<Array<string>>
 }
 
 /**
@@ -46,18 +40,8 @@ export const UploaderServices = [
 ]
 
 export interface Uploader {
-  upload: (f: File | Blob, filename: string) => Promise<UploadResult>
-  progress: Array<UploadProgress>
+  upload: (f: File | Blob, filename?: string) => Promise<UploadResult>
 }
-
-export interface UploadProgress {
-  id: string
-  file: File | Blob
-  progress: number
-  stage: UploadStage
-}
-
-export type UploadStage = "starting" | "hashing" | "uploading" | "done" | undefined
 
 export default function useFileUpload(privKey?: string) {
   const { publisher } = useEventPublisher()
@@ -70,29 +54,46 @@ export default function useFileUpload(privKey?: string) {
     const mirrors = sampled.slice(1)
     return new MultiServerBlossom(primary, mirrors, pub)
   } else if (pub) {
-    return new Blossom("https://blossom.band", pub)
+    return new SingleServerBlossom("https://blossom.band", pub)
   }
 }
 
-class MultiServerBlossom {
+class SingleServerBlossom implements Uploader {
+  constructor(
+    private server: string,
+    private publisher: EventPublisher,
+  ) {}
+
+  async upload(file: File | Blob, _filename?: string) {
+    const result = await blossomUpload(
+      this.server,
+      this.publisher,
+      file instanceof Blob ? new File([file], "blob") : file,
+    )
+    return result as UploadResult
+  }
+}
+
+class MultiServerBlossom implements Uploader {
   constructor(
     private primary: string,
     private mirrors: string[],
     private publisher: EventPublisher,
   ) {}
 
-  async upload(file: File | Blob) {
-    const blossom = new Blossom(this.primary, this.publisher)
-    const result = await blossom.upload(file instanceof Blob ? new File([file], "blob") : file)
+  async upload(file: File | Blob, _filename?: string) {
+    const result = (await blossomUpload(
+      this.primary,
+      this.publisher,
+      file instanceof Blob ? new File([file], "blob") : file,
+    )) as UploadResult
 
     const mirrorUrls = []
     for (const server of this.mirrors) {
       try {
-        if (result.url) {
-          const mirrorResult = await new Blossom(server, this.publisher).mirror(result.url)
-          if (mirrorResult.url) {
-            mirrorUrls.push(mirrorResult.url)
-          }
+        const mirrorResult = (await blossomMirror(server, this.publisher, result)) as UploadResult
+        if (mirrorResult.url) {
+          mirrorUrls.push(mirrorResult.url)
         }
       } catch (e) {
         console.warn("Mirror upload failed for", server, e)

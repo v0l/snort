@@ -5,6 +5,7 @@
     "": {
       "dependencies": {
         "@cloudflare/workers-types": "^4.20251011.0",
+        "blossom-client-sdk": "^5.0.0",
         "jiti": "^2.6.1",
         "typescript": "^5.9.3",
       },
@@ -122,7 +123,7 @@
     },
     "packages/shared": {
       "name": "@snort/shared",
-      "version": "2.0.0-pre.4",
+      "version": "2.0.0",
       "dependencies": {
         "@noble/curves": "^2.0.1",
         "@noble/hashes": "^2.0.1",
@@ -139,13 +140,13 @@
     },
     "packages/system": {
       "name": "@snort/system",
-      "version": "2.0.0-pre.11",
+      "version": "2.1.0",
       "dependencies": {
         "@noble/ciphers": "^2.0.1",
         "@noble/curves": "^2.0.1",
         "@noble/hashes": "^2.0.1",
         "@scure/base": "^2.0.0",
-        "@snort/shared": "^2.0.0-pre.4",
+        "@snort/shared": "^2.0.0",
         "debug": "^4.4.3",
         "eventemitter3": "^5.0.1",
         "isomorphic-ws": "^5.0.0",
@@ -164,17 +165,19 @@
     },
     "packages/system-react": {
       "name": "@snort/system-react",
-      "version": "2.0.0-pre.14",
+      "version": "2.1.0",
       "dependencies": {
-        "@snort/shared": "^2.0.0-pre.4",
-        "@snort/system": "^2.0.0-pre.11",
-        "react": "^19.2.3",
-        "react-dom": "^19.2.5",
+        "@snort/shared": "^2.0.0",
+        "@snort/system": "^2.1.0",
       },
       "devDependencies": {
         "@types/react": "^19.2.7",
         "@types/react-dom": "^19.2.3",
         "typescript": "^5.9.3",
+      },
+      "peerDependencies": {
+        "react": "^19.2.3",
+        "react-dom": "^19.2.5",
       },
     },
     "packages/system-svelte": {
@@ -191,11 +194,11 @@
     },
     "packages/system-wasm": {
       "name": "@snort/system-wasm",
-      "version": "1.0.7",
+      "version": "2.0.0",
     },
     "packages/wallet": {
       "name": "@snort/wallet",
-      "version": "2.0.0-pre.9",
+      "version": "2.0.1",
       "dependencies": {
         "@scure/base": "^2.0.0",
         "@snort/shared": "^2.0.0-pre.4",
@@ -211,7 +214,7 @@
     },
     "packages/worker-relay": {
       "name": "@snort/worker-relay",
-      "version": "2.0.0-pre.4",
+      "version": "2.0.0",
       "dependencies": {
         "@sqlite.org/sqlite-wasm": "^3.50.4-build1",
         "eventemitter3": "^5.0.1",
@@ -1022,6 +1025,8 @@
     "balanced-match": ["balanced-match@4.0.4", "", {}, "sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA=="],
 
     "baseline-browser-mapping": ["baseline-browser-mapping@2.10.19", "", { "bin": { "baseline-browser-mapping": "dist/cli.cjs" } }, "sha512-qCkNLi2sfBOn8XhZQ0FXsT1Ki/Yo5P90hrkRamVFRS7/KV9hpfA4HkoWNU152+8w0zPjnxo5psx5NL3PSGgv5g=="],
+
+    "blossom-client-sdk": ["blossom-client-sdk@5.0.0", "", { "dependencies": { "@noble/hashes": "^1.8.0" }, "peerDependencies": { "@cashu/cashu-ts": "^2.4.3", "hls.js": "^1.6.16" }, "optionalPeers": ["@cashu/cashu-ts", "hls.js"] }, "sha512-xz7w6eBQv6uiNK9ogh5AymnzCAohiU029XySpKxJyG7RsDHkoru+xoZhY55tiIOyWFX/5s8pip4hVh5hO1PN/Q=="],
 
     "body-parser": ["body-parser@2.2.2", "", { "dependencies": { "bytes": "^3.1.2", "content-type": "^1.0.5", "debug": "^4.4.3", "http-errors": "^2.0.0", "iconv-lite": "^0.7.0", "on-finished": "^2.4.1", "qs": "^6.14.1", "raw-body": "^3.0.1", "type-is": "^2.0.1" } }, "sha512-oP5VkATKlNwcgvxi0vM0p/D3n2C3EReYVX+DNYs5TjZFn/oQt2j+4sVJtSMr18pdRr8wjTcBl6LoV+FUwzPmNA=="],
 
@@ -2144,6 +2149,8 @@
     "@vitest/mocker/estree-walker": ["estree-walker@3.0.3", "", { "dependencies": { "@types/estree": "^1.0.0" } }, "sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g=="],
 
     "ajv-formats/ajv": ["ajv@8.18.0", "", { "dependencies": { "fast-deep-equal": "^3.1.3", "fast-uri": "^3.0.1", "json-schema-traverse": "^1.0.0", "require-from-string": "^2.0.2" } }, "sha512-PlXPeEWMXMZ7sPYOHqmDyCJzcfNrUr3fGNKtezX14ykXOEIvyK81d+qydx89KY5O71FKMPaQ2vBfBFI5NHR63A=="],
+
+    "blossom-client-sdk/@noble/hashes": ["@noble/hashes@1.8.0", "", {}, "sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A=="],
 
     "express/cookie": ["cookie@0.7.2", "", {}, "sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w=="],
 
