@@ -52,7 +52,7 @@ export abstract class KeyStorage {
  *   mac        = HMAC-SHA256(macKey, nonce || ciphertext) — verified before decryption
  */
 export class PinEncrypted extends KeyStorage {
-  static readonly #opts = { N: 2 ** 20, r: 8, p: 1, dkLen: 32 }
+  static readonly #opts = { N: 2 ** 20, r: 8, p: 1, dkLen: 32, maxmem: 2 ** 31 }
   #decrypted?: Uint8Array
   #encrypted: PinEncryptedPayload
 

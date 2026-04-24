@@ -11,7 +11,7 @@ import {
   type TaggedNostrEvent,
 } from "."
 import type { ConnectionType } from "./connection-pool"
-import { QueryFetchTimeout } from "./const"
+import { FetchAllGracePeriod, QueryFetchTimeout } from "./const"
 import { EventExt } from "./event-ext"
 import { NegentropyFlow } from "./negentropy/negentropy-flow"
 import { NoteCollection } from "./note-collection"
@@ -164,7 +164,9 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
   }
 
   /**
-   * Async fetch results
+   * Async fetch results.
+   * Relays race: the query's internal grace period times out slow traces
+   * after the first EOSE, so this resolves quickly in practice.
    */
   async fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
     req.withOptions({ groupingDelay: 0 }) //disable grouping timer
@@ -174,22 +176,23 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       q.on("event", cb)
     }
 
-    const pDone = new Promise<void>((resolve, reject) => {
-      const t = setTimeout(() => {
+    // Wait for the query-level eose (fires after grace period)
+    await new Promise<void>((resolve, reject) => {
+      const hardTimeout = setTimeout(() => {
         reject(
           new Error(
             `QueryManager.fetch() timed out after ${QueryFetchTimeout}ms — EOSE never received for "${req.id}"`,
           ),
         )
-      }, QueryFetchTimeout)
+      }, QueryFetchTimeout + FetchAllGracePeriod)
+
       q.once("eose", () => {
-        clearTimeout(t)
+        clearTimeout(hardTimeout)
         resolve()
       })
     })
 
     q.start()
-    await pDone
     const results = q.feed.takeSnapshot()
     if (cb) {
       q.flush()
@@ -199,9 +202,10 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
   }
 
   /**
-   * Wait for all active queries to reach EOSE.
-   * Useful for SSR: render once to trigger subscriptions, then await this
-   * before re-rendering with populated data.
+   * Wait for queries to collect enough data for SSR.
+   * Relays race: the Query's internal grace period times out slow traces
+   * after the first EOSE, so this resolves quickly in practice.
+   * Skips queries marked with `leaveOpen: true`.
    */
   async fetchAll(): Promise<void> {
     const queries = [...this.#queries.values()].filter(q => !q.leaveOpen)
@@ -209,23 +213,20 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
 
     const promises = queries.map(q => {
       return new Promise<void>((resolve, reject) => {
-        const t = setTimeout(() => {
-          reject(new Error(`fetchAll() timed out after ${QueryFetchTimeout}ms for query "${q.id}"`))
-        }, QueryFetchTimeout)
-
-        // Check immediately in case already finished
+        // Already finished?
         if (q.traces.length > 0 && q.traces.every(tr => tr.finished)) {
-          clearTimeout(t)
           resolve()
           return
         }
 
-        q.waitFinished()
-          .then(() => {
-            clearTimeout(t)
-            resolve()
-          })
-          .catch(reject)
+        const hardTimeout = setTimeout(() => {
+          reject(new Error(`fetchAll() timed out after ${QueryFetchTimeout}ms for query "${q.id}"`))
+        }, QueryFetchTimeout + FetchAllGracePeriod)
+
+        q.once("eose", () => {
+          clearTimeout(hardTimeout)
+          resolve()
+        })
       })
     })
 
@@ -585,11 +586,11 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
           }
         }
       }
-      // If no relays in pool, connect to default relays
+      // If no relays in pool, connect to default relays (non-ephemeral so #canSendQuery accepts them)
       if (ret.length === 0) {
         this.#log("No relays connected, using defaults")
         for (const relayUrl of DefaultRelays) {
-          const nc = await this.#system.pool.connect(relayUrl, { read: true, write: false }, true)
+          const nc = await this.#system.pool.connect(relayUrl, { read: true, write: false }, false)
           if (nc) {
             if (this.#canSendQuery(nc, qSend, q)) {
               const trace = this.createTrace(q, nc, qSend)
@@ -614,13 +615,6 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         this.#queries.delete(k)
         this.#log("Deleted query %s", k)
         changed = true
-      } else {
-        const now = unixNowMs()
-        for (const trace of v.traces) {
-          if (!trace.leaveOpen && !trace.finished && trace.createdAt + v.timeout < now) {
-            trace.timeout()
-          }
-        }
       }
     }
     if (changed) {

@@ -110,7 +110,7 @@ export function hydrateSnort(system: SystemInterface) {
 ## How It Works
 
 1. **First render**: `useRequestBuilder` hooks call `system.Query(rb)` which registers queries in the QueryManager
-2. **FetchAll**: Waits for all queries to reach EOSE (or timeout after 30s)
+2. **FetchAll**: Waits for the first relay EOSE per query, then allows a 500ms grace period for other relays before resolving. Slow relays that haven't responded are timed out. (Hard timeout: 30s)
 3. **Second render**: `useRequestBuilder` hooks now find populated snapshots via `system.GetQuery(rb.id)?.snapshot`
 4. **Hydration**: Client reads `window.__SNORT_HYDRATION__` and calls `hydrateQuery` to restore query state
 
@@ -118,7 +118,10 @@ export function hydrateSnort(system: SystemInterface) {
 
 ### `system.FetchAll(): Promise<void>`
 
-Waits for all active queries to reach EOSE. Skips queries marked with `leaveOpen: true`.
+Relays race: waits for the first trace on each query to reach EOSE, then
+allows a 500ms grace period for other relays to respond before resolving.
+Slow relays that haven't responded are timed out. Skips queries marked with
+`leaveOpen: true`. Hard timeout: 30s per query.
 
 ```typescript
 await system.FetchAll();
@@ -143,7 +146,7 @@ system.hydrateQuery("query-id-1", eventsFromServer);
 
 ## Notes
 
-- **Timeout**: Each query has a 30-second timeout in `FetchAll()`
+- **Timeout**: Hard timeout of 30s per query, but in practice `FetchAll()` resolves after first-EOSE + 500ms grace period
 - **LeaveOpen queries**: Queries with `leaveOpen: true` are skipped by `FetchAll()`
 - **Relay connections**: Ensure relays are connected before calling `FetchAll()`
 - **First request**: The first SSR request may be slower as relays establish WebSocket connections

@@ -3,6 +3,7 @@ import { EventEmitter } from "eventemitter3"
 import { unixNowMs } from "@snort/shared"
 
 import type { ReqFilter, TaggedNostrEvent } from "."
+import { FetchAllGracePeriod, QueryFetchTimeout } from "./const"
 import { NoteCollection } from "./note-collection"
 import type { RequestBuilder } from "./request-builder"
 import { eventMatchesFilter } from "./request-matcher"
@@ -181,11 +182,6 @@ export class Query extends EventEmitter<QueryEvents> {
   #feed: NoteCollection
 
   /**
-   * Maximum waiting time for this query
-   */
-  readonly timeout: number
-
-  /**
    * Milliseconds to wait before sending query (debounce)
    */
   #groupingDelay?: number
@@ -208,6 +204,19 @@ export class Query extends EventEmitter<QueryEvents> {
   /** Total number of duplicates produced by this query */
   #duplicates: number
 
+  /**
+   * Grace-period timer: started when the first trace finishes (EOSE/CLOSE/etc).
+   * After this timer fires, any remaining unfinished traces are timed out,
+   * which makes progress === 1 and emits the query-level "eose".
+   */
+  #graceTimer?: ReturnType<typeof setTimeout>
+
+  /**
+   * Hard timeout: if no trace has finished within this period, time out
+   * all remaining traces so the query doesn't hang forever.
+   */
+  #hardTimer?: ReturnType<typeof setTimeout>
+
   #log = debug("Query")
 
   constructor(req: RequestBuilder) {
@@ -219,7 +228,6 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#leaveOpen = req.options?.leaveOpen ?? false
     this.skipCache = req.options?.skipCache ?? false
     this.useSyncModule = req.options?.useSyncModule ?? false
-    this.timeout = req.options?.timeout ?? 5_000
     this.#groupingDelay = req.options?.groupingDelay ?? 100
     this.#replaceable = req.options?.replaceable ?? false
     this.#duplicates = 0
@@ -290,6 +298,15 @@ export class Query extends EventEmitter<QueryEvents> {
    */
   addTrace(trace: QueryTrace) {
     this.#tracing.set(trace.id, trace)
+
+    // Start hard timeout on first trace — ensures the query never hangs
+    if (this.#tracing.size === 1 && !this.#leaveOpen) {
+      this.#hardTimer = setTimeout(() => {
+        this.#hardTimer = undefined
+        this.#timeoutRemaining()
+      }, QueryFetchTimeout)
+    }
+
     trace.on("stateChange", event => {
       this.emit("trace", event)
 
@@ -304,11 +321,40 @@ export class Query extends EventEmitter<QueryEvents> {
         ].includes(event.state)
       ) {
         this.#log("Trace state changed to %s, progress=%d", event.state, this.progress)
+
+        // Start grace period when the first trace finishes
+        if (!this.#leaveOpen && !this.#graceTimer) {
+          this.#graceTimer = setTimeout(() => {
+            this.#graceTimer = undefined
+            this.#timeoutRemaining()
+          }, FetchAllGracePeriod)
+        }
+
         if (this.progress === 1) {
+          this.#clearTimers()
           this.emit("eose")
         }
       }
     })
+  }
+
+  #timeoutRemaining() {
+    for (const trace of this.#tracing.values()) {
+      if (!trace.finished) {
+        trace.timeout()
+      }
+    }
+  }
+
+  #clearTimers() {
+    if (this.#graceTimer) {
+      clearTimeout(this.#graceTimer)
+      this.#graceTimer = undefined
+    }
+    if (this.#hardTimer) {
+      clearTimeout(this.#hardTimer)
+      this.#hardTimer = undefined
+    }
   }
 
   /**
@@ -352,6 +398,7 @@ export class Query extends EventEmitter<QueryEvents> {
   }
 
   cleanup() {
+    this.#clearTimers()
     if (this.#groupTimeout) {
       clearTimeout(this.#groupTimeout)
       this.#groupTimeout = undefined

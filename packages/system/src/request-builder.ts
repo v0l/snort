@@ -28,11 +28,6 @@ export interface RequestBuilderOptions {
   outboxPickN?: number
 
   /**
-   * Max wait time for this request
-   */
-  timeout?: number
-
-  /**
    * How many milli-seconds to wait to allow grouping
    */
   groupingDelay?: number

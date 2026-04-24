@@ -13,6 +13,7 @@ import { QueryTrace, QueryTraceState } from "../src/query"
 import { QueryManager } from "../src/query-manager"
 import { DefaultOptimizer } from "../src/query-optimizer"
 import { RequestBuilder } from "../src/request-builder"
+import { FetchAllGracePeriod } from "../src/const"
 import type { SystemConfig, SystemInterface } from "../src/system"
 
 function createEv(
@@ -421,22 +422,58 @@ describe("QueryManager — query dedup and lifecycle", () => {
     expect(qm.get("cleanup-q")).toBeUndefined()
   })
 
-  test("cleanup times out stale traces", async () => {
-    const conn = new MockConnection("wss://relay.test", true)
-    pool.add(conn)
+  test("grace period times out remaining traces after first EOSE", async () => {
+    const conn1 = new MockConnection("wss://fast.test", true)
+    const conn2 = new MockConnection("wss://slow.test", true)
+    pool.add(conn1)
+    pool.add(conn2)
 
-    const rb = new RequestBuilder("timeout-q")
-    rb.withOptions({ groupingDelay: 0, timeout: 500 })
+    const rb = new RequestBuilder("grace-q")
+    rb.withOptions({ groupingDelay: 0 })
     rb.withFilter().kinds([1])
     const q = qm.query(rb)
     q.start()
     await sleep(50)
 
-    const trace = q.traces[0]
-    expect(trace.currentState).toBe(QueryTraceState.WAITING)
+    expect(q.traces.length).toBe(2)
+    const fastTrace = q.traces.find(t => t.relay.includes("fast.test"))!
+    const slowTrace = q.traces.find(t => t.relay.includes("slow.test"))!
+    expect(fastTrace.finished).toBe(false)
+    expect(slowTrace.finished).toBe(false)
 
-    await sleep(1500)
-    expect(trace.currentState).toBe(QueryTraceState.TIMEOUT)
+    // EOSE the fast relay — this starts the grace period.
+    // (QueryManager closes the REQ after EOSE for non-leaveOpen, so trace ends up LOCAL_CLOSE)
+    conn1.emit("eose", fastTrace.id)
+    expect(fastTrace.finished).toBe(true)
+    expect(slowTrace.finished).toBe(false)
+
+    // After grace period, the slow trace should be timed out
+    await sleep(FetchAllGracePeriod + 100)
+    expect(slowTrace.currentState).toBe(QueryTraceState.TIMEOUT)
+    expect(slowTrace.finished).toBe(true)
+  })
+
+  test("all traces EOSE naturally before grace period", async () => {
+    const conn = new MockConnection("wss://relay.test", true)
+    pool.add(conn)
+
+    const rb = new RequestBuilder("all-eose-q")
+    rb.withOptions({ groupingDelay: 0 })
+    rb.withFilter().kinds([1])
+    const q = qm.query(rb)
+    q.start()
+    await sleep(50)
+
+    // EOSE all traces immediately
+    for (const trace of q.traces) {
+      conn.emit("eose", trace.id)
+    }
+
+    // Query should have emitted eose and cleaned up timers
+    expect(q.progress).toBe(1)
+    for (const trace of q.traces) {
+      expect(trace.finished).toBe(true)
+    }
   })
 })
 

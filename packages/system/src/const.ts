@@ -87,6 +87,13 @@ export const Nip46RpcTimeout = 30_000
 export const QueryFetchTimeout = 30_000
 
 /**
+ * Grace period after first EOSE before FetchAll resolves (ms).
+ * Relays race — once the first one responds with EOSE we wait this
+ * long for stragglers before returning whatever data we have.
+ */
+export const FetchAllGracePeriod = 500
+
+/**
  * Timeout for NIP-55 clipboard-based signer response (ms)
  */
 export const Nip55SignerTimeout = 120_000
