@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="Inter, system-ui, -apple-system, sans-serif">
+  <defs>
+    <marker id="arrow-right" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="10" markerHeight="7" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-left" viewBox="0 0 10 7" refX="0" refY="3.5" markerWidth="10" markerHeight="7" orient="auto">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#64748b"/>
+    </marker>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="400" rx="12" fill="#f8fafc"/>
+
+  <!-- ===== Main Thread Box ===== -->
+  <rect x="40" y="80" width="240" height="240" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="160" y="48" text-anchor="middle" font-size="13" font-weight="600" fill="#64748b" letter-spacing="0.5">MAIN THREAD</text>
+  <line x1="70" y1="62" x2="250" y2="62" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- WorkerRelayInterface -->
+  <rect x="65" y="130" width="190" height="60" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="160" y="155" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">WorkerRelay</text>
+  <text x="160" y="175" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">Interface</text>
+
+  <!-- Methods hint -->
+  <text x="160" y="225" text-anchor="middle" font-size="11" fill="#94a3b8">query · event · count</text>
+  <text x="160" y="242" text-anchor="middle" font-size="11" fill="#94a3b8">delete · dump · wipe</text>
+  <text x="160" y="259" text-anchor="middle" font-size="11" fill="#94a3b8">forYouFeed · summary</text>
+
+  <!-- ===== Web Worker Box ===== -->
+  <rect x="500" y="80" width="260" height="240" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="630" y="48" text-anchor="middle" font-size="13" font-weight="600" fill="#64748b" letter-spacing="0.5">WEB WORKER</text>
+  <line x1="540" y1="62" x2="720" y2="62" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- worker.ts -->
+  <rect x="545" y="100" width="170" height="44" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="630" y="127" text-anchor="middle" font-size="13" font-weight="600" fill="#92400e">worker.ts</text>
+
+  <!-- Connector line worker.ts → backends -->
+  <line x1="630" y1="144" x2="630" y2="170" stroke="#cbd5e1" stroke-width="1.5"/>
+
+  <!-- SqliteRelay -->
+  <rect x="525" y="170" width="140" height="50" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="595" y="192" text-anchor="middle" font-size="12" font-weight="600" fill="#065f46">SqliteRelay</text>
+  <text x="595" y="208" text-anchor="middle" font-size="10" fill="#059669">OPFS + sqlite-wasm</text>
+
+  <!-- InMemoryRelay -->
+  <rect x="525" y="245" width="140" height="50" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="595" y="267" text-anchor="middle" font-size="12" font-weight="600" fill="#991b1b">InMemoryRelay</text>
+  <text x="595" y="283" text-anchor="middle" font-size="10" fill="#dc2626">fallback (no WASM)</text>
+
+  <!-- Branch lines -->
+  <line x1="630" y1="170" x2="595" y2="170" stroke="#cbd5e1" stroke-width="1.5"/>
+  <line x1="595" y1="220" x2="595" y2="245" stroke="#cbd5e1" stroke-width="1.5"/>
+
+  <!-- ===== Arrows ===== -->
+  <!-- postMessage arrow (right) -->
+  <line x1="280" y1="148" x2="498" y2="148" stroke="#64748b" stroke-width="1.8" marker-end="url(#arrow-right)"/>
+  <rect x="330" y="130" width="100" height="22" rx="4" fill="#f8fafc"/>
+  <text x="380" y="146" text-anchor="middle" font-size="11" font-weight="500" fill="#475569">postMessage</text>
+
+  <!-- reply arrow (left) -->
+  <line x1="498" y1="178" x2="280" y2="178" stroke="#64748b" stroke-width="1.8" marker-end="url(#arrow-left)"/>
+  <rect x="345" y="162" width="60" height="22" rx="4" fill="#f8fafc"/>
+  <text x="375" y="178" text-anchor="middle" font-size="11" font-weight="500" fill="#475569">reply</text>
+
+  <!-- ===== Legend ===== -->
+  <text x="40" y="368" font-size="11" fill="#94a3b8">Communication is async — 30 s default timeout per command. Events are batched (50 ms window) before writing to SQLite.</text>
+</svg>
