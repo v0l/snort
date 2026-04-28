@@ -207,7 +207,12 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
               .catch(this.#log)
             // todo: stats events received
           } else {
-            this.#log("Ignoring unexpected AUTH request")
+            this.#log("Unexpected AUTH request — closing all subscriptions that don't require auth")
+            // Relay requires auth for subscriptions that didn't expect it.
+            // Close them locally so the query doesn't hang forever.
+            for (const [id] of this.#activeRequests) {
+              this.closeRequest(id)
+            }
           }
           break
         }
