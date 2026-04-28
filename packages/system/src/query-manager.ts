@@ -311,7 +311,11 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         syncFrom: this.#system.config.disableSyncModule || !q.useSyncModule ? undefined : syncFrom,
       } as BuiltRawReqFilter
     })
-    await Promise.all(qSend.map(a => this.#sendToRelays(q, a)))
+    // Fire all relay sends — #sendToRelays connects non-blocking and
+    // creates traces as connections become available.
+    for (const a of qSend) {
+      this.#sendToRelays(q, a)
+    }
   }
 
   /**
@@ -563,21 +567,21 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     }
   }
 
-  async #sendToRelays(q: Query, qSend: BuiltRawReqFilter) {
+  #sendToRelays(q: Query, qSend: BuiltRawReqFilter) {
     if (qSend.relay) {
-      const nc = await this.#system.pool.connect(qSend.relay, { read: true, write: true }, true)
-      if (nc) {
-        if (this.#canSendQuery(nc, qSend, q)) {
+      // Start connecting — don't await. Create the trace immediately so the
+      // query has visibility even if NIP-11 or the WebSocket handshake is slow.
+      // sendTrace will queue the trace in #pendingTraces if the connection
+      // isn't open yet, and it'll be retried when the pool fires "connected".
+      this.#system.pool.connect(qSend.relay, { read: true, write: true }, true).then(nc => {
+        if (nc && this.#canSendQuery(nc, qSend, q)) {
           const trace = this.createTrace(q, nc, qSend)
           q.addTrace(trace)
           this.sendTrace(q, trace, nc, qSend)
-          return [trace]
         } else {
-          this.#log("Cannot send query to %s: validation failed", qSend.relay)
+          this.#log("Cannot send query to %s: %s", qSend.relay, nc ? "validation failed" : "connect failed")
         }
-      } else {
-        console.warn("Failed to connect to new relay for:", qSend.relay, q)
-      }
+      })
     } else {
       const ret = []
       for (const [a, s] of this.#system.pool) {
@@ -595,19 +599,17 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       // If no relays in pool, connect to default relays (non-ephemeral so #canSendQuery accepts them)
       if (ret.length === 0) {
         this.#log("No relays connected, using defaults")
+        // Fire all connects in parallel — each creates a trace as it resolves
         for (const relayUrl of DefaultRelays) {
-          const nc = await this.#system.pool.connect(relayUrl, { read: true, write: false }, false)
-          if (nc) {
-            if (this.#canSendQuery(nc, qSend, q)) {
+          this.#system.pool.connect(relayUrl, { read: true, write: false }, false).then(nc => {
+            if (nc && this.#canSendQuery(nc, qSend, q)) {
               const trace = this.createTrace(q, nc, qSend)
               q.addTrace(trace)
               this.sendTrace(q, trace, nc, qSend)
-              ret.push(trace)
             }
-          }
+          })
         }
       }
-      return ret
     }
 
     this.emit("request", q.id, qSend)
