@@ -1,184 +1,110 @@
 # AGENTS.md - Snort Codebase Guidelines
 
-This document provides guidelines for AI coding agents working in the Snort codebase.
+## Project
 
-## Project Overview
+Nostr UI client. TypeScript, React 19, Vite, Bun workspaces monorepo.
 
-Snort is a **Nostr UI client** built with:
-- **Language**: TypeScript (strict mode)
-- **Framework**: React 19 (main app)
-- **Build Tool**: Vite
-- **Package Manager**: Bun (required - do not use npm/yarn/pnpm)
-- **Monorepo**: Bun workspaces
+**Always use `bun`** — never npm/yarn/pnpm/node. Bun auto-loads `.env` files (no dotenv).
 
-### Package Structure
+## Packages
+
+| Package | Purpose | Build |
+|---------|---------|-------|
+| `shared` | Utilities (`@snort/shared`) | `tsc` |
+| `system` | Core Nostr library (`@snort/system`) | `tsc` |
+| `system-react` | React hooks for system (`@snort/system-react`) | `tsc` + copy CSS |
+| `system-wasm` | WASM crypto (`@snort/system-wasm`) | `wasm-pack` (not tsc!) |
+| `system-svelte` | Svelte bindings (`@snort/system-svelte`) | `tsc` |
+| `wallet` | Wallet integration (`@snort/wallet`) | `tsc` |
+| `worker-relay` | Service worker relay (`@snort/worker-relay`) | `tsc` + esbuild bundle |
+| `bot` | Bot framework (`@snort/bot`) | `tsc` |
+| `app` | Main React web app (`@snort/app`) | Vite |
+
+### Build order (matters — dependencies must build first)
+
 ```
-packages/
-  app/           # Main React web application (@snort/app)
-  system/        # Core Nostr system library (@snort/system)
-  shared/        # Shared utilities (@snort/shared)
-  wallet/        # Wallet integration (@snort/wallet)
-  worker-relay/  # Service worker relay (@snort/worker-relay)
-  system-react/  # React hooks for system (@snort/system-react)
+shared → system → system-react → wallet → worker-relay → app
 ```
 
-## Build Commands
+`system-wasm`, `system-svelte`, and `bot` are not in the root build chain.
+
+## Commands
 
 ```bash
-# Install dependencies
-bun install
-
-# Build all packages (order matters - shared -> system -> wallet -> worker-relay -> app)
-bun run build
-
-# Start dev server
-bun run start
-
-# Build specific package
-bun --cwd=packages/app run build
-bun --cwd=packages/system run build
+bun install                    # Install all workspace deps
+bun run build                  # Build all packages in correct order
+bun run start                  # Build then start Vite dev server (app)
+bun run pre:commit             # Extract/compile i18n + biome lint --write
+bunx --bun biome lint --write  # Lint and auto-fix only
+bun test                       # Run all tests
+bun test packages/system/tests/nip10.test.ts  # Single test file
+bun test --test-name-pattern="parseThread"     # Tests by name pattern
 ```
+
+### Per-package build
+
+```bash
+bun --cwd=packages/system run build
+bun --cwd=packages/app run build
+```
+
+### App dev server with alternate config
+
+```bash
+NODE_CONFIG_ENV=iris bun run start   # Uses config/iris.json instead of default.json
+```
+
+Configs live in `packages/app/config/` (default, iris, nostr, phoenix, soloco, meku). Selected via `NODE_CONFIG_ENV`.
+
+## CI pipeline order
+
+`bun run build` → `bun test` → `bunx --bun biome lint` (no `--write` in CI)
 
 ## Testing
 
-**Framework**: Bun's built-in test runner (`bun:test`)
+Uses `bun:test` (not jest/vitest). Most tests in `packages/system/tests/`. A few in `packages/app/tests/` and `packages/shared/src/`.
 
 ```bash
-# Run all tests
-bun test
-
-# Run tests in a specific package
-cd packages/system && bun test
-
-# Run a single test file
-bun test packages/system/tests/nip10.test.ts
-
-# Run tests matching a pattern
-bun test --test-name-pattern="parseThread"
-
-# Run test files matching a name
-bun test nip10
+bun test                                        # All tests
+bun test packages/system/tests/nip10.test.ts     # Single file
+cd packages/system && bun test                   # Package-scoped
 ```
 
-**Test file locations**:
-- `packages/system/tests/*.test.ts` (most tests)
-- `packages/app/tests/*.test.ts`
-- `packages/shared/src/**/*.test.ts`
+Tests use `tsconfig` with `"exclude": ["**/*.test.ts"]` — tests are not compiled by `tsc` build.
 
-## Linting & Formatting
+## Formatting & Linting
 
-**Tool**: Biome (not ESLint/Prettier)
+**Biome** (not ESLint/Prettier). Config in `biome.json` at root.
 
-```bash
-# Lint and fix
-bunx --bun biome lint --write
+Key settings that differ from defaults:
+- Line width: 120
+- **Double quotes** for JS/TS (not single — `quoteStyle: "double"`)
+- Semicolons: as needed (omit when optional)
+- Trailing commas: all
+- Arrow parens: as needed
+- `useExhaustiveDependencies` rule is **off**
+- Imports auto-organized by Biome (`assist.actions.source.organizeImports: "on"`)
 
-# Pre-commit (extract translations + lint)
-bun run pre:commit
-```
+## App architecture
 
-## Code Style Guidelines
+- **Path alias**: `@/*` → `./src/*` (in `packages/app`)
+- **Config**: `config` npm package, baked into build via `define: { CONFIG: ... }` in Vite
+- **Build output**: `packages/app/build/` (not `dist/`)
+- **Tailwind CSS v4** via `@tailwindcss/vite` plugin
+- **PWA**: `vite-plugin-pwa` with injectManifest strategy, service worker at `src/service-worker.ts`
+- **i18n**: react-intl. Extract: `bun --cwd=packages/app run intl-extract`. Compile: `bun --cwd=packages/app run intl-compile`. Source strings → `src/lang.json` → compiled to `src/translations/en.json`
 
-### Formatting (Biome)
-- **Indentation**: 2 spaces
-- **Line width**: 120 characters
-- **Semicolons**: as needed (omit when optional)
-- **Quotes**: single quotes for JS/TS, double quotes for JSX attributes
-- **Trailing commas**: all
-- **Arrow parentheses**: as needed
-- **Line endings**: LF
+## Nostr patterns
 
-### TypeScript
-- **Strict mode** is enabled
-- **Target**: ESNext
-- **Module resolution**: Bundler
-- Use `type` imports for types: `import type { Foo } from './bar'`
-- Path alias in app: `@/*` maps to `./src/*`
-
-### Imports
-- Biome auto-organizes imports
-- Group order: external packages, then internal modules
-- Use workspace packages: `@snort/shared`, `@snort/system`, etc.
-
-### Naming Conventions
-- **Files**: PascalCase for React components (`Note.tsx`, `EventBuilder.ts`)
-- **Files**: kebab-case or camelCase for utilities (`event-builder.ts`, `nostr-link.ts`)
-- **Components**: PascalCase (`function Note()`, `function EventComponent()`)
-- **Hooks**: camelCase with `use` prefix (`useLogin`, `useModeration`)
-- **Types/Interfaces**: PascalCase (`TaggedNostrEvent`, `NoteProps`)
-- **Constants**: UPPER_SNAKE_CASE or PascalCase
-- **Private class fields**: Use `#` prefix (`#kind`, `#content`)
-
-### React Patterns
-- Functional components only
-- Use hooks for state management
-- Custom hooks in `src/Hooks/` directory
-- Components in `src/Components/` with subdirectories by feature
-- Pages in `src/Pages/`
-
-### Error Handling
-- Use try/catch for async operations
-- Prefer optional chaining (`?.`) and nullish coalescing (`??`)
-- Return `undefined` for not-found cases rather than throwing
-
-### Nostr-Specific Patterns
-- Event kinds defined in `packages/system/src/event-kind.ts`
-- NIP implementations in `packages/system/src/impl/nip*.ts`
-- Use `EventBuilder` class for constructing events
-- Use `NostrLink` for referencing events/profiles
+- Event kinds: `packages/system/src/event-kind.ts`
+- NIP implementations: `packages/system/src/impl/nip*.ts`
+- `EventBuilder` for constructing events
+- `NostrLink` for referencing events/profiles
 - Tags are arrays: `["e", "eventId", "relay", "marker"]`
 
-## Project-Specific Notes
+## Other directories
 
-### Bun Requirements
-- Always use `bun` instead of `node`, `npm`, `yarn`, or `pnpm`
-- Use `bun <file>` instead of `node <file>` or `ts-node <file>`
-- Use `bun test` instead of `jest` or `vitest`
-- Use `bun install` instead of `npm install`
-- Use `bun run <script>` instead of `npm run <script>`
-- Bun automatically loads `.env` files - do not use dotenv
-
-### Internationalization
-- Uses react-intl for i18n
-- Translations in `packages/app/src/translations/`
-- Extract strings: `bun --cwd=packages/app run intl-extract`
-- Compile translations: `bun --cwd=packages/app run intl-compile`
-
-### Desktop App
-- Tauri support in `src-tauri/` (Rust backend)
-
-### Common Imports
-```typescript
-// From system package
-import { EventKind, NostrLink, type TaggedNostrEvent } from "@snort/system"
-
-// From shared package
-import { NostrPrefix, unixNow, getPublicKey } from "@snort/shared"
-
-// App internal imports (using path alias)
-import { Relay } from "@/Cache"
-import useModeration from "@/Hooks/useModeration"
-```
-
-### Test Patterns
-```typescript
-import { describe, expect, test } from "bun:test"
-
-describe("FeatureName", () => {
-  test("should do something", () => {
-    expect(result).toBe(expected)
-  })
-})
-```
-
-## Quick Reference
-
-| Task | Command |
-|------|---------|
-| Install deps | `bun install` |
-| Build all | `bun run build` |
-| Dev server | `bun run start` |
-| Run all tests | `bun test` |
-| Run single test | `bun test path/to/file.test.ts` |
-| Lint & fix | `bunx --bun biome lint --write` |
-| Pre-commit | `bun run pre:commit` |
+- `src-tauri/` — Tauri desktop app (Rust backend), at repo root
+- `functions/` — Cloudflare Workers middleware
+- `docs/` — VitePress documentation site. Per-package docs in `docs/packages/`. Run with `bunx --bun vitepress dev docs`
+- `packages/system-wasm/` — Requires `wasm-pack` to build (Rust → WASM)

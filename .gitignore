@@ -6,5 +6,6 @@ dist/
 *.log
 .DS_Store
 .pnp*
-docs/
 .wrangler/
+docs/.vitepress/*
+!docs/.vitepress/config.mts
