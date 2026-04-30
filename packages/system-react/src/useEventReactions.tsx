@@ -12,7 +12,15 @@ export function useEventReactions(link: NostrLink, related: ReadonlyArray<Tagged
   const reactionKinds = useMemo(() => {
     return related.reduce(
       (acc, v) => {
-        if (assumeRelated || link.isReplyToThis(v)) {
+        let isRelated = assumeRelated || link.isReplyToThis(v)
+        if (!isRelated && v.kind === EventKind.ZapReceipt) {
+          // Zap receipts may reference the target event only via the inner zap request
+          // (in the description tag), not via NIP-10 e/a tags on the receipt itself.
+          // Check both the receipt's own tags and the inner zap request's targetEvents.
+          const zap = parseZap(v)
+          isRelated = link.referencesThis(v) || zap.targetEvents.some(t => t.equals(link))
+        }
+        if (isRelated) {
           acc[v.kind.toString()] ??= []
           acc[v.kind.toString()].push(v)
         }
