@@ -1,4 +1,4 @@
-import { dedupe, dedupeBy, NostrPrefix } from "@snort/shared"
+import { dedupeBy, NostrPrefix } from "@snort/shared"
 import { findTag } from "../utils"
 import { type EventBuilder, LinkScope, type NostrEvent, NostrLink, type Thread } from "../index"
 
@@ -15,8 +15,12 @@ export class Nip22 {
   }
 
   static replyTo(other: NostrEvent, eb: EventBuilder) {
+    const rootLink = Nip22.rootScopeOf(other)
+    rootLink.scope = LinkScope.Root
     const linkOther = NostrLink.fromEvent(other)
-    const rootScope = Nip22.linkToTag(Nip22.rootScopeOf(other))
+    linkOther.scope = LinkScope.Reply
+
+    const rootScope = Nip22.linkToTag(rootLink)
     const rootKind = ["K", findTag(other, "K") ?? other.kind.toString()]
     const rootAuthor = ["P", findTag(other, "P") ?? other.pubkey]
 
@@ -69,8 +73,8 @@ export class Nip22 {
       if (ret.root) {
         const kTag = findTag(ev, "K")
         if (kTag && ret.root.kind === undefined) {
-          const kind = parseInt(kTag)
-          if (!isNaN(kind)) {
+          const kind = parseInt(kTag, 10)
+          if (!Number.isNaN(kind)) {
             ret.root.kind = kind
           }
         }
@@ -80,8 +84,8 @@ export class Nip22 {
       if (ret.replyTo) {
         const kTag = findTag(ev, "k")
         if (kTag && ret.replyTo.kind === undefined) {
-          const kind = parseInt(kTag)
-          if (!isNaN(kind)) {
+          const kind = parseInt(kTag, 10)
+          if (!Number.isNaN(kind)) {
             ret.replyTo.kind = kind
           }
         }
@@ -106,8 +110,24 @@ export class Nip22 {
 
   /**
    * Create a NIP-22 tag from an object link
+   * NIP-22 uses uppercase tags (E/A/P) for root scope and lowercase (e/a/p) for reply/mention
    */
   static linkToTag(link: NostrLink) {
-    // TODO: implement
+    const isRoot = link.scope === LinkScope.Root
+
+    if (link.type === NostrPrefix.Event || link.type === NostrPrefix.Note) {
+      const tag = isRoot ? "E" : "e"
+      const relay = link.relays?.[0] ?? ""
+      return [tag, link.id, relay, link.author ?? ""]
+    } else if (link.type === NostrPrefix.Address) {
+      const tag = isRoot ? "A" : "a"
+      const relay = link.relays?.[0] ?? ""
+      return [tag, `${link.kind}:${link.author}:${link.id}`, relay]
+    } else if (link.type === NostrPrefix.PublicKey || link.type === NostrPrefix.Profile) {
+      const tag = isRoot ? "P" : "p"
+      const relay = link.relays?.[0] ?? ""
+      return [tag, link.id, relay]
+    }
+    throw new Error("Invalid link")
   }
 }
