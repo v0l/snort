@@ -223,13 +223,9 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   async sign(ev: NostrEvent) {
     const rsp = await this.#rpc("sign_event", [JSON.stringify(ev)])
     const signed = JSON.parse(rsp.result as string) as NostrEvent
-    if (signed.id !== ev.id) {
-      throw new Error(
-        "Signer returned different event id! Please check your event format or contact the signer developer!",
-      )
-    }
     return {
       ...ev,
+      id: signed.id,
       sig: signed.sig,
     }
   }
