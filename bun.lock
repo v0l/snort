@@ -37,6 +37,7 @@
         "@snort/worker-relay": "workspace:*",
         "@uidotdev/usehooks": "^2.4.1",
         "@void-cat/api": "^1.0.12",
+        "blossom-client-sdk": "^5.0.0",
         "classnames": "^2.5.1",
         "comlink": "^4.4.2",
         "debug": "^4.4.3",
@@ -172,7 +173,7 @@
       },
       "peerDependencies": {
         "@snort/shared": "^2.0.0",
-        "@snort/system": "^2.1.4",
+        "@snort/system": "^2.1.5",
         "react": "^19.2.3",
         "react-dom": "^19.2.5",
       },
@@ -210,7 +211,7 @@
       },
       "peerDependencies": {
         "@snort/shared": "^2.0.0",
-        "@snort/system": "^2.1.4",
+        "@snort/system": "^2.1.5",
       },
     },
     "packages/worker-relay": {
@@ -1088,6 +1089,8 @@
     "baseline-browser-mapping": ["baseline-browser-mapping@2.10.19", "", { "bin": { "baseline-browser-mapping": "dist/cli.cjs" } }, "sha512-qCkNLi2sfBOn8XhZQ0FXsT1Ki/Yo5P90hrkRamVFRS7/KV9hpfA4HkoWNU152+8w0zPjnxo5psx5NL3PSGgv5g=="],
 
     "birpc": ["birpc@2.9.0", "", {}, "sha512-KrayHS5pBi69Xi9JmvoqrIgYGDkD6mcSe/i6YKi3w5kekCLzrX4+nawcXqrj2tIp50Kw/mT/s3p+GVK0A0sKxw=="],
+
+    "blossom-client-sdk": ["blossom-client-sdk@5.0.0", "", { "dependencies": { "@noble/hashes": "^1.8.0" }, "peerDependencies": { "@cashu/cashu-ts": "^2.4.3", "hls.js": "^1.6.16" }, "optionalPeers": ["@cashu/cashu-ts", "hls.js"] }, "sha512-xz7w6eBQv6uiNK9ogh5AymnzCAohiU029XySpKxJyG7RsDHkoru+xoZhY55tiIOyWFX/5s8pip4hVh5hO1PN/Q=="],
 
     "body-parser": ["body-parser@2.2.2", "", { "dependencies": { "bytes": "^3.1.2", "content-type": "^1.0.5", "debug": "^4.4.3", "http-errors": "^2.0.0", "iconv-lite": "^0.7.0", "on-finished": "^2.4.1", "qs": "^6.14.1", "raw-body": "^3.0.1", "type-is": "^2.0.1" } }, "sha512-oP5VkATKlNwcgvxi0vM0p/D3n2C3EReYVX+DNYs5TjZFn/oQt2j+4sVJtSMr18pdRr8wjTcBl6LoV+FUwzPmNA=="],
 
@@ -2298,6 +2301,8 @@
     "@vue/server-renderer/@vue/shared": ["@vue/shared@3.5.33", "", {}, "sha512-5vR2QIlmaLG77Ygd4pMP6+SGQ5yox9VhtnbDWTy9DzMzdmeLxZ1QqxrywEZ9sa1AVubfIJyaCG3ytyWU81ufcQ=="],
 
     "ajv-formats/ajv": ["ajv@8.18.0", "", { "dependencies": { "fast-deep-equal": "^3.1.3", "fast-uri": "^3.0.1", "json-schema-traverse": "^1.0.0", "require-from-string": "^2.0.2" } }, "sha512-PlXPeEWMXMZ7sPYOHqmDyCJzcfNrUr3fGNKtezX14ykXOEIvyK81d+qydx89KY5O71FKMPaQ2vBfBFI5NHR63A=="],
+
+    "blossom-client-sdk/@noble/hashes": ["@noble/hashes@1.8.0", "", {}, "sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A=="],
 
     "c12/perfect-debounce": ["perfect-debounce@2.1.0", "", {}, "sha512-LjgdTytVFXeUgtHZr9WYViYSM/g8MkcTPYDlPa3cDqMirHjKiSZPYd6DoL7pK8AJQr+uWkQvCjHNdiMqsrJs+g=="],
 
