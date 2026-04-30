@@ -9,6 +9,10 @@ import { NoteCollection } from "./note-collection"
 export class ConnectionCacheRelay implements CacheRelay {
   #eventsSent = new Set<string>()
 
+  static isInstance(obj: unknown): obj is ConnectionCacheRelay {
+    return obj instanceof ConnectionCacheRelay || (typeof obj === "object" && obj !== null && "connection" in obj)
+  }
+
   constructor(readonly connection: Connection) {}
 
   async event(ev: NostrEvent): Promise<OkResponse> {

@@ -15,7 +15,7 @@ export function TopicsPage() {
     () =>
       ({
         type: "hashtag",
-        items: tags.filter(a => a instanceof NostrHashtagLink).map(a => unwrap(a.toEventTag())[1]),
+        items: tags.filter(NostrHashtagLink.isInstance).map(a => unwrap(a.toEventTag())[1]),
         discriminator: pubKey ?? "",
       }) as TimelineSubject,
     [tags, pubKey],

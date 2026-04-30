@@ -25,7 +25,7 @@ export default function ExportKeys() {
       </small>
       <Copy text={hexToBech32("npub", publicKey ?? "")} className={copyClass} />
       <Copy text={encodeTLV(NostrPrefix.Profile, hexToBytes(publicKey ?? ""))} className={copyClass} />
-      {privateKeyData instanceof KeyStorage && (
+      {KeyStorage.isInstance(privateKeyData) && (
         <>
           <div className="text-xl">
             <FormattedMessage defaultMessage="Private Key" />

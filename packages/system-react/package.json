@@ -1,6 +1,6 @@
 {
   "name": "@snort/system-react",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "React hooks for @snort/system",
   "main": "dist/index.js",
   "module": "src/index.ts",
@@ -12,11 +12,10 @@
     "build": "rm -rf dist && bunx --bun tsc && cp src/TraceTimeline/TraceTimeline.css dist/TraceTimeline/"
   },
   "files": ["src", "dist"],
-  "dependencies": {
-    "@snort/shared": "^2.0.0",
-    "@snort/system": "^2.1.4"
-  },
+  "dependencies": {},
   "peerDependencies": {
+    "@snort/shared": "^2.0.0",
+    "@snort/system": "^2.1.5",
     "react": "^19.2.3",
     "react-dom": "^19.2.5"
   },

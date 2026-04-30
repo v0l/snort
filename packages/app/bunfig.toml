@@ -1,2 +1,5 @@
 [serve.static]
 env = "BUN_PUBLIC_*"
+
+[test]
+preload = ["./tests/preload.ts"]

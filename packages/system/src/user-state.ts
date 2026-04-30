@@ -55,6 +55,10 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   #appdata?: JsonEventSync<TAppData> // kind 30_0078
   #standardLists?: Map<EventKind, DiffSyncTags> // NIP-51 lists
 
+  static isInstance(obj: unknown): obj is UserState<unknown> {
+    return obj instanceof UserState || (typeof obj === "object" && obj !== null && "pubkey" in obj && "serialize" in obj && "checkIsStandardList" in obj)
+  }
+
   #signer?: EventSigner
   #system?: SystemInterface
 

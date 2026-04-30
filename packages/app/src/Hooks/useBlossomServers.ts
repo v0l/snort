@@ -8,7 +8,7 @@ export default function useBlossomServers(authors?: Array<string> | Array<NostrL
     const rb = new RequestBuilder(`blossom-lists:${sha256(authors?.join(",") ?? "")}`)
     if (authors && authors.length > 0) {
       const authorIds =
-        authors[0] instanceof NostrLink ? authors.map(a => (a as NostrLink).id) : (authors as Array<string>)
+        NostrLink.isInstance(authors[0]) ? authors.map(a => (a as NostrLink).id) : (authors as Array<string>)
       rb.withFilter().authors(authorIds).kinds([EventKind.BlossomServerList])
     }
     return rb

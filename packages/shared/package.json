@@ -1,6 +1,6 @@
 {
   "name": "@snort/shared",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Shared components for Snort",
   "type": "module",
   "module": "src/index.ts",

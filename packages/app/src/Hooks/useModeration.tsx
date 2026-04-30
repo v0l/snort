@@ -78,7 +78,7 @@ export default function useModeration() {
   function getMutedWords() {
     return state
       .getList(EventKind.MuteList)
-      .filter(a => a instanceof UnknownTag && a.value[0] === "word")
+      .filter(a => UnknownTag.isInstance(a) && a.value[0] === "word")
       .map(a => (a as UnknownTag).value[1])
   }
 

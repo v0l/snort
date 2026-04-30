@@ -266,7 +266,11 @@ export function normalizeReaction(content: string) {
   }
 }
 
-export class OfflineError extends Error {}
+export class OfflineError extends Error {
+  static isInstance(obj: unknown): obj is OfflineError {
+    return obj instanceof OfflineError || (obj instanceof Error && obj.constructor.name === "OfflineError")
+  }
+}
 
 export function throwIfOffline() {
   if (isOffline()) {

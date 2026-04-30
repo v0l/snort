@@ -32,6 +32,10 @@ export class EventPublisher {
   #pow?: number
   #miner?: PowMiner
 
+  static isInstance(obj: unknown): obj is EventPublisher {
+    return obj instanceof EventPublisher || (typeof obj === "object" && obj !== null && "signer" in obj && "pubKey" in obj && "supports" in obj)
+  }
+
   constructor(signer: EventSigner, pubKey: string) {
     this.#signer = signer
     this.#pubKey = pubKey

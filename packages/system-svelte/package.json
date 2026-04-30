@@ -1,6 +1,6 @@
 {
   "name": "@snort/system-svelte",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Svelte functions for @snort/system",
   "type": "module",
   "main": "dist/index.js",
@@ -13,9 +13,11 @@
   },
   "files": ["src", "dist"],
   "dependencies": {
-    "@snort/shared": "^1.0.6",
-    "@snort/system": "^1.0.21",
     "svelte": "^5.40.2"
+  },
+  "peerDependencies": {
+    "@snort/shared": "^1.0.6",
+    "@snort/system": "^1.0.21"
   },
   "devDependencies": {
     "typescript": "^5.9.3"

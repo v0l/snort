@@ -83,15 +83,15 @@ export const ForYouTab = memo(function ForYouTab() {
     if (!login.publicKey) {
       return []
     }
-    if (!getForYouFeedPromise && Relay instanceof WorkerRelayInterface) {
+    if (!getForYouFeedPromise && WorkerRelayInterface.isInstance(Relay)) {
       getForYouFeedPromise = Relay.forYouFeed(login.publicKey)
     }
     getForYouFeedPromise?.then(notes => {
       getForYouFeedPromise = null
       if (notes.length < 10) {
         setTimeout(() => {
-          if (Relay instanceof WorkerRelayInterface) {
-            getForYouFeedPromise = Relay.forYouFeed(login.publicKey!)
+        if (WorkerRelayInterface.isInstance(Relay)) {
+          getForYouFeedPromise = Relay.forYouFeed(login.publicKey!)
           }
         }, 1000)
       }

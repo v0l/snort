@@ -7,7 +7,7 @@ import { NostrPrefix } from "@snort/shared"
 
 export function ThreadRoute({ id }: { id?: string | NostrLink }) {
   const params = useParams()
-  const link = id instanceof NostrLink ? id : parseNostrLink(id ?? params.id ?? "", NostrPrefix.Note)
+  const link = NostrLink.isInstance(id) ? id : parseNostrLink(id ?? params.id ?? "", NostrPrefix.Note)
 
   return (
     <ThreadContextWrapper link={link}>

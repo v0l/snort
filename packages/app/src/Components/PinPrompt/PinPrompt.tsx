@@ -42,7 +42,7 @@ export function PinPrompt({
       await onResult(pin)
     } catch (e) {
       console.error(e)
-      if (e instanceof InvalidPinError) {
+      if (InvalidPinError.isInstance(e)) {
         setError(
           formatMessage({
             defaultMessage: "Incorrect pin",

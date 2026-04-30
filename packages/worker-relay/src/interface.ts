@@ -16,6 +16,10 @@ export class WorkerRelayInterface {
   // Command timeout
   timeout: number = 30_000
 
+  static isInstance(obj: unknown): obj is WorkerRelayInterface {
+    return obj instanceof WorkerRelayInterface || (typeof obj === "object" && obj !== null && "timeout" in obj && "forYouFeed" in obj)
+  }
+
   /**
    * Interface wrapper for worker relay
    * @param scriptPath Path to worker script or Worker script object

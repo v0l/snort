@@ -33,7 +33,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     // try to count replies from cache relay when props doesnt provide the count
     // this normally is the case for timelines views
     // thread views are the only ones which have the true reply count
-    if (cacheRelay instanceof WorkerRelayInterface && !props.replyCount) {
+    if (WorkerRelayInterface.isInstance(cacheRelay) && !props.replyCount) {
       const fx = new RequestFilterBuilder().kinds([EventKind.TextNote, EventKind.Comment]).replyToLink([link])
 
       cacheRelay.count(["REQ", "", fx.filter]).then(setReplyCount)

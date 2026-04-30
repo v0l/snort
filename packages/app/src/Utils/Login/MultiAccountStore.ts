@@ -105,7 +105,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       )
       MultiAccountStore.enableStandardLists(stateClass)
       stateClass.on("change", () => this.#save())
-      if (v.state instanceof UserState) {
+      if (UserState.isInstance(v.state)) {
         v.state.destroy()
       }
       console.debug("UserState assign = ", stateClass)
@@ -366,16 +366,16 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       }
       const toSave = []
       for (const v of this.#accounts.values()) {
-        if (v.privateKeyData instanceof KeyStorage) {
+        if (KeyStorage.isInstance(v.privateKeyData)) {
           toSave.push({
             ...v,
-            state: v.state instanceof UserState ? v.state.serialize() : v.state,
+            state: UserState.isInstance(v.state) ? v.state.serialize() : v.state,
             privateKeyData: v.privateKeyData.toPayload(),
           })
         } else {
           toSave.push({
             ...v,
-            state: v.state instanceof UserState ? v.state.serialize() : v.state,
+            state: UserState.isInstance(v.state) ? v.state.serialize() : v.state,
           })
         }
       }

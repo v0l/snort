@@ -88,7 +88,7 @@ export default class SnortApi extends JsonApi {
   constructor(url?: string, signer?: EventSigner | EventPublisher) {
     super()
     this.url = new URL(url ?? ApiHost).toString()
-    this.signer = signer instanceof EventPublisher ? signer.signer : signer
+    this.signer = EventPublisher.isInstance(signer) ? signer.signer : signer
   }
 
   revenueSplits() {

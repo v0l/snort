@@ -32,6 +32,10 @@ export interface ToNostrEventTag {
 export class NostrHashtagLink implements ToNostrEventTag {
   constructor(readonly tag: string) {}
 
+  static isInstance(obj: unknown): obj is NostrHashtagLink {
+    return obj instanceof NostrHashtagLink || (typeof obj === "object" && obj !== null && "tag" in obj && "toEventTag" in obj)
+  }
+
   equals(other: ToNostrEventTag): boolean {
     const otherTag = other.toEventTag()
     return otherTag?.at(0) === "t" && otherTag?.at(1) === this.tag
@@ -47,6 +51,10 @@ export class NostrHashtagLink implements ToNostrEventTag {
  */
 export class UnknownTag implements ToNostrEventTag {
   constructor(readonly value: Array<string>) {}
+
+  static isInstance(obj: unknown): obj is UnknownTag {
+    return obj instanceof UnknownTag || (typeof obj === "object" && obj !== null && "value" in obj && Array.isArray((obj as UnknownTag).value) && "toEventTag" in obj)
+  }
 
   equals(other: ToNostrEventTag): boolean {
     const otherTag = other.toEventTag()
@@ -92,6 +100,10 @@ export class NostrLink implements ToNostrEventTag {
    * Link scope for tagging
    */
   scope?: LinkScope
+
+  static isInstance(obj: unknown): obj is NostrLink {
+    return obj instanceof NostrLink || (typeof obj === "object" && obj !== null && "type" in obj && "id" in obj && "encode" in obj)
+  }
 
   constructor(
     readonly type: NostrPrefix,

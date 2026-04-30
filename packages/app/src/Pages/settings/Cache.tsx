@@ -69,7 +69,7 @@ function RelayCacheStats() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (Relay instanceof WorkerRelayInterface) {
+    if (WorkerRelayInterface.isInstance(Relay)) {
       Relay.summary().then(setCounts)
       if (login.publicKey) {
         Relay.count(["REQ", "my", { authors: [login.publicKey] }]).then(setMyEvents)
@@ -78,9 +78,9 @@ function RelayCacheStats() {
   }, [login.publicKey])
 
   function relayType() {
-    if (Relay instanceof WorkerRelayInterface) {
+    if (WorkerRelayInterface.isInstance(Relay)) {
       return <FormattedMessage defaultMessage="Browser" />
-    } else if (Relay instanceof ConnectionCacheRelay) {
+    } else if (ConnectionCacheRelay.isInstance(Relay)) {
       return <FormattedMessage defaultMessage="Local" />
     }
   }
@@ -138,11 +138,11 @@ function RelayCacheStats() {
         </CollapsedSection>
       </div>
       <div className="flex flex-col gap-2">
-        {Relay instanceof WorkerRelayInterface && (
+        {WorkerRelayInterface.isInstance(Relay) && (
           <>
             <AsyncButton
               onClick={async () => {
-                if (Relay instanceof WorkerRelayInterface) {
+                if (WorkerRelayInterface.isInstance(Relay)) {
                   await Relay.wipe()
                   window.location.reload()
                 }
@@ -152,7 +152,7 @@ function RelayCacheStats() {
             </AsyncButton>
             <AsyncButton
               onClick={async () => {
-                const data = Relay instanceof WorkerRelayInterface ? await Relay.dump() : undefined
+                const data = WorkerRelayInterface.isInstance(Relay) ? await Relay.dump() : undefined
                 if (data) {
                   const url = URL.createObjectURL(
                     new File([data.buffer as ArrayBuffer], "snort.db", {
@@ -174,7 +174,7 @@ function RelayCacheStats() {
           <FormattedMessage defaultMessage="Debug" />
         </AsyncButton>
 
-        {!(Relay instanceof ConnectionCacheRelay) && (
+        {!ConnectionCacheRelay.isInstance(Relay) && (
           <AsyncButton
             onClick={async () => {
               if (await tryUseLocalRelay()) {

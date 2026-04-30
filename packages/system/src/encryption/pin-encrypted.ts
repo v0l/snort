@@ -11,11 +11,19 @@ export class InvalidPinError extends Error {
   constructor() {
     super()
   }
+
+  static isInstance(obj: unknown): obj is InvalidPinError {
+    return obj instanceof InvalidPinError || (obj instanceof Error && obj.constructor.name === "InvalidPinError")
+  }
 }
 
 export abstract class KeyStorage {
   // Raw value
   abstract get value(): string
+
+  static isInstance(obj: unknown): obj is KeyStorage {
+    return obj instanceof KeyStorage || (typeof obj === "object" && obj !== null && "shouldUnlock" in obj && "toPayload" in obj && "unlock" in obj)
+  }
 
   /**
    * Is the storage locked

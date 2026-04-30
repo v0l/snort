@@ -228,7 +228,7 @@ export class RequestFilterBuilder {
    * Get event from link
    */
   link(link: NostrLink | ToNostrEventTag) {
-    if (link instanceof NostrLink) {
+    if (NostrLink.isInstance(link)) {
       if (link.type === NostrPrefix.Address) {
         this.tag("d", [link.id])
           .kinds([unwrap(link.kind)])

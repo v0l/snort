@@ -7,7 +7,6 @@ import {
   UserRelaysCache,
 } from "@snort/system"
 import { WorkerRelayInterface } from "@snort/worker-relay"
-import WorkerVite from "@snort/worker-relay/src/worker?worker"
 
 import { GiftWrapCache } from "./GiftWrapCache"
 import { ProfileCacheRelayWorker } from "./ProfileWorkerCache"
@@ -15,17 +14,25 @@ import { UserFollowsWorker } from "./UserFollowsWorker"
 import { RelaysWorkerCache } from "./RelaysWorkerCache"
 import { hasWasm } from "@/Utils/wasm"
 
-const cacheRelay = localStorage.getItem("cache-relay")
+const cacheRelayUrl = typeof localStorage !== "undefined" ? localStorage.getItem("cache-relay") : undefined
 
-const workerRelay = hasWasm
-  ? new WorkerRelayInterface(
-      import.meta.env.DEV ? new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url) : new WorkerVite(),
-    )
-  : undefined
+let _workerRelay: WorkerRelayInterface | undefined
+function getWorkerRelay() {
+  if (_workerRelay === undefined && hasWasm) {
+    const workerSrc = /* @vite-ignore */ new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url)
+    _workerRelay = new WorkerRelayInterface(workerSrc)
+  }
+  return _workerRelay
+}
 
-export const Relay: CacheRelay | undefined = cacheRelay
-  ? new ConnectionCacheRelay(new Connection(cacheRelay, { read: true, write: true }))
-  : workerRelay
+function getRelay(): CacheRelay | undefined {
+  if (cacheRelayUrl) {
+    return new ConnectionCacheRelay(new Connection(cacheRelayUrl, { read: true, write: true }))
+  }
+  return getWorkerRelay()
+}
+
+export const Relay: CacheRelay | undefined = getRelay()
 
 async function tryUseCacheRelay(url: string) {
   try {
@@ -48,26 +55,27 @@ export async function tryUseLocalRelay() {
 
 export async function initRelayWorker() {
   try {
-    if (Relay instanceof ConnectionCacheRelay) {
+    if (ConnectionCacheRelay.isInstance(Relay)) {
       await Relay.connection.connect(true)
       return
     }
   } catch (e) {
     localStorage.removeItem("cache-relay")
     console.error(e)
-    if (cacheRelay) {
+    if (cacheRelayUrl) {
       window.location.reload()
     }
   }
 
   try {
-    if (workerRelay) {
-      await workerRelay.debug("*")
-      await workerRelay.init({
+    const wr = getWorkerRelay()
+    if (wr) {
+      await wr.debug("*")
+      await wr.init({
         databasePath: "relay.db",
         insertBatchSize: 100,
       })
-      await workerRelay.configureSearchIndex({
+      await wr.configureSearchIndex({
         1: [], // add index for kind 1, dont index tags
       })
     }

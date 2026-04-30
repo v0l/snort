@@ -14,7 +14,7 @@ export function ErrorOrOffline({
   onRetry?: () => void | Promise<void>
   className?: string
 }) {
-  if (error instanceof OfflineError) {
+  if (OfflineError.isInstance(error)) {
     return <Offline onRetry={onRetry} className={className} />
   } else {
     return (
