@@ -6,6 +6,19 @@ import { defineConfig } from "vite"
 import { VitePWA } from "vite-plugin-pwa"
 import { vitePluginVersionMark } from "vite-plugin-version-mark"
 import tailwindcss from "@tailwindcss/vite"
+import { cp } from "node:fs/promises"
+import { resolve } from "node:path"
+
+// Copy sqlite3.wasm and OPFS proxy from worker-relay to build output
+const copyWorkerRelayAssets = () => ({
+  name: "copy-worker-relay-assets",
+  writeBundle: async () => {
+    const src = resolve(__dirname, "../worker-relay/dist/esm")
+    const dest = resolve(__dirname, "build/assets")
+    await cp(resolve(src, "sqlite3.wasm"), resolve(dest, "sqlite3.wasm")).catch(() => {})
+    await cp(resolve(src, "sqlite3-opfs-async-proxy.js"), resolve(dest, "sqlite3-opfs-async-proxy.js")).catch(() => {})
+  },
+})
 
 export default defineConfig({
   plugins: [
@@ -55,13 +68,21 @@ export default defineConfig({
       ifLog: false,
       ifGlobal: false,
     }),
+    copyWorkerRelayAssets(),
   ],
   assetsInclude: ["**/*.md", "**/*.wasm"],
   server: {
+    headers: {
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Embedder-Policy": "require-corp",
+    },
     proxy: {},
     watch: {
       usePolling: true,
     },
+  },
+  optimizeDeps: {
+    exclude: ["@sqlite.org/sqlite-wasm"],
   },
   build: {
     outDir: "build",

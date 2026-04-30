@@ -11,7 +11,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf dist && bunx --bun tsc && bun run build:esm",
-    "build:esm": "bunx --bun esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs --loader:.wasm=copy --asset-names=\"[name]\""
+    "build:esm": "bunx --bun esbuild src/worker.ts --bundle --minify --sourcemap --outdir=dist/esm --format=esm --out-extension:.js=.mjs && cp node_modules/@sqlite.org/sqlite-wasm/sqlite-wasm/jswasm/sqlite3.wasm dist/esm/sqlite3.wasm && cp node_modules/@sqlite.org/sqlite-wasm/sqlite-wasm/jswasm/sqlite3-opfs-async-proxy.js dist/esm/sqlite3-opfs-async-proxy.js"
   },
   "files": ["src", "dist"],
   "dependencies": {

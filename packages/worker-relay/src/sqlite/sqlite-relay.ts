@@ -1,6 +1,4 @@
 import sqlite3InitModule, { type Database, type SAHPoolUtil, type Sqlite3Static } from "@sqlite.org/sqlite-wasm"
-// import wasm file directly, this needs to be copied from https://sqlite.org/download.html
-import SqlitePath from "@sqlite.org/sqlite-wasm/sqlite3.wasm?url"
 import { EventEmitter } from "eventemitter3"
 import { debugLog } from "../debug"
 import {
@@ -47,12 +45,6 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
   async init(path: string) {
     if (this.#sqlite) return
     this.#sqlite = await sqlite3InitModule({
-      locateFile: (path, prefix) => {
-        if (path === "sqlite3.wasm") {
-          return SqlitePath
-        }
-        return prefix + path
-      },
       print: msg => this.#log(msg),
       printErr: msg => this.#log(msg),
     })
