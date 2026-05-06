@@ -130,6 +130,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
   query(req: RequestBuilder): Query {
     const existing = this.#queries.get(req.id)
     if (existing) {
+      existing.uncancel() // keep alive — new subscriber
       if (existing.addRequest(req)) {
         existing.start() // start emit again
         this.emit("change")

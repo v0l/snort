@@ -69,7 +69,8 @@ export default defineConfig({
           { text: 'Text Parsing', link: '/examples/text' },
           { text: 'Shared Utilities', link: '/examples/shared' },
           { text: 'Wallet Integration', link: '/examples/wallet' },
-          { text: 'Worker Relay', link: '/examples/worker-relay' }
+          { text: 'Worker Relay', link: '/examples/worker-relay' },
+          { text: 'Preact + HTM + Unpkg', link: '/examples/preact-htm-unkpkg' }
         ]
       }
     ],

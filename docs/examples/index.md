@@ -27,3 +27,7 @@ Real-world usage patterns extracted from the Snort app (`packages/app/src/`). Ea
 ## @snort/worker-relay
 
 - [Worker Relay](/examples/worker-relay) — Initialization, `forYouFeed()`, `setEventMetadata()`, `count()`, admin operations
+
+## Zero-Build Examples
+
+- [Preact + HTM + Unpkg](/examples/preact-htm-unkpkg) — Tiny single-file Nostr SPA with no build step

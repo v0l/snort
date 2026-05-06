@@ -8,6 +8,23 @@ import { NoteCollection } from "./note-collection"
 import type { RequestBuilder } from "./request-builder"
 import { eventMatchesFilter } from "./request-matcher"
 
+/**
+ * Compare two values that may be arrays or scalars.
+ * Two arrays are equal if they have the same items in the same order.
+ * Two scalars are equal if they are strictly equal.
+ * Mixed (array vs scalar) is always false.
+ */
+function equalArrayOrValue(a: unknown, b: unknown): boolean {
+  if (a === b) return true
+  if (a === undefined && b === undefined) return true
+  if (a === undefined || b === undefined) return false
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) return false
+    return a.every((v, i) => v === b[i])
+  }
+  return false
+}
+
 export enum QueryTraceState {
   NEW = "NEW", // New state, not used trace
   QUEUED = "QUEUED", // When first created
@@ -172,6 +189,12 @@ export class Query extends EventEmitter<QueryEvents> {
   useSyncModule = false
 
   /**
+   * How long (ms) to keep the query alive after all subscribers disconnect.
+   * Default: 0 (falls back to the 1s hardcoded cleanup).
+   */
+  #keepAlive: number
+
+  /**
    * Time when this query can be removed
    */
   #cancelAt?: number
@@ -205,6 +228,12 @@ export class Query extends EventEmitter<QueryEvents> {
   #duplicates: number
 
   /**
+   * Filters that have already been emitted to QueryManager for sending.
+   * Used to deduplicate re-added requests when a query is reused (keepAlive / SWR).
+   */
+  #sentFilters: Array<ReqFilter> = []
+
+  /**
    * Grace-period timer: started when the first trace finishes (EOSE/CLOSE/etc).
    * After this timer fires, any remaining unfinished traces are timed out,
    * which makes progress === 1 and emits the query-level "eose".
@@ -230,6 +259,7 @@ export class Query extends EventEmitter<QueryEvents> {
     this.useSyncModule = req.options?.useSyncModule ?? false
     this.#groupingDelay = req.options?.groupingDelay ?? 100
     this.#replaceable = req.options?.replaceable ?? false
+    this.#keepAlive = req.options?.keepAlive ?? 0
     this.#duplicates = 0
 
     this.addRequest(req)
@@ -245,13 +275,54 @@ export class Query extends EventEmitter<QueryEvents> {
     if (req.options?.extraEvents) {
       this.#feed.add(req.options.extraEvents)
     }
+    // Use the longest keepAlive from any attached request
+    const reqKeepAlive = req.options?.keepAlive ?? 0
+    if (reqKeepAlive > this.#keepAlive) {
+      this.#keepAlive = reqKeepAlive
+    }
     if (req.numFilters > 0) {
+      // If existing traces already cover these filters, skip re-adding them.
+      // The feed already has the data — no new relay requests needed.
+      if (this.areFiltersCovered(req.buildRaw())) {
+        this.#builderInstances.add(req.instance)
+        return
+      }
       this.#log("Add query %O to %s", req, this.id)
       this.requests.push(...req.buildRaw())
       this.#builderInstances.add(req.instance)
       return true
     }
     return false
+  }
+
+  /**
+   * Check whether a set of filters has already been sent (emitted to QueryManager).
+   * Returns true if every filter in `filters` matches a previously emitted filter,
+   * meaning no new relay requests are needed.
+   */
+  areFiltersCovered(filters: Array<ReqFilter>): boolean {
+    if (this.#sentFilters.length === 0) return false
+    return filters.every(f => this.#sentFilters.some(sf => this.#filterEq(f, sf)))
+  }
+
+  /**
+   * Compare two ReqFilters for equality.
+   * Compares all matching fields but ignores `relays` (routing info, not matching criteria).
+   */
+  #filterEq(a: ReqFilter, b: ReqFilter): boolean {
+    const keys: (keyof ReqFilter)[] = ["ids", "kinds", "authors", "since", "until", "limit", "search"]
+    for (const k of keys) {
+      if (!equalArrayOrValue(a[k], b[k])) return false
+    }
+    // Compare tag filters (#e, #p, #t, #d, #r, etc.)
+    const aTags = Object.keys(a).filter(k => k.startsWith("#"))
+    const bTags = Object.keys(b).filter(k => k.startsWith("#"))
+    if (aTags.length !== bTags.length) return false
+    for (const tag of aTags) {
+      if (!bTags.includes(tag)) return false
+      if (!equalArrayOrValue(a[tag], b[tag])) return false
+    }
+    return true
   }
 
   isOpen() {
@@ -283,6 +354,10 @@ export class Query extends EventEmitter<QueryEvents> {
 
   get leaveOpen() {
     return this.#leaveOpen
+  }
+
+  get keepAlive() {
+    return this.#keepAlive
   }
 
   /**
@@ -390,7 +465,7 @@ export class Query extends EventEmitter<QueryEvents> {
    * This function should be called when this Query object and FeedStore is no longer needed
    */
   cancel() {
-    this.#cancelAt = unixNowMs() + 1_000
+    this.#cancelAt = unixNowMs() + (this.#keepAlive > 0 ? this.#keepAlive : 1_000)
   }
 
   uncancel() {
@@ -477,6 +552,7 @@ export class Query extends EventEmitter<QueryEvents> {
       rawFilters.push(...this.filters)
     }
     if (rawFilters.length > 0) {
+      this.#sentFilters.push(...rawFilters)
       this.emit("request", this.id, rawFilters)
     }
   }

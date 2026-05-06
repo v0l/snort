@@ -56,6 +56,18 @@ export interface RequestBuilderOptions {
    * Extra events to include in the store, added automatically
    */
   extraEvents?: Array<NostrEvent>
+
+  /**
+   * How long (ms) to keep the query alive after all subscribers disconnect.
+   * During this window, if the same query ID is requested again, QueryManager
+   * will reuse the existing query with its cached data — no new relay requests.
+   * Default: 0 (uses the 1s cleanup in Query.cancel())
+   *
+   * Useful for SSR: set keepAlive to e.g. 30_000 so that the query survives
+   * between server renders. Subsequent requests for the same data resolve
+   * instantly from the existing feed.
+   */
+  keepAlive?: number
 }
 
 /**
