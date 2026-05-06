@@ -1,6 +1,7 @@
 import { TraceTimelineOverlay } from "@snort/system-react"
 import "@snort/system-react/dist/TraceTimeline/TraceTimeline.css"
 import { useCallback, useEffect } from "react"
+import { Helmet } from "react-helmet-async"
 import { Outlet, useLocation } from "react-router-dom"
 
 import CloseButton from "@/Components/Button/CloseButton"
@@ -72,6 +73,9 @@ export default function Index() {
 
   return (
     <ErrorBoundary>
+      <Helmet>
+        <title>{CONFIG.appTitle}</title>
+      </Helmet>
       <ScrollToTop />
       <div className="flex justify-center">
         <div className="w-full max-w-screen-xl">

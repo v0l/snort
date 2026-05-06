@@ -6,7 +6,8 @@ import { EventBuilder } from "@snort/system"
 import { SnortContext } from "@snort/system-react"
 import { StrictMode } from "react"
 import * as ReactDOM from "react-dom/client"
-import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router-dom"
+import { HelmetProvider } from "react-helmet-async"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
 import { initRelayWorker, ProfilesCache, preload, Relay } from "@/Cache"
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider"
@@ -253,15 +254,14 @@ const router = createBrowserRouter(routes)
 const root = ReactDOM.createRoot(unwrap(document.getElementById("root")))
 root.render(
   <StrictMode>
-    <IntlProvider>
-      <SnortContext.Provider value={System}>
-        <SpotlightContextWrapper>
-          <RouterProvider router={router} />
-        </SpotlightContextWrapper>
-      </SnortContext.Provider>
-    </IntlProvider>
+    <HelmetProvider>
+      <IntlProvider>
+        <SnortContext.Provider value={System}>
+          <SpotlightContextWrapper>
+            <RouterProvider router={router} />
+          </SpotlightContextWrapper>
+        </SnortContext.Provider>
+      </IntlProvider>
+    </HelmetProvider>
   </StrictMode>,
 )
-
-// Use react-helmet instead?
-document.title = CONFIG.appTitle
