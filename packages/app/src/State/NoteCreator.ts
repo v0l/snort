@@ -4,6 +4,7 @@ import type { ZapTarget } from "@snort/wallet"
 import { useSyncExternalStoreWithSelector } from "use-sync-external-store/with-selector"
 
 import type { BlobDescriptor } from "@/Utils/Upload/blossom"
+import type { UploadProgress } from "@/Utils/Upload"
 
 interface NoteCreatorDataSnapshot {
   show: boolean
@@ -20,6 +21,7 @@ interface NoteCreatorDataSnapshot {
   pollOptions?: Array<string>
   otherEvents?: Array<NostrEvent>
   attachments?: Record<string, Array<BlobDescriptor>>
+  uploadProgress: Array<UploadProgress>
   extraTags?: Array<Array<string>>
   sending?: Array<NostrEvent>
   sendStarted: boolean
@@ -43,6 +45,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
       sendStarted: false,
       filePicker: "hidden",
       hashTags: [],
+      uploadProgress: [],
       reset: this.#resetFn,
       update: this.#updateFn,
     }
@@ -68,6 +71,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
     d.hashTags = []
     d.filePicker = "hidden"
     d.attachments = undefined
+    d.uploadProgress = []
   }
 
   #resetFn = () => {

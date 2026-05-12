@@ -16,7 +16,7 @@ import { useUserProfile } from "@snort/system-react"
 import type { ZapTarget } from "@snort/wallet"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import classNames from "classnames"
-import { type ClipboardEventHandler, type DragEvent, useEffect } from "react"
+import { type ClipboardEventHandler, type DragEvent, useEffect, useState, useCallback } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import AsyncButton from "@/Components/Button/AsyncButton"
@@ -39,7 +39,8 @@ import usePreferences from "@/Hooks/usePreferences"
 import useRelays from "@/Hooks/useRelays"
 import { useNoteCreator } from "@/State/NoteCreator"
 import { openFile, trackEvent } from "@/Utils"
-import useFileUpload from "@/Utils/Upload"
+import type { BlobDescriptor } from "@/Utils/Upload/blossom"
+import useFileUpload, { type UploadProgress } from "@/Utils/Upload"
 import { GetPowWorker } from "@/Utils/wasm"
 
 import { OkResponseRow } from "./OkResponseRow"
@@ -256,6 +257,8 @@ export function NoteCreator() {
     }
   }
 
+  const [dragOver, setDragOver] = useState(false)
+
   async function attachFile() {
     try {
       const file = await openFile()
@@ -273,27 +276,73 @@ export function NoteCreator() {
     }
   }
 
-  async function uploadFile(file: File) {
-    try {
-      if (file && uploader) {
-        const rx = await uploader.upload(file)
+  function uploadFile(file: File) {
+    if (!file || !uploader) return
+
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2)}`
+    const controller = new AbortController()
+
+    note.update(v => {
+      v.uploadProgress = [
+        ...v.uploadProgress,
+        {
+          id,
+          file,
+          progress: 0.05,
+          stage: "auth" as const,
+          controller,
+        },
+      ]
+    })
+
+    const updateProgress = (fn: (p: UploadProgress) => Partial<UploadProgress>) => {
+      note.update(v => {
+        v.uploadProgress = v.uploadProgress.map(p => (p.id === id ? ({ ...p, ...fn(p) } as UploadProgress) : p))
+      })
+    }
+
+    uploader
+      .upload(file, file instanceof File ? file.name : undefined, controller.signal)
+      .then(rx => {
+        updateProgress(() => ({ progress: 1, stage: "complete", result: rx }))
         note.update(v => {
           if (rx.url) {
             v.attachments ??= {}
             v.attachments[rx.sha256] ??= []
-            v.attachments[rx.sha256].push(rx)
+            v.attachments[rx.sha256].push(rx as unknown as BlobDescriptor)
           }
+          // Remove completed upload from progress after a short delay
+          setTimeout(() => {
+            note.update(v2 => {
+              v2.uploadProgress = v2.uploadProgress.filter(p => p.id !== id)
+            })
+          }, 1500)
         })
-      }
-    } catch (e) {
-      note.update(v => {
-        if (e instanceof Error) {
-          v.error = e.message
-        } else {
-          v.error = e as string
-        }
       })
-    }
+      .catch(e => {
+        if (e?.name === "AbortError") {
+          note.update(v => {
+            v.uploadProgress = v.uploadProgress.filter(p => p.id !== id)
+          })
+          return
+        }
+        const message = e instanceof Error ? e.message : String(e)
+        updateProgress(() => ({ progress: 1, stage: "error", error: message }))
+      })
+  }
+
+  function retryUpload(progressItem: UploadProgress) {
+    note.update(v => {
+      v.uploadProgress = v.uploadProgress.filter(p => p.id !== progressItem.id)
+    })
+    uploadFile(progressItem.file instanceof File ? progressItem.file : new File([progressItem.file], "blob"))
+  }
+
+  function cancelUpload(progressItem: UploadProgress) {
+    progressItem.controller.abort()
+    note.update(v => {
+      v.uploadProgress = v.uploadProgress.filter(p => p.id !== progressItem.id)
+    })
   }
 
   function onChange(ev: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -613,22 +662,79 @@ export function NoteCreator() {
     }
   }
 
-  const handleDragOver = (event: DragEvent<HTMLTextAreaElement>) => {
+  const handleDragOver = useCallback((event: DragEvent) => {
     event.preventDefault()
-  }
+    setDragOver(true)
+  }, [])
 
-  const handleDragLeave = (event: DragEvent<HTMLTextAreaElement>) => {
+  const handleDragLeave = useCallback((event: DragEvent) => {
     event.preventDefault()
-  }
+    setDragOver(false)
+  }, [])
 
-  const handleDrop = (event: DragEvent<HTMLTextAreaElement>) => {
+  const handleDrop = useCallback((event: DragEvent) => {
     event.preventDefault()
+    setDragOver(false)
 
     const droppedFiles = Array.from(event.dataTransfer.files)
+    for (const file of droppedFiles) {
+      uploadFile(file)
+    }
+  }, [])
 
-    droppedFiles.forEach(async file => {
-      await uploadFile(file)
-    })
+  function renderUploadProgress() {
+    return (
+      <div className="flex flex-col gap-2">
+        {note.uploadProgress.map(p => (
+          <div key={p.id} className="flex items-center gap-2 bg-layer-2 rounded-lg p-2">
+            <div className="flex-1 min-w-0">
+              <div className="text-sm truncate font-medium">
+                {p.file instanceof File && p.file.name ? (
+                  p.file.name
+                ) : (
+                  <FormattedMessage defaultMessage="Pasted image" />
+                )}
+              </div>
+              <div className="text-xs text-gray-light">
+                {p.stage === "auth" && <FormattedMessage defaultMessage="Preparing..." />}
+                {p.stage === "uploading" && <FormattedMessage defaultMessage="Uploading..." />}
+                {p.stage === "mirroring" && <FormattedMessage defaultMessage="Mirroring..." />}
+                {p.stage === "processing" && <FormattedMessage defaultMessage="Processing..." />}
+                {p.stage === "complete" && <FormattedMessage defaultMessage="Complete" />}
+                {p.stage === "error" && (
+                  <span className="text-error truncate">
+                    {p.error ? p.error : <FormattedMessage defaultMessage="Upload failed" />}
+                  </span>
+                )}
+              </div>
+              {p.stage !== "complete" && p.stage !== "error" && (
+                <div className="h-1 bg-neutral-600 rounded-full mt-1 overflow-hidden">
+                  <div className="h-full bg-primary rounded-full animate-pulse" />
+                </div>
+              )}
+            </div>
+            {p.stage === "error" && (
+              <Icon
+                name="refresh-ccw-01"
+                size={18}
+                className="text-gray-light hover:text-white cursor-pointer"
+                aria-label="Retry upload"
+                onClick={() => retryUpload(p)}
+              />
+            )}
+            {p.stage !== "complete" && p.stage !== "error" && (
+              <Icon
+                name="close"
+                size={18}
+                className="text-gray-light hover:text-white cursor-pointer"
+                aria-label="Cancel upload"
+                onClick={() => cancelUpload(p)}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    )
   }
 
   function noteCreatorForm() {
@@ -657,7 +763,7 @@ export function NoteCreator() {
           </>
         )}
         {note.preview && getPreviewNote()}
-        {!note.preview && (
+        {(!note.preview && (
           <div className="flex flex-col gap-4">
             <div className="font-medium flex justify-between items-center">
               <FormattedMessage defaultMessage="Compose a note" />
@@ -667,12 +773,18 @@ export function NoteCreator() {
                 onClick={cancel}
               />
             </div>
-            <div onPaste={handlePaste} className={classNames({ poll: Boolean(note.pollOptions) })}>
+            <div
+              onPaste={handlePaste}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              className={classNames("relative rounded-lg border-2 border-dashed transition-colors", {
+                "border-primary bg-primary/5": dragOver,
+                "border-transparent": !dragOver,
+              })}
+            >
               <Textarea
                 className="!border-none !resize-none !p-0 !rounded-none !text-sm"
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
                 autoFocus={true}
                 onChange={c => onChange(c)}
                 value={note.note}
@@ -683,10 +795,19 @@ export function NoteCreator() {
                   }
                 }}
               />
+              {dragOver && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="bg-primary/90 text-white px-4 py-2 rounded-lg font-medium text-sm">
+                    <FormattedMessage defaultMessage="Drop files to upload" />
+                  </div>
+                </div>
+              )}
               {renderPollOptions()}
             </div>
           </div>
-        )}
+        )) ||
+          null}
+        {note.uploadProgress.length > 0 && !note.preview && renderUploadProgress()}
         {Object.entries(note.attachments ?? {}).length > 0 && !note.preview && (
           <div className="flex gap-2 flex-wrap">
             {Object.entries(note.attachments ?? {}).map(([k, v]) => (
@@ -722,12 +843,12 @@ export function NoteCreator() {
             </div>
           }
           actions=<IconButton
-                className="max-lg:!hidden"
-                icon={{
-                  name: "expand",
-                }}
-                onClick={() => note.update(n => (n.filePicker = n.filePicker === "wide" ? "compact" : "wide"))}
-              />
+            className="max-lg:!hidden"
+            icon={{
+              name: "expand",
+            }}
+            onClick={() => note.update(n => (n.filePicker = n.filePicker === "wide" ? "compact" : "wide"))}
+          />
         >
           <div className="overflow-y-auto h-[calc(100%-2rem)]">
             {note.filePicker !== "hidden" && (

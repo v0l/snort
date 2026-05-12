@@ -1,4 +1,5 @@
 import { EventPublisher } from "@snort/system"
+import { bech32ToHex } from "@snort/shared"
 
 import useEventPublisher from "@/Hooks/useEventPublisher"
 import { useMediaServerList } from "@/Hooks/useMediaServerList"
@@ -6,7 +7,6 @@ import { randomSample } from "@/Utils"
 import { KieranPubKey } from "@/Utils/Const"
 
 import { type BlobDescriptor, blossomMirror, blossomUpload } from "./blossom"
-import { bech32ToHex } from "@snort/shared"
 
 export interface UploadResult {
   url: string
@@ -15,6 +15,18 @@ export interface UploadResult {
   type?: string
   uploaded?: number
   nip94?: Array<Array<string>>
+}
+
+export type UploadStage = "auth" | "uploading" | "mirroring" | "processing" | "complete" | "error"
+
+export interface UploadProgress {
+  id: string
+  file: File | Blob
+  progress: number
+  stage: UploadStage
+  error?: string
+  result?: UploadResult
+  controller: AbortController
 }
 
 /**
@@ -64,11 +76,12 @@ class SingleServerBlossom implements Uploader {
     private publisher: EventPublisher,
   ) {}
 
-  async upload(file: File | Blob, _filename?: string) {
+  async upload(file: File | Blob, _filename?: string, signal?: AbortSignal) {
     const result = await blossomUpload(
       this.server,
       this.publisher,
       file instanceof Blob ? new File([file], "blob") : file,
+      signal,
     )
     return result as UploadResult
   }
@@ -81,17 +94,26 @@ class MultiServerBlossom implements Uploader {
     private publisher: EventPublisher,
   ) {}
 
-  async upload(file: File | Blob, _filename?: string) {
+  async upload(file: File | Blob, _filename?: string, signal?: AbortSignal) {
     const result = (await blossomUpload(
       this.primary,
       this.publisher,
       file instanceof Blob ? new File([file], "blob") : file,
+      signal,
     )) as UploadResult
+
+    if (signal?.aborted) return result
 
     const mirrorUrls = []
     for (const server of this.mirrors) {
+      if (signal?.aborted) break
       try {
-        const mirrorResult = (await blossomMirror(server, this.publisher, result)) as UploadResult
+        const mirrorResult = (await blossomMirror(
+          server,
+          this.publisher,
+          result as unknown as BlobDescriptor,
+          signal,
+        )) as UploadResult
         if (mirrorResult.url) {
           mirrorUrls.push(mirrorResult.url)
         }
