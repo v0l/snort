@@ -1,10 +1,10 @@
-import { useCallback, use } from "react"
+import { useCallback, useContext } from "react"
 import { tryParseNostrLink } from "@snort/system"
 import { fetchNip05Pubkey, NostrPrefix } from "@snort/shared"
 import { SnortContext } from "./context"
 
 export function useUserSearch() {
-  const system = use(SnortContext)
+  const system = useContext(SnortContext)
   const cache = system.config.profiles
 
   const search = useCallback(

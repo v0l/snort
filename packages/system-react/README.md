@@ -32,45 +32,80 @@ Search for profiles in the profile cache, this also returns exact links if they 
 
 Hook state of the nostr system
 
-## Example:
+## React/Preact
+
+This package works with both React and Preact. Preact consumers alias `react` and `react-dom` to `preact/compat` in their bundler. The package imports from `react` — the bundler resolves it to the compat layer at build time.
+
+### Vite config for Preact
+
+```ts
+import { defineConfig } from "vite"
+import preact from "@preact/preset-vite"
+import { resolve } from "path"
+
+export default defineConfig({
+  plugins: [preact()],
+  resolve: {
+    alias: {
+      react: resolve("node_modules/preact/compat"),
+      "react-dom": resolve("node_modules/preact/compat"),
+    },
+  },
+})
+```
+
+### Webpack config for Preact
 
 ```js
-import { useMemo } from "react";
-import { SnortContext, useRequestBuilder, useUserProfile } from "@snort/system-react";
-import { NostrSystem, NoteCollection, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+module.exports = {
+  resolve: {
+    alias: {
+      react: "preact/compat",
+      "react-dom": "preact/compat",
+    },
+  },
+}
+```
 
-const System = new NostrSystem({});
+### Preact example
 
-// some bootstrap relays
-["wss://relay.snort.social", "wss://nos.lol"].forEach(r => System.ConnectToRelay(r, { read: true, write: false }));
+```tsx
+import { h } from "preact"
+import { useMemo } from "preact/compat"
+import { NostrSystem, RequestBuilder, TaggedNostrEvent } from "@snort/system"
+import { SnortContext, useUserProfile, useRequestBuilder } from "@snort/system-react"
+
+const System = new NostrSystem({})
+;["wss://relay.snort.social", "wss://nos.lol"].forEach(r =>
+  System.ConnectToRelay(r, { read: true, write: false }),
+)
 
 export function Note({ ev }: { ev: TaggedNostrEvent }) {
-  const profile = useUserProfile(ev.pubkey);
+  const profile = useUserProfile(ev.pubkey)
 
   return (
     <div>
       Post by: {profile.name ?? profile.display_name}
       <p>{ev.content}</p>
     </div>
-  );
+  )
 }
 
 export function UserPosts(props: { pubkey: string }) {
   const sub = useMemo(() => {
-    const rb = new RequestBuilder("get-posts");
-    rb.withFilter().authors([props.pubkey]).kinds([1]).limit(10);
+    const rb = new RequestBuilder("get-posts")
+    rb.withFilter().authors([props.pubkey]).kinds([1]).limit(10)
+    return rb
+  }, [props.pubkey])
 
-    return rb;
-  }, [props.pubkey]);
-
-  const data = useRequestBuilder(sub);
+  const data = useRequestBuilder(sub)
   return (
     <>
       {data.map(a => (
         <Note ev={a} />
       ))}
     </>
-  );
+  )
 }
 
 export function MyApp() {
@@ -78,6 +113,7 @@ export function MyApp() {
     <SnortContext.Provider value={System}>
       <UserPosts pubkey="63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed" />
     </SnortContext.Provider>
-  );
+  )
 }
 ```
+

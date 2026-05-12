@@ -1,10 +1,10 @@
 import { QueryTraceState, type TimelineEntry } from "@snort/system"
 import { SnortContext } from "../context"
-import { use, useMemo, useSyncExternalStore } from "react"
+import { useContext, useMemo, useSyncExternalStore } from "react"
 import { sanitizeRelayUrl } from "@snort/shared"
 
 export function TraceStatsView() {
-  const system = use(SnortContext)
+  const system = useContext(SnortContext)
 
   const emptyTimeline = { entries: [] as TimelineEntry[] }
   const timeline = useSyncExternalStore(

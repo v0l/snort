@@ -1,11 +1,11 @@
 /* eslint-disable max-lines */
 import { QueryTraceState, type TimelineEntry } from "@snort/system"
-import { use, useMemo, useState, useSyncExternalStore } from "react"
+import { useContext, useMemo, useState, useSyncExternalStore } from "react"
 import { SnortContext } from "../context"
 import { TraceTimelineDetailPopup } from "./TraceTimelineDetailPopup"
 
 export function TraceTimelineView() {
-  const system = use(SnortContext)
+  const system = useContext(SnortContext)
   const [selectedEntry, setSelectedEntry] = useState<TimelineEntry | null>(null)
   const [filter, setFilter] = useState<string>("")
   const [timeScale, setTimeScale] = useState<number | null>(null) // null = auto (full range)

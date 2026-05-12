@@ -1,4 +1,4 @@
-import { use, useMemo, useSyncExternalStore } from "react"
+import { useContext, useMemo, useSyncExternalStore } from "react"
 import { EmptySnapshot, type RequestBuilder, type TaggedNostrEvent } from "@snort/system"
 import { SnortContext } from "./context"
 
@@ -6,7 +6,7 @@ import { SnortContext } from "./context"
  * Send a query to the relays and wait for data
  */
 export function useRequestBuilder(rb: RequestBuilder): Array<TaggedNostrEvent> {
-  const system = use(SnortContext)
+  const system = useContext(SnortContext)
   // Eagerly create the query so it exists during SSR.
   // On the client the same query is reused; on the server it registers
   // the request and makes data available after a FetchAll() pass.
@@ -31,7 +31,7 @@ export function useRequestBuilder(rb: RequestBuilder): Array<TaggedNostrEvent> {
  * More advanced hook which returns the Query object
  */
 export function useRequestBuilderAdvanced(rb: RequestBuilder) {
-  const system = use(SnortContext)
+  const system = useContext(SnortContext)
   const q = useMemo(() => {
     const q = system.Query(rb)
     return q

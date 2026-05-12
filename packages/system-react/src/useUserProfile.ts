@@ -1,6 +1,6 @@
 import type { CachedMetadata, ProfilePriority } from "@snort/system"
 import type { RefObject } from "react"
-import { use, useEffect, useRef, useSyncExternalStore } from "react"
+import { useContext, useEffect, useRef, useSyncExternalStore } from "react"
 import { SnortContext } from "./context"
 
 /**
@@ -13,7 +13,7 @@ import { SnortContext } from "./context"
  *              This avoids the need for callers to manually specify priority.
  */
 export function useUserProfile(pubKey?: string, ref?: RefObject<Element | null>): CachedMetadata | undefined {
-  const system = use(SnortContext)
+  const system = useContext(SnortContext)
 
   // Track the current priority in a ref so the IntersectionObserver callback
   // can update it without causing a re-render on its own.

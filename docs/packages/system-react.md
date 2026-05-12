@@ -10,7 +10,7 @@ bun add @snort/system-react
 
 ## Overview
 
-`@snort/system-react` provides React hooks that integrate with `@snort/system` for reactive Nostr data fetching with built-in caching, SSR support, and automatic subscriptions.
+`@snort/system-react` provides React hooks that integrate with `@snort/system` for reactive Nostr data fetching with built-in caching, SSR support, and automatic subscriptions. Works with both React and Preact (via `preact/compat`).
 
 ## Setup
 
@@ -324,15 +324,50 @@ React context providing the `SystemInterface` instance.
 
 ```typescript
 import { SnortContext } from '@snort/system-react'
-import { use } from 'react'
+import { useContext } from 'react'
 
 function MyComponent() {
-  const system = use(SnortContext)
+  const system = useContext(SnortContext)
   
   // Use system directly
   const query = system.Query(rb)
   
   return <div>...</div>
+}
+```
+
+## Preact Support
+
+This package works with both React and Preact via `preact/compat`. No code changes needed — just alias `react` and `react-dom` to `preact/compat` in your bundler.
+
+### Vite config for Preact
+
+```ts
+import { defineConfig } from "vite"
+import preact from "@preact/preset-vite"
+import { resolve } from "path"
+
+export default defineConfig({
+  plugins: [preact()],
+  resolve: {
+    alias: {
+      react: resolve("node_modules/preact/compat"),
+      "react-dom": resolve("node_modules/preact/compat"),
+    },
+  },
+})
+```
+
+### Webpack config for Preact
+
+```js
+module.exports = {
+  resolve: {
+    alias: {
+      react: "preact/compat",
+      "react-dom": "preact/compat",
+    },
+  },
 }
 ```
 
