@@ -42,6 +42,8 @@
   "showNip05": true,
   "eventLinkPrefix": "nevent",
   "profileLinkPrefix": "nprofile",
+  "profilesUrl": "https://profiles.v0l.io",
+  "profilesRelay": "wss://profiles.v0l.io",
   "defaultRelays": {
     "wss://soloco.nl/": { "read": true, "write": false }
   },

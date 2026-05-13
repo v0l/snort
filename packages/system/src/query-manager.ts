@@ -336,8 +336,8 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       this.#log("Cant send non-specific REQ to ephemeral connection %O %O %O", q, q.relay, c)
       return false
     }
-    // search not supported, cant send
-    if (q.filters.some(a => a.search) && !c.info?.supported_nips?.includes(Nips.Search)) {
+    // search not supported, cant send (only block if we know the relay doesn't support it)
+    if (q.filters.some(a => a.search) && c.info?.supported_nips && !c.info.supported_nips.includes(Nips.Search)) {
       this.#log("Cant send REQ to non-search relay", c.address)
       return false
     }

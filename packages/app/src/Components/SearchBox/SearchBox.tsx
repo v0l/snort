@@ -1,13 +1,14 @@
 import { NostrLink, tryParseNostrLink } from "@snort/system"
+import { fetchNip05Pubkey } from "@snort/shared"
 import { type ChangeEvent, useEffect, useMemo, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import Icon from "@/Components/Icons/Icon"
 import Spinner from "@/Components/Icons/Spinner"
 import ProfileImage from "@/Components/User/ProfileImage"
+import { getNostrProfilesApi } from "@/External/NostrProfiles"
 import useProfileSearch from "@/Hooks/useProfileSearch"
-import { fetchNip05Pubkey } from "@snort/shared"
 
 const MAX_RESULTS = 3
 
@@ -17,14 +18,37 @@ export default function SearchBox() {
   const [searching, setSearching] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
   const navigate = useNavigate()
-  const _location = useLocation()
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const [activeIndex, setActiveIndex] = useState<number>(-1)
   const resultListRef = useRef<HTMLDivElement | null>(null)
 
   const searchFn = useProfileSearch()
-  const results = useMemo(() => searchFn(search), [search, searchFn])
+  const localPubkeys = useMemo(() => {
+    const results = searchFn(search)
+    return results.map(r => r.pubkey)
+  }, [search, searchFn])
+
+  // Augment with nostr-profiles API results
+  const [apiPubkeys, setApiPubkeys] = useState<Array<string>>([])
+  useEffect(() => {
+    if (!search || search.length < 2) {
+      setApiPubkeys([])
+      return
+    }
+    const api = getNostrProfilesApi()
+    api
+      .search(search, 3)
+      .then(results => setApiPubkeys(results.map(r => r.pubkey)))
+      .catch(() => setApiPubkeys([]))
+  }, [search])
+
+  // Merge: API results first, then local (deduplicated)
+  const mergedPubkeys = useMemo(() => {
+    const apiSet = new Set(apiPubkeys)
+    const local = localPubkeys.filter(pk => !apiSet.has(pk))
+    return [...apiPubkeys, ...local].slice(0, MAX_RESULTS + 5)
+  }, [apiPubkeys, localPubkeys])
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -89,17 +113,19 @@ export default function SearchBox() {
       case "Enter":
         if (activeIndex === 0) {
           navigate(`/search/${encodeURIComponent(search)}`)
-        } else if (activeIndex > 0 && results) {
-          const selectedResult = results[activeIndex - 1]
-          navigate(`/${new NostrLink(CONFIG.profileLinkPrefix, selectedResult.pubkey).encode()}`)
-          inputRef.current?.blur()
+        } else if (activeIndex > 0 && mergedPubkeys.length > 0) {
+          const selectedPubkey = mergedPubkeys[activeIndex - 1]
+          if (selectedPubkey) {
+            navigate(`/${new NostrLink(CONFIG.profileLinkPrefix, selectedPubkey).encode()}`)
+            inputRef.current?.blur()
+          }
         } else {
           executeSearch()
         }
         break
       case "ArrowDown":
         e.preventDefault()
-        setActiveIndex(prev => Math.min(prev + 1, Math.min(MAX_RESULTS, results ? results.length : 0)))
+        setActiveIndex(prev => Math.min(prev + 1, Math.min(MAX_RESULTS, mergedPubkeys.length)))
         break
       case "ArrowUp":
         e.preventDefault()
@@ -133,15 +159,16 @@ export default function SearchBox() {
           className="absolute top-full mt-2 w-full border bg-white dark:bg-black shadow-lg rounded-lg z-10 overflow-hidden"
           ref={resultListRef}
         >
-          <div
-            className="cursor-pointer p-2 hover:bg-layer-2"
+          <button
+            type="button"
+            className="w-full text-left cursor-pointer p-2 hover:bg-layer-2"
             onMouseEnter={() => setActiveIndex(0)}
             onClick={() => navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })}
           >
             <FormattedMessage defaultMessage="Search notes" />: <b>{search}</b>
-          </div>
-          {results?.slice(0, MAX_RESULTS).map((result, _idx) => (
-            <ProfileImage pubkey={result.pubkey} showProfileCard={false} className="p-2 hover:bg-layer-2" />
+          </button>
+          {mergedPubkeys.slice(0, MAX_RESULTS).map(pubkey => (
+            <ProfileImage key={pubkey} pubkey={pubkey} showProfileCard={false} className="p-2 hover:bg-layer-2" />
           ))}
         </div>
       )}

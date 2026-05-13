@@ -36,6 +36,8 @@
   "hideFromNavbar": [],
   "eventLinkPrefix": "note",
   "profileLinkPrefix": "npub",
+  "profilesUrl": "https://profiles.v0l.io",
+  "profilesRelay": "wss://profiles.v0l.io",
   "showPowIcon": false,
   "defaultRelays": {
     "wss://relay.snort.social/": { "read": true, "write": true },

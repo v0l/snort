@@ -1,25 +1,51 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router-dom"
 
 import Timeline from "@/Components/Feed/Timeline"
 import TabSelectors, { type Tab } from "@/Components/TabSelectors/TabSelectors"
 import FollowListBase from "@/Components/User/FollowListBase"
+import PageSpinner from "@/Components/PageSpinner"
 import type { TimelineSubject } from "@/Feed/TimelineFeed"
+import { getNostrProfilesApi, type RecentClassification } from "@/External/NostrProfiles"
 import useProfileSearch from "@/Hooks/useProfileSearch"
+import { appendDedupe } from "@/Utils"
 
 const NOTES = 0
 const PROFILES = 1
 
 const Profiles = ({ keyword }: { keyword: string }) => {
   const searchFn = useProfileSearch()
-  const results = useMemo(() => searchFn(keyword), [keyword, searchFn])
-  const ids = useMemo(() => results.map(r => r.pubkey), [results])
+  const localResults = useMemo(() => searchFn(keyword), [keyword, searchFn])
+
+  const [apiResults, setApiResults] = useState<Array<RecentClassification>>([])
+  const [apiLoading, setApiLoading] = useState(false)
+
+  useEffect(() => {
+    if (!keyword) return
+    setApiLoading(true)
+    const api = getNostrProfilesApi()
+    api
+      .search(keyword, 20)
+      .then(setApiResults)
+      .catch(() => setApiResults([]))
+      .finally(() => setApiLoading(false))
+  }, [keyword])
+
+  // Merge: API results first (deduplicated with local), then remaining local results
+  const mergedPubkeys = useMemo(() => {
+    const apiPubkeys = apiResults.map(r => r.pubkey)
+    const localPubkeys = localResults.map(r => r.pubkey).filter(pk => !apiPubkeys.includes(pk))
+    return appendDedupe(apiPubkeys, localPubkeys)
+  }, [apiResults, localResults])
+
   if (!keyword) return
+
   return (
-    <div className="px-3">
+    <div className="px-3 flex flex-col gap-4">
+      {apiLoading && <PageSpinner />}
       <FollowListBase
-        pubkeys={ids}
+        pubkeys={mergedPubkeys}
         profilePreviewProps={{
           options: { about: true },
         }}

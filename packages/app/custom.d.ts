@@ -91,6 +91,10 @@ declare const CONFIG: {
 
   eventLinkPrefix: NostrPrefix
   profileLinkPrefix: NostrPrefix
+  /** Base URL of the nostr-profiles classification API */
+  profilesUrl: string
+  /** WebSocket URL of the nostr-profiles search relay (NIP-50) */
+  profilesRelay: string
   defaultRelays: Record<string, RelaySettings>
   showPowIcon: boolean
   // show nip5 beside usernames

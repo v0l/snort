@@ -40,6 +40,8 @@
   "showNip05": true,
   "eventLinkPrefix": "nevent",
   "profileLinkPrefix": "nprofile",
+  "profilesUrl": "https://profiles.v0l.io",
+  "profilesRelay": "wss://profiles.v0l.io",
   "defaultRelays": {
     "wss://relay.nostr.wirednet.jp/": { "read": true, "write": true },
     "wss://yabu.me/": { "read": true, "write": true },
