@@ -102,7 +102,7 @@ export async function blossomReport(
   })
 
   const results = new Map<string, boolean>()
-  
+
   for (const server of servers) {
     try {
       const success = await Actions.reportBlobs([server], reportEvent, {
@@ -119,7 +119,7 @@ export async function blossomReport(
   return results
 }
 
-async function uploadBlobAuth(signer: Signer, media: boolean, sha256: string, blob: File | Blob): Promise<SignedEvent> {
+async function uploadBlobAuth(signer: Signer, media: boolean, _sha256: string, blob: File | Blob): Promise<SignedEvent> {
   const { createUploadAuth } = await import("blossom-client-sdk")
   return await createUploadAuth(signer, blob, {
     type: media ? "media" : "upload",
@@ -127,9 +127,9 @@ async function uploadBlobAuth(signer: Signer, media: boolean, sha256: string, bl
   })
 }
 
-async function mirrorBlobAuth(signer: Signer, sha256: string, blob: BlobDescriptor): Promise<SignedEvent> {
+async function mirrorBlobAuth(signer: Signer, _sha256: string, _blob: BlobDescriptor): Promise<SignedEvent> {
   const { createMirrorAuth } = await import("blossom-client-sdk")
-  return await createMirrorAuth(signer, sha256, {
+  return await createMirrorAuth(signer, _sha256, {
     expiration: Math.floor(Date.now() / 1000) + 60,
   })
 }
