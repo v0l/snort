@@ -1,6 +1,7 @@
 import basicSsl from "@vitejs/plugin-basic-ssl"
 import react from "@vitejs/plugin-react"
 import appConfig from "config"
+import formatjs from "@formatjs/unplugin/vite"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 import { VitePWA } from "vite-plugin-pwa"
@@ -102,7 +103,11 @@ export default defineConfig(({ command, mode }) => {
       ...shared,
       plugins: [
         tailwindcss(),
-        react({ babel: { configFile: true } }),
+        react(),
+        formatjs({
+          idInterpolationPattern: "[sha512:contenthash:base64:6]",
+          ast: true,
+        }),
         htmlTransform,
         ssrClientEntry(),
         VitePWA({
@@ -135,11 +140,11 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       tailwindcss(),
       //basicSsl(),
-      react({
-        babel: {
-          configFile: true,
-        },
+      formatjs({
+        idInterpolationPattern: "[sha512:contenthash:base64:6]",
+        ast: true,
       }),
+      react(),
       htmlTransform,
       VitePWA({
         strategies: "injectManifest",
@@ -167,16 +172,6 @@ export default defineConfig(({ command, mode }) => {
       }),
       copyWorkerRelayAssets("build/assets"),
     ],
-    server: {
-      headers: {
-        "Cross-Origin-Opener-Policy": "same-origin",
-        "Cross-Origin-Embedder-Policy": "require-corp",
-      },
-      proxy: {},
-      watch: {
-        usePolling: true,
-      },
-    },
     build: {
       outDir: "build",
       commonjsOptions: { transformMixedEsModules: true },

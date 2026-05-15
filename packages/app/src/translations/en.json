@@ -39,6 +39,12 @@
       "value": "Cashu Wallet History"
     }
   ],
+  "+bGApC": [
+    {
+      "type": 0,
+      "value": "Report Results:"
+    }
+  ],
   "+mO9i4": [
     {
       "type": 0,
@@ -301,12 +307,6 @@
     {
       "type": 0,
       "value": "Check Signatures"
-    }
-  ],
-  "1ozeyg": [
-    {
-      "type": 0,
-      "value": "Nature"
     }
   ],
   "1sawgR": [
@@ -655,12 +655,6 @@
       "value": "Your new NIP-05 handle is:"
     }
   ],
-  "4MjsHk": [
-    {
-      "type": 0,
-      "value": "Life"
-    }
-  ],
   "4OB335": [
     {
       "type": 0,
@@ -859,6 +853,12 @@
       ],
       "type": 8,
       "value": "i"
+    }
+  ],
+  "6OWS4p": [
+    {
+      "type": 0,
+      "value": "Processing..."
     }
   ],
   "6Z3bDG": [
@@ -1175,6 +1175,12 @@
       "value": "Search sets.."
     }
   ],
+  "9aD6GO": [
+    {
+      "type": 0,
+      "value": "Drop files to upload"
+    }
+  ],
   "9kO0VQ": [
     {
       "type": 0,
@@ -1241,6 +1247,12 @@
       "value": "This author has been muted"
     }
   ],
+  "AYQh6r": [
+    {
+      "type": 0,
+      "value": "Submit Report"
+    }
+  ],
   "AedFVZ": [
     {
       "type": 0,
@@ -1269,12 +1281,6 @@
     {
       "type": 0,
       "value": "Great"
-    }
-  ],
-  "Am8glJ": [
-    {
-      "type": 0,
-      "value": "Game"
     }
   ],
   "AqGfF4": [
@@ -1577,6 +1583,12 @@
     {
       "type": 0,
       "value": "Badge Definition"
+    }
+  ],
+  "D0EEMc": [
+    {
+      "type": 0,
+      "value": "Report Media"
     }
   ],
   "D3idYv": [
@@ -2171,6 +2183,18 @@
       "value": "time"
     }
   ],
+  "I1ZCPK": [
+    {
+      "type": 0,
+      "value": "Technology"
+    }
+  ],
+  "I2AKfn": [
+    {
+      "type": 0,
+      "value": "Gaming"
+    }
+  ],
   "IEwZvs": [
     {
       "type": 0,
@@ -2303,6 +2327,12 @@
       "value": "P-tag with non-standard marker (nickname)"
     }
   ],
+  "JEsxDw": [
+    {
+      "type": 0,
+      "value": "Uploading..."
+    }
+  ],
   "JGrt9q": [
     {
       "type": 0,
@@ -2325,12 +2355,6 @@
     {
       "type": 0,
       "value": ")"
-    }
-  ],
-  "JIVWWA": [
-    {
-      "type": 0,
-      "value": "Sport"
     }
   ],
   "JJNc3c": [
@@ -2697,6 +2721,12 @@
       "value": "Client Authentication"
     }
   ],
+  "MjVQSd": [
+    {
+      "type": 0,
+      "value": "Report Selected"
+    }
+  ],
   "MkQ4FX": [
     {
       "type": 0,
@@ -2713,6 +2743,12 @@
     {
       "type": 0,
       "value": "Pay for subscription"
+    }
+  ],
+  "MtJqCl": [
+    {
+      "type": 0,
+      "value": "Reports will be sent to:"
     }
   ],
   "MuVeKe": [
@@ -3413,6 +3449,12 @@
       "value": "Has both r tags and imeta tags for images"
     }
   ],
+  "U78NhE": [
+    {
+      "type": 0,
+      "value": "Complete"
+    }
+  ],
   "UJTWqI": [
     {
       "type": 0,
@@ -3607,6 +3649,12 @@
       "value": "Avatar"
     }
   ],
+  "Vq3ifs": [
+    {
+      "type": 0,
+      "value": "No servers available"
+    }
+  ],
   "W1yoZY": [
     {
       "type": 0,
@@ -3733,6 +3781,12 @@
     {
       "type": 0,
       "value": "Reactions"
+    }
+  ],
+  "XhVXzt": [
+    {
+      "type": 0,
+      "value": "Privacy & Freedom"
     }
   ],
   "Xnimz0": [
@@ -4165,12 +4219,6 @@
       "value": "Native nostr wallet connection"
     }
   ],
-  "cHCwbF": [
-    {
-      "type": 0,
-      "value": "Photography"
-    }
-  ],
   "cKbMRX": [
     {
       "type": 0,
@@ -4259,6 +4307,12 @@
     {
       "type": 0,
       "value": "Not Subscribed to Push"
+    }
+  ],
+  "d6Yc8y": [
+    {
+      "type": 0,
+      "value": "Preparing..."
     }
   ],
   "d7d0/x": [
@@ -4393,6 +4447,12 @@
       "value": " sats to the zap pool."
     }
   ],
+  "eVMiDW": [
+    {
+      "type": 0,
+      "value": "Bitcoin & Nostr"
+    }
+  ],
   "eW/Bj9": [
     {
       "type": 0,
@@ -4463,6 +4523,12 @@
     {
       "type": 0,
       "value": "Poor"
+    }
+  ],
+  "f00p/7": [
+    {
+      "type": 0,
+      "value": "Upload failed"
     }
   ],
   "f0Mcqr": [
@@ -4775,6 +4841,12 @@
       "value": "PRO"
     }
   ],
+  "hY3X/U": [
+    {
+      "type": 0,
+      "value": "Lifestyle"
+    }
+  ],
   "hY4lzx": [
     {
       "type": 0,
@@ -4915,6 +4987,12 @@
       "value": "Group Chat Threaded Reply"
     }
   ],
+  "iobyxJ": [
+    {
+      "type": 0,
+      "value": "Mirroring..."
+    }
+  ],
   "ipHVx5": [
     {
       "type": 0,
@@ -5011,6 +5089,12 @@
     {
       "type": 1,
       "value": "msg"
+    }
+  ],
+  "jPzJ/z": [
+    {
+      "type": 0,
+      "value": "Pasted image"
     }
   ],
   "jiAVXu": [
@@ -5237,6 +5321,12 @@
     {
       "type": 0,
       "value": "Copy link"
+    }
+  ],
+  "le3Aj6": [
+    {
+      "type": 0,
+      "value": "No media found in this note that can be reported."
     }
   ],
   "lfOesV": [
@@ -5467,6 +5557,12 @@
     {
       "type": 0,
       "value": "Listen to this article"
+    }
+  ],
+  "ntt283": [
+    {
+      "type": 0,
+      "value": "Recommended for you"
     }
   ],
   "nwZXeh": [
@@ -5709,6 +5805,12 @@
       "value": "This note has been muted"
     }
   ],
+  "qgUkGk": [
+    {
+      "type": 0,
+      "value": "Content & Art"
+    }
+  ],
   "qkvYUb": [
     {
       "type": 0,
@@ -5737,12 +5839,6 @@
     {
       "type": 0,
       "value": "Show less"
-    }
-  ],
-  "qydxOd": [
-    {
-      "type": 0,
-      "value": "Science"
     }
   ],
   "qz9fty": [
@@ -5791,6 +5887,12 @@
     {
       "type": 0,
       "value": "Add Relays"
+    }
+  ],
+  "rbrahO": [
+    {
+      "type": 0,
+      "value": "Close"
     }
   ],
   "reFEEC": [
@@ -5999,6 +6101,12 @@
       "value": "Supporter Badge"
     }
   ],
+  "txkW56": [
+    {
+      "type": 0,
+      "value": "Submitting..."
+    }
+  ],
   "tzMNF3": [
     {
       "type": 0,
@@ -6173,12 +6281,6 @@
     {
       "type": 0,
       "value": "Amount of work to apply to all published events"
-    }
-  ],
-  "w1Fanr": [
-    {
-      "type": 0,
-      "value": "Business"
     }
   ],
   "w6qrwX": [
@@ -6447,6 +6549,12 @@
       "value": " nostr address"
     }
   ],
+  "z/ioE+": [
+    {
+      "type": 0,
+      "value": "Reporting:"
+    }
+  ],
   "z3UjXR": [
     {
       "type": 0,
@@ -6475,6 +6583,12 @@
     {
       "type": 0,
       "value": "Owner"
+    }
+  ],
+  "zMOIeW": [
+    {
+      "type": 0,
+      "value": "Select media to report and submit to the server owner. This will create a Blossom report."
     }
   ],
   "zQvVDJ": [

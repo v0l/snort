@@ -17,6 +17,9 @@
   "+W+Kof": {
     "defaultMessage": "Cashu Wallet History"
   },
+  "+bGApC": {
+    "defaultMessage": "Report Results:"
+  },
   "+mO9i4": {
     "defaultMessage": "Code Snippet"
   },
@@ -137,9 +140,6 @@
   },
   "1o2BgB": {
     "defaultMessage": "Check Signatures"
-  },
-  "1ozeyg": {
-    "defaultMessage": "Nature"
   },
   "1sawgR": {
     "defaultMessage": "Page {current} of {total} ({count} items)"
@@ -270,9 +270,6 @@
   "4L2vUY": {
     "defaultMessage": "Your new NIP-05 handle is:"
   },
-  "4MjsHk": {
-    "defaultMessage": "Life"
-  },
   "4OB335": {
     "defaultMessage": "Dislike"
   },
@@ -359,6 +356,9 @@
   },
   "6OSOXl": {
     "defaultMessage": "Reason: <i>{reason}</i>"
+  },
+  "6OWS4p": {
+    "defaultMessage": "Processing..."
   },
   "6Z3bDG": {
     "defaultMessage": "Cashu Wallet Event"
@@ -501,6 +501,9 @@
   "9WTAKy": {
     "defaultMessage": "Search sets.."
   },
+  "9aD6GO": {
+    "defaultMessage": "Drop files to upload"
+  },
   "9kO0VQ": {
     "defaultMessage": "Hide muted notes"
   },
@@ -535,6 +538,9 @@
   "ASRK0S": {
     "defaultMessage": "This author has been muted"
   },
+  "AYQh6r": {
+    "defaultMessage": "Submit Report"
+  },
   "AedFVZ": {
     "defaultMessage": "Create or update a product"
   },
@@ -549,9 +555,6 @@
   },
   "AktAk2": {
     "defaultMessage": "Great"
-  },
-  "Am8glJ": {
-    "defaultMessage": "Game"
   },
   "AqGfF4": {
     "defaultMessage": "Channel Creation"
@@ -688,6 +691,9 @@
   },
   "D09wbg": {
     "defaultMessage": "Badge Definition"
+  },
+  "D0EEMc": {
+    "defaultMessage": "Report Media"
   },
   "D3idYv": {
     "defaultMessage": "Settings"
@@ -934,6 +940,12 @@
   "I1AoOu": {
     "defaultMessage": "Last post {time}"
   },
+  "I1ZCPK": {
+    "defaultMessage": "Technology"
+  },
+  "I2AKfn": {
+    "defaultMessage": "Gaming"
+  },
   "IEwZvs": {
     "defaultMessage": "Are you sure you want to unpin this note?"
   },
@@ -982,14 +994,14 @@
   "JCOqRK": {
     "defaultMessage": "P-tag with non-standard marker (nickname)"
   },
+  "JEsxDw": {
+    "defaultMessage": "Uploading..."
+  },
   "JGrt9q": {
     "defaultMessage": "Send sats to {name}"
   },
   "JHEHCk": {
     "defaultMessage": "Zaps ({n})"
-  },
-  "JIVWWA": {
-    "defaultMessage": "Sport"
   },
   "JJNc3c": {
     "defaultMessage": "Previous"
@@ -1127,6 +1139,9 @@
   "MYUBaG": {
     "defaultMessage": "Client Authentication"
   },
+  "MjVQSd": {
+    "defaultMessage": "Report Selected"
+  },
   "MkQ4FX": {
     "defaultMessage": "Proxy Tags"
   },
@@ -1135,6 +1150,9 @@
   },
   "Mrpkot": {
     "defaultMessage": "Pay for subscription"
+  },
+  "MtJqCl": {
+    "defaultMessage": "Reports will be sent to:"
   },
   "MuVeKe": {
     "defaultMessage": "Buy nostr address"
@@ -1434,6 +1452,9 @@
   "U3P+36": {
     "defaultMessage": "Has both r tags and imeta tags for images"
   },
+  "U78NhE": {
+    "defaultMessage": "Complete"
+  },
   "UJTWqI": {
     "defaultMessage": "Remove from my relays"
   },
@@ -1500,6 +1521,9 @@
   "VnXp8Z": {
     "defaultMessage": "Avatar"
   },
+  "Vq3ifs": {
+    "defaultMessage": "No servers available"
+  },
   "W1yoZY": {
     "defaultMessage": "It looks like you dont have any subscriptions, you can get one {link}"
   },
@@ -1559,6 +1583,9 @@
   },
   "XgWvGA": {
     "defaultMessage": "Reactions"
+  },
+  "XhVXzt": {
+    "defaultMessage": "Privacy & Freedom"
   },
   "Xnimz0": {
     "defaultMessage": "Sending from <b>{wallet}</b>"
@@ -1725,9 +1752,6 @@
   "cG/bKQ": {
     "defaultMessage": "Native nostr wallet connection"
   },
-  "cHCwbF": {
-    "defaultMessage": "Photography"
-  },
   "cKbMRX": {
     "defaultMessage": "Direct Message"
   },
@@ -1773,6 +1797,9 @@
   },
   "d2ebEu": {
     "defaultMessage": "Not Subscribed to Push"
+  },
+  "d6Yc8y": {
+    "defaultMessage": "Preparing..."
   },
   "d7d0/x": {
     "defaultMessage": "LN Address"
@@ -1822,6 +1849,9 @@
   "eSzf2G": {
     "defaultMessage": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool."
   },
+  "eVMiDW": {
+    "defaultMessage": "Bitcoin & Nostr"
+  },
   "eW/Bj9": {
     "defaultMessage": "Feed"
   },
@@ -1839,6 +1869,9 @@
   },
   "eoV49s": {
     "defaultMessage": "Poor"
+  },
+  "f00p/7": {
+    "defaultMessage": "Upload failed"
   },
   "f0Mcqr": {
     "defaultMessage": "Double newlines before image URLs"
@@ -1975,6 +2008,9 @@
   "hRTfTR": {
     "defaultMessage": "PRO"
   },
+  "hY3X/U": {
+    "defaultMessage": "Lifestyle"
+  },
   "hY4lzx": {
     "defaultMessage": "Supports"
   },
@@ -2035,6 +2071,9 @@
   "igUUst": {
     "defaultMessage": "Group Chat Threaded Reply"
   },
+  "iobyxJ": {
+    "defaultMessage": "Mirroring..."
+  },
   "ipHVx5": {
     "defaultMessage": "Generate Invoice"
   },
@@ -2061,6 +2100,9 @@
   },
   "jMzO1S": {
     "defaultMessage": "Internal error: {msg}"
+  },
+  "jPzJ/z": {
+    "defaultMessage": "Pasted image"
   },
   "jiAVXu": {
     "defaultMessage": "Video Event"
@@ -2130,6 +2172,9 @@
   },
   "lbr3Lq": {
     "defaultMessage": "Copy link"
+  },
+  "le3Aj6": {
+    "defaultMessage": "No media found in this note that can be reported."
   },
   "lfOesV": {
     "defaultMessage": "Non-Zap"
@@ -2217,6 +2262,9 @@
   },
   "nihgfo": {
     "defaultMessage": "Listen to this article"
+  },
+  "ntt283": {
+    "defaultMessage": "Recommended for you"
   },
   "nwZXeh": {
     "defaultMessage": "{n} blocked"
@@ -2314,6 +2362,9 @@
   "qfmMQh": {
     "defaultMessage": "This note has been muted"
   },
+  "qgUkGk": {
+    "defaultMessage": "Content & Art"
+  },
   "qkvYUb": {
     "defaultMessage": "Add to Profile"
   },
@@ -2328,9 +2379,6 @@
   },
   "qyJtWy": {
     "defaultMessage": "Show less"
-  },
-  "qydxOd": {
-    "defaultMessage": "Science"
   },
   "qz9fty": {
     "defaultMessage": "Incorrect pin"
@@ -2355,6 +2403,9 @@
   },
   "rT14Ow": {
     "defaultMessage": "Add Relays"
+  },
+  "rbrahO": {
+    "defaultMessage": "Close"
   },
   "reFEEC": {
     "defaultMessage": "Reporting"
@@ -2443,6 +2494,9 @@
   "ttxS0b": {
     "defaultMessage": "Supporter Badge"
   },
+  "txkW56": {
+    "defaultMessage": "Submitting..."
+  },
   "tzMNF3": {
     "defaultMessage": "Status"
   },
@@ -2520,9 +2574,6 @@
   },
   "vxwnbh": {
     "defaultMessage": "Amount of work to apply to all published events"
-  },
-  "w1Fanr": {
-    "defaultMessage": "Business"
   },
   "w6qrwX": {
     "defaultMessage": "NSFW"
@@ -2629,6 +2680,9 @@
   "ywyVQg": {
     "defaultMessage": "{app} nostr address"
   },
+  "z/ioE+": {
+    "defaultMessage": "Reporting:"
+  },
   "z3UjXR": {
     "defaultMessage": "Debug"
   },
@@ -2643,6 +2697,9 @@
   },
   "zINlao": {
     "defaultMessage": "Owner"
+  },
+  "zMOIeW": {
+    "defaultMessage": "Select media to report and submit to the server owner. This will create a Blossom report."
   },
   "zQvVDJ": {
     "defaultMessage": "All"

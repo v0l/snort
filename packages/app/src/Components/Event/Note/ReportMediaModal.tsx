@@ -5,7 +5,7 @@ import Modal from "@/Components/Modal/Modal"
 import Icon from "@/Components/Icons/Icon"
 import useEventPublisher from "@/Hooks/useEventPublisher"
 import { blossomReport } from "@/Utils/Upload/blossom"
-import { appendDedupe, dedupe, isHex } from "@snort/shared"
+import { dedupe, isHex } from "@snort/shared"
 import useBlossomServers from "@/Hooks/useBlossomServers"
 
 interface ReportMediaModalProps {
@@ -13,11 +13,27 @@ interface ReportMediaModalProps {
   onClose: () => void
 }
 
+export function hasReportableMedia(event: NostrEvent): boolean {
+  // Extract media from NIP-94 tags and content
+  const nip94Tags = readNip94Tags(event.tags)
+
+  if (nip94Tags.url && nip94Tags.hash && isHex(nip94Tags.hash)) {
+    return true
+  }
+
+  if (!event.content || typeof event.content !== "string") {
+    return false
+  }
+
+  const blossomUrlsFromContent = extractBlossomUrls(event.content)
+  return blossomUrlsFromContent.length > 0
+}
+
 function extractBlossomUrls(content: string): Array<{ url: string; hash: string }> {
   const urls: Array<{ url: string; hash: string }> = []
   const urlRegex = /https?:\/\/[^\s<>"']+/g
-  let match
-  
+  let match: RegExpExecArray | null
+
   while ((match = urlRegex.exec(content)) !== null) {
     const url = match[0]
     try {
@@ -25,7 +41,7 @@ function extractBlossomUrls(content: string): Array<{ url: string; hash: string 
       const pathParts = urlObj.pathname.split("/").filter(Boolean)
       const lastPart = pathParts[pathParts.length - 1]
       const hashMatch = lastPart?.match(/^([a-fA-F0-9]{64})/)
-      
+
       if (hashMatch && isHex(hashMatch[1])) {
         urls.push({
           url,
@@ -36,7 +52,7 @@ function extractBlossomUrls(content: string): Array<{ url: string; hash: string 
       // Invalid URL, skip
     }
   }
-  
+
   return urls
 }
 
@@ -46,55 +62,92 @@ export default function ReportMediaModal({ event, onClose }: ReportMediaModalPro
   const [reportReason, setReportReason] = useState("")
   const [reporting, setReporting] = useState(false)
   const [selectedHash, setSelectedHash] = useState<string | null>(null)
-  
+  const [reportResults, setReportResults] = useState<Map<string, boolean> | null>(null)
+
   // Extract media from NIP-94 tags and content
   const nip94Tags = readNip94Tags(event.tags)
   const blossomUrlsFromTags: Array<{ url: string; hash: string }> = []
-  
+
   if (nip94Tags.url && nip94Tags.hash && isHex(nip94Tags.hash)) {
     blossomUrlsFromTags.push({
       url: nip94Tags.url,
       hash: nip94Tags.hash,
     })
+    // Add fallback URLs from NIP-94 tags
+    if (nip94Tags.fallback && nip94Tags.fallback.length > 0) {
+      for (const fallbackUrl of nip94Tags.fallback) {
+        try {
+          const urlObj = new URL(fallbackUrl)
+          const pathParts = urlObj.pathname.split("/").filter(Boolean)
+          const lastPart = pathParts[pathParts.length - 1]
+          const hashMatch = lastPart?.match(/^([a-fA-F0-9]{64})/)
+          if (hashMatch && isHex(hashMatch[1]) && hashMatch[1] === nip94Tags.hash) {
+            blossomUrlsFromTags.push({
+              url: fallbackUrl,
+              hash: nip94Tags.hash,
+            })
+          }
+        } catch {
+          // Invalid fallback URL, skip
+        }
+      }
+    }
   }
-  
-  const blossomUrlsFromContent = extractBlossomUrls(event.content)
+
+  const blossomUrlsFromContent = extractBlossomUrls(event.content || "")
   const allBlossomUrls = dedupe([...blossomUrlsFromTags, ...blossomUrlsFromContent])
-  
-  const servers = useBlossomServers(undefined)
-  const authorUrls = dedupe(Object.values(servers).flat())
-  const allServerUrls = appendDedupe(authorUrls, [new URL(event.content || "").origin])
-  
+
+  // Load author's blossom servers (including fallback URLs)
+  const blossomServers = useBlossomServers([event.pubkey])
+  const authorServers = dedupe(Object.values(blossomServers).flat())
+
+  // Extract origins from author servers
+  const authorOrigins = dedupe(
+    authorServers
+      .filter(s => s && s.trim())
+      .map(server => {
+        try {
+          return new URL(server).origin
+        } catch {
+          return server
+        }
+      }),
+  )
+
+  let origin = ""
+  try {
+    if (event.content && typeof event.content === "string" && event.content.trim()) {
+      origin = new URL(event.content).origin
+    }
+  } catch {
+    // Invalid URL, skip
+  }
+
+  // Combine author origins with event content origin and deduplicate
+  const allServerUrls = dedupe([...authorOrigins, origin].filter(s => s && s.trim()))
+
   async function handleReport() {
     if (!publisher || !reportReason.trim() || !selectedHash) return
-    
+
     setReporting(true)
+    setReportResults(null)
     try {
       const serverUrls = allServerUrls.filter(s => s)
       if (serverUrls.length === 0) {
-        alert("No servers available to report to")
+        setReporting(false)
         return
       }
-      
+
       const results = await blossomReport(serverUrls, publisher, selectedHash, reportReason.trim())
-      const successCount = Array.from(results.values()).filter(v => v).length
-      
-      if (successCount > 0) {
-        alert(`Report submitted successfully to ${successCount} server(s)`)
-        setReportReason("")
-        setSelectedHash(null)
-        setShowReportForm(false)
-      } else {
-        alert("Failed to submit report to any server")
-      }
+      setReportResults(results)
+      // Don't show alerts, just display results in the UI
     } catch (error) {
       console.error("Report failed:", error)
-      alert("Failed to submit report")
     } finally {
       setReporting(false)
     }
   }
-  
+
   if (allBlossomUrls.length === 0) {
     return (
       <Modal id="report-media-modal" onClose={onClose}>
@@ -116,28 +169,26 @@ export default function ReportMediaModal({ event, onClose }: ReportMediaModalPro
       </Modal>
     )
   }
-  
+
   return (
     <Modal id="report-media-modal" onClose={onClose}>
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">
           <FormattedMessage defaultMessage="Report Media" />
         </h2>
-        
+
         {!showReportForm ? (
           <div className="flex flex-col gap-3">
             <p className="text-sm text-neutral-500">
-              <FormattedMessage defaultMessage="Select media to report and submit to the server owner. This will create a NIP-56 report event (kind 1984)." />
+              <FormattedMessage defaultMessage="Select media to report and submit to the server owner. This will create a Blossom report." />
             </p>
-            
+
             <div className="flex flex-col gap-2 max-h-64 overflow-y-auto">
-              {allBlossomUrls.map((item, idx) => (
+              {allBlossomUrls.map(item => (
                 <div
-                  key={idx}
+                  key={item.hash}
                   className={`p-3 border rounded cursor-pointer transition-colors ${
-                    selectedHash === item.hash
-                      ? "border-primary bg-layer-2"
-                      : "border-neutral hover:border-neutral-400"
+                    selectedHash === item.hash ? "border-primary bg-layer-2" : "border-neutral hover:border-neutral-400"
                   }`}
                   onClick={() => setSelectedHash(item.hash)}
                 >
@@ -149,7 +200,12 @@ export default function ReportMediaModal({ event, onClose }: ReportMediaModalPro
                         className="w-full h-full object-cover"
                         onError={e => {
                           e.currentTarget.style.display = "none"
-                          e.currentTarget.parentElement!.classList.add("flex", "items-center", "justify-center", "text-xs")
+                          e.currentTarget.parentElement!.classList.add(
+                            "flex",
+                            "items-center",
+                            "justify-center",
+                            "text-xs",
+                          )
                           e.currentTarget.parentElement!.textContent = "Preview unavailable"
                         }}
                       />
@@ -166,7 +222,7 @@ export default function ReportMediaModal({ event, onClose }: ReportMediaModalPro
                 </div>
               ))}
             </div>
-            
+
             <button
               type="button"
               className="px-4 py-2 bg-error text-white rounded hover:bg-error/80 transition-colors disabled:opacity-50"
@@ -184,7 +240,28 @@ export default function ReportMediaModal({ event, onClose }: ReportMediaModalPro
               </div>
               <div className="text-xs font-mono break-all">{selectedHash}</div>
             </div>
-            
+
+            <div className="p-3 bg-layer-2 rounded">
+              <div className="text-sm font-semibold mb-2">
+                <FormattedMessage defaultMessage="Reports will be sent to:" />
+              </div>
+              <div className="text-xs text-neutral-500 max-h-32 overflow-y-auto">
+                {allServerUrls.filter(s => s).length > 0 ? (
+                  <ul className="list-disc list-inside space-y-1">
+                    {allServerUrls
+                      .filter(s => s)
+                      .map(server => (
+                        <li key={server} className="truncate">
+                          {server}
+                        </li>
+                      ))}
+                  </ul>
+                ) : (
+                  <FormattedMessage defaultMessage="No servers available" />
+                )}
+              </div>
+            </div>
+
             <textarea
               className="w-full p-2 border rounded bg-layer-2 min-h-[100px]"
               placeholder="Describe why you're reporting this media (e.g., inappropriate content, copyright violation, etc.)"
@@ -192,7 +269,27 @@ export default function ReportMediaModal({ event, onClose }: ReportMediaModalPro
               onChange={e => setReportReason(e.target.value)}
               disabled={reporting}
             />
-            
+
+            {reportResults && (
+              <div className="p-3 bg-layer-2 rounded">
+                <div className="text-sm font-semibold mb-2">
+                  <FormattedMessage defaultMessage="Report Results:" />
+                </div>
+                <div className="text-xs space-y-1 max-h-40 overflow-y-auto">
+                  {Array.from(reportResults.entries()).map(([server, success]) => (
+                    <div key={server} className="flex items-center gap-2">
+                      <Icon
+                        name={success ? "check" : "x-close"}
+                        className={success ? "text-success" : "text-error"}
+                        size={14}
+                      />
+                      <span className={success ? "text-success" : "text-error"}>{server}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="flex gap-2">
               <button
                 type="button"
@@ -212,6 +309,7 @@ export default function ReportMediaModal({ event, onClose }: ReportMediaModalPro
                 onClick={() => {
                   setShowReportForm(false)
                   setReportReason("")
+                  setReportResults(null)
                 }}
                 disabled={reporting}
               >

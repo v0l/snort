@@ -81,7 +81,7 @@ export async function blossomDelete(server: string, publisher: EventPublisher, h
  * @param blobHash - SHA256 hash of the blob to report
  * @param reason - Human-readable reason for the report
  * @param signal - AbortSignal to cancel the operation
- * @returns Map of servers to success status
+ * @returns Map of servers to result status (true = success, false = not implemented/failed)
  */
 export async function blossomReport(
   servers: Array<string>,
@@ -105,11 +105,23 @@ export async function blossomReport(
 
   for (const server of servers) {
     try {
-      const success = await Actions.reportBlobs([server], reportEvent, {
+      const res = await fetch(`${server}/report`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reportEvent),
         signal,
-        timeout: 10000,
       })
-      results.set(server, success.get(server) ?? false)
+
+      // 201 = success, 404 = not implemented, others = failed
+      if (res.status === 201 || res.status === 200) {
+        results.set(server, true)
+      } else if (res.status === 404) {
+        // Server doesn't implement reporting
+        results.set(server, false)
+      } else {
+        console.error(`Failed to report to ${server}: ${res.status}`)
+        results.set(server, false)
+      }
     } catch (error) {
       console.error("Failed to report blob to server:", server, error)
       results.set(server, false)
@@ -119,7 +131,12 @@ export async function blossomReport(
   return results
 }
 
-async function uploadBlobAuth(signer: Signer, media: boolean, _sha256: string, blob: File | Blob): Promise<SignedEvent> {
+async function uploadBlobAuth(
+  signer: Signer,
+  media: boolean,
+  _sha256: string,
+  blob: File | Blob,
+): Promise<SignedEvent> {
   const { createUploadAuth } = await import("blossom-client-sdk")
   return await createUploadAuth(signer, blob, {
     type: media ? "media" : "upload",

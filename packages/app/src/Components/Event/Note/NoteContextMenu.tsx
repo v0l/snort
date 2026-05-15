@@ -11,7 +11,7 @@ import useModeration from "@/Hooks/useModeration"
 
 import { ReBroadcaster } from "../../ReBroadcaster"
 import { useNoteContext } from "./NoteContext"
-import ReportMediaModal from "./ReportMediaModal"
+import ReportMediaModal, { hasReportableMedia } from "./ReportMediaModal"
 
 export function NoteContextMenu() {
   const { formatMessage } = useIntl()
@@ -27,6 +27,7 @@ export function NoteContextMenu() {
   })
   const isMine = ev.pubkey === login.publicKey
   const link = NostrLink.fromEvent(ev)
+  const canReportMedia = hasReportableMedia(ev)
 
   async function deleteEvent() {
     if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.id.substring(0, 8) })) && publisher) {
@@ -190,16 +191,18 @@ export function NoteContextMenu() {
           <Icon name="json" />
           <FormattedMessage {...messages.CopyJSON} />
         </DropdownMenu.Item>
-        <DropdownMenu.Item
-          className={itemClassName}
-          onClick={e => {
-            e.stopPropagation()
-            setShowReportModal(true)
-          }}
-        >
-          <Icon name="flag" />
-          <FormattedMessage defaultMessage="Report Media" />
-        </DropdownMenu.Item>
+        {canReportMedia && publisher && (
+          <DropdownMenu.Item
+            className={itemClassName}
+            onClick={e => {
+              e.stopPropagation()
+              setShowReportModal(true)
+            }}
+          >
+            <Icon name="shield-tick" />
+            <FormattedMessage defaultMessage="Report Media" />
+          </DropdownMenu.Item>
+        )}
         {isMine && !login.readonly && (
           <DropdownMenu.Item
             className={itemClassName}

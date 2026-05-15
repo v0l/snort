@@ -4,6 +4,7 @@
   "type": "module",
   "dependencies": {
     "@cashu/cashu-ts": "^2.7.2",
+    "@formatjs/unplugin": "^1.1.12",
     "@livekit/components-react": "^2.9.15",
     "@livekit/protocol": "^1.42.2",
     "@noble/curves": "^2.0.1",

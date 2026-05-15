@@ -9,3 +9,6 @@ dist/
 .wrangler/
 docs/.vitepress/*
 !docs/.vitepress/config.mts
+.vitepress
+.playwright-mcp
+.pi-lens
