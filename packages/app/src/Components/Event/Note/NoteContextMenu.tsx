@@ -11,6 +11,7 @@ import useModeration from "@/Hooks/useModeration"
 
 import { ReBroadcaster } from "../../ReBroadcaster"
 import { useNoteContext } from "./NoteContext"
+import ReportMediaModal from "./ReportMediaModal"
 
 export function NoteContextMenu() {
   const { formatMessage } = useIntl()
@@ -18,6 +19,7 @@ export function NoteContextMenu() {
   const { mute } = useModeration()
   const { publisher, system } = useEventPublisher()
   const [showBroadcast, setShowBroadcast] = useState(false)
+  const [showReportModal, setShowReportModal] = useState(false)
   const { ev, translate, setShowReactionsModal } = useNoteContext()
   const lang = window.navigator.language
   const langNames = new Intl.DisplayNames([...window.navigator.languages], {
@@ -188,6 +190,16 @@ export function NoteContextMenu() {
           <Icon name="json" />
           <FormattedMessage {...messages.CopyJSON} />
         </DropdownMenu.Item>
+        <DropdownMenu.Item
+          className={itemClassName}
+          onClick={e => {
+            e.stopPropagation()
+            setShowReportModal(true)
+          }}
+        >
+          <Icon name="flag" />
+          <FormattedMessage defaultMessage="Report Media" />
+        </DropdownMenu.Item>
         {isMine && !login.readonly && (
           <DropdownMenu.Item
             className={itemClassName}
@@ -219,6 +231,7 @@ export function NoteContextMenu() {
         </DropdownMenu.Portal>
       </DropdownMenu.Root>
       {showBroadcast && <ReBroadcaster ev={ev} onClose={() => setShowBroadcast(false)} />}
+      {showReportModal && <ReportMediaModal event={ev} onClose={() => setShowReportModal(false)} />}
     </>
   )
 }

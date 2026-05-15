@@ -74,6 +74,51 @@ export async function blossomDelete(server: string, publisher: EventPublisher, h
   })
 }
 
+/**
+ * Report a blob to blossom servers using NIP-56 report event (kind 1984)
+ * @param servers - Blossom servers to report to
+ * @param publisher - Event publisher for signing the report event
+ * @param blobHash - SHA256 hash of the blob to report
+ * @param reason - Human-readable reason for the report
+ * @param signal - AbortSignal to cancel the operation
+ * @returns Map of servers to success status
+ */
+export async function blossomReport(
+  servers: Array<string>,
+  publisher: EventPublisher,
+  blobHash: string,
+  reason: string,
+  signal?: AbortSignal,
+): Promise<Map<string, boolean>> {
+  throwIfOffline()
+  const signer = makeSigner(publisher)
+
+  // Create NIP-56 report event
+  const reportEvent: SignedEvent = await signer({
+    kind: 1984,
+    content: reason,
+    tags: [["x", blobHash, "media"]],
+    created_at: Math.floor(Date.now() / 1000),
+  })
+
+  const results = new Map<string, boolean>()
+  
+  for (const server of servers) {
+    try {
+      const success = await Actions.reportBlobs([server], reportEvent, {
+        signal,
+        timeout: 10000,
+      })
+      results.set(server, success.get(server) ?? false)
+    } catch (error) {
+      console.error("Failed to report blob to server:", server, error)
+      results.set(server, false)
+    }
+  }
+
+  return results
+}
+
 async function uploadBlobAuth(signer: Signer, media: boolean, sha256: string, blob: File | Blob): Promise<SignedEvent> {
   const { createUploadAuth } = await import("blossom-client-sdk")
   return await createUploadAuth(signer, blob, {
