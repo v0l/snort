@@ -50,9 +50,9 @@ class CustomModelProvider implements ModelProvider {
 }
 
 const AI_CONFIG = {
-  apiUrl: "https://or.v0l.io/v1",
+  apiUrl: "https://yalr.v0l.io/v1",
   model: "code",
-  apiKey: "sk-215c78cfd59ec07b-a1f9a1-59a9fe61",
+  apiKey: "sk_fU9Xul8T5VkYUBQz8pElyms7",
 }
 
 export interface ModelInfo {
