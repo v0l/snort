@@ -11,6 +11,7 @@ import {
 } from "../types"
 import { runFixers } from "./fixers"
 import migrate from "./migrations"
+import { buildQuery, buildSearchContent, repeatParams } from "./shared"
 
 // Maximum number of event IDs to keep in the in-memory dedup cache.
 // Each entry is a 64-char hex string (~64 bytes); 50k entries ≈ 3 MB.
@@ -139,18 +140,18 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
    */
   batchSetSeenAt(ids: Array<string>, seen_at: number) {
     if (ids.length === 0 || !this.db) return
-    this.db.exec(`update events set seen_at = ? where id in (${this.#repeatParams(ids.length)})`, {
+    this.db.exec(`update events set seen_at = ? where id in (${repeatParams(ids.length)})`, {
       bind: [seen_at, ...ids],
     })
   }
 
   #deleteById(db: Database, ids: Array<string>) {
     if (ids.length === 0) return
-    db.exec(`delete from events where id in (${this.#repeatParams(ids.length)})`, {
+    db.exec(`delete from events where id in (${repeatParams(ids.length)})`, {
       bind: ids,
     })
     const deleted = db.changes()
-    db.exec(`delete from search_content where id in (${this.#repeatParams(ids.length)})`, {
+    db.exec(`delete from search_content where id in (${repeatParams(ids.length)})`, {
       bind: ids,
     })
     this.#log("Deleted", ids, deleted)
@@ -295,7 +296,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
   req(id: string, req: ReqFilter) {
     const start = unixNowMs()
 
-    const [sql, params] = this.#buildQuery(req)
+    const { sql, params } = buildQuery(req)
     const res = this.db?.selectArrays(sql, params)
     const results =
       res?.map(a => {
@@ -318,7 +319,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
    */
   count(req: ReqFilter) {
     const start = unixNowMs()
-    const [sql, params] = this.#buildQuery(req, true)
+    const { sql, params } = buildQuery(req, { count: true })
     const rows = this.db?.exec(sql, {
       bind: params,
       returnValue: "resultRows",
@@ -390,128 +391,13 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     return new Uint8Array()
   }
 
-  #buildQuery(req: ReqFilter, count = false, remove = false): [string, Array<any>] {
-    const conditions: Array<string> = []
-    const params: Array<any> = []
-
-    let resultType = "json,relays"
-    if (count) {
-      resultType = "count(json)"
-    } else if (req.ids_only === true) {
-      resultType = "id"
-    }
-    let operation = `select ${resultType}`
-    if (remove) {
-      operation = "delete"
-    }
-    let sql = `${operation} from events`
-    const orTags = Object.entries(req).filter(([k]) => k.startsWith("#"))
-    let tx = 0
-    for (const [key, values] of orTags) {
-      const vArray = values as Array<string>
-      sql += ` inner join tags t_${tx} on events.id = t_${tx}.event_id and t_${tx}.key = ? and t_${tx}.value in (${this.#repeatParams(
-        vArray.length,
-      )})`
-      params.push(key.slice(1))
-      params.push(...vArray)
-      tx++
-    }
-    if (req.search) {
-      sql += " inner join search_content on search_content.id = events.id"
-      conditions.push("search_content match ?")
-      params.push(req.search.replaceAll(".", "+").replaceAll("@", "+"))
-    }
-    if (req.ids) {
-      conditions.push(`id in (${this.#repeatParams(req.ids.length)})`)
-      params.push(...req.ids)
-    }
-    if (req.authors) {
-      conditions.push(`pubkey in (${this.#repeatParams(req.authors.length)})`)
-      params.push(...req.authors)
-    }
-    if (req.kinds) {
-      conditions.push(`kind in (${this.#repeatParams(req.kinds.length)})`)
-      params.push(...req.kinds)
-    }
-    if (req.since) {
-      conditions.push("created >= ?")
-      params.push(req.since)
-    }
-    if (req.until) {
-      conditions.push("created < ?")
-      params.push(req.until)
-    }
-    if (conditions.length > 0) {
-      sql += ` where ${conditions.join(" and ")}`
-    }
-    // Always order by created DESC so queries are deterministic and indexes can be used.
-    // Append LIMIT only when requested.
-    sql += " order by created desc"
-    if (req.limit) {
-      sql += ` limit ${req.limit}`
-    }
-    return [sql, params]
-  }
-
-  #repeatParams(n: number) {
-    const ret: Array<string> = []
-    for (let x = 0; x < n; x++) {
-      ret.push("?")
-    }
-    return ret.join(", ")
-  }
 
   insertIntoSearchIndex(db: Database, ev: NostrEvent) {
-    let indexContent = ""
-    let shouldIndex = false
-
-    // always index profiles
-    if (ev.kind === 0) {
-      shouldIndex = true
-      const profile = JSON.parse(ev.content) as {
-        name?: string
-        display_name?: string
-        lud16?: string
-        nip05?: string
-        website?: string
-        about?: string
-      }
-      if (profile) {
-        indexContent = [
-          profile.name,
-          profile.display_name,
-          profile.about,
-          profile.website,
-          profile.lud16,
-          profile.nip05,
-        ].join(" ")
-      }
-    }
-
-    // Check if this event kind has configured searchable tags
-    const searchableTags = this.#searchableTagsByKind.get(ev.kind)
-    let searchableTagContent = ""
-
-    if (searchableTags) {
-      shouldIndex = true
-      searchableTagContent = ev.tags
-        .filter(tag => tag.length >= 2 && searchableTags.has(tag[0]))
-        .map(tag => tag[1])
-        .filter(value => value && value.trim().length > 0)
-        .join(" ")
-    }
-
-    if (shouldIndex) {
-      // Always include content + any searchable tag content
-      const fullContent = [ev.content, indexContent, searchableTagContent]
-        .filter(content => content && content.trim().length > 0)
-        .join(" ")
-
-      if (fullContent.trim().length > 0) {
-        db.exec("insert into search_content values(?,?)", {
-          bind: [ev.id, fullContent],
-        })
-      }
+    const content = buildSearchContent(ev, this.#searchableTagsByKind)
+    if (content.trim().length > 0) {
+      db.exec("insert into search_content values(?,?)", {
+        bind: [ev.id, content],
+      })
     }
   }
 

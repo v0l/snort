@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "target": "ESNext",
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "noImplicitOverride": true,
+    "module": "ESNext",
+    "strict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSourceMap": true,
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "types": ["bun"]
+  },
+  "include": ["./src/**/*.ts"],
+  "files": ["./src/index.ts"]
+}

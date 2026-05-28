@@ -126,6 +126,18 @@
         "@snort/system": "^1.5.2",
       },
     },
+    "packages/bun-sqlite-relay": {
+      "name": "@snort/bun-sqlite-relay",
+      "version": "0.1.0",
+      "dependencies": {
+        "@snort/system": "^2.0.0",
+        "@snort/worker-relay": "^2.0.0",
+      },
+      "devDependencies": {
+        "@types/bun": "^1.3.14",
+        "typescript": "^5.9.3",
+      },
+    },
     "packages/shared": {
       "name": "@snort/shared",
       "version": "2.0.1",
@@ -849,6 +861,8 @@
 
     "@snort/bot": ["@snort/bot@workspace:packages/bot"],
 
+    "@snort/bun-sqlite-relay": ["@snort/bun-sqlite-relay@workspace:packages/bun-sqlite-relay"],
+
     "@snort/shared": ["@snort/shared@workspace:packages/shared"],
 
     "@snort/system": ["@snort/system@workspace:packages/system"],
@@ -944,6 +958,8 @@
     "@types/bittorrent-protocol": ["@types/bittorrent-protocol@3.1.7", "", { "dependencies": { "@types/node": "*" } }, "sha512-RGOjJndPEuMDP7563SE+s7Yu3ctibhPizVKcFaDYiv6hmckNgdSXMqhABhb48wn2XWIRnj9nF66ryLTb2VuKZQ=="],
 
     "@types/body-parser": ["@types/body-parser@1.19.6", "", { "dependencies": { "@types/connect": "*", "@types/node": "*" } }, "sha512-HLFeCYgz89uk22N5Qg3dvGvsv46B8GLvKKo1zKG4NybA8U2DiEO3w9lqGg29t/tfLRJpJ6iQxnVw4OnB7MoM9g=="],
+
+    "@types/bun": ["@types/bun@1.3.14", "", { "dependencies": { "bun-types": "1.3.14" } }, "sha512-h1hFqFVcvAvD9j9K7ZW7vd82aSA+rTdznZa+5bwvCwqSB1jmmfLcbIWhOLx1/+boy/xmjgCs/OMUL8hRJSmnPw=="],
 
     "@types/chai": ["@types/chai@5.2.3", "", { "dependencies": { "@types/deep-eql": "*", "assertion-error": "^2.0.1" } }, "sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA=="],
 
@@ -1182,6 +1198,8 @@
     "browserslist": ["browserslist@4.28.2", "", { "dependencies": { "baseline-browser-mapping": "^2.10.12", "caniuse-lite": "^1.0.30001782", "electron-to-chromium": "^1.5.328", "node-releases": "^2.0.36", "update-browserslist-db": "^1.2.3" }, "bin": { "browserslist": "cli.js" } }, "sha512-48xSriZYYg+8qXna9kwqjIVzuQxi+KYWp2+5nCYnYKPTr0LvD89Jqk2Or5ogxz0NUMfIjhh2lIUX/LyX9B4oIg=="],
 
     "buffer-from": ["buffer-from@1.1.2", "", {}, "sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ=="],
+
+    "bun-types": ["bun-types@1.3.14", "", { "dependencies": { "@types/node": "*" } }, "sha512-4N0ig0fEomHt5R0KCFWjovxow98rIoRwKolrYdCcknNwMekCXRnWEUvgu5soYV8QXtVsrUD8B95MBOZGPvr6KQ=="],
 
     "bytes": ["bytes@3.1.2", "", {}, "sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg=="],
 
