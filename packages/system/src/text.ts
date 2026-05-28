@@ -368,6 +368,10 @@ export function transformText(body: string, tags: Array<Array<string>>) {
       if (ix) {
         f.data = ix
         f.mimeType = ix.mimeType ?? f.mimeType
+        // promote link fragments to media when imeta provides a mimeType
+        if (f.type === FragmentType.Link && f.mimeType) {
+          f.type = FragmentType.Media
+        }
       }
     }
   }

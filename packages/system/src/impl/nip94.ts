@@ -1,4 +1,5 @@
 import { FileExtensionRegex } from "../const"
+import { extensionToMime } from "../utils"
 
 /**
  * https://github.com/nostr-protocol/nips/blob/master/94.md impl
@@ -47,7 +48,7 @@ export function readNip94Tags(tags: Array<Array<string>>) {
         break
       }
       case "m": {
-        res.mimeType = v
+        res.mimeType = normalizeMimeType(v)
         break
       }
       case "x": {
@@ -125,4 +126,41 @@ export function addExtensionToNip94Url(meta: Nip94Tags) {
     }
   }
   return meta.url
+}
+
+const KNOWN_MIME_TYPES: Record<string, string> = {
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  jfif: "image/jpeg",
+  gif: "image/gif",
+  png: "image/png",
+  bmp: "image/bmp",
+  webp: "image/webp",
+  svg: "image/svg+xml",
+  wav: "audio/wav",
+  mp3: "audio/mpeg",
+  ogg: "audio/ogg",
+  m4a: "audio/mp4",
+  mp4: "video/mp4",
+  mov: "video/quicktime",
+  mkv: "video/x-matroska",
+  avi: "video/x-msvideo",
+  m4v: "video/mp4",
+  webm: "video/webm",
+  m3u8: "application/x-mpegURL",
+}
+
+/**
+ * Normalize short-form mime values (e.g. "jpeg") to full MIME type ("image/jpeg")
+ */
+export function normalizeMimeType(mime: string): string {
+  // already full MIME type with slash
+  if (mime.includes("/")) return mime
+  // known short-forms
+  const lower = mime.toLowerCase()
+  if (KNOWN_MIME_TYPES[lower]) return KNOWN_MIME_TYPES[lower]
+  // fallback: try extensionToMime
+  const fromExt = extensionToMime(lower)
+  if (fromExt) return fromExt
+  return mime
 }

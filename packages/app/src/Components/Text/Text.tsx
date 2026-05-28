@@ -154,8 +154,21 @@ export default function Text({
           break
         }
         case "link": {
-          if (disableMedia ?? false) {
-            chunks.push(<DisableMedia content={element.content} />)
+          // link fragment with media mimeType from imeta should render as inline media
+          if (element.mimeType?.startsWith("image/") || element.mimeType?.startsWith("audio/") || element.mimeType?.startsWith("video/")) {
+            if (disableMedia ?? false) {
+              chunks.push(<DisableMedia content={element.content} />)
+            } else {
+              chunks.push(
+                <RevealMedia
+                  src={element.content}
+                  meta={element.data}
+                  size={baseImageWidth}
+                  creator={creator}
+                  onMediaClick={onMediaClick}
+                />,
+              )
+            }
           } else {
             chunks.push(<HyperText link={element.content} showLinkPreview={!(disableLinkPreview ?? false)} />)
           }

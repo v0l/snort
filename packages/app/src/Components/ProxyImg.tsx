@@ -40,6 +40,8 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
         onClick={e => {
           e.stopPropagation()
           setBypass(true)
+          setLoadFailed(false)
+          setImgSrc(src ?? "")
         }}
       >
         <FormattedMessage
@@ -56,11 +58,7 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
     if (props.onError) {
       props.onError(e)
     } else {
-      if (bypass && imgSrc !== src) {
-        setImgSrc(src ?? "")
-      } else {
-        setLoadFailed(true)
-      }
+      setLoadFailed(true)
     }
   }
 
