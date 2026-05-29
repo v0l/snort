@@ -43,7 +43,7 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     const rb = new RequestBuilder(`nip17:${pk?.slice(0, 12)}`)
 
     if (pk && !session.readonly) {
-      rb.withOptions({ useSyncModule: true })
+      rb.withOptions({ useSyncModule: true, leaveOpen: true })
       rb.withFilter().kinds([EventKind.GiftWrap]).tag("p", [pk])
     }
     return rb
