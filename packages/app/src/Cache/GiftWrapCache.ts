@@ -11,6 +11,12 @@ export interface UnwrappedGift {
   created_at: number
   inner: NostrEvent
   tags?: Array<Array<string>>
+  // NIP-59 randomises both the gift wrap and the seal's `created_at` by up
+  // to 48h in the past for metadata-leak resistance. Only the innermost
+  // rumor (kind 14) carries the true send time. We capture it here so the
+  // UI can sort and render messages chronologically; `inner` is left as
+  // the seal so the `EventKind.SealedRumor` check below keeps working.
+  rumorCreatedAt?: number
 }
 
 const DecryptedContentCache = new Map<string, string>()
@@ -94,6 +100,7 @@ export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
           }
           const unsealed = await pub.unsealRumor(u.inner)
           u.tags = unsealed.tags
+          u.rumorCreatedAt = unsealed.created_at
         } catch (e) {
           console.debug("Failed to unseal rumor", u.id, e)
           failed.add(i)

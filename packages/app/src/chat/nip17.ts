@@ -92,12 +92,19 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     let lastMessage = 0
     for (const v of messages) {
       const sbj = v.tags?.find(a => a[0] === "subject")?.[1]
-      if (v.created_at > bestTitleTime && sbj) {
+      // Use the innermost rumor's created_at (true send time). NIP-59
+      // randomises BOTH the gift wrap (v.created_at) and the seal
+      // (v.inner.created_at) by up to 48h in the past for metadata-leak
+      // resistance. Only v.rumorCreatedAt (captured by GiftWrapCache after
+      // unsealing) carries the true send time. Fall back to the seal time
+      // for any cached entries from before this field was added.
+      const ts = v.rumorCreatedAt ?? v.inner.created_at
+      if (ts > bestTitleTime && sbj) {
         bestTitle = sbj
-        bestTitleTime = v.created_at
+        bestTitleTime = ts
       }
-      if (v.inner.created_at > last) unread++
-      if (v.created_at > lastMessage) lastMessage = v.created_at
+      if (ts > last) unread++
+      if (ts > lastMessage) lastMessage = ts
     }
     return {
       type: ChatType.PrivateDirectMessage,
@@ -110,7 +117,7 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
         const cached = getCachedDecryptedContent(m.id)
         return {
           id: m.id,
-          created_at: m.inner.created_at,
+          created_at: m.rumorCreatedAt ?? m.inner.created_at,
           from: m.inner.pubkey,
           tags: m.tags,
           content: cached ?? "",
@@ -150,7 +157,7 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
       },
       markRead: (msgId?: string) => {
         const msg = messages.find(a => a.id === msgId)
-        setLastReadIn(id, msg?.inner.created_at)
+        setLastReadIn(id, msg?.rumorCreatedAt ?? msg?.inner.created_at)
         Nip17Chats.notifyChange()
       },
     } as Chat
