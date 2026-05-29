@@ -20,6 +20,7 @@ export default function DM(props: DMProps) {
   const { publisher } = useEventPublisher()
   const msg = props.data
   const [content, setContent] = useState<string>(() => getCachedDecryptedContent(msg.id))
+  const [decryptFailed, setDecryptFailed] = useState(false)
   const { ref, inView } = useInView({ triggerOnce: true })
   const { formatMessage } = useIntl()
   const isMe = msg.from === publicKey
@@ -32,10 +33,20 @@ export default function DM(props: DMProps) {
     const m = msgRef.current
     if (publisher && !getCachedDecryptedContent(m.id)) {
       const decrypted = await m.decrypt(publisher)
-      const result = decrypted || "<ERROR>"
-      setCachedDecryptedContent(m.id, result)
-      setContent(result)
-      props.chat.markRead(m.id)
+      if (decrypted) {
+        setCachedDecryptedContent(m.id, decrypted)
+        setContent(decrypted)
+        props.chat.markRead(m.id)
+      } else {
+        // Decryption failed — typically because this gift wrap is not
+        // addressed to the local user (e.g. an outbound self-copy from
+        // a NIP-17 dual-publish client) or has a malformed payload.
+        // Don't cache the failure (so a future code path or session
+        // can retry) and don't mark it read (so unread counts stay
+        // accurate). Surface it as a subtle indicator instead of the
+        // literal placeholder string "<ERROR>".
+        setDecryptFailed(true)
+      }
     }
   }, [publisher])
 
@@ -76,6 +87,10 @@ export default function DM(props: DMProps) {
         {sender()}
         {content ? (
           <Text id={msg.id} content={content} tags={[]} creator={otherPubkey} />
+        ) : decryptFailed ? (
+          <span className="italic text-gray-400">
+            <FormattedMessage defaultMessage="Unable to decrypt message" />
+          </span>
         ) : (
           <FormattedMessage defaultMessage="Loading..." />
         )}
