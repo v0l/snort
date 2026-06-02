@@ -188,6 +188,12 @@ export interface NostrJson {
 }
 
 export async function fetchNip05PubkeyWithThrow(name: string, domain: string, timeout?: number) {
+  // Route .bit domains to Namecoin blockchain resolution
+  if (domain.toLowerCase().endsWith(".bit")) {
+    const { fetchNamecoinNip05Pubkey } = await import("./namecoin")
+    return fetchNamecoinNip05Pubkey(name, domain)
+  }
+
   const data = await fetchNostrAddressWithThrow(name, domain, timeout)
   const match = Object.keys(data.names).find(n => {
     return n.toLowerCase() === name.toLowerCase()
@@ -224,6 +230,17 @@ export async function fetchNostrAddressWithThrow(name: string, domain: string, t
   if (!name || !domain) {
     throw new Error("Name and Domain must be set")
   }
+
+  // Route .bit domains to Namecoin blockchain resolution
+  if (domain.toLowerCase().endsWith(".bit")) {
+    const { fetchNamecoinNostrAddress } = await import("./namecoin")
+    const result = await fetchNamecoinNostrAddress(name, domain)
+    if (!result) {
+      throw new Error(`Namecoin: name not found for ${name}@${domain}`)
+    }
+    return result as NostrJson
+  }
+
   const u = new URL(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`)
   const res = await fetch(u, {
     signal: AbortSignal.timeout(timeout),
