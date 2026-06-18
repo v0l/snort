@@ -1,6 +1,5 @@
 import type { ImgProxySettings } from "@/Hooks/useImgProxy"
 import type { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes"
-import { DefaultImgProxy } from "@/Utils/Const"
 
 export interface UserPreferences {
   /**
@@ -137,7 +136,7 @@ export const DefaultPreferences = {
   confirmReposts: false,
   showDebugMenus: true,
   autoShowLatest: false,
-  imgProxyConfig: DefaultImgProxy,
+  imgProxyConfig: undefined,
   defaultRootTab: "following",
   defaultZapAmount: 50,
   autoZap: false,

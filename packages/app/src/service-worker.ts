@@ -41,31 +41,6 @@ registerRoute(
   }),
 )
 
-// Avatars
-registerRoute(
-  ({ request, url }) => {
-    return (
-      request.destination === "image" &&
-      url.href.startsWith("https://imgproxy.v0l.io/") &&
-      (url.pathname.includes("rs:fit:32:32") || url.pathname.includes("rs:fit:120:120"))
-    )
-  },
-  new CacheFirst({
-    cacheName: "avatar-cache",
-    plugins: [
-      new ExpirationPlugin({
-        maxEntries: 200, // gif avatars can still be large
-        matchOptions: {
-          ignoreVary: true,
-        },
-      }),
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-    ],
-  }),
-)
-
 // Cache images from any domain
 registerRoute(
   // match images except gif

@@ -6,7 +6,6 @@ import { AllLanguageCodes } from "@/Components/IntlProvider/IntlProviderUtils"
 import { useLocale } from "@/Components/IntlProvider/useLocale"
 import { useAllPreferences } from "@/Hooks/usePreferences"
 import { unwrap } from "@/Utils"
-import { DefaultImgProxy } from "@/Utils/Const"
 import type { UserPreferences } from "@/Utils/Login"
 
 import messages from "./messages"
@@ -250,7 +249,7 @@ const PreferencesPage = () => {
           onChange={e =>
             setPref({
               ...pref,
-              imgProxyConfig: e.target.checked ? DefaultImgProxy : undefined,
+              imgProxyConfig: e.target.checked ? { url: "", key: "", salt: "" } : undefined,
             })
           }
         />,
