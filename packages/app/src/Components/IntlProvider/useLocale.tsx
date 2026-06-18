@@ -9,6 +9,7 @@ export function useLocale() {
   const loggedOutLang = useSyncExternalStore(
     c => LangOverride.hook(c),
     () => LangOverride.snapshot(),
+    () => LangOverride.snapshot(), // getServerSnapshot
   )
   const locale = language ?? loggedOutLang ?? getLocale()
   return {

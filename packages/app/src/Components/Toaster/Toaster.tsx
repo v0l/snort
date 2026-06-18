@@ -38,6 +38,7 @@ export default function Toaster() {
   const toast = useSyncExternalStore(
     c => Toastore.hook(c),
     () => Toastore.snapshot(),
+    () => Toastore.snapshot(), // getServerSnapshot
   )
 
   return createPortal(

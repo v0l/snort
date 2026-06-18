@@ -91,6 +91,7 @@ export default function AgentPage() {
   const messages = useSyncExternalStore(
     c => messagesRef.current.hook(c),
     () => messagesRef.current.snapshot(),
+    () => messagesRef.current.snapshot(), // getServerSnapshot
   )
 
   // Fetch models when agent URL changes

@@ -104,7 +104,7 @@ export function useNoteCreator<T extends object = NoteCreatorDataSnapshot>(
   return useSyncExternalStoreWithSelector<NoteCreatorDataSnapshot, T>(
     c => NoteCreatorState.hook(c),
     () => NoteCreatorState.snapshot(),
-    undefined,
+    () => NoteCreatorState.snapshot(), // getServerSnapshot
     selector || defaultSelector,
   )
 }

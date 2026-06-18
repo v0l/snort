@@ -25,6 +25,7 @@ export function ZapPoolPageInner() {
   const zapPool = useSyncExternalStore(
     c => unwrap(ZapPoolController).hook(c),
     () => unwrap(ZapPoolController).snapshot(),
+    () => unwrap(ZapPoolController).snapshot(), // getServerSnapshot
   )
   const { wallet } = useWallet()
 

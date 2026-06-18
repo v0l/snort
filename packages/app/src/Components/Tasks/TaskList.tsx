@@ -52,6 +52,7 @@ export function TaskList() {
   const tasks = useSyncExternalStore(
     c => AllTasks.hook(c),
     () => AllTasks.snapshot(),
+    () => AllTasks.snapshot(), // getServerSnapshot
   )
   const session = useLogin()
   const user = useUserProfile(session.publicKey)

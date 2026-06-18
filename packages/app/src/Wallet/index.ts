@@ -148,6 +148,7 @@ export function useWallet() {
   const wallet = useSyncExternalStore<WalletStoreSnapshot>(
     h => Wallets.hook(h),
     () => Wallets.snapshot(),
+    () => Wallets.snapshot(), // getServerSnapshot
   )
   useEffect(() => {
     if (wallet.wallet?.isReady() === false && wallet.wallet.canAutoLogin()) {

@@ -8,7 +8,7 @@ export default function useLogin<T = LoginSession>(selector?: (v: LoginSession) 
   return useSyncExternalStoreWithSelector<LoginSession, T>(
     s => LoginStore.hook(s),
     () => LoginStore.snapshot(),
-    undefined,
+    () => LoginStore.snapshot(), // getServerSnapshot
     selector || defaultSelector,
   )
 }

@@ -14,6 +14,7 @@ export function ZapPoolDonateSection() {
   const zapPool = useSyncExternalStore(
     c => unwrap(ZapPoolController).hook(c),
     () => unwrap(ZapPoolController).snapshot(),
+    () => unwrap(ZapPoolController).snapshot(), // getServerSnapshot
   )
 
   return (
