@@ -212,9 +212,14 @@ export function computeSyncState(
   records: Array<SyncRecordPending>,
   feed: Array<TaggedNostrEvent>,
   now: number,
+  latestPrev?: QuerySyncState,
 ): QuerySyncState | undefined {
   if (records.length === 0) return undefined
-  const { prev, dimension, kinds } = records[0]
+  const { dimension, kinds } = records[0]
+  // Merge against the freshest stored state when provided — concurrent
+  // queries sharing a key (e.g. timeline chunks) would otherwise clobber
+  // each other's windows by merging against a stale plan-time snapshot.
+  const prev = latestPrev ?? records[0].prev
 
   // EOSE-proven window of a sent sub-filter: its requested range, with the
   // lower bound raised to the limit-th newest matched event when truncated.
@@ -235,13 +240,23 @@ export function computeSyncState(
   // Group records by value-set identity: windows proven for the SAME values
   // union (contiguous ranges of one subset), windows of DIFFERENT value
   // subsets intersect (no over-claim for values only proven in a narrower
-  // range). Known groups start from the previous coverage window.
+  // range).
+  //
+  // Whether a group may merge with the previous coverage window is decided
+  // HERE, against the freshest prev — not from the plan-time known flag.
+  // Concurrent queries sharing a key (timeline chunks) plan against no/stale
+  // state, but by record time an earlier sibling may have written coverage
+  // for the same values, which must union rather than be clobbered.
+  const prevVals = prev ? new Set(prev.values) : undefined
+  const canMergePrev = (values: Array<string>) =>
+    prev !== undefined && (dimension === "" || values.every(v => prevVals?.has(v)))
   const groups = new Map<string, { withPrev: boolean; wins: Array<Win> }>()
   for (const r of records) {
-    const gk = `${r.known ? "k" : "f"}:${[...r.values].sort().join(",")}`
+    const withPrev = canMergePrev(r.values)
+    const gk = `${withPrev ? "k" : "f"}:${[...r.values].sort().join(",")}`
     let g = groups.get(gk)
     if (!g) {
-      g = { withPrev: r.known, wins: [] }
+      g = { withPrev, wins: [] }
       groups.set(gk, g)
     }
     if (r.sent) {

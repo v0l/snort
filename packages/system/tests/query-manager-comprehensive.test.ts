@@ -1078,6 +1078,47 @@ describe("QueryManager — sync coverage", () => {
     qm.destroy()
   })
 
+  test("concurrent chunk queries sharing syncId union windows (no clobbering)", async () => {
+    const { pool, system, stateMap } = makeSyncSystem()
+    const conn = new MockConnection("wss://relay.test", true)
+    pool.add(conn)
+
+    const T0 = Math.floor(Date.now() / 1000) - 1000
+    const H2 = 7200
+    const qm = new QueryManager(system)
+
+    // three adjacent 2h chunks, newest first (like TimelineChunk)
+    const windows: Array<[number, number]> = [
+      [T0 - H2, T0],
+      [T0 - 2 * H2, T0 - H2],
+      [T0 - 3 * H2, T0 - 2 * H2],
+    ]
+    const queries = windows.map(([s, u], i) => {
+      const rb = new RequestBuilder(`chunk-${i}-${Date.now()}`)
+      rb.withOptions({ groupingDelay: 0, syncId: "chunky-feed" })
+      rb.withFilter().kinds([1]).authors([PK_A]).since(s).until(u)
+      const q = qm.query(rb)
+      q.start()
+      return q
+    })
+    await sleep(80)
+
+    // EOSE all chunks in quick succession (concurrent record path)
+    for (const q of queries) {
+      const tr = q.traces[0]
+      expect(tr).toBeDefined()
+      conn.emit("eose", tr.id)
+    }
+    await sleep(50)
+
+    expect(stateMap.size).toBe(1)
+    const st = [...stateMap.values()][0] as { since: number; until: number }
+    // windows must union across all three chunks, not last-writer-wins
+    expect(st.since).toBe(T0 - 3 * H2)
+    expect(st.until).toBe(T0)
+    qm.destroy()
+  })
+
   test("skipCache bypasses sync coverage", async () => {
     const { pool, system, stateMap } = makeSyncSystem()
     const conn = new MockConnection("wss://relay.test", true)

@@ -87,6 +87,13 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    */
   #cleanupInterval?: ReturnType<typeof setInterval>
 
+  /**
+   * Per-key promise chains serializing sync-state read-modify-write.
+   * Concurrent EOSEs sharing a key (e.g. timeline chunks with one syncId)
+   * must merge sequentially or they clobber each other's windows.
+   */
+  #syncWrites: Map<string, Promise<void>> = new Map()
+
   constructor(system: SystemInterface) {
     super()
     this.#system = system
@@ -450,11 +457,31 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         }
       }
       for (const [key, group] of byKey) {
-        const next = computeSyncState(group, feed, now)
-        if (next) {
-          this.#log("Sync record %s: [%d..%d, %d values]", key, next.since, next.until, next.values.length)
-          store.set(key, next).catch(e => this.#log("Failed to write sync state %s: %O", key, e))
-        }
+        // Serialize read-modify-write per key: re-read the latest stored
+        // state so concurrent writers union windows instead of clobbering.
+        const task = (this.#syncWrites.get(key) ?? Promise.resolve()).then(async () => {
+          let latest: Awaited<ReturnType<SyncStateStore["get"]>>
+          try {
+            latest = await store.get(key)
+          } catch {
+            // fall back to plan-time state
+          }
+          const next = computeSyncState(group, feed, now, latest ?? group[0].prev)
+          if (next) {
+            this.#log("Sync record %s: [%d..%d, %d values]", key, next.since, next.until, next.values.length)
+            try {
+              await store.set(key, next)
+            } catch (e) {
+              this.#log("Failed to write sync state %s: %O", key, e)
+            }
+          }
+        })
+        this.#syncWrites.set(key, task)
+        task.finally(() => {
+          if (this.#syncWrites.get(key) === task) {
+            this.#syncWrites.delete(key)
+          }
+        })
       }
     }
     q.once("eose", record)
