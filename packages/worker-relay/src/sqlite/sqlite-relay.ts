@@ -391,6 +391,22 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     return new Uint8Array()
   }
 
+  /**
+   * Read a value from the KV table (same lifetime as the event store)
+   */
+  kvGet(key: string): string | undefined {
+    const rows = this.db?.selectArrays("select value from kv where key = ?", [key])
+    return (rows?.at(0)?.at(0) as string | undefined) ?? undefined
+  }
+
+  /**
+   * Upsert a value into the KV table
+   */
+  kvSet(key: string, value: string) {
+    this.db?.exec("insert into kv(key, value) values(?,?) on conflict(key) do update set value = excluded.value", {
+      bind: [key, value],
+    })
+  }
 
   insertIntoSearchIndex(db: Database, ev: NostrEvent) {
     const content = buildSearchContent(ev, this.#searchableTagsByKind)

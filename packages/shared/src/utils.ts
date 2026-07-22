@@ -94,7 +94,10 @@ export function distance(a: any, b: any): number {
         const aa = a[key] as Array<string | number>
         const bb = b[key] as Array<string | number>
         if (aa.length === bb.length) {
-          if (aa.some(v => !bb.includes(v))) {
+          // Use a Set for O(n) membership instead of O(n²) array scans, which
+          // matters when comparing large author/id filter arrays.
+          const bset = new Set(bb)
+          if (aa.some(v => !bset.has(v))) {
             distance++
           }
         } else {

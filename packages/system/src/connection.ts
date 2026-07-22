@@ -18,6 +18,9 @@ export interface RelaySettings {
 }
 
 export class Connection extends EventEmitter<ConnectionTypeEvents> implements ConnectionType {
+  /** Upper bound on the pending-raw send queue (see #send) */
+  static readonly MaxPendingRaw = 1000
+
   #log: debug.Debugger
   #ephemeralCheck?: ReturnType<typeof setInterval>
   #activity: number = unixNowMs()
@@ -37,6 +40,12 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
 
   settings: RelaySettings
   info: RelayInfoDocument | undefined
+  /**
+   * Resolves once the NIP-11 document load has settled (success or failure).
+   * Consumers that need relay capabilities (e.g. NIP-50 search) can await this
+   * since the fetch runs in parallel with the WebSocket handshake.
+   */
+  #infoReady?: Promise<void>
   ConnectTimeout: number = DefaultConnectTimeout
   HasStateChange: boolean = true
   ReconnectTimer?: ReturnType<typeof setTimeout>
@@ -69,6 +78,14 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     return this.Socket?.readyState === WebSocket.OPEN
   }
 
+  /**
+   * Promise that settles when the NIP-11 document load completes. Resolves
+   * immediately if the doc is already loaded or was never started.
+   */
+  get infoReady(): Promise<void> {
+    return this.#infoReady ?? Promise.resolve()
+  }
+
   get isConnecting() {
     return this.Socket?.readyState === WebSocket.CONNECTING
   }
@@ -90,12 +107,19 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     if (this.#connectStarted) return
     this.#connectStarted = true
 
-    try {
-      if (this.info === undefined) {
-        this.info = await Nip11.loadRelayDocument(this.address)
-      }
-    } catch {
-      // ignored
+    // Kick off the NIP-11 fetch in parallel with the WebSocket handshake
+    // instead of blocking the connection on an HTTP round-trip (or its
+    // timeout for relays that don't serve NIP-11). Features that need
+    // `info` (auth, max_subscriptions, negentropy) fall back to defaults
+    // until it resolves.
+    if (this.info === undefined && this.#infoReady === undefined) {
+      this.#infoReady = Nip11.loadRelayDocument(this.address)
+        .then(doc => {
+          this.info = doc
+        })
+        .catch(() => {
+          // ignored
+        })
     }
 
     try {
@@ -421,6 +445,11 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     const authPending = !this.Authed && (this.AwaitingAuth.size > 0 || this.info?.limitation?.auth_required === true)
     if (!this.isOpen || authPending) {
       this.PendingRaw.push(obj)
+      // Bound the queue so a connection stuck awaiting auth (e.g. no signer)
+      // doesn't accumulate messages without limit.
+      if (this.PendingRaw.length > Connection.MaxPendingRaw) {
+        this.PendingRaw.splice(0, this.PendingRaw.length - Connection.MaxPendingRaw)
+      }
       return false
     }
 

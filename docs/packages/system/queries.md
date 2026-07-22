@@ -329,3 +329,4 @@ q.on('eot', () => {
 ## See Also
 
 - [Examples → Query System](/examples/queries)
+- [Query Internals & Performance](/packages/system/query-internals) — event flow, hot paths, cache integration, filter shape corpus

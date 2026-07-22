@@ -5,6 +5,7 @@ const systemItems = [
   { text: 'NostrSystem', link: '/packages/system/nostr-system' },
   { text: 'Relay Management', link: '/packages/system/relays' },
   { text: 'Query System', link: '/packages/system/queries' },
+  { text: 'Query Internals & Performance', link: '/packages/system/query-internals' },
   { text: 'Caching', link: '/packages/system/caching' },
   { text: 'Signers', link: '/packages/system/signers' },
   { text: 'Event Builder & Publisher', link: '/packages/system/events' },

@@ -34,6 +34,11 @@ export type ConnectionType = {
   readonly isOpen: boolean
   readonly activeSubscriptions: number
   readonly maxSubscriptions: number
+  /**
+   * Settles when the relay's NIP-11 document load completes (optional; may be
+   * absent on custom connection implementations).
+   */
+  readonly infoReady?: Promise<void>
   settings: RelaySettings
   ephemeral: boolean
 
@@ -113,9 +118,11 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
   #log = debug("ConnectionPool")
 
   /**
-   * Track if a connection request has started
+   * In-flight connection promises keyed by sanitized address. Concurrent
+   * callers share the same promise instead of busy-polling or spawning
+   * duplicate sockets.
    */
-  #connectStarted = new Set<string>()
+  #inflight = new Map<string, Promise<ConnectionType | undefined>>()
 
   /**
    * All currently connected websockets
@@ -143,6 +150,9 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
    * Get a connection object from the pool
    */
   getConnection(id: string) {
+    // Fast path: already a sanitized address present in the pool.
+    const direct = this.#sockets.get(id)
+    if (direct) return direct
     const addr = sanitizeRelayUrl(id)
     if (addr) {
       return this.#sockets.get(addr)
@@ -155,27 +165,25 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
   async connect(address: string, options: RelaySettings, ephemeral: boolean) {
     const addr = unwrap(sanitizeRelayUrl(address))
 
-    // If connection is already being established, wait for it
-    if (this.#connectStarted.has(addr)) {
-      // Poll for the connection to be established
-      const maxWait = 10000 // 10 seconds
-      const pollInterval = 100 // 100ms
-      const startTime = Date.now()
-
-      while (this.#connectStarted.has(addr) && Date.now() - startTime < maxWait) {
-        await new Promise(resolve => setTimeout(resolve, pollInterval))
-        const existing = this.#sockets.get(addr)
-        if (existing) {
-          return existing
-        }
-      }
-
-      // If we get here, either connection failed or timed out
-      // Fall through to check sockets or start new connection
+    // Share any in-flight connection attempt for this address.
+    const pending = this.#inflight.get(addr)
+    if (pending) {
+      return pending
     }
 
-    this.#connectStarted.add(addr)
+    const p = this.#doConnect(addr, options, ephemeral)
+    this.#inflight.set(addr, p)
+    try {
+      return await p
+    } finally {
+      this.#inflight.delete(addr)
+    }
+  }
 
+  /**
+   * Actual connection logic. `addr` must already be sanitized.
+   */
+  async #doConnect(addr: string, options: RelaySettings, ephemeral: boolean) {
     try {
       const existing = this.#sockets.get(addr)
       if (!existing) {
@@ -242,8 +250,6 @@ export class DefaultConnectionPool<T extends ConnectionType = Connection>
       this.#log("%O", e)
       this.emit("connectFailed", addr)
       this.#sockets.delete(addr)
-    } finally {
-      this.#connectStarted.delete(addr)
     }
   }
 

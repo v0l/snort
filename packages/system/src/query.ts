@@ -161,6 +161,9 @@ export interface QueryEvents {
  * Active query - collects events and tracks traces
  */
 export class Query extends EventEmitter<QueryEvents> {
+  /** Upper bound on retained sent-filter history (see #recordSentFilters) */
+  static readonly MaxSentFilters = 256
+
   id: string
 
   /**
@@ -306,6 +309,22 @@ export class Query extends EventEmitter<QueryEvents> {
   }
 
   /**
+   * Record filters as emitted, deduplicating against what's already been sent
+   * and capping total retained history so long-lived (replaceable/streaming)
+   * queries don't grow #sentFilters without bound.
+   */
+  #recordSentFilters(filters: Array<ReqFilter>) {
+    for (const f of filters) {
+      if (!this.#sentFilters.some(sf => this.#filterEq(f, sf))) {
+        this.#sentFilters.push(f)
+      }
+    }
+    if (this.#sentFilters.length > Query.MaxSentFilters) {
+      this.#sentFilters.splice(0, this.#sentFilters.length - Query.MaxSentFilters)
+    }
+  }
+
+  /**
    * Compare two ReqFilters for equality.
    * Compares all matching fields but ignores `relays` (routing info, not matching criteria).
    */
@@ -334,10 +353,19 @@ export class Query extends EventEmitter<QueryEvents> {
   }
 
   /**
+   * Cached flattened filters across all traces. Invalidated whenever a trace
+   * is added or removed. Avoids re-allocating on every addEvent("*", ...) call.
+   */
+  #filtersCache?: Array<ReqFilter>
+
+  /**
    * Recompute the complete set of compressed filters from all query traces
    */
   get filters() {
-    return [...this.#tracing.values()].flatMap(a => a.filters)
+    if (this.#filtersCache === undefined) {
+      this.#filtersCache = [...this.#tracing.values()].flatMap(a => a.filters)
+    }
+    return this.#filtersCache
   }
 
   get feed() {
@@ -373,6 +401,7 @@ export class Query extends EventEmitter<QueryEvents> {
    */
   addTrace(trace: QueryTrace) {
     this.#tracing.set(trace.id, trace)
+    this.#filtersCache = undefined
 
     // Start hard timeout on first trace — ensures the query never hangs
     if (this.#tracing.size === 1 && !this.#leaveOpen) {
@@ -437,6 +466,7 @@ export class Query extends EventEmitter<QueryEvents> {
    */
   removeTrace(traceId: string) {
     this.#tracing.delete(traceId)
+    this.#filtersCache = undefined
   }
 
   /**
@@ -450,9 +480,14 @@ export class Query extends EventEmitter<QueryEvents> {
         const added = this.feed.add(e)
         if (added === 0) {
           this.#duplicates++
-          const ratio = this.#duplicates / this.feed.snapshot.length
-          if (ratio > 2) {
-            this.#log("High number of duplicates for: ", this.id, ratio, this.feed.snapshot.length)
+          // Use feed.size (O(1)) instead of snapshot.length, which would
+          // re-materialise the whole event array on every duplicate.
+          const size = this.feed.size
+          if (size > 0) {
+            const ratio = this.#duplicates / size
+            if (ratio > 2) {
+              this.#log("High number of duplicates for: ", this.id, ratio, size)
+            }
           }
         }
       } else {
@@ -552,7 +587,7 @@ export class Query extends EventEmitter<QueryEvents> {
       rawFilters.push(...this.filters)
     }
     if (rawFilters.length > 0) {
-      this.#sentFilters.push(...rawFilters)
+      this.#recordSentFilters(rawFilters)
       this.emit("request", this.id, rawFilters)
     }
   }

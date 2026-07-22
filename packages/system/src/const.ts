@@ -97,3 +97,9 @@ export const FetchAllGracePeriod = 500
  * Timeout for NIP-55 clipboard-based signer response (ms)
  */
 export const Nip55SignerTimeout = 120_000
+
+/**
+ * Overlap window (seconds) applied below a sync watermark when rewriting
+ * filters to deltas. Absorbs relay clock skew and slightly-late events.
+ */
+export const SyncOverlapWindow = 60 * 5

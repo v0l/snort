@@ -1,4 +1,4 @@
-import { unixNowMs } from "@snort/shared"
+import { unixNow } from "@snort/shared"
 import debug from "debug"
 import { EventEmitter } from "eventemitter3"
 import {
@@ -16,6 +16,8 @@ import { EventExt } from "./event-ext"
 import { NegentropyFlow } from "./negentropy/negentropy-flow"
 import { NoteCollection } from "./note-collection"
 import { Query, QueryTrace, type QueryTraceEvent } from "./query"
+import type { SyncStateStore } from "./cache-relay"
+import { computeSyncState, getSyncDimension, planFilterSync, type SyncRecordPending, syncStateKey } from "./query-sync"
 import { eventMatchesFilter, isRequestSatisfied } from "./request-matcher"
 import { trimFilters } from "./request-trim"
 import { RangeSync } from "./sync/range-sync"
@@ -33,6 +35,12 @@ interface PendingTrace {
   filters: BuiltRawReqFilter
 }
 
+interface TraceRoute {
+  query: Query
+  trace: QueryTrace
+  connection: ConnectionType
+}
+
 /**
  * Query manager handles sending requests to the nostr network
  */
@@ -48,6 +56,21 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    * Pending traces waiting for connection availability
    */
   #pendingTraces: Array<PendingTrace> = []
+
+  /**
+   * Routing table: subscription id (trace.id) → owning query/trace/connection.
+   * A single pool "event" listener dispatches through this map in O(1),
+   * instead of registering one pool listener per trace (which made event
+   * dispatch O(events × traces) and leaked listeners on long-lived queries).
+   */
+  #traceRouting: Map<string, TraceRoute> = new Map()
+
+  /**
+   * Connections we've already attached eose/closed listeners to.
+   * Connection objects persist across reconnects, so one listener each is
+   * enough and stays bounded by the number of relays.
+   */
+  #connListenersAttached: WeakSet<ConnectionType> = new WeakSet()
 
   /**
    * System interface handle
@@ -71,7 +94,30 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     // Set up global connection listeners for cleanup
     this.#setupConnectionListeners()
 
-    this.#cleanupInterval = setInterval(() => this.#cleanup(), 1_000)
+    // Single pool-level event listener — dispatches via #traceRouting.
+    this.#system.pool.on("event", this.#onPoolEvent)
+  }
+
+  /**
+   * Ensure the periodic cleanup timer is running. Started lazily when queries
+   * exist and stopped again once the query set empties, so an idle system
+   * isn't holding a wakeup every second.
+   */
+  #ensureCleanupRunning() {
+    if (!this.#cleanupInterval) {
+      this.#cleanupInterval = setInterval(() => this.#cleanup(), 1_000)
+    }
+  }
+
+  /**
+   * Central pool event handler. Routes an incoming event to the owning query
+   * using the trace-id → query map.
+   */
+  #onPoolEvent = (_addr: string, sub: string, ev: TaggedNostrEvent) => {
+    const route = this.#traceRouting.get(sub)
+    if (route) {
+      route.query.addEvent(sub, ev)
+    }
   }
 
   /**
@@ -83,10 +129,12 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       clearInterval(this.#cleanupInterval)
       this.#cleanupInterval = undefined
     }
+    this.#system.pool.off("event", this.#onPoolEvent)
     for (const [, q] of this.#queries) {
       q.cancel()
     }
     this.#queries.clear()
+    this.#traceRouting.clear()
     this.removeAllListeners()
   }
 
@@ -108,11 +156,12 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         this.#connectionListeners.delete(conn.id)
         this.#pendingTraces = this.#pendingTraces.filter(p => p.connection.id !== conn.id)
 
-        // Mark all traces for this connection as dropped
+        // Mark all traces for this connection as dropped and drop their routes
         for (const [_, query] of this.#queries) {
           for (const trace of query.traces) {
             if (trace.connId === conn.id && !trace.finished) {
               trace.drop()
+              this.#traceRouting.delete(trace.id)
             }
           }
         }
@@ -128,6 +177,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    * Compute query to send to relays
    */
   query(req: RequestBuilder): Query {
+    this.#ensureCleanupRunning()
     const existing = this.#queries.get(req.id)
     if (existing) {
       existing.uncancel() // keep alive — new subscriber
@@ -145,6 +195,11 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         this.#send(q, fx)
       })
       q.on("end", () => {
+        // Drop this query's routes so the central pool listener stops
+        // dispatching to it.
+        for (const tr of q.traces) {
+          this.#traceRouting.delete(tr.id)
+        }
         q.off("trace")
         q.off("request")
       })
@@ -291,6 +346,19 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       return
     }
 
+    // Apply sync coverage (watermarks) pre-routing: rewrite eligible filters
+    // into deltas against EOSE-proven windows, drop fully-covered ones.
+    // Gated on the cache relay exposing syncState (same-store rule).
+    const syncStore = !q.skipCache ? this.#system.cacheRelay?.syncState : undefined
+    if (syncStore) {
+      filters = await this.#applySyncCoverage(q, filters, syncStore)
+      if (filters.length === 0) {
+        this.#log("Dropping %s, all filters covered by sync state", q.id)
+        q.emit("eose")
+        return
+      }
+    }
+
     if (this.#system.requestRouter) {
       filters = this.#system.requestRouter.forAllRequest(filters)
     }
@@ -320,6 +388,68 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
   }
 
   /**
+   * Rewrite filters using stored sync coverage: known dimension values get
+   * delta `since` (or are dropped when fully covered), fresh values get a
+   * full fetch. Schedules watermark advancement on query EOSE.
+   */
+  async #applySyncCoverage(q: Query, filters: Array<ReqFilter>, store: SyncStateStore): Promise<Array<ReqFilter>> {
+    const send: Array<ReqFilter> = []
+    const records: Array<SyncRecordPending> = []
+    const now = unixNow()
+    for (const f of filters) {
+      const dim = getSyncDimension(f)
+      if (!dim) {
+        send.push(f)
+        continue
+      }
+      const key = syncStateKey(q.id, dim, f)
+      let st: Awaited<ReturnType<SyncStateStore["get"]>>
+      try {
+        st = await store.get(key)
+      } catch (e) {
+        this.#log("Failed to read sync state %s: %O", key, e)
+      }
+      const plan = planFilterSync(f, dim, st, key, now)
+      send.push(...plan.send)
+      records.push(...plan.records)
+    }
+    if (records.length > 0) {
+      this.#scheduleSyncRecord(q, records, store)
+    }
+    return send
+  }
+
+  /**
+   * Advance sync watermarks once the query reaches EOSE (or ends).
+   */
+  #scheduleSyncRecord(q: Query, records: Array<SyncRecordPending>, store: SyncStateStore) {
+    let done = false
+    const record = () => {
+      if (done) return
+      done = true
+      const feed = q.feed.snapshot
+      const now = unixNow()
+      const byKey = new Map<string, Array<SyncRecordPending>>()
+      for (const r of records) {
+        const list = byKey.get(r.key)
+        if (list) {
+          list.push(r)
+        } else {
+          byKey.set(r.key, [r])
+        }
+      }
+      for (const [key, group] of byKey) {
+        const next = computeSyncState(group, feed, now)
+        if (next) {
+          store.set(key, next).catch(e => this.#log("Failed to write sync state %s: %O", key, e))
+        }
+      }
+    }
+    q.once("eose", record)
+    q.once("end", record)
+  }
+
+  /**
    * Check if query can be sent to this connection
    */
   #canSendQuery(c: ConnectionType, q: BuiltRawReqFilter, query: Query) {
@@ -336,9 +466,12 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       this.#log("Cant send non-specific REQ to ephemeral connection %O %O %O", q, q.relay, c)
       return false
     }
-    // search not supported, cant send (only block if we know the relay doesn't support it)
-    if (q.filters.some(a => a.search) && c.info?.supported_nips && !c.info.supported_nips.includes(Nips.Search)) {
-      this.#log("Cant send REQ to non-search relay", c.address)
+    // Search queries must only go to relays known to support NIP-50. Sending a
+    // search filter to a relay that doesn't advertise NIP-50 makes it ignore
+    // `search` and return everything — so require advertised support. This also
+    // guards against firing search REQs before the relay's NIP-11 doc loads.
+    if (q.filters.some(a => a.search) && !(c.info?.supported_nips?.includes(Nips.Search) ?? false)) {
+      this.#log("Cant send search REQ to relay without known NIP-50 support", c.address)
       return false
     }
     // query already closed, cant send
@@ -355,39 +488,51 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
   createTrace(query: Query, connection: ConnectionType, filters: BuiltRawReqFilter): QueryTrace {
     const trace = new QueryTrace(connection.address, filters.filters, connection.id, query.leaveOpen)
 
-    // Set up event listeners for this trace
-    const eventHandler = (_relay: string, sub: string, ev: TaggedNostrEvent) => {
-      if (trace.id === sub) {
-        query.addEvent(sub, ev)
-      }
-    }
-
-    const eoseHandler = (sub: string) => {
-      if (trace.id === sub) {
-        trace.eose()
-        if (!trace.leaveOpen) {
-          connection.closeRequest(trace.id)
-          trace.close()
-        }
-      }
-    }
-
-    const closedHandler = (sub: string) => {
-      if (trace.id === sub) {
-        trace.remoteClosed()
-      }
-    }
-
-    this.#system.pool.on("event", eventHandler)
-    connection.on("eose", eoseHandler)
-    connection.on("closed", closedHandler)
-    query.on("end", () => {
-      this.#system.pool.off("event", eventHandler)
-      connection.off("eose", eoseHandler)
-      connection.off("closed", closedHandler)
-    })
+    // Register in the routing table (dispatched by the single pool listener).
+    this.#traceRouting.set(trace.id, { query, trace, connection })
+    // Attach per-connection eose/closed listeners once.
+    this.#ensureConnectionListeners(connection)
 
     return trace
+  }
+
+  /**
+   * Attach eose/closed listeners to a connection exactly once. Routing is done
+   * via #traceRouting so a single pair of listeners serves all traces on the
+   * connection instead of one pair per trace.
+   */
+  #ensureConnectionListeners(connection: ConnectionType) {
+    if (this.#connListenersAttached.has(connection)) return
+    this.#connListenersAttached.add(connection)
+
+    connection.on("eose", sub => this.#onConnectionEose(connection, sub))
+    connection.on("closed", sub => this.#onConnectionClosed(connection, sub))
+  }
+
+  #onConnectionEose(connection: ConnectionType, sub: string) {
+    const route = this.#traceRouting.get(sub)
+    if (route && route.connection === connection) {
+      route.trace.eose()
+      if (!route.trace.leaveOpen) {
+        // Delete route first so the re-entrant "eose" emitted by closeRequest
+        // is a no-op.
+        this.#traceRouting.delete(sub)
+        route.trace.close()
+        connection.closeRequest(route.trace.id)
+      }
+    }
+    // A subscription slot may have freed — flush any queued traces.
+    this.#retryPendingTraces(connection)
+  }
+
+  #onConnectionClosed(connection: ConnectionType, sub: string) {
+    const route = this.#traceRouting.get(sub)
+    if (route && route.connection === connection) {
+      route.trace.remoteClosed()
+      this.#traceRouting.delete(sub)
+    }
+    // A subscription slot may have freed — flush any queued traces.
+    this.#retryPendingTraces(connection)
   }
 
   /**
@@ -574,7 +719,13 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       // query has visibility even if NIP-11 or the WebSocket handshake is slow.
       // sendTrace will queue the trace in #pendingTraces if the connection
       // isn't open yet, and it'll be retried when the pool fires "connected".
-      this.#system.pool.connect(qSend.relay, { read: true, write: true }, true).then(nc => {
+      this.#system.pool.connect(qSend.relay, { read: true, write: true }, true).then(async nc => {
+        // Search queries depend on NIP-50 support, which is only known after the
+        // NIP-11 doc loads (in parallel with the WS handshake). Wait for it so
+        // targeted search REQs aren't dropped by #canSendQuery on a cold relay.
+        if (nc && nc.infoReady && qSend.filters.some(f => f.search)) {
+          await nc.infoReady
+        }
         if (nc && this.#canSendQuery(nc, qSend, q)) {
           const trace = this.createTrace(q, nc, qSend)
           q.addTrace(trace)
@@ -620,11 +771,19 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     let changed = false
     for (const [k, v] of this.#queries) {
       if (v.canRemove()) {
+        for (const tr of v.traces) {
+          this.#traceRouting.delete(tr.id)
+        }
         v.closeQuery()
         this.#queries.delete(k)
         this.#log("Deleted query %s", k)
         changed = true
       }
+    }
+    // Stop the timer while idle; #ensureCleanupRunning restarts it lazily.
+    if (this.#queries.size === 0 && this.#cleanupInterval) {
+      clearInterval(this.#cleanupInterval)
+      this.#cleanupInterval = undefined
     }
     if (changed) {
       this.emit("change")

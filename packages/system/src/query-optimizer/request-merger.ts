@@ -118,21 +118,38 @@ export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
     ) as ReqFilter
   }
 
-  // reducer, kinda verbose
-  while (all.length > 0) {
-    // biome-ignore lint/style/noNonNullAssertion: shift() is defined because length > 0
-    const currentFilter = all.shift()!
-    const mergeSet = [currentFilter]
-
-    for (let i = 0; i < all.length; i++) {
-      const f = all[i]
-
-      if (mergeSet.every(a => canMergeFilters(a, f))) {
-        mergeSet.push(all.splice(i, 1)[0])
-        i--
-      }
+  // Bucket by resultSetId first. Filters with different resultSetIds can never
+  // merge (canMergeFilters short-circuits on it), so restricting the O(n²)
+  // pairwise comparison to within each bucket turns a global O(n²) pass into
+  // the sum of much smaller per-bucket passes.
+  const buckets = new Map<string, Array<FlatReqFilter>>()
+  for (const f of all) {
+    const key = f.resultSetId ?? ""
+    let bucket = buckets.get(key)
+    if (!bucket) {
+      bucket = []
+      buckets.set(key, bucket)
     }
-    ret.push(mergeFiltersInSet(mergeSet))
+    bucket.push(f)
+  }
+
+  // reducer, kinda verbose
+  for (const bucket of buckets.values()) {
+    while (bucket.length > 0) {
+      // biome-ignore lint/style/noNonNullAssertion: shift() is defined because length > 0
+      const currentFilter = bucket.shift()!
+      const mergeSet = [currentFilter]
+
+      for (let i = 0; i < bucket.length; i++) {
+        const f = bucket[i]
+
+        if (mergeSet.every(a => canMergeFilters(a, f))) {
+          mergeSet.push(bucket.splice(i, 1)[0])
+          i--
+        }
+      }
+      ret.push(mergeFiltersInSet(mergeSet))
+    }
   }
 
   while (true) {

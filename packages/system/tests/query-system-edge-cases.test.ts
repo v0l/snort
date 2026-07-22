@@ -637,10 +637,13 @@ describe("eventMatchesFilter", () => {
     expect(eventMatchesFilter(futureEv, { until: 0 })).toBe(true)
   })
 
-  test("tag filters (#e, #p) are NOT checked — any event passes regardless of tags", () => {
+  test("tag filters (#e, #p) are enforced", () => {
     const noTags = { ...base, tags: [] }
-    // Even though filter requests specific #e values, matcher ignores them
-    expect(eventMatchesFilter(noTags, { "#e": ["someEventId"] })).toBe(true)
+    // Event without the requested tag must not match
+    expect(eventMatchesFilter(noTags, { "#e": ["someEventId"] })).toBe(false)
+    const withTag = { ...base, tags: [["e", "someEventId"]] }
+    expect(eventMatchesFilter(withTag, { "#e": ["someEventId"] })).toBe(true)
+    expect(eventMatchesFilter(withTag, { "#e": ["other"] })).toBe(false)
   })
 
   test("combined filter: all matching fields pass", () => {
@@ -677,11 +680,11 @@ describe("isRequestSatisfied", () => {
   })
 
   test("not satisfied when one id is missing", () => {
-    expect(isRequestSatisfied({ ids: ["id1", "id3"] }, results)).toBeUndefined()
+    expect(isRequestSatisfied({ ids: ["id1", "id3"] }, results)).toBe(false)
   })
 
-  test("not satisfied when ids field is absent — returns undefined for any author/kind filter", () => {
-    expect(isRequestSatisfied({ authors: ["aa"], kinds: [1] }, results)).toBeUndefined()
+  test("not satisfied when ids field is absent — returns false for any author/kind filter", () => {
+    expect(isRequestSatisfied({ authors: ["aa"], kinds: [1] }, results)).toBe(false)
   })
 
   test("not satisfied with empty ids array (no ids to satisfy)", () => {
@@ -692,12 +695,12 @@ describe("isRequestSatisfied", () => {
   })
 
   test("not satisfied when results is empty", () => {
-    expect(isRequestSatisfied({ ids: ["id1"] }, [])).toBeUndefined()
+    expect(isRequestSatisfied({ ids: ["id1"] }, [])).toBe(false)
   })
 
-  test("returns undefined (not false) when not satisfied", () => {
+  test("returns false (not undefined) when not satisfied", () => {
     const result = isRequestSatisfied({ ids: ["missing"] }, results)
-    expect(result).toBeUndefined()
+    expect(result).toBe(false)
   })
 })
 

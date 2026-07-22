@@ -24,6 +24,11 @@ export abstract class NoteStore extends EventEmitter<NosteStoreEvents> {
   abstract clear(): void
 
   abstract get snapshot(): NoteStoreSnapshotData
+
+  /**
+   * Number of events held, computed without materialising the snapshot.
+   */
+  abstract get size(): number
 }
 
 export abstract class HookedNoteStore extends NoteStore {
@@ -122,6 +127,10 @@ export class KeyedReplaceableNoteStore extends HookedNoteStore {
   clear() {
     this.#events.clear()
     this.onClear()
+  }
+
+  get size() {
+    return this.#events.size
   }
 
   takeSnapshot() {

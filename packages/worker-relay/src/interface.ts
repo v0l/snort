@@ -17,7 +17,10 @@ export class WorkerRelayInterface {
   timeout: number = 30_000
 
   static isInstance(obj: unknown): obj is WorkerRelayInterface {
-    return obj instanceof WorkerRelayInterface || (typeof obj === "object" && obj !== null && "timeout" in obj && "forYouFeed" in obj)
+    return (
+      obj instanceof WorkerRelayInterface ||
+      (typeof obj === "object" && obj !== null && "timeout" in obj && "forYouFeed" in obj)
+    )
   }
 
   /**
@@ -100,6 +103,30 @@ export class WorkerRelayInterface {
 
   configureSearchIndex(config: Record<number, Array<string>>) {
     return this.#workerRpc<Record<number, Array<string>>, void>("configureSearchIndex", config)
+  }
+
+  /**
+   * Sync-state storage capability (CacheRelay.syncState).
+   * Backed by a KV table in the same database as the events, so state and
+   * events share one lifetime (wiped together) — required for watermark
+   * correctness. State is stored as opaque JSON.
+   */
+  readonly syncState = {
+    // biome-ignore lint/suspicious/noExplicitAny: opaque JSON payload, typed by the consumer (@snort/system QuerySyncState)
+    get: async (key: string): Promise<any> => {
+      try {
+        const rsp = await this.#workerRpc<string, { value: string | null }>("kvGet", key)
+        return rsp.value ? JSON.parse(rsp.value) : undefined
+      } catch {
+        return undefined
+      }
+    },
+    set: async (key: string, state: object): Promise<void> => {
+      await this.#workerRpc<{ key: string; value: string }, boolean>("kvSet", {
+        key,
+        value: JSON.stringify(state),
+      })
+    },
   }
 
   async #workerRpc<T, R>(cmd: WorkerMessageCommand, args?: T) {

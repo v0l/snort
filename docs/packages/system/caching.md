@@ -198,3 +198,7 @@ const profile = useUserProfile(pubkey, elementRef) // auto-priority
 // Manual
 System.profileLoader.TrackKeys('pubkey', 'high')
 ```
+
+## See Also
+
+- [Query Internals & Performance](/packages/system/query-internals) — how the cache relay participates in the query path, availability tiers, and sync design notes

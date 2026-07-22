@@ -178,6 +178,18 @@ const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: Mes
         reply(msg.id, true)
         break
       }
+      case "kvGet": {
+        const key = msg.args as string
+        // Wrap in an object so the reply args are never undefined
+        reply(msg.id, { value: relay?.kvGet(key) ?? null })
+        break
+      }
+      case "kvSet": {
+        const { key, value } = msg.args as { key: string; value: string }
+        relay?.kvSet(key, value)
+        reply(msg.id, true)
+        break
+      }
       default: {
         reply(msg.id, { error: "Unknown command" })
         break

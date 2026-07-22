@@ -17,6 +17,8 @@ export type WorkerMessageCommand =
   | "delete"
   | "wipe"
   | "configureSearchIndex"
+  | "kvGet"
+  | "kvSet"
 
 export interface WorkerMessage<T> {
   id: string
@@ -79,6 +81,13 @@ export interface RelayHandler extends EventEmitter<RelayHandlerEvents> {
   batchSetSeenAt(ids: Array<string>, seen_at: number): void
   wipe(): Promise<void>
   configureSearchIndex(kindTagsMapping: Record<number, string[]>): void
+
+  /**
+   * Simple KV storage sharing the same lifetime as the event store
+   * (used for query sync-state watermarks)
+   */
+  kvGet(key: string): string | undefined
+  kvSet(key: string, value: string): void
 }
 
 export interface RelayHandlerEvents {

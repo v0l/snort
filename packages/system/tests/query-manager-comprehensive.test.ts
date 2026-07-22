@@ -337,23 +337,34 @@ describe("QueryManager — event propagation", () => {
     expect(trace.currentState).toBe(QueryTraceState.REMOTE_CLOSE)
   })
 
-  test("query end event cleans up pool and connection listeners", async () => {
+  test("listeners stay constant across queries (no per-trace leak) and routing stops after query end", async () => {
     const conn = new MockConnection("wss://relay.test", true)
     pool.add(conn)
 
-    const rb = makeRb("cleanup-test")
-    const q = qm.query(rb)
-    q.start()
+    // Central listeners are attached once (pool event listener in the ctor,
+    // per-connection eose/closed on first use), not per trace.
+    const poolListenersBaseline = pool.listenerCount("event")
+
+    // Run several queries against the same connection.
+    const queries = ["q1", "q2", "q3"].map(id => {
+      const q = qm.query(makeRb(id))
+      q.start()
+      return q
+    })
     await sleep(50)
 
-    const traceId = q.traces[0].id
-    const poolListenersBefore = pool.listenerCount("event")
-    const connEoseListenersBefore = conn.listenerCount("eose")
+    // Pool event listener count must NOT grow with the number of traces.
+    expect(pool.listenerCount("event")).toBe(poolListenersBaseline)
+    // Connection eose listener attached at most once.
+    expect(conn.listenerCount("eose")).toBeLessThanOrEqual(1)
 
-    q.closeQuery()
-
-    expect(pool.listenerCount("event")).toBeLessThan(poolListenersBefore)
-    expect(conn.listenerCount("eose")).toBeLessThan(connEoseListenersBefore)
+    // After a query ends, events for its trace must no longer reach its feed.
+    const q1 = queries[0]
+    const trace = q1.traces[0]
+    q1.closeQuery()
+    const before = q1.feed.snapshot.length
+    pool.emit("event", conn.address, trace.id, createEv("post-close", 1))
+    expect(q1.feed.snapshot.length).toBe(before)
   })
 })
 
@@ -926,5 +937,150 @@ describe("QueryTrace state machine", () => {
     t.syncFallback()
     expect(t.currentState).toBe(QueryTraceState.SYNC_FALLBACK)
     expect(t.finished).toBe(false)
+  })
+})
+
+// ===========================================================================
+// Sync coverage (watermarks) — QueryManager × SyncStateStore integration
+// ===========================================================================
+
+describe("QueryManager — sync coverage", () => {
+  const PK_A = "aa".repeat(32)
+  const PK_B = "bb".repeat(32)
+  function makeSyncSystem() {
+    const pool = new MockPool()
+    const stateMap = new Map<string, unknown>()
+    const cacheRelay = {
+      query: async () => [],
+      event: async (ev: NostrEvent) => ({ ok: true, id: ev.id, relay: "", event: ev }),
+      delete: async () => [],
+      syncState: {
+        get: async (k: string) => stateMap.get(k),
+        set: async (k: string, s: unknown) => {
+          stateMap.set(k, s)
+        },
+      },
+    }
+    const system = makeSystem(pool, { cacheRelay })
+    return { pool, system, stateMap }
+  }
+
+  test("EOSE records watermark; next run sends delta for known values, full for fresh", async () => {
+    const { pool, system, stateMap } = makeSyncSystem()
+    const conn = new MockConnection("wss://relay.test", true)
+    pool.add(conn)
+
+    const T0 = Math.floor(Date.now() / 1000) - 1000
+
+    // --- First run: no state, full fetch with explicit until ---
+    const qm1 = new QueryManager(system)
+    const rb1 = new RequestBuilder("sync-int")
+    rb1.withOptions({ groupingDelay: 0 })
+    rb1.withFilter().kinds([1]).authors([PK_A]).until(T0)
+    const q1 = qm1.query(rb1)
+    q1.start()
+    await sleep(60)
+
+    expect(conn.sentRequests).toHaveLength(1)
+    // filter sent unmodified (no sync state yet)
+    expect(conn.sentRequests[0][2]).toMatchObject({ kinds: [1], authors: [PK_A], until: T0 })
+
+    // deliver an event + EOSE
+    const trace = q1.traces[0]
+    pool.emit("event", conn.address, trace.id, createEv("e1", 1, T0 - 100, PK_A))
+    conn.emit("eose", trace.id)
+    await sleep(20)
+
+    // watermark recorded: proven [0, T0]
+    expect(stateMap.size).toBe(1)
+    const st = [...stateMap.values()][0] as { since: number; until: number; values: string[] }
+    expect(st.until).toBe(T0)
+    expect(st.since).toBe(0)
+    expect(st.values).toEqual([PK_A])
+    qm1.destroy()
+
+    // --- Second run: same query id, one known + one fresh author ---
+    const sentBefore = conn.sentRequests.length
+    const qm2 = new QueryManager(system)
+    const rb2 = new RequestBuilder("sync-int")
+    rb2.withOptions({ groupingDelay: 0 })
+    rb2.withFilter().kinds([1]).authors([PK_A, PK_B])
+    const q2 = qm2.query(rb2)
+    q2.start()
+    await sleep(60)
+
+    expect(conn.sentRequests.length).toBe(sentBefore + 1)
+    const sentFilters = conn.sentRequests[sentBefore].slice(2) as Array<{
+      authors?: string[]
+      since?: number
+    }>
+    // fresh author bb → full fetch, known author aa → delta above watermark
+    const fresh = sentFilters.find(f => f.authors?.includes(PK_B))
+    const delta = sentFilters.find(f => f.authors?.includes(PK_A))
+    expect(fresh).toBeDefined()
+    expect(fresh?.since).toBeUndefined()
+    expect(delta).toBeDefined()
+    expect(delta?.since).toBe(T0 - 300) // watermark - SyncOverlapWindow
+    qm2.destroy()
+  })
+
+  test("fully covered request sends nothing and emits eose", async () => {
+    const { pool, system, stateMap } = makeSyncSystem()
+    const conn = new MockConnection("wss://relay.test", true)
+    pool.add(conn)
+
+    const T0 = Math.floor(Date.now() / 1000) + 3600 // covered window extends past "now"
+    stateMap.set("sync:covered-q:authors:1", {
+      version: 1,
+      kinds: [1],
+      dimension: "authors",
+      values: [PK_A],
+      since: 0,
+      until: T0,
+    })
+
+    const qm = new QueryManager(system)
+    const rb = new RequestBuilder("covered-q")
+    rb.withOptions({ groupingDelay: 0 })
+    rb.withFilter().kinds([1]).authors([PK_A])
+    const q = qm.query(rb)
+    let eosed = false
+    q.on("eose", () => {
+      eosed = true
+    })
+    q.start()
+    await sleep(60)
+
+    expect(conn.sentRequests).toHaveLength(0)
+    expect(eosed).toBe(true)
+    qm.destroy()
+  })
+
+  test("skipCache bypasses sync coverage", async () => {
+    const { pool, system, stateMap } = makeSyncSystem()
+    const conn = new MockConnection("wss://relay.test", true)
+    pool.add(conn)
+
+    stateMap.set("sync:skip-q:authors:1", {
+      version: 1,
+      kinds: [1],
+      dimension: "authors",
+      values: [PK_A],
+      since: 0,
+      until: Math.floor(Date.now() / 1000) + 3600,
+    })
+
+    const qm = new QueryManager(system)
+    const rb = new RequestBuilder("skip-q")
+    rb.withOptions({ groupingDelay: 0, skipCache: true })
+    rb.withFilter().kinds([1]).authors([PK_A])
+    const q = qm.query(rb)
+    q.start()
+    await sleep(60)
+
+    // sent unmodified despite full coverage in state
+    expect(conn.sentRequests).toHaveLength(1)
+    expect(conn.sentRequests[0][2]).toMatchObject({ kinds: [1], authors: [PK_A] })
+    qm.destroy()
   })
 })

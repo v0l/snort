@@ -93,13 +93,15 @@ describe("flatMerge", () => {
       { authors: "b", limit: 100, resultSetId: "limit-b-100" },
       { ids: "1", authors: "c", resultSetId: "" },
     ] as Array<FlatReqFilter>
+    // Output is grouped by resultSetId (the "" bucket first, then the two
+    // limit buckets). Same set of merged filters, bucketed ordering.
     const output = [
       { ids: ["0"], authors: ["a", "b", "c"] },
       { kinds: [1, 2] },
       { authors: ["c"], kinds: [1] },
+      { ids: ["1"], authors: ["c"] },
       { authors: ["c"], limit: 100 },
       { authors: ["b"], limit: 100 },
-      { ids: ["1"], authors: ["c"] },
     ] as Array<ReqFilter>
 
     expect(flatMerge(input)).toMatchObject(output)

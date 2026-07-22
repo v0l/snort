@@ -14,6 +14,7 @@ import {
  */
 export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements RelayHandler {
   #events: Map<string, NostrEvent> = new Map()
+  #kv: Map<string, string> = new Map()
   #log = (msg: string, ...args: Array<any>) => debugLog("InMemoryRelay", msg, ...args)
 
   init() {
@@ -51,6 +52,7 @@ export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements R
 
   wipe() {
     this.#events = new Map()
+    this.#kv = new Map()
     return Promise.resolve()
   }
 
@@ -110,5 +112,13 @@ export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements R
 
   configureSearchIndex(_kindTagsMapping: Record<number, string[]>) {
     this.#log("configureSearchableTags not supported in InMemoryRelay")
+  }
+
+  kvGet(key: string): string | undefined {
+    return this.#kv.get(key)
+  }
+
+  kvSet(key: string, value: string) {
+    this.#kv.set(key, value)
   }
 }

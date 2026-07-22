@@ -89,10 +89,7 @@ export function buildQuery(req: ReqFilter, opts?: BuildQueryOpts): BuildQueryRes
  * Build the search index content string for an event.
  * Returns empty string if the event should not be indexed.
  */
-export function buildSearchContent(
-  ev: NostrEvent,
-  searchableTagsByKind: Map<number, Set<string>>,
-): string {
+export function buildSearchContent(ev: NostrEvent, searchableTagsByKind: Map<number, Set<string>>): string {
   const parts: Array<string> = []
 
   // Kind 0 profiles: index display fields
@@ -188,24 +185,15 @@ export const MIGRATIONS: Array<Migration> = [
   },
   {
     version: 4,
-    sql: [
-      `ALTER TABLE events ADD COLUMN seen_at INTEGER`,
-      `INSERT INTO __migration VALUES (4, ?)`,
-    ],
+    sql: [`ALTER TABLE events ADD COLUMN seen_at INTEGER`, `INSERT INTO __migration VALUES (4, ?)`],
   },
   {
     version: 5,
-    sql: [
-      `CREATE INDEX seen_at_IDX ON events (seen_at)`,
-      `INSERT INTO __migration VALUES (5, ?)`,
-    ],
+    sql: [`CREATE INDEX seen_at_IDX ON events (seen_at)`, `INSERT INTO __migration VALUES (5, ?)`],
   },
   {
     version: 6,
-    sql: [
-      `ALTER TABLE events ADD COLUMN relays TEXT`,
-      `INSERT INTO __migration VALUES (6, ?)`,
-    ],
+    sql: [`ALTER TABLE events ADD COLUMN relays TEXT`, `INSERT INTO __migration VALUES (6, ?)`],
   },
   {
     version: 7,
@@ -216,6 +204,16 @@ export const MIGRATIONS: Array<Migration> = [
       `CREATE INDEX pubkey_kind_created_IDX ON events (pubkey, kind, created DESC)`,
       `CREATE INDEX tags_event_id_IDX ON tags (event_id)`,
       `INSERT INTO __migration VALUES (7, ?)`,
+    ],
+  },
+  {
+    version: 8,
+    sql: [
+      `CREATE TABLE kv (
+        key TEXT PRIMARY KEY,
+        value TEXT
+      )`,
+      `INSERT INTO __migration VALUES (8, ?)`,
     ],
   },
 ]
