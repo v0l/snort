@@ -1,14 +1,17 @@
 import { unixNow } from "@snort/shared"
-import { EventKind, type NostrEvent, type RequestBuilder } from "@snort/system"
-import { type ReactNode, useCallback } from "react"
+import { EventKind, type NostrEvent, RequestBuilder } from "@snort/system"
+import { useRequestBuilder } from "@snort/system-react"
+import { type ReactNode, useCallback, useMemo } from "react"
 
 import useFollowsControls from "@/Hooks/useFollowControls"
 import useHistoryState from "@/Hooks/useHistoryState"
 import useTimelineChunks from "@/Hooks/useTimelineChunks"
+import { dedupeByPubkey } from "@/Utils"
 import { Hour } from "@/Utils/Const"
 
 import { AutoLoadMore } from "../Event/LoadMore"
 import TimelineChunk from "./TimelineChunk"
+import { TimelineRenderer } from "./TimelineRenderer"
 
 export interface TimelineFollowsProps {
   id?: string
@@ -21,11 +24,16 @@ export interface TimelineFollowsProps {
   windowSize?: number
 }
 
+const DefaultKinds = [EventKind.TextNote, EventKind.Repost, EventKind.Polls]
+
 /**
  * A list of notes by your follows
  */
 const TimelineFollows = (props: TimelineFollowsProps) => {
   const [openedAt] = useHistoryState(unixNow(), "openedAt")
+  // Events newer than this are buffered behind the "show latest" pill;
+  // persisted in history state so back-navigation doesn't re-bury them.
+  const [shownUntil, setShownUntil] = useHistoryState(openedAt, "latestShownUntil")
   const { isFollowing, followList } = useFollowsControls()
   const { chunks, showMore } = useTimelineChunks({
     now: openedAt,
@@ -33,11 +41,13 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     firstChunkSize: props.firstChunkSize ?? Hour * 2,
   })
 
+  const id = `follows${props.id ? `:${props.id}` : ""}`
+
   const builder = useCallback(
     (rb: RequestBuilder) => {
       rb.withFilter()
         .authors(followList)
-        .kinds(props.kinds ?? [EventKind.TextNote, EventKind.Repost, EventKind.Polls])
+        .kinds(props.kinds ?? DefaultKinds)
     },
     [followList, props.kinds],
   )
@@ -50,12 +60,51 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     [props.noteFilter, props.postsOnly, isFollowing],
   )
 
+  // Live edge: stream events published after the chunk anchor.
+  // Chunks are inclusive up to openedAt, so start 1s past the boundary.
+  const latestSub = useMemo(() => {
+    const rb = new RequestBuilder(`timeline-latest:${id}`)
+    rb.withOptions({ leaveOpen: true })
+    rb.withFilter()
+      .authors(followList)
+      .kinds(props.kinds ?? DefaultKinds)
+      .since(openedAt + 1)
+      .limit(1)
+    return rb
+  }, [id, followList, props.kinds, openedAt])
+  const latestFeed = useRequestBuilder(latestSub)
+
+  const shownLatest = useMemo(
+    () => latestFeed.filter(a => a.created_at <= shownUntil && filterEvents(a)),
+    [latestFeed, shownUntil, filterEvents],
+  )
+  const pendingLatest = useMemo(
+    () => latestFeed.filter(a => a.created_at > shownUntil && filterEvents(a)),
+    [latestFeed, shownUntil, filterEvents],
+  )
+  const latestAuthors = useMemo(() => dedupeByPubkey(pendingLatest).map(e => e.pubkey), [pendingLatest])
+
   return (
     <>
+      <TimelineRenderer
+        frags={{
+          events: shownLatest,
+          refTime: shownUntil,
+        }}
+        latest={latestAuthors}
+        showLatest={toTop => {
+          setShownUntil(unixNow())
+          if (toTop) {
+            window.scrollTo(0, 0)
+          }
+        }}
+        noteOnClick={props.noteOnClick}
+        noteRenderer={props.noteRenderer}
+      />
       {chunks.map(c => (
         <TimelineChunk
           key={c.until}
-          id={`follows${props.id ? `:${props.id}` : ""}`}
+          id={id}
           chunk={c}
           builder={builder}
           noteFilter={filterEvents}

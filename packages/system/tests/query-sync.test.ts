@@ -191,6 +191,23 @@ describe("computeSyncState", () => {
     expect(next?.since).toBe(NOW - 3600)
   })
 
+  test("adjacent windows separated by 1s union (non-overlapping timeline chunks)", () => {
+    const prev = st({ values: ["aa"], since: NOW - 7200, until: NOW - 3600 })
+    // chunk below: [NOW-10800, NOW-7201] — exactly 1s below prev.since
+    const next = computeSyncState(
+      [
+        rec({
+          prev,
+          known: true,
+          filter: { kinds: [1], authors: ["aa"], since: NOW - 10800, until: NOW - 7201 },
+        }),
+      ],
+      [],
+      NOW,
+    )
+    expect(next).toMatchObject({ since: NOW - 10800, until: NOW - 3600 })
+  })
+
   test("delta merges with overlapping previous window", () => {
     const prev = st({ values: ["aa"], since: NOW - 86400, until: NOW - 3600 })
     const next = computeSyncState(

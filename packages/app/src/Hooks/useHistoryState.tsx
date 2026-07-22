@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react"
 
 function useHistoryState<T>(initialValue: T, key: string) {
   const currentHistoryState = globalThis.history.state ? globalThis.history.state[key] : undefined
-  const myInitialValue = currentHistoryState === undefined ? initialValue : currentHistoryState
-  const [state, setState] = useState(myInitialValue)
+  const myInitialValue = (currentHistoryState === undefined ? initialValue : currentHistoryState) as T
+  const [state, setState] = useState<T>(myInitialValue)
 
   const latestValue = useRef(state)
 
@@ -47,7 +47,7 @@ function useHistoryState<T>(initialValue: T, key: string) {
     }
   }, [])
 
-  return [state, setState]
+  return [state, setState] as const
 }
 
 export default useHistoryState

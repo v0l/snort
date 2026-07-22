@@ -18,7 +18,10 @@ export default function useTimelineChunks(opt: { window?: number; firstChunkSize
       since: offset - size,
       until: offset,
     })
-    offset -= size
+    // NIP-01 filters are inclusive on both since and until — step past the
+    // boundary so adjacent chunks don't both fetch (and render) an event
+    // created exactly at the boundary timestamp.
+    offset -= size + 1
   }
 
   return {

@@ -188,10 +188,13 @@ function prevWin(prev?: QuerySyncState): Win | undefined {
 /**
  * Merge a newly proven window with an existing one.
  * Overlapping/adjacent windows union; disjoint windows keep the newer one.
+ * Timestamps are second-granularity, so windows separated by exactly 1s
+ * (e.g. non-overlapping timeline chunks [s, u] / [u+1, v]) are contiguous —
+ * no integer timestamp falls between them.
  */
 function mergeWin(a: Win | undefined, b: Win): Win {
   if (!a) return b
-  const overlaps = b.since <= a.until && b.until >= a.since
+  const overlaps = b.since <= a.until + 1 && b.until + 1 >= a.since
   if (overlaps) {
     return { since: Math.min(a.since, b.since), until: Math.max(a.until, b.until) }
   }
