@@ -402,7 +402,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         send.push(f)
         continue
       }
-      const key = syncStateKey(q.id, dim, f)
+      const key = syncStateKey(q.syncId ?? q.id, dim, f)
       let st: Awaited<ReturnType<SyncStateStore["get"]>>
       try {
         st = await store.get(key)
@@ -410,6 +410,17 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         this.#log("Failed to read sync state %s: %O", key, e)
       }
       const plan = planFilterSync(f, dim, st, key, now)
+      if (st) {
+        this.#log(
+          "Sync coverage %s: state=[%d..%d, %d values], %d filter(s) -> %d send",
+          key,
+          st.since,
+          st.until,
+          st.values.length,
+          1,
+          plan.send.length,
+        )
+      }
       send.push(...plan.send)
       records.push(...plan.records)
     }
@@ -441,6 +452,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       for (const [key, group] of byKey) {
         const next = computeSyncState(group, feed, now)
         if (next) {
+          this.#log("Sync record %s: [%d..%d, %d values]", key, next.since, next.until, next.values.length)
           store.set(key, next).catch(e => this.#log("Failed to write sync state %s: %O", key, e))
         }
       }

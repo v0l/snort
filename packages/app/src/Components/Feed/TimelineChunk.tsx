@@ -20,6 +20,9 @@ export interface TimelineChunkProps {
 export default function TimelineChunk(props: TimelineChunkProps) {
   const sub = useMemo(() => {
     const rb = new RequestBuilder(`timeline-chunk:${props.id}:${props.chunk.since}-${props.chunk.until}`)
+    // Stable sync identity across chunks/sessions: chunk windows merge into
+    // one coverage record, so previously-fetched ranges skip the network.
+    rb.withOptions({ syncId: `timeline-chunk:${props.id}` })
     props.builder(rb)
     for (const f of rb.filterBuilders) {
       f.since(props.chunk.since).until(props.chunk.until)

@@ -1056,6 +1056,28 @@ describe("QueryManager — sync coverage", () => {
     qm.destroy()
   })
 
+  test("syncId overrides volatile query id for watermark keying", async () => {
+    const { pool, system, stateMap } = makeSyncSystem()
+    const conn = new MockConnection("wss://relay.test", true)
+    pool.add(conn)
+
+    const T0 = Math.floor(Date.now() / 1000) - 1000
+    const qm = new QueryManager(system)
+    const rb = new RequestBuilder(`chunky-${Date.now()}-0`) // volatile id
+    rb.withOptions({ groupingDelay: 0, syncId: "chunky" })
+    rb.withFilter().kinds([1]).authors([PK_A]).until(T0)
+    const q = qm.query(rb)
+    q.start()
+    await sleep(60)
+
+    const trace = q.traces[0]
+    conn.emit("eose", trace.id)
+    await sleep(20)
+
+    expect([...stateMap.keys()]).toEqual(["sync:chunky:authors:1"])
+    qm.destroy()
+  })
+
   test("skipCache bypasses sync coverage", async () => {
     const { pool, system, stateMap } = makeSyncSystem()
     const conn = new MockConnection("wss://relay.test", true)

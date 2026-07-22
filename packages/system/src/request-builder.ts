@@ -58,6 +58,15 @@ export interface RequestBuilderOptions {
   extraEvents?: Array<NostrEvent>
 
   /**
+   * Stable identity for sync-state (watermark) keying. Use when the query id
+   * itself is volatile (embeds timestamps, window bounds or batch counters)
+   * but the underlying data dimension is stable — e.g. all timeline chunks of
+   * one feed share a syncId so their EOSE-proven windows merge into a single
+   * coverage record. Defaults to the query id.
+   */
+  syncId?: string
+
+  /**
    * How long (ms) to keep the query alive after all subscribers disconnect.
    * During this window, if the same query ID is requested again, QueryManager
    * will reuse the existing query with its cached data — no new relay requests.

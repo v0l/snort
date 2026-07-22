@@ -286,8 +286,11 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
    */
   #buildChunkSub(keys: Array<string>, chunkIndex: number): RequestBuilder {
     const req = this.buildSub(keys)
-    // Assign a unique ID so each chunk gets its own Query in the QueryManager
+    // Assign a unique ID so each chunk gets its own Query in the QueryManager,
+    // but keep a stable syncId so watermark coverage accumulates across
+    // batches/sessions instead of being keyed on throwaway ids.
     req.id = `${this.name()}-${Date.now()}-${chunkIndex}`
+    req.withOptions({ syncId: this.name() })
     return req
   }
 }

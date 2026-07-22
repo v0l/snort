@@ -192,6 +192,11 @@ export class Query extends EventEmitter<QueryEvents> {
   useSyncModule = false
 
   /**
+   * Stable identity for sync-state keying (defaults to query id)
+   */
+  syncId?: string
+
+  /**
    * How long (ms) to keep the query alive after all subscribers disconnect.
    * Default: 0 (falls back to the 1s hardcoded cleanup).
    */
@@ -260,6 +265,7 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#leaveOpen = req.options?.leaveOpen ?? false
     this.skipCache = req.options?.skipCache ?? false
     this.useSyncModule = req.options?.useSyncModule ?? false
+    this.syncId = req.options?.syncId
     this.#groupingDelay = req.options?.groupingDelay ?? 100
     this.#replaceable = req.options?.replaceable ?? false
     this.#keepAlive = req.options?.keepAlive ?? 0
@@ -542,9 +548,9 @@ export class Query extends EventEmitter<QueryEvents> {
    * Returns a promise that resolves when all traces are finished.
    */
   waitFinished(): Promise<void> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const checkDone = () => {
-        if (this.traces.length > 0 && this.traces.every((tr) => tr.finished)) {
+        if (this.traces.length > 0 && this.traces.every(tr => tr.finished)) {
           this.off("trace", onTrace)
           resolve()
         }
@@ -555,7 +561,7 @@ export class Query extends EventEmitter<QueryEvents> {
       }
 
       // Check immediately in case already finished
-      if (this.traces.length > 0 && this.traces.every((tr) => tr.finished)) {
+      if (this.traces.length > 0 && this.traces.every(tr => tr.finished)) {
         resolve()
       } else {
         this.on("trace", onTrace)
