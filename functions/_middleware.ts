@@ -55,7 +55,14 @@ export const onRequest: PagesFunction<Env> = async context => {
       console.error(e);
     }
     if (page !== undefined) {
-      return new Response(page, { status: next.status, statusText: next.statusText, headers: next.headers });
+      return new Response(page, {
+        // The asset pipeline serves the 404.html SPA shell with status 404
+        // for routes without a matching asset; the client router decides
+        // the real outcome, so serve the shell as 200.
+        status: next.status === 404 ? 200 : next.status,
+        statusText: next.statusText,
+        headers: next.headers,
+      });
     }
   }
   return next;
