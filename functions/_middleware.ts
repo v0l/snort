@@ -13,6 +13,11 @@ export const onRequest: PagesFunction<Env> = async context => {
   const next = await context.next();
   if (u.pathname != "/" && (isEntityPath || nostrAddress)) {
     //console.log("Handeling path: ", u.pathname, isEntityPath, nostrAddress[1]);
+    // `next`'s body is consumed below (it's POSTed upstream), so keep the
+    // bytes around to serve the unmodified page whenever the rewrite
+    // fails, times out, or comes back empty — returning `next` after
+    // reading it throws "ReadableStream is disturbed".
+    let page: ArrayBuffer | undefined;
     try {
       let id = u.pathname.split("/").at(-1);
       if (!isEntityPath && nostrAddress) {
@@ -22,14 +27,18 @@ export const onRequest: PagesFunction<Env> = async context => {
         `https://${HOST}/%s`,
       )}`;
       console.log("Fetching tags from: ", fetchApi);
+      page = await next.arrayBuffer();
       const rsp = await fetch(fetchApi, {
         method: "POST",
-        body: await next.arrayBuffer(),
+        body: page,
         headers: {
           "user-agent": `SnortFunctions/1.0 (https://${HOST})`,
           "content-type": "text/html",
           accept: "text/html",
         },
+        // Don't let a hung upstream stall the user-facing request; the
+        // catch below serves the unmodified page instead.
+        signal: AbortSignal.timeout(3_000),
       });
       if (rsp.ok) {
         const body = await rsp.text();
@@ -44,6 +53,9 @@ export const onRequest: PagesFunction<Env> = async context => {
       }
     } catch (e) {
       console.error(e);
+    }
+    if (page !== undefined) {
+      return new Response(page, { status: next.status, statusText: next.statusText, headers: next.headers });
     }
   }
   return next;
