@@ -69,7 +69,7 @@ strictly optional:
 | Tier | Storage | Durability | Notes |
 |---|---|---|---|
 | `SqliteRelay` | SQLite (WASM) on OPFS | persistent | Preferred; FTS5 search, tag/kind/pubkey indexes |
-| `InMemoryRelay` | in-memory | session only | Automatic fallback when WASM/OPFS unavailable |
+| `SqliteRelay` (proxied) | leader tab's SQLite | persistent | Non-owner tabs proxy to the tab holding the OPFS lock |
 | `ConnectionCacheRelay` | external relay over WebSocket | remote | User-configured `cache-relay` URL |
 | none | — | — | `#send` skips the cache path entirely |
 

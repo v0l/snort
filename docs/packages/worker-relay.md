@@ -8,8 +8,8 @@ A Nostr relay that runs inside a Web Worker, backed by SQLite via OPFS (Origin P
 
 - **`WorkerRelayInterface`** runs on the main thread. It serialises commands into `postMessage` calls and returns Promises that resolve when the worker replies.
 - **`worker.ts`** runs inside a Web Worker (Dedicated or Shared). It receives commands, delegates to a `RelayHandler`, and posts replies back.
-- **`SqliteRelay`** is the primary storage backend. It uses `@sqlite.org/sqlite-wasm` with the OPFS SAH (Origin-Private File System, Structured Access Handle) pool for persistent, transactional storage.
-- **`InMemoryRelay`** is a fallback that activates when WebAssembly is unavailable (e.g. restricted environments). Data is not persisted across sessions.
+- **`SqliteRelay`** is the storage backend. It uses `@sqlite.org/sqlite-wasm` with the OPFS SAH (Origin-Private File System, Structured Access Handle) pool for persistent, transactional storage.
+- **`RelayOwner`** decides which tab owns that database, since the SAH pool can only be open in one context at a time. See [Database ownership](#database-ownership).
 
 All communication is asynchronous. The interface sets a per-command timeout (default 30 s); if the worker doesn't reply in time the promise rejects.
 
@@ -56,7 +56,7 @@ await relay.init({
 });
 ```
 
-`init()` loads the SQLite WASM module, opens (or creates) the database at the given OPFS path, and runs any pending migrations. If WASM is unavailable it silently falls back to `InMemoryRelay`.
+`init()` claims the database, loads the SQLite WASM module, opens (or creates) the database at the given OPFS path, and runs any pending migrations. If another tab already owns the database, `init()` still resolves — this tab becomes a follower and its commands are served by the owner. See [Database ownership](#database-ownership).
 
 ### Use with NostrSystem
 
@@ -344,16 +344,34 @@ CREATE VIRTUAL TABLE search_content USING fts5(
 
 Migrations are tracked in the `__migration` table and run automatically on `init()`. The current schema version is **7**.
 
-## InMemoryRelay Fallback
+## Database ownership
 
-When WebAssembly is not available (e.g. in restricted browser environments), the worker automatically falls back to `InMemoryRelay`:
+The OPFS SAH pool VFS takes exclusive sync access handles on its files, so the database
+can only be open in one context at a time. A second tab that opens it directly gets
+`NoModificationAllowedError`. Ownership is therefore arbitrated with a
+[Web Lock](https://developer.mozilla.org/en-US/docs/Web/API/Web_Locks_API):
 
-- Stores events in a plain `Map<string, NostrEvent>`
-- Full filter support (including tag filters and AND-tags)
-- **Not persisted** — data is lost when the worker terminates
-- `sql()`, `setEventMetadata()`, `batchSetSeenAt()`, and `configureSearchIndex()` are no-ops
+- The lock holder is the **leader**. It opens SQLite and answers commands both for its own
+  page and, over a `BroadcastChannel`, for every other tab.
+- Every other tab is a **follower**. It opens no database of its own and proxies its
+  commands to the leader, so all tabs read and write one shared cache.
+- When the leader goes away its lock is released automatically — including when its
+  renderer crashes or is killed — and the next follower in the queue is promoted and opens
+  the database itself.
 
-The fallback is transparent — the same `WorkerRelayInterface` API works regardless of which backend is active.
+Two consequences worth knowing:
+
+- **A busy pool is retried, not fatal.** Sync access handles outlive a context that dies
+  abruptly by a short while, so `installOpfsSAHPoolVfs` is retried with backoff. If it
+  still fails, the lock is handed back and the attempt is repeated, rather than the tab
+  giving up on persistence for the rest of its life.
+- **Commands are a cache miss while nobody owns the database.** In the brief window where a
+  leader is being replaced, proxied queries return empty results (`req` → `[]`, `count` →
+  `0`) instead of failing, so callers fall through to the network as they would for any
+  other cache miss.
+
+There is no in-memory fallback backend. A relay cache that is not persisted has to refetch
+and re-index everything from the network on every load, which costs more than it saves.
 
 ## Worker Types
 

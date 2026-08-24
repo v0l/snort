@@ -19,6 +19,26 @@ import { buildQuery, buildSearchContent, repeatParams } from "./shared"
 // because INSERT OR IGNORE provides the definitive dedup at the DB layer.
 const MAX_SEEN_INSERTS = 50_000
 
+// Backoff between attempts to install the OPFS SAH pool VFS.
+// The pool takes exclusive sync access handles on its files, and those handles
+// outlive the context that opened them by a short while when that context dies
+// abruptly (renderer crash, tab kill). Retrying rides out that window instead of
+// treating a temporarily busy database as a permanently broken one.
+const VFS_RETRY_DELAYS_MS = [100, 250, 500, 1_000, 2_000]
+
+/**
+ * True for errors that mean "somebody else still has the files open", as opposed
+ * to OPFS being unusable in this environment.
+ */
+function isVfsBusyError(e: unknown) {
+  const name = (e as { name?: string })?.name
+  return name === "NoModificationAllowedError" || name === "InvalidStateError"
+}
+
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements RelayHandler {
   #sqlite?: Sqlite3Static
   #log = (msg: string, ...args: Array<any>) => debugLog("SqliteRelay", msg, ...args)
@@ -65,9 +85,27 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     if (!this.#sqlite) throw new Error("Must call init first")
     if (this.db) return
 
-    this.#pool = await this.#sqlite.installOpfsSAHPoolVfs({})
+    this.#pool = await this.#installVfs()
     this.db = new this.#pool.OpfsSAHPoolDb(path)
     this.#log(`Opened ${this.db.filename}`)
+  }
+
+  /**
+   * Install the OPFS SAH pool VFS, retrying while its files are still held by a
+   * context that has gone away.
+   */
+  async #installVfs() {
+    if (!this.#sqlite) throw new Error("Must call init first")
+    for (let attempt = 0; ; attempt++) {
+      try {
+        return await this.#sqlite.installOpfsSAHPoolVfs({})
+      } catch (e) {
+        if (attempt >= VFS_RETRY_DELAYS_MS.length || !isVfsBusyError(e)) throw e
+        const delay = VFS_RETRY_DELAYS_MS[attempt]
+        this.#log(`OPFS pool is busy, retrying in ${delay}ms`, e)
+        await sleep(delay)
+      }
+    }
   }
 
   /**

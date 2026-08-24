@@ -2,11 +2,17 @@
 
 import { setLogging } from "./debug"
 import { getForYouFeed } from "./forYouFeed"
-import { InMemoryRelay } from "./memory-relay"
-import { SqliteRelay } from "./sqlite/sqlite-relay"
-import type { EventMetadata, NostrEvent, OkResponse, RelayHandler, ReqCommand, ReqFilter, WorkerMessage } from "./types"
-
-let relay: RelayHandler | undefined
+import { RelayOwner } from "./relay-owner"
+import type {
+  EventMetadata,
+  NostrEvent,
+  OkResponse,
+  RelayHandler,
+  ReqCommand,
+  ReqFilter,
+  WorkerMessage,
+  WorkerMessageCommand,
+} from "./types"
 
 // Timer-windowed event batch.
 // Events are accumulated for up to BATCH_WINDOW_MS before being flushed
@@ -20,6 +26,7 @@ let flushScheduled = false
 
 function flushPendingEvents() {
   flushScheduled = false
+  const relay = owner.relay
   if (!relay || pendingEvents.length === 0) return
   const evs = pendingEvents.splice(0)
   relay.eventBatch(evs)
@@ -33,6 +40,7 @@ let seenAtFlushScheduled = false
 
 function flushPendingSeenAt() {
   seenAtFlushScheduled = false
+  const relay = owner.relay
   if (!relay || pendingSeenAt.length === 0) return
   const ids = pendingSeenAt.splice(0)
   const seen_at = Math.round(Date.now() / 1000)
@@ -42,6 +50,117 @@ function flushPendingSeenAt() {
 interface InitAargs {
   databasePath: string
 }
+
+/** Commands that send no reply to their caller */
+const NO_REPLY: ReadonlySet<WorkerMessageCommand> = new Set(["setSeenAt"])
+
+/**
+ * Run a command against a relay this context owns.
+ *
+ * Used both for messages from this worker's own page and, when this context is
+ * the leader, for messages proxied from other tabs.
+ */
+async function executeCommand(msg: WorkerMessage<any>, relay: RelayHandler): Promise<unknown> {
+  switch (msg.cmd) {
+    case "event": {
+      const ev = msg.args as NostrEvent
+      // Reply immediately (optimistic ok) so the caller is not blocked waiting
+      // for the DB flush. Events are accumulated and written in a single
+      // SQLite transaction once the BATCH_WINDOW_MS timer fires.
+      pendingEvents.push(ev)
+      if (!flushScheduled) {
+        flushScheduled = true
+        setTimeout(flushPendingEvents, BATCH_WINDOW_MS)
+      }
+      return { ok: true, id: ev.id, relay: "", event: ev } as OkResponse
+    }
+    case "close": {
+      return relay.close()
+    }
+    case "req": {
+      const req = msg.args as ReqCommand
+      const filters = req.slice(2) as Array<ReqFilter>
+      const results: Array<string | NostrEvent> = []
+      const ids = new Set<string>()
+      for (const r of filters) {
+        const rx = relay.req(req[1], r) ?? []
+        for (const x of rx) {
+          if ((typeof x === "string" && ids.has(x)) || ids.has((x as NostrEvent).id)) {
+            continue
+          }
+          ids.add(typeof x === "string" ? x : (x as NostrEvent).id)
+          results.push(x)
+        }
+      }
+      return results
+    }
+    case "count": {
+      const req = msg.args as ReqCommand
+      let results = 0
+      const filters = req.slice(2) as Array<ReqFilter>
+      for (const r of filters) {
+        results += relay.count(r) ?? 0
+      }
+      return results
+    }
+    case "delete": {
+      const req = msg.args as ReqCommand
+      const results = []
+      const filters = req.slice(2) as Array<ReqFilter>
+      for (const r of filters) {
+        const c = relay.delete(r) ?? []
+        results.push(...c)
+      }
+      return results
+    }
+    case "summary": {
+      return relay.summary()
+    }
+    case "dumpDb": {
+      return await relay.dump()
+    }
+    case "wipe": {
+      await relay.wipe()
+      return true
+    }
+    case "forYouFeed": {
+      return await getForYouFeed(relay, msg.args as string)
+    }
+    case "setSeenAt": {
+      // Fire-and-forget: no reply. Accumulate IDs and flush as one UPDATE per tick.
+      pendingSeenAt.push(msg.args as string)
+      if (!seenAtFlushScheduled) {
+        seenAtFlushScheduled = true
+        setTimeout(flushPendingSeenAt, BATCH_WINDOW_MS)
+      }
+      return undefined
+    }
+    case "setEventMetadata": {
+      // Legacy path kept for backward compat; new callers should use setSeenAt.
+      const [id, metadata] = msg.args as [string, EventMetadata]
+      relay.setEventMetadata(id, metadata)
+      return true
+    }
+    case "configureSearchIndex": {
+      relay.configureSearchIndex(msg.args as Record<number, string[]>)
+      return true
+    }
+    case "kvGet": {
+      // Wrap in an object so the reply args are never undefined
+      return { value: relay.kvGet(msg.args as string) ?? null }
+    }
+    case "kvSet": {
+      const { key, value } = msg.args as { key: string; value: string }
+      relay.kvSet(key, value)
+      return true
+    }
+    default: {
+      return { error: "Unknown command" }
+    }
+  }
+}
+
+const owner = new RelayOwner({ execute: executeCommand })
 
 const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: MessageEvent) => {
   async function reply<T>(id: string, obj?: T) {
@@ -62,136 +181,21 @@ const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: Mes
       }
       case "init": {
         const args = msg.args as InitAargs
-        try {
-          if ("WebAssembly" in self) {
-            relay = new SqliteRelay()
-          } else {
-            relay = new InMemoryRelay()
-          }
-          await relay.init(args.databasePath)
-        } catch (e) {
-          console.error("Fallback to InMemoryRelay", e)
-          relay = new InMemoryRelay()
-          await relay.init(args.databasePath)
-        }
+        await owner.init(args.databasePath)
         reply(msg.id, true)
-        break
-      }
-      case "event": {
-        const ev = msg.args as NostrEvent
-        // Reply immediately (optimistic ok) so the caller is not blocked waiting
-        // for the DB flush. Events are accumulated and written in a single
-        // SQLite transaction once the BATCH_WINDOW_MS timer fires.
-        pendingEvents.push(ev)
-        if (!flushScheduled) {
-          flushScheduled = true
-          setTimeout(flushPendingEvents, BATCH_WINDOW_MS)
-        }
-        reply(msg.id, { ok: true, id: ev.id, relay: "", event: ev } as OkResponse)
         break
       }
       case "close": {
-        const res = relay?.close()
+        const res = await owner.execute(msg)
+        owner.close()
         reply(msg.id, res)
-        break
-      }
-      case "req": {
-        const req = msg.args as ReqCommand
-        const filters = req.slice(2) as Array<ReqFilter>
-        const results: Array<string | NostrEvent> = []
-        const ids = new Set<string>()
-        for (const r of filters) {
-          const rx = relay?.req(req[1], r) ?? []
-          for (const x of rx) {
-            if ((typeof x === "string" && ids.has(x)) || ids.has((x as NostrEvent).id)) {
-              continue
-            }
-            ids.add(typeof x === "string" ? x : (x as NostrEvent).id)
-            results.push(x)
-          }
-        }
-        reply(msg.id, results)
-        break
-      }
-      case "count": {
-        const req = msg.args as ReqCommand
-        let results = 0
-        const filters = req.slice(2) as Array<ReqFilter>
-        for (const r of filters) {
-          const c = relay?.count(r) ?? 0
-          results += c
-        }
-        reply(msg.id, results)
-        break
-      }
-      case "delete": {
-        const req = msg.args as ReqCommand
-        const results = []
-        const filters = req.slice(2) as Array<ReqFilter>
-        for (const r of filters) {
-          const c = relay?.delete(r) ?? []
-          results.push(...c)
-        }
-        reply(msg.id, results)
-        break
-      }
-      case "summary": {
-        const res = relay?.summary()
-        reply(msg.id, res)
-        break
-      }
-      case "dumpDb": {
-        const res = await relay?.dump()
-        reply(msg.id, res)
-        break
-      }
-      case "wipe": {
-        await relay?.wipe()
-        reply(msg.id, true)
-        break
-      }
-      case "forYouFeed": {
-        const res = await getForYouFeed(relay!, msg.args as string)
-        reply(msg.id, res)
-        break
-      }
-      case "setSeenAt": {
-        // Fire-and-forget: no reply. Accumulate IDs and flush as one UPDATE per tick.
-        const id = msg.args as string
-        pendingSeenAt.push(id)
-        if (!seenAtFlushScheduled) {
-          seenAtFlushScheduled = true
-          setTimeout(flushPendingSeenAt, BATCH_WINDOW_MS)
-        }
-        break
-      }
-      case "setEventMetadata": {
-        // Legacy path kept for backward compat; new callers should use setSeenAt.
-        const [id, metadata] = msg.args as [string, EventMetadata]
-        relay?.setEventMetadata(id, metadata)
-        reply(msg.id, true)
-        break
-      }
-      case "configureSearchIndex": {
-        const kindTagsMapping = msg.args as Record<number, string[]>
-        relay?.configureSearchIndex(kindTagsMapping)
-        reply(msg.id, true)
-        break
-      }
-      case "kvGet": {
-        const key = msg.args as string
-        // Wrap in an object so the reply args are never undefined
-        reply(msg.id, { value: relay?.kvGet(key) ?? null })
-        break
-      }
-      case "kvSet": {
-        const { key, value } = msg.args as { key: string; value: string }
-        relay?.kvSet(key, value)
-        reply(msg.id, true)
         break
       }
       default: {
-        reply(msg.id, { error: "Unknown command" })
+        const res = await owner.execute(msg)
+        if (!NO_REPLY.has(msg.cmd)) {
+          reply(msg.id, res)
+        }
         break
       }
     }
