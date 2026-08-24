@@ -153,6 +153,8 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         this.#connectionListeners.delete(conn.id)
         // Retry immediately — the connection is now open
         this.#retryPendingTraces(conn)
+        // Re-send streaming subscriptions that died with the previous socket.
+        this.#resubscribeOpenQueries(conn)
       }
     })
 
@@ -174,6 +176,44 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
         }
       }
     })
+  }
+
+  /**
+   * Re-send traces belonging to long-lived (leaveOpen) queries after a relay
+   * reconnect.
+   *
+   * `Connection.#reset()` clears its active REQs on close and never replays
+   * them, and the disconnect handler above drops the matching traces. Without
+   * this, a single websocket blip (idle timeout, proxy restart, wifi change,
+   * mobile backgrounding) permanently kills streaming subscriptions such as
+   * live chat: the query object stays alive so nothing ever rebuilds it, and
+   * events silently stop arriving until the page is reloaded.
+   *
+   * Traces carry the connection id they were sent on; `Connection` assigns a
+   * fresh id on every reset/connect, so any trace with a stale connId for this
+   * relay is dead and must be replaced.
+   */
+  #resubscribeOpenQueries(connection: ConnectionType) {
+    for (const [, query] of this.#queries) {
+      if (!query.leaveOpen || query.canRemove()) continue
+
+      for (const trace of query.traces) {
+        if (trace.relay !== connection.address) continue
+        if (trace.connId === connection.id) continue // still live on the current socket
+
+        // Drop the dead trace, then re-send the same filters on the new socket.
+        query.removeTrace(trace.id)
+        this.#traceRouting.delete(trace.id)
+
+        const qSend = { relay: connection.address, filters: trace.filters } as BuiltRawReqFilter
+        if (!this.#canSendQuery(connection, qSend, query)) continue
+
+        this.#log("Re-subscribing %s to %s after reconnect", query.id, connection.address)
+        const newTrace = this.createTrace(query, connection, qSend)
+        query.addTrace(newTrace)
+        this.sendTrace(query, newTrace, connection, qSend)
+      }
+    }
   }
 
   get(id: string) {
