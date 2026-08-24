@@ -137,10 +137,14 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       this.#cleanupInterval = undefined
     }
     this.#system.pool.off("event", this.#onPoolEvent)
+    for (const [, route] of this.#traceRouting) {
+      route.connection.closeRequest(route.trace.id)
+    }
     for (const [, q] of this.#queries) {
       q.cancel()
     }
     this.#queries.clear()
+    this.#pendingTraces = []
     this.#traceRouting.clear()
     this.removeAllListeners()
   }
@@ -779,6 +783,10 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    * Retry pending traces for a connection
    */
   #retryPendingTraces(connection: ConnectionType) {
+    // Drop queued traces whose query has been cancelled — they would otherwise
+    // hold up the queue (the loop below stops at the first trace it can't send).
+    this.#pendingTraces = this.#pendingTraces.filter(p => !p.query.canRemove())
+
     const pending = this.#pendingTraces.filter(p => p.connection.id === connection.id)
     for (const p of pending) {
       const sent = this.sendTrace(p.query, p.trace, p.connection, p.filters)
@@ -851,8 +859,20 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     for (const [k, v] of this.#queries) {
       if (v.canRemove()) {
         for (const tr of v.traces) {
+          // Send CLOSE on the wire before dropping the trace. Without this the
+          // relay keeps streaming to a subscription nobody routes any more, and
+          // - worse - Connection keeps counting it in #activeRequests, so
+          // activeSubscriptions grows on every navigation until it hits
+          // maxSubscriptions and all new REQs (e.g. a stream's chat) are parked
+          // in #pendingTraces forever.
+          // Delete the route first so the re-entrant "eose" emitted by
+          // closeRequest is a no-op.
+          const route = this.#traceRouting.get(tr.id)
           this.#traceRouting.delete(tr.id)
+          route?.connection.closeRequest(tr.id)
         }
+        // Drop any queued traces for this query; it is going away.
+        this.#pendingTraces = this.#pendingTraces.filter(p => p.query !== v)
         v.closeQuery()
         this.#queries.delete(k)
         this.#log("Deleted query %s", k)

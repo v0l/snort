@@ -213,13 +213,22 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   }
 
   #onMessage(e: WebSocket.MessageEvent) {
+    this.handleMessage(e.data as string)
+  }
+
+  /**
+   * Handle one raw relay message. Split out from the socket handler so relay
+   * protocol behaviour can be exercised without a websocket.
+   * @internal
+   */
+  handleMessage(data: string) {
     this.#activity = unixNowMs()
-    if ((e.data as string).length > 0) {
+    if (data.length > 0) {
       let msg: Array<string | NostrEvent | boolean>
       try {
-        msg = JSON.parse(e.data as string) as Array<string | NostrEvent | boolean>
+        msg = JSON.parse(data) as Array<string | NostrEvent | boolean>
       } catch {
-        this.#log("Dropping malformed relay message (JSON parse error): %s", e.data)
+        this.#log("Dropping malformed relay message (JSON parse error): %s", data)
         return
       }
       const tag = msg[0] as string
@@ -274,7 +283,14 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
           break
         }
         case "CLOSED": {
-          this.emit("closed", msg[1] as string, msg[2] as string)
+          // The relay has torn down this subscription — release its slot,
+          // otherwise activeSubscriptions creeps up towards maxSubscriptions
+          // and later REQs get parked instead of sent.
+          const closedId = msg[1] as string
+          if (this.#activeRequests.delete(closedId)) {
+            this.emit("change")
+          }
+          this.emit("closed", closedId, msg[2] as string)
           this.#log(`CLOSED: ${msg.slice(1)}`)
           break
         }

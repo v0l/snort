@@ -20,6 +20,7 @@ import type { ConnectionPool, ConnectionPoolEvents, ConnectionType, ConnectionTy
 import type { NostrEvent, OkResponse, ReqCommand } from "../src/nostr"
 import type { RelayMetadataLoader } from "../src/outbox"
 import type { ProfileLoaderService } from "../src/profile-cache"
+import { Connection } from "../src/connection"
 import { QueryManager } from "../src/query-manager"
 import { DefaultOptimizer } from "../src/query-optimizer"
 import { RequestBuilder } from "../src/request-builder"
@@ -38,6 +39,7 @@ class MockConnection extends EventEmitter<ConnectionTypeEvents> implements Conne
 
   sentRequests: Array<ReqCommand> = []
   activeRequests = new Set<string>()
+  closedRequests: Array<string> = []
 
   constructor(address: string, open = true) {
     super()
@@ -56,7 +58,7 @@ class MockConnection extends EventEmitter<ConnectionTypeEvents> implements Conne
     return this.activeRequests.size
   }
   get maxSubscriptions() {
-    return 20
+    return this.info?.limitation?.max_subscriptions ?? 20
   }
 
   async connect() {}
@@ -73,9 +75,22 @@ class MockConnection extends EventEmitter<ConnectionTypeEvents> implements Conne
   }
 
   closeRequest(id: string) {
-    this.activeRequests.delete(id)
+    if (this.activeRequests.delete(id)) {
+      this.closedRequests.push(id)
+      this.emit("eose", id)
+    }
   }
   sendRaw(_obj: object) {}
+
+  get maxSubscriptionsOverride() {
+    return this.info?.limitation?.max_subscriptions
+  }
+
+  /** Relay sends CLOSED for a subscription (mirrors Connection's handling) */
+  simulateRelayClosed(id: string, reason: string) {
+    this.activeRequests.delete(id)
+    this.emit("closed", id, reason)
+  }
 
   /** Mirrors Connection.#onClose + #reset: drop active REQs, new connection id */
   simulateDisconnect() {
@@ -283,5 +298,79 @@ describe("QueryManager — streaming subscriptions across reconnects", () => {
     await sleep(20)
 
     expect(conn.sentRequests.length).toBe(1)
+  })
+})
+
+describe("QueryManager — subscription slot accounting", () => {
+  let pool: MockPool
+  let system: SystemInterface
+  let qm: QueryManager
+
+  beforeEach(() => {
+    pool = new MockPool()
+    system = makeSystem(pool)
+    qm = new QueryManager(system)
+  })
+
+  afterEach(() => {
+    qm.destroy()
+  })
+
+  test("CLOSE is sent and the slot freed when a cancelled query is cleaned up", async () => {
+    const conn = new MockConnection("wss://relay.test")
+    pool.add(conn)
+
+    const q = qm.query(makeStreamingRb("stream:slot-a"))
+    q.start()
+    await sleep(20)
+    expect(conn.activeSubscriptions).toBe(1)
+    const subId = conn.sentRequests[0][1]
+
+    // Navigate away: subscriber unsubscribes, cleanup removes the query
+    // (cancel() holds it for 1s, the cleanup timer ticks every 1s)
+    q.cancel()
+    await sleep(2200)
+
+    expect(conn.closedRequests).toContain(subId)
+    expect(conn.activeSubscriptions).toBe(0)
+  })
+
+  test("navigating between streams does not exhaust the relay subscription limit", async () => {
+    const conn = new MockConnection("wss://relay.test")
+    conn.info = { limitation: { max_subscriptions: 2 } } as RelayInfoDocument
+    pool.add(conn)
+
+    // Visit 2 streams in a row, cancelling each as we navigate away
+    for (let i = 0; i < 2; i++) {
+      const q = qm.query(makeStreamingRb(`stream:nav-${i}`))
+      q.start()
+      await sleep(20)
+      q.cancel()
+      await sleep(2200) // let #cleanup remove it
+    }
+
+    // The next stream's chat must still get a REQ on the wire
+    const q = qm.query(makeStreamingRb("stream:nav-last"))
+    q.start()
+    await sleep(20)
+
+    expect(conn.activeSubscriptions).toBe(1)
+    expect(conn.sentRequests[conn.sentRequests.length - 1][1]).toBe(q.traces[0].id)
+  })
+
+  test("relay-initiated CLOSED frees the subscription slot (real Connection)", () => {
+    const conn = new Connection("wss://relay.test", { read: true, write: false })
+
+    conn.request(["REQ", "sub-1", { kinds: [1311], limit: 10 }])
+    conn.request(["REQ", "sub-2", { kinds: [1311], limit: 10 }])
+    expect(conn.activeSubscriptions).toBe(2)
+
+    // Relay drops one subscription (rate limit, auth, policy, ...)
+    conn.handleMessage(JSON.stringify(["CLOSED", "sub-1", "rate-limited"]))
+
+    // The slot must be released, otherwise activeSubscriptions creeps up to
+    // maxSubscriptions and later REQs are parked instead of sent.
+    expect(conn.activeSubscriptions).toBe(1)
+    expect(conn.ActiveRequests).toEqual(["sub-2"])
   })
 })
