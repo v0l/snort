@@ -31,9 +31,18 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
     const sub = new RequestBuilder(`thread-replies:${k}`)
     if (rootLink) {
       sub.withFilter().link(rootLink)
-      const f = sub.withFilter().kinds([EventKind.TextNote]).replyToLink([rootLink])
-      if (rootLink.kind && rootLink.kind !== EventKind.TextNote) {
-        f.kinds([EventKind.Comment])
+      // NIP-10 replies, which reference the root with lowercase e/a tags
+      if (!rootLink.kind || rootLink.kind === EventKind.TextNote) {
+        sub.withFilter().kinds([EventKind.TextNote]).replyToLink([rootLink])
+      }
+      // NIP-22 comments, which reference the root scope with uppercase E/A tags
+      const rootTag = rootLink.toEventTag()
+      if (rootTag) {
+        sub
+          .withFilter()
+          .kinds([EventKind.Comment])
+          .tag(rootTag[0].toUpperCase(), [rootTag[1]])
+          .relay(rootLink.relays ?? [])
       }
     }
     return sub

@@ -6,7 +6,13 @@ import useLogin from "@/Hooks/useLogin"
 
 export function useNotificationsView() {
   const publicKey = useLogin(s => s.publicKey)
-  const kinds = [EventKind.TextNote, EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt]
+  const kinds = [
+    EventKind.TextNote,
+    EventKind.Comment,
+    EventKind.Reaction,
+    EventKind.Repost,
+    EventKind.ZapReceipt,
+  ]
   const req = useMemo(() => {
     const rb = new RequestBuilder("notifications")
     rb.withOptions({

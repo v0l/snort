@@ -17,8 +17,9 @@ export interface NotificationRequest {
 
 export async function makeNotification(ev: TaggedNostrEvent): Promise<NotificationRequest | null> {
   switch (ev.kind) {
-    case EventKind.TextNote: {
-      if (ev.tags.some(tagFilterOfTextRepost(ev))) {
+    case EventKind.TextNote:
+    case EventKind.Comment: {
+      if (ev.kind === EventKind.TextNote && ev.tags.some(tagFilterOfTextRepost(ev))) {
         return null
       }
       const pubkeys = new Set([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1])])

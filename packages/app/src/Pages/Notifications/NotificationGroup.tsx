@@ -28,6 +28,8 @@ export function NotificationGroup({
   const { formatMessage } = useIntl()
   const wot = useWoT()
   const kind = evs[0].kind
+  // NIP-10 (kind 1) and NIP-22 (kind 1111) replies are shown identically
+  const isReply = kind === EventKind.TextNote || kind === EventKind.Comment
   const navigate = useNavigate()
 
   const zaps = useMemo(() => {
@@ -56,6 +58,7 @@ export function NotificationGroup({
       case EventKind.Repost:
         return "repeat"
       case EventKind.TextNote:
+      case EventKind.Comment:
         return "reverse-left"
     }
     return ""
@@ -63,7 +66,8 @@ export function NotificationGroup({
 
   const actionName = (n: number, name: string) => {
     switch (kind) {
-      case EventKind.TextNote: {
+      case EventKind.TextNote:
+      case EventKind.Comment: {
         return ""
       }
       case EventKind.Reaction: {
@@ -126,14 +130,14 @@ export function NotificationGroup({
             <div className="flex flex-row justify-between items-center">
               <AvatarGroup
                 ids={wot.sortPubkeys(pubkeys.filter(a => a !== "anon")).slice(0, 12)}
-                showUsername={kind === EventKind.TextNote}
+                showUsername={isReply}
                 size={40}
               />
               <div className="text-neutral-500">
                 <NoteTime from={evs[0].created_at * 1000} />
               </div>
             </div>
-            {kind !== EventKind.TextNote && (
+            {!isReply && (
               <div className="font-bold">
                 {actionName(
                   pubkeys.length - 1,

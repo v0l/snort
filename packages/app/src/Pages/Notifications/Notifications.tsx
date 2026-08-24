@@ -74,7 +74,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
       .slice(0, limit)
       .filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey))
       .filter(a => {
-        if (a.kind === EventKind.TextNote) {
+        if (a.kind === EventKind.TextNote || a.kind === EventKind.Comment) {
           return hasFlag(filter, NotificationSummaryFilter.Mentions)
         } else if (a.kind === EventKind.Reaction) {
           return hasFlag(filter, NotificationSummaryFilter.Reactions)

@@ -198,14 +198,16 @@ export class EventPublisher {
   /**
    * Reply to a note
    *
-   * Replies to kind 1 notes are kind 1, otherwise kind 1111
+   * All replies are kind 1111 (NIP-22), kind 1 is reserved for root notes.
+   * Pass `legacy` to write a NIP-10 kind 1 reply instead (only valid for kind 1 targets).
    */
-  async reply(replyTo: TaggedNostrEvent, msg: string, fnExtra?: EventBuilderHook) {
-    const replyKind = replyTo.kind === EventKind.TextNote ? EventKind.TextNote : EventKind.Comment
+  async reply(replyTo: TaggedNostrEvent, msg: string, fnExtra?: EventBuilderHook, legacy = false) {
+    const useNip10 = legacy && replyTo.kind === EventKind.TextNote
+    const replyKind = useNip10 ? EventKind.TextNote : EventKind.Comment
     const eb = this.#eb(replyKind)
     eb.content(msg)
 
-    if (replyKind === EventKind.TextNote) {
+    if (useNip10) {
       Nip10.replyTo(replyTo, eb)
     } else {
       Nip22.replyTo(replyTo, eb)

@@ -5,7 +5,7 @@ const PRIVKEY = "a".repeat(64)
 
 describe("EventPublisher", () => {
   describe("reply", () => {
-    test("should use NIP-10 tags when replying to kind 1 (TextNote)", async () => {
+    test("should use NIP-22 tags when replying to kind 1 (TextNote)", async () => {
       const publisher = EventPublisher.privateKey(PRIVKEY)
 
       const textNote: TaggedNostrEvent = {
@@ -21,20 +21,43 @@ describe("EventPublisher", () => {
 
       const reply = await publisher.reply(textNote, "Replying to your note")
 
-      // Should be kind 1 (TextNote) when replying to kind 1
+      // Replies to kind 1 are now NIP-22 comments
+      expect(reply.kind).toBe(EventKind.Comment)
+
+      // Root scope tags
+      const rootTag = reply.tags.find(t => t[0] === "E")
+      expect(rootTag?.[1]).toBe("aaaa000000000000000000000000000000000000000000000000000000000001")
+      expect(reply.tags.find(t => t[0] === "K")?.[1]).toBe("1")
+      expect(reply.tags.find(t => t[0] === "P")?.[1]).toBe(textNote.pubkey)
+
+      // Parent tags
+      const parentTag = reply.tags.find(t => t[0] === "e")
+      expect(parentTag?.[1]).toBe("aaaa000000000000000000000000000000000000000000000000000000000001")
+      expect(reply.tags.find(t => t[0] === "k")?.[1]).toBe("1")
+      expect(reply.tags.find(t => t[0] === "p")?.[1]).toBe(textNote.pubkey)
+    })
+
+    test("should still support legacy NIP-10 replies to kind 1", async () => {
+      const publisher = EventPublisher.privateKey(PRIVKEY)
+
+      const textNote: TaggedNostrEvent = {
+        id: "aaaa000000000000000000000000000000000000000000000000000000000001",
+        kind: EventKind.TextNote,
+        pubkey: "bbbb000000000000000000000000000000000000000000000000000000000002",
+        created_at: 1234567890,
+        content: "Hello world!",
+        tags: [],
+        sig: "test",
+        relays: ["wss://relay.example.com"],
+      }
+
+      const reply = await publisher.reply(textNote, "Replying to your note", undefined, true)
+
       expect(reply.kind).toBe(EventKind.TextNote)
-
-      // NIP-10: lowercase e tags with marker strings
-      const eTags = reply.tags.filter(t => t[0] === "e")
-      expect(eTags.length).toBeGreaterThanOrEqual(1)
-
-      // Should NOT have uppercase E/A/K/P tags (those are NIP-22)
       expect(reply.tags.some(t => t[0] === "E")).toBe(false)
       expect(reply.tags.some(t => t[0] === "K")).toBe(false)
 
-      // Should have a root marker on the e tag
-      const rootTag = eTags.find(t => t[3] === "root")
-      expect(rootTag).toBeDefined()
+      const rootTag = reply.tags.filter(t => t[0] === "e").find(t => t[3] === "root")
       expect(rootTag?.[1]).toBe("aaaa000000000000000000000000000000000000000000000000000000000001")
     })
 

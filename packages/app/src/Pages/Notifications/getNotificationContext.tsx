@@ -25,7 +25,8 @@ export function getNotificationContext(ev: TaggedNostrEvent) {
       const thread = Nip10.parseThread(ev)
       return thread?.replyTo ?? thread?.root ?? thread?.mentions[0]
     }
-    case EventKind.TextNote: {
+    case EventKind.TextNote:
+    case EventKind.Comment: {
       return NostrLink.fromEvent(ev)
     }
   }
