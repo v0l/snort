@@ -10,6 +10,15 @@ const log = (msg: string, ...args: Array<any>) => debugLog("RelayOwner", msg, ..
 const DEFAULT_PROMOTION_RETRY_MS = 2_000
 
 /**
+ * How many times to try opening the database before staying a follower for good.
+ *
+ * A busy pool frees up in seconds, so a handful of attempts covers it. Anything
+ * that survives them is environmental — OPFS disabled, no WASM, private browsing —
+ * and retrying it forever would just re-initialise sqlite-wasm on a timer.
+ */
+const DEFAULT_MAX_PROMOTION_ATTEMPTS = 5
+
+/**
  * Commands that always run in the calling context and are never proxied.
  *
  * `close` is per-worker teardown: a follower closing must not close the leader's
@@ -35,6 +44,8 @@ export interface RelayOwnerOptions {
   callTimeoutMs?: number
   /** How long to wait between attempts to open the database */
   promotionRetryMs?: number
+  /** How many attempts to make before giving up on owning the database */
+  maxPromotionAttempts?: number
 }
 
 /**
@@ -62,6 +73,7 @@ export class RelayOwner {
   #createChannel: (name: string) => RelayChannel
   #callTimeoutMs?: number
   #promotionRetryMs: number
+  #maxPromotionAttempts: number
 
   constructor(options: RelayOwnerOptions) {
     this.#execute = options.execute
@@ -70,6 +82,7 @@ export class RelayOwner {
     this.#createChannel = options.createChannel ?? (name => new RelayChannel(name))
     this.#callTimeoutMs = options.callTimeoutMs
     this.#promotionRetryMs = options.promotionRetryMs ?? DEFAULT_PROMOTION_RETRY_MS
+    this.#maxPromotionAttempts = options.maxPromotionAttempts ?? DEFAULT_MAX_PROMOTION_ATTEMPTS
   }
 
   get mode() {
@@ -169,12 +182,18 @@ export class RelayOwner {
   async #waitForPromotion() {
     const path = this.#path
     if (!path) return
+    let failures = 0
     while (this.#mode === "follower" && this.#channel) {
       // Unbounded wait: resolves as soon as the current leader goes away
       const lock = await this.#requestLock(dbLockName(path))
       if (!lock) return
       if (await this.#becomeLeader(lock)) return
-      await new Promise(resolve => setTimeout(resolve, this.#promotionRetryMs))
+      if (++failures >= this.#maxPromotionAttempts) {
+        log(`Could not open the database after ${failures} attempts, staying a follower`)
+        return
+      }
+      // Back off so a database that will never open doesn't reinitialise on a timer
+      await new Promise(resolve => setTimeout(resolve, this.#promotionRetryMs * failures))
     }
   }
 }

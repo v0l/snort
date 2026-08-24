@@ -112,11 +112,17 @@ const note = (id: string): NostrEvent => ({
   sig: "",
 })
 
-function makeOwner(bus: FakeBus, locks: FakeLocks, relay: RelayHandler, opts: { failOpens?: number } = {}) {
+function makeOwner(
+  bus: FakeBus,
+  locks: FakeLocks,
+  relay: RelayHandler,
+  opts: { failOpens?: number; onOpen?: () => void } = {},
+) {
   let failures = opts.failOpens ?? 0
   return new RelayOwner({
     execute,
     createRelay: () => {
+      opts.onOpen?.()
       if (failures > 0) {
         failures--
         return { init: async () => Promise.reject(new Error("OPFS busy")) } as unknown as RelayHandler
@@ -202,6 +208,21 @@ describe("RelayOwner", () => {
     // The failed attempt hands the lock back, so the retry can claim it again
     await new Promise(resolve => setTimeout(resolve, 20))
     expect(owner.mode).toBe("leader")
+  })
+
+  test("a database that never opens stops being retried", async () => {
+    let opens = 0
+    const owner = makeOwner(new FakeBus(), new FakeLocks(), fakeRelay(), {
+      failOpens: Number.MAX_SAFE_INTEGER,
+      onOpen: () => opens++,
+    })
+
+    await owner.init("db")
+    await new Promise(resolve => setTimeout(resolve, 100))
+
+    // 1 attempt from init() plus the capped retries, not an endless timer
+    expect(owner.mode).toBe("follower")
+    expect(opens).toBe(6)
   })
 
   test("commands are a cache miss while nobody owns the database", async () => {
