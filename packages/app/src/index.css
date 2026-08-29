@@ -512,6 +512,18 @@ svg.repeat {
   color: var(--repost);
 }
 
+.reaction-pill.repost-button:not(.reacted) {
+  color: var(--font-secondary-color);
+}
+
+.reaction-pill.repost-button:not(.reacted) svg.repeat {
+  color: var(--font-secondary-color);
+}
+
+.reaction-pill.repost-button.reacted {
+  color: var(--repost);
+}
+
 .light button.icon {
   border: 1px solid var(--color-neutral-800);
   box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
