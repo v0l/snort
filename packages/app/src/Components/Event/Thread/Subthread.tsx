@@ -2,7 +2,6 @@ import { EventExt, type TaggedNostrEvent } from "@snort/system"
 import { Fragment } from "react"
 
 import Note from "@/Components/Event/EventComponent"
-import SpamNote from "@/Components/Event/SpamNote"
 import { getReplies } from "@/Components/Event/Thread/util"
 
 export interface SubthreadProps {
@@ -12,13 +11,11 @@ export interface SubthreadProps {
   allNotes: readonly TaggedNostrEvent[]
   chains: Map<string, Array<string>>
   onNavigate: (e: TaggedNostrEvent) => void
-  /** Replies classified as spam by nspam */
+  /** Replies classified as spam by nspam, dropped from the tree */
   spamIds?: ReadonlySet<string>
-  /** Drop spam replies instead of collapsing them */
-  hideSpam?: boolean
 }
 
-export const Subthread = ({ active, notes, allNotes, chains, onNavigate, spamIds, hideSpam }: SubthreadProps) => {
+export const Subthread = ({ active, notes, allNotes, chains, onNavigate, spamIds }: SubthreadProps) => {
   const renderNote = (
     note: TaggedNostrEvent,
     idx: number,
@@ -27,8 +24,7 @@ export const Subthread = ({ active, notes, allNotes, chains, onNavigate, spamIds
     parentContinues: boolean,
   ): React.ReactNode => {
     const noteKey = EventExt.keyOf(note)
-    const allReplies = getReplies(noteKey, allNotes, chains)
-    const replies = hideSpam ? allReplies.filter(r => !spamIds?.has(r.id)) : allReplies
+    const replies = getReplies(noteKey, allNotes, chains).filter(r => !spamIds?.has(r.id))
     const hasReplies = replies.length > 0
     const isLast = idx === siblings.length - 1
 
@@ -69,7 +65,7 @@ export const Subthread = ({ active, notes, allNotes, chains, onNavigate, spamIds
 
     return (
       <Fragment key={noteKey}>
-        {spamIds?.has(note.id) ? <SpamNote>{noteElement}</SpamNote> : noteElement}
+        {noteElement}
         {replies.map((reply, y) => renderNote(reply, y, replies, depth + 1, continuesAfterThisNote))}
       </Fragment>
     )

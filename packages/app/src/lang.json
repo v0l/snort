@@ -120,9 +120,6 @@
   "1A6QoL": {
     "defaultMessage": "Author-Derived Servers ({count})"
   },
-  "1Bq0Kc": {
-    "defaultMessage": "This reply looks like spam"
-  },
   "1GvBMj": {
     "defaultMessage": "internal reference"
   },
@@ -455,9 +452,6 @@
   },
   "8HJxXG": {
     "defaultMessage": "Sign up"
-  },
-  "8POdZj": {
-    "defaultMessage": "Score replies on your device and collapse the ones that look like spam"
   },
   "8QDesP": {
     "defaultMessage": "Zap {n} sats"
@@ -1340,9 +1334,6 @@
   "RoOyAh": {
     "defaultMessage": "Relays"
   },
-  "RqlVIh": {
-    "defaultMessage": "Remove spam replies instead of collapsing them"
-  },
   "RrUIfX": {
     "defaultMessage": "Downloadable backups from {app} relay"
   },
@@ -1822,6 +1813,9 @@
   "dK2CcV": {
     "defaultMessage": "The public key is like your username, you can share it with anyone."
   },
+  "dNlba8": {
+    "defaultMessage": "Score replies on your device and move the ones that look like spam out of the thread"
+  },
   "dOQCL8": {
     "defaultMessage": "Display name"
   },
@@ -2167,6 +2161,9 @@
   "kuPHYE": {
     "defaultMessage": "{n,plural,=0{{name} liked} other{{name} & {n} others liked}}"
   },
+  "kx4kKa": {
+    "defaultMessage": "{n,plural,one{# reply hidden as spam} other{# replies hidden as spam}}"
+  },
   "l+ikU1": {
     "defaultMessage": "Everything in {plan}"
   },
@@ -2511,9 +2508,6 @@
   },
   "txkW56": {
     "defaultMessage": "Submitting..."
-  },
-  "tz0lL0": {
-    "defaultMessage": "Hide spam replies"
   },
   "tzMNF3": {
     "defaultMessage": "Status"

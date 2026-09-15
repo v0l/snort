@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom"
 
 import BackButton from "@/Components/Button/BackButton"
 import Note from "@/Components/Event/EventComponent"
+import { SpamReplies } from "@/Components/Event/SpamReplies"
 import { useSpamIds } from "@/Hooks/useSpamScores"
-import usePreferences from "@/Hooks/usePreferences"
 import { ThreadContext, type ThreadContextState } from "@/Utils/Thread"
 import Modal from "@/Components/Modal/Modal"
 import JsonBlock from "@/Components/json"
@@ -36,8 +36,8 @@ export function ThreadElement(props: ThreadProps) {
 
 function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContextState }) {
   const navigate = useNavigate()
-  const hideSpamReplies = usePreferences(s => s.hideSpamReplies)
   const spamIds = useSpamIds(thread.data)
+  const spamReplies = useMemo(() => thread.data.filter(a => spamIds.has(a.id)), [thread.data, spamIds])
 
   const rootOptions = useMemo(
     () => ({ showReactionsLink: true, showMediaSpotlight: !props.disableSpotlight, isRoot: true }),
@@ -56,8 +56,7 @@ function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContext
     if (!from || thread.chains.size === 0) {
       return
     }
-    const all = getReplies(from, thread.data, thread.chains)
-    const replies = hideSpamReplies ? all.filter(a => !spamIds.has(a.id)) : all
+    const replies = getReplies(from, thread.data, thread.chains).filter(a => !spamIds.has(a.id))
     if (replies.length > 0) {
       return (
         <Subthread
@@ -67,7 +66,6 @@ function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContext
           onNavigate={navigateThread}
           chains={thread.chains}
           spamIds={spamIds}
-          hideSpam={hideSpamReplies}
         />
       )
     }
@@ -147,6 +145,7 @@ function ThreadInner({ thread, ...props }: ThreadProps & { thread: ThreadContext
             />
           </div>
         )}
+        <SpamReplies notes={spamReplies} />
         <ThreadDebug />
       </div>
     </>
