@@ -5,9 +5,11 @@ import useLogin from "./useLogin"
 export default function usePreferences<T = UserPreferences>(selector?: (v: UserPreferences) => T): T {
   const defaultSelector = (v: UserPreferences) => v as unknown as T
   return useLogin(s => {
-    const pref = s.state.appdata?.preferences ?? {
+    // stored preferences predate newer keys, defaults fill in the gaps
+    const pref = {
       ...DefaultPreferences,
       ...CONFIG.defaultPreferences,
+      ...s.state.appdata?.preferences,
     }
 
     return (selector || defaultSelector)(pref)
@@ -16,9 +18,11 @@ export default function usePreferences<T = UserPreferences>(selector?: (v: UserP
 
 export function useAllPreferences() {
   const { id, pref } = useLogin(s => {
-    const pref = s.state.appdata?.preferences ?? {
+    // stored preferences predate newer keys, defaults fill in the gaps
+    const pref = {
       ...DefaultPreferences,
       ...CONFIG.defaultPreferences,
+      ...s.state.appdata?.preferences,
     }
 
     return {
