@@ -120,6 +120,9 @@
   "1A6QoL": {
     "defaultMessage": "Author-Derived Servers ({count})"
   },
+  "1Bq0Kc": {
+    "defaultMessage": "This reply looks like spam"
+  },
   "1GvBMj": {
     "defaultMessage": "internal reference"
   },
@@ -170,6 +173,9 @@
   },
   "2IFGap": {
     "defaultMessage": "Donate"
+  },
+  "2MzX6F": {
+    "defaultMessage": "Unable to decrypt message"
   },
   "2Npgrt": {
     "defaultMessage": "Has imeta tags for images, but no r tags"
@@ -449,6 +455,9 @@
   },
   "8HJxXG": {
     "defaultMessage": "Sign up"
+  },
+  "8POdZj": {
+    "defaultMessage": "Score replies on your device and collapse the ones that look like spam"
   },
   "8QDesP": {
     "defaultMessage": "Zap {n} sats"
@@ -1331,6 +1340,9 @@
   "RoOyAh": {
     "defaultMessage": "Relays"
   },
+  "RqlVIh": {
+    "defaultMessage": "Remove spam replies instead of collapsing them"
+  },
   "RrUIfX": {
     "defaultMessage": "Downloadable backups from {app} relay"
   },
@@ -1478,6 +1490,9 @@
   },
   "Ub+AGc": {
     "defaultMessage": "Sign In"
+  },
+  "Uf/bAs": {
+    "defaultMessage": "Filter spam replies"
   },
   "Up5U7K": {
     "defaultMessage": "Block"
@@ -2496,6 +2511,9 @@
   },
   "txkW56": {
     "defaultMessage": "Submitting..."
+  },
+  "tz0lL0": {
+    "defaultMessage": "Hide spam replies"
   },
   "tzMNF3": {
     "defaultMessage": "Status"

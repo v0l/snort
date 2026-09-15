@@ -108,6 +108,16 @@ export interface UserPreferences {
   muteWithWoT: boolean
 
   /**
+   * Collapse replies that the on-device nspam model classifies as spam
+   */
+  filterSpamReplies: boolean
+
+  /**
+   * Hide spam replies completely instead of collapsing them
+   */
+  hideSpamReplies: boolean
+
+  /**
    * Selected DVM provider pubkey for trending notes (kind 5300)
    */
   trendingDvmPubkey?: string
@@ -147,6 +157,8 @@ export const DefaultPreferences = {
   autoTranslate: true,
   hideMutedNotes: false,
   muteWithWoT: false,
+  filterSpamReplies: true,
+  hideSpamReplies: false,
   showContentWarningPosts: false,
   trendingDvmPubkey: "0d9ec486275b70f0c4faec277fc4c63b9f14cb1ca1ec029f7d76210e957e5257",
 } as UserPreferences

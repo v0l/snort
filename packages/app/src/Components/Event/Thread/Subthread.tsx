@@ -1,6 +1,8 @@
 import { EventExt, type TaggedNostrEvent } from "@snort/system"
+import { Fragment } from "react"
 
 import Note from "@/Components/Event/EventComponent"
+import SpamNote from "@/Components/Event/SpamNote"
 import { getReplies } from "@/Components/Event/Thread/util"
 
 export interface SubthreadProps {
@@ -10,9 +12,13 @@ export interface SubthreadProps {
   allNotes: readonly TaggedNostrEvent[]
   chains: Map<string, Array<string>>
   onNavigate: (e: TaggedNostrEvent) => void
+  /** Replies classified as spam by nspam */
+  spamIds?: ReadonlySet<string>
+  /** Drop spam replies instead of collapsing them */
+  hideSpam?: boolean
 }
 
-export const Subthread = ({ active, notes, allNotes, chains, onNavigate }: SubthreadProps) => {
+export const Subthread = ({ active, notes, allNotes, chains, onNavigate, spamIds, hideSpam }: SubthreadProps) => {
   const renderNote = (
     note: TaggedNostrEvent,
     idx: number,
@@ -21,7 +27,8 @@ export const Subthread = ({ active, notes, allNotes, chains, onNavigate }: Subth
     parentContinues: boolean,
   ): React.ReactNode => {
     const noteKey = EventExt.keyOf(note)
-    const replies = getReplies(noteKey, allNotes, chains)
+    const allReplies = getReplies(noteKey, allNotes, chains)
+    const replies = hideSpam ? allReplies.filter(r => !spamIds?.has(r.id)) : allReplies
     const hasReplies = replies.length > 0
     const isLast = idx === siblings.length - 1
 
@@ -46,22 +53,25 @@ export const Subthread = ({ active, notes, allNotes, chains, onNavigate }: Subth
             bottomLine: hasReplies || !isLast || (depth > 1 && parentContinues),
           }
 
+    const noteElement = (
+      <Note
+        highlight={active === noteKey}
+        inset={`ml-14`}
+        data={note}
+        onClick={onNavigate}
+        threadChains={chains}
+        waitUntilInView={idx > 5}
+        options={{
+          threadLines,
+        }}
+      />
+    )
+
     return (
-      <>
-        <Note
-          highlight={active === noteKey}
-          inset={`ml-14`}
-          data={note}
-          key={noteKey}
-          onClick={onNavigate}
-          threadChains={chains}
-          waitUntilInView={idx > 5}
-          options={{
-            threadLines,
-          }}
-        />
+      <Fragment key={noteKey}>
+        {spamIds?.has(note.id) ? <SpamNote>{noteElement}</SpamNote> : noteElement}
         {replies.map((reply, y) => renderNote(reply, y, replies, depth + 1, continuesAfterThisNote))}
-      </>
+      </Fragment>
     )
   }
 

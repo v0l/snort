@@ -263,6 +263,12 @@
       "value": ")"
     }
   ],
+  "1Bq0Kc": [
+    {
+      "type": 0,
+      "value": "This reply looks like spam"
+    }
+  ],
   "1GvBMj": [
     {
       "type": 0,
@@ -391,6 +397,12 @@
     {
       "type": 0,
       "value": "Donate"
+    }
+  ],
+  "2MzX6F": [
+    {
+      "type": 0,
+      "value": "Unable to decrypt message"
     }
   ],
   "2Npgrt": [
@@ -1055,6 +1067,12 @@
     {
       "type": 0,
       "value": "Sign up"
+    }
+  ],
+  "8POdZj": [
+    {
+      "type": 0,
+      "value": "Score replies on your device and collapse the ones that look like spam"
     }
   ],
   "8QDesP": [
@@ -3179,6 +3197,12 @@
       "value": "Relays"
     }
   ],
+  "RqlVIh": [
+    {
+      "type": 0,
+      "value": "Remove spam replies instead of collapsing them"
+    }
+  ],
   "RrUIfX": [
     {
       "type": 0,
@@ -3501,6 +3525,12 @@
     {
       "type": 0,
       "value": "Sign In"
+    }
+  ],
+  "Uf/bAs": [
+    {
+      "type": 0,
+      "value": "Filter spam replies"
     }
   ],
   "Up5U7K": [
@@ -6105,6 +6135,12 @@
     {
       "type": 0,
       "value": "Submitting..."
+    }
+  ],
+  "tz0lL0": [
+    {
+      "type": 0,
+      "value": "Hide spam replies"
     }
   ],
   "tzMNF3": [

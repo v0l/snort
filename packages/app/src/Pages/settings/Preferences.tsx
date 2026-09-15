@@ -178,6 +178,27 @@ const PreferencesPage = () => {
       )}
 
       {row(
+        <FormattedMessage defaultMessage="Filter spam replies" />,
+        <FormattedMessage defaultMessage="Score replies on your device and collapse the ones that look like spam" />,
+        <input
+          type="checkbox"
+          checked={pref.filterSpamReplies}
+          onChange={e => setPref({ ...pref, filterSpamReplies: e.target.checked })}
+        />,
+      )}
+
+      {pref.filterSpamReplies &&
+        row(
+          <FormattedMessage defaultMessage="Hide spam replies" />,
+          <FormattedMessage defaultMessage="Remove spam replies instead of collapsing them" />,
+          <input
+            type="checkbox"
+            checked={pref.hideSpamReplies}
+            onChange={e => setPref({ ...pref, hideSpamReplies: e.target.checked })}
+          />,
+        )}
+
+      {row(
         <FormattedMessage defaultMessage="Auto Translate" />,
         <FormattedMessage defaultMessage="Automatically translate notes to your local language" />,
         <input
