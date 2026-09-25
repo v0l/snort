@@ -3,7 +3,7 @@ import "./Textarea.css"
 
 import { NostrLink } from "@snort/system"
 import ReactTextareaAutocomplete, { type ItemComponentProps } from "@webscopeio/react-textarea-autocomplete"
-import type { ComponentType, TextareaHTMLAttributes } from "react"
+import { type ComponentType, type TextareaHTMLAttributes, useRef } from "react"
 import { useIntl } from "react-intl"
 import TextareaAutosize from "react-textarea-autosize"
 
@@ -67,8 +67,16 @@ const Textarea = (props: TextareaProps) => {
   const { formatMessage } = useIntl()
   const mentionSearch = useMentionSearch()
 
+  const latestMention = useRef<Promise<Array<FuzzySearchResult>>>(undefined)
+
   const userDataProvider = async (token: string) => {
-    return (await mentionSearch(token)).slice(0, 10)
+    latestMention.current = mentionSearch(token).then(r => r.slice(0, 10))
+    let current: Promise<Array<FuzzySearchResult>>
+    do {
+      current = latestMention.current
+      await current
+    } while (current !== latestMention.current)
+    return current
   }
 
   const emojiDataProvider = async (token: string) => {
