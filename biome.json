@@ -47,6 +47,18 @@
       }
     }
   },
+  "overrides": [
+    {
+      "includes": ["packages/app/e2e/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noEmptyPattern": "off"
+          }
+        }
+      }
+    }
+  ],
   "javascript": {
     "formatter": {
       "jsxQuoteStyle": "double",

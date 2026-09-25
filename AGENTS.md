@@ -72,6 +72,20 @@ cd packages/system && bun test                   # Package-scoped
 
 Tests use `tsconfig` with `"exclude": ["**/*.test.ts"]` — tests are not compiled by `tsc` build.
 
+### End-to-end tests
+
+Playwright suite in `packages/app/e2e/*.e2e.ts`, run against `vite preview` of the built app (`bun run build` first).
+Every relay WebSocket is served by an in-memory relay (`e2e/support/relay.ts`) seeded with signed fixture events
+(`e2e/support/world.ts`); HTTP APIs, Blossom, LNURL, the AI endpoint and an NWC wallet are mocked in `e2e/support/`.
+Assert on what the app publishes with `expectPublished(relay, ...)`.
+
+```bash
+bun --cwd=packages/app run test:e2e            # all specs
+bun --cwd=packages/app run test:e2e -g "media" # by name
+bun --cwd=packages/app run test:e2e:coverage   # V8 coverage report in packages/app/coverage-e2e
+E2E_RELAY_LOG=1 bunx playwright test ...        # log relay traffic
+```
+
 ## Formatting & Linting
 
 **Biome** (not ESLint/Prettier). Config in `biome.json` at root.
