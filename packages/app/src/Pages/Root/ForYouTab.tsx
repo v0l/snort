@@ -42,7 +42,7 @@ export const ForYouTab = memo(function ForYouTab() {
   const [notes, setNotes] = useState<NostrEvent[]>(forYouFeed.events)
   const login = useLogin(s => ({
     publicKey: s.publicKey,
-    tags: s.state.getList(EventKind.InterestSet),
+    tags: s.state.getList(EventKind.InterestsList),
   }))
   const navigationType = useNavigationType()
   const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt")

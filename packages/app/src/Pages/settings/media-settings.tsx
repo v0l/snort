@@ -13,7 +13,7 @@ import { getRelayName } from "@/Utils"
 
 export default function MediaSettingsPage() {
   const { state } = useLogin(s => ({ v: s.state.version, state: s.state }))
-  const list = state.getList(EventKind.BlossomServerList)
+  const list = state.getList(EventKind.BlossomServerList).filter(a => a.toEventTag()?.[0] === "server")
   const [newServer, setNewServer] = useState("")
   const knownServers = useDiscoverMediaServers()
 

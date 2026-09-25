@@ -15,7 +15,7 @@ export function RootTabs({ base = "/" }: { base: string }) {
   const location = useLocation()
   const { publicKey: pubKey, tags } = useLogin(s => ({
     publicKey: s.publicKey,
-    tags: s.state.getList(EventKind.InterestSet),
+    tags: s.state.getList(EventKind.InterestsList),
   }))
   const defaultRootTab = usePreferences(s => s.defaultRootTab)
 

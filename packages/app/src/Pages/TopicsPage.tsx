@@ -9,7 +9,7 @@ import useLogin from "@/Hooks/useLogin"
 export function TopicsPage() {
   const { tags, pubKey } = useLogin(s => ({
     pubKey: s.publicKey,
-    tags: s.state.getList(EventKind.InterestSet),
+    tags: s.state.getList(EventKind.InterestsList),
   }))
   const subject = useMemo(
     () =>
