@@ -17,9 +17,11 @@ Snort supports the following NIP's:
 - [x] NIP-11: Relay Information Document
 - [x] NIP-13: Proof of Work
 - [ ] NIP-14: Subject tag in text events
+- [x] NIP-17: Private Direct Messages
 - [x] NIP-18: Reposts
 - [x] NIP-19: bech32-encoded entities
 - [x] NIP-21: `nostr:` Protocol handler (`web+nostr`)
+- [x] NIP-22: Comments
 - [x] NIP-23: Long form content
 - [x] NIP-25: Reactions
 - [x] NIP-26: Delegated Event Signing (Display delegated signings only)
@@ -43,13 +45,33 @@ Snort supports the following NIP's:
 - [x] NIP-58: Badges
 - [x] NIP-59: Gift Wrap
 - [x] NIP-65: Relay List Metadata
+- [x] NIP-68: Picture-first feeds
+- [x] NIP-69: Zap polls
+- [x] NIP-71: Video events
 - [x] NIP-75: Zap Goals
 - [x] NIP-78: App specific data
 - [x] NIP-89: App handlers
 - [x] NIP-90: Data Vending Machines
+- [x] NIP-92: Media Attachments
 - [x] NIP-94: File Metadata
-- [x] NIP-96: HTTP File Storage Integration (Draft)
 - [x] NIP-98: HTTP Auth
+
+Media uploads use [Blossom](https://github.com/hzrd149/blossom) servers.
+
+### Development
+
+Snort is a Bun workspace. Install [Bun](https://bun.sh), then:
+
+```bash
+bun install
+bun run start          # build the packages and start the dev server
+bun run build          # build everything into packages/app/build
+bun test               # run the test suite
+bunx --bun biome lint  # lint
+bun --cwd=packages/app run typecheck
+```
+
+Set `NODE_CONFIG_ENV` to build with one of the configs in `packages/app/config`, for example `NODE_CONFIG_ENV=iris bun run start`.
 
 ### Translations
 
@@ -63,4 +85,4 @@ To extract translations run:
 bun run pre:commit
 ```
 
-This will create the source file `packages/app/src/translations/en.json`
+This updates the source strings in `packages/app/src/lang.json` and compiles them to `packages/app/src/translations/en.json`.

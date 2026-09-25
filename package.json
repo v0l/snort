@@ -4,6 +4,8 @@
   "scripts": {
     "start": "bun run build && bun --cwd=packages/app run start",
     "build": "bun --cwd=packages/shared run build && bun --cwd=packages/system run build && bun --cwd=packages/system-react run build && bun --cwd=packages/wallet run build && bun --cwd=packages/worker-relay run build && bun --cwd=packages/bun-sqlite-relay run build && bun --cwd=packages/app run build",
+    "docs:dev": "bunx --bun vitepress dev docs",
+    "docs:build": "bunx --bun vitepress build docs",
     "push-prod": "git switch snort-prod && git merge --ff-only main && git push && git checkout main",
     "pre:commit": "bun --cwd=packages/app run intl-extract && bun --cwd=packages/app run intl-compile && bunx --bun biome lint --write"
   },
@@ -14,6 +16,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
     "@tauri-apps/cli": "^2.11.5",
-    "vitepress": "^1.6.4"
+    "vitepress": "^1.6.4",
+    "vue": "3.5.33"
   }
 }

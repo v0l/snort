@@ -58,7 +58,7 @@ Configs live in `packages/app/config/` (default, iris, nostr, phoenix, soloco, m
 
 ## CI pipeline order
 
-`bun run build` → `bun test` → `bunx --bun biome lint` (no `--write` in CI)
+`bun run build` → `bun test` → `bun --cwd=packages/app run typecheck` → `bunx --bun biome lint` (no `--write` in CI)
 
 ## Testing
 
@@ -106,5 +106,5 @@ Key settings that differ from defaults:
 
 - `src-tauri/` — Tauri desktop app (Rust backend), at repo root
 - `functions/` — Cloudflare Workers middleware
-- `docs/` — VitePress documentation site. Per-package docs in `docs/packages/`. Run with `bunx --bun vitepress dev docs`
+- `docs/` — VitePress documentation site. Per-package docs in `docs/packages/`. Run with `bun run docs:dev`, build with `bun run docs:build`
 - `packages/system-wasm/` — Requires `wasm-pack` to build (Rust → WASM)

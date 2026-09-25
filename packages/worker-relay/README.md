@@ -4,7 +4,7 @@ Worker relay is a Nostr relay built on `sqlite-wasm`
 
 `WorkerRelayInterface` is the class which accepts the URL of the worker script
 
-`sqlite-wasm` uses OFPS in order to persist the database.
+`sqlite-wasm` uses OPFS in order to persist the database.
 
 ### Example
 
@@ -24,7 +24,6 @@ const workerRelay = new WorkerRelayInterface(workerScript);
 // load sqlite database and run migrations
 await workerRelay.init({
   databasePath: "relay.db",
-  insertBatchSize: 100,
 });
 
 // Query worker relay with regular nostr REQ command
