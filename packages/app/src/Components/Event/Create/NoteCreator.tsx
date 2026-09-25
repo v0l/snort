@@ -153,15 +153,14 @@ export function NoteCreator() {
         for (const [, v] of Object.entries(note.attachments ?? {})) {
           const at = v[0]
           note.note += note.note.length > 0 ? `\n${at.url}` : at.url
-          const n94 =
-            (at.nip94?.length ?? 0) > 0
-              ? readNip94Tags(at.nip94!)
-              : ({
-                  url: at.url,
-                  hash: at.sha256,
-                  size: at.size,
-                  mimeType: at.type,
-                } as Nip94Tags)
+          const fromServer = readNip94Tags(at.nip94 ?? [])
+          const n94: Nip94Tags = {
+            ...fromServer,
+            url: fromServer.url ?? at.url,
+            hash: fromServer.hash ?? at.sha256,
+            size: fromServer.size ?? at.size,
+            mimeType: fromServer.mimeType ?? at.type,
+          }
 
           // attach fallbacks
           n94.fallback ??= []
