@@ -26,9 +26,6 @@
   "+sDqqq": {
     "defaultMessage": "Peer-to-peer Order events"
   },
-  "+tShPg": {
-    "defaultMessage": "following"
-  },
   "+vA//S": {
     "defaultMessage": "Logins"
   },
@@ -122,9 +119,6 @@
   },
   "1GvBMj": {
     "defaultMessage": "internal reference"
-  },
-  "1Ia8qN": {
-    "defaultMessage": "Processing"
   },
   "1Mo59U": {
     "defaultMessage": "Are you sure you want to remove this note from bookmarks?"
@@ -486,9 +480,6 @@
   "9HU8vw": {
     "defaultMessage": "Reply"
   },
-  "9O+VX8": {
-    "defaultMessage": "Partial"
-  },
   "9RNiUn": {
     "defaultMessage": "View Feed"
   },
@@ -515,9 +506,6 @@
   },
   "9pMqYs": {
     "defaultMessage": "Nostr Address"
-  },
-  "9qtLJC": {
-    "defaultMessage": "Payment Required"
   },
   "9wO4wJ": {
     "defaultMessage": "Lightning Invoice"
@@ -1050,9 +1038,6 @@
   },
   "KJryGq": {
     "defaultMessage": "Live Chat Message"
-  },
-  "KN7zKn": {
-    "defaultMessage": "Error"
   },
   "KQvWvD": {
     "defaultMessage": "Deleted"
@@ -2658,9 +2643,6 @@
   },
   "xmcVZ0": {
     "defaultMessage": "Search"
-  },
-  "xrKHS6": {
-    "defaultMessage": "Success"
   },
   "xybOUv": {
     "defaultMessage": "FAN"

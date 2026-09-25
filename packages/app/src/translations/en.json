@@ -57,12 +57,6 @@
       "value": "Peer-to-peer Order events"
     }
   ],
-  "+tShPg": [
-    {
-      "type": 0,
-      "value": "following"
-    }
-  ],
   "+vA//S": [
     {
       "type": 0,
@@ -267,12 +261,6 @@
     {
       "type": 0,
       "value": "internal reference"
-    }
-  ],
-  "1Ia8qN": [
-    {
-      "type": 0,
-      "value": "Processing"
     }
   ],
   "1Mo59U": [
@@ -1141,12 +1129,6 @@
       "value": "Reply"
     }
   ],
-  "9O+VX8": [
-    {
-      "type": 0,
-      "value": "Partial"
-    }
-  ],
   "9RNiUn": [
     {
       "type": 0,
@@ -1203,12 +1185,6 @@
     {
       "type": 0,
       "value": "Nostr Address"
-    }
-  ],
-  "9qtLJC": [
-    {
-      "type": 0,
-      "value": "Payment Required"
     }
   ],
   "9wO4wJ": [
@@ -2475,12 +2451,6 @@
     {
       "type": 0,
       "value": "Live Chat Message"
-    }
-  ],
-  "KN7zKn": [
-    {
-      "type": 0,
-      "value": "Error"
     }
   ],
   "KQvWvD": [
@@ -6499,12 +6469,6 @@
     {
       "type": 0,
       "value": "Search"
-    }
-  ],
-  "xrKHS6": [
-    {
-      "type": 0,
-      "value": "Success"
     }
   ],
   "xybOUv": [

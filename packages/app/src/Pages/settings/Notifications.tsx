@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, type MessageDescriptor } from "react-intl"
 
 import Icon from "@/Components/Icons/Icon"
 import useEventPublisher from "@/Hooks/useEventPublisher"
@@ -10,8 +10,8 @@ import messages from "./messages"
 
 interface StatusIndicatorProps {
   status: boolean
-  enabledMessage: React.ComponentProps<typeof FormattedMessage>
-  disabledMessage: React.ComponentProps<typeof FormattedMessage>
+  enabledMessage: MessageDescriptor
+  disabledMessage: MessageDescriptor
 }
 
 const StatusIndicator = ({ status, enabledMessage, disabledMessage }: StatusIndicatorProps) => {
