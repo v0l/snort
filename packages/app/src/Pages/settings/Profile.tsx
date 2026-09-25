@@ -172,13 +172,6 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     }
   }
 
-  async function _setNewAvatar() {
-    const rsp = await uploadFile()
-    if (rsp) {
-      setPicture(rsp)
-    }
-  }
-
   async function onNip05Change(e: React.ChangeEvent<HTMLInputElement>) {
     isDirty.current = true
     const Nip05Address = e.target.value.toLowerCase()
