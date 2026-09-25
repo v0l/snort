@@ -14,7 +14,7 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.9",
+    "@biomejs/biome": "2.5.14",
     "@tauri-apps/cli": "^2.11.5",
     "vitepress": "^1.6.4"
   }
