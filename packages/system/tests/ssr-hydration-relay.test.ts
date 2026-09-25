@@ -19,7 +19,7 @@ function ts(label: string, start: number) {
   return ms
 }
 
-describe("SSR Hydration — real relays", () => {
+describe.skipIf(!process.env.LIVE_RELAYS)("SSR Hydration — real relays", () => {
   let server: NostrSystem
   let client: NostrSystem
 
