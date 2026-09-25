@@ -33,7 +33,10 @@ export class NostrHashtagLink implements ToNostrEventTag {
   constructor(readonly tag: string) {}
 
   static isInstance(obj: unknown): obj is NostrHashtagLink {
-    return obj instanceof NostrHashtagLink || (typeof obj === "object" && obj !== null && "tag" in obj && "toEventTag" in obj)
+    return (
+      obj instanceof NostrHashtagLink ||
+      (typeof obj === "object" && obj !== null && "tag" in obj && "toEventTag" in obj)
+    )
   }
 
   equals(other: ToNostrEventTag): boolean {
@@ -53,7 +56,14 @@ export class UnknownTag implements ToNostrEventTag {
   constructor(readonly value: Array<string>) {}
 
   static isInstance(obj: unknown): obj is UnknownTag {
-    return obj instanceof UnknownTag || (typeof obj === "object" && obj !== null && "value" in obj && Array.isArray((obj as UnknownTag).value) && "toEventTag" in obj)
+    return (
+      obj instanceof UnknownTag ||
+      (typeof obj === "object" &&
+        obj !== null &&
+        "value" in obj &&
+        Array.isArray((obj as UnknownTag).value) &&
+        "toEventTag" in obj)
+    )
   }
 
   equals(other: ToNostrEventTag): boolean {
@@ -102,7 +112,10 @@ export class NostrLink implements ToNostrEventTag {
   scope?: LinkScope
 
   static isInstance(obj: unknown): obj is NostrLink {
-    return obj instanceof NostrLink || (typeof obj === "object" && obj !== null && "type" in obj && "id" in obj && "encode" in obj)
+    return (
+      obj instanceof NostrLink ||
+      (typeof obj === "object" && obj !== null && "type" in obj && "id" in obj && "encode" in obj)
+    )
   }
 
   constructor(
@@ -333,7 +346,7 @@ export class NostrLink implements ToNostrEventTag {
     // extract the relay tags from the event to use in linking to this event
     const eventRelays = removeUndefined(
       ev.tags
-        .filter(a => a[0] === "relays" || a[0] === "relay" || (a[0] === "r" && ev.kind == EventKind.Relays))
+        .filter(a => a[0] === "relays" || a[0] === "relay" || (a[0] === "r" && ev.kind === EventKind.Relays))
         .flatMap(a => a.slice(1).map(b => sanitizeRelayUrl(b))),
     )
     relays = appendDedupe(relays, eventRelays)

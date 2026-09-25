@@ -1,4 +1,4 @@
-import type { ParsedFragment, } from "@snort/system"
+import type { ParsedFragment } from "@snort/system"
 import classNames from "classnames"
 import type React from "react"
 import { lazy, type ReactNode, Suspense, use } from "react"
@@ -155,7 +155,11 @@ export default function Text({
         }
         case "link": {
           // link fragment with media mimeType from imeta should render as inline media
-          if (element.mimeType?.startsWith("image/") || element.mimeType?.startsWith("audio/") || element.mimeType?.startsWith("video/")) {
+          if (
+            element.mimeType?.startsWith("image/") ||
+            element.mimeType?.startsWith("audio/") ||
+            element.mimeType?.startsWith("video/")
+          ) {
             if (disableMedia ?? false) {
               chunks.push(<DisableMedia content={element.content} />)
             } else {
@@ -214,10 +218,10 @@ export default function Text({
         default: {
           chunks.push(
             highlightText ? (
-                <HighlightedText content={element.content} textToHighlight={highlightText} />
-              ) : (
-                element.content
-              ),
+              <HighlightedText content={element.content} textToHighlight={highlightText} />
+            ) : (
+              element.content
+            ),
           )
           break
         }
@@ -295,6 +299,7 @@ function buildGallery(
       <div className="grid grid-cols-4 gap-0.5 place-items-start">
         {imagesWithGridConfig.map(img => (
           <RevealMedia
+            key={img.content}
             src={img.content}
             meta={img.data}
             creator={creator}

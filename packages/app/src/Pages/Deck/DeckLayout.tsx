@@ -104,13 +104,13 @@ export function SnortDeckLayout() {
             {cols.map(c => {
               switch (c) {
                 case "notes":
-                  return <NotesCol />
+                  return <NotesCol key={c} />
                 case "media":
-                  return <MediaCol setThread={t => setDeckState({ thread: t })} />
+                  return <MediaCol key={c} setThread={t => setDeckState({ thread: t })} />
                 case "articles":
-                  return <ArticlesCol />
+                  return <ArticlesCol key={c} />
                 case "notifications":
-                  return <NotificationsCol setThread={t => setDeckState({ thread: t })} />
+                  return <NotificationsCol key={c} setThread={t => setDeckState({ thread: t })} />
               }
             })}
           </div>
@@ -123,15 +123,15 @@ export function SnortDeckLayout() {
           )}
           {deckState.article && (
             <Modal
-                id="deck-article"
-                onClose={() => setDeckState({})}
-                className="long-form"
-                onClick={() => setDeckState({})}
-              >
-                <div onClick={e => e.stopPropagation()}>
-                  <LongFormText ev={deckState.article} isPreview={false} />
-                </div>
-              </Modal>
+              id="deck-article"
+              onClose={() => setDeckState({})}
+              className="long-form"
+              onClick={() => setDeckState({})}
+            >
+              <div onClick={e => e.stopPropagation()}>
+                <LongFormText ev={deckState.article} isPreview={false} />
+              </div>
+            </Modal>
           )}
           <Toaster />
         </ErrorBoundary>

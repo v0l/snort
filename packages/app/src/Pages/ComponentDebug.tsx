@@ -718,7 +718,7 @@ export default function ComponentDebugPage() {
             <span className="mb-2">KindName (various event kinds):</span>
             <div className="flex justify-between">
               {[1, 6, 7, 9735, 30023].map(k => (
-                <div>
+                <div key={k}>
                   {k}: <KindName kind={k} />
                 </div>
               ))}

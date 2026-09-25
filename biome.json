@@ -37,8 +37,13 @@
     "enabled": true,
     "rules": {
       "preset": "recommended",
+      "a11y": "warn",
       "correctness": {
         "useExhaustiveDependencies": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "warn",
+        "useIterableCallbackReturn": "warn"
       }
     }
   },

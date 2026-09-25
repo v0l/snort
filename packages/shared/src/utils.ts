@@ -302,7 +302,7 @@ export function isHex(s?: string) {
   // 65-70 = A-F
   // 97-102 = a-f
   return (
-    s.length % 2 == 0 &&
+    s.length % 2 === 0 &&
     [...s].map(v => v.charCodeAt(0)).every(v => (v >= 48 && v <= 57) || (v >= 65 && v <= 70) || (v >= 97 && v <= 102))
   )
 }

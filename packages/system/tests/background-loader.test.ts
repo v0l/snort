@@ -8,11 +8,11 @@
  *   - UntrackKeys: removes from all priority sets
  */
 
-import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test"
+import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 import type { CachedTable, CacheEvents } from "@snort/shared"
 import { EventEmitter } from "eventemitter3"
 import type { RequestBuilder, SystemInterface, TaggedNostrEvent } from "../src"
-import { BackgroundLoader, type ProfilePriority } from "../src/background-loader"
+import { BackgroundLoader } from "../src/background-loader"
 
 // ---------------------------------------------------------------------------
 // Helpers

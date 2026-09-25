@@ -95,14 +95,16 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef, tags: Array<
           <table className="table-auto border-collapse">
             <thead>
               <tr>
-                {(t.header as Tokens.TableCell[]).map(v => (
-                  <th className="border">{v.tokens ? v.tokens.map(a => renderToken(a, tags)) : v.text}</th>
+                {(t.header as Tokens.TableCell[]).map((v, i) => (
+                  <th key={i} className="border">
+                    {v.tokens ? v.tokens.map(a => renderToken(a, tags)) : v.text}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {(t.rows as Tokens.TableCell[][]).map(v => (
-                <tr>
+              {(t.rows as Tokens.TableCell[][]).map((v, i) => (
+                <tr key={i}>
                   {v.map((d, d_key) => (
                     <td className="border px-2 py-1" key={d_key}>
                       {d.tokens ? d.tokens.map(a => renderToken(a, tags)) : d.text}

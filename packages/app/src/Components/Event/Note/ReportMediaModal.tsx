@@ -32,9 +32,7 @@ export function hasReportableMedia(event: NostrEvent): boolean {
 function extractBlossomUrls(content: string): Array<{ url: string; hash: string }> {
   const urls: Array<{ url: string; hash: string }> = []
   const urlRegex = /https?:\/\/[^\s<>"']+/g
-  let match: RegExpExecArray | null
-
-  while ((match = urlRegex.exec(content)) !== null) {
+  for (const match of content.matchAll(urlRegex)) {
     const url = match[0]
     try {
       const urlObj = new URL(url)

@@ -1,4 +1,3 @@
-import EventEmitter from "eventemitter3"
 import {
   EventExt,
   type EventSigner,

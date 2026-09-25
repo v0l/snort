@@ -245,7 +245,6 @@ select {
 }
 
 button.primary {
-  background: rgb(239, 150, 68);
   background: var(--primary);
   color: #fff;
   border: none;

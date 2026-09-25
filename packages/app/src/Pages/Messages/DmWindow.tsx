@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { FormattedMessage } from "react-intl"
 
 import { type Chat, useChat } from "@/chat"
@@ -41,7 +41,7 @@ export default function DmWindow({ id }: { id: string }) {
   }
 
   return (
-    <FixedPage className="flex flex-1 flex-col" >
+    <FixedPage className="flex flex-1 flex-col">
       <div className="p-3">{sender()}</div>
       <div ref={scrollRef} className="overflow-y-auto hide-scrollbar p-2.5 flex-grow min-w-0">
         {chat && <DmChatSelected chat={chat} />}

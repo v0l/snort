@@ -4,7 +4,6 @@ import {
   decryptSigner,
   EventBuilder,
   type EventSigner,
-  NostrEvent,
   type NostrLink,
   type NotSignedNostrEvent,
   type SystemInterface,
@@ -129,7 +128,7 @@ export class DiffSyncTags extends EventEmitter<DiffSyncTagsEvents> {
 
     const isNew = this.#sync.value === undefined
     const next = this.#nextEvent(content)
-    let nextDecryptedContent
+    let nextDecryptedContent: string | undefined
     // content is populated as tags, encrypt it
     if (next.content.length > 0 && !content) {
       nextDecryptedContent = next.content

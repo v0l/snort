@@ -25,14 +25,13 @@ import type { RelayInfoDocument } from "../src"
 import type { CachedMetadata, UsersFollows } from "../src/cache"
 import type { RelaySettings } from "../src/connection"
 import type { ConnectionPool, ConnectionPoolEvents, ConnectionType, ConnectionTypeEvents } from "../src/connection-pool"
-import type { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "../src/nostr"
+import type { NostrEvent, OkResponse, ReqCommand } from "../src/nostr"
 import type { RelayMetadataLoader } from "../src/outbox"
 import type { ProfileLoaderService } from "../src/profile-cache"
 import { QueryTraceState } from "../src/query"
 import { QueryManager } from "../src/query-manager"
 import { DefaultOptimizer } from "../src/query-optimizer"
 import { RequestBuilder } from "../src/request-builder"
-import type { RequestRouter } from "../src/request-router"
 import type { SystemConfig, SystemInterface } from "../src/system"
 
 // ---------------------------------------------------------------------------
@@ -66,12 +65,18 @@ class MockConnection extends EventEmitter<ConnectionTypeEvents> implements Conne
     }
   }
 
-  get isOpen() { return this.#open }
-  get isDown() { return false }
+  get isOpen() {
+    return this.#open
+  }
+  get isDown() {
+    return false
+  }
   get activeSubscriptions() {
     return this.wireMessages.filter(m => Array.isArray(m) && m[0] === "REQ").length
   }
-  get maxSubscriptions() { return 20 }
+  get maxSubscriptions() {
+    return 20
+  }
 
   open() {
     this.#open = true
@@ -105,8 +110,7 @@ class MockConnection extends EventEmitter<ConnectionTypeEvents> implements Conne
    */
   #send(obj: object) {
     const authPending =
-      !this.Authed &&
-      (this.AwaitingAuth.size > 0 || (this.info as any)?.limitation?.auth_required === true)
+      !this.Authed && (this.AwaitingAuth.size > 0 || (this.info as any)?.limitation?.auth_required === true)
     if (!this.isOpen || authPending) {
       this.PendingRaw.push(obj)
       return false
@@ -144,11 +148,7 @@ class MockConnection extends EventEmitter<ConnectionTypeEvents> implements Conne
       .filter(m => Array.isArray(m) && m[0] === "REQ")
       .map(m => (m as any[])[1])
       // Also include requests stuck in PendingRaw
-      .concat(
-        this.PendingRaw
-          .filter(m => Array.isArray(m) && m[0] === "REQ")
-          .map(m => (m as any[])[1])
-      )
+      .concat(this.PendingRaw.filter(m => Array.isArray(m) && m[0] === "REQ").map(m => (m as any[])[1]))
 
     for (const id of ids) {
       this.emit("eose", id) // triggers trace.eose() → trace finishes
@@ -157,9 +157,7 @@ class MockConnection extends EventEmitter<ConnectionTypeEvents> implements Conne
     // Clear PendingRaw — nothing to send anymore
     this.PendingRaw = []
     // Clear wire messages tracking for closed subs
-    this.wireMessages = this.wireMessages.filter(
-      m => !Array.isArray(m) || m[0] !== "REQ"
-    )
+    this.wireMessages = this.wireMessages.filter(m => !Array.isArray(m) || m[0] !== "REQ")
   }
 
   /** Simulate successful auth completion */
@@ -175,7 +173,9 @@ class MockConnection extends EventEmitter<ConnectionTypeEvents> implements Conne
     return { ok: true, id: "", relay: this.address, event: ev }
   }
   closeRequest(_id: string) {}
-  sendRaw(obj: object) { this.#send(obj) }
+  sendRaw(obj: object) {
+    this.#send(obj)
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -194,7 +194,9 @@ class SimplePool extends EventEmitter<ConnectionPoolEvents> implements Connectio
     conn.on("closed", (sub, reason) => this.emit("event", conn.address, sub, reason as any))
   }
 
-  getConnection(id: string) { return this.#conns.get(id) }
+  getConnection(id: string) {
+    return this.#conns.get(id)
+  }
 
   async connect(address: string, options: RelaySettings, ephemeral: boolean) {
     let conn = this.#conns.get(address)
@@ -211,12 +213,16 @@ class SimplePool extends EventEmitter<ConnectionPoolEvents> implements Connectio
   }
 
   disconnect(_a: string) {}
-  async broadcast(): Promise<OkResponse[]> { return [] }
+  async broadcast(): Promise<OkResponse[]> {
+    return []
+  }
   async broadcastTo(_a: string, ev: NostrEvent): Promise<OkResponse> {
     return { ok: true, id: "", relay: _a, event: ev }
   }
 
-  *[Symbol.iterator]() { yield* this.#conns }
+  *[Symbol.iterator]() {
+    yield* this.#conns
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -238,27 +244,50 @@ function makeSystem(pool: SimplePool): SystemInterface {
   }
 
   return {
-    pool, config, cacheRelay: undefined, requestRouter: undefined,
-    checkSigs: false, optimizer: DefaultOptimizer,
+    pool,
+    config,
+    cacheRelay: undefined,
+    requestRouter: undefined,
+    checkSigs: false,
+    optimizer: DefaultOptimizer,
     relayLoader: { TrackKeys: () => {} } as unknown as RelayMetadataLoader,
     profileLoader: {} as ProfileLoaderService,
     userFollowsCache: {} as CachedTable<UsersFollows>,
     traceTimeline: undefined,
-    async Init() {}, GetQuery: () => undefined,
-    Query: () => { throw new Error("not used") },
+    async Init() {},
+    GetQuery: () => undefined,
+    Query: () => {
+      throw new Error("not used")
+    },
     Fetch: () => Promise.resolve([]),
-    async ConnectToRelay() {}, DisconnectRelay() {}, HandleEvent() {},
-    async BroadcastEvent() { return [] },
-    async WriteOnceToRelay() { return { ok: true, id: "", message: "", relay: "" } },
-    emit: () => false, on: () => ({}) as any, off: () => ({}) as any,
-    once: () => ({}) as any, removeAllListeners: () => ({}) as any,
-    listeners: () => [], listenerCount: () => 0, eventNames: () => [],
-    addListener: () => ({}) as any, removeListener: () => ({}) as any,
+    async ConnectToRelay() {},
+    DisconnectRelay() {},
+    HandleEvent() {},
+    async BroadcastEvent() {
+      return []
+    },
+    async WriteOnceToRelay() {
+      return { ok: true, id: "", message: "", relay: "" }
+    },
+    emit: () => false,
+    on: () => ({}) as any,
+    off: () => ({}) as any,
+    once: () => ({}) as any,
+    removeAllListeners: () => ({}) as any,
+    listeners: () => [],
+    listenerCount: () => 0,
+    eventNames: () => [],
+    addListener: () => ({}) as any,
+    removeListener: () => ({}) as any,
   } as unknown as SystemInterface
 }
 
-function sleep(ms: number) { return new Promise(r => setTimeout(r, ms)) }
-function pubkey(i: number) { return i.toString(16).padStart(64, "0") }
+function sleep(ms: number) {
+  return new Promise(r => setTimeout(r, ms))
+}
+function pubkey(i: number) {
+  return i.toString(16).padStart(64, "0")
+}
 
 // ---------------------------------------------------------------------------
 // Tests: demonstrate the CURRENT (broken) behavior
@@ -354,7 +383,9 @@ describe("QueryManager — fetch() on auth_required relay", () => {
 
     const rb = new RequestBuilder("auth-test")
     rb.withOptions({ groupingDelay: 0 })
-    rb.withFilter().kinds([0]).authors([pubkey(1)])
+    rb.withFilter()
+      .kinds([0])
+      .authors([pubkey(1)])
 
     const q = qm.query(rb)
     q.start()
@@ -381,7 +412,9 @@ describe("QueryManager — fetch() on auth_required relay", () => {
 
     const rb = new RequestBuilder("auth-fetch-resolve")
     rb.withOptions({ groupingDelay: 0 })
-    rb.withFilter().kinds([0]).authors([pubkey(1)])
+    rb.withFilter()
+      .kinds([0])
+      .authors([pubkey(1)])
 
     const fetchPromise = qm.fetch(rb)
 
@@ -413,7 +446,9 @@ describe("QueryManager — fetch() on auth_required relay", () => {
 
     const rb = new RequestBuilder("normal-test")
     rb.withOptions({ groupingDelay: 0 })
-    rb.withFilter().kinds([0]).authors([pubkey(1)])
+    rb.withFilter()
+      .kinds([0])
+      .authors([pubkey(1)])
 
     const q = qm.query(rb)
     q.start()

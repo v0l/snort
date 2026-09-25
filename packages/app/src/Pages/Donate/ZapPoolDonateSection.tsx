@@ -11,6 +11,10 @@ export function ZapPoolDonateSection() {
   if (!CONFIG.features.zapPool) {
     return
   }
+  return <ZapPoolDonateSectionInner />
+}
+
+function ZapPoolDonateSectionInner() {
   const zapPool = useSyncExternalStore(
     c => unwrap(ZapPoolController).hook(c),
     () => unwrap(ZapPoolController).snapshot(),

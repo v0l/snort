@@ -7,7 +7,6 @@
  */
 
 import { describe, expect, test } from "bun:test"
-import type { CacheStore } from "@snort/shared"
 import { FeedCache } from "@snort/shared"
 
 // ---------------------------------------------------------------------------
