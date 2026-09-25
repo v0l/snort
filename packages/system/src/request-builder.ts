@@ -256,7 +256,7 @@ export class RequestFilterBuilder {
           .authors([unwrap(link.author)])
       } else {
         // dont query with ids when looking for replaceable events
-        if (!link.kind || !EventExt.isReplaceable(link.kind)) {
+        if (link.kind === undefined || !EventExt.isReplaceable(link.kind)) {
           this.ids([link.id])
         }
         if (link.author) {
