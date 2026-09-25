@@ -71,6 +71,9 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef, tags: Array<
       case "list_item": {
         return <li>{t.tokens ? t.tokens.map(a => renderToken(a, tags)) : t.raw}</li>
       }
+      case "checkbox": {
+        return <input type="checkbox" className="mr-2" checked={t.checked} disabled />
+      }
       case "em": {
         return <em>{t.tokens ? t.tokens.map(a => renderToken(a, tags)) : t.raw}</em>
       }
