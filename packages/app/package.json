@@ -62,6 +62,7 @@
     "dev:ssr": "bun server/dev.ts",
     "serve:ssr": "bun run server/prod.ts",
     "build:all": "bun run build && bun run build:ssr",
+    "typecheck": "bunx --bun tsc --noEmit",
     "intl-extract": "bunx --bun formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file src/lang.json --flatten true",
     "intl-compile": "bunx --bun formatjs compile src/lang.json --ast --out-file src/translations/en.json",
     "eslint": "bunx --bun eslint ."

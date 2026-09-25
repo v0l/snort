@@ -19,7 +19,7 @@ export default function DM(props: DMProps) {
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }))
   const { publisher } = useEventPublisher()
   const msg = props.data
-  const [content, setContent] = useState<string>(() => getCachedDecryptedContent(msg.id))
+  const [content, setContent] = useState<string | undefined>(() => getCachedDecryptedContent(msg.id))
   const [decryptFailed, setDecryptFailed] = useState(false)
   const { ref, inView } = useInView({ triggerOnce: true })
   const { formatMessage } = useIntl()

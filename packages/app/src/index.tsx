@@ -7,7 +7,7 @@ import { SnortContext } from "@snort/system-react"
 import { StrictMode } from "react"
 import * as ReactDOM from "react-dom/client"
 import { HelmetProvider } from "react-helmet-async"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router-dom"
 
 import { initRelayWorker, ProfilesCache, preload, Relay } from "@/Cache"
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider"

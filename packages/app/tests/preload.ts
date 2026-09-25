@@ -6,12 +6,10 @@ import config from "../config/default.json"
 
 //@ts-expect-error Vite define
 globalThis.CONFIG = config
-//@ts-expect-error Vite define
 globalThis.global = globalThis
 
 if (typeof globalThis.localStorage === "undefined") {
   const store: Record<string, string> = {}
-  //@ts-expect-error browser stub
   globalThis.localStorage = {
     getItem: (key: string) => store[key] ?? null,
     setItem: (key: string, value: string) => {

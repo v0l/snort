@@ -48,7 +48,6 @@ export function PruneFollowList() {
       const req = new RequestBuilder(`prune-${batch}`)
       req.withOptions({
         outboxPickN: 10,
-        timeout: 10_000,
       })
       pubkeys.forEach(p => req.withFilter().limit(1).kinds([0, 1, 3, 5, 6, 7, 10002]).authors([p]))
       const results = await system.Fetch(req)

@@ -234,11 +234,6 @@ export function useAiAgent() {
             .describe(
               "Array of Nostr REQ filter objects. Each filter can have: authors (64-char hex only), kinds, ids, #e, #p, #t, #a, search, since, until, and relays (array of URLs). IMPORTANT: If you have a nevent/naddr link, first call 'prepare_event_filter' to get a properly formatted filter with relay hints.",
             ),
-          timeout: z
-            .union([z.number(), z.string()])
-            .nullable()
-            .optional()
-            .describe("Optional: timeout in ms (default 10000)"),
         }),
         execute: async input => {
           try {
@@ -247,11 +242,6 @@ export function useAiAgent() {
             }
 
             const req = new RequestBuilder(`ai-query-${Date.now()}`)
-            let timeout = (input.timeout as number | string) || 10000
-            if (typeof timeout === "string" && !isNaN(parseInt(timeout, 10))) {
-              timeout = parseInt(timeout, 10)
-            }
-            req.withOptions({ timeout: typeof timeout === "string" ? parseInt(timeout, 10) : timeout })
 
             // Build filters - relays should be inside the filter object, not as a separate parameter
             for (const f of input.filters) {

@@ -3,8 +3,7 @@ import type { NostrEvent, TaggedNostrEvent } from "@snort/system"
 import type { ZapTarget } from "@snort/wallet"
 import { useSyncExternalStoreWithSelector } from "use-sync-external-store/with-selector"
 
-import type { BlobDescriptor } from "@/Utils/Upload/blossom"
-import type { UploadProgress } from "@/Utils/Upload"
+import type { UploadProgress, UploadResult } from "@/Utils/Upload"
 
 interface NoteCreatorDataSnapshot {
   show: boolean
@@ -20,7 +19,7 @@ interface NoteCreatorDataSnapshot {
   sensitive?: string
   pollOptions?: Array<string>
   otherEvents?: Array<NostrEvent>
-  attachments?: Record<string, Array<BlobDescriptor>>
+  attachments?: Record<string, Array<UploadResult>>
   uploadProgress: Array<UploadProgress>
   extraTags?: Array<Array<string>>
   sending?: Array<NostrEvent>

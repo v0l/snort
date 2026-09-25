@@ -57,9 +57,6 @@ export function useCloseRelays() {
           addr: `${u.protocol}//${u.host}/`,
         })
       }
-      if (acc.get(u.hostname)?.distance > v.distance) {
-        acc.set(u.hostname, v)
-      }
       return acc
     }, new Map<string, RelayDistance>())
 

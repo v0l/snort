@@ -1,3 +1,4 @@
+import { removeUndefined } from "@snort/shared"
 import type { Nip94Tags } from "@snort/system"
 import classNames from "classnames"
 import type React from "react"
@@ -39,9 +40,9 @@ const AudioElement = ({ src }: AudioElementProps) => {
 
 const ImageElement = ({ src, meta, onMediaClick, size, onFallback, ...props }: ImageElementProps) => {
   const imageRef = useRef<HTMLImageElement | null>(null)
-  const urlsRef = useRef<Array<string>>()
+  const urlsRef = useRef<Array<string>>(undefined)
   if (!urlsRef.current) {
-    urlsRef.current = randomSample([src, ...(meta?.fallback ?? [])], 10)
+    urlsRef.current = randomSample(removeUndefined([src, ...(meta?.fallback ?? [])]), 10)
   }
   const [alternatives, setAlternatives] = useState<Array<string>>(urlsRef.current.slice(1))
   const [currentUrl, setCurrentUrl] = useState(urlsRef.current[0])
