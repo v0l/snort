@@ -94,7 +94,7 @@ export default function RightColumn() {
 
   return (
     <div
-      className={classNames("hidden lg:flex flex-col lg:w-1/3 sticky top-0 h-screen py-3 px-4 border-l", {
+      className={classNames("hidden flex-col lg:w-1/3 sticky top-0 h-screen py-3 px-4 border-l", {
         "lg:flex": show,
       })}
     >
