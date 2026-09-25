@@ -21,7 +21,7 @@
     "@snort/worker-relay": "^3.0.0"
   },
   "devDependencies": {
-    "@types/bun": "^1.3.14",
+    "@types/bun": "^1.4.2",
     "typescript": "^5.9.3"
   }
 }

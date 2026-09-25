@@ -13,16 +13,16 @@
     "build": "rm -rf dist && bunx --bun tsc"
   },
   "dependencies": {
-    "@noble/curves": "^2.0.1",
-    "@noble/hashes": "^2.0.1",
-    "@scure/base": "^2.0.0",
+    "@noble/curves": "^2.4.0",
+    "@noble/hashes": "^2.4.0",
+    "@scure/base": "^2.4.0",
     "debug": "^4.4.3",
-    "eventemitter3": "^5.0.1",
+    "eventemitter3": "^5.0.4",
     "light-bolt11-decoder": "^3.2.0",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.2"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.12",
+    "@types/debug": "^4.1.13",
     "typescript": "^5.9.3"
   }
 }

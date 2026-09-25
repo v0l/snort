@@ -10,13 +10,13 @@
     "pre:commit": "bun --cwd=packages/app run intl-extract && bun --cwd=packages/app run intl-compile && bunx --bun biome lint --write"
   },
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20251011.0",
-    "jiti": "^2.6.1",
+    "@cloudflare/workers-types": "^4.20260702.1",
+    "jiti": "^2.7.0",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.9",
-    "@tauri-apps/cli": "^2.8.4",
+    "@tauri-apps/cli": "^2.11.5",
     "vitepress": "^1.6.4"
   }
 }

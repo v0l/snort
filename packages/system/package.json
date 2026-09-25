@@ -20,24 +20,24 @@
     "dist"
   ],
   "devDependencies": {
-    "@peculiar/webcrypto": "^1.5.0",
-    "@types/debug": "^4.1.12",
-    "@types/node": "^24.8.1",
+    "@peculiar/webcrypto": "^1.7.1",
+    "@types/debug": "^4.1.13",
+    "@types/node": "^24.13.6",
     "@types/ws": "^8.18.1",
-    "nostr-tools": "^2.23.3",
+    "nostr-tools": "^2.25.2",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@noble/ciphers": "^2.0.1",
-    "@noble/curves": "^2.0.1",
-    "@noble/hashes": "^2.0.1",
-    "@scure/base": "^2.0.0",
+    "@noble/ciphers": "^2.4.0",
+    "@noble/curves": "^2.4.0",
+    "@noble/hashes": "^2.4.0",
+    "@scure/base": "^2.4.0",
     "@snort/shared": "^2.0.0",
     "debug": "^4.4.3",
-    "eventemitter3": "^5.0.1",
+    "eventemitter3": "^5.0.4",
     "isomorphic-ws": "^5.0.0",
-    "nostr-social-graph": "^1.0.33",
+    "nostr-social-graph": "^1.0.36",
     "typescript-lru-cache": "^2.0.0",
-    "ws": "^8.18.3"
+    "ws": "^8.21.3"
   }
 }
