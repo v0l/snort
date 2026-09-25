@@ -21,21 +21,21 @@ import useProfileSearch from "./useProfileSearch"
 import usePreferences from "./usePreferences"
 import { hexToBech32, NostrPrefix } from "@snort/shared"
 
-const hexList = z.array(z.string()).nullable()
+const hexList = z.array(z.string()).nullish()
 const NostrFilterSchema = z.object({
   ids: hexList,
   authors: hexList,
-  kinds: z.array(z.number()).nullable(),
+  kinds: z.array(z.number()).nullish(),
   "#e": hexList,
   "#p": hexList,
-  "#t": z.array(z.string()).nullable(),
-  "#a": z.array(z.string()).nullable(),
-  "#d": z.array(z.string()).nullable(),
-  search: z.string().nullable(),
-  since: z.number().nullable(),
-  until: z.number().nullable(),
-  limit: z.number().nullable(),
-  relays: z.array(z.string()).nullable(),
+  "#t": z.array(z.string()).nullish(),
+  "#a": z.array(z.string()).nullish(),
+  "#d": z.array(z.string()).nullish(),
+  search: z.string().nullish(),
+  since: z.number().nullish(),
+  until: z.number().nullish(),
+  limit: z.number().nullish(),
+  relays: z.array(z.string()).nullish(),
 })
 
 class CustomModelProvider implements ModelProvider {
@@ -219,16 +219,19 @@ export function useAiAgent() {
         name: "update_profile",
         description: "Update user profile information",
         parameters: z.object({
-          displayName: z.string().nullable().describe("Display name"),
-          bio: z.string().nullable().describe("Bio/note"),
-          avatarUrl: z.string().nullable().describe("Profile image URL"),
-          bannerUrl: z.string().nullable().describe("Banner image URL"),
-          website: z.string().nullable().describe("Website URL"),
+          displayName: z.string().nullish().describe("Display name"),
+          bio: z.string().nullish().describe("Bio/note"),
+          avatarUrl: z.string().nullish().describe("Profile image URL"),
+          bannerUrl: z.string().nullish().describe("Banner image URL"),
+          website: z.string().nullish().describe("Website URL"),
         }),
         execute: async input => {
           if (!publisher) return JSON.stringify({ error: "Not logged in, cannot update profile" })
           try {
-            const profile: UserMetadata = {}
+            const current = await system.config.profiles.get(publisher.pubKey)
+            const { loaded, created, pubkey, npub, deleted, zapService, isNostrAddressValid, ...existing } = (current ??
+              {}) as Record<string, unknown>
+            const profile = existing as UserMetadata
             if (input.displayName) profile.display_name = input.displayName
             if (input.bio) profile.about = input.bio
             if (input.avatarUrl) profile.picture = input.avatarUrl
