@@ -259,6 +259,14 @@ function FilterForm({ filter, onChange }: { filter: ReqFilter; onChange: (f: Req
   )
 }
 
+function previewRaw(raw: string) {
+  try {
+    return JSON.stringify(raw ? JSON.parse(raw) : {}, undefined, 2)
+  } catch {
+    return raw
+  }
+}
+
 export function DebugPage() {
   const system = use(SnortContext)
   const [filter, setFilter] = useState<ReqFilter>({ kinds: [1], limit: 10 })
@@ -365,7 +373,7 @@ export function DebugPage() {
 
         <CollapsedSection title={<span className="text-sm text-neutral-400">Filter Preview</span>} startClosed={true}>
           <pre className="text-xs text-mono text-neutral-300 p-2 overflow-x-auto">
-            {JSON.stringify(filterMode === "builder" ? filter : rawFilter ? JSON.parse(rawFilter) : {}, undefined, 2)}
+            {filterMode === "builder" ? JSON.stringify(filter, undefined, 2) : previewRaw(rawFilter)}
           </pre>
         </CollapsedSection>
 
