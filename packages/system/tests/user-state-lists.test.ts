@@ -1,6 +1,14 @@
 import { describe, expect, test } from "bun:test"
 import { unixNow } from "@snort/shared"
-import { EventKind, type NostrEvent, PrivateKeySigner, type SystemInterface, UnknownTag, UserState } from "../src"
+import {
+  EventKind,
+  type NostrEvent,
+  PrivateKeySigner,
+  type RequestBuilder,
+  type SystemInterface,
+  UnknownTag,
+  UserState,
+} from "../src"
 
 const KEY = "0000000000000000000000000000000000000000000000000000000000000001"
 
@@ -17,8 +25,12 @@ async function setup(servers: Array<string>) {
     tags: servers.map(s => ["server", s]),
   })
   const published: Array<NostrEvent> = []
+  const fetched: Array<RequestBuilder> = []
   const system = {
-    Fetch: async () => [existing],
+    Fetch: async (rb: RequestBuilder) => {
+      fetched.push(rb)
+      return [existing]
+    },
     BroadcastEvent: async (ev: NostrEvent) => {
       published.push(ev)
       return []
@@ -28,7 +40,7 @@ async function setup(servers: Array<string>) {
   const state = new UserState(pubkey)
   state.checkIsStandardList(EventKind.BlossomServerList)
   await state.init(signer, system)
-  return { state, published }
+  return { state, published, fetched }
 }
 
 const servers = (state: UserState<never>) => state.getList(EventKind.BlossomServerList).map(a => a.toEventTag()?.[1])
@@ -56,5 +68,11 @@ describe("UserState standard lists", () => {
     expect(published).toHaveLength(2)
     expect(published[1].created_at).toBeGreaterThan(published[0].created_at)
     expect(servers(state)).toEqual([])
+  })
+
+  test("list sync bypasses the local cache", async () => {
+    const { fetched } = await setup(["https://a.example/"])
+    expect(fetched.length).toBeGreaterThan(0)
+    expect(fetched.every(rb => rb.options?.skipCache === true)).toBe(true)
   })
 })
