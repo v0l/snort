@@ -22,7 +22,7 @@ import {
   schnorr_verify_event,
   default as wasmInit,
 } from "../../../system-wasm/pkg/system_wasm"
-import WasmPath from "../../../system-wasm/pkg/system_wasm_bg.wasm"
+import WasmPath from "../../../system-wasm/pkg/system_wasm_bg.wasm?url"
 
 export const WasmOptimizer = {
   expandFilter: (f: ReqFilter) => {

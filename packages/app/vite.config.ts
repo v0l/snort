@@ -13,8 +13,8 @@ import { resolve } from "node:path"
 const copyWorkerRelayAssets = (destDir: string) => ({
   name: "copy-worker-relay-assets",
   writeBundle: async () => {
-    const src = resolve(__dirname, "../worker-relay/dist/esm")
-    const dest = resolve(__dirname, destDir)
+    const src = resolve(import.meta.dirname, "../worker-relay/dist/esm")
+    const dest = resolve(import.meta.dirname, destDir)
     await cp(resolve(src, "sqlite3.wasm"), resolve(dest, "sqlite3.wasm")).catch(() => {})
     await cp(resolve(src, "sqlite3-opfs-async-proxy.js"), resolve(dest, "sqlite3-opfs-async-proxy.js")).catch(() => {})
   },
@@ -47,6 +47,12 @@ const ssrClientEntry = () => ({
   },
 })
 
+const intl = () =>
+  formatjs({
+    idInterpolationPattern: "[sha512:contenthash:base64:6]",
+    ast: true,
+  })
+
 // Shared settings common to both client and server builds
 const shared = {
   assetsInclude: ["**/*.md", "**/*.wasm"] as string[],
@@ -78,14 +84,13 @@ export default defineConfig(({ command, mode }) => {
   if (isSSR) {
     return {
       ...shared,
-      plugins: [react({ babel: { configFile: true } })],
+      plugins: [intl(), react()],
       build: {
         outDir: "build/server",
-        commonjsOptions: { transformMixedEsModules: true },
         sourcemap: true,
         ssr: true,
-        rollupOptions: {
-          input: resolve(__dirname, "src/entry/entry-server.tsx"),
+        rolldownOptions: {
+          input: resolve(import.meta.dirname, "src/entry/entry-server.tsx"),
           output: {
             format: "esm",
             entryFileNames: "entry-server.js",
@@ -103,10 +108,7 @@ export default defineConfig(({ command, mode }) => {
       plugins: [
         tailwindcss(),
         react(),
-        formatjs({
-          idInterpolationPattern: "[sha512:contenthash:base64:6]",
-          ast: true,
-        }),
+        intl(),
         htmlTransform,
         ssrClientEntry(),
         VitePWA({
@@ -124,10 +126,9 @@ export default defineConfig(({ command, mode }) => {
       ],
       build: {
         outDir: "build/client",
-        commonjsOptions: { transformMixedEsModules: true },
         sourcemap: true,
-        rollupOptions: {
-          input: resolve(__dirname, "index.html"),
+        rolldownOptions: {
+          input: resolve(import.meta.dirname, "index.html"),
         },
       },
     }
@@ -139,10 +140,7 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       tailwindcss(),
       //basicSsl(),
-      formatjs({
-        idInterpolationPattern: "[sha512:contenthash:base64:6]",
-        ast: true,
-      }),
+      intl(),
       react(),
       htmlTransform,
       VitePWA({
@@ -173,10 +171,9 @@ export default defineConfig(({ command, mode }) => {
     ],
     build: {
       outDir: "build",
-      commonjsOptions: { transformMixedEsModules: true },
       sourcemap: true,
-      rollupOptions: {
-        input: resolve(__dirname, "index.html"),
+      rolldownOptions: {
+        input: resolve(import.meta.dirname, "index.html"),
       },
     },
   }

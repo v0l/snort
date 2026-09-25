@@ -32,7 +32,7 @@ async function initSite() {
   ]
   storeRefCode()
   if (hasWasm) {
-    await wasmInit(WasmPath)
+    await wasmInit({ module_or_path: WasmPath })
     await initRelayWorker()
   }
 
