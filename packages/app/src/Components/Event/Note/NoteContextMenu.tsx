@@ -179,7 +179,7 @@ export function NoteContextMenu() {
           }}
         >
           <Icon name="translate" />
-          <FormattedMessage {...messages.TranslateTo} values={{ lang: langNames.of(lang.split("-")[0]) }} />
+          <FormattedMessage {...messages.TranslateTo} values={{ lang: langNames.of(lang.split("-")[0]) ?? lang }} />
         </DropdownMenu.Item>
         <DropdownMenu.Item
           className={itemClassName}

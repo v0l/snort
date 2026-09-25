@@ -1,22 +1,15 @@
 import { defineMessages } from "react-intl"
 
-export default defineMessages({
+const plain = defineMessages({
   Login: { defaultMessage: "Login", id: "AyGauy" },
   Global: { defaultMessage: "Global", id: "EWyQH5" },
   NewUsers: { defaultMessage: "New users page", id: "NndBJE" },
   Reactions: { defaultMessage: "Reactions", id: "XgWvGA" },
   Followers: { defaultMessage: "Followers", id: "pzTOmv" },
-  FollowersCount: { defaultMessage: "{n} Followers", id: "3tVy+Z" },
   Follows: { defaultMessage: "Following", id: "cPIKU2" },
-  FollowsCount: { defaultMessage: "{n} Following", id: "1nYUGC" },
   Zaps: { defaultMessage: "Zaps", id: "OEW7yJ" },
-  ZapsCount: { defaultMessage: "{n} Zaps", id: "FDguSC" },
   Muted: { defaultMessage: "Muted", id: "HOzFdo" },
-  MutedCount: { defaultMessage: "{n} Muted", id: "CmZ9ls" },
   Blocked: { defaultMessage: "Blocked", id: "qUJTsT" },
-  BlockedCount: { defaultMessage: "{n} Blocked", id: "W2PiAr" },
-  Sats: { defaultMessage: "{n} {n, plural, =1 {sat} other {sats}}", id: "jA3OE/" },
-  Following: { defaultMessage: "Following {n}", id: "lnaT9F" },
   Settings: { defaultMessage: "Settings", id: "D3idYv" },
   Messages: { defaultMessage: "Messages", id: "hMzcSq" },
   MarkAllRead: { defaultMessage: "Mark All Read", id: "e7qqly" },
@@ -37,11 +30,33 @@ export default defineMessages({
     defaultMessage: "Relays",
     id: "RoOyAh",
   },
+  Bookmarks: { defaultMessage: "Bookmarks", id: "nGBrvw" },
+  KeyPlaceholder: { defaultMessage: "nsec, npub, nip-05, hex", id: "B6H7eJ" },
+})
+
+const withArgs = defineMessages<{
+  FollowersCount: { n: number }
+  FollowsCount: { n: number }
+  ZapsCount: { n: number }
+  MutedCount: { n: number }
+  BlockedCount: { n: number }
+  Sats: { n: number | string }
+  Following: { n: number }
+  RelaysCount: { n: number }
+  BookmarksCount: { n: number }
+}>({
+  FollowersCount: { defaultMessage: "{n} Followers", id: "3tVy+Z" },
+  FollowsCount: { defaultMessage: "{n} Following", id: "1nYUGC" },
+  ZapsCount: { defaultMessage: "{n} Zaps", id: "FDguSC" },
+  MutedCount: { defaultMessage: "{n} Muted", id: "CmZ9ls" },
+  BlockedCount: { defaultMessage: "{n} Blocked", id: "W2PiAr" },
+  Sats: { defaultMessage: "{n} {n, plural, =1 {sat} other {sats}}", id: "jA3OE/" },
+  Following: { defaultMessage: "Following {n}", id: "lnaT9F" },
   RelaysCount: {
     defaultMessage: "{n} Relays",
     id: "QDFTjG",
   },
-  Bookmarks: { defaultMessage: "Bookmarks", id: "nGBrvw" },
   BookmarksCount: { defaultMessage: "{n} Bookmarks", id: "2a2YiP" },
-  KeyPlaceholder: { defaultMessage: "nsec, npub, nip-05, hex", id: "B6H7eJ" },
 })
+
+export default { ...plain, ...withArgs }
