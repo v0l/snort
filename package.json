@@ -8,7 +8,7 @@
     "pre:commit": "bun --cwd=packages/app run intl-extract && bun --cwd=packages/app run intl-compile && bunx --bun biome lint --write"
   },
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20260702.1",
+    "@cloudflare/workers-types": "^5.20260925.1",
     "typescript": "^7.0.2"
   },
   "devDependencies": {
