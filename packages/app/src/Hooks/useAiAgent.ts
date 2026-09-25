@@ -14,12 +14,29 @@ import {
 } from "@openai/agents"
 import OpenAI from "openai"
 import { z } from "zod"
-import { RequestBuilder, type UserMetadata, NostrLink, tryParseNostrLink } from "@snort/system"
+import { RequestBuilder, type ReqFilter, type UserMetadata, NostrLink, tryParseNostrLink } from "@snort/system"
 import { SnortSystemPrompt } from "@/Agent/system-prompt"
 import useEventPublisher from "./useEventPublisher"
 import useProfileSearch from "./useProfileSearch"
 import usePreferences from "./usePreferences"
 import { hexToBech32, NostrPrefix } from "@snort/shared"
+
+const hexList = z.array(z.string()).nullable()
+const NostrFilterSchema = z.object({
+  ids: hexList,
+  authors: hexList,
+  kinds: z.array(z.number()).nullable(),
+  "#e": hexList,
+  "#p": hexList,
+  "#t": z.array(z.string()).nullable(),
+  "#a": z.array(z.string()).nullable(),
+  "#d": z.array(z.string()).nullable(),
+  search: z.string().nullable(),
+  since: z.number().nullable(),
+  until: z.number().nullable(),
+  limit: z.number().nullable(),
+  relays: z.array(z.string()).nullable(),
+})
 
 class CustomModelProvider implements ModelProvider {
   private client: OpenAI
@@ -230,7 +247,7 @@ export function useAiAgent() {
           "Query the local relay for Nostr events using REQ filters. IMPORTANT: authors must be 64-char hex pubkeys, NOT npub/nip05. Use 'search_username' for names. For fetching a specific event by nevent/naddr link, use 'prepare_event_filter' first to get the correct filter with relay hints.",
         parameters: z.object({
           filters: z
-            .array(z.record(z.string(), z.any()))
+            .array(NostrFilterSchema)
             .describe(
               "Array of Nostr REQ filter objects. Each filter can have: authors (64-char hex only), kinds, ids, #e, #p, #t, #a, search, since, until, and relays (array of URLs). IMPORTANT: If you have a nevent/naddr link, first call 'prepare_event_filter' to get a properly formatted filter with relay hints.",
             ),
@@ -245,7 +262,9 @@ export function useAiAgent() {
 
             // Build filters - relays should be inside the filter object, not as a separate parameter
             for (const f of input.filters) {
-              req.withBareFilter(f)
+              req.withBareFilter(
+                Object.fromEntries(Object.entries(f).filter(([, v]) => v !== null && v !== undefined)) as ReqFilter,
+              )
             }
 
             const events = await system.Fetch(req)
