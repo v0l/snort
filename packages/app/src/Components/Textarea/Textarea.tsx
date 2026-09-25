@@ -9,7 +9,7 @@ import TextareaAutosize from "react-textarea-autosize"
 
 import Avatar from "@/Components/User/Avatar"
 import type { FuzzySearchResult } from "@/Db/FuzzySearch"
-import useProfileSearch from "@/Hooks/useProfileSearch"
+import { useMentionSearch } from "@/Hooks/useProfileSearch"
 import searchEmoji from "@/Utils/emoji-search"
 
 import messages from "../messages"
@@ -65,10 +65,10 @@ const AutosizeTextarea = TextareaAutosize as ComponentType<TextareaHTMLAttribute
 
 const Textarea = (props: TextareaProps) => {
   const { formatMessage } = useIntl()
-  const userSearch = useProfileSearch()
+  const mentionSearch = useMentionSearch()
 
-  const userDataProvider = (token: string) => {
-    return userSearch(token).slice(0, 10)
+  const userDataProvider = async (token: string) => {
+    return (await mentionSearch(token)).slice(0, 10)
   }
 
   const emojiDataProvider = async (token: string) => {
