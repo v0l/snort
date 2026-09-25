@@ -1,4 +1,5 @@
 import {
+  DefaultOptimizer,
   EventExt,
   type FlatReqFilter,
   type NostrEvent,
@@ -24,17 +25,48 @@ import {
 } from "../../../system-wasm/pkg/system_wasm"
 import WasmPath from "../../../system-wasm/pkg/system_wasm_bg.wasm?url"
 
+const WasmFilterKeys = new Set([
+  "ids",
+  "authors",
+  "kinds",
+  "#e",
+  "#p",
+  "#t",
+  "#d",
+  "#r",
+  "#a",
+  "#g",
+  "#k",
+  "#i",
+  "relays",
+  "relay",
+  "search",
+  "since",
+  "until",
+  "limit",
+  "keys",
+  "resultSetId",
+])
+
+function wasmCanHandle(filters: Array<object>) {
+  return filters.every(f => Object.keys(f).every(k => WasmFilterKeys.has(k)))
+}
+
 export const WasmOptimizer = {
   expandFilter: (f: ReqFilter) => {
+    if (!wasmCanHandle([f])) return DefaultOptimizer.expandFilter(f)
     return expand_filter(f) as Array<FlatReqFilter>
   },
   getDiff: (prev: Array<ReqFilter>, next: Array<ReqFilter>) => {
+    if (!wasmCanHandle(prev) || !wasmCanHandle(next)) return DefaultOptimizer.getDiff(prev, next)
     return get_diff(prev, next) as Array<FlatReqFilter>
   },
   flatMerge: (all: Array<FlatReqFilter>) => {
+    if (!wasmCanHandle(all)) return DefaultOptimizer.flatMerge(all)
     return flat_merge(all) as Array<ReqFilter>
   },
   compress: (all: Array<ReqFilter>) => {
+    if (!wasmCanHandle(all)) return DefaultOptimizer.compress(all)
     return compress(all) as Array<ReqFilter>
   },
   schnorrVerify: ev => {
