@@ -68,6 +68,9 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       // return if sw. we might want to use localForage (idb) to share keys between sw and app
       return
     }
+    window.addEventListener("pagehide", () => {
+      if (this.#saveDebounce !== undefined) this.#flush()
+    })
     const existing = window.localStorage.getItem(AccountStoreKey)
     if (existing) {
       const logins = JSON.parse(existing)
@@ -360,29 +363,34 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       clearTimeout(this.#saveDebounce)
     }
     this.notifyChange()
-    this.#saveDebounce = setTimeout(() => {
-      if (!this.#activeAccount && this.#accounts.size > 0) {
-        this.#activeAccount = this.#accounts.keys().next().value
-      }
-      const toSave = []
-      for (const v of this.#accounts.values()) {
-        if (KeyStorage.isInstance(v.privateKeyData)) {
-          toSave.push({
-            ...v,
-            state: UserState.isInstance(v.state) ? v.state.serialize() : v.state,
-            privateKeyData: v.privateKeyData.toPayload(),
-          })
-        } else {
-          toSave.push({
-            ...v,
-            state: UserState.isInstance(v.state) ? v.state.serialize() : v.state,
-          })
-        }
-      }
+    this.#saveDebounce = setTimeout(() => this.#flush(), 2000)
+  }
 
-      console.debug("Trying to save", toSave)
-      window.localStorage.setItem(AccountStoreKey, JSON.stringify(toSave))
+  #flush() {
+    if (this.#saveDebounce !== undefined) {
+      clearTimeout(this.#saveDebounce)
       this.#saveDebounce = undefined
-    }, 2000)
+    }
+    if (!this.#activeAccount && this.#accounts.size > 0) {
+      this.#activeAccount = this.#accounts.keys().next().value
+    }
+    const toSave = []
+    for (const v of this.#accounts.values()) {
+      if (KeyStorage.isInstance(v.privateKeyData)) {
+        toSave.push({
+          ...v,
+          state: UserState.isInstance(v.state) ? v.state.serialize() : v.state,
+          privateKeyData: v.privateKeyData.toPayload(),
+        })
+      } else {
+        toSave.push({
+          ...v,
+          state: UserState.isInstance(v.state) ? v.state.serialize() : v.state,
+        })
+      }
+    }
+
+    console.debug("Trying to save", toSave)
+    window.localStorage.setItem(AccountStoreKey, JSON.stringify(toSave))
   }
 }
