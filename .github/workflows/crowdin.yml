@@ -1,0 +1,50 @@
+name: Crowdin
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: crowdin
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      CROWDIN_TOKEN: ${{ secrets.CROWDIN }}
+    steps:
+      - name: Checkout code
+        if: env.CROWDIN_TOKEN != ''
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        if: env.CROWDIN_TOKEN != ''
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        if: env.CROWDIN_TOKEN != ''
+        run: bun install
+
+      - name: Upload sources and pull translations
+        if: env.CROWDIN_TOKEN != ''
+        run: |
+          bunx @crowdin/cli upload sources -b main -T "$CROWDIN_TOKEN"
+          bunx @crowdin/cli pull -b main -T "$CROWDIN_TOKEN"
+          bunx --bun biome lint --write
+
+      - name: Commit translations
+        if: env.CROWDIN_TOKEN != ''
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add .
+            git commit -m "chore: update translations"
+            git push
+          fi
