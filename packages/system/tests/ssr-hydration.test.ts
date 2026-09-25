@@ -697,10 +697,7 @@ describe("SSR Hydration — replaceable event handling", () => {
     const q = qm.query(rb)
 
     // Add older version then newer version
-    hydrateQuery(qm, "replaceable", [
-      createEv("old", 0, 100, "pk1"),
-      createEv("new", 0, 200, "pk1"),
-    ])
+    hydrateQuery(qm, "replaceable", [createEv("old", 0, 100, "pk1"), createEv("new", 0, 200, "pk1")])
 
     // NoteCollection deduplicates by kind:pubkey for replaceable events
     // Should only keep the newer one

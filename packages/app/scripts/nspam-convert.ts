@@ -75,10 +75,7 @@ async function loadCalibration(): Promise<{ x: number[]; y: number[] }> {
   return { x: [...x], y: [...y] }
 }
 
-const [modelText, calib] = await Promise.all([
-  fetch(`${BASE}/model.txt`).then(r => r.text()),
-  loadCalibration(),
-])
+const [modelText, calib] = await Promise.all([fetch(`${BASE}/model.txt`).then(r => r.text()), loadCalibration()])
 
 const trees = parseTrees(modelText)
 const maxFeature = Number(/max_feature_idx=(\d+)/.exec(modelText)?.[1])

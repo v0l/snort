@@ -39,33 +39,33 @@ const ProfilePreview = forwardRef<HTMLDivElement, ProfilePreviewProps>(function 
 
   return (
     <div
-        className={classNames("flex items-center justify-between", props.className)}
-        ref={el => {
-          innerRef.current = el
-          if (typeof ref === "function") ref(el)
-          else if (ref) ref.current = el
-        }}
-        onClick={handleClick}
-      >
-        <ProfileImage
-          pubkey={pubkey}
-          profile={props.profile}
-          className="overflow-hidden"
-          subHeader={
-            options.about && (
-              <div className="text-sm text-neutral-400 whitespace-nowrap text-ellipsis overflow-hidden">
-                {user?.about}
-              </div>
-            )
-          }
-          {...props.profileImageProps}
-        />
-        {props.actions ?? (
-          <div className="whitespace-nowrap">
-            <FollowButton pubkey={pubkey} />
-          </div>
-        )}
-      </div>
+      className={classNames("flex items-center justify-between", props.className)}
+      ref={el => {
+        innerRef.current = el
+        if (typeof ref === "function") ref(el)
+        else if (ref) ref.current = el
+      }}
+      onClick={handleClick}
+    >
+      <ProfileImage
+        pubkey={pubkey}
+        profile={props.profile}
+        className="overflow-hidden"
+        subHeader={
+          options.about && (
+            <div className="text-sm text-neutral-400 whitespace-nowrap text-ellipsis overflow-hidden">
+              {user?.about}
+            </div>
+          )
+        }
+        {...props.profileImageProps}
+      />
+      {props.actions ?? (
+        <div className="whitespace-nowrap">
+          <FollowButton pubkey={pubkey} />
+        </div>
+      )}
+    </div>
   )
 })
 

@@ -17,12 +17,12 @@ export function ZapModalTitle({
   if (!targets) {
     return (
       <div className="text-lg font-medium">
-          {zapper?.canZap() ? (
-            <FormattedMessage defaultMessage="Send zap" />
-          ) : (
-            <FormattedMessage defaultMessage="Send sats" />
-          )}
-        </div>
+        {zapper?.canZap() ? (
+          <FormattedMessage defaultMessage="Send zap" />
+        ) : (
+          <FormattedMessage defaultMessage="Send sats" />
+        )}
+      </div>
     )
   }
   if (targets.length === 1 && targets[0].name) {

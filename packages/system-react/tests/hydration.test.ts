@@ -58,7 +58,7 @@ describe("hydrateSnort", () => {
   test("deletes window.__SNORT_HYDRATION__ after hydrating", () => {
     const system = makeMockSystem()
     globalThis.window = {
-      __SNORT_HYDRATION__: { "q1": [createEv("ev1")] },
+      __SNORT_HYDRATION__: { q1: [createEv("ev1")] },
     } as any
 
     hydrateSnort(system)
@@ -117,7 +117,7 @@ describe("hydrateSnort", () => {
     })
 
     const originalData: Record<string, TaggedNostrEvent[]> = {
-      "feed": [createEv("note1", 1, 1000, "author1", [], ["wss://relay.test"])],
+      feed: [createEv("note1", 1, 1000, "author1", [], ["wss://relay.test"])],
     }
 
     // Simulate serialization/deserialization through <script> tag

@@ -11,11 +11,7 @@ import { NostrSystem } from "../src/nostr-system"
 import { RequestBuilder } from "../src/request-builder"
 import type { TaggedNostrEvent } from "../src/nostr"
 
-const RELAYS = [
-  "wss://relay.damus.io",
-  "wss://nos.lol",
-  "wss://relay.snort.social",
-]
+const RELAYS = ["wss://relay.damus.io", "wss://nos.lol", "wss://relay.snort.social"]
 
 function ts(label: string, start: number) {
   const ms = Date.now() - start
@@ -91,7 +87,10 @@ describe("SSR Hydration — real relays", () => {
 
     // Log trace states
     for (const trace of q.traces) {
-      ts(`  Trace ${trace.id.slice(0, 8)}: relay=${trace.relay} state=${trace.currentState} finished=${trace.finished}`, t0)
+      ts(
+        `  Trace ${trace.id.slice(0, 8)}: relay=${trace.relay} state=${trace.currentState} finished=${trace.finished}`,
+        t0,
+      )
     }
 
     // === SERVER: FetchAll ===
@@ -221,7 +220,9 @@ describe("SSR Hydration — real relays", () => {
       const fetchAllMs = Date.now() - fetchAllStart
       ts(`FetchAll FAILED after ${fetchAllMs}ms: ${e}`, t0)
       // This is the bug — if FetchAll times out because traces don't exist yet
-      console.log(`  ❌ Race condition: FetchAll timed out. This means waitFinished() hangs when traces are created asynchronously.`)
+      console.log(
+        `  ❌ Race condition: FetchAll timed out. This means waitFinished() hangs when traces are created asynchronously.`,
+      )
       for (const trace of q.traces) {
         ts(`  Trace ${trace.id.slice(0, 8)}: state=${trace.currentState} finished=${trace.finished}`, t0)
       }
@@ -321,7 +322,9 @@ describe("SSR Hydration — real relays", () => {
     } finally {
       // Disconnect default relays
       for (const [, conn] of fresh.pool) {
-        try { conn.close() } catch {}
+        try {
+          conn.close()
+        } catch {}
       }
     }
   })

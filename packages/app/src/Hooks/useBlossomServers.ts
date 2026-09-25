@@ -7,8 +7,9 @@ export default function useBlossomServers(authors?: Array<string> | Array<NostrL
   const subServerLists = useMemo(() => {
     const rb = new RequestBuilder(`blossom-lists:${sha256(authors?.join(",") ?? "")}`)
     if (authors && authors.length > 0) {
-      const authorIds =
-        NostrLink.isInstance(authors[0]) ? authors.map(a => (a as NostrLink).id) : (authors as Array<string>)
+      const authorIds = NostrLink.isInstance(authors[0])
+        ? authors.map(a => (a as NostrLink).id)
+        : (authors as Array<string>)
       rb.withFilter().authors(authorIds).kinds([EventKind.BlossomServerList])
     }
     return rb

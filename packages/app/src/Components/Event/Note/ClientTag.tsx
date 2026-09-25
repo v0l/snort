@@ -13,8 +13,8 @@ export function ClientTag({ ev }: { ev: TaggedNostrEvent }) {
 
   return (
     <span className="text-xs text-neutral-400 light:text-neutral-500">
-        {info.fingerprintDetails ? <FingerprintClientTag info={info} /> : <ViaTag info={info} />}
-      </span>
+      {info.fingerprintDetails ? <FingerprintClientTag info={info} /> : <ViaTag info={info} />}
+    </span>
   )
 }
 

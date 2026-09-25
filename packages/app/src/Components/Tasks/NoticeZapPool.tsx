@@ -14,26 +14,26 @@ export class NoticeZapPoolDefault extends BaseUITask {
   render() {
     return (
       <p>
-          <FormattedMessage
-            defaultMessage="A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}"
-            id="dmsiLv"
-            values={{
-              site: CONFIG.appNameCapitalized,
-              n: (
-                <FormattedNumber
-                  value={(CONFIG.defaultZapPoolFee ?? 0) / 100}
-                  style="percent"
-                  maximumFractionDigits={2}
-                />
-              ),
-              link: (
-                <Link to="/zap-pool">
-                  <FormattedMessage defaultMessage="Zap Pool" />
-                </Link>
-              ),
-            }}
-          />
-        </p>
+        <FormattedMessage
+          defaultMessage="A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}"
+          id="dmsiLv"
+          values={{
+            site: CONFIG.appNameCapitalized,
+            n: (
+              <FormattedNumber
+                value={(CONFIG.defaultZapPoolFee ?? 0) / 100}
+                style="percent"
+                maximumFractionDigits={2}
+              />
+            ),
+            link: (
+              <Link to="/zap-pool">
+                <FormattedMessage defaultMessage="Zap Pool" />
+              </Link>
+            ),
+          }}
+        />
+      </p>
     )
   }
 }

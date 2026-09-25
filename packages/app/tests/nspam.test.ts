@@ -52,9 +52,7 @@ describe("nspam scoring", () => {
 
   test("reproduces the reference raw score", () => {
     const logit = (p: number) => Math.log(p / (1 - p))
-    const errors = fixtures.map(f =>
-      Math.abs(model.rawMargin(extractFeatures(f.notes)) - logit(f.expected_raw_score)),
-    )
+    const errors = fixtures.map(f => Math.abs(model.rawMargin(extractFeatures(f.notes)) - logit(f.expected_raw_score)))
     const exact = errors.filter(e => e < 1e-6).length
     const mean = errors.reduce((a, b) => a + b, 0) / errors.length
     // the reference feature extractor is not published, a handful of rare structural

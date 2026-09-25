@@ -12,10 +12,7 @@ export function NotificationContext({ link }: { link: NostrLink }) {
   if (link.type === NostrPrefix.PublicKey) {
     return <ProfilePreview pubkey={link.id} actions={<></>} />
   }
-  if (!ev)
-    return (
-      <FormattedMessage defaultMessage="Loading context..." />
-    )
+  if (!ev) return <FormattedMessage defaultMessage="Loading context..." />
   if (ev.kind === EventKind.LiveEvent) {
     return <LiveEvent ev={ev} />
   }

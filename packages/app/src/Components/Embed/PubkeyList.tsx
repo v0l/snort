@@ -71,15 +71,17 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
         pubkeys={ids}
         className={className}
         title={findTag(ev, "title") ?? findTag(ev, "d")}
-        actions={<AsyncButton className="mr5 secondary" onClick={() => zapAll()}>
-              <FormattedMessage
-                defaultMessage="Zap all {n} sats"
-                id="IVbtTS"
-                values={{
-                  n: <FormattedNumber value={defaultZapAmount * ids.length} />,
-                }}
-              />
-            </AsyncButton>}
+        actions={
+          <AsyncButton className="mr5 secondary" onClick={() => zapAll()}>
+            <FormattedMessage
+              defaultMessage="Zap all {n} sats"
+              id="IVbtTS"
+              values={{
+                n: <FormattedNumber value={defaultZapAmount * ids.length} />,
+              }}
+            />
+          </AsyncButton>
+        }
         profilePreviewProps={{
           options: {
             about: true,

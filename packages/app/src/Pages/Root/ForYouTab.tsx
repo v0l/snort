@@ -90,8 +90,8 @@ export const ForYouTab = memo(function ForYouTab() {
       getForYouFeedPromise = null
       if (notes.length < 10) {
         setTimeout(() => {
-        if (WorkerRelayInterface.isInstance(Relay)) {
-          getForYouFeedPromise = Relay.forYouFeed(login.publicKey!)
+          if (WorkerRelayInterface.isInstance(Relay)) {
+            getForYouFeedPromise = Relay.forYouFeed(login.publicKey!)
           }
         }, 1000)
       }

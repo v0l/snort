@@ -7,7 +7,7 @@ import { getNewest } from "@/Utils"
 import { SnortPubkey } from "@/Utils/Const"
 
 /** Default max age for rate data: 4 hours in seconds */
-const DEFAULT_MAX_AGE = 4 * 60 * 60;
+const DEFAULT_MAX_AGE = 4 * 60 * 60
 
 export function useRates(symbol: string, leaveOpen = true, maxAge = DEFAULT_MAX_AGE) {
   const sub = useMemo(() => {
@@ -29,8 +29,8 @@ export function useRates(symbol: string, leaveOpen = true, maxAge = DEFAULT_MAX_
   const tag = ev?.tags.find(a => a[0] === "d" && a[1] === symbol)
   if (!tag) return undefined
 
-  const age = unixNow() - (ev?.created_at ?? 0);
-  if (maxAge > 0 && age > maxAge) return undefined;
+  const age = unixNow() - (ev?.created_at ?? 0)
+  if (maxAge > 0 && age > maxAge) return undefined
 
   return {
     time: ev?.created_at,

@@ -20,8 +20,8 @@ function userSearch(wot: WoT, search: string | undefined) {
 
       const followDistance = wot.followDistance(result.item.pubkey) / followDistanceNormalizationFactor
 
-      const startsWithSearchString = [result.item.name, result.item.display_name, result.item.nip05].some(
-        field => field?.toLowerCase?.().startsWith(searchString.toLowerCase()),
+      const startsWithSearchString = [result.item.name, result.item.display_name, result.item.nip05].some(field =>
+        field?.toLowerCase?.().startsWith(searchString.toLowerCase()),
       )
 
       const boostFactor = startsWithSearchString ? 0.25 : 1

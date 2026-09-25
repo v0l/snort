@@ -9,7 +9,7 @@ import Icon from "@/Components/Icons/Icon"
 export function AskSnortInput() {
   const navigate = useNavigate()
   const [input, setInput] = useState("")
-  const { formatMessage } = useIntl();
+  const { formatMessage } = useIntl()
 
   function handleSubmit() {
     if (!input.trim()) return
@@ -40,7 +40,7 @@ export function AskSnortInput() {
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            onFocus={() => { }}
+            onFocus={() => {}}
             className="!border-0 !resize-none !p-2 !bg-transparent !text-sm min-h-[32px] max-h-[48px] overflow-hidden"
           />
         </div>

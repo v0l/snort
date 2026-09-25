@@ -328,9 +328,16 @@ describe("Query.addRequest — filter dedup via areFiltersCovered", () => {
     const conn = new MockConnection("wss://relay.test", true)
     pool.add(conn)
 
-    const q = await setupEosedQuery(qm, pool, conn, "dedup-same", rb => {
-      rb.withFilter().kinds([1]).limit(10)
-    }, { keepAlive: 30_000 })
+    const q = await setupEosedQuery(
+      qm,
+      pool,
+      conn,
+      "dedup-same",
+      rb => {
+        rb.withFilter().kinds([1]).limit(10)
+      },
+      { keepAlive: 30_000 },
+    )
     const reqsBefore = conn.sentRequests.length
 
     // Second request: identical filters
@@ -609,9 +616,16 @@ describe("QueryManager.query — SWR reuse via keepAlive", () => {
     const conn = new MockConnection("wss://relay.test", true)
     pool.add(conn)
 
-    const q = await setupEosedQuery(qm, pool, conn, "swr-diff", rb => {
-      rb.withFilter().kinds([0])
-    }, { keepAlive: 30_000 })
+    const q = await setupEosedQuery(
+      qm,
+      pool,
+      conn,
+      "swr-diff",
+      rb => {
+        rb.withFilter().kinds([0])
+      },
+      { keepAlive: 30_000 },
+    )
     const reqsAfterFirst = conn.sentRequests.length
 
     // Request 2: kinds=[1] (different)
