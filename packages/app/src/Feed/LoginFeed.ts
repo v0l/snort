@@ -1,4 +1,4 @@
-import { bech32ToHex, unixNowMs } from "@snort/shared"
+import { bech32ToHex, unixNow, unixNowMs } from "@snort/shared"
 import { EventKind, RequestBuilder } from "@snort/system"
 import { useRequestBuilder } from "@snort/system-react"
 import { useEffect, useMemo } from "react"
@@ -35,6 +35,21 @@ export default function useLoginFeed() {
       )
     }
   }, [pubKey, system.config.socialGraphInstance.setRoot])
+
+  const follows = login.state.follows
+  useEffect(() => {
+    if (pubKey && follows) {
+      system.config.socialGraphInstance.handleEvent({
+        id: "",
+        sig: "",
+        content: "",
+        kind: EventKind.ContactList,
+        pubkey: pubKey,
+        created_at: unixNow(),
+        tags: follows.map(p => ["p", p]),
+      })
+    }
+  }, [pubKey, follows?.join()])
 
   useEffect(() => {
     login.state.init(publisher?.signer, system).catch(console.error)
