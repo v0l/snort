@@ -185,6 +185,7 @@ export class BunSqliteRelay implements CacheRelay {
     for (let i = 0; i < ids.length; i += 1000) {
       const batch = ids.slice(i, i + 1000)
       this.#db.run(`DELETE FROM events WHERE id IN (${repeatParams(batch.length)})`, batch)
+      this.#db.run(`DELETE FROM tags WHERE event_id IN (${repeatParams(batch.length)})`, batch)
     }
   }
 

@@ -77,6 +77,7 @@ export interface RelayHandler extends EventEmitter<RelayHandlerEvents> {
   summary(): Record<string, number>
   dump(): Promise<Uint8Array>
   delete(req: ReqFilter): Array<string>
+  deleteInBatches?(req: ReqFilter): Promise<Array<string>>
   setEventMetadata(id: string, meta: EventMetadata): void
   batchSetSeenAt(ids: Array<string>, seen_at: number): void
   wipe(): Promise<void>

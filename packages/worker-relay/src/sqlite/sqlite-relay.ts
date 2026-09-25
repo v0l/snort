@@ -39,6 +39,9 @@ function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+const DELETE_BATCH_SIZE = 500
+const SEARCH_PRUNE_RANGE = 5_000
+
 export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements RelayHandler {
   #sqlite?: Sqlite3Static
   #log = (msg: string, ...args: Array<any>) => debugLog("SqliteRelay", msg, ...args)
@@ -189,14 +192,11 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
 
   #deleteById(db: Database, ids: Array<string>) {
     if (ids.length === 0) return
-    db.exec(`delete from events where id in (${repeatParams(ids.length)})`, {
-      bind: ids,
-    })
+    const params = repeatParams(ids.length)
+    db.exec(`delete from events where id in (${params})`, { bind: ids })
     const deleted = db.changes()
-    db.exec(`delete from search_content where id in (${repeatParams(ids.length)})`, {
-      bind: ids,
-    })
-    this.#log("Deleted", ids, deleted)
+    db.exec(`delete from tags where event_id in (${params})`, { bind: ids })
+    this.#log("Deleted", ids.length, deleted)
   }
 
   #isDeleted(db: Database, ev: NostrEvent) {
@@ -388,26 +388,42 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
    * Delete events by nostr filter
    */
   delete(req: ReqFilter) {
+    const ids = this.req("ids-for-delete", { ...req, ids_only: true }) as Array<string>
+    for (let i = 0; i < ids.length; i += DELETE_BATCH_SIZE) {
+      this.#deleteById(this.db!, ids.slice(i, i + DELETE_BATCH_SIZE))
+    }
+    return ids
+  }
+
+  /**
+   * Delete events matching a filter in batches, yielding between batches so other
+   * commands (including those proxied from other tabs) are not starved by a large cleanup
+   */
+  async deleteInBatches(req: ReqFilter) {
     this.#log(`Starting delete of ${JSON.stringify(req)}`)
     const start = unixNowMs()
-    const for_delete = this.req("ids-for-delete", { ...req, ids_only: true }) as Array<string>
+    const ids = this.req("ids-for-delete", { ...req, ids_only: true }) as Array<string>
+    for (let i = 0; i < ids.length; i += DELETE_BATCH_SIZE) {
+      if (!this.db) break
+      this.db.transaction(db => this.#deleteById(db, ids.slice(i, i + DELETE_BATCH_SIZE)))
+      await new Promise(resolve => setTimeout(resolve, 0))
+    }
+    if (ids.length > 0) {
+      await this.#pruneSearchIndex()
+    }
+    this.#log(`Delete ${ids.length} events took ${(unixNowMs() - start).toLocaleString()}ms`)
+    return ids
+  }
 
-    const grouped = for_delete.reduce(
-      (acc, v, i) => {
-        const batch = (i / 1000).toFixed(0)
-        acc[batch] ??= []
-        acc[batch].push(v)
-        return acc
-      },
-      {} as Record<string, Array<string>>,
-    )
-    this.#log(`Starting delete of ${Object.keys(grouped).length} batches`)
-    Object.entries(grouped).forEach(([_batch, ids]) => {
-      this.#deleteById(this.db!, ids)
-    })
-    const time = unixNowMs() - start
-    this.#log(`Delete ${for_delete.length} events took ${time.toLocaleString()}ms`)
-    return for_delete
+  async #pruneSearchIndex() {
+    const maxRowId = Number(this.db?.selectValue("select max(rowid) from search_content") ?? 0)
+    for (let from = 0; from <= maxRowId; from += SEARCH_PRUNE_RANGE) {
+      if (!this.db) break
+      this.db.exec("delete from search_content where rowid between ? and ? and id not in (select id from events)", {
+        bind: [from, from + SEARCH_PRUNE_RANGE - 1],
+      })
+      await new Promise(resolve => setTimeout(resolve, 0))
+    }
   }
 
   /**

@@ -108,7 +108,7 @@ async function executeCommand(msg: WorkerMessage<any>, relay: RelayHandler): Pro
       const results = []
       const filters = req.slice(2) as Array<ReqFilter>
       for (const r of filters) {
-        const c = relay.delete(r) ?? []
+        const c = (await relay.deleteInBatches?.(r)) ?? relay.delete(r) ?? []
         results.push(...c)
       }
       return results
