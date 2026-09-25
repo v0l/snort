@@ -1,5 +1,5 @@
 import { useUserProfile } from "@snort/system-react"
-import Lottie from "lottie-react"
+import { Lottie } from "lottie-react"
 import { useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { Link, useNavigate } from "react-router-dom"
@@ -29,7 +29,7 @@ const InviteModal = () => {
   return (
     <Modal id="invite-modal" onClose={close}>
       <div className="flex flex-col gap-4 items-center">
-        <Lottie animationData={Hugs} />
+        <Lottie src={Hugs} autoplay loop className="w-full aspect-[5/4]" />
         <p className="text-3xl font-semibold">
           <FormattedMessage
             defaultMessage="{name} invited you to {app}"
