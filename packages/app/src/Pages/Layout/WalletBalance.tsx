@@ -16,8 +16,11 @@ export const WalletBalance = () => {
 
   useEffect(() => {
     setBalance(undefined)
-    if (wallet.wallet?.canGetBalance()) {
-      wallet.wallet.getBalance().then(setBalance)
+    const w = wallet.wallet
+    if (w?.isReady()) {
+      w.getInfo()
+        .then(() => (w.canGetBalance() ? w.getBalance().then(setBalance) : undefined))
+        .catch(console.warn)
     }
   }, [wallet])
 
