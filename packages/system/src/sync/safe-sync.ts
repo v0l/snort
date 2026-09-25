@@ -93,6 +93,7 @@ export class SafeSync {
 
   async #sync(system: SystemInterface) {
     const rb = new RequestBuilder("sync")
+    rb.withOptions({ skipCache: true })
     const f = rb.withFilter().link(this.link)
     if (this.#base) {
       f.since(this.#base.created_at)
