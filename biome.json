@@ -1,12 +1,13 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.9/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "includes": ["**", "!**/system-wasm/pkg", "!**/.pi-lens"]
   },
   "formatter": {
     "enabled": true,
@@ -35,7 +36,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "correctness": {
         "useExhaustiveDependencies": "off"
       }
@@ -52,6 +53,11 @@
       "quoteStyle": "double",
       "attributePosition": "auto",
       "bracketSpacing": true
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   },
   "html": {

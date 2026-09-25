@@ -26,7 +26,7 @@ export function ApplicationHandler({ ev }: { ev: TaggedNostrEvent }) {
             </div>
             <ProfileImage pubkey={ev.pubkey} size={30} />
             {sourceLink && (
-              <a href={sourceLink} className="flex items-center gap-1" target="_blank">
+              <a href={sourceLink} className="flex items-center gap-1" target="_blank" rel="noopener">
                 <Icon name="link" size={14} />
                 <FormattedMessage defaultMessage="Source Code" />
               </a>
