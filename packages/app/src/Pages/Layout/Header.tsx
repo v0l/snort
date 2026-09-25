@@ -1,4 +1,4 @@
-import { Bech32Regex, bech32ToHex, NostrPrefix, unwrap } from "@snort/shared"
+import { Bech32Regex, NostrPrefix, unwrap } from "@snort/shared"
 import { EventKind, type NostrLink, tryParseNostrLink } from "@snort/system"
 import { useEventFeed } from "@snort/system-react"
 import classNames from "classnames"
@@ -74,11 +74,7 @@ export function Header() {
     ) {
       title = <NoteTitle link={nostrLink} />
     } else if (nostrLink.type === NostrPrefix.PublicKey || nostrLink.type === NostrPrefix.Profile) {
-      try {
-        title = <DisplayName pubkey={bech32ToHex(pageName)} />
-      } catch (e) {
-        console.error(e)
-      }
+      title = <DisplayName pubkey={nostrLink.id} />
     }
   } else if (location.pathname.startsWith("/t/")) {
     title = <span>#{location.pathname.split("/").slice(-1)}</span>
