@@ -126,6 +126,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     state.checkIsStandardList(EventKind.BlossomServerList) // track blossom list
     state.checkIsStandardList(EventKind.PinList)
     state.checkIsStandardList(EventKind.BookmarksList)
+    state.checkIsStandardList(EventKind.InterestsList)
   }
 
   getSessions() {
