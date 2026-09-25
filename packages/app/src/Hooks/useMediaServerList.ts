@@ -31,12 +31,14 @@ export function useMediaServerList() {
 
         const u = sanitizeRelayUrl(s)
         if (!u) return
-        state?.addToList(EventKind.BlossomServerList, new UnknownTag(["server", u]), true)
+        state?.addToList(EventKind.BlossomServerList, new UnknownTag(["server", u]))
+        await state?.saveList(EventKind.BlossomServerList)
       },
       removeServer: async (s: string) => {
         const u = sanitizeRelayUrl(s)
         if (!u) return
-        state?.removeFromList(EventKind.BlossomServerList, new UnknownTag(["server", u]), true)
+        state?.removeFromList(EventKind.BlossomServerList, new UnknownTag(["server", u]))
+        await state?.saveList(EventKind.BlossomServerList)
       },
     }),
     [servers, publisher, state?.addToList, state?.removeFromList],

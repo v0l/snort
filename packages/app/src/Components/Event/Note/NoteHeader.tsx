@@ -24,6 +24,7 @@ export default function NoteHeader(props: { options: NotePropsOptions; context?:
     if (options.canUnpin && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnpin))) {
         login.state.removeFromList(EventKind.PinList, NostrLink.fromEvent(ev))
+        await login.state.saveList(EventKind.PinList)
       }
     }
   }
@@ -32,6 +33,7 @@ export default function NoteHeader(props: { options: NotePropsOptions; context?:
     if (options.canUnbookmark && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnbookmark))) {
         login.state.removeFromList(EventKind.BookmarksList, NostrLink.fromEvent(ev))
+        await login.state.saveList(EventKind.BookmarksList)
       }
     }
   }
