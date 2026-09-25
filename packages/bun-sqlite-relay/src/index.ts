@@ -190,6 +190,16 @@ export class BunSqliteRelay implements CacheRelay {
 
   // ---- Event Insertion ----
 
+  #isDeleted(ev: TaggedNostrEvent) {
+    const hit = this.#db
+      .query(
+        `SELECT 1 FROM tags t JOIN events e ON e.id = t.event_id
+         WHERE t.key = 'e' AND t.value = ? AND e.kind = 5 AND e.pubkey = ? LIMIT 1`,
+      )
+      .get(ev.id, ev.pubkey)
+    return hit !== null
+  }
+
   #insertEvent(ev: TaggedNostrEvent): boolean {
     if (this.#seenInserts.has(ev.id)) return false
 
@@ -223,7 +233,9 @@ export class BunSqliteRelay implements CacheRelay {
         aDeleted += dTagRows.length
         this.#deleteByIds(dTagRows.map(r => r.id))
       }
-      return deletedEIds.length > 0 || aDeleted > 0
+    } else if (this.#isDeleted(ev)) {
+      this.#markSeen(ev.id)
+      return false
     }
 
     if (legacyReplaceableKinds.includes(ev.kind) || (ev.kind >= 10_000 && ev.kind < 20_000)) {
