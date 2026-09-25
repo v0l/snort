@@ -7,7 +7,7 @@ export function ToggleSwitch(props: Omit<IconProps, "name">) {
       viewBox="0 0 33.015999 19.353487"
       fill="none"
       width={size}
-      height={props.height ?? size}
+      height={size}
       className={props.className}
       onClick={props.onClick}
     >

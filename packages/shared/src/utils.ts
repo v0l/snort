@@ -270,6 +270,8 @@ export function normalizeReaction(content: string) {
 }
 
 export class OfflineError extends Error {
+  override readonly name = "OfflineError"
+
   static isInstance(obj: unknown): obj is OfflineError {
     return obj instanceof OfflineError || (obj instanceof Error && obj.constructor.name === "OfflineError")
   }

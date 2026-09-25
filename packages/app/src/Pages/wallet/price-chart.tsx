@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { FormattedNumber } from "react-intl"
-import { Line, LineChart, ResponsiveContainer, Tooltip, type TooltipProps, XAxis, YAxis } from "recharts"
+import { Line, LineChart, ResponsiveContainer, Tooltip, type TooltipContentProps, XAxis, YAxis } from "recharts"
 
 import { useRateHistory } from "@/Hooks/useRates"
 
@@ -12,7 +12,7 @@ interface ChartData {
   bid: number
 }
 
-function CustomTooltip({ active, payload }: TooltipProps<number, string>) {
+function CustomTooltip({ active, payload }: Partial<TooltipContentProps<number, string>>) {
   if (!active || !payload || payload.length === 0) {
     return null
   }
@@ -67,7 +67,8 @@ export default function PriceChart() {
       const bucketKey = Math.floor(point.time / interval) * interval
 
       // Keep the most recent value in each bucket
-      if (!buckets.has(bucketKey) || point.time > buckets.get(bucketKey)?.time) {
+      const existing = buckets.get(bucketKey)
+      if (!existing || point.time > existing.time) {
         buckets.set(bucketKey, { time: bucketKey, ask: point.ask, bid: point.bid })
       }
 

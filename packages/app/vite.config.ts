@@ -60,7 +60,7 @@ const shared = {
     exclude: ["@sqlite.org/sqlite-wasm"],
   },
   clearScreen: false,
-  publicDir: appConfig.get("publicDir"),
+  publicDir: appConfig.get<string>("publicDir"),
   resolve: {
     alias: {
       "@": "/src",

@@ -86,7 +86,7 @@ export default function SignIn() {
     }
   }
 
-  async function onSubmit(e: Event) {
+  async function onSubmit(e: { preventDefault(): void }) {
     e.preventDefault()
     doLogin(key)
   }

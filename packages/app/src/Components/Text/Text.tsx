@@ -26,6 +26,7 @@ export interface TextProps {
   creator: string
   tags: Array<Array<string>>
   disableMedia?: boolean
+  disableMediaSpotlight?: boolean
   disableGallery?: boolean
   disableLinkPreview?: boolean
   depth?: number
@@ -41,6 +42,7 @@ export default function Text({
   tags,
   creator,
   disableMedia,
+  disableMediaSpotlight,
   disableGallery,
   depth,
   disableLinkPreview,
@@ -54,6 +56,7 @@ export default function Text({
 
   const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content)
   const onMediaClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    if (disableMediaSpotlight) return
     e.stopPropagation()
     spotlight?.showImages(images)
   }

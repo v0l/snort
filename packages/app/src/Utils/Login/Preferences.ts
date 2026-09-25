@@ -1,4 +1,4 @@
-import type { ImgProxySettings } from "@/Hooks/useImgProxy"
+import type { ImgProxySettings } from "@snort/shared"
 import type { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes"
 
 export interface UserPreferences {

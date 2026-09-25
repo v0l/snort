@@ -1,4 +1,5 @@
 import { NostrLink, type TaggedNostrEvent } from "@snort/system"
+import { useEventFeed } from "@snort/system-react"
 
 import { ThreadElement } from "@/Components/Event/Thread/Thread"
 import Modal from "@/Components/Modal/Modal"
@@ -35,12 +36,11 @@ export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
       <ThreadContextWrapper link={link!}>
         <div className="flex flex-row h-screen w-screen">
           <div className="flex w-full md:w-2/3 items-center justify-center overflow-hidden" onClick={onClickBg}>
-            <SpotlightFromEvent
-              event={props.event || props.thread}
-              onClose={onClose}
-              onNext={props.onNext}
-              onPrev={props.onPrev}
-            />
+            {props.event ? (
+              <SpotlightFromEvent event={props.event} onClose={onClose} onNext={props.onNext} onPrev={props.onPrev} />
+            ) : (
+              <SpotlightFromLink link={link!} onClose={onClose} onNext={props.onNext} onPrev={props.onPrev} />
+            )}
           </div>
           <div className="bg-layer-1 md:flex w-1/3 min-w-[400px] overflow-y-auto">
             <ThreadElement onBack={onBack} disableSpotlight={true} />
@@ -56,6 +56,11 @@ interface SpotlightFromEventProps {
   onClose: () => void
   onNext?: () => void
   onPrev?: () => void
+}
+
+function SpotlightFromLink({ link, ...props }: Omit<SpotlightFromEventProps, "event"> & { link: NostrLink }) {
+  const event = useEventFeed(link)
+  return event ? <SpotlightFromEvent event={event} {...props} /> : null
 }
 
 function SpotlightFromEvent({ event, onClose, onNext, onPrev }: SpotlightFromEventProps) {

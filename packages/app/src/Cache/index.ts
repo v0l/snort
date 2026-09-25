@@ -73,7 +73,6 @@ export async function initRelayWorker() {
       await wr.debug("*")
       await wr.init({
         databasePath: "relay.db",
-        insertBatchSize: 100,
       })
       await wr.configureSearchIndex({
         1: [], // add index for kind 1, dont index tags

@@ -39,7 +39,6 @@ import usePreferences from "@/Hooks/usePreferences"
 import useRelays from "@/Hooks/useRelays"
 import { useNoteCreator } from "@/State/NoteCreator"
 import { openFile, trackEvent } from "@/Utils"
-import type { BlobDescriptor } from "@/Utils/Upload/blossom"
 import useFileUpload, { type UploadProgress } from "@/Utils/Upload"
 import { GetPowWorker } from "@/Utils/wasm"
 
@@ -309,7 +308,7 @@ export function NoteCreator() {
           if (rx.url) {
             v.attachments ??= {}
             v.attachments[rx.sha256] ??= []
-            v.attachments[rx.sha256].push(rx as unknown as BlobDescriptor)
+            v.attachments[rx.sha256].push(rx)
           }
           // Remove completed upload from progress after a short delay
           setTimeout(() => {
