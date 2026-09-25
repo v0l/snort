@@ -32,6 +32,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
         setError(undefined)
         setBalance(0)
         setHistory(undefined)
+        await wallet.getInfo()
         if (wallet.canGetBalance()) {
           const b = await wallet.getBalance()
           setBalance(b as Sats)
