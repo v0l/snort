@@ -202,7 +202,7 @@ test.describe("context menu", () => {
     await page.getByRole("link", { name: "Settings" }).first().click()
     await page.getByRole("link", { name: "Cache" }).click()
     await page.getByRole("button", { name: "Debug" }).click()
-    await page.getByRole("button", { name: "Raw JSON" }).click()
+    await page.getByRole("button", { name: "Raw JSON" }).first().click()
     await page.getByPlaceholder('{"kinds": [1], "limit": 10}').fill(JSON.stringify({ authors: [alice.pubkey] }))
     await expect(async () => {
       await page.getByRole("button", { name: "Query" }).click()

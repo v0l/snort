@@ -70,6 +70,8 @@ bun test packages/system/tests/nip10.test.ts     # Single file
 cd packages/system && bun test                   # Package-scoped
 ```
 
+`packages/system/tests/ssr-hydration-relay.test.ts` talks to public relays and only runs with `LIVE_RELAYS=1`.
+
 Tests use `tsconfig` with `"exclude": ["**/*.test.ts"]` — tests are not compiled by `tsc` build.
 
 ### End-to-end tests

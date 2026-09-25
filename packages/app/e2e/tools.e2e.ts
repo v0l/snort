@@ -48,7 +48,7 @@ test("cache debug builder adds and removes fields", async ({ page }) => {
 
 test("cache debug raw filter tolerates partial json", async ({ page }) => {
   await openCacheDebug(page)
-  await page.getByRole("button", { name: "Raw JSON" }).click()
+  await page.getByRole("button", { name: "Raw JSON" }).first().click()
   const raw = page.getByPlaceholder('{"kinds": [1], "limit": 10}')
   await raw.fill('{"kinds": [1')
   await expect(page.getByRole("heading", { name: "Cache Query" })).toBeVisible()
@@ -64,7 +64,7 @@ test("cache debug inserts and deletes an event", async ({ page }) => {
   await page.getByText("Manual Insert").click()
   await page.getByPlaceholder("paste a nostr event JSON").fill(JSON.stringify(ev))
   await page.getByRole("button", { name: "Insert" }).click()
-  await page.getByRole("button", { name: "Raw JSON" }).click()
+  await page.getByRole("button", { name: "Raw JSON" }).first().click()
   await page.getByPlaceholder('{"kinds": [1], "limit": 10}').fill(JSON.stringify({ ids: [ev.id] }))
   await queryUntil(page, "Results: 1")
   await page.getByRole("button", { name: "Delete Matching" }).click()
