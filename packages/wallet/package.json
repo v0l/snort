@@ -25,6 +25,6 @@
   "devDependencies": {
     "@types/debug": "^4.1.13",
     "@webbtc/webln-types": "^3.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   }
 }

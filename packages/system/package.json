@@ -25,7 +25,7 @@
     "@types/node": "^24.13.6",
     "@types/ws": "^8.18.1",
     "nostr-tools": "^2.25.2",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "@noble/ciphers": "^2.4.0",

@@ -2,7 +2,8 @@ import "@webscopeio/react-textarea-autocomplete/style.css"
 import "./Textarea.css"
 
 import { NostrLink } from "@snort/system"
-import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete"
+import ReactTextareaAutocomplete, { type ItemComponentProps } from "@webscopeio/react-textarea-autocomplete"
+import type { ComponentType, TextareaHTMLAttributes } from "react"
 import { useIntl } from "react-intl"
 import TextareaAutosize from "react-textarea-autosize"
 
@@ -52,6 +53,16 @@ interface TextareaProps {
 
 type TriggerData = EmojiItemProps | FuzzySearchResult
 
+const isEmoji = (item: TriggerData): item is EmojiItemProps => "char" in item
+
+const EmojiTriggerItem = ({ entity }: ItemComponentProps<TriggerData>) =>
+  isEmoji(entity) ? <EmojiItem entity={entity} /> : null
+
+const UserTriggerItem = ({ entity }: ItemComponentProps<TriggerData>) =>
+  isEmoji(entity) ? null : <UserItem {...entity} />
+
+const AutosizeTextarea = TextareaAutosize as ComponentType<TextareaHTMLAttributes<HTMLTextAreaElement>>
+
 const Textarea = (props: TextareaProps) => {
   const { formatMessage } = useIntl()
   const userSearch = useProfileSearch()
@@ -65,24 +76,23 @@ const Textarea = (props: TextareaProps) => {
   }
 
   return (
-    // @ts-expect-error 2769
     <ReactTextareaAutocomplete<TriggerData>
       dir="auto"
       {...props}
       loadingComponent={() => <span>Loading...</span>}
       placeholder={props.placeholder ?? formatMessage(messages.NotePlaceholder)}
-      textAreaComponent={TextareaAutosize}
+      textAreaComponent={AutosizeTextarea}
       trigger={{
         ":": {
           dataProvider: emojiDataProvider,
-          component: EmojiItem,
-          output: (item: EmojiItemProps) => item.char,
+          component: EmojiTriggerItem,
+          output: item => (isEmoji(item) ? item.char : ""),
         },
         "@": {
           afterWhitespace: true,
           dataProvider: userDataProvider,
-          component: (props: { entity: FuzzySearchResult }) => <UserItem {...props.entity} />,
-          output: (item: { pubkey: string }) => `@${NostrLink.profile(item.pubkey).encode()}`,
+          component: UserTriggerItem,
+          output: item => (isEmoji(item) ? "" : `@${NostrLink.profile(item.pubkey).encode()}`),
         },
       }}
     />
