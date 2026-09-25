@@ -69,7 +69,7 @@ class CustomModelProvider implements ModelProvider {
 const AI_CONFIG = {
   apiUrl: "https://yalr.v0l.io/v1",
   model: "code",
-  apiKey: "sk_fU9Xul8T5VkYUBQz8pElyms7",
+  apiKey: import.meta.env.VITE_AI_API_KEY,
 }
 
 export interface ModelInfo {
