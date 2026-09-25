@@ -56,7 +56,7 @@ NODE_CONFIG_ENV=iris bun run start   # Uses config/iris.json instead of default.
 
 Configs live in `packages/app/config/` (default, iris, nostr, phoenix, soloco, meku). Selected via `NODE_CONFIG_ENV`.
 
-## CI pipeline order
+## CI pipeline order (`.github/workflows/ci.yml`)
 
 `bun run build` → `bun test` → `bun --cwd=packages/app run typecheck` → `bunx --bun biome lint` (no `--write` in CI)
 
