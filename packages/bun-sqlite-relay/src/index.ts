@@ -139,7 +139,9 @@ export class BunSqliteRelay implements CacheRelay {
           }
           // v3 needs to re-index existing profile events
           if (version === 3) {
-            const events = this.#db.query(`SELECT json FROM events WHERE kind IN (0, 1)`).all() as Array<{ json: string }>
+            const events = this.#db.query(`SELECT json FROM events WHERE kind IN (0, 1)`).all() as Array<{
+              json: string
+            }>
             for (const { json } of events) {
               const ev = JSON.parse(json) as TaggedNostrEvent
               this.#insertSearchIndex(ev)
@@ -195,11 +197,12 @@ export class BunSqliteRelay implements CacheRelay {
 
     if (ev.kind === 5) {
       const eTags = ev.tags.filter(a => a[0] === "e").map(a => a[1])
-      const deletedE = eTags.length > 0
-        ? this.#db
-            .query(`SELECT id FROM events WHERE id IN (${repeatParams(eTags.length)}) AND pubkey = ?`)
-            .all(...eTags, ev.pubkey)
-        : []
+      const deletedE =
+        eTags.length > 0
+          ? this.#db
+              .query(`SELECT id FROM events WHERE id IN (${repeatParams(eTags.length)}) AND pubkey = ?`)
+              .all(...eTags, ev.pubkey)
+          : []
       const deletedEIds = (deletedE as Array<{ id: string }>).map(r => r.id)
       this.#deleteByIds(deletedEIds)
 

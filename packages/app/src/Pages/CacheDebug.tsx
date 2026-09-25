@@ -34,15 +34,7 @@ function isFieldSet(filter: ReqFilter, key: string): boolean {
   return Array.isArray(v) && v.length > 0
 }
 
-function FilterRow({
-  label,
-  children,
-  onRemove,
-}: {
-  label: string
-  children: React.ReactNode
-  onRemove: () => void
-}) {
+function FilterRow({ label, children, onRemove }: { label: string; children: React.ReactNode; onRemove: () => void }) {
   return (
     <div className="flex items-center gap-2">
       <span className="w-16 shrink-0 text-xs text-neutral-400 text-right">{label}</span>
@@ -88,7 +80,8 @@ function ChipInput({
           className={`inline-flex items-center gap-0.5 bg-nostr-purple/20 text-nostr-purple rounded px-1.5 text-xs ${
             mono ? "font-mono" : ""
           }`}
-          onClick={() => onChange(values.filter(x => x !== v))}>
+          onClick={() => onChange(values.filter(x => x !== v))}
+        >
           {v.length > 16 ? `${v.slice(0, 6)}…${v.slice(-4)}` : v}
           <span className="text-[10px] opacity-60">✕</span>
         </button>
@@ -242,7 +235,8 @@ function FilterForm({ filter, onChange }: { filter: ReqFilter; onChange: (f: Req
                 if (e.target.value) addKey(e.target.value)
                 setAddField(null)
               }}
-              onBlur={() => setAddField(null)}>
+              onBlur={() => setAddField(null)}
+            >
               <option value="">Add field…</option>
               {availableKeys.map(o => (
                 <option key={o.key} value={o.key}>
@@ -254,7 +248,8 @@ function FilterForm({ filter, onChange }: { filter: ReqFilter; onChange: (f: Req
             <button
               type="button"
               onClick={() => setAddField("open")}
-              className="px-2 py-1 rounded text-sm text-nostr-purple hover:text-white transition-colors">
+              className="px-2 py-1 rounded text-sm text-nostr-purple hover:text-white transition-colors"
+            >
               + Add
             </button>
           )}
@@ -340,7 +335,8 @@ export function DebugPage() {
               onClick={() => setFilterMode("builder")}
               className={`px-3 py-1 rounded text-sm transition-colors ${
                 filterMode === "builder" ? "bg-nostr-purple text-white" : "layer-2 hover:bg-neutral-700"
-              }`}>
+              }`}
+            >
               Builder
             </button>
             <button
@@ -348,7 +344,8 @@ export function DebugPage() {
               onClick={() => setFilterMode("raw")}
               className={`px-3 py-1 rounded text-sm transition-colors ${
                 filterMode === "raw" ? "bg-nostr-purple text-white" : "layer-2 hover:bg-neutral-700"
-              }`}>
+              }`}
+            >
               Raw JSON
             </button>
           </div>
@@ -405,7 +402,8 @@ export function DebugPage() {
                 onClick={() => setResultView("notes")}
                 className={`px-3 py-1 rounded text-sm transition-colors ${
                   resultView === "notes" ? "bg-nostr-purple text-white" : "layer-2 hover:bg-neutral-700"
-                }`}>
+                }`}
+              >
                 Notes
               </button>
               <button
@@ -413,7 +411,8 @@ export function DebugPage() {
                 onClick={() => setResultView("raw")}
                 className={`px-3 py-1 rounded text-sm transition-colors ${
                   resultView === "raw" ? "bg-nostr-purple text-white" : "layer-2 hover:bg-neutral-700"
-                }`}>
+                }`}
+              >
                 Raw JSON
               </button>
             </div>
@@ -452,7 +451,8 @@ export function DebugPage() {
             {results.map(a => (
               <pre
                 key={a.id ?? Math.random()}
-                className="text-xs text-mono text-neutral-300 p-2 layer-1 rounded overflow-x-auto">
+                className="text-xs text-mono text-neutral-300 p-2 layer-1 rounded overflow-x-auto"
+              >
                 {JSON.stringify(a, undefined, 2)}
               </pre>
             ))}

@@ -22,7 +22,10 @@ export abstract class KeyStorage {
   abstract get value(): string
 
   static isInstance(obj: unknown): obj is KeyStorage {
-    return obj instanceof KeyStorage || (typeof obj === "object" && obj !== null && "shouldUnlock" in obj && "toPayload" in obj && "unlock" in obj)
+    return (
+      obj instanceof KeyStorage ||
+      (typeof obj === "object" && obj !== null && "shouldUnlock" in obj && "toPayload" in obj && "unlock" in obj)
+    )
   }
 
   /**

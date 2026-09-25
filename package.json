@@ -1,8 +1,6 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
     "start": "bun run build && bun --cwd=packages/app run start",
     "build": "bun --cwd=packages/shared run build && bun --cwd=packages/system run build && bun --cwd=packages/system-react run build && bun --cwd=packages/wallet run build && bun --cwd=packages/worker-relay run build && bun --cwd=packages/bun-sqlite-relay run build && bun --cwd=packages/app run build",

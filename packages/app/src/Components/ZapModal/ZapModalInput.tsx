@@ -117,12 +117,12 @@ export function ZapModalInput(props: {
         {custom()}
         {props.zapper.maxComment() > 0 && (
           <input
-              type="text"
-              placeholder={formatMessage(messages.Comment)}
-              className="grow"
-              maxLength={props.zapper.maxComment()}
-              onChange={e => setComment(e.target.value)}
-            />
+            type="text"
+            placeholder={formatMessage(messages.Comment)}
+            className="grow"
+            maxLength={props.zapper.maxComment()}
+            onChange={e => setComment(e.target.value)}
+          />
         )}
       </div>
       <ZapTypeSelector zapType={zapType} setZapType={setZapType} />

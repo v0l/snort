@@ -45,61 +45,61 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
 
   return (
     <div className="px-3 py-2 subtier">
-        <div className="flex">
-          <Icon name="badge" className="mr5" size={25} />
-          {mapPlanName(sub.type)}
-        </div>
-        <div className="flex">
+      <div className="flex">
+        <Icon name="badge" className="mr5" size={25} />
+        {mapPlanName(sub.type)}
+      </div>
+      <div className="flex">
+        <p className="flex-1">
+          <FormattedMessage defaultMessage="Created" />
+          :&nbsp;
+          <time dateTime={created.toISOString()}>
+            <FormattedDate value={created} dateStyle="medium" />
+          </time>
+        </p>
+        {daysToExpire >= 1 && (
           <p className="flex-1">
-            <FormattedMessage defaultMessage="Created" />
+            <FormattedMessage defaultMessage="Expires" />
             :&nbsp;
-            <time dateTime={created.toISOString()}>
-              <FormattedDate value={created} dateStyle="medium" />
+            <time dateTime={expires.toISOString()}>
+              <FormattedMessage
+                defaultMessage="{n} days"
+                id="rmdsT4"
+                values={{
+                  n: <FormattedNumber value={daysToExpire} maximumFractionDigits={0} />,
+                }}
+              />
             </time>
           </p>
-          {daysToExpire >= 1 && (
-            <p className="flex-1">
-              <FormattedMessage defaultMessage="Expires" />
-              :&nbsp;
-              <time dateTime={expires.toISOString()}>
-                <FormattedMessage
-                  defaultMessage="{n} days"
-                  id="rmdsT4"
-                  values={{
-                    n: <FormattedNumber value={daysToExpire} maximumFractionDigits={0} />,
-                  }}
-                />
-              </time>
-            </p>
-          )}
-          {daysToExpire >= 0 && daysToExpire < 1 && (
-            <p className="flex-1">
-              <FormattedMessage defaultMessage="Expires" />
-              :&nbsp;
-              <time dateTime={expires.toISOString()}>
-                <FormattedMessage
-                  defaultMessage="{n} hours"
-                  id="2ukA4d"
-                  values={{
-                    n: <FormattedNumber value={hoursToExpire} maximumFractionDigits={0} />,
-                  }}
-                />
-              </time>
-            </p>
-          )}
-          {isExpired && (
-            <p className="flex-1 error">
-              <FormattedMessage defaultMessage="Expired" />
-            </p>
-          )}
-          {isNew && (
-            <p className="flex-1">
-              <FormattedMessage defaultMessage="Unpaid" />
-            </p>
-          )}
-        </div>
-        {(isExpired || isNew) && <RenewSub sub={sub} />}
-        {isPaid && subFeatures()}
+        )}
+        {daysToExpire >= 0 && daysToExpire < 1 && (
+          <p className="flex-1">
+            <FormattedMessage defaultMessage="Expires" />
+            :&nbsp;
+            <time dateTime={expires.toISOString()}>
+              <FormattedMessage
+                defaultMessage="{n} hours"
+                id="2ukA4d"
+                values={{
+                  n: <FormattedNumber value={hoursToExpire} maximumFractionDigits={0} />,
+                }}
+              />
+            </time>
+          </p>
+        )}
+        {isExpired && (
+          <p className="flex-1 error">
+            <FormattedMessage defaultMessage="Expired" />
+          </p>
+        )}
+        {isNew && (
+          <p className="flex-1">
+            <FormattedMessage defaultMessage="Unpaid" />
+          </p>
+        )}
       </div>
+      {(isExpired || isNew) && <RenewSub sub={sub} />}
+      {isPaid && subFeatures()}
+    </div>
   )
 }

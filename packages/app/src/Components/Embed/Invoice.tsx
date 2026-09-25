@@ -59,34 +59,34 @@ export default function Invoice(props: InvoiceProps) {
 
   return (
     <div className="border rounded-lg p-6 flex-col items-start relative bg-[image:var(--invoice-gradient)]">
-        <div>{header()}</div>
+      <div>{header()}</div>
 
-        <p className="font-normal text-[37px] leading-[45px] mb-4">
-          {amount > 0 && (
-            <>
-              {(amount / 1_000).toLocaleString()}{" "}
-              <span className="text-font-secondary-color uppercase text-[21px]">sat{amount === 1_000 ? "" : "s"}</span>
-            </>
-          )}
-        </p>
+      <p className="font-normal text-[37px] leading-[45px] mb-4">
+        {amount > 0 && (
+          <>
+            {(amount / 1_000).toLocaleString()}{" "}
+            <span className="text-font-secondary-color uppercase text-[21px]">sat{amount === 1_000 ? "" : "s"}</span>
+          </>
+        )}
+      </p>
 
-        <div className="text-font-secondary-color w-full text-base leading-[19px]">
-          {description && <p className="mb-4">{description}</p>}
-          {isPaid ? (
-            <div className="w-full h-11 font-semibold text-[19px] leading-[23px] flex items-center justify-center bg-success text-white rounded-lg">
-              <FormattedMessage defaultMessage="Paid" />
-            </div>
-          ) : (
-            <button
-              disabled={isExpired}
-              type="button"
-              onClick={payInvoice}
-              className="w-full h-11 font-semibold text-[19px] leading-[23px]"
-            >
-              {isExpired ? <FormattedMessage {...messages.Expired} /> : <FormattedMessage {...messages.Pay} />}
-            </button>
-          )}
-        </div>
+      <div className="text-font-secondary-color w-full text-base leading-[19px]">
+        {description && <p className="mb-4">{description}</p>}
+        {isPaid ? (
+          <div className="w-full h-11 font-semibold text-[19px] leading-[23px] flex items-center justify-center bg-success text-white rounded-lg">
+            <FormattedMessage defaultMessage="Paid" />
+          </div>
+        ) : (
+          <button
+            disabled={isExpired}
+            type="button"
+            onClick={payInvoice}
+            className="w-full h-11 font-semibold text-[19px] leading-[23px]"
+          >
+            {isExpired ? <FormattedMessage {...messages.Expired} /> : <FormattedMessage {...messages.Pay} />}
+          </button>
+        )}
       </div>
+    </div>
   )
 }

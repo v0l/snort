@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!**/system-wasm/pkg", "!**/.pi-lens"]
+    "includes": ["**", "!**/system-wasm/pkg", "!**/.pi-lens", "!**/src-tauri"]
   },
   "formatter": {
     "enabled": true,

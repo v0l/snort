@@ -1,5 +1,5 @@
-import { EventKind, NostrLink, } from "@snort/system"
-import { useEventFeed, useEventsFeed, } from "@snort/system-react"
+import { EventKind, NostrLink } from "@snort/system"
+import { useEventFeed, useEventsFeed } from "@snort/system-react"
 import { useMemo } from "react"
 
 import { NostrPrefix, removeUndefined } from "@snort/shared"

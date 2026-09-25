@@ -1,11 +1,11 @@
 import type { CachedTable } from "@snort/shared"
 import { ConnectionCacheRelay } from "@snort/system"
 import { WorkerRelayInterface } from "@snort/worker-relay"
-import { type ReactNode, use, useEffect, useState, } from "react"
+import { type ReactNode, use, useEffect, useState } from "react"
 import { FormattedMessage, FormattedNumber } from "react-intl"
 import { useNavigate } from "react-router-dom"
 
-import { GiftsCache, Relay, tryUseLocalRelay, } from "@/Cache"
+import { GiftsCache, Relay, tryUseLocalRelay } from "@/Cache"
 import AsyncButton from "@/Components/Button/AsyncButton"
 import useLogin from "@/Hooks/useLogin"
 import { SnortContext } from "@snort/system-react"

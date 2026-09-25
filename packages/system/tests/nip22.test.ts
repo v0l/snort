@@ -80,7 +80,11 @@ describe("Nip22", () => {
         LinkScope.Root,
       )
       const tag = Nip22.linkToTag(link)
-      expect(tag).toEqual(["A", "30023:bbbb000000000000000000000000000000000000000000000000000000000002:my-dtag", "wss://relay.example.com"])
+      expect(tag).toEqual([
+        "A",
+        "30023:bbbb000000000000000000000000000000000000000000000000000000000002:my-dtag",
+        "wss://relay.example.com",
+      ])
     })
 
     test("should produce lowercase a tag for Address link with Reply scope", () => {
@@ -93,7 +97,11 @@ describe("Nip22", () => {
         LinkScope.Reply,
       )
       const tag = Nip22.linkToTag(link)
-      expect(tag).toEqual(["a", "30023:bbbb000000000000000000000000000000000000000000000000000000000002:my-dtag", "wss://relay.example.com"])
+      expect(tag).toEqual([
+        "a",
+        "30023:bbbb000000000000000000000000000000000000000000000000000000000002:my-dtag",
+        "wss://relay.example.com",
+      ])
     })
 
     test("should produce lowercase a tag for Address link without relay", () => {
@@ -119,7 +127,11 @@ describe("Nip22", () => {
         LinkScope.Root,
       )
       const tag = Nip22.linkToTag(link)
-      expect(tag).toEqual(["P", "bbbb000000000000000000000000000000000000000000000000000000000002", "wss://relay.example.com"])
+      expect(tag).toEqual([
+        "P",
+        "bbbb000000000000000000000000000000000000000000000000000000000002",
+        "wss://relay.example.com",
+      ])
     })
 
     test("should produce lowercase p tag for Profile link with Reply scope", () => {
@@ -132,15 +144,16 @@ describe("Nip22", () => {
         LinkScope.Reply,
       )
       const tag = Nip22.linkToTag(link)
-      expect(tag).toEqual(["p", "bbbb000000000000000000000000000000000000000000000000000000000002", "wss://relay.example.com"])
+      expect(tag).toEqual([
+        "p",
+        "bbbb000000000000000000000000000000000000000000000000000000000002",
+        "wss://relay.example.com",
+      ])
     })
 
     test("should throw for unsupported NostrPrefix types", () => {
       // Note links shouldn't be used in NIP-22 tag context
-      const link = new NostrLink(
-        NostrPrefix.Note,
-        "aaaa000000000000000000000000000000000000000000000000000000000001",
-      )
+      const link = new NostrLink(NostrPrefix.Note, "aaaa000000000000000000000000000000000000000000000000000000000001")
       // Note is treated like Event (falls through to e/E branch)
       const tag = Nip22.linkToTag(link)
       expect(tag[0]).toBe("e") // lowercase because no scope
@@ -161,7 +174,9 @@ describe("Nip22", () => {
       }
 
       const eb = new EventBuilder()
-      eb.kind(EventKind.Comment).pubKey("cccc000000000000000000000000000000000000000000000000000000000003").content("Great content!")
+      eb.kind(EventKind.Comment)
+        .pubKey("cccc000000000000000000000000000000000000000000000000000000000003")
+        .content("Great content!")
       Nip22.replyTo(rootEvent, eb)
 
       const built = eb.build()
@@ -209,8 +224,18 @@ describe("Nip22", () => {
         created_at: 1234567891,
         content: "A nested reply",
         tags: [
-          ["E", "aaaa000000000000000000000000000000000000000000000000000000000001", "", "bbbb000000000000000000000000000000000000000000000000000000000002"],
-          ["e", "cccc000000000000000000000000000000000000000000000000000000000003", "", "ffff000000000000000000000000000000000000000000000000000000000006"],
+          [
+            "E",
+            "aaaa000000000000000000000000000000000000000000000000000000000001",
+            "",
+            "bbbb000000000000000000000000000000000000000000000000000000000002",
+          ],
+          [
+            "e",
+            "cccc000000000000000000000000000000000000000000000000000000000003",
+            "",
+            "ffff000000000000000000000000000000000000000000000000000000000006",
+          ],
           ["K", "34235"],
           ["k", "1111"],
           ["P", "bbbb000000000000000000000000000000000000000000000000000000000002"],
@@ -221,7 +246,9 @@ describe("Nip22", () => {
       }
 
       const eb = new EventBuilder()
-      eb.kind(EventKind.Comment).pubKey("9999000000000000000000000000000000000000000000000000000000000009").content("Another reply")
+      eb.kind(EventKind.Comment)
+        .pubKey("9999000000000000000000000000000000000000000000000000000000000009")
+        .content("Another reply")
       Nip22.replyTo(parentComment, eb)
 
       const built = eb.build()
@@ -269,7 +296,9 @@ describe("Nip22", () => {
       }
 
       const eb = new EventBuilder()
-      eb.kind(EventKind.Comment).pubKey("cccc000000000000000000000000000000000000000000000000000000000003").content("Great article!")
+      eb.kind(EventKind.Comment)
+        .pubKey("cccc000000000000000000000000000000000000000000000000000000000003")
+        .content("Great article!")
       Nip22.replyTo(longFormEvent, eb)
 
       const built = eb.build()
@@ -282,7 +311,9 @@ describe("Nip22", () => {
       expect(rootATag[1]).toBe("30023:bbbb000000000000000000000000000000000000000000000000000000000002:my-article-slug")
 
       const replyATag = aTags.find(t => t[0] === "a")!
-      expect(replyATag[1]).toBe("30023:bbbb000000000000000000000000000000000000000000000000000000000002:my-article-slug")
+      expect(replyATag[1]).toBe(
+        "30023:bbbb000000000000000000000000000000000000000000000000000000000002:my-article-slug",
+      )
 
       // K and k tags
       const KTag = built.tags.find(t => t[0] === "K")
@@ -310,7 +341,9 @@ describe("Nip22", () => {
       }
 
       const eb = new EventBuilder()
-      eb.kind(EventKind.Comment).pubKey("cccc000000000000000000000000000000000000000000000000000000000003").content("Nice!")
+      eb.kind(EventKind.Comment)
+        .pubKey("cccc000000000000000000000000000000000000000000000000000000000003")
+        .content("Nice!")
 
       // This should NOT throw — the original bug caused this to throw
       // "RootScope or ReplyScope are undefined!"
@@ -332,7 +365,12 @@ describe("Nip22", () => {
         pubkey: "0000000000000000000000000000000000000000000000000000000000000001",
         sig: "test",
         tags: [
-          ["E", "aaaa000000000000000000000000000000000000000000000000000000000001", "wss://relay.example.com", "bbbb000000000000000000000000000000000000000000000000000000000002"],
+          [
+            "E",
+            "aaaa000000000000000000000000000000000000000000000000000000000001",
+            "wss://relay.example.com",
+            "bbbb000000000000000000000000000000000000000000000000000000000002",
+          ],
           ["K", "34235"],
           ["P", "bbbb000000000000000000000000000000000000000000000000000000000002"],
         ],
@@ -358,7 +396,11 @@ describe("Nip22", () => {
         pubkey: "0000000000000000000000000000000000000000000000000000000000000001",
         sig: "test",
         tags: [
-          ["A", "30023:bbbb000000000000000000000000000000000000000000000000000000000002:my-article", "wss://relay.example.com"],
+          [
+            "A",
+            "30023:bbbb000000000000000000000000000000000000000000000000000000000002:my-article",
+            "wss://relay.example.com",
+          ],
           ["K", "30023"],
           ["P", "bbbb000000000000000000000000000000000000000000000000000000000002"],
         ],

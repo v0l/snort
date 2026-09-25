@@ -57,9 +57,7 @@ export const WasmOptimizer = {
     }
     if (unverified.length > 0) {
       // One JS→WASM call for all unverified events; returns Uint8Array (1=valid, 0=invalid).
-      const raw = schnorr_verify_batch(
-        unverified.map(u => u.ev),
-      ) as Uint8Array
+      const raw = schnorr_verify_batch(unverified.map(u => u.ev)) as Uint8Array
       for (let j = 0; j < unverified.length; j++) {
         const ok = raw[j] === 1
         results[unverified[j].idx] = ok

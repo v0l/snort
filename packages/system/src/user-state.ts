@@ -56,7 +56,10 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
   #standardLists?: Map<EventKind, DiffSyncTags> // NIP-51 lists
 
   static isInstance(obj: unknown): obj is UserState<unknown> {
-    return obj instanceof UserState || (typeof obj === "object" && obj !== null && "pubkey" in obj && "serialize" in obj && "checkIsStandardList" in obj)
+    return (
+      obj instanceof UserState ||
+      (typeof obj === "object" && obj !== null && "pubkey" in obj && "serialize" in obj && "checkIsStandardList" in obj)
+    )
   }
 
   #signer?: EventSigner

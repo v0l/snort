@@ -12,10 +12,7 @@
   "scripts": {
     "build": "rm -rf dist && bunx --bun tsc"
   },
-  "files": [
-    "src",
-    "dist"
-  ],
+  "files": ["src", "dist"],
   "dependencies": {
     "@snort/system": "^2.0.0",
     "@snort/worker-relay": "^3.0.0"

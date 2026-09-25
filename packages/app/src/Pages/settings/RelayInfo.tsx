@@ -35,91 +35,91 @@ const RelayInfo = () => {
 
   return (
     <div className="flex flex-col gap-4">
-        <div className="flex justify-between">
-          <div className="flex gap-4 items-center">
-            <RelayFavicon url={params.id ?? ""} size={80} />
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <div className="text-2xl font-bold">{info?.name ?? getRelayName(params.id ?? "")}</div>
-                {info && <RelayPaymentLabel info={info} />}
-              </div>
-              <div className="text-gray-light">{params.id}</div>
+      <div className="flex justify-between">
+        <div className="flex gap-4 items-center">
+          <RelayFavicon url={params.id ?? ""} size={80} />
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <div className="text-2xl font-bold">{info?.name ?? getRelayName(params.id ?? "")}</div>
+              {info && <RelayPaymentLabel info={info} />}
             </div>
+            <div className="text-gray-light">{params.id}</div>
           </div>
         </div>
+      </div>
 
-        {info && (
-          <div className="grid grid-cols-3 gap-4">
-            <div className="flex flex-col gap-2">
-              <div className="uppercase text-neutral-400 font-bold text-sm">
-                <FormattedMessage defaultMessage="Admin" />
-              </div>
-              <div>{info?.pubkey && <ProfileImage pubkey={parseId(info.pubkey)} size={30} />}</div>
+      {info && (
+        <div className="grid grid-cols-3 gap-4">
+          <div className="flex flex-col gap-2">
+            <div className="uppercase text-neutral-400 font-bold text-sm">
+              <FormattedMessage defaultMessage="Admin" />
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="uppercase text-neutral-400 font-bold text-sm">
-                <FormattedMessage defaultMessage="Contact" />
-              </div>
-              <div>
-                {info?.contact && (
-                  <a
-                    href={`${info.contact.startsWith("mailto:") ? "" : "mailto:"}${info.contact}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {info.contact.replace("mailto:", "")}
-                  </a>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="uppercase text-neutral-400 font-bold text-sm">
-                <FormattedMessage defaultMessage="Software" />
-              </div>
-              <div>{info?.software && <RelaySoftware software={info.software} />}</div>
-            </div>
-            {conn && (
-              <>
-                <div className="flex flex-col gap-2">
-                  <div className="uppercase text-neutral-400 font-bold text-sm">
-                    <FormattedMessage defaultMessage="Status" />
-                  </div>
-                  <div>
-                    <RelayStatusLabel conn={conn} />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="uppercase text-neutral-400 font-bold text-sm">
-                    <FormattedMessage defaultMessage="Permissions" />
-                  </div>
-                  <div>
-                    <RelayPermissions conn={conn} />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="uppercase text-neutral-400 font-bold text-sm">
-                    <FormattedMessage defaultMessage="Uptime" />
-                  </div>
-                  <div>
-                    <RelayUptime url={conn.address} />
-                  </div>
-                </div>
-              </>
-            )}
+            <div>{info?.pubkey && <ProfileImage pubkey={parseId(info.pubkey)} size={30} />}</div>
           </div>
-        )}
-
-        <hr />
-        <div className="flex gap-4">
-          <Link to={`/relay/${encodeURIComponent(params.id ?? "")}`}>
-            <button>
-              <FormattedMessage defaultMessage="View Feed" />
-            </button>
-          </Link>
+          <div className="flex flex-col gap-2">
+            <div className="uppercase text-neutral-400 font-bold text-sm">
+              <FormattedMessage defaultMessage="Contact" />
+            </div>
+            <div>
+              {info?.contact && (
+                <a
+                  href={`${info.contact.startsWith("mailto:") ? "" : "mailto:"}${info.contact}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {info.contact.replace("mailto:", "")}
+                </a>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="uppercase text-neutral-400 font-bold text-sm">
+              <FormattedMessage defaultMessage="Software" />
+            </div>
+            <div>{info?.software && <RelaySoftware software={info.software} />}</div>
+          </div>
+          {conn && (
+            <>
+              <div className="flex flex-col gap-2">
+                <div className="uppercase text-neutral-400 font-bold text-sm">
+                  <FormattedMessage defaultMessage="Status" />
+                </div>
+                <div>
+                  <RelayStatusLabel conn={conn} />
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="uppercase text-neutral-400 font-bold text-sm">
+                  <FormattedMessage defaultMessage="Permissions" />
+                </div>
+                <div>
+                  <RelayPermissions conn={conn} />
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="uppercase text-neutral-400 font-bold text-sm">
+                  <FormattedMessage defaultMessage="Uptime" />
+                </div>
+                <div>
+                  <RelayUptime url={conn.address} />
+                </div>
+              </div>
+            </>
+          )}
         </div>
-        <hr />
+      )}
 
-        {/* {stats && (
+      <hr />
+      <div className="flex gap-4">
+        <Link to={`/relay/${encodeURIComponent(params.id ?? "")}`}>
+          <button>
+            <FormattedMessage defaultMessage="View Feed" />
+          </button>
+        </Link>
+      </div>
+      <hr />
+
+      {/* {stats && (
           <CollapsedSection
             title={
               <div className="text-xl font-semibold">
@@ -176,31 +176,31 @@ const RelayInfo = () => {
             </ul>
           </CollapsedSection>
         )} */}
-        <hr />
-        {info?.supported_nips && (
-          <CollapsedSection
-            title={
-              <div className="text-xl font-semibold">
-                <FormattedMessage defaultMessage="Supported NIPs" />
-              </div>
-            }
-            startClosed={false}
-          >
-            <ul className="list-disc">
-              {info.supported_nips.map(n => (
-                <li key={n}>
-                  <Link
-                    target="_blank"
-                    to={`https://github.com/nostr-protocol/nips/blob/master/${n.toString().padStart(2, "0")}.md`}
-                  >
-                    <NipDescription nip={n} />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </CollapsedSection>
-        )}
-      </div>
+      <hr />
+      {info?.supported_nips && (
+        <CollapsedSection
+          title={
+            <div className="text-xl font-semibold">
+              <FormattedMessage defaultMessage="Supported NIPs" />
+            </div>
+          }
+          startClosed={false}
+        >
+          <ul className="list-disc">
+            {info.supported_nips.map(n => (
+              <li key={n}>
+                <Link
+                  target="_blank"
+                  to={`https://github.com/nostr-protocol/nips/blob/master/${n.toString().padStart(2, "0")}.md`}
+                >
+                  <NipDescription nip={n} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </CollapsedSection>
+      )}
+    </div>
   )
 }
 
