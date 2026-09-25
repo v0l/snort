@@ -16,16 +16,18 @@ export function useMediaServerList() {
   const { publisher } = useEventPublisher()
   const { state } = useLogin(s => ({ v: s.state.version, state: s.state }))
 
-  let servers = state?.getList(EventKind.BlossomServerList) ?? []
-  if (servers.length === 0) {
-    servers = DefaultMediaServers
+  let list = state?.getList(EventKind.BlossomServerList) ?? []
+  if (list.length === 0) {
+    list = DefaultMediaServers
   }
+  const serverKey = removeUndefined(list.map(a => a.toEventTag()))
+    .filter(a => a[0] === "server")
+    .map(a => a[1])
+    .join("\n")
 
   return useMemo(
     () => ({
-      servers: removeUndefined(servers.map(a => a.toEventTag()))
-        .filter(a => a[0] === "server")
-        .map(a => a[1]),
+      servers: serverKey.split("\n"),
       addServer: async (s: string) => {
         if (!publisher) return
 
@@ -41,6 +43,6 @@ export function useMediaServerList() {
         await state?.saveList(EventKind.BlossomServerList)
       },
     }),
-    [servers, publisher, state?.addToList, state?.removeFromList],
+    [serverKey, publisher, state],
   )
 }

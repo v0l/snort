@@ -24,8 +24,8 @@ export function MediaServerFileList({
   const servers = useMediaServerList()
 
   const listFiles = useCallback(async () => {
-    const res = []
-    if (!publisher) return
+    const res: Array<BlobDescriptor> = []
+    if (!publisher) return res
     for (const s of servers.servers) {
       try {
         const files = await blossomList(s, publisher, state.pubkey)
@@ -34,7 +34,7 @@ export function MediaServerFileList({
         console.error(e)
       }
     }
-    setFilesList(res)
+    return res
   }, [publisher, servers.servers, state.pubkey])
 
   function toggleFile(b: BlobDescriptor) {
@@ -50,8 +50,8 @@ export function MediaServerFileList({
   useEffect(() => {
     let cancelled = false
     listFiles()
-      .then(() => {
-        if (cancelled) setFilesList([])
+      .then(files => {
+        if (!cancelled) setFilesList(files)
       })
       .catch(console.error)
     return () => {
