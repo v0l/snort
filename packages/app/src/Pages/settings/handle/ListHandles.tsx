@@ -17,7 +17,11 @@ export default function ListHandles() {
     if (!publisher) return
     const sp = new SnortServiceProvider(publisher, `${ApiHost}/api/v1/n5sp`)
     const list = await sp.list()
-    setHandles(list as Array<ManageHandle>)
+    if (Array.isArray(list)) {
+      setHandles(list)
+    } else {
+      setError(new Error(list.error))
+    }
   }, [publisher])
 
   useEffect(() => {

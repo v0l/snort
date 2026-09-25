@@ -216,6 +216,13 @@ mainRoutes.push({
     return { Component: NostrLinkHandler }
   },
 })
+mainRoutes.push({
+  path: "*",
+  async lazy() {
+    const { default: NotFoundPage } = await import("@/Pages/NotFound")
+    return { Component: NotFoundPage }
+  },
+})
 
 const routes = [
   {
