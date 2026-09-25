@@ -8,7 +8,7 @@ import { ExternalStore, unixNow } from "@snort/shared"
 import { AvatarGroup } from "@/Components/User/AvatarGroup"
 import { useLocation } from "react-router-dom"
 import { Note } from "@/Components/Event/Note/Note"
-import type { NostrEvent, TaggedNostrEvent } from "@snort/system"
+import { mapEventToProfile, type NostrEvent, type TaggedNostrEvent } from "@snort/system"
 import AsyncButton from "@/Components/Button/AsyncButton"
 import { SnortContext } from "@snort/system-react"
 import usePreferences from "@/Hooks/usePreferences"
@@ -311,6 +311,26 @@ export default function AgentPage() {
               </div>
             )
           }
+          case "update_profile": {
+            if (typeof seg.result !== "object" || !("content" in seg.result)) break
+            const ev = seg.result as NostrEvent
+            return (
+              <div key={`tool-result-${i}`} className="p-2 bg-neutral-900 rounded-lg flex flex-col gap-2">
+                <pre className="text-[10px] bg-layer-3 p-2 rounded overflow-auto max-h-64">
+                  {JSON.stringify(JSON.parse(ev.content), null, 2)}
+                </pre>
+                <AsyncButton
+                  onClick={async () => {
+                    await system.BroadcastEvent(ev)
+                    const profile = mapEventToProfile(ev)
+                    if (profile) await system.config.profiles.set(profile)
+                  }}
+                >
+                  <FormattedMessage defaultMessage="Post Event" />
+                </AsyncButton>
+              </div>
+            )
+          }
           default:
             break
         }
@@ -363,7 +383,7 @@ export default function AgentPage() {
               <select
                 value={agentModel || ""}
                 onChange={e => {
-                  setPreference({ agentModel: e.target.value })
+                  setPreference({ agentModel: e.target.value }).catch(console.error)
                 }}
                 className="w-full bg-layer-2 text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               >
