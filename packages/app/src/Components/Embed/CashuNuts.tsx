@@ -8,7 +8,7 @@ import Icon from "@/Components/Icons/Icon"
 import { useCopy } from "@/Hooks/useCopy"
 import useLogin from "@/Hooks/useLogin"
 import { WarningNotice } from "../WarningNotice/WarningNotice"
-import { getDecodedToken, type Token } from "@cashu/cashu-ts"
+import { getTokenMetadata, type TokenMetadata } from "@cashu/cashu-ts"
 
 export default function CashuNuts({ token }: { token: string }) {
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }))
@@ -23,14 +23,13 @@ export default function CashuNuts({ token }: { token: string }) {
     window.open(url, "_blank")
   }
 
-  const [cashu, setCashu] = useState<Token>()
+  const [cashu, setCashu] = useState<TokenMetadata>()
   useEffect(() => {
     try {
       if (!token.startsWith("cashuA") || token.length < 10) {
         return
       }
-      const tkn = getDecodedToken(token)
-      setCashu(tkn)
+      setCashu(getTokenMetadata(token))
     } catch (e) {
       // ignored
       console.warn(e)
@@ -44,7 +43,7 @@ export default function CashuNuts({ token }: { token: string }) {
       </WarningNotice>
     )
 
-  const amount = cashu.proofs.reduce((acc, v) => acc + v.amount, 0)
+  const amount = cashu.amount.toNumber()
   return (
     <div
       className="flex justify-between p-6 rounded-lg items-center"

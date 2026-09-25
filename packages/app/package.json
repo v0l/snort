@@ -3,7 +3,7 @@
   "version": "0.5.3",
   "type": "module",
   "dependencies": {
-    "@cashu/cashu-ts": "^2.9.0",
+    "@cashu/cashu-ts": "^4.11.0",
     "@formatjs/unplugin": "^1.2.12",
     "@livekit/components-react": "^2.9.24",
     "@noble/hashes": "^2.4.0",
