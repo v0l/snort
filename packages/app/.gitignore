@@ -27,3 +27,6 @@ yarn-error.log*
 dist/
 dev-dist/
 .wrangler/
+/test-results
+/playwright-report
+/coverage-e2e

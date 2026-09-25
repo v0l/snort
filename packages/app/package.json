@@ -63,6 +63,8 @@
     "serve:ssr": "bun run server/prod.ts",
     "build:all": "bun run build && bun run build:ssr",
     "typecheck": "bunx --bun tsc --noEmit",
+    "test:e2e": "bunx playwright test",
+    "test:e2e:coverage": "E2E_COVERAGE=1 bunx playwright test",
     "intl-extract": "bunx --bun formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file src/lang.json --flatten true",
     "intl-compile": "bunx --bun formatjs compile src/lang.json --ast --out-file src/translations/en.json",
     "eslint": "bunx --bun eslint ."
@@ -73,6 +75,7 @@
   },
   "devDependencies": {
     "@formatjs/cli": "6.14.2",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/config": "^4.4.0",
     "@types/debug": "^4.1.13",
@@ -87,6 +90,7 @@
     "@webbtc/webln-types": "^3.0.0",
     "@webscopeio/react-textarea-autocomplete": "^4.9.2",
     "config": "^5.0.1",
+    "monocart-coverage-reports": "^2.13.0",
     "prop-types": "^15.8.1",
     "rollup-plugin-visualizer": "^7.1.1",
     "tailwindcss": "^4.3.3",
