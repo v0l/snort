@@ -16,14 +16,14 @@
   "files": ["src", "dist"],
   "dependencies": {
     "@sqlite.org/sqlite-wasm": "^3.50.4-build1",
-    "eventemitter3": "^5.0.1",
-    "uuid": "^13.0.0"
+    "eventemitter3": "^5.0.4",
+    "uuid": "^13.0.2"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.12",
+    "@types/debug": "^4.1.13",
     "@types/sharedworker": "^0.0.188",
     "@types/uuid": "^11.0.0",
-    "esbuild": "^0.25.11",
+    "esbuild": "^0.25.12",
     "typescript": "^5.9.3"
   }
 }

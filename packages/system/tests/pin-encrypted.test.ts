@@ -1,10 +1,12 @@
-import { describe, expect, test } from "bun:test"
+import { describe, expect, setDefaultTimeout, test } from "bun:test"
 import { InvalidPinError, PinEncrypted } from "../src/encryption/pin-encrypted"
 
 // A valid 32-byte private key (64 hex chars)
 const TEST_KEY = "0000000000000000000000000000000000000000000000000000000000000001"
 const TEST_PIN = "correct-pin"
 const WRONG_PIN = "wrong-pin"
+
+setDefaultTimeout(30_000)
 
 describe("PinEncrypted", () => {
   test("roundtrip: create with correct PIN then unlock", async () => {

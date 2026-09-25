@@ -13,13 +13,13 @@
     "build": "rm -rf dist && bunx --bun tsc"
   },
   "dependencies": {
-    "eventemitter3": "^5.0.1"
+    "eventemitter3": "^5.0.4"
   },
   "peerDependencies": {
     "@snort/system": "^1.5.2"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.12",
+    "@types/debug": "^4.1.13",
     "typescript": "^5.9.3"
   }
 }

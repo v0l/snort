@@ -14,16 +14,16 @@
   },
   "files": ["src", "dist"],
   "dependencies": {
-    "@scure/base": "^2.0.0",
+    "@scure/base": "^2.4.0",
     "debug": "^4.4.3",
-    "eventemitter3": "^5.0.1"
+    "eventemitter3": "^5.0.4"
   },
   "peerDependencies": {
     "@snort/shared": "^2.0.0",
     "@snort/system": "^2.1.5"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.12",
+    "@types/debug": "^4.1.13",
     "@webbtc/webln-types": "^3.0.0",
     "typescript": "^5.9.3"
   }
