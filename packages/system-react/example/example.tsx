@@ -31,7 +31,7 @@ export function UserPosts(props: { pubkey: string }) {
   return (
     <>
       {data.map(a => (
-        <Note ev={a} />
+        <Note key={a.id} ev={a} />
       ))}
     </>
   )

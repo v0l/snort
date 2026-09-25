@@ -29,7 +29,7 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
       pubkey: b.pubkey,
       name,
       description,
-      thumb: (thumb?.length ?? 0 > 0) ? thumb : image,
+      thumb: (thumb?.length ?? 0) > 0 ? thumb : image,
       image,
     } as BadgeInfo
   })

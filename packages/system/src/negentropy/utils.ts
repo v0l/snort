@@ -16,7 +16,7 @@ export enum Mode {
 export function decodeVarInt(buf: Uint8Array | WrappedBuffer) {
   let res = 0
 
-  while (1) {
+  while (true) {
     if (buf.length === 0) throw Error("parse ends prematurely")
     let byte = 0
     if (buf instanceof WrappedBuffer) {

@@ -313,19 +313,19 @@ export function magnetURIDecode(uri: string): Magnet | undefined {
     })
 
     // Convenience properties for parity with `parse-torrent-file` module
-    let m
     if (result.xt) {
       const xts = Array.isArray(result.xt) ? result.xt : [result.xt]
       xts.forEach(xt => {
-        if (typeof xt === "string") {
-          if ((m = xt.match(/^urn:btih:(.{40})/))) {
-            result.infoHash = [m[1].toLowerCase()]
-          } else if ((m = xt.match(/^urn:btih:(.{32})/))) {
-            const decodedStr = base32hex.decode(m[1])
-            result.infoHash = [bytesToHex(decodedStr)]
-          } else if ((m = xt.match(/^urn:btmh:1220(.{64})/))) {
-            result.infoHashV2 = [m[1].toLowerCase()]
-          }
+        if (typeof xt !== "string") return
+        const btih40 = xt.match(/^urn:btih:(.{40})/)
+        const btih32 = xt.match(/^urn:btih:(.{32})/)
+        const btmh = xt.match(/^urn:btmh:1220(.{64})/)
+        if (btih40) {
+          result.infoHash = [btih40[1].toLowerCase()]
+        } else if (btih32) {
+          result.infoHash = [bytesToHex(base32hex.decode(btih32[1]))]
+        } else if (btmh) {
+          result.infoHashV2 = [btmh[1].toLowerCase()]
         }
       })
     }
@@ -333,7 +333,8 @@ export function magnetURIDecode(uri: string): Magnet | undefined {
     if (result.xs) {
       const xss = Array.isArray(result.xs) ? result.xs : [result.xs]
       xss.forEach(xs => {
-        if (typeof xs === "string" && (m = xs.match(/^urn:btpk:(.{64})/))) {
+        const m = typeof xs === "string" ? xs.match(/^urn:btpk:(.{64})/) : null
+        if (m) {
           if (!result.publicKey) {
             result.publicKey = []
           }

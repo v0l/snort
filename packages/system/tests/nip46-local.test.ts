@@ -3,9 +3,7 @@
  * Uses nostr-tools to create a local NIP-46 signer for testing
  */
 
-import { afterEach, beforeEach, describe, expect, test } from "bun:test"
-import { generateSecretKey, getPublicKey } from "nostr-tools"
-import { SimpleRelay } from "nostr-tools/relay"
+import { beforeEach, describe, expect, test } from "bun:test"
 import { Nip46Signer } from "../src/impl/nip46"
 import { PrivateKeySigner } from "../src/signer"
 

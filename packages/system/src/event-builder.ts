@@ -88,10 +88,9 @@ export class EventBuilder {
     if (this.#content) {
       this.#content = this.#content.replace(MentionNostrEntityRegex, m => this.#replaceMention(m))
 
-      const hashTags = [...this.#content.matchAll(HashtagRegex)]
-      hashTags.map(hashTag => {
+      for (const hashTag of this.#content.matchAll(HashtagRegex)) {
         this.#addHashtag(hashTag[0])
-      })
+      }
     }
     return this
   }

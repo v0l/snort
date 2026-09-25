@@ -7,7 +7,7 @@
  *   - QueryManager (dedup, destroy cleanup, canSendQuery branches)
  */
 
-import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test"
+import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 import type { CachedTable } from "@snort/shared"
 import { EventEmitter } from "eventemitter3"
 import { SocialGraph } from "nostr-social-graph"
@@ -16,7 +16,7 @@ import type { CachedMetadata, UsersFollows } from "../src/cache"
 import type { RelaySettings } from "../src/connection"
 import type { ConnectionPool, ConnectionPoolEvents, ConnectionType, ConnectionTypeEvents } from "../src/connection-pool"
 import type { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "../src/nostr"
-import { KeyedReplaceableNoteStore, NoteCollection } from "../src/note-collection"
+import { NoteCollection } from "../src/note-collection"
 import type { RelayMetadataLoader } from "../src/outbox"
 import type { ProfileLoaderService } from "../src/profile-cache"
 import { Query, QueryTraceState } from "../src/query"

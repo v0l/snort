@@ -1,6 +1,5 @@
 import { describe, expect, test } from "bun:test"
 import { transformText } from "../src"
-import { sha256 } from "@snort/shared"
 
 describe("transformText", () => {
   describe("links", () => {

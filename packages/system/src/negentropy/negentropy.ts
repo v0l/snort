@@ -202,7 +202,7 @@ export class Negentropy {
         const ourFingerprint = this.#storage.fingerprint(curr, curr + bucketSize)
         curr += bucketSize
 
-        let nextBound
+        let nextBound: VectorStorageItem
 
         if (curr === upper) {
           nextBound = upperBound

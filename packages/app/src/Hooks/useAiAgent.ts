@@ -464,8 +464,6 @@ export function useAiAgent() {
                   args = JSON.parse(toolCall.rawItem.arguments as string)
                 } catch {}
                 yield { type: "tool_call", name: toolCall.rawItem.name, args }
-              } else {
-                debugger
               }
               break
             }

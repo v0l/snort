@@ -1,5 +1,5 @@
 import { useContext, useMemo, useSyncExternalStore } from "react"
-import { EmptySnapshot, type RequestBuilder, type TaggedNostrEvent } from "@snort/system"
+import { type RequestBuilder, type TaggedNostrEvent } from "@snort/system"
 import { SnortContext } from "./context"
 
 /**

@@ -4,7 +4,7 @@
  * @see https://github.com/nostr-protocol/nips/blob/master/46.md
  */
 
-import { afterEach, beforeEach, describe, expect, test } from "bun:test"
+import { beforeEach, describe, expect, test } from "bun:test"
 import { Nip46Signer } from "../src/impl/nip46"
 import { PrivateKeySigner } from "../src/signer"
 

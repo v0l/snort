@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, test } from "bun:test"
+import { afterEach, describe, expect, test } from "bun:test"
 import { Nip7Signer } from "../src/impl/nip7"
 import { EventExt } from "../src/event-ext"
 import { PrivateKeySigner } from "../src/signer"

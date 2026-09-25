@@ -173,7 +173,10 @@ export default function AgentPage() {
     return msg.segments.map((seg, i) => {
       if (seg.type === "thinking") {
         return (
-          <div className="text-xs text-gray-400 italic border-l-2 border-gray-500 pl-2 mb-2">
+          <div
+            key={`${msg.id}-thinking-${i}`}
+            className="text-xs text-gray-400 italic border-l-2 border-gray-500 pl-2 mb-2"
+          >
             <span
               onClick={() => {
                 messagesRef.current.updateMessage(msg.id, o => {
@@ -193,7 +196,7 @@ export default function AgentPage() {
       }
       if (seg.type === "error") {
         return (
-          <span className="text-error font-bold flex gap-2 items-center">
+          <span key={`${msg.id}-error-${i}`} className="text-error font-bold flex gap-2 items-center">
             <Icon name="x" />
             {seg.error instanceof Error ? seg.error.message : seg.error}
           </span>
@@ -251,6 +254,7 @@ export default function AgentPage() {
                 )
               }
             }
+            break
           }
           case "prepare_event_filter": {
             if (typeof seg.result === "string" && !seg.result.startsWith("Error")) {
@@ -279,6 +283,7 @@ export default function AgentPage() {
                 </div>
               )
             }
+            break
           }
           case "search_username": {
             if (Array.isArray(seg.result)) {

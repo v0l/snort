@@ -211,16 +211,16 @@ const handleMsg = async (port: MessagePort | DedicatedWorkerGlobalScope, ev: Mes
 }
 
 if ("SharedWorkerGlobalScope" in globalThis) {
-  onconnect = e => {
-    const port = e.ports[0]
+  self.addEventListener("connect", e => {
+    const port = (e as MessageEvent).ports[0]
     port.onmessage = msg => handleMsg(port, msg)
     port.start()
-  }
+  })
 }
 if ("DedicatedWorkerGlobalScope" in globalThis) {
-  onmessage = e => {
+  self.addEventListener("message", e => {
     handleMsg(self as DedicatedWorkerGlobalScope, e)
-  }
+  })
 }
 
 export default {}

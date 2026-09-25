@@ -1,7 +1,7 @@
 import { NostrPrefix } from "@snort/shared"
 import { EventKind, NostrLink, type TaggedNostrEvent } from "@snort/system"
 import { useUserProfile } from "@snort/system-react"
-import { useCallback, useMemo, useRef } from "react"
+import { useCallback, useRef } from "react"
 import { useInView } from "react-intersection-observer"
 import { FormattedMessage } from "react-intl"
 import Icon from "@/Components/Icons/Icon"
@@ -21,14 +21,14 @@ export default function NoteReaction(props: NoteReactionProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const profile = useUserProfile(ev.pubkey, rootRef)
 
-  const _opt = useMemo(
-    () => ({
-      showHeader: ev?.kind === EventKind.Repost || ev?.kind === EventKind.TextNote,
-      showFooter: false,
-      truncate: true,
-    }),
-    [ev],
+  const setRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      rootRef.current = el
+      inViewRef(el)
+    },
+    [inViewRef],
   )
+
   const links = NostrLink.fromTags(ev.tags)
   const refEvent = links.find(a => [NostrPrefix.Event, NostrPrefix.Note, NostrPrefix.Address].includes(a.type))
   const isOpMuted = refEvent?.author && isMuted(refEvent.author)
@@ -82,14 +82,6 @@ export default function NoteReaction(props: NoteReactionProps) {
       </>
     )
   }
-
-  const setRef = useCallback(
-    (el: HTMLDivElement | null) => {
-      rootRef.current = el
-      inViewRef(el)
-    },
-    [inViewRef],
-  )
 
   return (
     <div className="flex flex-col gap-2" ref={setRef}>
