@@ -338,7 +338,7 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
   req(id: string, req: ReqFilter) {
     const start = unixNowMs()
 
-    const { sql, params } = buildQuery(req)
+    const { sql, params } = buildQuery(req, { idsOnly: req.ids_only === true })
     const res = this.db?.selectArrays(sql, params)
     const results =
       res?.map(a => {
