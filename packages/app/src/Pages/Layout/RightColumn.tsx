@@ -106,7 +106,7 @@ export default function RightColumn() {
           kind={5300}
           onClose={() => setShowDvmSelector(false)}
           onSelect={p => {
-            setPreference({ trendingDvmPubkey: p })
+            setPreference({ trendingDvmPubkey: p }).catch(console.error)
           }}
           currentProvider={currentProvider}
         />

@@ -118,7 +118,7 @@ export function updateAppData(id: string, fn: (data: SnortAppData) => SnortAppDa
   }
 }
 
-export function setPreference(obj: Partial<UserPreferences>) {
+export async function setPreference(obj: Partial<UserPreferences>) {
   const { id } = LoginStore.snapshot()
   const session = LoginStore.get(id)
   if (!session?.state.appdata) return
@@ -129,6 +129,7 @@ export function setPreference(obj: Partial<UserPreferences>) {
     },
   }
   session.state.setAppData(p)
+  await session.state.saveAppData()
 }
 
 export async function saveAppData(id: string) {
