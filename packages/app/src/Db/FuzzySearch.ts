@@ -6,6 +6,7 @@ export type FuzzySearchResult = {
   name?: string
   display_name?: string
   nip05?: string
+  picture?: string
 }
 
 const fuzzySearch = new Fuse<FuzzySearchResult>([], {

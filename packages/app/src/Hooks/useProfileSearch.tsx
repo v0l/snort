@@ -1,10 +1,55 @@
-import fuzzySearch from "@/Db/FuzzySearch"
+import { ProfilesCache } from "@/Cache"
+import fuzzySearch, { addCachedMetadataToFuzzySearch, type FuzzySearchResult } from "@/Db/FuzzySearch"
+import { getNostrProfilesApi } from "@/External/NostrProfiles"
 
 import useWoT, { type WoT } from "./useWoT"
 
 export default function useProfileSearch() {
   const wot = useWoT()
   return (search: string | undefined) => userSearch(wot, search)
+}
+
+export function useMentionSearch() {
+  const search = useProfileSearch()
+  return async (term: string): Promise<Array<FuzzySearchResult>> => {
+    const [, remote] = await Promise.all([loadCachedProfiles(term), searchRemoteProfiles(term)])
+    const local = search(term)
+    const seen = new Set(local.map(a => a.pubkey))
+    return [...local, ...remote.filter(a => !seen.has(a.pubkey))]
+  }
+}
+
+async function loadCachedProfiles(term: string) {
+  const query = term
+    .split(/\s+/)
+    .map(w => w.replaceAll('"', ""))
+    .filter(w => w.length > 0)
+    .map(w => `"${w}"*`)
+    .join(" ")
+  if (!query || !("search" in ProfilesCache)) return
+  try {
+    for (const profile of await ProfilesCache.search(query)) {
+      addCachedMetadataToFuzzySearch(profile)
+    }
+  } catch (e) {
+    console.warn("Profile cache search failed", e)
+  }
+}
+
+async function searchRemoteProfiles(term: string): Promise<Array<FuzzySearchResult>> {
+  if (term.length < 2) return []
+  const timeout = new Promise<[]>(resolve => setTimeout(() => resolve([]), 1_500))
+  try {
+    const results = await Promise.race([getNostrProfilesApi().search(term, 5), timeout])
+    return results.map(r => ({
+      pubkey: r.pubkey,
+      name: r.name ?? undefined,
+      display_name: r.display_name ?? undefined,
+      picture: r.picture ?? undefined,
+    }))
+  } catch {
+    return []
+  }
 }
 
 function userSearch(wot: WoT, search: string | undefined) {
