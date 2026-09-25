@@ -19,7 +19,7 @@
     "debug": "^4.4.3",
     "eventemitter3": "^5.0.4",
     "light-bolt11-decoder": "^3.2.0",
-    "uuid": "^13.0.2"
+    "uuid": "^14.0.2"
   },
   "devDependencies": {
     "@types/debug": "^4.1.13",

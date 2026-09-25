@@ -65,7 +65,11 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
    */
   async init(path: string) {
     if (this.#sqlite) return
-    this.#sqlite = await sqlite3InitModule({
+    const initModule = sqlite3InitModule as (module: {
+      print: (msg: string) => void
+      printErr: (msg: string) => void
+    }) => Promise<Sqlite3Static>
+    this.#sqlite = await initModule({
       print: msg => this.#log(msg),
       printErr: msg => this.#log(msg),
     })
