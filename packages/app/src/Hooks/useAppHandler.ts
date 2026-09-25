@@ -40,7 +40,7 @@ export default function useAppHandler(kind: EventKind | undefined): Array<AppHan
       .kinds([31989 as EventKind])
       .replyToLink(dataApps.map(a => NostrLink.fromEvent(a)))
     return reccomendsSub
-  }, [kind, dataApps.length, dataApps.map])
+  }, [kind, dataApps])
 
   const dataRecommends = useRequestBuilder(reccomendsSub)
 
@@ -55,7 +55,7 @@ export default function useAppHandler(kind: EventKind | undefined): Array<AppHan
         reccomendations: wot.sortEvents(dataRecommends.filter(a => link.isReplyToThis(a))),
       } as AppHandler
     })
-  }, [wot, dataApps.map, dataRecommends.filter, kind])
+  }, [wot, dataApps, dataRecommends, kind])
 
   return apps.sort((a, b) => (a.reccomendations.length > b.reccomendations.length ? -1 : 1))
 }
