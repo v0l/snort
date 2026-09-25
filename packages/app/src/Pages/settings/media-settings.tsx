@@ -37,7 +37,8 @@ export default function MediaSettingsPage() {
                   size: 15,
                 }}
                 onClick={async () => {
-                  state.removeFromList(EventKind.BlossomServerList, [new UnknownTag(["server", addr])], true)
+                  state.removeFromList(EventKind.BlossomServerList, new UnknownTag(["server", addr]))
+                  await state.saveList(EventKind.BlossomServerList)
                 }}
               />
             </div>
@@ -64,11 +65,8 @@ export default function MediaSettingsPage() {
           <AsyncButton
             onClick={async () => {
               if (sanitizeRelayUrl(newServer)) {
-                state.addToList(
-                  EventKind.BlossomServerList,
-                  [new UnknownTag(["server", new URL(newServer).toString()])],
-                  true,
-                )
+                state.addToList(EventKind.BlossomServerList, new UnknownTag(["server", new URL(newServer).toString()]))
+                await state.saveList(EventKind.BlossomServerList)
                 setNewServer("")
               }
             }}
@@ -117,7 +115,8 @@ export default function MediaSettingsPage() {
                       className="!py-1 mb-1"
                       disabled={list.some(b => b.equals(new UnknownTag(["server", k])))}
                       onClick={async () => {
-                        state.addToList(EventKind.BlossomServerList, [new UnknownTag(["server", k])], true)
+                        state.addToList(EventKind.BlossomServerList, new UnknownTag(["server", k]))
+                        await state.saveList(EventKind.BlossomServerList)
                       }}
                     >
                       <FormattedMessage defaultMessage="Add" />

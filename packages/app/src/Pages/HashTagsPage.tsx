@@ -75,12 +75,20 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
         {isFollowing ? (
           <AsyncButton
             className="secondary"
-            onClick={() => state.removeFromList(EventKind.InterestsList, new NostrHashtagLink(tag), true)}
+            onClick={async () => {
+              state.removeFromList(EventKind.InterestsList, new NostrHashtagLink(tag))
+              await state.saveList(EventKind.InterestsList)
+            }}
           >
             <FormattedMessage defaultMessage="Unfollow" />
           </AsyncButton>
         ) : (
-          <AsyncButton onClick={() => state.addToList(EventKind.InterestsList, new NostrHashtagLink(tag), true)}>
+          <AsyncButton
+            onClick={async () => {
+              state.addToList(EventKind.InterestsList, new NostrHashtagLink(tag))
+              await state.saveList(EventKind.InterestsList)
+            }}
+          >
             <FormattedMessage defaultMessage="Follow" />
           </AsyncButton>
         )}

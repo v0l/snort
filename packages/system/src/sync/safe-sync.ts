@@ -87,7 +87,7 @@ export class SafeSync {
 
   async #signEvent(next: NotSignedNostrEvent, signer: EventSigner) {
     const toSign = { ...next, id: "", sig: "" } as NostrEvent
-    toSign.created_at = unixNow()
+    toSign.created_at = Math.max(unixNow(), (this.#base?.created_at ?? 0) + 1)
     toSign.id = EventExt.createId(toSign)
     return await signer.sign(toSign)
   }
