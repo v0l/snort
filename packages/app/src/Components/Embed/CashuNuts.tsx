@@ -26,7 +26,7 @@ export default function CashuNuts({ token }: { token: string }) {
   const [cashu, setCashu] = useState<TokenMetadata>()
   useEffect(() => {
     try {
-      if (!token.startsWith("cashuA") || token.length < 10) {
+      if (!/^cashu[AB]/.test(token) || token.length < 10) {
         return
       }
       setCashu(getTokenMetadata(token))

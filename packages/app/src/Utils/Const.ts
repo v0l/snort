@@ -134,7 +134,7 @@ export const WavlakeRegex =
 /*
  * Regex to match any base64 string
  */
-export const CashuRegex = /(cashuA[A-Za-z0-9_-]{0,10000}={0,3})/i
+export const CashuRegex = /(cashu[AB][A-Za-z0-9_-]{0,10000}={0,3})/i
 
 /*
  * Max username length - profile/settings

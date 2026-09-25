@@ -240,7 +240,7 @@ function extractMentions(fragments: Fragment[]) {
 
 function extractCashuTokens(fragments: Fragment[]) {
   return mapFragments(fragments, f => {
-    if (f.includes("cashuA")) {
+    if (/cashu[AB]/.test(f)) {
       return splitAndParseRegex(f, CashuRegex, FragmentType.Cashu)
     }
     return f
