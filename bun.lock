@@ -11,6 +11,7 @@
         "@biomejs/biome": "2.5.14",
         "@tauri-apps/cli": "^2.11.5",
         "vitepress": "^1.6.4",
+        "vue": "3.5.33",
       },
     },
     "packages/app": {

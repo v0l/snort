@@ -1,21 +1,15 @@
-# bun-react-template
+# @snort/app
 
-To install dependencies:
+The Snort web client. React 19, Vite and Tailwind.
 
-```bash
-bun install
-```
-
-To start a development server:
+Build the workspace packages first from the repo root (`bun run build`), then:
 
 ```bash
-bun dev
+bun run start       # dev server
+bun run build       # production build into build/
+bun run typecheck
 ```
 
-To run for production:
+`NODE_CONFIG_ENV` picks a config from `config/`, for example `NODE_CONFIG_ENV=iris bun run start`.
 
-```bash
-bun start
-```
-
-This project was created using `bun init` in bun v1.3.0. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+Source strings live in `src/lang.json`. Run `bun run pre:commit` from the repo root after changing UI text.
