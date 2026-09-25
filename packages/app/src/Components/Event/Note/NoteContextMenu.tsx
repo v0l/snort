@@ -228,7 +228,11 @@ export function NoteContextMenu() {
           </span>
         </DropdownMenu.Trigger>
         <DropdownMenu.Portal>
-          <DropdownMenu.Content className="bg-layer-2 rounded-lg overflow-hidden z-[9999] min-w-48" sideOffset={5}>
+          <DropdownMenu.Content
+            className="bg-layer-2 rounded-lg overflow-y-auto max-h-(--radix-dropdown-menu-content-available-height) z-[9999] min-w-48"
+            sideOffset={5}
+            collisionPadding={8}
+          >
             {menuItems()}
           </DropdownMenu.Content>
         </DropdownMenu.Portal>
