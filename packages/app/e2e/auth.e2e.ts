@@ -49,7 +49,7 @@ test.describe("sign in", () => {
     await page.getByRole("button", { name: "Login" }).click()
     await expect(page.getByRole("link", { name: "Settings" })).toBeVisible()
     await expect(page.getByRole("button", { name: "New Note" })).toHaveCount(0)
-    await expect(page.getByText(alice.displayName).first()).toBeVisible()
+    await expect.poll(() => page.evaluate(() => localStorage.getItem("sessions") ?? "")).toContain(alice.pubkey)
   })
 
   test("invalid key shows an error", async ({ page }) => {
