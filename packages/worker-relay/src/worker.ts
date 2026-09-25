@@ -151,6 +151,7 @@ async function executeCommand(msg: WorkerMessage<any>, relay: RelayHandler): Pro
     }
     case "kvSet": {
       const { key, value } = msg.args as { key: string; value: string }
+      flushPendingEvents()
       relay.kvSet(key, value)
       return true
     }
