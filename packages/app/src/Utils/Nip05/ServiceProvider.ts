@@ -117,6 +117,9 @@ export class ServiceProvider {
       if ("error" in obj) {
         return obj as ServiceError
       }
+      if (!rsp.ok) {
+        return { error: "UNKNOWN_ERROR", errors: [`HTTP ${rsp.status}`] }
+      }
       return obj as T
     } catch (e) {
       console.warn(e)
