@@ -115,9 +115,11 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       v.state = stateClass
 
       // always activate signer
-      const signer = createPublisher(v)
-      if (signer) {
-        this.#publishers.set(v.id, signer)
+      if (!v.privateKeyData?.shouldUnlock()) {
+        const signer = createPublisher(v)
+        if (signer) {
+          this.#publishers.set(v.id, signer)
+        }
       }
     }
   }
