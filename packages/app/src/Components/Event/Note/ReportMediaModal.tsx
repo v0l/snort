@@ -112,17 +112,10 @@ export default function ReportMediaModal({ event, onClose }: ReportMediaModalPro
       }),
   )
 
-  let origin = ""
-  try {
-    if (event.content && typeof event.content === "string" && event.content.trim()) {
-      origin = new URL(event.content).origin
-    }
-  } catch {
-    // Invalid URL, skip
-  }
+  const mediaOrigins = allBlossomUrls.map(a => new URL(a.url).origin)
 
   // Combine author origins with event content origin and deduplicate
-  const allServerUrls = dedupe([...authorOrigins, origin].filter(s => s && s.trim()))
+  const allServerUrls = dedupe([...mediaOrigins, ...authorOrigins])
 
   async function handleReport() {
     if (!publisher || !reportReason.trim() || !selectedHash) return
