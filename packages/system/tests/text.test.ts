@@ -337,6 +337,17 @@ describe("transformText", () => {
       })
     })
 
+    test("parse v4 cashuB token", () => {
+      const token =
+        "cashuBpGFtd2h0dHBzOi8vODMzMy5zcGFjZTozMzM4YXVjc2F0YXSBomFpSACaHykyU-QeYXCCo2FhAmFzeEA0MDc5MTViYzIxMmJlNjFhNzdlM2U2ZDJhZWI0YzcyNzk4MGJkYTUxY2QwNmE2YWZjMjllMjg2MTc2OGE3ODM3YWNYIQK8kJeZfYGvssxzRrXkNFqTRr0qUG63lYWYpy8M-FFj6qNhYQhhc3hAZmUxNTEwOTMxNGU2MWQ3NzU2YjBmOGVlMGYyM2E2MjRhY2FhM2Y0ZTA0MmY2MTQzM2M3MjhjNzA1N2I5MzFiZWFjWCECno5QULiQp9bAlo2xa8HV1foEDqHeKE9uxp1hKZ9nEFlhZGpUaGFuayB5b3Uu"
+      const frags = transformText(`Redeem ${token}`, [])
+
+      expect(frags[1]).toMatchObject({
+        type: "cashu",
+        content: token,
+      })
+    })
+
     test("parse cashu token at start", () => {
       const emptyToken = `cashuA${btoa(JSON.stringify("{}"))}`
       const str = `${emptyToken} is a token`
