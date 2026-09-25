@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
     "target": "ESNext",
     "moduleResolution": "Bundler",
     "esModuleInterop": true,
@@ -10,6 +9,7 @@
     "declaration": true,
     "inlineSourceMap": true,
     "outDir": "dist",
+    "rootDir": "src",
     "skipLibCheck": true
   },
   "include": ["./src/**/*.ts"],
