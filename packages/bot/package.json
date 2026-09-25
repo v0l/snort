@@ -16,10 +16,10 @@
     "eventemitter3": "^5.0.4"
   },
   "peerDependencies": {
+    "@snort/shared": "^2.0.0",
     "@snort/system": "^1.5.2"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.13",
     "typescript": "^5.9.3"
   }
 }
