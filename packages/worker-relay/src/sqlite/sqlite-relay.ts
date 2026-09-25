@@ -199,6 +199,15 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     this.#log("Deleted", ids, deleted)
   }
 
+  #isDeleted(db: Database, ev: NostrEvent) {
+    const hit = db.selectValue(
+      `SELECT 1 FROM tags t JOIN events e ON e.id = t.event_id
+       WHERE t.key = 'e' AND t.value = ? AND e.kind = 5 AND e.pubkey = ? LIMIT 1`,
+      [ev.id, ev.pubkey],
+    )
+    return hit !== undefined
+  }
+
   #insertEvent(db: Database, ev: NostrEvent) {
     if (this.#seenInserts.has(ev.id)) return false
 
@@ -233,7 +242,10 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
           "#d": [aSplit[2]],
         }).length
       }
-      return deletedE.length > 0 || aDeleted > 0
+      this.#log("Deletion %s removed %d events", ev.id, deletedE.length + aDeleted)
+    } else if (this.#isDeleted(db, ev)) {
+      this.#markSeen(ev.id)
+      return false
     }
 
     // Handle legacy and standard replaceable events (kinds 0, 3, 41, 10000-19999)
