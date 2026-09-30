@@ -40,6 +40,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
 
     this.profileLoader = new ProfileLoaderService(this, this.config.profiles)
     this.relayLoader = new RelayMetadataLoader(this, this.config.relays)
+    this.config.relays.on("change", keys => this.profileLoader.retry(keys))
     this.traceTimeline = new TraceTimeline()
     this.pool = new DefaultConnectionPool(this)
 

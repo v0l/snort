@@ -13,6 +13,7 @@ import type { CachedTable, CacheEvents } from "@snort/shared"
 import { EventEmitter } from "eventemitter3"
 import type { RequestBuilder, SystemInterface, TaggedNostrEvent } from "../src"
 import { BackgroundLoader } from "../src/background-loader"
+import { NostrSystem } from "../src/nostr-system"
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -515,6 +516,46 @@ describe("BackgroundLoader — in-flight deduplication", () => {
     const countOfPk = allFetched.filter(k => k === pk).length
     expect(countOfPk).toBe(1)
   })
+
+  test("a finished dispatch keeps keys of another dispatch in-flight", async () => {
+    const cache = new MemoryCache()
+    const fetchedBatches: string[][] = []
+    let release!: () => void
+    const latch = new Promise<void>(resolve => {
+      release = resolve
+    })
+    let calls = 0
+    const system = {
+      Fetch: async (_req: RequestBuilder, cb?: FetchCallback) => {
+        calls++
+        if (calls === 1) await latch
+        if (cb) await cb([])
+        return []
+      },
+    } as unknown as SystemInterface
+
+    class Loader extends TestLoader {
+      override buildSub(missing: string[]) {
+        fetchedBatches.push([...missing])
+        return super.buildSub(missing)
+      }
+    }
+
+    const loader = new Loader(system, cache)
+    const slow = pubkey(1)
+    const fast = pubkey(2)
+    loader.TrackKeys(slow, "high")
+    await sleep(80)
+    loader.TrackKeys(fast, "high")
+    await sleep(80)
+    loader.TrackKeys(slow, "high")
+    await sleep(80)
+    release()
+    await sleep(50)
+    loader.destroy()
+
+    expect(fetchedBatches.flat().filter(k => k === slow)).toHaveLength(1)
+  })
 })
 
 describe("BackgroundLoader — fresh cache skip", () => {
@@ -663,5 +704,57 @@ describe("BackgroundLoader — blacklisting", () => {
 
     // Total batches should be the same — blacklisted key was not re-queued
     expect(fetchedBatches.length).toBe(firstBatchCount)
+  })
+})
+
+describe("BackgroundLoader — retry", () => {
+  class RetryLoader extends TestLoader {
+    batches: string[][] = []
+    override buildSub(missing: string[]) {
+      this.batches.push([...missing])
+      return super.buildSub(missing)
+    }
+  }
+
+  const emptySystem = {
+    Fetch: async (_req: RequestBuilder, cb?: FetchCallback) => {
+      if (cb) await cb([])
+      return []
+    },
+  } as unknown as SystemInterface
+
+  test("retry fetches a blacklisted key again", async () => {
+    const loader = new RetryLoader(emptySystem, new MemoryCache())
+    const pk = pubkey(5)
+    loader.TrackKeys(pk, "high")
+    await sleep(100)
+    loader.retry([pk])
+    await sleep(600)
+    loader.destroy()
+    expect(loader.batches).toEqual([[pk], [pk]])
+  })
+
+  test("retry ignores keys that were never blacklisted", async () => {
+    const loader = new RetryLoader(emptySystem, new MemoryCache())
+    loader.retry([pubkey(6)])
+    await sleep(600)
+    loader.destroy()
+    expect(loader.batches).toEqual([])
+  })
+})
+
+describe("NostrSystem — profile retry on relay lists", () => {
+  test("a relay list arriving retries a blacklisted profile", async () => {
+    const relays = new MemoryCache()
+    const system = new NostrSystem({ relays: relays as never, automaticOutboxModel: false, buildFollowGraph: false })
+    const retried: string[][] = []
+    system.profileLoader.retry = keys => {
+      retried.push(keys)
+    }
+    const pk = pubkey(7)
+    await relays.set({ pubkey: pk, loaded: Date.now(), created: 1 })
+    system.profileLoader.destroy()
+    system.relayLoader.destroy()
+    expect(retried).toEqual([[pk]])
   })
 })

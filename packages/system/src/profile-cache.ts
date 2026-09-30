@@ -2,7 +2,7 @@ import { unixNowMs } from "@snort/shared"
 import { EventKind, RequestBuilder, type TaggedNostrEvent } from "."
 import { BackgroundLoader } from "./background-loader"
 import { type CachedMetadata, mapEventToProfile } from "./cache"
-import { ProfileCacheExpire } from "./const"
+import { MetadataRelays, ProfileCacheExpire } from "./const"
 
 export type { ProfilePriority } from "./background-loader"
 
@@ -22,6 +22,7 @@ export class ProfileLoaderService extends BackgroundLoader<CachedMetadata> {
   override buildSub(missing: string[]): RequestBuilder {
     const sub = new RequestBuilder(`profiles`)
     sub.withFilter().kinds([EventKind.SetMetadata]).authors(missing)
+    sub.withFilter().kinds([EventKind.SetMetadata]).authors(missing).relay(MetadataRelays)
     return sub
   }
 }

@@ -1,6 +1,6 @@
 import { EventKind, RequestBuilder, type TaggedNostrEvent, type UsersRelays, parseRelaysFromKind } from ".."
 import { unixNowMs } from "@snort/shared"
-import { RelayListCacheExpire } from "../const"
+import { MetadataRelays, RelayListCacheExpire } from "../const"
 import { BackgroundLoader } from "../background-loader"
 
 export class RelayMetadataLoader extends BackgroundLoader<UsersRelays> {
@@ -33,6 +33,7 @@ export class RelayMetadataLoader extends BackgroundLoader<UsersRelays> {
       outboxPickN: 4,
     })
     rb.withFilter().authors(missing).kinds([EventKind.Relays, EventKind.ContactList])
+    rb.withFilter().authors(missing).kinds([EventKind.Relays, EventKind.ContactList]).relay(MetadataRelays)
     return rb
   }
 }

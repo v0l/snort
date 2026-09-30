@@ -145,6 +145,13 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
     }
   }
 
+  retry(keys: Array<string>) {
+    const released = keys.filter(k => this.#blacklist.delete(k))
+    if (released.length > 0 && !this.#destroyed) {
+      this.#flush.normal.schedule()
+    }
+  }
+
   /**
    * Get object from cache or fetch if missing
    */
@@ -218,6 +225,10 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
       return
     }
 
+    for (const k of candidates) {
+      this.#inFlight.add(k)
+    }
+
     try {
       // Buffer any keys not already in memory from persistent storage
       const needsBuffer = candidates.filter(a => !this.cache.getFromCache(a))
@@ -236,11 +247,6 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
 
       this.#log("Fetching %d keys (triggered by %s)", missing.length, triggeredBy)
 
-      // Mark all as in-flight before dispatching to prevent re-entry
-      for (const k of missing) {
-        this.#inFlight.add(k)
-      }
-
       // Chunk into groups of ChunkSize and dispatch each chunk independently
       const chunks = chunk(missing, ChunkSize)
       const results = await Promise.all(chunks.map((c, i) => this.#loadChunk(c, i)))
@@ -256,7 +262,7 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
     } finally {
       // Release in-flight locks regardless of outcome
       // (keys were added above; we clear them all here)
-      for (const k of this.#allWanted) {
+      for (const k of candidates) {
         this.#inFlight.delete(k)
       }
     }
