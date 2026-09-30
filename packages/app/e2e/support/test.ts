@@ -1,4 +1,4 @@
-import { test as base, expect, type Locator, type Page } from "@playwright/test"
+import { test as base, type BrowserContext, devices, expect, type Locator, type Page } from "@playwright/test"
 import { EventKind, type NostrEvent } from "@snort/system"
 
 import { addCoverage, collectCoverage } from "./coverage"
@@ -13,6 +13,14 @@ interface Fixtures {
   wallet: WalletLog
   pageErrors: Array<string>
   login: (user?: User) => Promise<void>
+  cleanLogin: (user?: User) => Promise<Page>
+}
+
+async function loginAs(page: Page, user: User) {
+  await page.goto("/login")
+  await page.getByPlaceholder("nsec, npub, nip-05, hex, mnemonic").fill(user.nsec)
+  await page.getByRole("button", { name: "Login" }).click()
+  await expect(page.getByRole("button", { name: "New Note" })).toBeVisible()
 }
 
 export const test = base.extend<Fixtures, { world: World }>({
@@ -58,12 +66,28 @@ export const test = base.extend<Fixtures, { world: World }>({
   },
 
   login: async ({ page }, use) => {
+    await use(user => loginAs(page, user ?? alice))
+  },
+
+  cleanLogin: async ({ browser, baseURL, relay, pageErrors }, use) => {
+    const contexts: Array<BrowserContext> = []
     await use(async (user = alice) => {
-      await page.goto("/login")
-      await page.getByPlaceholder("nsec, npub, nip-05, hex, mnemonic").fill(user.nsec)
-      await page.getByRole("button", { name: "Login" }).click()
-      await expect(page.getByRole("button", { name: "New Note" })).toBeVisible()
+      const context = await browser.newContext({
+        ...devices["Desktop Chrome"],
+        baseURL,
+        serviceWorkers: "block",
+        locale: "en-US",
+        timezoneId: "UTC",
+      })
+      contexts.push(context)
+      await mockHttp(context, new URL(baseURL ?? "http://localhost").origin)
+      await context.routeWebSocket(/^wss?:\/\//, ws => relay.connect(ws))
+      const page = await context.newPage()
+      page.on("pageerror", e => pageErrors.push(e.message))
+      await loginAs(page, user)
+      return page
     })
+    for (const c of contexts) await c.close()
   },
 })
 

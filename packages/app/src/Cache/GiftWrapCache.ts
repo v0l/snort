@@ -64,7 +64,7 @@ export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
   override async onEvent(evs: Readonly<Array<TaggedNostrEvent>>, _: string, pub?: EventPublisher) {
     if (!pub) return
 
-    const fresh = evs.filter(v => !this.#persistedIds.has(v.id) && !this.cache.has(v.id))
+    const fresh = evs.filter(v => !this.cache.has(v.id))
     if (fresh.length === 0) return
 
     const valid = fresh.filter(v => isValidNip44Content(v.content))
