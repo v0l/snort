@@ -233,6 +233,18 @@ describe("RelayOwner", () => {
     expect(await owner.execute(rpc("count", ["COUNT", "1", {}]))).toEqual(0)
   })
 
+  test("commands sent while the database is opening wait for it", async () => {
+    const relay = fakeRelay([note("dd")])
+    relay.init = () => new Promise(resolve => setTimeout(resolve, 20))
+    const owner = makeOwner(new FakeBus(), new FakeLocks(), relay)
+
+    const opening = owner.init("db")
+    const events = (await owner.execute(rpc("req", ["REQ", "1", {}]))) as Array<NostrEvent>
+    await opening
+
+    expect(events.map(a => a.id)).toEqual(["dd"])
+  })
+
   test("close is never proxied to the leader", async () => {
     const bus = new FakeBus()
     const locks = new FakeLocks()

@@ -63,6 +63,7 @@ export interface RelayOwnerOptions {
  */
 export class RelayOwner {
   #path?: string
+  #opening?: Promise<void>
   #mode: RelayMode = "follower"
   #relay?: RelayHandler
   #lock?: DbLock
@@ -98,7 +99,12 @@ export class RelayOwner {
    * Claim the database if it is free, otherwise become a follower and queue for
    * ownership in the background.
    */
-  async init(path: string) {
+  init(path: string) {
+    this.#opening ??= this.#open(path)
+    return this.#opening
+  }
+
+  async #open(path: string) {
     this.#path = path
     this.#channel ??= this.#createChannel(relayChannelName(path))
 
@@ -120,6 +126,12 @@ export class RelayOwner {
     }
     if (LOCAL_ONLY.has(msg.cmd)) {
       return undefined
+    }
+    if (this.#opening) {
+      await this.#opening
+      if (this.#mode === "leader" && this.#relay) {
+        return await this.#execute(msg, this.#relay)
+      }
     }
     const channel = this.#channel
     if (!channel) throw new Error("Must call init first")
