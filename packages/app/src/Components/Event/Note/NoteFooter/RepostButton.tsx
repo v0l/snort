@@ -45,7 +45,7 @@ export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: T
         <span>
           <AsyncFooterIcon
             className={classNames(
-              "flex-none min-w-[50px] md:min-w-[80px]",
+              "flex-none min-w-[50px] md:min-w-[80px] repost-button",
               hasReposted() ? "reacted text-nostr-blue" : "hover:text-nostr-blue",
             )}
             iconName="repeat"
