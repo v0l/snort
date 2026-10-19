@@ -5,6 +5,7 @@ import LinkPreview from "@/Components/Embed/LinkPreview"
 import MixCloudEmbed from "@/Components/Embed/MixCloudEmbed"
 import SoundCloudEmbed from "@/Components/Embed/SoundCloudEmded"
 import SpotifyEmbed from "@/Components/Embed/SpotifyEmbed"
+import ThreeSpeakEmbed from "@/Components/Embed/ThreeSpeakEmbed"
 import TidalEmbed from "@/Components/Embed/TidalEmbed"
 import TwitchEmbed from "@/Components/Embed/TwitchEmbed"
 import WavlakeEmbed from "@/Components/Embed/WavlakeEmbed"
@@ -14,6 +15,7 @@ import {
   MixCloudRegex,
   SoundCloudRegex,
   SpotifyRegex,
+  ThreeSpeakRegex,
   TidalRegex,
   TwitchRegex,
   WavlakeRegex,
@@ -43,6 +45,8 @@ export default function HyperText({ link, showLinkPreview, children }: HypeTextP
     return <AppleMusicEmbed link={link} />
   } else if (link.match(WavlakeRegex)) {
     return <WavlakeEmbed link={link} />
+  } else if (link.match(ThreeSpeakRegex)) {
+    return <ThreeSpeakEmbed link={link} />
   } else if (showLinkPreview ?? true) {
     return <LinkPreview url={link} />
   }
