@@ -131,6 +131,14 @@ export const MagnetRegex = /(magnet:[\S]+)/i
 export const WavlakeRegex =
   /https?:\/\/(?:player\.|www\.)?wavlake\.com\/(?!top|new|artists|account|activity|login|preferences|feed|profile)(?:(?:track|album)\/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}|[a-z-]+)/i
 
+/**
+ * 3Speak video / short regex
+ * https://3speak.tv/watch?v=author/permlink
+ * https://3speak.tv/shorts?v=author/id
+ */
+export const ThreeSpeakRegex =
+  /^https?:\/\/(?:www\.)?3speak\.tv\/(watch|shorts)\?v=([a-z][a-z0-9.-]{1,14}[a-z0-9])\/([a-z0-9-]+)(?:[&#]|$)/
+
 /*
  * Regex to match any base64 string
  */
