@@ -72,19 +72,6 @@ registerRoute(
   }),
 )
 
-registerRoute(
-  ({ url }) => url.origin === "https://api.snort.social" && url.pathname.startsWith("/api/v1/translate"),
-  new CacheFirst({
-    cacheName: "translate-cache",
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 1000 }),
-      new CacheableResponsePlugin({
-        statuses: [0, 200, 204],
-      }),
-    ],
-  }),
-)
-
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting()

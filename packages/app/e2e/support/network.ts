@@ -46,6 +46,8 @@ export interface HttpLog {
   aiRequests: Array<{ model: string; messages: Array<{ role: string; content: unknown }> }>
   aiScript: Array<AiStep>
   reports: Array<{ server: string; event: NostrEvent }>
+  translateRequests: Array<{ text: Array<string>; target_lang: string }>
+  translateReply?: { detected_source_language: string; text: string }
   handles?: Array<{ id: string; handle: string; domain: string; pubkey: string; created: string; lnAddress?: string }>
   handleCalls: Array<{ method: string; path: string; query: string; body?: unknown; auth?: NostrEvent }>
 }
@@ -143,6 +145,7 @@ export async function mockHttp(context: BrowserContext, origin: string): Promise
     aiScript: DefaultAiScript,
     handleCalls: [],
     reports: [],
+    translateRequests: [],
   }
   const blobs = new Map<string, { type: string; size: number }>([[StoredBlob, { type: "image/png", size: 2_048 }]])
 
@@ -189,6 +192,12 @@ export async function mockHttp(context: BrowserContext, origin: string): Promise
     }
     if (url.hostname === "api.snort.social" && url.pathname.startsWith("/api/v1/n5sp")) {
       return nostrAddressService(route, url, log)
+    }
+    if (url.hostname === "api.snort.social" && url.pathname === "/api/v1/translate") {
+      const body = req.postDataJSON() as HttpLog["translateRequests"][number]
+      log.translateRequests.push(body)
+      if (!log.translateReply) return route.fulfill({ status: 204, headers: cors })
+      return json(route, { translations: [log.translateReply] })
     }
     if (url.hostname === "profiles.v0l.io" && url.pathname === "/api/search") {
       const q = (url.searchParams.get("q") ?? "").toLowerCase()

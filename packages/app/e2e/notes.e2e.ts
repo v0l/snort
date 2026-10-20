@@ -213,3 +213,27 @@ test.describe("context menu", () => {
     await expect(results.getByText("Alice's first post")).toHaveCount(0)
   })
 })
+
+test.describe("translation cache", () => {
+  const requestsFor = (http: { translateRequests: Array<{ text: Array<string> }> }, text: string) =>
+    http.translateRequests.filter(r => r.text[0].includes(text)).length
+
+  test("untranslatable notes are requested once and not again after reload", async ({ page, http }) => {
+    await expect.poll(() => requestsFor(http, "Hello from Bob")).toBe(1)
+    await page.reload()
+    await expect(page.getByText("Hello from Bob").first()).toBeVisible()
+    await page.waitForTimeout(1_500)
+    expect(requestsFor(http, "Hello from Bob")).toBe(1)
+  })
+
+  test("a translated note is requested once and shown again after remounting", async ({ page, http }) => {
+    http.translateReply = { detected_source_language: "ES", text: "Translated by the cache test" }
+    await page.goto("/following")
+    await expect(page.getByText("Translated by the cache test").first()).toBeVisible()
+    const before = http.translateRequests.length
+    await page.goto("/search")
+    await page.goto("/following")
+    await expect(page.getByText("Translated by the cache test").first()).toBeVisible()
+    expect(http.translateRequests.length).toBe(before)
+  })
+})

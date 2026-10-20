@@ -1,14 +1,23 @@
 import { NostrLink, type TaggedNostrEvent } from "@snort/system"
 import { useEventReactions, useReactions } from "@snort/system-react"
 import { createContext, type ReactNode, use, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { LRUCache } from "typescript-lru-cache"
 import SnortApi from "@/External/SnortApi"
 import useModeration from "@/Hooks/useModeration"
 import usePreferences from "@/Hooks/usePreferences"
 import ReactionsModal from "./ReactionsModal"
+import { type TranslationEntry, translationCache } from "./translationCache"
 import type { NoteTranslation } from "./types"
 
-const translationCache = new LRUCache<string, NoteTranslation>({ maxSize: 1_000 })
+function targetLanguage() {
+  return window.navigator.language.split("-")[0].toUpperCase()
+}
+
+function toNoteTranslation(entry: TranslationEntry | undefined): NoteTranslation | undefined {
+  if (!entry) return undefined
+  if (entry.skipped) return { text: "", fromLanguage: "", confidence: 0, skipped: true }
+  const langNames = new Intl.DisplayNames([...window.navigator.languages], { type: "language" })
+  return { text: entry.text, fromLanguage: langNames.of(entry.source) ?? entry.source, confidence: 1 }
+}
 
 interface NoteContextType {
   ev: TaggedNostrEvent
@@ -36,7 +45,7 @@ export function NoteProvider({ ev, children }: NoteProviderProps) {
   const [showReactionsModal, setShowReactionsModal] = useState(false)
   const [showTranslation, setShowTranslation] = useState(true)
   const [translated, setTranslatedState] = useState<NoteTranslation | undefined>(
-    translationCache.get(ev.id) ?? undefined,
+    toNoteTranslation(translationCache.get(ev.id, targetLanguage())),
   )
   const { isMuted } = useModeration()
 
@@ -54,39 +63,24 @@ export function NoteProvider({ ev, children }: NoteProviderProps) {
   const evContentRef = useRef(ev.content)
   evContentRef.current = ev.content
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: translate is stable; translated guard is in the effect
   const translate = useCallback(async () => {
-    const lang = window.navigator.language
-    const langNames = new Intl.DisplayNames([...window.navigator.languages], {
-      type: "language",
-    })
-
-    const api = new SnortApi()
-    const targetLang = lang.split("-")[0].toUpperCase()
-    const result = await api.translate({
-      text: [evContentRef.current],
-      target_lang: targetLang,
-    })
-
-    if (
-      "translations" in result &&
-      result.translations.length > 0 &&
-      targetLang !== result.translations[0].detected_source_language
-    ) {
-      setTranslatedState({
-        text: result.translations[0].text,
-        fromLanguage: langNames.of(result.translations[0].detected_source_language),
-        confidence: 1,
-      } as NoteTranslation)
-    } else {
-      setTranslatedState({
-        text: "",
-        fromLanguage: "",
-        confidence: 0,
-        skipped: true,
+    const targetLang = targetLanguage()
+    const entry = await translationCache.resolve(ev.id, targetLang, async () => {
+      const result = await new SnortApi().translate({
+        text: [evContentRef.current],
+        target_lang: targetLang,
       })
-    }
-  }, [])
+      if (
+        "translations" in result &&
+        result.translations.length > 0 &&
+        targetLang !== result.translations[0].detected_source_language
+      ) {
+        return { text: result.translations[0].text, source: result.translations[0].detected_source_language }
+      }
+      return { skipped: true }
+    })
+    setTranslatedState(toNoteTranslation(entry))
+  }, [ev.id])
 
   useEffect(() => {
     if (translated || !autoTranslate) return
