@@ -1,5 +1,5 @@
 import { unixNow } from "@snort/shared"
-import { EventKind, RequestBuilder } from "@snort/system"
+import { EventKind, type NostrEvent, RequestBuilder } from "@snort/system"
 import { useRequestBuilderAdvanced } from "@snort/system-react"
 import { useCallback, useMemo, useSyncExternalStore } from "react"
 
@@ -25,6 +25,12 @@ export interface TimelineSubject {
 
 export type TimelineFeed = ReturnType<typeof useTimelineFeed>
 
+export const TimelineKinds = [EventKind.TextNote, EventKind.Comment, EventKind.Repost, EventKind.Polls]
+
+export function isReply(ev: NostrEvent) {
+  return ev.kind === EventKind.Comment || ev.tags.some(t => t[0] === "e" || t[0] === "a")
+}
+
 export default function useTimelineFeed(subject: TimelineSubject, options: TimelineFeedOptions) {
   const { now, since, until, older, setUntil } = useTimelineWindow({
     window: options.window,
@@ -34,11 +40,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
   const { isEventMuted } = useModeration()
 
   const createBuilder = useCallback(() => {
-    const kinds =
-      subject.kinds ??
-      (subject.type === "profile_keyword"
-        ? [EventKind.SetMetadata]
-        : [EventKind.TextNote, EventKind.Repost, EventKind.Polls])
+    const kinds = subject.kinds ?? (subject.type === "profile_keyword" ? [EventKind.SetMetadata] : TimelineKinds)
 
     const b = new RequestBuilder(`timeline:${subject.type}:${subject.discriminator}`)
     const f = b.withFilter().kinds(kinds)

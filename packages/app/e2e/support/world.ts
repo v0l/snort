@@ -77,6 +77,7 @@ export interface World {
     carolRepo: NostrEvent
     bobArticleComment: NostrEvent
     daveStrayComment: NostrEvent
+    aliceComment: NostrEvent
     gitApp: NostrEvent
   }
   dmText: string
@@ -219,6 +220,20 @@ export async function buildWorld(): Promise<World> {
     ],
     1_400,
   )
+  const aliceComment = await sign(
+    alice,
+    EventKind.Comment,
+    "Alice comments on Bob",
+    [
+      ["E", bobHello.id],
+      ["K", `${EventKind.TextNote}`],
+      ["P", bob.pubkey],
+      ["e", bobHello.id],
+      ["k", `${EventKind.TextNote}`],
+      ["p", bob.pubkey],
+    ],
+    1_300,
+  )
   const daveCashu = await sign(dave, EventKind.TextNote, `Free sats ${CashuToken}`, [], 2_600)
 
   const reactions = [
@@ -312,6 +327,7 @@ export async function buildWorld(): Promise<World> {
       gitApp,
       bobArticleComment,
       daveStrayComment,
+      aliceComment,
       ...(await Promise.all(
         [dvm, freshDvm].map(d =>
           sign(
@@ -349,6 +365,7 @@ export async function buildWorld(): Promise<World> {
       gitApp,
       bobArticleComment,
       daveStrayComment,
+      aliceComment,
     },
     dmText,
   }

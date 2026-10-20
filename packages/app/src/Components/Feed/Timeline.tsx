@@ -3,7 +3,7 @@ import type { TaggedNostrEvent } from "@snort/system"
 import { useCallback, useMemo } from "react"
 
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer"
-import useTimelineFeed, { type TimelineFeed, type TimelineSubject } from "@/Feed/TimelineFeed"
+import useTimelineFeed, { isReply, type TimelineFeed, type TimelineSubject } from "@/Feed/TimelineFeed"
 import useHistoryState from "@/Hooks/useHistoryState"
 import useWoT from "@/Hooks/useWoT"
 import { dedupeByPubkey } from "@/Utils"
@@ -45,7 +45,7 @@ const Timeline = (props: TimelineProps) => {
         return followDistance === props.followDistance
       }
       return nts
-        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
+        ?.filter(a => (props.postsOnly ? !isReply(a) : true))
         .filter(a => props.ignoreModeration || checkFollowDistance(a))
     },
     [props.postsOnly, props.ignoreModeration, props.followDistance, wot],

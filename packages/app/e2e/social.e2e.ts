@@ -13,6 +13,14 @@ test.describe("feeds", () => {
     await expect(page.locator("main, #root").getByText("A stranger also likes")).toHaveCount(1)
   })
 
+  test("conversations include comments, following does not", async ({ page }) => {
+    await page.goto("/conversations")
+    await expect(page.getByText("Great write up").first()).toBeVisible()
+    await page.goto("/following")
+    await expect(page.getByText("Hello from Bob").first()).toBeVisible()
+    await expect(page.getByText("Great write up")).toHaveCount(0)
+  })
+
   test("tab menu switches feeds", async ({ page }) => {
     await page.goto("/following")
     await page.locator("header").getByRole("button", { name: "Following" }).click()
@@ -75,6 +83,12 @@ test.describe("profiles", () => {
     await page.getByRole("button", { name: "Unfollow" }).click()
     const ev = await expectPublished(relay, e => e.kind === EventKind.ContactList && e.pubkey === alice.pubkey)
     expect(tagValues(ev, "p")).toEqual([carol.pubkey])
+  })
+
+  test("own profile shows own comments", async ({ page }) => {
+    await page.goto(`/p/${alice.npub}`)
+    await expect(page.getByText("Alice comments on Bob")).toBeVisible()
+    await expect(page.getByText("Alice's first post").first()).toBeVisible()
   })
 
   test("own profile links to settings", async ({ page }) => {

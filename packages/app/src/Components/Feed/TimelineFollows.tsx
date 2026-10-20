@@ -3,6 +3,7 @@ import { EventKind, type NostrEvent, RequestBuilder } from "@snort/system"
 import { useRequestBuilder } from "@snort/system-react"
 import { type ReactNode, useCallback, useMemo } from "react"
 
+import { isReply, TimelineKinds } from "@/Feed/TimelineFeed"
 import useFollowsControls from "@/Hooks/useFollowControls"
 import useHistoryState from "@/Hooks/useHistoryState"
 import useTimelineChunks from "@/Hooks/useTimelineChunks"
@@ -23,8 +24,6 @@ export interface TimelineFollowsProps {
   firstChunkSize?: number
   windowSize?: number
 }
-
-const DefaultKinds = [EventKind.TextNote, EventKind.Repost, EventKind.Polls]
 
 /**
  * A list of notes by your follows
@@ -47,7 +46,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     (rb: RequestBuilder) => {
       rb.withFilter()
         .authors(followList)
-        .kinds(props.kinds ?? DefaultKinds)
+        .kinds(props.kinds ?? TimelineKinds)
     },
     [followList, props.kinds],
   )
@@ -55,7 +54,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const filterEvents = useCallback(
     (a: NostrEvent) =>
       (props.noteFilter?.(a) ?? true) &&
-      (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true) &&
+      (props.postsOnly ? !isReply(a) : true) &&
       (isFollowing(a.pubkey) || a.tags.filter(a => a[0] === "t").length < 5),
     [props.noteFilter, props.postsOnly, isFollowing],
   )
@@ -67,7 +66,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     rb.withOptions({ leaveOpen: true })
     rb.withFilter()
       .authors(followList)
-      .kinds(props.kinds ?? DefaultKinds)
+      .kinds(props.kinds ?? TimelineKinds)
       .since(openedAt + 1)
       .limit(1)
     return rb
