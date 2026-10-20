@@ -53,6 +53,22 @@ const intl = () =>
     ast: true,
   })
 
+const pwa = () =>
+  VitePWA({
+    strategies: "injectManifest",
+    injectRegister: "script",
+    srcDir: "src",
+    filename: "service-worker.ts",
+    registerType: "autoUpdate",
+    injectManifest: {
+      globIgnores: ["**/node_modules/**/*", "stats.html", "**/agent-*.js", "**/AgentPage-*.js", "**/livekit-*.js"],
+    },
+    devOptions: {
+      enabled: false,
+      type: "module",
+    },
+  })
+
 // Shared settings common to both client and server builds
 const shared = {
   assetsInclude: ["**/*.md", "**/*.wasm"] as string[],
@@ -111,17 +127,7 @@ export default defineConfig(({ command, mode }) => {
         intl(),
         htmlTransform,
         ssrClientEntry(),
-        VitePWA({
-          strategies: "injectManifest",
-          injectRegister: "script",
-          srcDir: "src",
-          filename: "service-worker.ts",
-          registerType: "autoUpdate",
-          devOptions: {
-            enabled: false,
-            type: "module",
-          },
-        }),
+        pwa(),
         copyWorkerRelayAssets("build/client/assets"),
       ],
       build: {
@@ -143,17 +149,7 @@ export default defineConfig(({ command, mode }) => {
       intl(),
       react(),
       htmlTransform,
-      VitePWA({
-        strategies: "injectManifest",
-        injectRegister: "script",
-        srcDir: "src",
-        filename: "service-worker.ts",
-        registerType: "autoUpdate",
-        devOptions: {
-          enabled: false,
-          type: "module",
-        },
-      }),
+      pwa(),
       visualizer({
         open: false,
         gzipSize: true,

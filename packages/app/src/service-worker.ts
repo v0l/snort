@@ -6,29 +6,54 @@ import { NostrLink, tryParseNostrLink } from "@snort/system/dist/nostr-link"
 import { CacheableResponsePlugin } from "workbox-cacheable-response"
 import { clientsClaim } from "workbox-core"
 import { ExpirationPlugin } from "workbox-expiration"
-import { precacheAndRoute, type PrecacheEntry } from "workbox-precaching"
-import { registerRoute } from "workbox-routing"
+import { cleanupOutdatedCaches, matchPrecache, type PrecacheEntry, precacheAndRoute } from "workbox-precaching"
+import { NavigationRoute, registerRoute } from "workbox-routing"
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies"
 
 declare const self: ServiceWorkerGlobalScope & {
   __WB_MANIFEST: (string | PrecacheEntry)[]
 }
 
+const Day = 24 * 60 * 60
+const LegacyCaches = ["translate-cache", "image-cache"]
+
 precacheAndRoute(self.__WB_MANIFEST)
+cleanupOutdatedCaches()
 clientsClaim()
 
-// cache everything in current domain /assets because precache doesn't seem to include everything
+self.addEventListener("install", () => {
+  self.skipWaiting()
+})
+
+self.addEventListener("activate", event => {
+  event.waitUntil(Promise.all(LegacyCaches.map(name => caches.delete(name))))
+})
+
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.startsWith("/assets"),
-  new StaleWhileRevalidate({
+  new NavigationRoute(async ({ request }) => {
+    try {
+      return await fetch(request)
+    } catch (e) {
+      const shell = await matchPrecache("/index.html")
+      if (shell) return shell
+      throw e
+    }
+  }),
+)
+
+const notHtml = {
+  cacheWillUpdate: async ({ response }: { response: Response }) =>
+    response.headers.get("content-type")?.includes("text/html") ? null : response,
+}
+
+registerRoute(
+  ({ url }) => url.origin === self.location.origin && url.pathname.startsWith("/assets/"),
+  new CacheFirst({
     cacheName: "assets-cache",
     plugins: [
-      new ExpirationPlugin({
-        maxEntries: 200,
-        matchOptions: {
-          ignoreVary: true,
-        },
-      }),
+      new CacheableResponsePlugin({ statuses: [200] }),
+      notHtml,
+      new ExpirationPlugin({ maxEntries: 200, purgeOnQuotaError: true }),
     ],
   }),
 )
@@ -37,61 +62,44 @@ registerRoute(
   ({ url }) => url.pathname.endsWith("/.well-known/nostr.json"),
   new StaleWhileRevalidate({
     cacheName: "nostr-json-cache",
-    plugins: [new ExpirationPlugin({ maxAgeSeconds: 4 * 60 * 60 })],
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 200, maxAgeSeconds: Day / 6, purgeOnQuotaError: true }),
+      new CacheableResponsePlugin({ statuses: [200] }),
+    ],
   }),
 )
 
-// Cache images from any domain
 registerRoute(
-  // match images except gif
-  ({ request, url }) => request.destination === "image" && !url.pathname.endsWith(".gif"),
+  ({ request, url }) =>
+    request.destination === "image" &&
+    !url.pathname.endsWith(".gif") &&
+    (request.mode === "cors" || url.origin === self.location.origin),
   new CacheFirst({
-    cacheName: "image-cache",
+    cacheName: "images",
     plugins: [
+      new CacheableResponsePlugin({ statuses: [200] }),
       new ExpirationPlugin({
-        maxEntries: 100,
+        maxEntries: 200,
+        maxAgeSeconds: 7 * Day,
+        purgeOnQuotaError: true,
         matchOptions: {
           ignoreVary: true,
         },
       }),
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
     ],
   }),
 )
 
 registerRoute(
-  ({ url }) => url.origin === "https://nostr-api.v0l.io" && url.pathname.startsWith("/api/v1/preview"),
+  ({ url }) => url.origin === "https://nostr-rs-api.v0l.io" && url.pathname === "/preview",
   new CacheFirst({
     cacheName: "preview-cache",
     plugins: [
-      new ExpirationPlugin({ maxAgeSeconds: 24 * 60 * 60 }),
-      new CacheableResponsePlugin({ statuses: [0, 200] }),
+      new ExpirationPlugin({ maxEntries: 500, maxAgeSeconds: Day, purgeOnQuotaError: true }),
+      new CacheableResponsePlugin({ statuses: [200] }),
     ],
   }),
 )
-
-self.addEventListener("message", event => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
-    self.skipWaiting()
-  }
-})
-self.addEventListener("install", event => {
-  // delete all cache on install
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          console.debug("Deleting cache: ", cacheName)
-          return caches.delete(cacheName)
-        }),
-      )
-    }),
-  )
-  // always skip waiting
-  self.skipWaiting()
-})
 
 enum PushType {
   Mention = 1,
@@ -160,10 +168,11 @@ self.addEventListener("notificationclick", event => {
   )
 })
 
-self.addEventListener("push", async e => {
-  console.debug(e)
-  const data = e.data?.json() as PushNotification | undefined
-  console.debug(data)
+self.addEventListener("push", e => {
+  e.waitUntil(showPushNotification(e.data?.json() as PushNotification | undefined))
+})
+
+async function showPushNotification(data: PushNotification | undefined) {
   if (data) {
     switch (data.type) {
       case PushType.Mention: {
@@ -199,7 +208,7 @@ self.addEventListener("push", async e => {
       }
     }
   }
-})
+}
 
 const MentionNostrEntityRegex = /(nostr:n(?:pub|profile|event|ote|addr)1[acdefghjklmnpqrstuvwxyz023456789]+)/g
 

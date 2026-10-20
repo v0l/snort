@@ -18,6 +18,7 @@ import { RootRoutes } from "@/Pages/Root/RootRoutes"
 import SettingsRoutes from "@/Pages/settings/Routes"
 import { System } from "@/system"
 import { storeRefCode, unwrap } from "@/Utils"
+import { reloadOnStaleChunk } from "@/Utils/staleChunkReload"
 import { hasWasm, WasmPath, wasmInit } from "@/Utils/wasm"
 import { setupWebLNWalletConfig, Wallets } from "@/Wallet"
 import { SpotlightContextWrapper } from "./Components/Spotlight/context"
@@ -255,6 +256,8 @@ const routes = [
     },
   },
 ] as Array<RouteObject>
+
+reloadOnStaleChunk()
 
 const router = createBrowserRouter(routes)
 
