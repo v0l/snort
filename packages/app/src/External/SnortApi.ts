@@ -4,16 +4,6 @@ import { ApiHost } from "@/Utils/Const"
 import type { SubscriptionType } from "@/Utils/Subscription"
 import { JsonApi } from "./base"
 
-export interface RevenueToday {
-  donations: number
-  nip5: number
-}
-
-export interface RevenueSplit {
-  pubKey: string
-  split: number
-}
-
 export interface InvoiceResponse {
   pr: string
 }
@@ -91,14 +81,6 @@ export default class SnortApi extends JsonApi {
     this.signer = EventPublisher.isInstance(signer) ? signer.signer : signer
   }
 
-  revenueSplits() {
-    return this.getJson<Array<RevenueSplit>>("api/v1/revenue/splits")
-  }
-
-  revenueToday() {
-    return this.getJson<RevenueToday>("api/v1/revenue/today")
-  }
-
   createSubscription(type: number, refCode?: string) {
     if (!this.signer) {
       throw new Error("No signer set")
@@ -118,10 +100,6 @@ export default class SnortApi extends JsonApi {
       throw new Error("No signer set")
     }
     return this.getJsonAuthd<Array<Subscription>>("api/v1/subscription", this.signer)
-  }
-
-  onChainDonation() {
-    return this.getJson<{ address: string }>("p/on-chain")
   }
 
   getPushNotificationInfo() {

@@ -47,4 +47,4 @@ export const Translators = [
 
   bech32ToHex("npub1dnvslq0vvrs8d603suykc4harv94yglcxwna9sl2xu8grt2afm3qgfh0tp"), // summoner001 - HU
 ]
-export const DonateLNURL = "donate@snort.social"
+export const DonateLNURL = "kieran@zap.stream"
