@@ -721,3 +721,34 @@ describe("SSR Hydration — replaceable event handling", () => {
     expect(q.snapshot[0].id).toBe("new-article")
   })
 })
+
+describe("SSR Hydration — events supplied before the query exists", () => {
+  test("QueryManager.hydrate seeds a query created afterwards", () => {
+    const qm = new QueryManager(makeSystem(new MockPool()))
+    qm.hydrate("late-query", [createEv("a"), createEv("b")])
+
+    const rb = new RequestBuilder("late-query")
+    rb.withOptions({ groupingDelay: 0 })
+    rb.withFilter().kinds([1])
+    const q = qm.query(rb)
+
+    expect(
+      q.snapshot
+        .map(e => e.id)
+        .sort(),
+    ).toEqual(["a", "b"])
+    qm.destroy()
+  })
+
+  test("QueryManager.hydrate adds to a query that already exists", () => {
+    const qm = new QueryManager(makeSystem(new MockPool()))
+    const rb = new RequestBuilder("existing-query")
+    rb.withOptions({ groupingDelay: 0 })
+    rb.withFilter().kinds([1])
+    const q = qm.query(rb)
+    qm.hydrate("existing-query", [createEv("c")])
+
+    expect(q.snapshot.map(e => e.id)).toEqual(["c"])
+    qm.destroy()
+  })
+})

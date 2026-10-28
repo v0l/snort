@@ -94,6 +94,11 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
    */
   #syncWrites: Map<string, Promise<void>> = new Map()
 
+  /**
+   * Events supplied for queries that have not been created yet
+   */
+  #hydrated: Map<string, Array<TaggedNostrEvent>> = new Map()
+
   constructor(system: SystemInterface) {
     super()
     this.#system = system
@@ -256,10 +261,27 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       })
 
       this.#queries.set(req.id, q)
+      const hydrated = this.#hydrated.get(req.id)
+      if (hydrated) {
+        this.#hydrated.delete(req.id)
+        q.feed.add(hydrated)
+      }
       if (req.numFilters > 0) {
         this.emit("change")
       }
       return q
+    }
+  }
+
+  /**
+   * Seed a query with events, now or when it is first created
+   */
+  hydrate(id: string, events: Array<TaggedNostrEvent>) {
+    const q = this.#queries.get(id)
+    if (q) {
+      q.feed.add(events)
+    } else {
+      this.#hydrated.set(id, events)
     }
   }
 
