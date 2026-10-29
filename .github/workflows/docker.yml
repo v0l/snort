@@ -19,15 +19,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-
-      - name: Install dependencies
-        run: bun install
-
-      - name: Build site
-        run: bun run build
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -41,7 +32,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: Dockerfile.prebuilt
+          file: Dockerfile.ssr
           platforms: linux/amd64,linux/arm64
           push: true
           tags: voidic/snort:latest
@@ -56,15 +47,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-
-      - name: Install dependencies
-        run: bun install
-
-      - name: Build site
-        run: bun run build
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -78,7 +60,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: Dockerfile.prebuilt
+          file: Dockerfile.ssr
           platforms: linux/amd64,linux/arm64
           push: true
           tags: voidic/snort:${{ github.ref_name }}
