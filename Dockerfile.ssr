@@ -1,0 +1,10 @@
+FROM oven/bun:alpine AS web
+WORKDIR /src
+RUN apk add --no-cache git
+COPY . .
+RUN git init -q . 2>/dev/null; bun install && bun run build
+
+FROM voidic/nostr-ssr:latest
+COPY --from=web /src/packages/app/build /app/dist/client
+COPY ssr.json /app/ssr.json
+ENV CONFIG=/app/ssr.json
