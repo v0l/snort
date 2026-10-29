@@ -6,7 +6,6 @@ match: ".*snort-.*\\.apk$"
 
 # App metadata (from nap.yaml)
 name: Snort
-id: social.snort.app
 description: Nostr social client
 icon: https://snort.social/nostrich_256.png
 images:
@@ -19,3 +18,4 @@ license: MIT
 tags:
   - social
   - twitter
+metadata_sources: [github, playstore]
