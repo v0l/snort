@@ -234,7 +234,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       const tag = msg[0] as string
       switch (tag) {
         case "AUTH": {
-          if (this.#expectAuth) {
+          if (this.#expectAuth || this.listenerCount("auth") > 0) {
             this.#onAuthAsync(msg[1] as string)
               .then(() => this.#sendPendingRaw())
               .catch(this.#log)
