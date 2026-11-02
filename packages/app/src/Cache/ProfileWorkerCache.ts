@@ -15,7 +15,7 @@ export class ProfileCacheRelayWorker extends WorkerBaseCache<CachedMetadata> {
   }
 
   mapper(ev: NostrEvent): CachedMetadata | undefined {
-    return mapEventToProfile(ev)
+    return mapEventToProfile(ev, 0)
   }
 
   override async preload(follows?: Array<string>) {

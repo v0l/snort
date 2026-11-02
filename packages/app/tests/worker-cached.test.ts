@@ -98,6 +98,36 @@ describe("WorkerBaseCache.update() — timestamp guard", () => {
   })
 })
 
+describe("WorkerBaseCache.bulkGet() loaded time", () => {
+  const ev = (created_at: number) =>
+    ({ id: "i", pubkey: "pk1", created_at, kind: 0, tags: [], content: "{}", sig: "" }) as NostrEvent
+
+  class ReadCache extends WorkerBaseCache<TestEntry> {
+    constructor(events: NostrEvent[]) {
+      super(0, { ...mockRelay, query: async () => events as TaggedNostrEvent[] })
+    }
+    name() {
+      return "ReadCache"
+    }
+    maxSize() {
+      return 10
+    }
+    mapper(e: NostrEvent) {
+      return { pubkey: e.pubkey, created: e.created_at, loaded: 0, name: "x" }
+    }
+  }
+
+  test("reading a cached entry does not make it look freshly loaded", async () => {
+    const cache = new ReadCache([ev(100)])
+    const a = await cache.bulkGet(["pk1"])
+    expect(a[0].loaded).toBe(0)
+    await cache.update({ pubkey: "pk1", created: 100, loaded: 5000, name: "x" })
+    const b = await cache.bulkGet(["pk1"])
+    expect(b[0].loaded).toBe(5000)
+    expect(cache.getFromCache("pk1")?.loaded).toBe(5000)
+  })
+})
+
 describe("WorkerBaseCache.subscribe()", () => {
   test("subscriber is called when key is set", async () => {
     const cache = new TestWorkerCache()

@@ -109,7 +109,7 @@ export abstract class WorkerBaseCache<T extends CachedBase>
         kinds: [this.kind],
       },
     ])
-    const mapped = removeUndefined(results.map(this.mapper))
+    const mapped = removeUndefined(results.map(this.mapper)).map(pf => this.#keepLoaded(pf))
     for (const pf of mapped) {
       this.#cache.set(pf.pubkey, pf)
     }
@@ -118,6 +118,14 @@ export abstract class WorkerBaseCache<T extends CachedBase>
       mapped.map(a => a.pubkey),
     )
     return mapped
+  }
+
+  #keepLoaded(read: T): T {
+    const cached = this.#cache.get(this.key(read))
+    if (cached && cached.created === read.created && cached.loaded > read.loaded) {
+      return { ...read, loaded: cached.loaded }
+    }
+    return read
   }
 
   /**
