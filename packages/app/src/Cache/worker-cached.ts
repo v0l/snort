@@ -17,6 +17,8 @@ export abstract class WorkerBaseCache<T extends CachedBase>
   #log = debug(this.name())
   /** Per-key subscribers for O(1) targeted notifications */
   #keyListeners = new Map<string, Set<() => void>>()
+  #stamps = new Map<string, [loaded: number, created: number]>()
+  #stampSave?: ReturnType<typeof setTimeout>
 
   constructor(
     readonly kind: number,
@@ -39,10 +41,36 @@ export abstract class WorkerBaseCache<T extends CachedBase>
   abstract maxSize(): number
   abstract mapper(ev: NostrEvent): T | undefined
 
+  persistLoaded(): boolean {
+    return false
+  }
+
+  #stampKey() {
+    return `loaded:${this.name()}`
+  }
+
+  async #restoreStamps() {
+    if (!this.persistLoaded()) return
+    const saved = await this.#relay.syncState?.get(this.#stampKey()).catch(() => undefined)
+    const stored = saved as unknown as Record<string, [number, number]> | undefined
+    for (const [k, v] of Object.entries(stored ?? {})) {
+      if (!this.#stamps.has(k)) this.#stamps.set(k, v)
+    }
+  }
+
+  #saveStamps() {
+    if (!this.persistLoaded() || !this.#relay.syncState || this.#stampSave) return
+    this.#stampSave = setTimeout(() => {
+      this.#stampSave = undefined
+      this.#relay.syncState?.set(this.#stampKey(), Object.fromEntries(this.#stamps) as never).catch(() => {})
+    }, 2_000)
+  }
+
   /**
    * Preload only the ids from the worker relay
    */
   async preload() {
+    await this.#restoreStamps()
     await this.preloadTable(`${this.name()}-preload-ids`, { kinds: [this.kind], ids_only: true })
   }
 
@@ -55,7 +83,7 @@ export abstract class WorkerBaseCache<T extends CachedBase>
     if (f.ids_only === true) {
       this.#keys = new Set(data as unknown as Array<string>)
     } else {
-      const mapped = removeUndefined(data.map(a => this.mapper(a)))
+      const mapped = removeUndefined(data.map(a => this.mapper(a))).map(o => this.#keepLoaded(o))
       for (const o of mapped) {
         this.#cache.set(o.pubkey, o)
       }
@@ -121,9 +149,14 @@ export abstract class WorkerBaseCache<T extends CachedBase>
   }
 
   #keepLoaded(read: T): T {
-    const cached = this.#cache.get(this.key(read))
+    const k = this.key(read)
+    const cached = this.#cache.get(k)
     if (cached && cached.created === read.created && cached.loaded > read.loaded) {
       return { ...read, loaded: cached.loaded }
+    }
+    const stamp = this.#stamps.get(k)
+    if (stamp && stamp[1] === read.created && stamp[0] > read.loaded) {
+      return { ...read, loaded: stamp[0] }
     }
     return read
   }
@@ -142,6 +175,10 @@ export abstract class WorkerBaseCache<T extends CachedBase>
 
     this.#keys.add(k)
     this.#cache.set(k, obj)
+    if (this.persistLoaded() && obj.loaded > 0) {
+      this.#stamps.set(k, [obj.loaded, obj.created])
+      this.#saveStamps()
+    }
   }
 
   async set(obj: T) {

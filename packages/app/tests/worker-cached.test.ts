@@ -128,6 +128,51 @@ describe("WorkerBaseCache.bulkGet() loaded time", () => {
   })
 })
 
+describe("WorkerBaseCache persisted loaded time", () => {
+  const kv = new Map<string, unknown>()
+  const relay = {
+    ...mockRelay,
+    query: async (req: ReqCommand) =>
+      (req[2] as { ids_only?: boolean }).ids_only
+        ? ([] as never)
+        : ([{ id: "i", pubkey: "pk1", created_at: 100, kind: 0, tags: [], content: "{}", sig: "" }] as TaggedNostrEvent[]),
+    syncState: {
+      get: async (k: string) => kv.get(k) as never,
+      set: async (k: string, v: unknown) => {
+        kv.set(k, v)
+      },
+    },
+  } as CacheRelay
+
+  class Persisting extends WorkerBaseCache<TestEntry> {
+    constructor() {
+      super(0, relay)
+    }
+    name() {
+      return "Persisting"
+    }
+    maxSize() {
+      return 10
+    }
+    persistLoaded() {
+      return true
+    }
+    mapper(e: NostrEvent) {
+      return { pubkey: e.pubkey, created: e.created_at, loaded: 0, name: "x" }
+    }
+  }
+
+  test("loaded time survives a reload", async () => {
+    const first = new Persisting()
+    await first.update({ pubkey: "pk1", created: 100, loaded: 7000, name: "x" })
+    await new Promise(r => setTimeout(r, 2100))
+    const second = new Persisting()
+    await second.preload()
+    const got = await second.bulkGet(["pk1"])
+    expect(got[0].loaded).toBe(7000)
+  })
+})
+
 describe("WorkerBaseCache.subscribe()", () => {
   test("subscriber is called when key is set", async () => {
     const cache = new TestWorkerCache()
