@@ -1,24 +1,16 @@
-import classNames from "classnames"
+import { useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-import { RightColumnWidget } from "@/Components/RightWidgets"
-import LatestArticlesWidget from "@/Components/RightWidgets/articles"
-import { BaseWidget } from "@/Components/RightWidgets/base"
-import InviteFriendsWidget from "@/Components/RightWidgets/invite-friends"
-import MiniStreamWidget from "@/Components/RightWidgets/mini-stream"
+import DvmSelector from "@/Components/DvmSelector"
+import Icon from "@/Components/Icons/Icon"
+import usePreferences from "@/Hooks/usePreferences"
+import { setPreference } from "@/Utils/Login"
+
+import { AskSnortInput } from "@/Components/AskSnort/AskSnortInput"
 import SearchBox from "@/Components/SearchBox/SearchBox"
 import { TaskList } from "@/Components/Tasks/TaskList"
-import TrendingHashtags from "@/Components/Trending/TrendingHashtags"
-import TrendingNotes from "@/Components/Trending/TrendingPosts"
-import TrendingUsers from "@/Components/Trending/TrendingUsers"
+import { WorthALook } from "@/Components/WorthALook/WorthALook"
 import useLogin from "@/Hooks/useLogin"
-import useWindowSize from "@/Hooks/useWindowSize"
-import IconButton from "@/Components/Button/IconButton"
-import { useState } from "react"
-import { setPreference } from "@/Utils/Login"
-import DvmSelector from "@/Components/DvmSelector"
-import usePreferences from "@/Hooks/usePreferences"
-import { AskSnortInput } from "@/Components/AskSnort/AskSnortInput"
 
 export default function RightColumn() {
   const { pubkey } = useLogin(s => ({ pubkey: s.publicKey }))
@@ -27,80 +19,32 @@ export default function RightColumn() {
   const isAiChatPage = globalThis.location.pathname.startsWith("/agent")
   const [showDvmSelector, setShowDvmSelector] = useState(false)
   const currentProvider = usePreferences(s => s.trendingDvmPubkey)
-
-  const pageSize = useWindowSize()
-  const isDesktop = pageSize.width >= 1024 //max-xl
-  if (!isDesktop) return
-
-  const widgets = pubkey
-    ? [
-        ...(!isAiChatPage ? [RightColumnWidget.AskSnort] : []),
-        RightColumnWidget.TaskList,
-        RightColumnWidget.InviteFriends,
-        //RightColumnWidget.LiveStreams,
-        RightColumnWidget.TrendingNotes,
-        RightColumnWidget.LatestArticls,
-      ]
-    : [RightColumnWidget.TaskList]
-
-  const getWidget = (t: RightColumnWidget) => {
-    switch (t) {
-      case RightColumnWidget.TaskList:
-        return <TaskList />
-      case RightColumnWidget.AskSnort:
-        return <AskSnortInput />
-      case RightColumnWidget.TrendingNotes:
-        return (
-          <BaseWidget
-            title={<FormattedMessage defaultMessage="Trending Notes" />}
-            contextMenu={
-              <IconButton onClick={() => setShowDvmSelector(true)} icon={{ name: "settings-02", size: 18 }} />
-            }
-          >
-            <TrendingNotes small={true} count={6} />
-          </BaseWidget>
-        )
-      case RightColumnWidget.TrendingPeople:
-        return (
-          <BaseWidget title={<FormattedMessage defaultMessage="Trending People" />}>
-            <TrendingUsers
-              count={6}
-              followListProps={{
-                showFollowAll: false,
-                profilePreviewProps: {
-                  actions: pubkey ? undefined : <></>,
-                  profileImageProps: {
-                    size: 32,
-                  },
-                },
-              }}
-            />
-          </BaseWidget>
-        )
-      case RightColumnWidget.TrendingHashtags:
-        return (
-          <BaseWidget title={<FormattedMessage defaultMessage="Popular Hashtags" />}>
-            <TrendingHashtags short={true} count={6} />
-          </BaseWidget>
-        )
-      case RightColumnWidget.InviteFriends:
-        return <InviteFriendsWidget />
-      case RightColumnWidget.LiveStreams:
-        return <MiniStreamWidget />
-      case RightColumnWidget.LatestArticls:
-        return <LatestArticlesWidget />
-    }
-  }
+  if (!show) return null
 
   return (
-    <div
-      className={classNames("hidden flex-col lg:w-1/3 sticky top-0 h-screen py-3 px-4 border-l", {
-        "lg:flex": show,
-      })}
-    >
+    <div className="flex flex-col w-full max-w-[460px] h-screen py-3 px-4 gap-4 overflow-y-auto hide-scrollbar">
       <SearchBox />
-      <span className="mb-4"></span>
-      <div className="flex flex-col gap-4 overflow-y-auto hide-scrollbar flex-1">{widgets.map(getWidget)}</div>
+      {pubkey && !isAiChatPage && <AskSnortInput />}
+      <TaskList />
+      <section className="flex flex-col">
+        <div className="flex items-center justify-between mb-1">
+          <h2 className="text-base font-semibold m-0">
+            <FormattedMessage defaultMessage="Worth a look" />
+          </h2>
+          {pubkey && (
+            <button
+              type="button"
+              onClick={() => setShowDvmSelector(true)}
+              className="plain p-1.5 rounded-lg text-neutral-400 hover:bg-layer-2"
+              aria-label="Popular notes provider"
+              title="Popular notes provider"
+            >
+              <Icon name="settings-02" size={18} />
+            </button>
+          )}
+        </div>
+        <WorthALook />
+      </section>
       {showDvmSelector && (
         <DvmSelector
           kind={5300}

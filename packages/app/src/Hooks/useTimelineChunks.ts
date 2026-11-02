@@ -1,4 +1,4 @@
-import { useState } from "react"
+import useHistoryState from "@/Hooks/useHistoryState"
 
 export interface WindowChunk {
   since: number
@@ -7,7 +7,7 @@ export interface WindowChunk {
 
 export default function useTimelineChunks(opt: { window?: number; firstChunkSize?: number; now: number }) {
   const windowSize = opt.window ?? 60 * 60 * 2
-  const [windows, setWindows] = useState(1)
+  const [windows, setWindows] = useHistoryState(1, "timelineWindows")
 
   let offset = opt.now
   const chunks: Array<WindowChunk> = []
@@ -28,7 +28,16 @@ export default function useTimelineChunks(opt: { window?: number; firstChunkSize
     now: opt.now,
     chunks,
     showMore: () => {
-      setWindows(s => s + 1)
+      setWindows(windows + 1)
+    },
+    loadUntil: (t: number) => {
+      let need = windows
+      let edge = chunks[chunks.length - 1]?.since ?? opt.now
+      while (edge > t && need < 48) {
+        edge -= windowSize + 1
+        need++
+      }
+      if (need > windows) setWindows(need)
     },
   }
 }

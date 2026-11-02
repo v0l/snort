@@ -51,6 +51,24 @@
       "value": "Code Snippet"
     }
   ],
+  "+qGMB6": [
+    {
+      "type": 0,
+      "value": "Highlighted by "
+    },
+    {
+      "type": 1,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": " and "
+    },
+    {
+      "type": 1,
+      "value": "b"
+    }
+  ],
   "+sDqqq": [
     {
       "type": 0,
@@ -109,6 +127,12 @@
       "value": "Account Support"
     }
   ],
+  "/PD+P7": [
+    {
+      "type": 0,
+      "value": "Popular on nostr today"
+    }
+  ],
   "/T7HId": [
     {
       "type": 0,
@@ -153,6 +177,16 @@
     {
       "type": 0,
       "value": "Nostr address does not belong to you"
+    }
+  ],
+  "063sPD": [
+    {
+      "type": 0,
+      "value": "Highlighted by "
+    },
+    {
+      "type": 1,
+      "value": "a"
     }
   ],
   "08zn6O": [
@@ -221,6 +255,16 @@
       "value": "Show Status"
     }
   ],
+  "0xB3sY": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " people you follow are in this thread"
+    }
+  ],
   "0yO7wF": [
     {
       "type": 1,
@@ -281,6 +325,12 @@
       "value": "Be sure to back up your keys!"
     }
   ],
+  "1kOFp2": [
+    {
+      "type": 0,
+      "value": "Threads"
+    }
+  ],
   "1nYUGC": [
     {
       "type": 1,
@@ -337,6 +387,12 @@
     {
       "type": 0,
       "value": "Add"
+    }
+  ],
+  "21CbUK": [
+    {
+      "type": 0,
+      "value": "People your follows reply to a lot"
     }
   ],
   "25V4l1": [
@@ -715,6 +771,12 @@
       "value": "Recommended Application Handlers"
     }
   ],
+  "56iS37": [
+    {
+      "type": 0,
+      "value": "Welcome back."
+    }
+  ],
   "5BVs2e": [
     {
       "type": 0,
@@ -725,6 +787,12 @@
     {
       "type": 0,
       "value": "Zap Splits"
+    }
+  ],
+  "5K2fvD": [
+    {
+      "type": 0,
+      "value": "The most talked about note on nostr right now"
     }
   ],
   "5PRWs7": [
@@ -1181,6 +1249,12 @@
       "value": "Retry publishing"
     }
   ],
+  "9khnVR": [
+    {
+      "type": 0,
+      "value": "Photos"
+    }
+  ],
   "9pMqYs": [
     {
       "type": 0,
@@ -1217,6 +1291,16 @@
       "value": "API key for AI Agent service"
     }
   ],
+  "ALdW69": [
+    {
+      "type": 0,
+      "value": "Note by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
   "AN0Z7Q": [
     {
       "type": 0,
@@ -1227,6 +1311,12 @@
     {
       "type": 0,
       "value": "This author has been muted"
+    }
+  ],
+  "AU8sN9": [
+    {
+      "type": 0,
+      "value": "Jump to where you left off"
     }
   ],
   "AYQh6r": [
@@ -1467,12 +1557,6 @@
     {
       "type": 1,
       "value": "title"
-    }
-  ],
-  "CVWeJ6": [
-    {
-      "type": 0,
-      "value": "Trending People"
     }
   ],
   "CYkOCI": [
@@ -1757,12 +1841,6 @@
       "value": "Key"
     }
   ],
-  "EjFyoR": [
-    {
-      "type": 0,
-      "value": "On-chain Donation Address"
-    }
-  ],
   "EnCOBJ": [
     {
       "type": 0,
@@ -1809,6 +1887,12 @@
     {
       "type": 0,
       "value": " Zaps"
+    }
+  ],
+  "FEiLmN": [
+    {
+      "type": 0,
+      "value": "Popular people to follow"
     }
   ],
   "FHWpHC": [
@@ -2637,6 +2721,24 @@
       "value": "Become a leader"
     }
   ],
+  "M70SEj": [
+    {
+      "type": 0,
+      "value": "Zapped by "
+    },
+    {
+      "type": 1,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": " and "
+    },
+    {
+      "type": 1,
+      "value": "b"
+    }
+  ],
   "MBAYRO": [
     {
       "type": 0,
@@ -2659,6 +2761,16 @@
     {
       "type": 0,
       "value": " KB)"
+    }
+  ],
+  "MFNK/k": [
+    {
+      "type": 0,
+      "value": "Reposted by "
+    },
+    {
+      "type": 1,
+      "value": "a"
     }
   ],
   "MI2jkA": [
@@ -2771,6 +2883,24 @@
     {
       "type": 0,
       "value": "Job Feedback"
+    }
+  ],
+  "NH3zzM": [
+    {
+      "type": 0,
+      "value": "Reposted by "
+    },
+    {
+      "type": 1,
+      "value": "a"
+    },
+    {
+      "type": 0,
+      "value": " and "
+    },
+    {
+      "type": 1,
+      "value": "b"
     }
   ],
   "NepkXH": [
@@ -2903,20 +3033,6 @@
     {
       "type": 0,
       "value": "System (Default)"
-    }
-  ],
-  "P7nJT9": [
-    {
-      "type": 0,
-      "value": "Total today (UTC): "
-    },
-    {
-      "type": 1,
-      "value": "amount"
-    },
-    {
-      "type": 0,
-      "value": " sats"
     }
   ],
   "P8JC58": [
@@ -3519,6 +3635,16 @@
       "value": "Show Thread Data"
     }
   ],
+  "V1OgBC": [
+    {
+      "type": 0,
+      "value": "You left off here at "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    }
+  ],
   "V20Og0": [
     {
       "type": 0,
@@ -3757,6 +3883,12 @@
     {
       "type": 0,
       "value": "Trending Hashtags"
+    }
+  ],
+  "Xenpsl": [
+    {
+      "type": 0,
+      "value": "Long reads"
     }
   ],
   "XgWvGA": [
@@ -4089,12 +4221,6 @@
       "value": "Compute prune list"
     }
   ],
-  "bLZL5a": [
-    {
-      "type": 0,
-      "value": "Get Address"
-    }
-  ],
   "bMphls": [
     {
       "type": 0,
@@ -4319,12 +4445,6 @@
     {
       "type": 0,
       "value": "Display name"
-    }
-  ],
-  "ddd3JX": [
-    {
-      "type": 0,
-      "value": "Popular Hashtags"
     }
   ],
   "djLctd": [
@@ -4609,12 +4729,6 @@
       "value": "What's on your mind?"
     }
   ],
-  "fqwcJ1": [
-    {
-      "type": 0,
-      "value": "On-chain Donation"
-    }
-  ],
   "fr+XYA": [
     {
       "type": 0,
@@ -4693,6 +4807,16 @@
     {
       "type": 0,
       "value": "Not all clients support this yet"
+    }
+  ],
+  "gZChF2": [
+    {
+      "type": 0,
+      "value": "Zapped by "
+    },
+    {
+      "type": 1,
+      "value": "a"
     }
   ],
   "gczcC5": [
@@ -5442,7 +5566,8 @@
       "offset": 0,
       "options": {
         "=0": {
-          "value": []
+          "value": [
+          ]
         },
         "=1": {
           "value": [
@@ -5470,6 +5595,12 @@
     {
       "type": 0,
       "value": "Start"
+    }
+  ],
+  "mWKPwa": [
+    {
+      "type": 0,
+      "value": "Everything"
     }
   ],
   "mfe8RW": [
@@ -5576,6 +5707,12 @@
     {
       "type": 0,
       "value": "Listen to this article"
+    }
+  ],
+  "nqVJUP": [
+    {
+      "type": 0,
+      "value": "Worth a look"
     }
   ],
   "ntt283": [
@@ -6038,6 +6175,54 @@
       "value": "Interests list"
     }
   ],
+  "tFQLS6": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " new note since "
+            },
+            {
+              "type": 1,
+              "value": "time"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " new notes since "
+            },
+            {
+              "type": 1,
+              "value": "time"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
+    }
+  ],
   "tFpT/O": [
     {
       "type": 0,
@@ -6258,6 +6443,152 @@
     {
       "type": 0,
       "value": "Communities list"
+    }
+  ],
+  "vCZ66U": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "offset": 0,
+              "options": {
+                "=1": {
+                  "value": [
+                    {
+                      "style": null,
+                      "type": 2,
+                      "value": "n"
+                    },
+                    {
+                      "type": 0,
+                      "value": " new note since "
+                    },
+                    {
+                      "type": 1,
+                      "value": "time"
+                    },
+                    {
+                      "type": 0,
+                      "value": ", and "
+                    },
+                    {
+                      "type": 7
+                    },
+                    {
+                      "type": 0,
+                      "value": " reply to you."
+                    }
+                  ]
+                },
+                "other": {
+                  "value": [
+                    {
+                      "style": null,
+                      "type": 2,
+                      "value": "n"
+                    },
+                    {
+                      "type": 0,
+                      "value": " new note since "
+                    },
+                    {
+                      "type": 1,
+                      "value": "time"
+                    },
+                    {
+                      "type": 0,
+                      "value": ", and "
+                    },
+                    {
+                      "type": 7
+                    },
+                    {
+                      "type": 0,
+                      "value": " replies to you."
+                    }
+                  ]
+                }
+              },
+              "pluralType": "cardinal",
+              "type": 6,
+              "value": "r"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "offset": 0,
+              "options": {
+                "=1": {
+                  "value": [
+                    {
+                      "style": null,
+                      "type": 2,
+                      "value": "n"
+                    },
+                    {
+                      "type": 0,
+                      "value": " new notes since "
+                    },
+                    {
+                      "type": 1,
+                      "value": "time"
+                    },
+                    {
+                      "type": 0,
+                      "value": ", and "
+                    },
+                    {
+                      "type": 7
+                    },
+                    {
+                      "type": 0,
+                      "value": " reply to you."
+                    }
+                  ]
+                },
+                "other": {
+                  "value": [
+                    {
+                      "style": null,
+                      "type": 2,
+                      "value": "n"
+                    },
+                    {
+                      "type": 0,
+                      "value": " new notes since "
+                    },
+                    {
+                      "type": 1,
+                      "value": "time"
+                    },
+                    {
+                      "type": 0,
+                      "value": ", and "
+                    },
+                    {
+                      "type": 7
+                    },
+                    {
+                      "type": 0,
+                      "value": " replies to you."
+                    }
+                  ]
+                }
+              },
+              "pluralType": "cardinal",
+              "type": 6,
+              "value": "r"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "n"
     }
   ],
   "vN5UH8": [
@@ -6608,6 +6939,12 @@
     {
       "type": 0,
       "value": "All"
+    }
+  ],
+  "zWCwR7": [
+    {
+      "type": 0,
+      "value": "See replies"
     }
   ],
   "zi9MdS": [

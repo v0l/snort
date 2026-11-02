@@ -13,6 +13,7 @@ import { initRelayWorker, ProfilesCache, preload, Relay } from "@/Cache"
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider"
 import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch"
 import ErrorPage from "@/Pages/ErrorPage"
+import { PaneRouteIds } from "@/Pages/Layout/panes"
 import { OnboardingRoutes } from "@/Pages/onboarding/routes"
 import { RootRoutes } from "@/Pages/Root/RootRoutes"
 import SettingsRoutes from "@/Pages/settings/Routes"
@@ -83,6 +84,7 @@ const mainRoutes = [
     },
   },
   {
+    id: PaneRouteIds.thread,
     path: "/e/:id",
     async lazy() {
       const { ThreadRoute } = await import("@/Components/Event/Thread/ThreadRoute")
@@ -90,6 +92,7 @@ const mainRoutes = [
     },
   },
   {
+    id: PaneRouteIds.profile,
     path: "/p/:id",
     async lazy() {
       const { default: ProfilePage } = await import("@/Pages/Profile/ProfilePage")
@@ -97,10 +100,18 @@ const mainRoutes = [
     },
   },
   {
+    id: PaneRouteIds.notifications,
     path: "/notifications",
     async lazy() {
       const { default: NotificationsPage } = await import("@/Pages/Notifications/Notifications")
       return { Component: NotificationsPage }
+    },
+  },
+  {
+    path: "/worth-a-look",
+    async lazy() {
+      const { WorthALookPage } = await import("@/Components/WorthALook/WorthALook")
+      return { Component: WorthALookPage }
     },
   },
   {
@@ -211,6 +222,7 @@ if (CONFIG.features.subscriptions) {
 
 // add catch all route
 mainRoutes.push({
+  id: PaneRouteIds.link,
   path: "/:link",
   async lazy() {
     const { default: NostrLinkHandler } = await import("@/Pages/NostrLinkHandler")

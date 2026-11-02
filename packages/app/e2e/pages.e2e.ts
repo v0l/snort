@@ -1,4 +1,4 @@
-import { EventKind, expect, expectPublished, icon, test } from "./support/test"
+import { EventKind, expect, expectPublished, test } from "./support/test"
 import { alice, bob, freshDvm } from "./support/world"
 
 test.beforeEach(async ({ login }) => {
@@ -50,18 +50,11 @@ test("new chat window", async ({ page }) => {
   await expect(page.getByText(bob.displayName).last()).toBeVisible()
 })
 
-test("invite widget copies a link", async ({ page, context }) => {
-  await context.grantPermissions(["clipboard-read", "clipboard-write"])
-  await page.goto("/following")
-  await page.getByRole("button", { name: "Copy link" }).click()
-  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toContain("ref=")
-})
-
 test("trending provider can be switched and is saved", async ({ page, relay }) => {
   await page.goto("/following")
-  const trending = page.locator("div.layer-1", { hasText: "Trending Notes" })
-  await expect(trending.getByText("Hello from Bob")).toBeVisible()
-  await icon(trending, "settings-02").first().click()
+  const worth = page.locator("section", { has: page.getByRole("heading", { name: "Worth a look" }) })
+  await expect(worth.getByText("Hello from Bob").first()).toBeVisible()
+  await worth.getByRole("button", { name: "Popular notes provider" }).click()
   await expect(page.getByText("Select Provider")).toBeVisible()
   await page.getByText(freshDvm.displayName).click()
 
@@ -70,6 +63,6 @@ test("trending provider can be switched and is saved", async ({ page, relay }) =
   expect(data.preferences.trendingDvmPubkey).toBe(freshDvm.pubkey)
 
   await page.reload()
-  await expect(trending.getByText("Read this")).toBeVisible()
-  await expect(trending.getByText("Hello from Bob")).toHaveCount(0)
+  await expect(worth.getByText("Read this").first()).toBeVisible()
+  await expect(worth.getByText("Hello from Bob")).toHaveCount(0)
 })

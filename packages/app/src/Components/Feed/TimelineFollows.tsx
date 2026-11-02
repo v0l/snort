@@ -1,5 +1,5 @@
 import { unixNow } from "@snort/shared"
-import { EventKind, type NostrEvent, RequestBuilder } from "@snort/system"
+import { type EventKind, type NostrEvent, RequestBuilder } from "@snort/system"
 import { useRequestBuilder } from "@snort/system-react"
 import { type ReactNode, useCallback, useMemo } from "react"
 
@@ -10,7 +10,11 @@ import useTimelineChunks from "@/Hooks/useTimelineChunks"
 import { dedupeByPubkey } from "@/Utils"
 import { Hour } from "@/Utils/Const"
 
+import { useLastRead } from "@/Hooks/useLastRead"
+import { useNewNoteCount } from "@/Hooks/useNewNoteCount"
+
 import { AutoLoadMore } from "../Event/LoadMore"
+import { WelcomeBack } from "./LeftOff"
 import TimelineChunk from "./TimelineChunk"
 import { TimelineRenderer } from "./TimelineRenderer"
 
@@ -29,18 +33,19 @@ export interface TimelineFollowsProps {
  * A list of notes by your follows
  */
 const TimelineFollows = (props: TimelineFollowsProps) => {
+  const id = `follows${props.id ? `:${props.id}` : ""}`
   const [openedAt] = useHistoryState(unixNow(), "openedAt")
   // Events newer than this are buffered behind the "show latest" pill;
   // persisted in history state so back-navigation doesn't re-bury them.
   const [shownUntil, setShownUntil] = useHistoryState(openedAt, "latestShownUntil")
   const { isFollowing, followList } = useFollowsControls()
-  const { chunks, showMore } = useTimelineChunks({
+  const { leftOffAt } = useLastRead(id)
+  const newNotes = useNewNoteCount(leftOffAt)
+  const { chunks, showMore, loadUntil } = useTimelineChunks({
     now: openedAt,
     window: props.windowSize,
     firstChunkSize: props.firstChunkSize ?? Hour * 2,
   })
-
-  const id = `follows${props.id ? `:${props.id}` : ""}`
 
   const builder = useCallback(
     (rb: RequestBuilder) => {
@@ -85,6 +90,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
 
   return (
     <>
+      <WelcomeBack leftOffAt={leftOffAt} newNotes={newNotes} loadUntil={loadUntil} />
       <TimelineRenderer
         frags={{
           events: shownLatest,
@@ -99,6 +105,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         }}
         noteOnClick={props.noteOnClick}
         noteRenderer={props.noteRenderer}
+        leftOffAt={leftOffAt}
       />
       {chunks.map(c => (
         <TimelineChunk
@@ -109,6 +116,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
           noteFilter={filterEvents}
           noteOnClick={props.noteOnClick}
           noteRenderer={props.noteRenderer}
+          leftOffAt={leftOffAt}
         />
       ))}
       <AutoLoadMore onClick={() => showMore()} />

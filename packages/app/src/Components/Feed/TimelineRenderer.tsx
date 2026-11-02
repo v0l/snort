@@ -22,6 +22,7 @@ export interface TimelineRendererProps {
   noteContext?: (ev: TaggedNostrEvent) => ReactNode
   loadMore?: () => void
   highlightText?: string
+  leftOffAt?: number
 }
 
 export function TimelineRenderer(props: TimelineRendererProps) {
@@ -59,6 +60,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
           noteOnClick={props.noteOnClick}
           noteContext={props.noteContext}
           highlightText={props.highlightText}
+          leftOffAt={props.leftOffAt}
         />
       </ErrorBoundary>
     ))

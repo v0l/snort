@@ -231,9 +231,9 @@ small {
   @apply button;
 }
 
-button,
-button[type="reset"],
-button[type="submit"] {
+button:not(.plain),
+button[type="reset"]:not(.plain),
+button[type="submit"]:not(.plain) {
   @apply button;
   user-select: none;
 }
@@ -242,6 +242,18 @@ button[type="submit"] {
 input,
 select {
   @apply rounded-full;
+}
+
+@layer base {
+  button.plain {
+    cursor: pointer;
+    user-select: none;
+    background: none;
+    border: 0 solid;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+  }
 }
 
 button.primary {
@@ -279,7 +291,7 @@ button:disabled:hover {
   color: var(--font-color);
 }
 
-button:hover {
+button:not(.plain):hover {
   background-color: var(--color-neutral-100);
 }
 
@@ -520,7 +532,7 @@ svg.repeat {
   box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
 }
 
-.light button,
+.light button:not(.plain),
 .light button.secondary {
   color: #4b5c83;
   background-color: #fff;
@@ -535,7 +547,7 @@ svg.repeat {
   box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
 }
 
-.light button:hover,
+.light button:not(.plain):hover,
 .light button.secondary:hover {
   box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
 }

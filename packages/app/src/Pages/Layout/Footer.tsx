@@ -30,6 +30,7 @@ const MENU_ITEMS: MenuItem[] = [
     ),
     hideReadOnly: true,
   },
+  { link: "/worth-a-look", icon: "stars" },
   { link: "/search", icon: "search" },
 ]
 
@@ -74,8 +75,14 @@ const FooterNavItem = ({ item, readonly }: { item: MenuItem; readonly: boolean }
         classNames({ active: isActive || isHovered }, "flex flex-1 p-4 justify-center items-center cursor-pointer")
       }
     >
-      <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
-      <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
+      {item.icon === "stars" ? (
+        <Icon name="stars" size={24} />
+      ) : (
+        <>
+          <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
+          <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
+        </>
+      )}
     </NavLink>
   )
 }

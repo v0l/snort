@@ -23,6 +23,9 @@
   "+mO9i4": {
     "defaultMessage": "Code Snippet"
   },
+  "+qGMB6": {
+    "defaultMessage": "Highlighted by {a} and {b}"
+  },
   "+sDqqq": {
     "defaultMessage": "Peer-to-peer Order events"
   },
@@ -50,6 +53,9 @@
   "/JE/X+": {
     "defaultMessage": "Account Support"
   },
+  "/PD+P7": {
+    "defaultMessage": "Popular on nostr today"
+  },
   "/T7HId": {
     "defaultMessage": "HTTP File Storage Integration"
   },
@@ -70,6 +76,9 @@
   },
   "01iNut": {
     "defaultMessage": "Nostr address does not belong to you"
+  },
+  "063sPD": {
+    "defaultMessage": "Highlighted by {a}"
   },
   "08zn6O": {
     "defaultMessage": "Export Keys"
@@ -104,6 +113,9 @@
   "0uoY11": {
     "defaultMessage": "Show Status"
   },
+  "0xB3sY": {
+    "defaultMessage": "{n} people you follow are in this thread"
+  },
   "0yO7wF": {
     "defaultMessage": "{n} secs"
   },
@@ -129,6 +141,9 @@
   "1UWegE": {
     "defaultMessage": "Be sure to back up your keys!"
   },
+  "1kOFp2": {
+    "defaultMessage": "Threads"
+  },
   "1nYUGC": {
     "defaultMessage": "{n} Following"
   },
@@ -143,6 +158,9 @@
   },
   "2/2yg+": {
     "defaultMessage": "Add"
+  },
+  "21CbUK": {
+    "defaultMessage": "People your follows reply to a lot"
   },
   "25V4l1": {
     "defaultMessage": "Banner"
@@ -300,11 +318,17 @@
   "4wgYpI": {
     "defaultMessage": "Recommended Application Handlers"
   },
+  "56iS37": {
+    "defaultMessage": "Welcome back."
+  },
   "5BVs2e": {
     "defaultMessage": "zap"
   },
   "5CB6zB": {
     "defaultMessage": "Zap Splits"
+  },
+  "5K2fvD": {
+    "defaultMessage": "The most talked about note on nostr right now"
   },
   "5PRWs7": {
     "defaultMessage": "Notifications API Enabled"
@@ -504,6 +528,9 @@
   "9kSari": {
     "defaultMessage": "Retry publishing"
   },
+  "9khnVR": {
+    "defaultMessage": "Photos"
+  },
   "9pMqYs": {
     "defaultMessage": "Nostr Address"
   },
@@ -523,11 +550,17 @@
   "AKrsKF": {
     "defaultMessage": "API key for AI Agent service"
   },
+  "ALdW69": {
+    "defaultMessage": "Note by {name}"
+  },
   "AN0Z7Q": {
     "defaultMessage": "Muted Words"
   },
   "ASRK0S": {
     "defaultMessage": "This author has been muted"
+  },
+  "AU8sN9": {
+    "defaultMessage": "Jump to where you left off"
   },
   "AYQh6r": {
     "defaultMessage": "Submit Report"
@@ -644,9 +677,6 @@
   "CSOaM+": {
     "defaultMessage": "{note_type} by {name}{title}"
   },
-  "CVWeJ6": {
-    "defaultMessage": "Trending People"
-  },
   "CYkOCI": {
     "defaultMessage": "and {count} others you follow"
   },
@@ -758,9 +788,6 @@
   "EcglP9": {
     "defaultMessage": "Key"
   },
-  "EjFyoR": {
-    "defaultMessage": "On-chain Donation Address"
-  },
   "EnCOBJ": {
     "defaultMessage": "Buy"
   },
@@ -778,6 +805,9 @@
   },
   "FDguSC": {
     "defaultMessage": "{n} Zaps"
+  },
+  "FEiLmN": {
+    "defaultMessage": "Popular people to follow"
   },
   "FHWpHC": {
     "defaultMessage": "Wallet Response"
@@ -1102,11 +1132,17 @@
   "M6C/px": {
     "defaultMessage": "Become a leader"
   },
+  "M70SEj": {
+    "defaultMessage": "Zapped by {a} and {b}"
+  },
   "MBAYRO": {
     "defaultMessage": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message"
   },
   "MF9ke5": {
     "defaultMessage": "{size} bytes ({kb} KB)"
+  },
+  "MFNK/k": {
+    "defaultMessage": "Reposted by {a}"
   },
   "MI2jkA": {
     "defaultMessage": "Not available:"
@@ -1162,6 +1198,9 @@
   },
   "NDTFsp": {
     "defaultMessage": "Job Feedback"
+  },
+  "NH3zzM": {
+    "defaultMessage": "Reposted by {a} and {b}"
   },
   "NepkXH": {
     "defaultMessage": "Can't vote with {amount} sats, please set a different default zap amount"
@@ -1222,9 +1261,6 @@
   },
   "P7FD0F": {
     "defaultMessage": "System (Default)"
-  },
-  "P7nJT9": {
-    "defaultMessage": "Total today (UTC): {amount} sats"
   },
   "P8JC58": {
     "defaultMessage": "Distance"
@@ -1485,6 +1521,9 @@
   "UxkETt": {
     "defaultMessage": "Show Thread Data"
   },
+  "V1OgBC": {
+    "defaultMessage": "You left off here at {time}"
+  },
   "V20Og0": {
     "defaultMessage": "Labeling"
   },
@@ -1571,6 +1610,9 @@
   },
   "XXm7jJ": {
     "defaultMessage": "Trending Hashtags"
+  },
+  "Xenpsl": {
+    "defaultMessage": "Long reads"
   },
   "XgWvGA": {
     "defaultMessage": "Reactions"
@@ -1695,9 +1737,6 @@
   "bJ+wrA": {
     "defaultMessage": "Compute prune list"
   },
-  "bLZL5a": {
-    "defaultMessage": "Get Address"
-  },
   "bMphls": {
     "defaultMessage": "Logged in with read-only access"
   },
@@ -1804,9 +1843,6 @@
   "dOQCL8": {
     "defaultMessage": "Display name"
   },
-  "ddd3JX": {
-    "defaultMessage": "Popular Hashtags"
-  },
   "djLctd": {
     "defaultMessage": "Amount in sats"
   },
@@ -1906,9 +1942,6 @@
   "flnGvv": {
     "defaultMessage": "What's on your mind?"
   },
-  "fqwcJ1": {
-    "defaultMessage": "On-chain Donation"
-  },
   "fr+XYA": {
     "defaultMessage": "Lightning Pub RPC"
   },
@@ -1944,6 +1977,9 @@
   },
   "gXgY3+": {
     "defaultMessage": "Not all clients support this yet"
+  },
+  "gZChF2": {
+    "defaultMessage": "Zapped by {a}"
   },
   "gczcC5": {
     "defaultMessage": "Subscribe"
@@ -2215,6 +2251,9 @@
   "mOFG3K": {
     "defaultMessage": "Start"
   },
+  "mWKPwa": {
+    "defaultMessage": "Everything"
+  },
   "mfe8RW": {
     "defaultMessage": "Option: {n}"
   },
@@ -2259,6 +2298,9 @@
   },
   "nihgfo": {
     "defaultMessage": "Listen to this article"
+  },
+  "nqVJUP": {
+    "defaultMessage": "Worth a look"
   },
   "ntt283": {
     "defaultMessage": "Recommended for you"
@@ -2458,6 +2500,9 @@
   "tDDiRL": {
     "defaultMessage": "Interests list"
   },
+  "tFQLS6": {
+    "defaultMessage": "{n,plural,=1{# new note since {time}.} other{# new notes since {time}.}}"
+  },
   "tFpT/O": {
     "defaultMessage": "Release artifact sets"
   },
@@ -2550,6 +2595,9 @@
   },
   "vBsZhD": {
     "defaultMessage": "Communities list"
+  },
+  "vCZ66U": {
+    "defaultMessage": "{n,plural,=1{{r,plural,=1{{n, number} new note since {time}, and # reply to you.} other{{n, number} new note since {time}, and # replies to you.}}} other{{r,plural,=1{{n, number} new notes since {time}, and # reply to you.} other{{n, number} new notes since {time}, and # replies to you.}}}}"
   },
   "vN5UH8": {
     "defaultMessage": "Profile Image"
@@ -2697,6 +2745,9 @@
   },
   "zQvVDJ": {
     "defaultMessage": "All"
+  },
+  "zWCwR7": {
+    "defaultMessage": "See replies"
   },
   "zi9MdS": {
     "defaultMessage": "Chess (PGN)"
