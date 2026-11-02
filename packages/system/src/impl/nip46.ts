@@ -38,6 +38,11 @@ interface Nip46Events {
   ready: () => void
 }
 
+export function isConnectAccepted(rsp: { result: string; error?: string }, secret?: string) {
+  if (rsp.error) return false
+  return rsp.result === "ack" || (!!secret && rsp.result === secret)
+}
+
 export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigner {
   #conn?: Connection
   #relay: string
@@ -152,7 +157,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
         if (autoConnect) {
           if (this.isBunker) {
             const rsp = await this.#connect(unwrap(this.#remotePubkey))
-            if (rsp.result === "ack") {
+            if (isConnectAccepted(rsp, this.#token)) {
               resolve()
             } else {
               reject(rsp.error)
