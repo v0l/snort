@@ -11,7 +11,7 @@ import { dedupeByPubkey } from "@/Utils"
 import { Hour } from "@/Utils/Const"
 
 import { useLastRead } from "@/Hooks/useLastRead"
-import { useNewNoteCount } from "@/Hooks/useNewNoteCount"
+import { useLeftOff } from "@/Hooks/useNewNoteCount"
 
 import { AutoLoadMore } from "../Event/LoadMore"
 import { WelcomeBack } from "./LeftOff"
@@ -40,7 +40,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const [shownUntil, setShownUntil] = useHistoryState(openedAt, "latestShownUntil")
   const { isFollowing, followList } = useFollowsControls()
   const { leftOffAt } = useLastRead(id)
-  const newNotes = useNewNoteCount(leftOffAt)
+  const { count: newNotes, before: leftOffBefore } = useLeftOff(leftOffAt)
   const { chunks, showMore, loadUntil } = useTimelineChunks({
     now: openedAt,
     window: props.windowSize,
@@ -106,6 +106,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         noteOnClick={props.noteOnClick}
         noteRenderer={props.noteRenderer}
         leftOffAt={leftOffAt}
+        leftOffBefore={leftOffBefore}
       />
       {chunks.map(c => (
         <TimelineChunk
@@ -117,6 +118,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
           noteOnClick={props.noteOnClick}
           noteRenderer={props.noteRenderer}
           leftOffAt={leftOffAt}
+          leftOffBefore={leftOffBefore}
         />
       ))}
       <AutoLoadMore onClick={() => showMore()} />

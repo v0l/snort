@@ -13,6 +13,7 @@ export interface TimelineChunkProps {
   noteRenderer?: (ev: NostrEvent) => ReactNode
   noteOnClick?: (ev: NostrEvent) => void
   leftOffAt?: number
+  leftOffBefore?: string
 }
 
 /**
@@ -44,6 +45,7 @@ export default function TimelineChunk(props: TimelineChunkProps) {
       latest={[]}
       showLatest={() => {}}
       leftOffAt={props.leftOffAt}
+      leftOffBefore={props.leftOffBefore}
     />
   )
 }

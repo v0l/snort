@@ -77,7 +77,7 @@ export function Note(props: NoteProps) {
 
   const noteElement = (
     <NoteProvider ev={ev}>
-      <div className="relative border-b" data-created={ev.created_at}>
+      <div className="relative border-b" data-created={ev.created_at} data-id={ev.id}>
         <div
           className={classNames("min-h-[88px] flex flex-col gap-2 px-4 pt-3 pb-2", {
             "outline-highlight outline-2": highlight,

@@ -23,6 +23,7 @@ export interface TimelineRendererProps {
   loadMore?: () => void
   highlightText?: string
   leftOffAt?: number
+  leftOffBefore?: string
 }
 
 export function TimelineRenderer(props: TimelineRendererProps) {
@@ -61,6 +62,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
           noteContext={props.noteContext}
           highlightText={props.highlightText}
           leftOffAt={props.leftOffAt}
+          leftOffBefore={props.leftOffBefore}
         />
       </ErrorBoundary>
     ))

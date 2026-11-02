@@ -6,15 +6,25 @@ export interface ReadMark {
 
 export const SessionGap = 30 * 60
 
-export function advanceMark(mark: ReadMark | undefined, seenAt: number, now: number): ReadMark {
+export function advanceMark(mark: ReadMark | undefined, seenAt: number, now: number, newest = 0): ReadMark {
   if (!mark) return { readUntil: seenAt, previous: 0, savedAt: now }
-  return { readUntil: Math.max(mark.readUntil, seenAt), previous: mark.previous, savedAt: now }
+  const readUntil = Math.max(mark.readUntil, seenAt)
+  const caughtUp = newest > 0 && readUntil >= newest
+  return { readUntil, previous: caughtUp ? 0 : mark.previous, savedAt: now }
 }
 
 export function startSession(mark: ReadMark | undefined, now: number): ReadMark | undefined {
   if (!mark) return
   if (now - mark.savedAt <= SessionGap) return mark
   return { readUntil: mark.readUntil, previous: mark.readUntil, savedAt: now }
+}
+
+export function leftOffTarget(notes: Array<{ id: string; created: number }>, since: number) {
+  if (since <= 0) return
+  const sorted = [...notes].sort((a, b) => b.created - a.created)
+  const idx = sorted.findIndex(n => n.created <= since)
+  if (idx <= 0) return
+  return sorted[idx].id
 }
 
 export function countSince(times: Array<number>, since: number) {

@@ -147,6 +147,55 @@ test.describe("welcome back", () => {
     await expect(noteCard(page, "line two of note 8")).toBeInViewport()
   })
 
+  test("there is exactly one left-off divider however the feed is split", async ({ page, relay, login }) => {
+    for (let i = 0; i < 30; i++) {
+      relay.add(await note(bob, `Spread note ${i}`, 600 * (i + 1)))
+    }
+    await login()
+    const leftOff = unixNow() - 600 * 3 - 30
+    await page.evaluate(({ key, mark }) => localStorage.setItem(key, JSON.stringify(mark)), {
+      key: `snort:read:${alice.pubkey.slice(0, 16)}:follows`,
+      mark: { readUntil: leftOff, previous: 0, savedAt: unixNow() - 7200 },
+    })
+    await page.goto("/following")
+    await expect(noteCard(page, "Spread note 0")).toBeVisible()
+    await expect(async () => {
+      await page.mouse.wheel(0, 1500)
+      await expect(noteCard(page, "Spread note 25")).toBeVisible({ timeout: 300 })
+    }).toPass({ timeout: 20_000 })
+    await expect(page.locator("[data-feed-column] [data-left-off]")).toHaveCount(1)
+  })
+
+  test("no divider when nothing new arrived since you left", async ({ page, relay, login }) => {
+    await seedLongFeed(relay, 10)
+    await login()
+    await page.evaluate(({ key, mark }) => localStorage.setItem(key, JSON.stringify(mark)), {
+      key: `snort:read:${alice.pubkey.slice(0, 16)}:follows`,
+      mark: { readUntil: unixNow(), previous: 0, savedAt: unixNow() - 7200 },
+    })
+    await page.goto("/following")
+    await expect(noteCard(page, "line two of note 0")).toBeVisible()
+    await page.waitForTimeout(1000)
+    await expect(page.locator("[data-left-off]")).toHaveCount(0)
+  })
+
+  test("the divider is gone once you have read past it", async ({ page, relay, login }) => {
+    await seedLongFeed(relay, 20)
+    await login()
+    const leftOff = unixNow() - 60 * 8 - 30
+    await page.evaluate(({ key, mark }) => localStorage.setItem(key, JSON.stringify(mark)), {
+      key: `snort:read:${alice.pubkey.slice(0, 16)}:follows`,
+      mark: { readUntil: leftOff, previous: 0, savedAt: unixNow() - 7200 },
+    })
+    await page.goto("/following")
+    await expect(page.locator("[data-feed-column] [data-left-off]")).toHaveCount(1)
+    await page.waitForTimeout(2500)
+    await page.reload()
+    await expect(noteCard(page, "line two of note 0")).toBeVisible()
+    await page.waitForTimeout(1000)
+    await expect(page.locator("[data-left-off]")).toHaveCount(0)
+  })
+
   test("a first visit shows no callout", async ({ page, relay, login }) => {
     await seedLongFeed(relay, 5)
     await login()

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
 
-import { advanceMark, countSince, SessionGap, startSession } from "../src/Utils/readMark"
+import { advanceMark, countSince, leftOffTarget, SessionGap, startSession } from "../src/Utils/readMark"
 
 describe("read mark", () => {
   test("first visit records what you read with nothing to come back to", () => {
@@ -23,6 +23,12 @@ describe("read mark", () => {
     expect(startSession(left, 1060)).toEqual(left)
   })
 
+  test("once you have read the newest notes there is nothing left to come back to", () => {
+    const back = startSession({ readUntil: 500, previous: 200, savedAt: 1000 }, 5000)
+    const caughtUp = advanceMark(back, 900, 5010, 900)
+    expect(caughtUp.previous).toBe(0)
+  })
+
   test("reading after coming back does not move where you left off", () => {
     const back = startSession({ readUntil: 500, previous: 200, savedAt: 1000 }, 5000)
     const later = advanceMark(back, 900, 5010)
@@ -33,5 +39,34 @@ describe("read mark", () => {
   test("new notes are the ones newer than where you left off", () => {
     expect(countSince([100, 600, 700, 400], 500)).toBe(2)
     expect(countSince([100, 600], 0)).toBe(0)
+  })
+
+  test("the divider goes before the newest note you had already seen", () => {
+    const notes = [
+      { id: "c", created: 300 },
+      { id: "a", created: 100 },
+      { id: "b", created: 200 },
+    ]
+    expect(leftOffTarget(notes, 250)).toBe("b")
+  })
+
+  test("no divider when nothing is newer than where you left off", () => {
+    expect(leftOffTarget([{ id: "a", created: 100 }], 150)).toBeUndefined()
+  })
+
+  test("no divider when every loaded note is new", () => {
+    expect(leftOffTarget([{ id: "a", created: 300 }], 150)).toBeUndefined()
+  })
+
+  test("no divider on a first visit", () => {
+    expect(
+      leftOffTarget(
+        [
+          { id: "a", created: 300 },
+          { id: "b", created: 100 },
+        ],
+        0,
+      ),
+    ).toBeUndefined()
   })
 })

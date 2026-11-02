@@ -17,6 +17,7 @@ export interface TimelineFragProps {
   noteContext?: (ev: TaggedNostrEvent) => ReactNode
   highlightText?: string
   leftOffAt?: number
+  leftOffBefore?: string
 }
 
 const options = {
@@ -28,12 +29,10 @@ export function TimelineFragment(props: TimelineFragProps) {
     <>
       {props.frag.title}
       {props.frag.events.map((e, index) => {
-        const leftOff = props.leftOffAt ?? 0
-        const showDivider =
-          leftOff > 0 && e.created_at <= leftOff && (index === 0 || props.frag.events[index - 1].created_at > leftOff)
+        const showDivider = props.leftOffBefore !== undefined && e.id === props.leftOffBefore
         return (
           <Fragment key={e.id}>
-            {showDivider && <LeftOffDivider at={leftOff} />}
+            {showDivider && <LeftOffDivider at={props.leftOffAt ?? 0} />}
             {props.noteRenderer?.(e) ?? (
               <Note
                 data={e}

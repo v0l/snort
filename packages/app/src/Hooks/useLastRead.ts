@@ -7,16 +7,19 @@ import { advanceMark, loadMark, markKey, type ReadMark, saveMark, startSession }
 const FeedSelector = "[data-feed-column]"
 const NoteSelector = "[data-created]"
 
-function newestScrolledPast(root: Element) {
+function scan(root: Element) {
+  let seen = 0
   let newest = 0
   for (const el of root.querySelectorAll<HTMLElement>(NoteSelector)) {
     if (el.closest("[data-pane-scroller]")) continue
+    const created = Number(el.dataset.created)
+    newest = Math.max(newest, created)
     const r = el.getBoundingClientRect()
     if (r.bottom > 0 && r.top < window.innerHeight * 0.6) {
-      newest = Math.max(newest, Number(el.dataset.created))
+      seen = Math.max(seen, created)
     }
   }
-  return newest
+  return { seen, newest }
 }
 
 export function useLastRead(feed: string) {
@@ -35,9 +38,9 @@ export function useLastRead(feed: string) {
       pending = 0
       const root = document.querySelector(FeedSelector)
       if (!root) return
-      const seen = newestScrolledPast(root)
+      const { seen, newest } = scan(root)
       if (seen === 0 || (current && seen <= current.readUntil)) return
-      current = advanceMark(current, seen, unixNow())
+      current = advanceMark(current, seen, unixNow(), newest)
       saveMark(key, current)
     }
     const onScroll = () => {
