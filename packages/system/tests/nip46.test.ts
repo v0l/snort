@@ -5,6 +5,8 @@
  */
 
 import { beforeEach, describe, expect, test } from "bun:test"
+import { EventBuilder } from "../src/event-builder"
+import type EventKind from "../src/event-kind"
 import { isConnectAccepted, Nip46Signer } from "../src/impl/nip46"
 import { PrivateKeySigner } from "../src/signer"
 
@@ -204,5 +206,64 @@ describe("Nip46Signer - Connection lifecycle", () => {
 
     await nip46.close()
     await nip46.close() // Should not throw
+  })
+})
+
+describe("Nip46Signer - bunker connect flow", () => {
+  async function runConnect(connectResult: (secret: string) => string) {
+    const bunker = PrivateKeySigner.random()
+    const bunkerPubkey = await bunker.getPubKey()
+    const secret = "s3cret-token"
+    const server = Bun.serve({
+      port: 0,
+      fetch(req, srv) {
+        return srv.upgrade(req) ? undefined : new Response("ws only", { status: 400 })
+      },
+      websocket: {
+        async message(ws, raw) {
+          const msg = JSON.parse(raw.toString())
+          if (msg[0] !== "EVENT") return
+          const ev = msg[1]
+          const req = JSON.parse(await bunker.nip44Decrypt(ev.content, ev.pubkey))
+          ws.send(JSON.stringify(["OK", ev.id, true, ""]))
+          const eb = new EventBuilder()
+          eb.kind(24_133 as EventKind)
+            .content(
+              await bunker.nip44Encrypt(
+                JSON.stringify({
+                  id: req.id,
+                  result: req.method === "connect" ? connectResult(secret) : "ack",
+                  error: "",
+                }),
+                ev.pubkey,
+              ),
+            )
+            .tag(["p", ev.pubkey])
+          ws.send(JSON.stringify(["EVENT", "reply", await eb.buildAndSign(bunker)]))
+        },
+      },
+    })
+    const signer = new Nip46Signer(
+      `bunker://${bunkerPubkey}?relay=ws://localhost:${server.port}&secret=${secret}`,
+      PrivateKeySigner.random(),
+    )
+    try {
+      await signer.init()
+    } finally {
+      await signer.close().catch(() => undefined)
+      server.stop(true)
+    }
+  }
+
+  test("resolves when the signer answers connect with the secret", async () => {
+    await runConnect(secret => secret)
+  })
+
+  test("resolves when the signer answers connect with ack", async () => {
+    await runConnect(() => "ack")
+  })
+
+  test("rejects when the signer answers connect with something else", async () => {
+    await expect(runConnect(() => "nope")).rejects.toBeDefined()
   })
 })
