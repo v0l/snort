@@ -38,11 +38,11 @@ function targetOf(ev: NostrEvent): { link: NostrLink; author?: string } | undefi
     case HighlightKind: {
       const a = tag(ev, "a")
       if (a) {
-        const link = NostrLink.fromTag(a)
+        const link = NostrLink.fromTag(["a", a[1]])
         return { link, author: link.author }
       }
       const e = tag(ev, "e")
-      return e ? { link: NostrLink.fromTag(e), author: p } : undefined
+      return e ? { link: NostrLink.fromTag(["e", e[1]]), author: p } : undefined
     }
     case EventKind.TextNote: {
       const root = ev.tags.find(t => t[0] === "e" && t[3] === "root")
@@ -73,6 +73,14 @@ function reasonOf(kind: number): DiscoveryReason | undefined {
   }
 }
 
+function safe<T>(f: () => T): T | undefined {
+  try {
+    return f()
+  } catch {
+    return
+  }
+}
+
 function actorOf(ev: NostrEvent) {
   return ev.kind === EventKind.ZapReceipt ? parseZap(ev).sender : ev.pubkey
 }
@@ -87,8 +95,8 @@ export function rankDiscovery(
 
   for (const ev of events) {
     const reason = reasonOf(ev.kind)
-    const actor = actorOf(ev)
-    const target = targetOf(ev)
+    const actor = safe(() => actorOf(ev))
+    const target = safe(() => targetOf(ev))
     if (!reason || !actor || !target || !followSet.has(actor)) continue
     if (target.author && (followSet.has(target.author) || target.author === me)) continue
     const key = target.link.tagKey

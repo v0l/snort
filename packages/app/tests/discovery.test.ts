@@ -74,6 +74,30 @@ describe("rankDiscovery", () => {
     expect(out[0].link.id).toBe("relay-lists")
   })
 
+  test("highlights with a source marker on their tags do not crash", () => {
+    const article = `30023:${stranger}:relay-lists`
+    const events = [
+      ev(alice, HighlightKind, [["a", article, "wss://relay.example/", "source"]]),
+      ev(bob, HighlightKind, [
+        ["e", strangerNote, "wss://relay.example/", "source"],
+        ["p", stranger, "", "author"],
+      ]),
+    ]
+    const out = rankDiscovery(events, [alice, bob], me)
+    expect(out.map(i => i.link.id).sort()).toEqual(["relay-lists", strangerNote].sort())
+  })
+
+  test("one malformed event is skipped instead of breaking the list", () => {
+    const events = [
+      ev(alice, EventKind.Repost, [["e", "not-hex"]]),
+      ev(alice, EventKind.ZapReceipt, [["description", "{not json"]]),
+      repost(alice, strangerNote, stranger),
+      repost(bob, strangerNote, stranger),
+    ]
+    const out = rankDiscovery(events, [alice, bob], me)
+    expect(out.map(i => i.link.id)).toEqual([strangerNote])
+  })
+
   test("busier items rank first", () => {
     const other = hex("9")
     const out = rankDiscovery(
