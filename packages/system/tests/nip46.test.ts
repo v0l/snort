@@ -5,8 +5,24 @@
  */
 
 import { beforeEach, describe, expect, test } from "bun:test"
-import { Nip46Signer } from "../src/impl/nip46"
+import { isConnectAccepted, Nip46Signer } from "../src/impl/nip46"
 import { PrivateKeySigner } from "../src/signer"
+
+describe("isConnectAccepted", () => {
+  test("accepts ack", () => {
+    expect(isConnectAccepted({ result: "ack" }, "s3cret")).toBe(true)
+  })
+
+  test("accepts a connect response that echoes the secret", () => {
+    expect(isConnectAccepted({ result: "s3cret", error: "" }, "s3cret")).toBe(true)
+  })
+
+  test("rejects a different result or an error", () => {
+    expect(isConnectAccepted({ result: "other" }, "s3cret")).toBe(false)
+    expect(isConnectAccepted({ result: "s3cret", error: "denied" }, "s3cret")).toBe(false)
+    expect(isConnectAccepted({ result: "" }, undefined)).toBe(false)
+  })
+})
 
 describe("Nip46Signer - Constructor", () => {
   let clientSigner: PrivateKeySigner
