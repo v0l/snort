@@ -133,7 +133,7 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
     <>
       {targets && (
         <>
-          <div ref={zapRef} className="flex flex-row flex-none min-w-[50px] md:min-w-[80px] gap-4 items-center">
+          <div ref={zapRef} className="flex flex-row flex-none min-w-[52px] md:min-w-[64px] gap-2 items-center">
             <AsyncFooterIcon
               className={didZap ? "reacted text-zap" : "hover:text-zap"}
               {...longPress()}

@@ -21,21 +21,27 @@ test.describe("feeds", () => {
     await expect(page.getByText("Great write up")).toHaveCount(0)
   })
 
-  test("tab menu switches feeds", async ({ page }) => {
+  test("tab row switches feeds and marks the current one", async ({ page }) => {
     await page.goto("/following")
-    await page.locator("header").getByRole("button", { name: "Following" }).click()
+    const tabs = page.getByRole("navigation", { name: "Feeds" })
     for (const tab of [
       "For you",
+      "Following",
       "Trending Notes",
       "Conversations",
       "Followed by friends",
       "Trending Hashtags",
       "Media",
     ]) {
-      await expect(page.getByText(tab, { exact: true }).last()).toBeVisible()
+      await expect(tabs.getByRole("button", { name: tab, exact: true })).toBeAttached()
     }
-    await page.getByText("Conversations", { exact: true }).last().click()
+    await expect(tabs.getByRole("button", { name: "Following", exact: true })).toHaveAttribute("aria-current", "page")
+    await tabs.getByRole("button", { name: "Conversations", exact: true }).click()
     await expect(page).toHaveURL(/\/conversations$/)
+    await expect(tabs.getByRole("button", { name: "Conversations", exact: true })).toHaveAttribute(
+      "aria-current",
+      "page",
+    )
   })
 
   test("topics shows followed hashtags", async ({ page }) => {

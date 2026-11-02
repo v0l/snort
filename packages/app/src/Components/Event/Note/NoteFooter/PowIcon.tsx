@@ -12,7 +12,7 @@ export const PowIcon = ({ ev }: { ev: TaggedNostrEvent }) => {
 
   return (
     <AsyncFooterIcon
-      className="hidden md:flex flex-none min-w-[50px] md:min-w-[80px]"
+      className="hidden md:flex flex-none min-w-[52px] md:min-w-[64px]"
       title={formatMessage({ defaultMessage: "Proof of Work", id: "grQ+mI" })}
       iconName="diamond"
       value={powValue}

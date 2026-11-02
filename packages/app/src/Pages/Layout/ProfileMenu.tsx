@@ -11,7 +11,7 @@ import { useProfileLink } from "@/Hooks/useProfileLink"
 import useWindowSize from "@/Hooks/useWindowSize"
 import { LoginStore } from "@/Utils/Login"
 
-export default function ProfileMenu({ className }: { className?: string }) {
+export default function ProfileMenu({ className, compact }: { className?: string; compact?: boolean }) {
   const { publicKey, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
     readonly: s.readonly,
@@ -23,6 +23,18 @@ export default function ProfileMenu({ className }: { className?: string }) {
   const pageSize = useWindowSize()
   const isNarrow = pageSize.width <= 1280 //xl
   function profile() {
+    if (compact) {
+      return (
+        <ProfileImage
+          pubkey={publicKey!}
+          size={32}
+          link=""
+          showUsername={false}
+          showProfileCard={false}
+          showFollowDistance={false}
+        />
+      )
+    }
     return (
       <ProfilePreview
         pubkey={publicKey!}
@@ -53,7 +65,9 @@ export default function ProfileMenu({ className }: { className?: string }) {
     <div className={classNames("w-full cursor-pointer", className)}>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <div>{profile()}</div>
+          <button type="button" className="plain w-full text-left" aria-label="Account menu">
+            {profile()}
+          </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Portal>
           <DropdownMenu.Content className="bg-layer-2 rounded-lg overflow-hidden z-[9999] min-w-48" sideOffset={5}>
@@ -67,6 +81,18 @@ export default function ProfileMenu({ className }: { className?: string }) {
               <div className="flex gap-2 items-center">
                 <Icon name="user" />
                 <FormattedMessage defaultMessage="Profile" />
+              </div>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              className={itemClassName}
+              onClick={e => {
+                e.stopPropagation()
+                navigate("/wallet")
+              }}
+            >
+              <div className="flex gap-2 items-center">
+                <Icon name="wallet" />
+                <FormattedMessage defaultMessage="Wallet" />
               </div>
             </DropdownMenu.Item>
             <DropdownMenu.Item className="px-6 py-2 uppercase text-xs font-medium text-gray-light bg-layer-2 light:bg-white outline-none cursor-default">

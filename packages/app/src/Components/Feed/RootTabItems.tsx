@@ -10,6 +10,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       tab: "for-you",
       path: `${base}/for-you`,
       show: Boolean(pubKey),
+      label: <FormattedMessage defaultMessage="For you" />,
       element: (
         <>
           <Icon name="user-v2" />
@@ -21,6 +22,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       tab: "following",
       path: `${base}/following`,
       show: Boolean(pubKey),
+      label: <FormattedMessage defaultMessage="Following" />,
       element: (
         <>
           <Icon name="user-v2" />
@@ -32,6 +34,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       tab: "trending/notes",
       path: `${base}/trending/notes`,
       show: true,
+      label: <FormattedMessage defaultMessage="Trending Notes" />,
       element: (
         <>
           <Icon name="fire" />
@@ -43,6 +46,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       tab: "conversations",
       path: `${base}/conversations`,
       show: Boolean(pubKey),
+      label: <FormattedMessage defaultMessage="Conversations" />,
       element: (
         <>
           <Icon name="message-chat-circle" />
@@ -54,6 +58,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       tab: "followed-by-friends",
       path: `${base}/followed-by-friends`,
       show: Boolean(pubKey),
+      label: <FormattedMessage defaultMessage="Followed by friends" />,
       element: (
         <>
           <Icon name="user-v2" />
@@ -65,6 +70,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       tab: "trending/hashtags",
       path: `${base}/trending/hashtags`,
       show: true,
+      label: <FormattedMessage defaultMessage="Trending Hashtags" />,
       element: (
         <>
           <Icon name="hash" />
@@ -76,6 +82,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       tab: "tags",
       path: `${base}/topics`,
       show: tags.length > 0,
+      label: <FormattedMessage defaultMessage="Topics" />,
       element: (
         <>
           <Icon name="hash" />
@@ -87,6 +94,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       tab: "media",
       path: `${base}/media`,
       show: true,
+      label: <FormattedMessage defaultMessage="Media" />,
       element: (
         <>
           <Icon name="camera-plus" />
@@ -98,6 +106,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
       tab: "follow-sets",
       path: `${base}/follow-sets`,
       show: true,
+      label: <FormattedMessage defaultMessage="Follow Sets" />,
       element: (
         <>
           <Icon name="thumbs-up" />
@@ -109,6 +118,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: Arr
     tab: RootTabRoutePath
     path: string
     show: boolean
+    label: ReactNode
     element: ReactNode
   }>
   return menuItems

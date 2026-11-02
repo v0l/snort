@@ -68,7 +68,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
 
   function latestInner() {
     return (
-      <div className="cursor-pointer flex flex-row justify-center items-center py-1.5 px-6 gap-2 text-white bg-highlight rounded-full">
+      <div className="cursor-pointer flex flex-row justify-center items-center py-1.5 px-4 gap-2 text-sm font-semibold text-primary bg-black light:bg-white border border-primary/40 rounded-full hover:bg-primary/10">
         <div className="flex">
           <AvatarGroup ids={wot.sortPubkeys(props.latest).slice(0, 3)} />
         </div>
@@ -86,7 +86,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
     <div ref={containerRef}>
       {props.latest.length > 0 && (
         <>
-          <div className="flex justify-center" onClick={() => props.showLatest(false)} ref={ref}>
+          <div className="flex justify-center py-2 border-b" onClick={() => props.showLatest(false)} ref={ref}>
             {latestInner()}
           </div>
           {!inView && (

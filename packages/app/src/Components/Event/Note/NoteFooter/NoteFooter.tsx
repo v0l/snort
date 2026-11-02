@@ -41,7 +41,12 @@ export default function NoteFooter(props: NoteFooterProps) {
   }, [system, link, props.replyCount])
 
   return (
-    <div className={classNames("flex flex-row gap-4 overflow-hidden max-w-full h-6 items-center", props.className)}>
+    <div
+      className={classNames(
+        "flex flex-row gap-1 overflow-hidden max-w-full h-6 items-center text-neutral-400",
+        props.className,
+      )}
+    >
       <ReplyButton ev={ev} replyCount={props.replyCount ?? replyCount} readonly={readonly} />
       <RepostButton ev={ev} reposts={reposts} />
       {enableReactions && <LikeButton ev={ev} positiveReactions={positive} />}

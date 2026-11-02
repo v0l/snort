@@ -46,7 +46,7 @@ export const ReplyButton = ({
   return (
     <AsyncFooterIcon
       className={classNames(
-        "flex-none min-w-[50px] md:min-w-[80px]",
+        "flex-none min-w-[52px] md:min-w-[64px]",
         note.show ? "reacted text-nostr-purple" : "hover:text-nostr-purple",
       )}
       iconName="reply"

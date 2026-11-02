@@ -14,7 +14,7 @@ import KindName from "@/Components/kind-name"
 import DisplayName from "@/Components/User/DisplayName"
 import useLogin from "@/Hooks/useLogin"
 import { LogoHeader } from "@/Pages/Layout/LogoHeader"
-import NotificationsHeader from "@/Pages/Layout/NotificationsHeader"
+import ProfileMenu from "@/Pages/Layout/ProfileMenu"
 import { findTag } from "@/Utils"
 import { RelayName } from "@/Components/Relay/name"
 
@@ -86,7 +86,8 @@ export function Header() {
     <header
       className={classNames(
         { "md:hidden": pageName === "messages" },
-        "flex justify-between items-center self-stretch gap-6 sticky top-0 z-10 backdrop-blur-lg",
+        "flex justify-between items-center self-stretch sticky top-0 z-10 backdrop-blur-lg border-b",
+        isRootTab ? "gap-0" : "gap-6",
       )}
     >
       <div
@@ -96,7 +97,7 @@ export function Header() {
         <Icon name="arrowBack" />
       </div>
       {!showBackButton && (
-        <div className="p-2 md:p-0 md:invisible">
+        <div className="p-2 md:hidden">
           <LogoHeader showText={false} />
         </div>
       )}
@@ -109,8 +110,8 @@ export function Header() {
           {title}
         </div>
       )}
-      <div className="md:invisible">
-        <NotificationsHeader />
+      <div className="md:hidden px-2">
+        <ProfileMenu compact={true} />
       </div>
     </header>
   )

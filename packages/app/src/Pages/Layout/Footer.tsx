@@ -1,6 +1,5 @@
 import classNames from "classnames"
 import type React from "react"
-import { useState } from "react"
 
 import NavLink from "@/Components/Button/NavLink"
 import { NoteCreatorButton } from "@/Components/Event/Create/NoteCreatorButton"
@@ -8,60 +7,66 @@ import Icon from "@/Components/Icons/Icon"
 import useLogin from "@/Hooks/useLogin"
 import useWindowSize from "@/Hooks/useWindowSize"
 
-import ProfileMenu from "./ProfileMenu"
+import { HasNotificationsMarker, UnreadMessages } from "./HasNotificationsMarker"
 
 type MenuItem = {
-  label?: string
+  label: string
   icon?: string
+  solid?: boolean
   link?: string
-  nonLoggedIn?: boolean
   el?: React.ReactNode
+  badge?: React.ReactNode
+  loggedIn?: boolean
   hideReadOnly?: boolean
 }
 
 const MENU_ITEMS: MenuItem[] = [
-  { link: "/", icon: "home" },
-  { link: "/messages", icon: "mail", hideReadOnly: true },
+  { label: "Home", link: "/", icon: "home", solid: true },
+  { label: "Worth a look", link: "/worth-a-look", icon: "stars" },
   {
+    label: "New note",
     el: (
       <div className="flex flex-grow items-center justify-center">
         <NoteCreatorButton alwaysShow={true} withModal={true} />
       </div>
     ),
+    loggedIn: true,
     hideReadOnly: true,
   },
-  { link: "/worth-a-look", icon: "stars" },
-  { link: "/search", icon: "search" },
+  {
+    label: "Notifications",
+    link: "/notifications",
+    icon: "bell",
+    solid: true,
+    badge: <HasNotificationsMarker />,
+    loggedIn: true,
+  },
+  { label: "Messages", link: "/messages", icon: "mail", solid: true, badge: <UnreadMessages />, hideReadOnly: true },
 ]
 
 const Footer = () => {
-  const { readonly } = useLogin(s => ({
+  const { readonly, publicKey } = useLogin(s => ({
     readonly: s.readonly,
+    publicKey: s.publicKey,
   }))
   const pageSize = useWindowSize()
   const isMobile = pageSize.width <= 768 //max-md
   if (!isMobile) return
 
-  return (
-    <footer className="md:hidden fixed bottom-0 z-10 w-full pb-safe-area bg-layer-1">
-      <div className="grid grid-flow-col">
-        {MENU_ITEMS.map((item, index) => (
-          <FooterNavItem key={index} item={item} readonly={readonly} />
-        ))}
+  const items = MENU_ITEMS.filter(a => !(readonly && a.hideReadOnly) && !((a.loggedIn || a.hideReadOnly) && !publicKey))
 
-        <ProfileMenu className="flex justify-center items-center" />
+  return (
+    <nav className="md:hidden fixed bottom-0 z-10 w-full pb-safe-area bg-layer-1 border-t" aria-label="Main">
+      <div className="grid grid-flow-col">
+        {items.map(item => (
+          <FooterNavItem key={item.label} item={item} />
+        ))}
       </div>
-    </footer>
+    </nav>
   )
 }
 
-const FooterNavItem = ({ item, readonly }: { item: MenuItem; readonly: boolean }) => {
-  const [isHovered, setIsHovered] = useState(false)
-
-  if (readonly && item.hideReadOnly) {
-    return null
-  }
-
+const FooterNavItem = ({ item }: { item: MenuItem }) => {
   if (item.el) {
     return item.el
   }
@@ -69,20 +74,22 @@ const FooterNavItem = ({ item, readonly }: { item: MenuItem; readonly: boolean }
   return (
     <NavLink
       to={item.link ?? "/"}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      aria-label={item.label}
       className={({ isActive }) =>
-        classNames({ active: isActive || isHovered }, "flex flex-1 p-4 justify-center items-center cursor-pointer")
+        classNames({ active: isActive }, "flex flex-1 p-4 justify-center items-center cursor-pointer")
       }
     >
-      {item.icon === "stars" ? (
-        <Icon name="stars" size={24} />
-      ) : (
-        <>
-          <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
-          <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
-        </>
-      )}
+      <span className="relative inline-flex">
+        {item.solid ? (
+          <>
+            <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
+            <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
+          </>
+        ) : (
+          <Icon name={item.icon ?? ""} size={24} />
+        )}
+        {item.badge}
+      </span>
     </NavLink>
   )
 }

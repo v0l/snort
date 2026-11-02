@@ -31,7 +31,7 @@ export function NoteContent({ props, options, goToEvent, setSeenAtRef, waitUntil
         {translated && <TranslationInfo />}
         {ev.kind === EventKind.Polls && <Poll ev={ev} zaps={[]} />}
         {options.showFooter && (
-          <div className="mt-4">
+          <div className="mt-2">
             <NoteFooter replyCount={props.threadChains?.get(EventExt.keyOf(ev))?.length} />
           </div>
         )}

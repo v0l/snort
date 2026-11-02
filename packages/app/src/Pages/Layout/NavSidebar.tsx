@@ -8,8 +8,7 @@ import Icon from "@/Components/Icons/Icon"
 import useEventPublisher from "@/Hooks/useEventPublisher"
 import useLogin from "@/Hooks/useLogin"
 import useWindowSize from "@/Hooks/useWindowSize"
-import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker"
-import { WalletBalance } from "@/Pages/Layout/WalletBalance"
+import { HasNotificationsMarker, UnreadMessages } from "@/Pages/Layout/HasNotificationsMarker"
 import { subscribeToNotifications } from "@/Utils/Notifications"
 
 import { LogoHeader } from "./LogoHeader"
@@ -91,7 +90,6 @@ export default function NavSidebar({ narrow = false }: { narrow?: boolean }) {
             "gap-1 flex flex-col items-center text-lg font-bold",
           )}
         >
-          {!narrow && <WalletBalance />}
           {MENU_ITEMS.filter(a => {
             if ((CONFIG.hideFromNavbar ?? []).includes(a.link)) {
               return false
@@ -119,9 +117,12 @@ export default function NavSidebar({ narrow = false }: { narrow?: boolean }) {
                 to={item.link}
                 className={({ isActive }) => getNavLinkClass(isActive, narrow)}
               >
-                <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
-                <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
-                {item.link === "/notifications" && <HasNotificationsMarker />}
+                <span className="relative inline-flex">
+                  <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
+                  <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
+                  {item.link === "/notifications" && <HasNotificationsMarker />}
+                  {item.link === "/messages" && <UnreadMessages />}
+                </span>
                 {!narrow && <span className="hidden xl:inline ml-3">{item.label}</span>}
               </NavLink>
             )

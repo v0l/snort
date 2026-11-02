@@ -41,7 +41,7 @@ export const LikeButton = ({
   return (
     <AsyncFooterIcon
       className={classNames(
-        "flex-none min-w-[50px] md:min-w-[80px]",
+        "flex-none min-w-[52px] md:min-w-[64px]",
         reacted ? "reacted text-heart" : "hover:text-heart",
       )}
       iconName={reacted ? "heart-solid" : "heart"}

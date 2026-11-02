@@ -40,8 +40,11 @@ test("zap pays through the connected wallet", async ({ page, wallet }) => {
   await expect(page.getByText("Zap amount:")).toHaveCount(0)
 })
 
-test("sidebar balance reflects the wallet", async ({ page }) => {
+test("profile menu opens the wallet with its balance", async ({ page }) => {
   await connectNwc(page)
   await page.goto("/following")
+  await page.getByRole("button", { name: "Account menu" }).first().click()
+  await page.getByRole("menuitem", { name: "Wallet" }).click()
+  await expect(page).toHaveURL(/\/wallet$/)
   await expect(page.getByText("21,000").first()).toBeVisible()
 })

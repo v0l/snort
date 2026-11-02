@@ -79,7 +79,7 @@ export function Note(props: NoteProps) {
     <NoteProvider ev={ev}>
       <div className="relative border-b" data-created={ev.created_at}>
         <div
-          className={classNames("min-h-[110px] flex flex-col gap-4 px-3 py-2", {
+          className={classNames("min-h-[88px] flex flex-col gap-2 px-4 pt-3 pb-2", {
             "outline-highlight outline-2": highlight,
             "hover:bg-neutral-950 light:hover:bg-neutral-50 cursor-pointer": !opt?.isRoot,
           })}
