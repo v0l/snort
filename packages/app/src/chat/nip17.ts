@@ -50,7 +50,7 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
   }
 
   async processEvents(pub: EventPublisher, evs: Array<TaggedNostrEvent>) {
-    const evsProcess = evs.filter(a => !this.#seenEvents.has(a.id) && !this.#cache.keysOnTable().includes(a.id))
+    const evsProcess = evs.filter(a => a?.id && !this.#seenEvents.has(a.id) && !this.#cache.keysOnTable().includes(a.id))
     await this.#cache.onEvent(evsProcess, "", pub)
     for (const a of evsProcess) {
       this.#seenEvents.add(a.id)
