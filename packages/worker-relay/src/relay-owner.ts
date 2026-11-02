@@ -64,6 +64,7 @@ export interface RelayOwnerOptions {
 export class RelayOwner {
   #path?: string
   #opening?: Promise<void>
+  #initRequested = Promise.withResolvers<void>()
   #mode: RelayMode = "follower"
   #relay?: RelayHandler
   #lock?: DbLock
@@ -101,6 +102,7 @@ export class RelayOwner {
    */
   init(path: string) {
     this.#opening ??= this.#open(path)
+    this.#initRequested.resolve()
     return this.#opening
   }
 
@@ -127,6 +129,7 @@ export class RelayOwner {
     if (LOCAL_ONLY.has(msg.cmd)) {
       return undefined
     }
+    await this.#initRequested.promise
     if (this.#opening) {
       await this.#opening
       if (this.#mode === "leader" && this.#relay) {

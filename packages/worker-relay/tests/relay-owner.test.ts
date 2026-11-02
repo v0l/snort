@@ -145,6 +145,16 @@ describe("RelayOwner", () => {
     expect(owner.relay).toBeDefined()
   })
 
+  test("a command sent before init waits for it instead of failing", async () => {
+    const owner = makeOwner(new FakeBus(), new FakeLocks(), fakeRelay([note("dd")]))
+
+    const early = owner.execute(rpc("req", ["REQ", "1", {}])) as Promise<Array<NostrEvent>>
+    await new Promise(resolve => setTimeout(resolve, 5))
+    await owner.init("db")
+
+    expect((await early).map(a => a.id)).toEqual(["dd"])
+  })
+
   test("a second context follows and is served by the leader", async () => {
     const bus = new FakeBus()
     const locks = new FakeLocks()
