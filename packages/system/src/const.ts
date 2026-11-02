@@ -93,6 +93,10 @@ export const QueryFetchTimeout = 30_000
  */
 export const FetchAllGracePeriod = 500
 
+export const SafeSyncGracePeriod = 5_000
+
+export const SafeSyncPickN = 20
+
 /**
  * Timeout for NIP-55 clipboard-based signer response (ms)
  */

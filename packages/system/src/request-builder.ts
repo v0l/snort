@@ -57,6 +57,8 @@ export interface RequestBuilderOptions {
    */
   extraEvents?: Array<NostrEvent>
 
+  gracePeriod?: number
+
   /**
    * Stable identity for sync-state (watermark) keying. Use when the query id
    * itself is volatile (embeds timestamps, window bounds or batch counters)

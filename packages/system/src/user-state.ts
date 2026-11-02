@@ -134,13 +134,19 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
 
   async #performInit(signer: EventSigner | undefined, system: SystemInterface) {
     this.#log("Init start")
+    const relaysSynced = this.#relays?.sync(signer, system).catch(e => this.#log("Failed to sync relays: %O", e))
     const tasks = [
       this.#profile?.sync(signer, system).catch(e => this.#log("Failed to sync profile: %O", e)),
       this.#contacts?.sync(signer, system).catch(e => this.#log("Failed to sync contacts: %O", e)),
-      this.#relays?.sync(signer, system).catch(e => this.#log("Failed to sync relays: %O", e)),
+      relaysSynced,
     ]
     if (this.#appdata) {
-      tasks.push(this.#appdata.sync(signer, system).catch(e => this.#log("Failed to sync appdata: %O", e)))
+      const appdata = this.#appdata
+      tasks.push(
+        Promise.resolve(relaysSynced)
+          .then(() => appdata.sync(signer, system, this.#writeRelays()))
+          .catch(e => this.#log("Failed to sync appdata: %O", e)),
+      )
     }
     if (this.#standardLists) {
       for (const list of this.#standardLists.values()) {
@@ -171,6 +177,10 @@ export class UserState<TAppData> extends EventEmitter<UserStateEvents> {
 
   get signer() {
     return this.#signer
+  }
+
+  #writeRelays() {
+    return (this.relays ?? []).filter(r => r.settings.write).map(r => r.url)
   }
 
   get version() {

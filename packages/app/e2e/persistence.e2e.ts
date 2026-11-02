@@ -2,6 +2,7 @@ import { unixNow } from "@snort/shared"
 import { EventBuilder } from "@snort/system"
 import type { Page } from "@playwright/test"
 
+import { FakeRelay } from "./support/relay"
 import { EventKind, expect, expectPublished, icon, tagValues, test } from "./support/test"
 import { alice, BlossomServers, bob, RelayUrl } from "./support/world"
 
@@ -51,6 +52,106 @@ test.describe("app data", () => {
     )
     await login()
     await expectPreferences(page)
+  })
+})
+
+test.describe("removed settings", () => {
+  const imgproxy = { url: "https://imgproxy.snort.test", key: "aa", salt: "bb" }
+
+  async function decryptLatest(relay: import("./support/relay").FakeRelay) {
+    const ev = relay.latest({ kinds: [EventKind.AppData], authors: [alice.pubkey], "#d": ["snort"] })
+    return ev ? JSON.parse(await alice.signer.nip44Decrypt(ev.content, alice.pubkey)) : undefined
+  }
+
+  test("turning imgproxy off stays off after a reload and a clean login", async ({
+    page,
+    relay,
+    login,
+    cleanLogin,
+  }) => {
+    const content = JSON.stringify({ preferences: { imgProxyConfig: imgproxy } })
+    relay.add(
+      await new EventBuilder()
+        .kind(EventKind.AppData)
+        .content(await alice.signer.nip44Encrypt(content, alice.pubkey))
+        .tag(["d", "snort"])
+        .createdAt(unixNow() - 600)
+        .buildAndSign(alice.signer),
+    )
+    await login()
+    await page.goto("/settings/preferences")
+    const toggle = page
+      .getByText("Use imgproxy to compress images")
+      .locator("xpath=following::input[@type='checkbox'][1]")
+    await expect(toggle).toBeChecked()
+
+    await toggle.uncheck()
+    await page.getByRole("button", { name: "Save" }).first().click()
+    await expect
+      .poll(async () => (await decryptLatest(relay))?.preferences?.imgProxyConfig ?? "removed")
+      .toBe("removed")
+
+    await page.reload()
+    await page.goto("/settings/preferences")
+    await expect(toggle).not.toBeChecked()
+
+    const fresh = await cleanLogin()
+    await fresh.goto("/settings/preferences")
+    await expect(
+      fresh.getByText("Use imgproxy to compress images").locator("xpath=following::input[@type='checkbox'][1]"),
+    ).not.toBeChecked()
+  })
+})
+
+test.describe("app data across relays", () => {
+  const SlowRelay = "wss://slow.snort.test/"
+  const theme = (page: Page) => after(page, "Theme", "select")
+
+  async function appData(prefs: object, age: number) {
+    return await new EventBuilder()
+      .kind(EventKind.AppData)
+      .content(await alice.signer.nip44Encrypt(JSON.stringify({ preferences: prefs }), alice.pubkey))
+      .tag(["d", "snort"])
+      .createdAt(unixNow() - age)
+      .buildAndSign(alice.signer)
+  }
+
+  test("the newest settings load even when a faster relay has an older copy", async ({
+    page,
+    relay,
+    extraRelays,
+    login,
+  }) => {
+    const slow = new FakeRelay([await appData({ theme: "dark", imgProxyConfig: undefined }, 60)])
+    slow.replyDelay = 1500
+    extraRelays.set(SlowRelay, slow)
+    relay.add(await appData({ theme: "light" }, 3600))
+    relay.add(
+      await new EventBuilder()
+        .kind(EventKind.Relays)
+        .tag(["r", RelayUrl])
+        .tag(["r", SlowRelay])
+        .createdAt(unixNow() - 30)
+        .buildAndSign(alice.signer),
+    )
+
+    await login()
+    await page.goto("/settings/preferences")
+    await expect(theme(page)).toHaveValue("dark")
+    await expect(page.locator("html")).not.toHaveClass(/light/)
+
+    await theme(page).selectOption("system")
+    await page.getByRole("button", { name: "Save" }).first().click()
+    for (const r of [relay, slow]) {
+      await expect
+        .poll(async () => {
+          const ev = r.latest({ kinds: [EventKind.AppData], authors: [alice.pubkey], "#d": ["snort"] })
+          return ev
+            ? JSON.parse(await alice.signer.nip44Decrypt(ev.content, alice.pubkey)).preferences.theme
+            : undefined
+        })
+        .toBe("system")
+    }
   })
 })
 

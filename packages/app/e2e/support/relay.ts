@@ -47,6 +47,7 @@ export class FakeRelay {
   readonly published: Array<NostrEvent> = []
   readonly #subs: Array<Subscription> = []
   readonly #responders: Array<Responder> = []
+  replyDelay = 0
 
   constructor(events: Array<NostrEvent>) {
     for (const ev of events) this.#store(ev)
@@ -78,6 +79,7 @@ export class FakeRelay {
           this.#close(ws, id)
           this.#subs.push({ ws, id, filters })
           this.requests.push(...filters)
+          if (this.replyDelay > 0) await new Promise(r => setTimeout(r, this.replyDelay))
           const seen = new Set<string>()
           for (const f of filters) {
             for (const ev of this.query(f)) {

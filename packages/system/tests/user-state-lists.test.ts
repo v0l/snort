@@ -75,4 +75,41 @@ describe("UserState standard lists", () => {
     expect(fetched.length).toBeGreaterThan(0)
     expect(fetched.every(rb => rb.options?.skipCache === true)).toBe(true)
   })
+
+  test("app data is asked for on every write relay in the user's relay list", async () => {
+    const signer = new PrivateKeySigner(KEY)
+    const pubkey = await signer.getPubKey()
+    const relayList = await signer.sign({
+      id: "",
+      sig: "",
+      pubkey,
+      kind: EventKind.Relays,
+      created_at: unixNow(),
+      content: "",
+      tags: [
+        ["r", "wss://a.example/"],
+        ["r", "wss://b.example/", "write"],
+        ["r", "wss://c.example/", "read"],
+      ],
+    })
+    const appdataRelays: Array<string> = []
+    const system = {
+      Fetch: async (rb: RequestBuilder) => {
+        const raw = rb.buildRaw()
+        if (raw.some(f => f.kinds?.includes(EventKind.Relays))) return [relayList]
+        if (raw.some(f => f.kinds?.includes(EventKind.AppData))) {
+          appdataRelays.push(...raw.flatMap(f => f.relays ?? []))
+        }
+        return []
+      },
+      BroadcastEvent: async () => [],
+    } as unknown as SystemInterface
+    const state = new UserState<{ v: number }>(pubkey, {
+      appdataId: "snort",
+      initAppdata: { v: 1 },
+      encryptAppdata: false,
+    })
+    await state.init(signer, system)
+    expect([...new Set(appdataRelays)].sort()).toEqual(["wss://a.example/", "wss://b.example/"])
+  })
 })

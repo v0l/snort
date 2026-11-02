@@ -56,8 +56,8 @@ export class JsonEventSync<T> extends EventEmitter<JsonEventSyncEvents> {
     this.emit("change")
   }
 
-  async sync(signer: EventSigner | undefined, system: SystemInterface) {
-    const res = await this.#sync.sync(system)
+  async sync(signer: EventSigner | undefined, system: SystemInterface, relays?: Array<string>) {
+    const res = await this.#sync.sync(system, relays)
     this.#log("Sync result %O", res)
     if (res) {
       if (this.encrypt) {

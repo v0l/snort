@@ -411,7 +411,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     }
 
     if (this.#system.requestRouter) {
-      filters = this.#system.requestRouter.forAllRequest(filters)
+      filters = this.#system.requestRouter.forAllRequest(filters, q.outboxPickN)
     }
 
     const compressed = this.#system.optimizer.compress(filters).reduce(

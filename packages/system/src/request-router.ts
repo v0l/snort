@@ -44,7 +44,7 @@ export interface RequestRouter {
    * Same as forRequest, but merges the results
    * @param filters
    */
-  forAllRequest(filters: Array<ReqFilter>): Array<ReqFilter>
+  forAllRequest(filters: Array<ReqFilter>, pickN?: number): Array<ReqFilter>
 }
 
 export abstract class BaseRequestRouter implements RequestRouter {
@@ -53,9 +53,9 @@ export abstract class BaseRequestRouter implements RequestRouter {
   abstract forRequest(filter: ReqFilter, pickN?: number): Array<ReqFilter>
   abstract forFlatRequest(filter: FlatReqFilter[], pickN?: number): Array<FlatReqFilter>
 
-  forAllRequest(filters: Array<ReqFilter>) {
+  forAllRequest(filters: Array<ReqFilter>, pickN?: number) {
     const allSplit = filters
-      .map(a => this.forRequest(a))
+      .map(a => this.forRequest(a, pickN))
       .reduce((acc, v) => {
         for (const vn of v) {
           for (const r of (vn.relays?.length ?? 0) > 0 ? unwrap(vn.relays) : [""]) {

@@ -9,6 +9,8 @@ import {
   type SystemInterface,
 } from ".."
 import { unixNow } from "@snort/shared"
+
+import { SafeSyncGracePeriod, SafeSyncPickN } from "../const"
 import debug from "debug"
 
 /**
@@ -41,12 +43,12 @@ export class SafeSync {
   /**
    * Fetch the latest version
    */
-  async sync(system: SystemInterface) {
+  async sync(system: SystemInterface, relays?: Array<string>) {
     if (this.link.kind === undefined || this.link.author === undefined) {
       throw new Error("Kind must be set")
     }
 
-    return await this.#sync(system)
+    return await this.#sync(system, relays)
   }
 
   /**
@@ -91,12 +93,15 @@ export class SafeSync {
     return await signer.sign(toSign)
   }
 
-  async #sync(system: SystemInterface) {
+  async #sync(system: SystemInterface, relays?: Array<string>) {
     const rb = new RequestBuilder("sync")
-    rb.withOptions({ skipCache: true })
+    rb.withOptions({ skipCache: true, gracePeriod: SafeSyncGracePeriod, outboxPickN: SafeSyncPickN })
     const f = rb.withFilter().link(this.link)
     if (this.#base) {
       f.since(this.#base.created_at)
+    }
+    if (relays && relays.length > 0) {
+      rb.withFilter().link(this.link).relay(relays)
     }
     const results = await system.Fetch(rb)
     const res = results.find(a => this.link.matchesEvent(a))

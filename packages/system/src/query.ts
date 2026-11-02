@@ -254,6 +254,10 @@ export class Query extends EventEmitter<QueryEvents> {
    */
   #hardTimer?: ReturnType<typeof setTimeout>
 
+  #gracePeriod: number
+
+  readonly outboxPickN?: number
+
   #log = debug("Query")
 
   constructor(req: RequestBuilder) {
@@ -269,6 +273,8 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#groupingDelay = req.options?.groupingDelay ?? 100
     this.#replaceable = req.options?.replaceable ?? false
     this.#keepAlive = req.options?.keepAlive ?? 0
+    this.#gracePeriod = req.options?.gracePeriod ?? FetchAllGracePeriod
+    this.outboxPickN = req.options?.outboxPickN
     this.#duplicates = 0
 
     this.addRequest(req)
@@ -437,7 +443,7 @@ export class Query extends EventEmitter<QueryEvents> {
           this.#graceTimer = setTimeout(() => {
             this.#graceTimer = undefined
             this.#timeoutRemaining()
-          }, FetchAllGracePeriod)
+          }, this.#gracePeriod)
         }
 
         if (this.progress === 1) {

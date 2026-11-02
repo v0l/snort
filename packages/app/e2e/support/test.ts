@@ -9,6 +9,7 @@ import { alice, buildWorld, freshDvm, NwcUri, trendingResult, type User, type Wo
 
 interface Fixtures {
   relay: FakeRelay
+  extraRelays: Map<string, FakeRelay>
   http: HttpLog
   wallet: WalletLog
   pageErrors: Array<string>
@@ -34,7 +35,11 @@ export const test = base.extend<Fixtures, { world: World }>({
     await use({ balanceMsats: 21_000_000, payments: [], invoices: [] })
   },
 
-  relay: async ({ world, context, http, wallet }, use) => {
+  extraRelays: async ({}, use) => {
+    await use(new Map())
+  },
+
+  relay: async ({ world, context, http, wallet, extraRelays }, use) => {
     void http
     const relay = new FakeRelay(world.events)
     relay.onEvent(walletResponder(wallet))
@@ -48,7 +53,10 @@ export const test = base.extend<Fixtures, { world: World }>({
       }
       return []
     })
-    await context.routeWebSocket(/^wss?:\/\//, ws => relay.connect(ws))
+    await context.routeWebSocket(/^wss?:\/\//, ws => {
+      const extra = extraRelays.get(ws.url())
+      ;(extra ?? relay).connect(ws)
+    })
     await use(relay)
   },
 
