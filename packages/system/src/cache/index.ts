@@ -28,7 +28,7 @@ export type UsersFollows = {
   follows: Array<Array<string>>
 } & CachedBase
 
-export function mapEventToProfile(ev: NostrEvent) {
+export function mapEventToProfile(ev: NostrEvent, loaded: number = unixNowMs()) {
   if (ev.kind !== 0 && ev.kind !== 31990) return
   try {
     const data: UserMetadata = JSON.parse(ev.content)
@@ -36,7 +36,7 @@ export function mapEventToProfile(ev: NostrEvent) {
       ...data,
       pubkey: ev.pubkey,
       created: ev.created_at,
-      loaded: unixNowMs(),
+      loaded,
     } as CachedMetadata
 
     // sanitize non-string/number

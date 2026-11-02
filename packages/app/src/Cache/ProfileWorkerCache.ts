@@ -14,8 +14,12 @@ export class ProfileCacheRelayWorker extends WorkerBaseCache<CachedMetadata> {
     return 5_000
   }
 
+  override persistLoaded(): boolean {
+    return true
+  }
+
   mapper(ev: NostrEvent): CachedMetadata | undefined {
-    return mapEventToProfile(ev)
+    return mapEventToProfile(ev, 0)
   }
 
   override async preload(follows?: Array<string>) {
