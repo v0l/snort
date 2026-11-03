@@ -228,9 +228,20 @@ test.describe("translation cache", () => {
 
   test("a translated note is requested once and shown again after remounting", async ({ page, http }) => {
     http.translateReply = { detected_source_language: "ES", text: "Translated by the cache test" }
+    await page.addInitScript(() => {
+      if (sessionStorage.getItem("translations-reset")) return
+      sessionStorage.setItem("translations-reset", "1")
+      localStorage.removeItem("translations:v1")
+    })
     await page.goto("/following")
     await expect(page.getByText("Translated by the cache test").first()).toBeVisible()
-    const before = http.translateRequests.length
+    let before = -1
+    await expect(async () => {
+      const seen = http.translateRequests.length
+      await page.waitForTimeout(1_500)
+      expect(http.translateRequests.length).toBe(seen)
+      before = seen
+    }).toPass()
     await page.goto("/search")
     await page.goto("/following")
     await expect(page.getByText("Translated by the cache test").first()).toBeVisible()
