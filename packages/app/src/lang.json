@@ -1743,6 +1743,9 @@
   "bMphls": {
     "defaultMessage": "Logged in with read-only access"
   },
+  "bMypsQ": {
+    "defaultMessage": "No chats match your search"
+  },
   "bQdA2k": {
     "defaultMessage": "Sensitive Content"
   },
@@ -1902,6 +1905,9 @@
   },
   "eoV49s": {
     "defaultMessage": "Poor"
+  },
+  "f+G3aw": {
+    "defaultMessage": "No messages yet. Say hello!"
   },
   "f00p/7": {
     "defaultMessage": "Upload failed"
@@ -2157,6 +2163,9 @@
   },
   "k7sKNy": {
     "defaultMessage": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
+  },
+  "kJ5W29": {
+    "defaultMessage": "You"
   },
   "kJYo0u": {
     "defaultMessage": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"
@@ -2638,6 +2647,9 @@
   "wSZR47": {
     "defaultMessage": "Submit"
   },
+  "wTbikY": {
+    "defaultMessage": "No messages yet. Start a new chat to say hello."
+  },
   "wc9st7": {
     "defaultMessage": "Media Attachments"
   },
@@ -2709,6 +2721,9 @@
   },
   "yCLnBC": {
     "defaultMessage": "LNURL or Lightning Address"
+  },
+  "yF0QS1": {
+    "defaultMessage": "Search chats"
   },
   "yLzgxH": {
     "defaultMessage": "Popular Relays"

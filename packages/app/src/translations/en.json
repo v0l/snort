@@ -4233,6 +4233,12 @@
       "value": "Logged in with read-only access"
     }
   ],
+  "bMypsQ": [
+    {
+      "type": 0,
+      "value": "No chats match your search"
+    }
+  ],
   "bQdA2k": [
     {
       "type": 0,
@@ -4637,6 +4643,12 @@
     {
       "type": 0,
       "value": "Poor"
+    }
+  ],
+  "f+G3aw": [
+    {
+      "type": 0,
+      "value": "No messages yet. Say hello!"
     }
   ],
   "f00p/7": [
@@ -5263,6 +5275,12 @@
     {
       "type": 0,
       "value": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
+    }
+  ],
+  "kJ5W29": [
+    {
+      "type": 0,
+      "value": "You"
     }
   ],
   "kJYo0u": [
@@ -6677,6 +6695,12 @@
       "value": "Submit"
     }
   ],
+  "wTbikY": [
+    {
+      "type": 0,
+      "value": "No messages yet. Start a new chat to say hello."
+    }
+  ],
   "wc9st7": [
     {
       "type": 0,
@@ -6839,6 +6863,12 @@
     {
       "type": 0,
       "value": "LNURL or Lightning Address"
+    }
+  ],
+  "yF0QS1": [
+    {
+      "type": 0,
+      "value": "Search chats"
     }
   ],
   "yLzgxH": [
