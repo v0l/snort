@@ -33,6 +33,18 @@ export interface Optimizer {
   batchVerify(evs: Array<NostrEvent>): Array<boolean>
 }
 
+function verifyEventSafe(ev: NostrEvent): boolean {
+  try {
+    if (EventExt.isVerified(ev)) return true
+    const id = EventExt.createId(ev)
+    const ok = schnorr.verify(hexToBytes(ev.sig), hexToBytes(id), hexToBytes(ev.pubkey))
+    if (ok) EventExt.markVerified(ev)
+    return ok
+  } catch {
+    return false
+  }
+}
+
 export const DefaultOptimizer = {
   expandFilter: (f: ReqFilter) => {
     return expandFilter(f)
@@ -50,21 +62,6 @@ export const DefaultOptimizer = {
   compress: (all: Array<ReqFilter>) => {
     return mergeSimilar(all)
   },
-  schnorrVerify: ev => {
-    // Fast path: already verified (e.g. came through EventExt.verify earlier)
-    if (EventExt.isVerified(ev)) return true
-    const id = EventExt.createId(ev)
-    const ok = schnorr.verify(hexToBytes(ev.sig), hexToBytes(id), hexToBytes(ev.pubkey))
-    if (ok) EventExt.markVerified(ev)
-    return ok
-  },
-  batchVerify: evs => {
-    return evs.map(ev => {
-      if (EventExt.isVerified(ev)) return true
-      const id = EventExt.createId(ev)
-      const ok = schnorr.verify(hexToBytes(ev.sig), hexToBytes(id), hexToBytes(ev.pubkey))
-      if (ok) EventExt.markVerified(ev)
-      return ok
-    })
-  },
+  schnorrVerify: ev => verifyEventSafe(ev),
+  batchVerify: evs => evs.map(ev => verifyEventSafe(ev)),
 } as Optimizer
