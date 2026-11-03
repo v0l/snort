@@ -13,6 +13,7 @@ import useLogin from "@/Hooks/useLogin"
 export interface DMProps {
   chat: Chat
   data: ChatMessage
+  grouped?: boolean
 }
 
 export default function DM(props: DMProps) {
@@ -52,7 +53,7 @@ export default function DM(props: DMProps) {
 
   function sender() {
     const isGroup = props.chat.type === ChatType.PrivateGroupChat || props.chat.type === ChatType.PublicGroupChat
-    if (isGroup && !isMe) {
+    if (isGroup && !isMe && !props.grouped) {
       return <ProfileImage pubkey={msg.from} />
     }
   }
@@ -72,8 +73,8 @@ export default function DM(props: DMProps) {
     <div
       className={
         isMe
-          ? "self-end mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap align-self-end"
-          : "mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap"
+          ? `self-end ${props.grouped ? "mt-1" : "mt-4"} min-w-[100px] max-w-[90%] whitespace-pre-wrap`
+          : `${props.grouped ? "mt-1" : "mt-4"} min-w-[100px] max-w-[90%] whitespace-pre-wrap`
       }
       ref={ref}
     >

@@ -103,7 +103,7 @@ export class Nip17ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
         bestTitle = sbj
         bestTitleTime = ts
       }
-      if (ts > last) unread++
+      if (ts > last && v.inner.pubkey !== v.to) unread++
       if (ts > lastMessage) lastMessage = ts
     }
     return {
