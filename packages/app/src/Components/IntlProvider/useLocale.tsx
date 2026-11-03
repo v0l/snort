@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react"
 
-import { getLocale } from "@/Components/IntlProvider/IntlProviderUtils"
+import { DefaultLocale, getLocale } from "@/Components/IntlProvider/IntlProviderUtils"
 import { LangOverride } from "@/Components/IntlProvider/langStore"
 import usePreferences from "@/Hooks/usePreferences"
 
@@ -8,9 +8,10 @@ export function useLocale() {
   const language = usePreferences(s => s.language)
   const loggedOutLang = useSyncExternalStore(
     c => LangOverride.hook(c),
-    () => LangOverride.snapshot(),
+    () => LangOverride.snapshot() ?? getLocale(),
+    () => DefaultLocale,
   )
-  const locale = language ?? loggedOutLang ?? getLocale()
+  const locale = language ?? loggedOutLang
   return {
     locale,
     lang: locale.toLowerCase().split(/[_-]+/)[0],

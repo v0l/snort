@@ -2,9 +2,11 @@ FROM oven/bun:alpine AS web
 WORKDIR /src
 RUN apk add --no-cache git
 COPY . .
-RUN git init -q . 2>/dev/null; bun install && bun run build
+RUN git init -q . 2>/dev/null; bun install && bun run build && bun --cwd=packages/app run build:ssr
 
 FROM voidic/nostr-ssr:latest
 COPY --from=web /src/packages/app/build /app/dist/client
+COPY --from=web /src/packages/app/build/ssr /app/dist/ssr
+RUN rm -rf /app/dist/client/ssr
 COPY ssr.json /app/ssr.json
 ENV CONFIG=/app/ssr.json

@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react"
+import { useSyncExternalStore } from "react"
+
+export const ServerWindowSize = { width: 1280, height: 800 }
+
+let current = ServerWindowSize
+
+function read() {
+  if (current.width !== window.innerWidth || current.height !== window.innerHeight) {
+    current = { width: window.innerWidth, height: window.innerHeight }
+  }
+  return current
+}
+
+function subscribe(cb: () => void) {
+  window.addEventListener("resize", cb)
+  return () => window.removeEventListener("resize", cb)
+}
 
 export default function useWindowSize() {
-  const [dims, setDims] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  })
-
-  useEffect(() => {
-    const handler = () => {
-      setDims({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      })
-    }
-    window.addEventListener("resize", handler)
-    return () => window.removeEventListener("resize", handler)
-  }, [])
-  return dims
+  return useSyncExternalStore(subscribe, read, () => ServerWindowSize)
 }

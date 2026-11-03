@@ -137,6 +137,7 @@ export function useChatSystem<T extends ChatSystem & ExternalStore<Array<Chat>>>
   const chat = useSyncExternalStore(
     s => sys.hook(s),
     () => sys.snapshot(),
+    () => sys.snapshot(),
   )
   // biome-ignore lint/correctness/useExhaustiveDependencies: sys is a stable singleton
   const sub = useMemo(() => {

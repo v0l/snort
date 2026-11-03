@@ -60,6 +60,6 @@ export function useUserProfile(pubKey?: string, ref?: RefObject<Element | null>)
       }
     },
     () => system.profileLoader.cache.getFromCache(pubKey),
-    () => undefined,
+    () => system.profileLoader.cache.getFromCache(pubKey),
   )
 }

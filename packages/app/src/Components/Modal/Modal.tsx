@@ -2,6 +2,8 @@ import type React from "react"
 import { type ReactNode, useEffect, useLayoutEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 
+import { useHydrated } from "@/Hooks/useHydrated"
+
 export interface ModalProps {
   id: string
   className?: string
@@ -63,11 +65,13 @@ export default function Modal(props: ModalProps) {
     }
   }, [])
 
+  const hydrated = useHydrated()
   const handleBackdropClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     props.onClose?.(e)
   }
 
+  if (!hydrated) return null
   return createPortal(
     <div
       className={

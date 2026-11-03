@@ -11,6 +11,7 @@ import FollowsList from "@/Components/User/FollowListBase"
 import MutedList from "@/Components/User/MutedList"
 import useFollowsFeed from "@/Feed/FollowsFeed"
 import useLogin from "@/Hooks/useLogin"
+import useWindowSize from "@/Hooks/useWindowSize"
 import AvatarSection from "@/Pages/Profile/AvatarSection"
 import ProfileDetails from "@/Pages/Profile/ProfileDetails"
 import {
@@ -32,14 +33,25 @@ interface ProfilePageProps {
   state?: CachedMetadata
 }
 
+function linkFromParam(param?: string) {
+  if (!param || param.match(EmailRegex)) return undefined
+  const nav = tryParseNostrLink(param)
+  if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
+    return { id: nav.id, relays: nav.relays }
+  }
+  return { id: parseId(param), relays: undefined }
+}
+
 export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   const params = useParams()
   const location = useLocation()
   const spotlight = use(SpotlightContext)
   const profileState = (location.state as CachedMetadata | undefined) || state
   const navigate = useNavigate()
-  const [id, setId] = useState<string | undefined>(profileState?.pubkey)
-  const [relays, setRelays] = useState<Array<string>>()
+  const windowSize = useWindowSize()
+  const initialLink = profileState ? undefined : linkFromParam(propId || params.id)
+  const [id, setId] = useState<string | undefined>(profileState?.pubkey ?? initialLink?.id)
+  const [relays, setRelays] = useState<Array<string> | undefined>(initialLink?.relays)
   const user = useUserProfile(profileState ? undefined : id) || profileState
   const { loginPubKey, readonly } = useLogin(s => ({
     loginPubKey: s.publicKey,
@@ -84,13 +96,9 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
           setId(a)
         })
       } else {
-        const nav = tryParseNostrLink(resolvedParamId ?? "")
-        if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
-          setId(nav.id)
-          setRelays(nav.relays)
-        } else {
-          setId(parseId(resolvedParamId ?? ""))
-        }
+        const link = linkFromParam(resolvedParamId)
+        setId(link?.id)
+        setRelays(link?.relays)
       }
       setTab(ProfileTabSelectors.Notes)
     }
@@ -130,7 +138,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
     }
   }
 
-  const bannerWidth = Math.min(window.innerWidth, 940)
+  const bannerWidth = Math.min(windowSize.width, 940)
   return (
     <>
       <div>

@@ -3,6 +3,7 @@ import type { CSSProperties, ReactNode } from "react"
 import { createPortal } from "react-dom"
 
 import IconButton from "@/Components/Button/IconButton"
+import { useHydrated } from "@/Hooks/useHydrated"
 
 export default function Flyout({
   show,
@@ -21,6 +22,7 @@ export default function Flyout({
   side: "left" | "right"
   width?: string
 }) {
+  const hydrated = useHydrated()
   const styles = {
     "--flyout-w": width ?? "400px",
     transition: "all 0.2s ease-in-out",
@@ -31,6 +33,7 @@ export default function Flyout({
         : `translate(${show ? "0" : "calc(-1 * var(--flyout-w))"},0)`,
   } as CSSProperties
 
+  if (!hydrated) return null
   return createPortal(
     <div
       className={classNames("absolute top-0 overflow-hidden z-50", {

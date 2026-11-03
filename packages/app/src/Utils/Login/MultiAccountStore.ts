@@ -304,6 +304,10 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     }
   }
 
+  loggedOutSnapshot(): LoginSession {
+    return LoggedOut
+  }
+
   takeSnapshot(): LoginSession {
     const s = this.#activeAccount ? this.#accounts.get(this.#activeAccount) : undefined
     if (!s) return LoggedOut

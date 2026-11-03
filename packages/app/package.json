@@ -57,10 +57,8 @@
   "scripts": {
     "start": "bunx --bun vite",
     "build": "bunx vite build",
-    "build:ssr": "SSR_CLIENT=true bunx vite build && SSR=true bunx vite build",
+    "build:ssr": "bunx vite build -c vite.ssr.config.ts",
     "serve": "bunx --bun vite preview",
-    "dev:ssr": "bun server/dev.ts",
-    "serve:ssr": "bun run server/prod.ts",
     "build:all": "bun run build && bun run build:ssr",
     "typecheck": "bunx --bun tsc --noEmit",
     "test:e2e": "bunx playwright test",

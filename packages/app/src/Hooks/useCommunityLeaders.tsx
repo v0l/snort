@@ -30,6 +30,7 @@ export function useCommunityLeader(pubkey?: string) {
   const store = useSyncExternalStore(
     c => LeadersStore.hook(c),
     () => LeadersStore.snapshot(),
+    () => LeadersStore.snapshot(),
   )
 
   return pubkey && store.includes(pubkey)

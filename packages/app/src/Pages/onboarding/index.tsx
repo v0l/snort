@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom"
 import Icon from "@/Components/Icons/Icon"
 import { AllLanguageCodes } from "@/Components/IntlProvider/IntlProviderUtils"
 import { useLocale } from "@/Components/IntlProvider/useLocale"
+import { useHydrated } from "@/Hooks/useHydrated"
 
 import Discover from "./discover"
 import Moderation from "./moderation"
@@ -22,6 +23,7 @@ export interface NewUserState {
 
 export function OnboardingLayout() {
   const { lang, setOverride } = useLocale()
+  const hydrated = useHydrated()
 
   return (
     <div className="p-6">
@@ -30,9 +32,11 @@ export function OnboardingLayout() {
         <select value={lang} onChange={e => setOverride(e.target.value)} className="capitalize">
           {AllLanguageCodes.sort().map(a => (
             <option key={a} value={a}>
-              {new Intl.DisplayNames([a], {
-                type: "language",
-              }).of(a)}
+              {hydrated
+                ? new Intl.DisplayNames([a], {
+                    type: "language",
+                  }).of(a)
+                : a}
             </option>
           ))}
         </select>

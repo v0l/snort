@@ -36,17 +36,6 @@ const htmlTransform = {
   },
 }
 
-// Plugin that swaps the SPA entry script for the SSR client entry in index.html
-const ssrClientEntry = () => ({
-  name: "ssr-client-entry",
-  transformIndexHtml(html: string) {
-    return html.replace(
-      `<script type="module" src="/src/index.tsx"></script>`,
-      `<script type="module" src="/src/entry/entry-client.tsx"></script>`,
-    )
-  },
-})
-
 const intl = () =>
   formatjs({
     idInterpolationPattern: "[sha512:contenthash:base64:6]",
@@ -92,54 +81,7 @@ const shared = {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => {
-  const isSSR = process.env.SSR === "true"
-  const isSSRClient = process.env.SSR_CLIENT === "true"
-
-  // SSR server build: produces the server-side bundle
-  if (isSSR) {
-    return {
-      ...shared,
-      plugins: [intl(), react()],
-      build: {
-        outDir: "build/server",
-        sourcemap: true,
-        ssr: true,
-        rolldownOptions: {
-          input: resolve(import.meta.dirname, "src/entry/entry-server.tsx"),
-          output: {
-            format: "esm",
-            entryFileNames: "entry-server.js",
-          },
-        },
-        copyPublicDir: false,
-      },
-    }
-  }
-
-  // SSR client build: same as SPA but uses entry-client.tsx for hydration
-  if (isSSRClient) {
-    return {
-      ...shared,
-      plugins: [
-        tailwindcss(),
-        react(),
-        intl(),
-        htmlTransform,
-        ssrClientEntry(),
-        pwa(),
-        copyWorkerRelayAssets("build/client/assets"),
-      ],
-      build: {
-        outDir: "build/client",
-        sourcemap: true,
-        rolldownOptions: {
-          input: resolve(import.meta.dirname, "index.html"),
-        },
-      },
-    }
-  }
-
+export default defineConfig(() => {
   // Default SPA client build (bun run build)
   return {
     ...shared,

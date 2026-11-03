@@ -4,6 +4,7 @@ import { createPortal } from "react-dom"
 import { v4 as uuid } from "uuid"
 
 import Icon from "@/Components/Icons/Icon"
+import { useHydrated } from "@/Hooks/useHydrated"
 
 interface ToastNotification {
   element: ReactNode | ((remove: () => void) => ReactNode)
@@ -38,7 +39,10 @@ export default function Toaster() {
   const toast = useSyncExternalStore(
     c => Toastore.hook(c),
     () => Toastore.snapshot(),
+    () => Toastore.snapshot(),
   )
+  const hydrated = useHydrated()
+  if (!hydrated) return null
 
   return createPortal(
     <div className="fixed bottom-0.5 left-0.5 flex flex-col-reverse z-[9999] gap-1">

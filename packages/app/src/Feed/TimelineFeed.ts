@@ -104,6 +104,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       }
     },
     () => mainQuery?.snapshot,
+    () => mainQuery?.snapshot,
   )
 
   const subRealtime = useMemo(() => {
@@ -130,6 +131,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         latestQuery.off("event", h)
       }
     },
+    () => latestQuery?.snapshot,
     () => latestQuery?.snapshot,
   )
 

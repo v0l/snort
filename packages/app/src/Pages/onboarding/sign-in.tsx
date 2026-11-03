@@ -6,13 +6,12 @@ import { Link, useNavigate } from "react-router-dom"
 
 import AsyncButton from "@/Components/Button/AsyncButton"
 import Icon from "@/Components/Icons/Icon"
+import { useHydrated } from "@/Hooks/useHydrated"
 import useLoginHandler from "@/Hooks/useLoginHandler"
 import { trackEvent } from "@/Utils"
 import { LoginSessionType, LoginStore } from "@/Utils/Login"
 
 import { Bech32Regex, unwrap } from "@snort/shared"
-
-const isAndroid = /Android/i.test(navigator.userAgent)
 
 const NIP46_PERMS =
   "nip04_encrypt,nip04_decrypt,sign_event:0,sign_event:1,sign_event:3,sign_event:4,sign_event:6,sign_event:7,sign_event:30078"
@@ -25,8 +24,9 @@ export default function SignIn() {
   const [useKey, setUseKey] = useState(false)
   const loginHandler = useLoginHandler()
 
-  const hasNip7 = "nostr" in window
-  const hasNip46 = isAndroid
+  const hydrated = useHydrated()
+  const hasNip7 = hydrated && "nostr" in window
+  const hasNip46 = hydrated && /Android/i.test(navigator.userAgent)
 
   async function doNip07Login() {
     setError("")
