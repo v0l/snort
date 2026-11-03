@@ -57,8 +57,10 @@
   "scripts": {
     "start": "bunx --bun vite",
     "build": "bunx vite build",
-    "build:ssr": "bunx vite build -c vite.ssr.config.ts",
+    "build:ssr": "SSR_CLIENT=true bunx vite build && SSR=true bunx vite build",
     "serve": "bunx --bun vite preview",
+    "dev:ssr": "bun server/dev.ts",
+    "serve:ssr": "bun run server/prod.ts",
     "build:all": "bun run build && bun run build:ssr",
     "typecheck": "bunx --bun tsc --noEmit",
     "test:e2e": "bunx playwright test",
@@ -73,7 +75,7 @@
   },
   "devDependencies": {
     "@formatjs/cli": "6.14.2",
-    "@playwright/test": "^1.64.1",
+    "@playwright/test": "1.64.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/config": "^4.4.0",
     "@types/debug": "^4.1.13",
