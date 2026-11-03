@@ -101,20 +101,16 @@ export default function ProfileMenu({ className, compact }: { className?: string
             {logins
               .filter(a => a.pubkey !== publicKey)
               .map(a => (
-                <DropdownMenu.Item key={a.id} className={itemClassName}>
-                  <ProfileImage
-                    pubkey={a.pubkey}
-                    link=""
-                    size={24}
-                    showProfileCard={false}
-                    showFollowDistance={false}
-                    onClick={e => {
-                      e.stopPropagation()
-                      LoginStore.switchAccount(a.id)
-                    }}
-                  />
+                <DropdownMenu.Item key={a.id} className={itemClassName} onSelect={() => LoginStore.switchAccount(a.id)}>
+                  <ProfileImage pubkey={a.pubkey} link="" size={24} showProfileCard={false} showFollowDistance={false} />
                 </DropdownMenu.Item>
               ))}
+            <DropdownMenu.Item className={itemClassName} onSelect={() => navigate("/login")}>
+              <div className="flex gap-2 items-center">
+                <Icon name="plus" />
+                <FormattedMessage defaultMessage="Add Account" />
+              </div>
+            </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Portal>
       </DropdownMenu.Root>

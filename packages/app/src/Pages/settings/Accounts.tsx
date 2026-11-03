@@ -3,11 +3,12 @@ import { Link } from "react-router-dom"
 
 import ProfilePreview from "@/Components/User/ProfilePreview"
 import { LoginStore } from "@/Utils/Login"
-import { getActiveSubscriptions } from "@/Utils/Subscription"
+import useLogin from "@/Hooks/useLogin"
+import { logout } from "@/Utils/Login"
 
 export default function AccountsPage() {
+  const activeId = useLogin(s => s.id)
   const logins = LoginStore.getSessions()
-  const sub = getActiveSubscriptions(LoginStore.allSubscriptions())
 
   return (
     <div className="flex flex-col gap-2">
@@ -23,10 +24,16 @@ export default function AccountsPage() {
             }}
             actions={
               <div className="align-end flex gap-2">
-                <button onClick={() => LoginStore.switchAccount(a.id)}>
-                  <FormattedMessage defaultMessage="Switch" />
-                </button>
-                <button onClick={() => LoginStore.removeSession(a.id)}>
+                {a.id === activeId ? (
+                  <span className="text-sm text-neutral-400">
+                    <FormattedMessage defaultMessage="Active" />
+                  </span>
+                ) : (
+                  <button onClick={() => LoginStore.switchAccount(a.id)}>
+                    <FormattedMessage defaultMessage="Switch" />
+                  </button>
+                )}
+                <button onClick={() => logout(a.id)}>
                   <FormattedMessage defaultMessage="Logout" />
                 </button>
               </div>
@@ -35,13 +42,11 @@ export default function AccountsPage() {
         </div>
       ))}
 
-      {sub && (
-        <Link to={"/login"}>
-          <button type="button">
-            <FormattedMessage defaultMessage="Add Account" />
-          </button>
-        </Link>
-      )}
+      <Link to={"/login"}>
+        <button type="button">
+          <FormattedMessage defaultMessage="Add Account" />
+        </button>
+      </Link>
     </div>
   )
 }

@@ -14,6 +14,7 @@ import { createPublisher, type LoginSession, LoginSessionType, type SnortAppData
 import { DefaultPreferences, type UserPreferences } from "./Preferences"
 
 const AccountStoreKey = "sessions"
+const ActiveAccountKey = "sessions-active"
 const LoggedOut = {
   id: "default",
   type: "public_key",
@@ -79,6 +80,10 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       this.#accounts = new Map()
     }
     this.#migrate()
+    const storedActive = window.localStorage.getItem(ActiveAccountKey)
+    if (storedActive && this.#accounts.has(storedActive)) {
+      this.#activeAccount = storedActive
+    }
     if (!this.#activeAccount) {
       this.#activeAccount = this.#accounts.keys().next().value
     }
@@ -149,10 +154,19 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     return [...this.#accounts.values()].flatMap(a => a.subscriptions)
   }
 
+  getActiveId() {
+    return this.#activeAccount
+  }
+
+  findByPubkey(pubkey: string) {
+    return [...this.#accounts.values()].find(a => a.publicKey === pubkey)
+  }
+
   switchAccount(id: string) {
-    if (this.#accounts.has(id)) {
+    if (this.#accounts.has(id) && this.#activeAccount !== id) {
       this.#activeAccount = id
       this.#save()
+      this.#flush()
     }
   }
 
@@ -173,7 +187,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     privateKey?: KeyStorage,
     stalker?: boolean,
   ) {
-    if (this.#accounts.has(key)) {
+    if (this.findByPubkey(key)) {
       throw new Error("Already logged in with this pubkey")
     }
     const initRelays = this.decideInitRelays(relays)
@@ -224,7 +238,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
 
   loginWithPrivateKey(key: KeyStorage, entropy?: string, relays?: Record<string, RelaySettings>) {
     const pubKey = getPublicKey(key.value)
-    if (this.#accounts.has(pubKey)) {
+    if (this.findByPubkey(pubKey)) {
       throw new Error("Already logged in with this pubkey")
     }
     const initRelays = this.decideInitRelays(relays)
@@ -276,11 +290,17 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   }
 
   removeSession(id: string) {
+    const existing = this.#accounts.get(id)
     if (this.#accounts.delete(id)) {
+      this.#publishers.delete(id)
+      if (UserState.isInstance(existing?.state)) {
+        existing.state.destroy()
+      }
       if (this.#activeAccount === id) {
-        this.#activeAccount = undefined
+        this.#activeAccount = this.#accounts.keys().next().value
       }
       this.#save()
+      this.#flush()
     }
   }
 
@@ -395,5 +415,10 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
 
     console.debug("Trying to save", toSave)
     window.localStorage.setItem(AccountStoreKey, JSON.stringify(toSave))
+    if (this.#activeAccount) {
+      window.localStorage.setItem(ActiveAccountKey, this.#activeAccount)
+    } else {
+      window.localStorage.removeItem(ActiveAccountKey)
+    }
   }
 }

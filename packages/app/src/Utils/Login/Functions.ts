@@ -31,7 +31,6 @@ export function logout(id: string) {
   LoginStore.removeSession(id)
   GiftsCache.clear()
   deleteRefCode()
-  localStorage.clear()
 }
 
 export function markNotificationsRead(state: LoginSession) {
