@@ -7,18 +7,20 @@ import { SnortContext } from "@snort/system-react"
 import { StrictMode } from "react"
 import * as ReactDOM from "react-dom/client"
 import { HelmetProvider } from "react-helmet-async"
-import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, type LoaderFunctionArgs, type RouteObject, RouterProvider } from "react-router-dom"
 
 import { initRelayWorker, ProfilesCache, preload, Relay } from "@/Cache"
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider"
 import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch"
 import ErrorPage from "@/Pages/ErrorPage"
+import NotFoundBoundary from "@/Pages/NotFoundBoundary"
 import { PaneRouteIds } from "@/Pages/Layout/panes"
 import { OnboardingRoutes } from "@/Pages/onboarding/routes"
 import { RootRoutes } from "@/Pages/Root/RootRoutes"
 import SettingsRoutes from "@/Pages/settings/Routes"
 import { System } from "@/system"
 import { storeRefCode, unwrap } from "@/Utils"
+import { isValidChatId, isValidListFeedId, notFoundUnless } from "@/Utils/routeIds"
 import { reloadOnStaleChunk } from "@/Utils/staleChunkReload"
 import { hasWasm, WasmPath, wasmInit } from "@/Utils/wasm"
 import { setupWebLNWalletConfig, Wallets } from "@/Wallet"
@@ -132,7 +134,11 @@ const mainRoutes = [
     path: "/messages/:id?",
     async lazy() {
       const { default: MessagesPage } = await import("@/Pages/Messages/MessagesPage")
-      return { Component: MessagesPage }
+      return {
+        Component: MessagesPage,
+        loader: ({ params }: LoaderFunctionArgs) => notFoundUnless(isValidChatId(params.id)),
+        ErrorBoundary: NotFoundBoundary,
+      }
     },
   },
   {
@@ -153,7 +159,11 @@ const mainRoutes = [
     path: "/list-feed/:id",
     async lazy() {
       const { ListFeedPage } = await import("@/Pages/ListFeedPage")
-      return { Component: ListFeedPage }
+      return {
+        Component: ListFeedPage,
+        loader: ({ params }: LoaderFunctionArgs) => notFoundUnless(isValidListFeedId(params.id)),
+        ErrorBoundary: NotFoundBoundary,
+      }
     },
   },
   {
