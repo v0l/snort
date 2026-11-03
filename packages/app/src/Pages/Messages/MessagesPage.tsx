@@ -1,10 +1,11 @@
 import classNames from "classnames"
 import type React from "react"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router-dom"
 
 import { type Chat, type ChatType, useChatSystems } from "@/chat"
+import { getCachedDecryptedContent } from "@/Cache/GiftWrapCache"
 import { CollapsedSection } from "@/Components/Collapsed"
 import NoteTime from "@/Components/Event/Note/NoteTime"
 import NoteToSelf from "@/Components/User/NoteToSelf"
@@ -15,6 +16,7 @@ import useWoT from "@/Hooks/useWoT"
 import { ChatParticipantProfile } from "@/Pages/Messages/ChatParticipant"
 import DmWindow from "@/Pages/Messages/DmWindow"
 import NewChatWindow from "@/Pages/Messages/NewChatWindow"
+import { matchesQuery, previewText, splitChats } from "@/Pages/Messages/chatList"
 import UnreadCount from "@/Pages/Messages/UnreadCount"
 
 const TwoCol = 768
@@ -29,18 +31,18 @@ export default function MessagesPage() {
   const chats = useChatSystems()
   const wot = useWoT()
   const myPubkey = login.publicKey
-  const trustedChats = chats.filter(a => {
-    const p = a.participants[0]
-    if (!p) return false
-    if (p.id === myPubkey) return true
-    return wot.followDistance(p.id) <= 2
-  })
-  const otherChats = chats.filter(a => {
-    const p = a.participants[0]
-    if (!p) return false
-    if (p.id === myPubkey) return false
-    return wot.followDistance(p.id) > 2
-  })
+  const [query, setQuery] = useState("")
+  const visibleChats = useMemo(
+    () =>
+      chats.filter(c =>
+        matchesQuery(
+          [c.title, ...c.participants.flatMap(p => [p.id, p.profile?.name, p.profile?.display_name, p.profile?.nip05])],
+          query,
+        ),
+      ),
+    [chats, query],
+  )
+  const { trusted: trustedChats, other: otherChats } = splitChats(visibleChats, myPubkey, p => wot.followDistance(p))
 
   const unreadTrustedCount = useMemo(() => trustedChats.reduce((p, c) => p + c.unread, 0), [trustedChats])
   const unreadOtherCount = useMemo(() => otherChats.reduce((p, c) => p + c.unread, 0), [otherChats])
@@ -64,7 +66,7 @@ export default function MessagesPage() {
       return <ChatParticipantProfile participant={cx.participants[0]} />
     } else {
       return (
-        <div className="flex items-center grow pfp-overlap">
+        <div className="flex items-center grow pfp-overlap min-w-0">
           {cx.participants.map(v => (
             <ProfileImage key={v.id} pubkey={v.id} link="" showUsername={false} profile={v.profile} />
           ))}
@@ -72,6 +74,17 @@ export default function MessagesPage() {
         </div>
       )
     }
+  }
+
+  function lastPreview(cx: Chat) {
+    const last = cx.messages.reduce<Chat["messages"][number] | undefined>(
+      (best, m) => (!best || m.created_at > best.created_at ? m : best),
+      undefined,
+    )
+    if (!last) return ""
+    const text = previewText(getCachedDecryptedContent(last.id) ?? last.content)
+    if (!text) return ""
+    return last.from === myPubkey ? `${formatMessage({ defaultMessage: "You" })}: ${text}` : text
   }
 
   function conversation(cx: Chat) {
@@ -86,7 +99,10 @@ export default function MessagesPage() {
         key={cx.id}
         onClick={e => openChat(e, cx.type, cx.id)}
       >
-        {conversationIdent(cx)}
+        <div className="flex flex-col min-w-0 grow">
+          {conversationIdent(cx)}
+          <small className="text-neutral-400 truncate">{lastPreview(cx)}</small>
+        </div>
         <div className="whitespace-nowrap">
           <small>
             <NoteTime
@@ -98,15 +114,6 @@ export default function MessagesPage() {
         </div>
       </div>
     )
-  }
-
-  function sortMessages(a: Chat, b: Chat) {
-    const aSelf = a.participants.length === 1 && a.participants[0].id === login.publicKey
-    const bSelf = b.participants.length === 1 && b.participants[0].id === login.publicKey
-    if (aSelf || bSelf) {
-      return aSelf ? -1 : 1
-    }
-    return b.lastMessage > a.lastMessage ? 1 : -1
   }
 
   return (
@@ -126,8 +133,24 @@ export default function MessagesPage() {
             </button>
             <NewChatWindow />
           </div>
-          {trustedChats.sort(sortMessages).map(conversation)}
-          {otherChats.sort(sortMessages).length > 0 && (
+          <input
+            type="search"
+            className="w-full"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder={formatMessage({ defaultMessage: "Search chats" })}
+          />
+          {visibleChats.length === 0 && (
+            <div className="text-neutral-400 text-center p-4">
+              {query ? (
+                <FormattedMessage defaultMessage="No chats match your search" />
+              ) : (
+                <FormattedMessage defaultMessage="No messages yet. Start a new chat to say hello." />
+              )}
+            </div>
+          )}
+          {trustedChats.map(conversation)}
+          {otherChats.length > 0 && (
             <CollapsedSection
               title={
                 <div className="text-xl flex items-center gap-4">
