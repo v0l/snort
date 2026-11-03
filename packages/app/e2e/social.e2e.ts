@@ -118,7 +118,7 @@ test.describe("messages", () => {
     await expect(chat).toBeVisible()
     await chat.click()
     await expect(page).toHaveURL(/\/messages\/.+/)
-    await expect(page.getByText(world.dmText)).toBeVisible()
+    await expect(page.locator("div[dir=auto]", { hasText: world.dmText })).toBeVisible()
   })
 
   test("sends a gift wrapped reply", async ({ page, relay }) => {
@@ -127,7 +127,7 @@ test.describe("messages", () => {
     const input = page.locator("textarea.rta__textarea:visible")
     await input.fill("Hi Bob, got it")
     await input.press("Enter")
-    await expect(page.getByText("Hi Bob, got it")).toBeVisible()
+    await expect(page.getByText("Hi Bob, got it", { exact: true })).toBeVisible()
     await expect
       .poll(
         () =>

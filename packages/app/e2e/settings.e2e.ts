@@ -177,7 +177,7 @@ test("moderation muted words", async ({ page, relay }) => {
 test("accounts page", async ({ page }) => {
   await page.goto("/settings/accounts")
   await expect(page.getByRole("heading", { name: "Logins" })).toBeVisible()
-  await expect(page.getByRole("button", { name: "Switch" })).toBeVisible()
+  await expect(page.getByRole("button", { name: "Logout" })).toBeVisible()
   await expect(page.getByRole("button", { name: "Add Account" })).toBeVisible()
 })
 
