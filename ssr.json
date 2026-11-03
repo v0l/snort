@@ -9,7 +9,20 @@
     "wss://relay.damus.io",
     "wss://relay.primal.net"
   ],
-  "live": false,
+  "live": true,
+  "kinds": [0, 1, 5, 30023],
+  "max_events": 80000,
+  "backfill": [
+    { "filter": { "kinds": [0] }, "max": 20000, "priority": true },
+    { "filter": { "kinds": [30023] }, "max": 5000, "priority": true },
+    { "filter": { "kinds": [1] }, "max": 20000 }
+  ],
+  "sitemap": [
+    { "name": "profiles", "filter": { "kinds": [0] }, "encoding": "npub", "prefix": "/", "changefreq": "weekly", "priority": "0.6" },
+    { "name": "articles", "filter": { "kinds": [30023] }, "encoding": "naddr", "prefix": "/", "changefreq": "monthly", "priority": "0.7" },
+    { "name": "notes", "filter": { "kinds": [1] }, "max": 20000, "encoding": "nevent", "prefix": "/e/", "priority": "0.5" },
+    { "name": "hashtags", "filter": { "kinds": [1] }, "group": "tag", "min_count": 3, "prefix": "/t/", "changefreq": "daily", "priority": "0.4" }
+  ],
   "dist": "/app/dist",
   "bundle": "/app/dist/ssr/render.js",
   "opengraph": {
