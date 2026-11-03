@@ -82,6 +82,11 @@ describe("ssr bundle", () => {
     expect(out.status).toBe(404)
   })
 
+  test("a bad messages or list feed id is a 404", async () => {
+    expect((await render("/messages/abc")).status).toBe(404)
+    expect((await render("/list-feed/abc")).status).toBe(404)
+  })
+
   test("a query string does not break the render", async () => {
     const out = await render(`/p/${pubkey}?tab=notes`)
     expect(out.status).toBe(200)

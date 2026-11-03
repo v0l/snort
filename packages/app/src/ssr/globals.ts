@@ -438,19 +438,33 @@ class ServerRequest {
   }
 }
 
+interface ResponseInit {
+  status?: number
+  statusText?: string
+  headers?: Record<string, string>
+}
+
 class ServerResponse {
   status: number
+  statusText: string
   headers: ServerHeaders
   body: unknown
-  constructor(body?: unknown, init: { status?: number; headers?: Record<string, string> } = {}) {
+  constructor(body?: unknown, init: ResponseInit = {}) {
     this.body = body ?? null
     this.status = init.status ?? 200
+    this.statusText = init.statusText ?? ""
     this.headers = new ServerHeaders(init.headers)
+  }
+  async text() {
+    return typeof this.body === "string" ? this.body : ""
+  }
+  async json() {
+    return JSON.parse(await this.text())
   }
   get ok() {
     return this.status >= 200 && this.status < 300
   }
-  static json(data: unknown, init: { status?: number; headers?: Record<string, string> } = {}) {
+  static json(data: unknown, init: ResponseInit = {}) {
     return new ServerResponse(JSON.stringify(data), init)
   }
   static redirect(url: string, status = 302) {
