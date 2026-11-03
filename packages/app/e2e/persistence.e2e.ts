@@ -183,17 +183,17 @@ test.describe("direct messages", () => {
       .toEqual([alice.pubkey, bob.pubkey].sort())
 
     await page.reload()
-    await expect(page.getByText(text)).toBeVisible()
-    await expect(page.getByText(world.dmText)).toBeVisible()
+    await expect(page.locator("div[dir=auto]", { hasText: text })).toBeVisible()
+    await expect(page.locator("div[dir=auto]", { hasText: world.dmText })).toBeVisible()
 
     const aliceAgain = await cleanLogin(alice)
     await openChat(aliceAgain, bob.displayName)
-    await expect(aliceAgain.getByText(world.dmText)).toBeVisible()
-    await expect(aliceAgain.getByText(text)).toBeVisible()
+    await expect(aliceAgain.locator("div[dir=auto]", { hasText: world.dmText })).toBeVisible()
+    await expect(aliceAgain.locator("div[dir=auto]", { hasText: text })).toBeVisible()
 
     const bobPage = await cleanLogin(bob)
     await openChat(bobPage, alice.displayName)
-    await expect(bobPage.getByText(text)).toBeVisible()
+    await expect(bobPage.locator("div[dir=auto]", { hasText: text })).toBeVisible()
   })
 })
 

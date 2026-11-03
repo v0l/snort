@@ -45,7 +45,7 @@ test("agent page", async ({ page }) => {
 test("new chat window", async ({ page }) => {
   await page.goto("/messages")
   await page.locator("button:right-of(:text('Mark all read'))").first().click()
-  await expect(page.getByText("New Chat")).toBeVisible()
+  await expect(page.getByRole("heading", { name: "New Chat" })).toBeVisible()
   await expect(page.getByText("People you follow")).toBeVisible()
   await expect(page.getByText(bob.displayName).last()).toBeVisible()
 })
