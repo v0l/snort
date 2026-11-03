@@ -141,7 +141,7 @@
     },
     "packages/system": {
       "name": "@snort/system",
-      "version": "2.1.9",
+      "version": "2.1.10",
       "dependencies": {
         "@noble/ciphers": "^2.4.0",
         "@noble/curves": "^2.4.0",
@@ -223,7 +223,7 @@
     },
     "packages/worker-relay": {
       "name": "@snort/worker-relay",
-      "version": "3.0.1",
+      "version": "3.0.2",
       "dependencies": {
         "@sqlite.org/sqlite-wasm": "3.53.4-build1",
         "eventemitter3": "^5.0.4",
