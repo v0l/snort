@@ -4,11 +4,12 @@ import { Link } from "react-router-dom"
 import ProfilePreview from "@/Components/User/ProfilePreview"
 import { LoginStore } from "@/Utils/Login"
 import useLogin from "@/Hooks/useLogin"
+import { useSessions } from "@/Hooks/useSessions"
 import { logout } from "@/Utils/Login"
 
 export default function AccountsPage() {
   const activeId = useLogin(s => s.id)
-  const logins = LoginStore.getSessions()
+  const logins = useSessions()
 
   return (
     <div className="flex flex-col gap-2">

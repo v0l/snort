@@ -91,4 +91,18 @@ describe("ssr bundle", () => {
     const out = await render(`/p/${pubkey}?tab=notes`)
     expect(out.status).toBe(200)
   })
+
+  test("the accounts page renders no visitor sessions, so the client can hydrate it", async () => {
+    const sessions = JSON.stringify([
+      { id: "a", type: "public_key", publicKey: pubkey, readonly: true },
+      { id: "b", type: "public_key", publicKey: "e".repeat(64), readonly: true },
+    ])
+    const storage = { getItem: (k: string) => (k === "sessions" ? sessions : null), setItem() {}, removeItem() {} }
+    const withSessions = vm.createContext({ relayQuery, hostLog: () => {}, localStorage: storage })
+    vm.runInContext(readFileSync(join(appDir, "build/ssr/render.js"), "utf8"), withSessions)
+    const input = JSON.stringify({ url: "/settings/accounts", now: 1_762_130_000, origin: "https://snort.social" })
+    const out = JSON.parse(await vm.runInContext(`ssrRender(${JSON.stringify(input)})`, withSessions))
+    expect(out.html).toContain("Logins")
+    expect(out.html).not.toContain("Switch")
+  })
 })

@@ -8,6 +8,7 @@ import ProfileImage from "@/Components/User/ProfileImage"
 import ProfilePreview from "@/Components/User/ProfilePreview"
 import useLogin from "@/Hooks/useLogin"
 import { useProfileLink } from "@/Hooks/useProfileLink"
+import { useSessions } from "@/Hooks/useSessions"
 import useWindowSize from "@/Hooks/useWindowSize"
 import { LoginStore } from "@/Utils/Login"
 
@@ -16,7 +17,7 @@ export default function ProfileMenu({ className, compact }: { className?: string
     publicKey: s.publicKey,
     readonly: s.readonly,
   }))
-  const logins = LoginStore.getSessions()
+  const logins = useSessions()
   const navigate = useNavigate()
   const link = useProfileLink(publicKey)
 
@@ -102,7 +103,13 @@ export default function ProfileMenu({ className, compact }: { className?: string
               .filter(a => a.pubkey !== publicKey)
               .map(a => (
                 <DropdownMenu.Item key={a.id} className={itemClassName} onSelect={() => LoginStore.switchAccount(a.id)}>
-                  <ProfileImage pubkey={a.pubkey} link="" size={24} showProfileCard={false} showFollowDistance={false} />
+                  <ProfileImage
+                    pubkey={a.pubkey}
+                    link=""
+                    size={24}
+                    showProfileCard={false}
+                    showFollowDistance={false}
+                  />
                 </DropdownMenu.Item>
               ))}
             <DropdownMenu.Item className={itemClassName} onSelect={() => navigate("/login")}>
