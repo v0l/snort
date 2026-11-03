@@ -11,7 +11,7 @@
   ],
   "live": true,
   "kinds": [0, 1, 5, 30023],
-  "max_events": 80000,
+  "max_events": 150000,
   "backfill": [
     { "filter": { "kinds": [0] }, "max": 20000, "priority": true },
     { "filter": { "kinds": [30023] }, "max": 5000, "priority": true },
