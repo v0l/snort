@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import { bytesToHex } from "@noble/hashes/utils.js"
 import { sha256 } from "@noble/hashes/sha2.js"
-import { Hll, hllOffset, mergeHll } from "../src/impl/nip45"
+import { Hll, hllOffset, mergeCounts, mergeHll } from "../src/impl/nip45"
 
 const hex32 = (f: (i: number) => number) => bytesToHex(Uint8Array.from({ length: 32 }, (_, i) => f(i)))
 const randomKey = () => bytesToHex(crypto.getRandomValues(new Uint8Array(32)))
@@ -81,5 +81,54 @@ describe("NIP-45 HLL", () => {
     const merged = mergeHll([{ hll: a.toHex() }, {}, { hll: "zz" }])
     expect(merged?.registers[7]).toBe(4)
     expect(mergeHll([{}])).toBeUndefined()
+  })
+})
+
+describe("mergeCounts", () => {
+  const withKeys = (n: number) => {
+    const h = new Hll()
+    for (let i = 0; i < n; i++) h.add(randomKey(), 10)
+    return h
+  }
+
+  test("no relays gives zero", () => {
+    expect(mergeCounts([])).toEqual({ count: 0, approximate: false, relays: [] })
+  })
+
+  test("exact only takes the highest count", () => {
+    const m = mergeCounts([
+      { relay: "a", count: 10 },
+      { relay: "b", count: 14 },
+    ])
+    expect(m.count).toBe(14)
+    expect(m.approximate).toBe(false)
+    expect(m.hll).toBeUndefined()
+  })
+
+  test("hll relays are merged and estimated", () => {
+    const a = withKeys(3000)
+    const b = withKeys(3000)
+    const m = mergeCounts([
+      { relay: "a", count: 3000, hll: a.toHex() },
+      { relay: "b", count: 3000, hll: b.toHex() },
+    ])
+    expect(m.approximate).toBe(true)
+    expect(Math.abs(m.count - 6000) / 6000).toBeLessThan(0.15)
+    expect(m.hll).toBe(new Hll(a.registers).merge(b).toHex())
+  })
+
+  test("mixed exact and hll never undercounts the exact relay", () => {
+    const m = mergeCounts([
+      { relay: "a", count: 50, hll: withKeys(50).toHex() },
+      { relay: "b", count: 9000 },
+    ])
+    expect(m.count).toBeGreaterThanOrEqual(9000)
+    expect(m.approximate).toBe(true)
+  })
+
+  test("invalid hll is ignored and its count still used", () => {
+    const m = mergeCounts([{ relay: "a", count: 7, hll: "zz" }])
+    expect(m.count).toBe(7)
+    expect(m.hll).toBeUndefined()
   })
 })

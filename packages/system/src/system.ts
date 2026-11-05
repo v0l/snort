@@ -3,7 +3,8 @@ import type { UsersRelays, CachedMetadata, UsersFollows } from "./cache"
 import type { CacheRelay } from "./cache-relay"
 import type { RelaySettings } from "./connection"
 import type { ConnectionPool } from "./connection-pool"
-import type { TaggedNostrEvent, OkResponse, ReqFilter, NostrEvent, RelayCount } from "./nostr"
+import type { MergedCount } from "./impl/nip45"
+import type { TaggedNostrEvent, OkResponse, ReqFilter, NostrEvent } from "./nostr"
 import type { RelayMetadataLoader } from "./outbox"
 import type { ProfileLoaderService } from "./profile-cache"
 import type { Optimizer } from "./query-optimizer"
@@ -149,9 +150,10 @@ export interface SystemInterface {
 
   /**
    * NIP-45 COUNT on the given relays (default: connected read relays).
-   * Relays that time out, close the request or lack support are omitted.
+   * Returns the merged count (HLL merged where relays supply it, exact counts as lower bounds) with
+   * the per-relay results in `relays`. Relays that time out, close the request or lack support are omitted.
    */
-  Count(filters: Array<ReqFilter>, relays?: Array<string>, timeout?: number): Promise<Array<RelayCount>>
+  Count(filters: Array<ReqFilter>, relays?: Array<string>, timeout?: number): Promise<MergedCount>
 
   /**
    * Create a new permanent connection to a relay

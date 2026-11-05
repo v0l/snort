@@ -106,3 +106,23 @@ export function mergeHll(results: Array<Pick<RelayCount, "hll">>): Hll | undefin
   }
   return merged
 }
+
+export interface MergedCount {
+  count: number
+  approximate: boolean
+  hll?: string
+  relays: Array<RelayCount>
+}
+
+/**
+ * Forgiving merge of per-relay counts. HLL values are merged and estimated, exact counts (and the
+ * count each HLL relay reported) act as lower bounds, so the result never undercounts a relay.
+ */
+export function mergeCounts(relays: Array<RelayCount>): MergedCount {
+  const merged = mergeHll(relays)
+  const lowerBound = relays.reduce((max, r) => Math.max(max, Number.isFinite(r.count) ? r.count : 0), 0)
+  if (!merged) {
+    return { count: lowerBound, approximate: relays.some(r => r.approximate === true), relays }
+  }
+  return { count: Math.max(merged.estimate(), lowerBound), approximate: true, hll: merged.toHex(), relays }
+}

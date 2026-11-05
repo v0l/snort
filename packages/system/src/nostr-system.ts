@@ -2,6 +2,7 @@ import debug from "debug"
 
 import { unixNowMs } from "@snort/shared"
 import type { NostrEvent, TaggedNostrEvent, OkResponse, ReqFilter, RelayCount } from "./nostr"
+import { type MergedCount, mergeCounts } from "./impl/nip45"
 import type { RelaySettings } from "./connection"
 import type { RequestBuilder } from "./request-builder"
 import { TraceTimeline } from "./trace-timeline"
@@ -175,7 +176,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
     return this.#queryManager.fetchAll()
   }
 
-  async Count(filters: Array<ReqFilter>, relays?: Array<string>, timeout = 5000): Promise<Array<RelayCount>> {
+  async Count(filters: Array<ReqFilter>, relays?: Array<string>, timeout = 5000): Promise<MergedCount> {
     const targets = relays
       ? [...new Set(relays)]
       : [...this.pool].filter(([, c]) => c.settings.read).map(([addr]) => addr)
@@ -192,7 +193,7 @@ export class NostrSystem extends SystemBase implements SystemInterface {
         }
       }),
     )
-    return results.filter((a): a is RelayCount => a !== undefined)
+    return mergeCounts(results.filter((a): a is RelayCount => a !== undefined))
   }
 
   Query(req: RequestBuilder): QueryLike {
