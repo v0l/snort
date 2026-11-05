@@ -7,7 +7,7 @@ import { AuthTimeout, DefaultConnectTimeout } from "./const"
 import { EventExt } from "./event-ext"
 import EventKind from "./event-kind"
 import { Nip11, type RelayInfoDocument } from "./impl/nip11"
-import type { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr"
+import type { CountResponse, NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr"
 
 /**
  * Relay settings
@@ -29,6 +29,7 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
   #closing = false
   #downCount = 0
   #activeRequests = new Map<string, ReqCommand>()
+  #pendingCounts = new Map<string, { cmd: Array<unknown>; settle: (r: CountResponse | undefined) => void }>()
   #connectStarted = false
   #wasUp = false
 
@@ -282,7 +283,19 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
           this.#log(`NOTICE: ${msg[1]}`)
           break
         }
+        case "COUNT": {
+          const pending = this.#pendingCounts.get(msg[1] as string)
+          const payload = msg[2] as unknown as CountResponse | undefined
+          if (pending && payload && typeof payload.count === "number") {
+            pending.settle(payload)
+          }
+          break
+        }
         case "CLOSED": {
+          const pendingCount = this.#pendingCounts.get(msg[1] as string)
+          if (pendingCount && !String(msg[2] ?? "").startsWith("auth-required")) {
+            pendingCount.settle(undefined)
+          }
           // The relay has torn down this subscription — release its slot,
           // otherwise activeSubscriptions creeps up towards maxSubscriptions
           // and later REQs get parked instead of sent.
@@ -405,6 +418,29 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
     this.emit("change")
   }
 
+  /**
+   * Send a NIP-45 COUNT and resolve with the relay's payload, or undefined on
+   * CLOSED, timeout or disconnect
+   */
+  count(filters: Array<ReqFilter>, timeout = 5000): Promise<CountResponse | undefined> {
+    return new Promise(resolve => {
+      const id = crypto.randomUUID()
+      const cmd = ["COUNT", id, ...filters]
+      const t = setTimeout(() => settle(undefined), timeout)
+      const settle = (r: CountResponse | undefined) => {
+        clearTimeout(t)
+        this.#pendingCounts.delete(id)
+        resolve(r)
+      }
+      this.#pendingCounts.set(id, { cmd, settle })
+      try {
+        this.#send(cmd)
+      } catch {
+        settle(undefined)
+      }
+    })
+  }
+
   closeRequest(id: string) {
     if (this.#activeRequests.has(id)) {
       this.#activeRequests.delete(id)
@@ -445,6 +481,9 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
       }
     }
     this.#activeRequests.clear()
+    for (const [, p] of [...this.#pendingCounts]) {
+      p.settle(undefined)
+    }
     this.PendingRaw = []
 
     this.emit("change")
@@ -528,6 +567,9 @@ export class Connection extends EventEmitter<ConnectionTypeEvents> implements Co
           this.#log("Auth successful, resending %d active requests", this.#activeRequests.size)
           for (const [, cmd] of this.#activeRequests) {
             this.#sendOnWire(cmd)
+          }
+          for (const [, p] of this.#pendingCounts) {
+            this.#sendOnWire(p.cmd)
           }
         }
         resolve()

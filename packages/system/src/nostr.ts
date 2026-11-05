@@ -22,6 +22,14 @@ export interface TaggedNostrEvent extends NostrEvent {
   context?: object
 }
 
+export interface CountResponse {
+  count: number
+  approximate?: boolean
+  hll?: string
+}
+
+export type RelayCount = { relay: string } & CountResponse
+
 export type ReqCommand = [cmd: "REQ", id: string, ...filters: Array<ReqFilter>]
 
 /**

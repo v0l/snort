@@ -3,7 +3,7 @@ import type { UsersRelays, CachedMetadata, UsersFollows } from "./cache"
 import type { CacheRelay } from "./cache-relay"
 import type { RelaySettings } from "./connection"
 import type { ConnectionPool } from "./connection-pool"
-import type { TaggedNostrEvent, OkResponse, ReqFilter, NostrEvent } from "./nostr"
+import type { TaggedNostrEvent, OkResponse, ReqFilter, NostrEvent, RelayCount } from "./nostr"
 import type { RelayMetadataLoader } from "./outbox"
 import type { ProfileLoaderService } from "./profile-cache"
 import type { Optimizer } from "./query-optimizer"
@@ -146,6 +146,12 @@ export interface SystemInterface {
    * Useful for SSR: render once to discover queries, call FetchAll(), then re-render.
    */
   FetchAll(): Promise<void>
+
+  /**
+   * NIP-45 COUNT on the given relays (default: connected read relays).
+   * Relays that time out, close the request or lack support are omitted.
+   */
+  Count(filters: Array<ReqFilter>, relays?: Array<string>, timeout?: number): Promise<Array<RelayCount>>
 
   /**
    * Create a new permanent connection to a relay

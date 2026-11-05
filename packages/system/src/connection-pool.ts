@@ -3,7 +3,7 @@ import debug from "debug"
 import { EventEmitter } from "eventemitter3"
 import type { RelayInfoDocument, SystemInterface } from "."
 import { Connection, type RelaySettings } from "./connection"
-import type { NostrEvent, OkResponse, ReqCommand, TaggedNostrEvent } from "./nostr"
+import type { CountResponse, NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent } from "./nostr"
 
 /**
  * Events which the ConnectionType must emit
@@ -66,6 +66,11 @@ export type ConnectionType = {
    * Send raw json object on wire (used by negentropy sync)
    */
   sendRaw: (obj: object) => void
+
+  /**
+   * NIP-45 COUNT, resolves undefined if unsupported, closed or timed out
+   */
+  count?: (filters: Array<ReqFilter>, timeout?: number) => Promise<CountResponse | undefined>
 
   /**
    * Close a request

@@ -1,7 +1,7 @@
 import debug from "debug"
 
 import { unixNowMs } from "@snort/shared"
-import type { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr"
+import type { NostrEvent, TaggedNostrEvent, OkResponse, ReqFilter, RelayCount } from "./nostr"
 import type { RelaySettings } from "./connection"
 import type { RequestBuilder } from "./request-builder"
 import { TraceTimeline } from "./trace-timeline"
@@ -173,6 +173,26 @@ export class NostrSystem extends SystemBase implements SystemInterface {
 
   FetchAll(): Promise<void> {
     return this.#queryManager.fetchAll()
+  }
+
+  async Count(filters: Array<ReqFilter>, relays?: Array<string>, timeout = 5000): Promise<Array<RelayCount>> {
+    const targets = relays
+      ? [...new Set(relays)]
+      : [...this.pool].filter(([, c]) => c.settings.read).map(([addr]) => addr)
+    const results = await Promise.all(
+      targets.map(async addr => {
+        try {
+          const conn =
+            this.pool.getConnection(addr) ??
+            (await this.pool.connect(addr, { read: true, write: false }, true))
+          const rsp = await conn?.count?.(filters, timeout)
+          return rsp ? { relay: conn!.address, ...rsp } : undefined
+        } catch {
+          return undefined
+        }
+      }),
+    )
+    return results.filter((a): a is RelayCount => a !== undefined)
   }
 
   Query(req: RequestBuilder): QueryLike {
