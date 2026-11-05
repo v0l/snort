@@ -18,8 +18,7 @@ pub fn pow(ev: &mut Event, target: u8) {
     loop {
         ev.tags[nonce_tag_idx][1] = ctr.to_string();
 
-        let id_hex = make_id(ev);
-        let digest = sha256::digest(id_hex.as_bytes());
+        let digest = make_id(ev);
         if count_leading_zeros(&digest) >= target {
             ev.id = Some(digest);
             break;
@@ -119,6 +118,23 @@ mod tests {
         })).ok().unwrap();
 
         assert_eq!(super::make_id(&ev), ev.id.unwrap())
+    }
+
+    #[test]
+    fn pow_id_matches_event_hash() {
+        let mut ev = Event::deserialize(json!({
+          "content": "hello",
+          "created_at": 1695568849,
+          "kind": 1,
+          "pubkey": "63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed",
+          "tags": []
+        })).ok().unwrap();
+
+        super::pow(&mut ev, 12);
+
+        let id = ev.id.clone().unwrap();
+        assert_eq!(super::make_id(&ev), id);
+        assert!(super::count_leading_zeros(&id) >= 12);
     }
 
     #[test]
