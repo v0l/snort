@@ -1,6 +1,6 @@
 {
   "name": "@snort/system",
-  "version": "2.1.11",
+  "version": "2.2.0",
   "description": "Snort nostr system package",
   "type": "module",
   "main": "dist/index.js",
@@ -15,7 +15,10 @@
   "scripts": {
     "build": "rm -rf dist && bunx --bun tsc"
   },
-  "files": ["src", "dist"],
+  "files": [
+    "src",
+    "dist"
+  ],
   "devDependencies": {
     "@peculiar/webcrypto": "^1.7.1",
     "@types/debug": "^4.1.13",
