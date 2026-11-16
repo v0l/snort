@@ -1,4 +1,5 @@
-import { secp256k1 } from "@noble/curves/secp256k1.js"
+import { schnorr, secp256k1 } from "@noble/curves/secp256k1.js"
+import { hexToBytes } from "@noble/hashes/utils.js"
 import { bech32ToHex, unwrap } from "@snort/shared"
 import debug from "debug"
 import { EventEmitter } from "eventemitter3"
@@ -7,7 +8,7 @@ import { Nip46RpcTimeout } from "../const"
 import { EventBuilder } from "../event-builder"
 import { EventExt } from "../event-ext"
 import type EventKind from "../event-kind"
-import type { NostrEvent } from "../nostr"
+import type { NostrEvent, NotSignedNostrEvent } from "../nostr"
 import { type EventSigner, PrivateKeySigner } from "../signer"
 
 const NIP46_KIND = 24_133
@@ -38,6 +39,11 @@ interface Nip46Events {
   ready: () => void
 }
 
+export interface Nip46SignerOptions {
+  timeoutMs?: number
+  permissions?: string
+}
+
 export function isConnectAccepted(rsp: { result: string; error?: string }, secret?: string) {
   if (rsp.error) return false
   return rsp.result === "ack" || (!!secret && rsp.result === secret)
@@ -54,6 +60,9 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   #log = debug("NIP-46")
   #proto: string
   #didInit: boolean = false
+  #initializing?: Promise<void>
+  #generation = 0
+  #userPubkey?: string
 
   /**
    * Start NIP-46 connection
@@ -72,7 +81,11 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
    *
    * @see https://github.com/nostr-protocol/nips/blob/master/46.md#initiating-a-connection
    */
-  constructor(config: string, insideSigner?: EventSigner) {
+  constructor(
+    config: string,
+    insideSigner?: EventSigner,
+    readonly options: Nip46SignerOptions = {},
+  ) {
     super()
     const u = new URL(config)
     this.#proto = u.protocol
@@ -89,6 +102,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
 
     this.#relay = unwrap(u.searchParams.get("relay"))
     this.#insideSigner = insideSigner ?? new PrivateKeySigner(secp256k1.keygen().secretKey)
+    if (!this.isBunker && !this.#token) throw new Error("Nostr Connect pairing requires a secret")
 
     // For bunker:// flow, the remote signer pubkey is in the URL
     // For nostrconnect:// flow, the remote signer pubkey is discovered from the connect response
@@ -117,6 +131,14 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     return this.#proto === "bunker:"
   }
 
+  get remotePubkey() {
+    return this.#remotePubkey
+  }
+
+  get timeoutMs() {
+    return this.options.timeoutMs ?? Nip46RpcTimeout
+  }
+
   /**
    * Connect to the remote signer relay and establish the NIP-46 connection.
    *
@@ -128,19 +150,41 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
    * @see https://github.com/nostr-protocol/nips/blob/master/46.md#initiating-a-connection
    */
   async init(autoConnect = true) {
+    this.#initializing ??= this.#start(autoConnect)
+    return this.#initializing
+  }
+
+  async #start(autoConnect: boolean) {
+    const generation = this.#generation
     this.#localPubkey = await this.#insideSigner.getPubKey()
-    return await new Promise<void>((resolve, reject) => {
+    if (generation !== this.#generation) throw new Error("NIP-46 connection closed")
+    return new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(() => {
+        reject(new Error("NIP-46 connection timed out"))
+        void this.close()
+      }, this.timeoutMs)
+      this.#commandQueue.set("connect", {
+        resolve: () => {
+          clearTimeout(timer)
+          resolve()
+        },
+        reject: error => {
+          clearTimeout(timer)
+          reject(error)
+        },
+      })
       this.#conn = new Connection(this.#relay, { read: true, write: true })
       this.#conn.on("unverifiedEvent", (_sub, e) => {
         // Verify the Schnorr signature before processing the NIP-46 message to
         // prevent forged protocol messages from an attacker on a public relay.
-        if (!EventExt.isValid(e)) {
+        if (generation !== this.#generation || !EventExt.isValid(e)) {
           this.#log("Dropping NIP-46 event with invalid signature from %s", e.pubkey)
           return
         }
         this.#onReply(e).catch(err => this.#log("Error handling NIP-46 reply: %O", err))
       })
       this.#conn.on("connected", async () => {
+        if (generation !== this.#generation) return
         this.#conn?.request([
           "REQ",
           "reply",
@@ -153,25 +197,25 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
         ])
 
         this.emit("ready")
+        if (!this.#commandQueue.has("connect")) return
 
-        if (autoConnect) {
-          if (this.isBunker) {
+        try {
+          if (autoConnect && this.isBunker) {
             const rsp = await this.#connect(unwrap(this.#remotePubkey))
             if (isConnectAccepted(rsp, this.#token)) {
-              resolve()
+              this.#commandQueue.get("connect")?.resolve(rsp)
+              this.#commandQueue.delete("connect")
             } else {
-              reject(rsp.error)
+              this.#commandQueue.get("connect")?.reject(new Error(rsp.error || "Connection rejected"))
+              void this.close()
             }
-          } else {
-            this.#commandQueue.set("connect", {
-              reject,
-              resolve: () => {
-                resolve()
-              },
-            })
+          } else if (!autoConnect) {
+            this.#commandQueue.get("connect")?.resolve({ id: "connect", result: "ack", error: "" })
+            this.#commandQueue.delete("connect")
           }
-        } else {
-          resolve()
+        } catch (error) {
+          this.#commandQueue.get("connect")?.reject(error instanceof Error ? error : new Error(String(error)))
+          void this.close()
         }
       })
       this.#conn.connect()
@@ -180,13 +224,16 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   }
 
   async close() {
-    if (this.#conn) {
-      await this.#disconnect()
-      this.#conn.closeRequest("reply")
-      this.#conn.close()
-      this.#conn = undefined
-      this.#didInit = false
-    }
+    this.#generation++
+    for (const pending of this.#commandQueue.values()) pending.reject(new Error("NIP-46 connection closed"))
+    this.#commandQueue.clear()
+    this.#conn?.closeRequest("reply")
+    this.#conn?.close()
+    this.#conn?.removeAllListeners()
+    this.#conn = undefined
+    this.#didInit = false
+    this.#initializing = undefined
+    this.#userPubkey = undefined
   }
 
   async describe() {
@@ -204,6 +251,8 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   async getPubKey() {
     if (!this.#remotePubkey) throw new Error("Remote pubkey not yet known; call init() first")
     const rsp = await this.#rpc("get_public_key", [])
+    if (!/^[0-9a-f]{64}$/.test(rsp.result)) throw new Error("Invalid signing public key")
+    this.#userPubkey = rsp.result
     return rsp.result as string
   }
 
@@ -217,22 +266,31 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     return rsp.result as string
   }
 
-  nip44Encrypt(_content: string, _key: string): Promise<string> {
-    throw new Error("Method not implemented.")
+  async nip44Encrypt(content: string, key: string): Promise<string> {
+    return (await this.#rpc("nip44_encrypt", [key, content])).result
   }
 
-  nip44Decrypt(_content: string, _otherKey: string): Promise<string> {
-    throw new Error("Method not implemented.")
+  async nip44Decrypt(content: string, otherKey: string): Promise<string> {
+    return (await this.#rpc("nip44_decrypt", [otherKey, content])).result
   }
 
-  async sign(ev: NostrEvent) {
+  async sign(ev: NostrEvent | NotSignedNostrEvent) {
+    const pubkey = this.#userPubkey ?? (await this.getPubKey())
     const rsp = await this.#rpc("sign_event", [JSON.stringify(ev)])
     const signed = JSON.parse(rsp.result as string) as NostrEvent
-    return {
-      ...ev,
-      id: signed.id,
-      sig: signed.sig,
+    if (
+      signed.pubkey !== pubkey ||
+      (ev.pubkey && ev.pubkey !== pubkey) ||
+      signed.kind !== ev.kind ||
+      signed.created_at !== ev.created_at ||
+      signed.content !== ev.content ||
+      JSON.stringify(signed.tags) !== JSON.stringify(ev.tags) ||
+      !EventExt.isValid(signed) ||
+      !schnorr.verify(hexToBytes(signed.sig), hexToBytes(signed.id), hexToBytes(signed.pubkey))
+    ) {
+      throw new Error("The signer returned a different identity or event")
     }
+    return signed
   }
 
   /**
@@ -250,12 +308,8 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     }
   }
 
-  async #disconnect() {
-    return await this.#rpc("disconnect", [])
-  }
-
   async #connect(pk: string) {
-    const connectParams = [pk, this.#token ?? "", PERMS]
+    const connectParams = [pk, this.#token ?? "", this.options.permissions ?? PERMS]
     return await this.#rpc("connect", connectParams)
   }
 
@@ -273,7 +327,14 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
       throw new Error("Unknown event kind")
     }
 
+    if (
+      !e.tags.some(t => t[0] === "p" && t[1] === this.#localPubkey) ||
+      (this.#remotePubkey && e.pubkey !== this.#remotePubkey)
+    )
+      return
+    const generation = this.#generation
     const decryptedContent = await this.#insideSigner.nip44Decrypt(e.content, e.pubkey)
+    if (generation !== this.#generation) return
     let reply: Nip46Request | Nip46Response
     try {
       reply = JSON.parse(decryptedContent) as Nip46Request | Nip46Response
@@ -282,47 +343,21 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
       return
     }
 
-    let id = reply.id
+    const id = reply.id
     // Log only the id/method — never the decrypted params/result which may contain secrets.
     if ("method" in reply) {
       this.#log("Recv request id=%s method=%s", reply.id, reply.method)
     } else {
       this.#log("Recv response id=%s error=%s", reply.id, reply.error || "(none)")
     }
-    if ("method" in reply && reply.method === "connect") {
-      // For nostrconnect:// flow, the signer should send a connect RESPONSE (not request).
-      // Per NIP-46: "Client discovers remote-signer-pubkey from connect response author."
-      // We use e.pubkey (the cryptographically verified event author) as the signer's pubkey,
-      // regardless of whether the signer sends a request or response. This ensures we always
-      // trust the verified pubkey over potentially incorrect params.
-      // See: https://github.com/nostr-protocol/nips/blob/master/46.md#initiating-a-connection
-      if (!this.isBunker) {
-        this.#remotePubkey = e.pubkey
-      } else {
-        this.#remotePubkey = reply.params[0]
-      }
-      await this.#sendCommand(
-        {
-          id: reply.id,
-          result: "ack",
-          error: "",
-        },
-        unwrap(this.#remotePubkey),
-      )
-      id = "connect"
-    } else if (!this.#remotePubkey) {
-      // nostrconnect:// flow: signer sends a response (not a connect request)
-      // Discover remote signer pubkey from event author per NIP-46 spec
+    if ("method" in reply) return
+    if (!this.#remotePubkey) {
+      // Bind the discovered transport key only after the QR secret and recipient match.
+      if (reply.error || reply.result !== this.#token) return
       this.#remotePubkey = e.pubkey
-      await this.#sendCommand(
-        {
-          id: reply.id,
-          result: "ack",
-          error: "",
-        },
-        e.pubkey,
-      )
-      id = "connect"
+      this.#commandQueue.get("connect")?.resolve(reply)
+      this.#commandQueue.delete("connect")
+      return
     }
     const pending = this.#commandQueue.get(id)
     if (!pending) {
@@ -345,9 +380,11 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   }
 
   async #rpc(method: string, params: Array<string>) {
+    const generation = this.#generation
     if (!this.#didInit) {
       await this.init()
     }
+    if (generation !== this.#generation) throw new Error("NIP-46 connection closed")
     if (!this.#conn) throw new Error("Connection error")
 
     const payload = {
@@ -356,12 +393,11 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
       params,
     } as Nip46Request
 
-    this.#sendCommand(payload, unwrap(this.#remotePubkey))
-    return await new Promise<Nip46Response>((resolve, reject) => {
+    const response = await new Promise<Nip46Response>((resolve, reject) => {
       const timeout = setTimeout(() => {
         this.#commandQueue.delete(payload.id)
-        reject(new Error(`NIP-46 RPC timed out after ${Nip46RpcTimeout}ms (method=${method})`))
-      }, Nip46RpcTimeout)
+        reject(new Error(`NIP-46 RPC timed out after ${this.timeoutMs}ms (method=${method})`))
+      }, this.timeoutMs)
       this.#commandQueue.set(payload.id, {
         resolve: async (o: Nip46Response) => {
           clearTimeout(timeout)
@@ -372,11 +408,18 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
           reject(e)
         },
       })
+      void this.#sendCommand(payload, unwrap(this.#remotePubkey)).catch(error => {
+        this.#commandQueue.get(payload.id)?.reject(error)
+        this.#commandQueue.delete(payload.id)
+      })
     })
+    if (generation !== this.#generation) throw new Error("NIP-46 connection closed")
+    return response
   }
 
   async #sendCommand(payload: Nip46Request | Nip46Response, target: string) {
     if (!this.#conn) return
+    const connection = this.#conn
 
     const eb = new EventBuilder()
     eb.kind(NIP46_KIND as EventKind)
@@ -390,6 +433,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
       this.#log("Send response id=%s", payload.id)
     }
     const evCommand = await eb.buildAndSign(this.#insideSigner)
-    await this.#conn.publish(evCommand)
+    if (this.#conn !== connection) throw new Error("NIP-46 connection closed")
+    await connection.publish(evCommand)
   }
 }

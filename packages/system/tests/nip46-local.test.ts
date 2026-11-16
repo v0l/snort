@@ -58,12 +58,9 @@ describe("Nip46Signer - Client-side validation", () => {
     expect(signer.isBunker).toBe(false)
   })
 
-  test("handles missing secret parameter gracefully", () => {
+  test("rejects missing nostrconnect pairing secret", () => {
     const url = `nostrconnect://${clientPubkey}?relay=wss://relay.test`
-    const signer = new Nip46Signer(url, clientSigner)
-
-    expect(signer.isBunker).toBe(false)
-    // Secret will be undefined, which may cause issues with some signers
+    expect(() => new Nip46Signer(url, clientSigner)).toThrow("secret")
   })
 
   test("generates random client keypair when not provided", async () => {

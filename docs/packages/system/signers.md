@@ -117,7 +117,18 @@ const signer = new Nip46Signer('nostrconnect://<client-pubkey>?relay=wss://...&s
 
 // With an inside signer (for nostrconnect:// flow)
 const signer = new Nip46Signer('nostrconnect://...', insideSigner)
+
+// Optional request/handshake timeout and application-specific permission hints
+const signer = new Nip46Signer('bunker://...', insideSigner, {
+  timeoutMs: 120_000,
+  permissions: 'sign_event:1311,sign_event:27235,nip44_encrypt,nip44_decrypt',
+})
 ```
+
+Client-initiated pairing requires a non-empty secret. The signer accepts the remote
+transport key only from a valid response addressed to the client and echoing that
+secret. `getPubKey()` returns the separate user signing identity; `sign()` rejects
+an invalid signature or changes to that identity or the requested event fields.
 
 ### Connection Flow
 
@@ -144,7 +155,7 @@ const pubkey = await signer.getPubKey()
 | Event | Callback | Description |
 |-------|----------|-------------|
 | `oauth` | `(url: string) => void` | OAuth URL to redirect user to |
-| `ready` | `() => void` | Connection established and authed |
+| `ready` | `() => void` | Relay connection established; await `init()` for signer approval |
 
 ### Additional Properties
 
@@ -153,14 +164,24 @@ const pubkey = await signer.getPubKey()
 | `isBunker` | `boolean` | Whether this is a bunker:// connection |
 | `relays` | `string[]` | Relay URLs for the connection |
 | `privateKey` | `string \| undefined` | Local private key (for nostrconnect:// flow) |
+| `remotePubkey` | `string \| undefined` | Remote transport key, discovered after QR pairing |
 
 ### Additional Methods
 
-#### `close(): Promise<boolean>`
+#### `close(): Promise<void>`
 
-Close the NIP-46 connection.
+Close the local connection and reject pending requests immediately, including
+an unfinished handshake. This does not require a remote `disconnect` response
+or revoke the client's grant in the remote signer.
 
-#### `describe(): Promise<string>`
+To restore an already authorised client, retain its generated client key and
+the remote transport public key and relay. Construct a `bunker://` connection
+without the one-time pairing secret, supply the retained `PrivateKeySigner`,
+and call `await signer.init(false)` before `getPubKey()`. Check the returned user
+identity against the saved identity before using the connection. The client key
+is a credential and should be removed on logout; it is not the user's Nostr key.
+
+#### `describe(): Promise<string[]>`
 
 Get the remote signer's supported methods.
 
