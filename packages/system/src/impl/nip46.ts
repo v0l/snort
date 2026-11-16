@@ -113,6 +113,10 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     return undefined
   }
 
+  get remotePubkey() {
+    return this.#remotePubkey
+  }
+
   get isBunker() {
     return this.#proto === "bunker:"
   }
@@ -181,7 +185,6 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
 
   async close() {
     if (this.#conn) {
-      await this.#disconnect()
       this.#conn.closeRequest("reply")
       this.#conn.close()
       this.#conn = undefined
@@ -250,10 +253,6 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     if (!rsp.error) {
       this.#remotePubkey = rsp.result as string
     }
-  }
-
-  async #disconnect() {
-    return await this.#rpc("disconnect", [])
   }
 
   async #connect(pk: string) {
