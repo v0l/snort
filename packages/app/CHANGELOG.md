@@ -1,3 +1,29 @@
+# v0.5.6
+
+## Added
+
+- NIP-44 encryption and decryption over NIP-46 remote signers
+- NIP-45 COUNT support with merged results and HyperLogLog helpers
+- Hydrating server rendering, profile, article, note and hashtag sitemaps
+- Reworked messages page and multi-account switching
+- Feed tabs, lighter note cards, mobile bar, welcome back callout and "worth a look"
+
+## Changed
+
+- Remote signer key is saved with NIP-46 sessions, so logins survive reloads
+- @snort/system 2.2.1, @snort/worker-relay 3.0.2
+
+## Fixed
+
+- Relays discovered from relay lists are persisted correctly
+- Proof of work event ids no longer double hash in WASM
+- Bunker login accepts connect responses that echo the secret
+- Profiles refresh again and keep their loaded time across reloads
+- Crash on "worth a look" with tag markers, messages page crash, DM processing of undefined events
+- Malformed signatures no longer throw during batch verification
+- Settings load from every write relay
+- Docker image build for the server rendered app
+
 # v0.5.0
 
 `+196,739,-43,235`
