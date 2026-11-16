@@ -217,12 +217,14 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     return rsp.result as string
   }
 
-  nip44Encrypt(_content: string, _key: string): Promise<string> {
-    throw new Error("Method not implemented.")
+  async nip44Encrypt(content: string, key: string): Promise<string> {
+    const rsp = await this.#rpc("nip44_encrypt", [key, content])
+    return rsp.result as string
   }
 
-  nip44Decrypt(_content: string, _otherKey: string): Promise<string> {
-    throw new Error("Method not implemented.")
+  async nip44Decrypt(content: string, otherKey: string): Promise<string> {
+    const rsp = await this.#rpc("nip44_decrypt", [otherKey, content])
+    return rsp.result as string
   }
 
   async sign(ev: NostrEvent) {
