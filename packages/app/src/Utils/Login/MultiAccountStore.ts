@@ -186,6 +186,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     remoteSignerRelays?: Array<string>,
     privateKey?: KeyStorage,
     stalker?: boolean,
+    remoteSignerPubkey?: string,
   ) {
     if (this.findByPubkey(key)) {
       throw new Error("Already logged in with this pubkey")
@@ -212,6 +213,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         appdataId: "snort",
       }),
       remoteSignerRelays,
+      remoteSignerPubkey,
       privateKeyData: privateKey,
       stalker: stalker ?? false,
     } as LoginSession

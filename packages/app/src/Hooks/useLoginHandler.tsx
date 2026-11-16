@@ -62,6 +62,8 @@ export default function useLoginHandler() {
           undefined,
           nip46.relays,
           await pin(unwrap(nip46.privateKey)),
+          false,
+          nip46.remotePubkey,
         )
         nip46.close()
       } else {
@@ -81,6 +83,8 @@ export default function useLoginHandler() {
         undefined,
         nip46.relays,
         await pin(unwrap(nip46.privateKey)),
+        false,
+        nip46.remotePubkey,
       )
       nip46.close()
     } else {

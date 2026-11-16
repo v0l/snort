@@ -77,6 +77,8 @@ export default function SignIn() {
         undefined,
         nip46.relays,
         new NotEncrypted(unwrap(nip46.privateKey)),
+        false,
+        nip46.remotePubkey,
       )
       nip46.close()
       trackEvent("Login", { type: "NIP46" })

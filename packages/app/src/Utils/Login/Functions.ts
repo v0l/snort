@@ -150,15 +150,19 @@ export function sessionNeedsPin(l: LoginSession) {
   return l.privateKeyData?.shouldUnlock()
 }
 
+export function nip46RestoreUrl(l: LoginSession) {
+  const relayArgs = (l.remoteSignerRelays ?? []).map(a => `relay=${encodeURIComponent(a)}`)
+  return `bunker://${l.remoteSignerPubkey ?? unwrap(l.publicKey)}?${relayArgs.join("&")}`
+}
+
 export function createPublisher(l: LoginSession) {
   switch (l.type) {
     case LoginSessionType.PrivateKey: {
       return EventPublisher.privateKey(unwrap(l.privateKeyData as KeyStorage).value)
     }
     case LoginSessionType.Nip46: {
-      const relayArgs = (l.remoteSignerRelays ?? []).map(a => `relay=${encodeURIComponent(a)}`)
       const inner = new PrivateKeySigner(unwrap(l.privateKeyData as KeyStorage).value)
-      const nip46 = new Nip46Signer(`bunker://${unwrap(l.publicKey)}?${[...relayArgs].join("&")}`, inner)
+      const nip46 = new Nip46Signer(nip46RestoreUrl(l), inner)
       nip46.on("oauth", url => {
         window.open(url, CONFIG.appNameCapitalized, "width=600,height=800,popup=yes")
       })

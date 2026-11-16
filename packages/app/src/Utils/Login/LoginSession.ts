@@ -82,6 +82,11 @@ export interface LoginSession {
   remoteSignerRelays?: Array<string>
 
   /**
+   * Remote signer transport pubkey (NIP-46)
+   */
+  remoteSignerPubkey?: string
+
+  /**
    * A list of chats which we have joined (NIP-28/NIP-29)
    */
   extraChats: Array<string>
