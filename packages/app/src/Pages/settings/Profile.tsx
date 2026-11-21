@@ -168,6 +168,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   async function setNewBanner() {
     const rsp = await uploadFile()
     if (rsp) {
+      isDirty.current = true
       setBanner(rsp)
     }
   }
@@ -320,7 +321,10 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               </AsyncButton>
             </div>
           )}
-          {(props.avatar ?? true) && <AvatarEditor onPictureChange={p => setPicture(p)} picture={picture} />}
+          {(props.avatar ?? true) && <AvatarEditor onPictureChange={p => {
+                isDirty.current = true
+                setPicture(p)
+              }} picture={picture} />}
         </div>
         {error && <ErrorOrOffline error={error} />}
         {editor()}

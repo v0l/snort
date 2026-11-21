@@ -68,7 +68,5 @@ test("cache debug inserts and deletes an event", async ({ page }) => {
   await page.getByPlaceholder('{"kinds": [1], "limit": 10}').fill(JSON.stringify({ ids: [ev.id] }))
   await queryUntil(page, "Results: 1")
   await page.getByRole("button", { name: "Delete Matching" }).click()
-  await expect(page.getByRole("heading", { name: "Results: 1" })).toBeVisible()
-  await page.getByRole("button", { name: "Query" }).click()
-  await expect(page.getByRole("heading", { name: "Results: 0" })).toBeVisible()
+  await queryUntil(page, "Results: 0")
 })
